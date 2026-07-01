@@ -361,7 +361,7 @@ Cut content documented in detail elsewhere:
 - **Pause-screen vehicle-upgrade overlays** (CHR bank `$15`) — a full set of overlay tiles
   meant to draw onto the Sophia illustration when an upgrade is collected; the shipped game
   draws ability text labels instead. See
-  docs/misc/pause-screen-dead-overlays.md.
+  [docs/misc/pause-screen-dead-overlays.md](pause-screen-dead-overlays.md).
 - **Orphaned metasprite compositions `$0C`/`$0D`** — likely cut. See
   docs/entities/metasprite-system.md.
 - **`$16`/`$17` E-Canister pickup handler** — handler exists but is unreachable in normal
