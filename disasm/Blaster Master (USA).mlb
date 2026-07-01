@@ -1814,13 +1814,13 @@ NesPrgRom:1CDBA:L_CDBA
 NesPrgRom:1CDD0:ScreenFade_Step:Per-frame palette-wipe animator;\n\nif bit 7 of ScreenFade_Flags ($15) set: DEC ScreenFade_Counter ($B6, 8→0, fade-in);\nif bit 6 set: INC $B6 (0→9, fade-out);\n\neach step subtracts $B6×8 from $0650–$066F palette shadow
 NesPrgRom:1CDD2::bits 6 and 7
 NesPrgRom:1CDD4::Neither bit set, so abort.
-NesPrgRom:1CDE0::is completed faded out?
+NesPrgRom:1CDE0::is completly faded out?
 NesPrgRom:1CDE4:_ScreenFade_Step__Fade_Out
 NesPrgRom:1CDE9:_ScreenFade_Step__Fade_In
 NesPrgRom:1CDED:_ScreenFade_Step__Apply_Change
 NesPrgRom:1CDF8:_ScreenFade_Step__Apply_To_Palette_Entry_X
 NesPrgRom:1CE00::Clamp to $0F on underflow
-NesPrgRom:1CE02:_ScreenFade_Step__Save_Palette_Entry:\nnot sure about this
+NesPrgRom:1CE02:_ScreenFade_Step__Save_Palette_Entry
 NesPrgRom:1CE08:_ScreenFade_Step__On_Completely_Faded_Out
 NesPrgRom:1CE0E:_ScreenFade_Step__Return
 NesPrgRom:1CE0F:L_CE0F

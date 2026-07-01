@@ -1458,8 +1458,6 @@ LABEL {
 LABEL {
   NAME    "_ScreenFade_Step__Save_Palette_Entry";
   ADDR    $CE02;
-  COMMENT "
-; not sure about this";
 };
 
 LABEL {
@@ -5133,7 +5131,7 @@ LABEL {
 LABEL {
   NAME    "_note_CDE0";
   ADDR    $CDE0;
-  COMMENT "is completed faded out?";
+  COMMENT "is completly faded out?";
 };
 
 LABEL {

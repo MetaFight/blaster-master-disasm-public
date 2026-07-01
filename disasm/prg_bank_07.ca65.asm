@@ -2071,7 +2071,7 @@ _note_CDD4:
         lda     $15                             ; CDDA
         bmi     _ScreenFade_Step__Fade_In       ; CDDC
         lda     $B6                             ; CDDE
-; is completed faded out?
+; is completly faded out?
 _note_CDE0:
         cmp     #$09                            ; CDE0
         bcs     _ScreenFade_Step__On_Completely_Faded_Out; CDE2
@@ -2099,8 +2099,6 @@ _ScreenFade_Step__Apply_To_Palette_Entry_X:
 ; Clamp to $0F on underflow
 _note_CE00:
         lda     #$0F                            ; CE00
-; 
-; not sure about this
 _ScreenFade_Step__Save_Palette_Entry:
         sta     $58,x                           ; CE02
         dex                                     ; CE04
