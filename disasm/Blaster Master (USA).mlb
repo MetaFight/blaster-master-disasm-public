@@ -1483,13 +1483,18 @@ NesPrgRom:1AFD1:L_AFD1
 NesPrgRom:1AFE1:L_AFE1
 NesPrgRom:1AFEB:L_AFEB
 NesPrgRom:1AFF7:L_AFF7
-NesPrgRom:1B012:L_B012
-NesPrgRom:1B02E:L_B02E
-NesPrgRom:1B047:L_B047
-NesPrgRom:1B04B:L_B04B
-NesPrgRom:1B05B:L_B05B
-NesPrgRom:1B065:L_B065
-NesPrgRom:1B071:L_B071
+NesPrgRom:1AFFC:ObjHandler_Tank_76_Shooter_Init:(alpha: not fully human-verified) \nObjType $76 — Shooter (Thing $10, "Gray Shooter") init. ObjState 0: JMP $B012→RTS. ObjState 1: JSR TankEnemy_Init ($A2E9, descriptor $10: HP $10, death drop $2C Health-x1); JSR Counter13_Step ($EB71) → $47 = random launch ANGLE (0–255 = full circle); LDY #$14 (speed magnitude) → JSR $E1BD converts angle $47 + speed into a velocity vector $4C/$4D (random-direction straight-line launch); $52=0 (clear fire cooldown); RTS. $A2E9's INC $46 → $77 active.\nObjState 0: JMP $B012 → RTS (dormant)
+NesPrgRom:1AFFF:_ObjHandler_Tank_76_Shooter_Init__Update__:init body: JSR TankEnemy_Init ($A2E9) desc $10 (HP $10); JSR $EB71 → $47 = random launch angle; LDY #$14 speed → JSR $E1BD angle→velocity vector $4C/$4D; $52=0; RTS  [+3 body entry]
+NesPrgRom:1B012:_ObjHandler_Tank_76_Shooter_Init__Done:Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
+NesPrgRom:1B013:ObjHandler_Tank_77_Shooter_Main:(alpha: not fully human-verified) \nObjType $77 — Shooter active. Dual-entry: ObjState 0 JMP→$B04B (skip logic to render/hit tail). Update ($B016): $42/$43=$80 terrain half-extents; JSR $DF68 = advance + BOUNCE off walls (reflects $4C on H-wall bit7, $4D on V-wall bit6 of the $E083 probe). Fire gate: if cooldown $52≠0 → DEC $52, $50=0 (recoil pose), skip; else at $B02E: JSR $E0ED (signed X-dist to player) EOR $4C (Xvel sign) BMI skip (fire only when drifting TOWARD player in X); JSR $E0FA (signed Y-dist) BMI skip (fire only when player at/below); $A0=$3C (Small Red shot) JSR $DF36 (rate-limited spawn: frame $11&$4C==0 AND Counter13&3==0) BEQ skip; on spawn $52=$10 (16-frame cooldown). $50=1. Render tail: $40/$41=$10 16×16 hitbox, $EF2B off-screen despawn, $A30A(desc $10) damage vs HP 16 → $A34D on kill; metasprite $6C (idle/searching) / $6D (recoil, cooldown active).\nObjState 0: JMP $B04B → skip logic to shared hit-check
+NesPrgRom:1B016:_ObjHandler_Tank_77_Shooter_Main__Update__:ObjState 1 body: $42=$80/$43=$80 terrain half-extents; JSR $DF68 (advance + bounce off walls: reflect $4C/$4D on collision); LDA $52 (fire cooldown): BEQ $B02E (try fire); else DEC $52; $50=0 (recoil pose); JMP $B04B  [+3 body entry]
+NesPrgRom:1B02E:_ObjHandler_Tank_77_Shooter_Main__FireCheck:JSR $E0ED (signed X-dist to player) EOR $4C (Xvel sign): BMI $B047 (only fire when moving TOWARD player in X); JSR $E0FA (signed Y-dist to player): BMI $B047 (only fire when player at/below, Y-dist≥0)
+NesPrgRom:1B035::$A0=$3C (Small Red projectile); JSR $DF36 fire (internally throttled: frame $11&$4C==0 AND Counter13&$03==0); BEQ $B047 (didn't fire / no slot); $52=$10 (16-frame cooldown)
+NesPrgRom:1B047:_ObjHandler_Tank_77_Shooter_Main__SetActive:$50=1 (idle/searching pose — set on both the skip-fire and post-fire paths)
+NesPrgRom:1B04B:_ObjHandler_Tank_77_Shooter_Main__HitCheck:$40=$10/$41=$10 (16×16 hitbox); JSR $EF2B (ScreenPos_Compute + player-shot overlap); off-screen → JMP $D7F8 despawn
+NesPrgRom:1B05B:_ObjHandler_Tank_77_Shooter_Main__Damage:LDA #$10 JSR $A30A (TankEnemy_DamageCheck desc $10, HP 16); on kill JMP $A34D (defeat: explosion + maybe Health-x1 drop)
+NesPrgRom:1B065:_ObjHandler_Tank_77_Shooter_Main__Render:JSR $E04E (OAM attr base 1 + h-flip by $4C sign); LDX #$6C; LDA $50: BNE $B071 ($50≠0 idle→$6C, $50=0 recoil→$6D)
+NesPrgRom:1B071:_ObjHandler_Tank_77_Shooter_Main__TileBase:TXA ($6C or $6D); JMP $F011
 NesPrgRom:1B094:L_B094
 NesPrgRom:1B0B0:L_B0B0
 NesPrgRom:1B0C9:L_B0C9

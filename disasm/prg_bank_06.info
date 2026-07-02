@@ -4165,38 +4165,69 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_B012";
+  NAME    "ObjHandler_Tank_76_Shooter_Init";
+  ADDR    $AFFC;
+  COMMENT "(alpha: not fully human-verified) \n; ObjType $76 — Shooter (Thing $10, 'Gray Shooter') init. ObjState 0: JMP $B012→RTS. ObjState 1:\n; JSR TankEnemy_Init ($A2E9, descriptor $10: HP $10, death drop $2C Health-x1); JSR Counter13_Step\n; ($EB71) → $47 = random launch ANGLE (0–255 = full circle); LDY #$14 (speed magnitude) → JSR\n; $E1BD converts angle $47 + speed into a velocity vector $4C/$4D (random-direction straight-line\n; launch); $52=0 (clear fire cooldown); RTS. $A2E9's INC $46 → $77 active.\n; ObjState 0: JMP $B012 → RTS (dormant)";
+};
+
+LABEL {
+  NAME    "_ObjHandler_Tank_76_Shooter_Init__Update__";
+  ADDR    $AFFF;
+  COMMENT "init body: JSR TankEnemy_Init ($A2E9) desc $10 (HP $10); JSR $EB71 → $47 = random launch angle;\n; LDY #$14 speed → JSR $E1BD angle→velocity vector $4C/$4D; $52=0; RTS  [+3 body entry]";
+};
+
+LABEL {
+  NAME    "_ObjHandler_Tank_76_Shooter_Init__Done";
   ADDR    $B012;
+  COMMENT "Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.";
 };
 
 LABEL {
-  NAME    "L_B02E";
+  NAME    "ObjHandler_Tank_77_Shooter_Main";
+  ADDR    $B013;
+  COMMENT "(alpha: not fully human-verified) \n; ObjType $77 — Shooter active. Dual-entry: ObjState 0 JMP→$B04B (skip logic to render/hit tail).\n; Update ($B016): $42/$43=$80 terrain half-extents; JSR $DF68 = advance + BOUNCE off walls\n; (reflects $4C on H-wall bit7, $4D on V-wall bit6 of the $E083 probe). Fire gate: if cooldown\n; $52≠0 → DEC $52, $50=0 (recoil pose), skip; else at $B02E: JSR $E0ED (signed X-dist to player)\n; EOR $4C (Xvel sign) BMI skip (fire only when drifting TOWARD player in X); JSR $E0FA (signed\n; Y-dist) BMI skip (fire only when player at/below); $A0=$3C (Small Red shot) JSR $DF36\n; (rate-limited spawn: frame $11&$4C==0 AND Counter13&3==0) BEQ skip; on spawn $52=$10 (16-frame\n; cooldown). $50=1. Render tail: $40/$41=$10 16×16 hitbox, $EF2B off-screen despawn, $A30A(desc\n; $10) damage vs HP 16 → $A34D on kill; metasprite $6C (idle/searching) / $6D (recoil, cooldown\n; active).\n; ObjState 0: JMP $B04B → skip logic to shared hit-check";
+};
+
+LABEL {
+  NAME    "_ObjHandler_Tank_77_Shooter_Main__Update__";
+  ADDR    $B016;
+  COMMENT "ObjState 1 body: $42=$80/$43=$80 terrain half-extents; JSR $DF68 (advance + bounce off walls:\n; reflect $4C/$4D on collision); LDA $52 (fire cooldown): BEQ $B02E (try fire); else DEC $52;\n; $50=0 (recoil pose); JMP $B04B  [+3 body entry]";
+};
+
+LABEL {
+  NAME    "_ObjHandler_Tank_77_Shooter_Main__FireCheck";
   ADDR    $B02E;
+  COMMENT "JSR $E0ED (signed X-dist to player) EOR $4C (Xvel sign): BMI $B047 (only fire when moving TOWARD\n; player in X); JSR $E0FA (signed Y-dist to player): BMI $B047 (only fire when player at/below,\n; Y-dist≥0)";
 };
 
 LABEL {
-  NAME    "L_B047";
+  NAME    "_ObjHandler_Tank_77_Shooter_Main__SetActive";
   ADDR    $B047;
+  COMMENT "$50=1 (idle/searching pose — set on both the skip-fire and post-fire paths)";
 };
 
 LABEL {
-  NAME    "L_B04B";
+  NAME    "_ObjHandler_Tank_77_Shooter_Main__HitCheck";
   ADDR    $B04B;
+  COMMENT "$40=$10/$41=$10 (16×16 hitbox); JSR $EF2B (ScreenPos_Compute + player-shot overlap); off-screen\n; → JMP $D7F8 despawn";
 };
 
 LABEL {
-  NAME    "L_B05B";
+  NAME    "_ObjHandler_Tank_77_Shooter_Main__Damage";
   ADDR    $B05B;
+  COMMENT "LDA #$10 JSR $A30A (TankEnemy_DamageCheck desc $10, HP 16); on kill JMP $A34D (defeat: explosion\n; + maybe Health-x1 drop)";
 };
 
 LABEL {
-  NAME    "L_B065";
+  NAME    "_ObjHandler_Tank_77_Shooter_Main__Render";
   ADDR    $B065;
+  COMMENT "JSR $E04E (OAM attr base 1 + h-flip by $4C sign); LDX #$6C; LDA $50: BNE $B071 ($50≠0 idle→$6C,\n; $50=0 recoil→$6D)";
 };
 
 LABEL {
-  NAME    "L_B071";
+  NAME    "_ObjHandler_Tank_77_Shooter_Main__TileBase";
   ADDR    $B071;
+  COMMENT "TXA ($6C or $6D); JMP $F011";
 };
 
 LABEL {
@@ -5052,5 +5083,11 @@ LABEL {
 LABEL {
   NAME    "L_BC18";
   ADDR    $BC18;
+};
+
+LABEL {
+  NAME    "_note_B035";
+  ADDR    $B035;
+  COMMENT "$A0=$3C (Small Red projectile); JSR $DF36 fire (internally throttled: frame $11&$4C==0 AND\n; Counter13&$03==0); BEQ $B047 (didn't fire / no slot); $52=$10 (16-frame cooldown)";
 };
 

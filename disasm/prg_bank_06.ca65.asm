@@ -6609,9 +6609,20 @@ L_AFF7: txa                                     ; AFF7
 ; ----------------------------------------------------------------------------
         .byte   $60                             ; AFFB
 ; ----------------------------------------------------------------------------
-        jmp     L_B012                          ; AFFC
+; (alpha: not fully human-verified) 
+; ObjType $76 — Shooter (Thing $10, 'Gray Shooter') init. ObjState 0: JMP $B012→RTS. ObjState 1:
+; JSR TankEnemy_Init ($A2E9, descriptor $10: HP $10, death drop $2C Health-x1); JSR Counter13_Step
+; ($EB71) → $47 = random launch ANGLE (0–255 = full circle); LDY #$14 (speed magnitude) → JSR
+; $E1BD converts angle $47 + speed into a velocity vector $4C/$4D (random-direction straight-line
+; launch); $52=0 (clear fire cooldown); RTS. $A2E9's INC $46 → $77 active.
+; ObjState 0: JMP $B012 → RTS (dormant)
+ObjHandler_Tank_76_Shooter_Init:
+        jmp     _ObjHandler_Tank_76_Shooter_Init__Done; AFFC
 
 ; ----------------------------------------------------------------------------
+; init body: JSR TankEnemy_Init ($A2E9) desc $10 (HP $10); JSR $EB71 → $47 = random launch angle;
+; LDY #$14 speed → JSR $E1BD angle→velocity vector $4C/$4D; $52=0; RTS  [+3 body entry]
+_ObjHandler_Tank_76_Shooter_Init__Update__:
         lda     #$10                            ; AFFF
         jsr     L_A2E9                          ; B001
         jsr     LEB71                           ; B004
@@ -6620,60 +6631,99 @@ L_AFF7: txa                                     ; AFF7
         jsr     LE1BD                           ; B00B
         lda     #$00                            ; B00E
         sta     $52                             ; B010
-L_B012: rts                                     ; B012
+; Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
+_ObjHandler_Tank_76_Shooter_Init__Done:
+        rts                                     ; B012
 
 ; ----------------------------------------------------------------------------
-        jmp     L_B04B                          ; B013
+; (alpha: not fully human-verified) 
+; ObjType $77 — Shooter active. Dual-entry: ObjState 0 JMP→$B04B (skip logic to render/hit tail).
+; Update ($B016): $42/$43=$80 terrain half-extents; JSR $DF68 = advance + BOUNCE off walls
+; (reflects $4C on H-wall bit7, $4D on V-wall bit6 of the $E083 probe). Fire gate: if cooldown
+; $52≠0 → DEC $52, $50=0 (recoil pose), skip; else at $B02E: JSR $E0ED (signed X-dist to player)
+; EOR $4C (Xvel sign) BMI skip (fire only when drifting TOWARD player in X); JSR $E0FA (signed
+; Y-dist) BMI skip (fire only when player at/below); $A0=$3C (Small Red shot) JSR $DF36
+; (rate-limited spawn: frame $11&$4C==0 AND Counter13&3==0) BEQ skip; on spawn $52=$10 (16-frame
+; cooldown). $50=1. Render tail: $40/$41=$10 16×16 hitbox, $EF2B off-screen despawn, $A30A(desc
+; $10) damage vs HP 16 → $A34D on kill; metasprite $6C (idle/searching) / $6D (recoil, cooldown
+; active).
+; ObjState 0: JMP $B04B → skip logic to shared hit-check
+ObjHandler_Tank_77_Shooter_Main:
+        jmp     _ObjHandler_Tank_77_Shooter_Main__HitCheck; B013
 
 ; ----------------------------------------------------------------------------
+; ObjState 1 body: $42=$80/$43=$80 terrain half-extents; JSR $DF68 (advance + bounce off walls:
+; reflect $4C/$4D on collision); LDA $52 (fire cooldown): BEQ $B02E (try fire); else DEC $52;
+; $50=0 (recoil pose); JMP $B04B  [+3 body entry]
+_ObjHandler_Tank_77_Shooter_Main__Update__:
         lda     #$80                            ; B016
         sta     $42                             ; B018
         lda     #$80                            ; B01A
         sta     $43                             ; B01C
         jsr     LDF68                           ; B01E
         lda     $52                             ; B021
-        beq     L_B02E                          ; B023
+        beq     _ObjHandler_Tank_77_Shooter_Main__FireCheck; B023
         dec     $52                             ; B025
         lda     #$00                            ; B027
         sta     $50                             ; B029
-        jmp     L_B04B                          ; B02B
+        jmp     _ObjHandler_Tank_77_Shooter_Main__HitCheck; B02B
 
 ; ----------------------------------------------------------------------------
-L_B02E: jsr     LE0ED                           ; B02E
+; JSR $E0ED (signed X-dist to player) EOR $4C (Xvel sign): BMI $B047 (only fire when moving TOWARD
+; player in X); JSR $E0FA (signed Y-dist to player): BMI $B047 (only fire when player at/below,
+; Y-dist≥0)
+_ObjHandler_Tank_77_Shooter_Main__FireCheck:
+        jsr     LE0ED                           ; B02E
         eor     $4C                             ; B031
-        bmi     L_B047                          ; B033
+        bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B033
+; $A0=$3C (Small Red projectile); JSR $DF36 fire (internally throttled: frame $11&$4C==0 AND
+; Counter13&$03==0); BEQ $B047 (didn't fire / no slot); $52=$10 (16-frame cooldown)
+_note_B035:
         jsr     LE0FA                           ; B035
-        bmi     L_B047                          ; B038
+        bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B038
         lda     #$3C                            ; B03A
         sta     $A0                             ; B03C
         jsr     LDF36                           ; B03E
-        beq     L_B047                          ; B041
+        beq     _ObjHandler_Tank_77_Shooter_Main__SetActive; B041
         lda     #$10                            ; B043
         sta     $52                             ; B045
-L_B047: lda     #$01                            ; B047
+; $50=1 (idle/searching pose — set on both the skip-fire and post-fire paths)
+_ObjHandler_Tank_77_Shooter_Main__SetActive:
+        lda     #$01                            ; B047
         sta     $50                             ; B049
-L_B04B: lda     #$10                            ; B04B
+; $40=$10/$41=$10 (16×16 hitbox); JSR $EF2B (ScreenPos_Compute + player-shot overlap); off-screen
+; → JMP $D7F8 despawn
+_ObjHandler_Tank_77_Shooter_Main__HitCheck:
+        lda     #$10                            ; B04B
         sta     $40                             ; B04D
         lda     #$10                            ; B04F
         sta     $41                             ; B051
         jsr     LEF2B                           ; B053
-        beq     L_B05B                          ; B056
+        beq     _ObjHandler_Tank_77_Shooter_Main__Damage; B056
         jmp     LD7F8                           ; B058
 
 ; ----------------------------------------------------------------------------
-L_B05B: lda     #$10                            ; B05B
+; LDA #$10 JSR $A30A (TankEnemy_DamageCheck desc $10, HP 16); on kill JMP $A34D (defeat: explosion
+; + maybe Health-x1 drop)
+_ObjHandler_Tank_77_Shooter_Main__Damage:
+        lda     #$10                            ; B05B
         jsr     L_A30A                          ; B05D
-        beq     L_B065                          ; B060
+        beq     _ObjHandler_Tank_77_Shooter_Main__Render; B060
         jmp     L_A34D                          ; B062
 
 ; ----------------------------------------------------------------------------
-L_B065: lda     #$01                            ; B065
+; JSR $E04E (OAM attr base 1 + h-flip by $4C sign); LDX #$6C; LDA $50: BNE $B071 ($50≠0 idle→$6C,
+; $50=0 recoil→$6D)
+_ObjHandler_Tank_77_Shooter_Main__Render:
+        lda     #$01                            ; B065
         jsr     LE04E                           ; B067
         ldx     #$6C                            ; B06A
         lda     $50                             ; B06C
-        bne     L_B071                          ; B06E
+        bne     _ObjHandler_Tank_77_Shooter_Main__TileBase; B06E
         inx                                     ; B070
-L_B071: txa                                     ; B071
+; TXA ($6C or $6D); JMP $F011
+_ObjHandler_Tank_77_Shooter_Main__TileBase:
+        txa                                     ; B071
         jmp     LF011                           ; B072
 
 ; ----------------------------------------------------------------------------
