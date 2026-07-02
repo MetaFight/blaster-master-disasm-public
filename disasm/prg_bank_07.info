@@ -1427,12 +1427,7 @@ LABEL {
 LABEL {
   NAME    "ScreenFade_Step";
   ADDR    $CDD0;
-  COMMENT "Per-frame palette-wipe animator;
-; 
-; if bit 7 of ScreenFade_Flags ($15) set: DEC ScreenFade_Counter ($B6, 8→0, fade-in);
-; if bit 6 set: INC $B6 (0→9, fade-out);
-; 
-; each step subtracts $B6×8 from $0650–$066F palette shadow";
+  COMMENT "Per-frame palette-wipe animator;\n; \n; if bit 7 of ScreenFade_Flags ($15) set: DEC ScreenFade_Counter ($B6, 8→0, fade-in);\n; if bit 6 set: INC $B6 (0→9, fade-out);\n; \n; each step subtracts $B6×8 from $0650–$066F palette shadow";
 };
 
 LABEL {
@@ -2898,7 +2893,7 @@ LABEL {
 LABEL {
   NAME    "Enqueue_Sound_Command";
   ADDR    $DECC;
-  COMMENT "Insert value (A) into first empty or matching slot of Sound_Command_Queue ($0370-$0377); 8-slot scan from slot 7 down";
+  COMMENT "Insert value (A) into first empty or matching slot of Sound_Command_Queue ($0370-$0377); 8-slot\n; scan from slot 7 down";
 };
 
 LABEL {
@@ -3555,9 +3550,7 @@ LABEL {
 LABEL {
   NAME    "_OAM_Copy_To_PPU__Manually";
   ADDR    $E6A7;
-  COMMENT "Dead code?
-; 
-; TODO:  Check if this is used in PAL";
+  COMMENT "Dead code?\n; \n; TODO:  Check if this is used in PAL";
 };
 
 LABEL {

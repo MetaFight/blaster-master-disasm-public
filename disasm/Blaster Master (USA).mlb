@@ -28,6 +28,10 @@ NesMemory:4014:SpriteDma_4014:Writing $XX will upload 256 bytes of data from CPU
 NesMemory:4015:ApuStatus_4015:Read:\nIF-D NT21\nDMC interrupt (I), frame interrupt (F), DMC active (D), length counter > 0 (N/T/2/1)\n\nWrite:\n---D NT21\nEnable DMC (D), noise (N), triangle (T), and pulse channels (2/1)
 NesMemory:4016:Ctrl1_4016:Read (NES - input):\n---4 3210\nRead data from controller port #1.\n\nWrite:\n---- ---A\nOutput data (strobe) to both controllers.
 NesMemory:4017:Ctrl2_FrameCtr_4017:Read (NES - input):\n---4 3210\nRead data from controller port #2.\n\nWrite (Frame counter): MI-- ----\nMode (M, 0 = 4-step, 1 = 5-step), IRQ inhibit flag (I)
+NesMemory:9FFF:MMC1_Ctrl_9FFF:MMC1 control register (write-only, 5 serial bit0 writes). Bits select CHR mode, PRG mode and mirroring. Writing a value with bit7 set resets the MMC1 shift register.
+NesMemory:BFFF:MMC1_ChrBank0_BFFF:MMC1 CHR bank 0 select (write-only, 5 serial bit0 writes). 4KB bank at PPU $0000 (or the 8KB bank in 8KB CHR mode).
+NesMemory:DFFF:MMC1_ChrBank1_DFFF:MMC1 CHR bank 1 select (write-only, 5 serial bit0 writes). 4KB bank at PPU $1000; ignored in 8KB CHR mode.
+NesMemory:FFFF:MMC1_PrgBank_FFFF:MMC1 PRG bank select (write-only, 5 serial bit0 writes). 16KB bank at CPU $8000-$BFFF. Address also overlaps the IRQ vector high byte (read by the CPU on IRQ).
 NesPrgRom:10A84:L_8A84
 NesPrgRom:10A8F:L_8A8F
 NesPrgRom:10A9A:L_8A9A

@@ -13,6 +13,12 @@ LBFE8           := $BFE8
 LBFF1           := $BFF1
 ; ----------------------------------------------------------------------------
 
+; MMC1 mapper registers (write-only serial port; see NesMemory labels)
+MMC1_Ctrl_9FFF     := $9FFF
+MMC1_ChrBank0_BFFF := $BFFF
+MMC1_ChrBank1_DFFF := $DFFF
+MMC1_PrgBank_FFFF  := $FFFF
+
 .segment        "BANK07": absolute
 
         jmp     L_E775                          ; C000
@@ -4440,7 +4446,8 @@ L_DEC2: jsr     L_DF05                          ; DEC2
         rts                                     ; DECB
 
 ; ----------------------------------------------------------------------------
-; Insert value (A) into first empty or matching slot of Sound_Command_Queue ($0370-$0377); 8-slot scan from slot 7 down
+; Insert value (A) into first empty or matching slot of Sound_Command_Queue ($0370-$0377); 8-slot
+; scan from slot 7 down
 Enqueue_Sound_Command:
         sta     $E1                             ; DECC
         txa                                     ; DECE
@@ -4650,7 +4657,6 @@ L_DFF6: sta     $9C                             ; DFF6
         pla                                     ; DFF8
         sta     $9B                             ; DFF9
         jsr     L_E16B                          ; DFFB
-LDFFF           := * + 1
         bne     L_E002                          ; DFFE
         lda     #$01                            ; E000
 L_E002: sta     $52                             ; E002
@@ -5426,56 +5432,56 @@ L_E633: lda     #$00                            ; E633
         rts                                     ; E63B
 
 ; ----------------------------------------------------------------------------
-L_E63C: sta     LFFFF                           ; E63C
+L_E63C: sta     MMC1_PrgBank_FFFF               ; E63C
         lsr     a                               ; E63F
-        sta     LFFFF                           ; E640
+        sta     MMC1_PrgBank_FFFF               ; E640
         lsr     a                               ; E643
-        sta     LFFFF                           ; E644
+        sta     MMC1_PrgBank_FFFF               ; E644
         lsr     a                               ; E647
-        sta     LFFFF                           ; E648
+        sta     MMC1_PrgBank_FFFF               ; E648
         lsr     a                               ; E64B
-        sta     LFFFF                           ; E64C
+        sta     MMC1_PrgBank_FFFF               ; E64C
         rts                                     ; E64F
 
 ; ----------------------------------------------------------------------------
-L_E650: sta     LDFFF                           ; E650
+L_E650: sta     MMC1_ChrBank1_DFFF              ; E650
         lsr     a                               ; E653
-        sta     LDFFF                           ; E654
+        sta     MMC1_ChrBank1_DFFF              ; E654
         lsr     a                               ; E657
-        sta     LDFFF                           ; E658
+        sta     MMC1_ChrBank1_DFFF              ; E658
         lsr     a                               ; E65B
-        sta     LDFFF                           ; E65C
+        sta     MMC1_ChrBank1_DFFF              ; E65C
         lsr     a                               ; E65F
-        sta     LDFFF                           ; E660
+        sta     MMC1_ChrBank1_DFFF              ; E660
         rts                                     ; E663
 
 ; ----------------------------------------------------------------------------
-L_E664: sta     $BFFF                           ; E664
+L_E664: sta     MMC1_ChrBank0_BFFF              ; E664
         lsr     a                               ; E667
-        sta     $BFFF                           ; E668
+        sta     MMC1_ChrBank0_BFFF              ; E668
         lsr     a                               ; E66B
-        sta     $BFFF                           ; E66C
+        sta     MMC1_ChrBank0_BFFF              ; E66C
         lsr     a                               ; E66F
-        sta     $BFFF                           ; E670
+        sta     MMC1_ChrBank0_BFFF              ; E670
         lsr     a                               ; E673
-        sta     $BFFF                           ; E674
+        sta     MMC1_ChrBank0_BFFF              ; E674
         rts                                     ; E677
 
 ; ----------------------------------------------------------------------------
-L_E678: sta     $9FFF                           ; E678
+L_E678: sta     MMC1_Ctrl_9FFF                  ; E678
         lsr     a                               ; E67B
-        sta     $9FFF                           ; E67C
+        sta     MMC1_Ctrl_9FFF                  ; E67C
         lsr     a                               ; E67F
-        sta     $9FFF                           ; E680
+        sta     MMC1_Ctrl_9FFF                  ; E680
         lsr     a                               ; E683
-        sta     $9FFF                           ; E684
+        sta     MMC1_Ctrl_9FFF                  ; E684
         lsr     a                               ; E687
-        sta     $9FFF                           ; E688
+        sta     MMC1_Ctrl_9FFF                  ; E688
         rts                                     ; E68B
 
 ; ----------------------------------------------------------------------------
 L_E68C: lda     #$80                            ; E68C
-        sta     LFFFF                           ; E68E
+        sta     MMC1_PrgBank_FFFF               ; E68E
         rts                                     ; E691
 
 ; ----------------------------------------------------------------------------
