@@ -35,14 +35,14 @@ Descriptor **index `$10`** in `TankEnemy_DescTable` (`$A36A`), via the tank enem
 | desc[0] | `$03` | behavior flag → `$53` |
 | desc[1] | `$10` (16) | HP |
 | desc[2] | `$2C` | death drop = Health-x1 pickup |
-| desc[3] | `$80` | drop-chance threshold (`Counter13 < $80`) |
+| desc[3] | `$80` | drop-chance threshold (`RNG_State < $80`) |
 
 ## Init routine (`$AFFF`)
 
 ```
 LDA #$10 : JSR $A2E9   ; TankEnemy_Init(desc $10): desc[0]→$53, $4F=0,
                        ;   CalcTilemapIndex, INC $46 → $77 (active)
-JSR $EB71 : STA $47    ; Counter13_Step (pseudo-random) → $47 = launch ANGLE
+JSR $EB71 : STA $47    ; Step_RNG (pseudo-random) → $47 = launch ANGLE
 LDY #$14  : JSR $E1BD  ; angle($47) + speed(Y=$14) → velocity vector $4C/$4D
 LDA #$00  : STA $52    ; clear fire-cooldown timer
 RTS
@@ -52,7 +52,7 @@ RTS
 `$47` as an 8-bit heading (0–255 spanning a full circle) and `Y` as a speed magnitude. It looks
 the heading up in the quarter-sine table at `$E202` — `$E1D2` (angle + `$40`, the cosine) for the
 X component and `$E1D5` (the sine) for the Y component — scales each by the speed in `$E196`, and
-stores `$4C` (X velocity) and `$4D` (Y velocity). Because `$47` comes from `Counter13_Step`
+stores `$4C` (X velocity) and `$4D` (Y velocity). Because `$47` comes from `Step_RNG`
 (`$EB71`, a position/frame-derived pseudo-random byte), the **launch direction is random** while
 the **speed is fixed** at magnitude `$14` (slow drift). This is the "flies in a line" behaviour.
 
@@ -83,7 +83,7 @@ Firing is gated by a cooldown, two aiming tests, and a further internal throttle
      **at or below** the Shooter (non-negative Y-distance).
 3. If both gates pass: `LDA #$3C : STA $A0 : JSR $DF36` spawns child ObjType **`$3C` (the "Small
    Red" projectile)** into a free slot. `$DF36` has its **own rate limiter**: it refuses unless
-   `frame_counter $11 AND #$4C == 0` (bits 2,3,6 clear) **and** a fresh `Counter13 AND #$03 == 0`
+   `frame_counter $11 AND #$4C == 0` (bits 2,3,6 clear) **and** a fresh `RNG_State AND #$03 == 0`
    (¼ random) both hold, so even a well-aimed Shooter fires only sporadically.
 4. On a successful spawn: `$52 = $10` → **16-frame cooldown** before the next attempt.
 
@@ -105,7 +105,7 @@ LDA #$10 : JSR $A30A  ; TankEnemy_DamageCheck(desc $10): apply pending shot dama
 `$EF2B` computes screen position (despawning if it scrolls off) and registers overlap with the
 player's shots against the 16×16 box. `$A30A` subtracts accumulated damage from its 16 HP; on
 death it jumps to the shared tail `$A34D → TankEnemy_SpawnDrop → SpawnBigExplosion` (`$9B8B`):
-big explosion + SFX `$28`, and — gated by `Counter13 < $80` — a possible **Health-x1 (`$2C`)**
+big explosion + SFX `$28`, and — gated by `RNG_State < $80` — a possible **Health-x1 (`$2C`)**
 drop.
 
 ## Rendering (`$B065`)

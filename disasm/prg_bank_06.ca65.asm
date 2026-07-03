@@ -6611,7 +6611,7 @@ L_AFF7: txa                                     ; AFF7
 ; ----------------------------------------------------------------------------
 ; (alpha: not fully human-verified) 
 ; ObjType $76 — Shooter (Thing $10, 'Gray Shooter') init. ObjState 0: JMP $B012→RTS. ObjState 1:
-; JSR TankEnemy_Init ($A2E9, descriptor $10: HP $10, death drop $2C Health-x1); JSR Counter13_Step
+; JSR TankEnemy_Init ($A2E9, descriptor $10: HP $10, death drop $2C Health-x1); JSR Step_RNG
 ; ($EB71) → $47 = random launch ANGLE (0–255 = full circle); LDY #$14 (speed magnitude) → JSR
 ; $E1BD converts angle $47 + speed into a velocity vector $4C/$4D (random-direction straight-line
 ; launch); $52=0 (clear fire cooldown); RTS. $A2E9's INC $46 → $77 active.
@@ -6643,7 +6643,7 @@ _ObjHandler_Tank_76_Shooter_Init__Done:
 ; $52≠0 → DEC $52, $50=0 (recoil pose), skip; else at $B02E: JSR $E0ED (signed X-dist to player)
 ; EOR $4C (Xvel sign) BMI skip (fire only when drifting TOWARD player in X); JSR $E0FA (signed
 ; Y-dist) BMI skip (fire only when player at/below); $A0=$3C (Small Red shot) JSR $DF36
-; (rate-limited spawn: frame $11&$4C==0 AND Counter13&3==0) BEQ skip; on spawn $52=$10 (16-frame
+; (rate-limited spawn: frame $11&$4C==0 AND RNG_State&3==0) BEQ skip; on spawn $52=$10 (16-frame
 ; cooldown). $50=1. Render tail: $40/$41=$10 16×16 hitbox, $EF2B off-screen despawn, $A30A(desc
 ; $10) damage vs HP 16 → $A34D on kill; metasprite $6C (idle/searching) / $6D (recoil, cooldown
 ; active).
@@ -6677,7 +6677,7 @@ _ObjHandler_Tank_77_Shooter_Main__FireCheck:
         eor     $4C                             ; B031
         bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B033
 ; $A0=$3C (Small Red projectile); JSR $DF36 fire (internally throttled: frame $11&$4C==0 AND
-; Counter13&$03==0); BEQ $B047 (didn't fire / no slot); $52=$10 (16-frame cooldown)
+; RNG_State&$03==0); BEQ $B047 (didn't fire / no slot); $52=$10 (16-frame cooldown)
 _note_B035:
         jsr     LE0FA                           ; B035
         bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B038
