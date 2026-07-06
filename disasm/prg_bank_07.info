@@ -5151,3 +5151,9 @@ LABEL {
   COMMENT "Restore X from stack";
 };
 
+LABEL {
+  NAME    "_note_E938";
+  ADDR    $E938;
+  COMMENT "Set $12 bit7, then spin until the NMI handler clears it (waits exactly one frame).";
+};
+

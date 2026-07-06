@@ -43,16 +43,18 @@ Descriptor **index `$10`** in `TankEnemy_DescTable` (`$A36A`), via the tank enem
 LDA #$10 : JSR $A2E9   ; TankEnemy_Init(desc $10): desc[0]→$53, $4F=0,
                        ;   CalcTilemapIndex, INC $46 → $77 (active)
 JSR $EB71 : STA $47    ; Step_RNG (pseudo-random) → $47 = launch ANGLE
-LDY #$14  : JSR $E1BD  ; angle($47) + speed(Y=$14) → velocity vector $4C/$4D
+LDY #$14  : JSR $E1BD  ; Obj_AngleToVelocity: angle($47)+speed(Y=$14) → $4C/$4D
 LDA #$00  : STA $52    ; clear fire-cooldown timer
 RTS
 ```
 
-**How the direction is decided.** `$E1BD` is the engine's *angle → velocity* routine. It treats
-`$47` as an 8-bit heading (0–255 spanning a full circle) and `Y` as a speed magnitude. It looks
-the heading up in the quarter-sine table at `$E202` — `$E1D2` (angle + `$40`, the cosine) for the
-X component and `$E1D5` (the sine) for the Y component — scales each by the speed in `$E196`, and
-stores `$4C` (X velocity) and `$4D` (Y velocity). Because `$47` comes from `Step_RNG`
+**How the direction is decided.** `$E1BD` (`Obj_AngleToVelocity`) is the engine's *angle →
+velocity* routine. It treats `$47` as an 8-bit heading (0–255 spanning a full circle) and `Y` as a
+speed magnitude. It looks the heading up in the quarter-sine table at `$E202`
+(`Trig_QuarterSineTable`) — `$E1D2` (`Trig_CosByAngle`, angle + `$40`) for the X component and
+`$E1D5` (`Trig_SinByAngle`) for the Y component — scales each by the speed via `$E196`
+(`Trig_ScaleBySpeed`, which multiplies through `Mul8_HighByte`), and stores `$4C` (X velocity) and
+`$4D` (Y velocity). Because `$47` comes from `Step_RNG`
 (`$EB71`, a position/frame-derived pseudo-random byte), the **launch direction is random** while
 the **speed is fixed** at magnitude `$14` (slow drift). This is the "flies in a line" behaviour.
 
@@ -63,11 +65,11 @@ $42=$80 ; $43=$80     ; terrain-probe half-extents
 JSR $DF68             ; advance + bounce
 ```
 
-`$DF68` moves the object and **reflects its velocity off level geometry**. It calls the terrain
-probe `$E083`, which returns a flags byte in `$9A`: **bit 7 = horizontal wall → negate `$4C`**
-(X velocity), **bit 6 = vertical wall/floor → negate `$4D`** (Y velocity). The Shooter therefore
-ricochets around the room, keeping its speed. (This is *not* gravity — it has no downward
-acceleration.)
+`$DF68` (`Obj_MoveBounce`) moves the object and **reflects its velocity off level geometry**. It
+calls the terrain probe `$E083` (`Obj_TerrainProbe`), which returns a flags byte in `$9A`:
+**bit 7 = horizontal wall → negate `$4C`** (X velocity), **bit 6 = vertical wall/floor → negate
+`$4D`** (Y velocity). The Shooter therefore ricochets around the room, keeping its speed. (This is
+*not* gravity — it has no downward acceleration.)
 
 ## When/how often it attacks (`$B021`–`$B045`)
 
@@ -76,19 +78,44 @@ Firing is gated by a cooldown, two aiming tests, and a further internal throttle
 1. **Cooldown**: if `$52 ≠ 0`, decrement it, force `$50 = 0` (recoil pose), and skip to render —
    no fire this frame.
 2. When `$52 == 0`, evaluate the aiming gates:
-   - `JSR $E0ED` → **signed X-distance to the player** (player_X − obj_X). `EOR $4C` then
-     `BMI skip`: fire only when the sign of the X-distance matches the sign of the X-velocity —
-     i.e. **only while drifting toward Sophia horizontally**.
-   - `JSR $E0FA` → **signed Y-distance to the player**. `BMI skip`: fire only when the player is
-     **at or below** the Shooter (non-negative Y-distance).
-3. If both gates pass: `LDA #$3C : STA $A0 : JSR $DF36` spawns child ObjType **`$3C` (the "Small
-   Red" projectile)** into a free slot. `$DF36` has its **own rate limiter**: it refuses unless
-   `frame_counter $11 AND #$4C == 0` (bits 2,3,6 clear) **and** a fresh `RNG_State AND #$03 == 0`
-   (¼ random) both hold, so even a well-aimed Shooter fires only sporadically.
+   - `JSR $E0ED` (`Obj_DeltaToPlayerX`) → **signed X-distance to the player** (player_X − obj_X).
+     `EOR $4C` then `BMI skip`: fire only when the sign of the X-distance matches the sign of the
+     X-velocity — i.e. **only while drifting toward Sophia horizontally**.
+   - `JSR $E0FA` (`Obj_DeltaToPlayerY`) → **signed Y-distance to the player**. `BMI skip`: fire
+     only when the player is **at or below** the Shooter (non-negative Y-distance).
+3. If both gates pass: `LDA #$3C : STA $A0 : JSR $DF36` (`Obj_SpawnChild_A0_Throttled`) spawns
+   child ObjType **`$3C` (the "Small Red" projectile)** into a free slot. `$DF36` has its **own
+   rate limiter**: it refuses unless `frame_counter $11 AND #$4C == 0` (bits 2, 3, 6 clear) **and**
+   a fresh `Step_RNG AND #$03 == 0` (¼ random) both hold, so even a well-aimed Shooter fires only
+   sporadically.
 4. On a successful spawn: `$52 = $10` → **16-frame cooldown** before the next attempt.
 
 Net effect: at most one shot roughly every 16+ frames, only while roughly aimed at Sophia and
 with a random throttle — irregular bursts rather than a steady stream.
+
+### Can the player predict the shot? (verified against the bytes)
+
+Yes — the Shooter is **not** a random-at-any-instant threat; every gate above must line up on
+the same frame, and two of them are entirely under the player's control:
+
+- **Vertical position is a hard on/off switch.** The Y-gate fires only when the player is **at or
+  below** the Shooter. **Stay above it (smaller screen-Y) and it can *never* fire at you**,
+  regardless of everything else.
+- **You must be on its "incoming" side horizontally.** The X-gate fires only while the Shooter's
+  current X-velocity points toward you. Right after it bounces off a wall its Xvel flips, so the
+  side it threatens flips with each horizontal bounce — a bounce away from you buys a safe window
+  until the next bounce.
+- **Even when aimed, it can only fire on ~1 frame in 32.** The `$DF36` frame-gate `$11 & $4C == 0`
+  opens only on frames whose counter has bits 2, 3 and 6 clear — that's **4 frames out of every
+  16** (`$11 & $0C == 0`), and only during the **first half of each 128-frame supercycle**
+  (`$11 & $40 == 0`): **32 of every 256 frames = 1/8**. On each of those open frames a fresh RNG
+  draw must also come up `& $03 == 0` (¼). So a perfectly-aimed Shooter still fires, on average,
+  only about **once per ~32 eligible frames (~½ second)**, then locks out for 16 frames.
+
+Practical read for a player: **it fires only while you are level-with-or-below it and it is
+drifting toward you; stay above it and it is harmless.** When you are in its firing arc, expect an
+irregular shot roughly twice a second rather than a predictable metronome — the final trigger is a
+coin-flip on the open frames, so it can't be dodged on a fixed rhythm, only avoided by position.
 
 ## Damage / death (`$B04B` tail)
 
@@ -132,8 +159,15 @@ projectiles-ballistics.md).
 ## Maintainer Notes
 
 - ObjType chain `$76 → $77` confirmed from the bank-06 dispatch table and disassembly.
-- Helper semantics used above (verified by decoding bank 07): `$E0ED` = signed X-distance to
-  player, `$E0FA` = signed Y-distance to player, `$E1BD` = angle(`$47`)+speed(Y) → velocity,
-  `$DF68` = move + reflect velocity on wall collision, `$DF36` = rate-limited child spawn,
-  `$E04E` = OAM attr/h-flip by X-velocity sign.
+- Helper semantics used above (verified by decoding bank 07, now labelled in the MLB):
+  `$E0ED` = `Obj_DeltaToPlayerX` (signed X-distance to player), `$E0FA` = `Obj_DeltaToPlayerY`
+  (signed Y-distance to player), `$E1BD` = `Obj_AngleToVelocity` (angle `$47` + speed Y → velocity;
+  internals `Trig_CosByAngle` `$E1D2` / `Trig_SinByAngle` `$E1D5` / `Trig_ScaleBySpeed` `$E196` /
+  `Mul8_HighByte` `$E182` over `Trig_QuarterSineTable` `$E202`), `$DF68` = `Obj_MoveBounce` (move +
+  reflect velocity on wall collision, via `Obj_TerrainProbe` `$E083`), `$DF36` =
+  `Obj_SpawnChild_A0_Throttled` (rate-limited child spawn), `$E04E` = `Obj_SetAttrFlipX`
+  (OAM attr / h-flip by X-velocity sign).
+- The fire-timing analysis in "Can the player predict the shot?" was verified byte-for-byte:
+  handler `$B013` decoded directly, and the `$DF36` throttle (`$11 & $4C == 0` frame-gate + fresh
+  `Step_RNG & $03` quarter-chance) decoded from the fixed bank.
 - Human verification of the tri-state status still pending.

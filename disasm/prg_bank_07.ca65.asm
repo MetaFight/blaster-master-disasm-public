@@ -5901,6 +5901,8 @@ L_E920: lda     $4016                           ; E920
 ; ----------------------------------------------------------------------------
 ; Set NmiFrameFlag bit 7 then spin until NMI handler clears it; guarantees 60 Hz pacing
 WaitNMI:lda     #$80                            ; E936
+; Set $12 bit7, then spin until the NMI handler clears it (waits exactly one frame).
+_note_E938:
         sta     $12                             ; E938
 _WaitNMI__Loop:
         bit     $12                             ; E93A

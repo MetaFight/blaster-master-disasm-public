@@ -2295,6 +2295,7 @@ NesPrgRom:1E913:L_E913
 NesPrgRom:1E914:L_E914
 NesPrgRom:1E920:L_E920
 NesPrgRom:1E936:WaitNMI:Set NmiFrameFlag bit 7 then spin until NMI handler clears it; guarantees 60 Hz pacing
+NesPrgRom:1E938::Set $12 bit7, then spin until the NMI handler clears it (waits exactly one frame).
 NesPrgRom:1E93A:_WaitNMI__Loop
 NesPrgRom:1E93F:L_E93F
 NesPrgRom:1E949:L_E949
