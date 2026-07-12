@@ -30,7 +30,7 @@ tile, step **`+$10` per column** (to the right) and **`+1` per row** (down). Siz
 The remaining tiles are border/frame tiles, the Sophia vehicle illustration, a
 Jason illustration, lines, text characters, digits, some unused UI elements, and some unused weapon images.
 
-Generate the bank sheet: `dotnet run --project tools/Trace6502 -- chrsheet "roms/Blaster Master (USA).nes" 15 --col-major`
+Generate the bank sheet: `dotnet run --project tools/Trace6502 -- chrsheet us 15 --col-major`
 
 The two dead overlays are the small mechanical tiles at the top-right of the sheet. Overlay A (drawn for the CRUSHER record) is the 2×2 block `$B3 $C3 / $B4 $C4`; overlay B (HYPER record) is the 2×3 block `$D3 $E3 / $D4 $E4 / $D5 $E5`. The annotated sheet highlights them (red = overlay A, cyan = overlay B):
 
@@ -65,11 +65,11 @@ Examples:
 ### Pointer structure
 
 `$F96F/$F970` holds a LE16 pointer to the sub-table at `$F971`.  
-`$F971` holds 8 × LE16 pointers to individual item records (indexed by `SophiaPowerUps` bit position × 2).
+`$F971` holds 8 × LE16 pointers to individual item records (indexed by `PauseScreen_SophiaPowerUps` bit position × 2).
 
 ### Item records — all 8 entries
 
-Each `SophiaPowerUps ($99)` bit gates one record. All eight labels were read by rendering
+Each `PauseScreen_SophiaPowerUps ($99)` bit gates one record. All eight labels were read by rendering
 every record's tiles at once (equivalent to `$99 = $FF`) with
 `tools/Trace6502 -- nametable`; the word in the **Label** column is what that record actually
 draws on-screen.
@@ -85,7 +85,7 @@ draws on-screen.
 | 6 | `$F985` | 14 | 4  | `$C2` auto 4w×2t | `$6A` | **HYPER** |
 | 7 | `$F9A0` | 2  | 14 | `$B2` auto 3w×2t | `$6C` | **KEY** |
 
-The status screen with every upgrade collected (`SophiaPowerUps = $DF`):
+The status screen with every upgrade collected (`PauseScreen_SophiaPowerUps = $DF`):
 
 ![Pause screen with every upgrade granted — CRUSHER/HYPER top, HOVER/DIVE/WALL 1/WALL 2 right, KEY left](img/pause-screen_all-upgrades-live.png)
 
@@ -99,7 +99,7 @@ localisation but never completed; its sentinel byte ensures it is always skipped
 
 ## Changing which upgrades you have (RAM)
 
-`SophiaPowerUps ($0099)` is the collected-upgrades bitfield — one bit per record above, in the
+`PauseScreen_SophiaPowerUps ($0099)` is the collected-upgrades bitfield — one bit per record above, in the
 same bit order. Setting a bit marks that upgrade "collected", so it shows on the pause screen
 and its ability is enabled in tank physics (e.g. the WALL bits gate wall-climb; see
 `docs/execution-flow/07-sophia-physics.md`). To change loadout live, write `$0099`:

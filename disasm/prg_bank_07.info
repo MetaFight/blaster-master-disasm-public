@@ -92,18 +92,6 @@ RANGE {
 
 RANGE {
   START  $C772;
-  END    $C7BD;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $C7BE;
-  END    $C7C6;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $C7C7;
   END    $C7F7;
   TYPE   CODE;
 };
@@ -296,12 +284,12 @@ RANGE {
 
 RANGE {
   START  $DEC2;
-  END    $E01A;
+  END    $E026;
   TYPE   CODE;
 };
 
 RANGE {
-  START  $E01B;
+  START  $E027;
   END    $E02E;
   TYPE   BYTETABLE;
 };
@@ -392,42 +380,6 @@ RANGE {
 
 RANGE {
   START  $E6E9;
-  END    $EA55;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $EA56;
-  END    $EA62;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $EA63;
-  END    $EA6E;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $EA6F;
-  END    $EAE8;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $EAE9;
-  END    $EB63;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $EB64;
-  END    $EB70;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $EB71;
   END    $EBF4;
   TYPE   CODE;
 };
@@ -440,18 +392,6 @@ RANGE {
 
 RANGE {
   START  $EC34;
-  END    $F14C;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $F14D;
-  END    $F14D;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $F14E;
   END    $F31A;
   TYPE   CODE;
 };
@@ -488,12 +428,12 @@ RANGE {
 
 RANGE {
   START  $F45D;
-  END    $F464;
+  END    $F51E;
   TYPE   CODE;
 };
 
 RANGE {
-  START  $F465;
+  START  $F51F;
   END    $F546;
   TYPE   BYTETABLE;
 };
@@ -506,6 +446,18 @@ RANGE {
 
 RANGE {
   START  $F59E;
+  END    $F5AD;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $F5AE;
+  END    $F5CE;
+  TYPE   CODE;
+};
+
+RANGE {
+  START  $F5CF;
   END    $F5D8;
   TYPE   BYTETABLE;
 };
@@ -3554,8 +3506,9 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_E6B1";
+  NAME    "_OAM_Copy_To_PPU__ManualLoop";
   ADDR    $E6B1;
+  COMMENT "Copy 64 bytes $0200+X → OAM data port ($2004).";
 };
 
 LABEL {
@@ -3875,8 +3828,58 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_EA60";
+  ADDR    $EA60;
+};
+
+LABEL {
   NAME    "L_EA63";
   ADDR    $EA63;
+};
+
+LABEL {
+  NAME    "L_EA73";
+  ADDR    $EA73;
+};
+
+LABEL {
+  NAME    "L_EA7E";
+  ADDR    $EA7E;
+};
+
+LABEL {
+  NAME    "L_EA8B";
+  ADDR    $EA8B;
+};
+
+LABEL {
+  NAME    "L_EA97";
+  ADDR    $EA97;
+};
+
+LABEL {
+  NAME    "L_EA9C";
+  ADDR    $EA9C;
+};
+
+LABEL {
+  NAME    "L_EAA8";
+  ADDR    $EAA8;
+};
+
+LABEL {
+  NAME    "L_EAB3";
+  ADDR    $EAB3;
+};
+
+LABEL {
+  NAME    "L_EAB9";
+  ADDR    $EAB9;
+};
+
+LABEL {
+  NAME    "L_EACB";
+  ADDR    $EACB;
 };
 
 LABEL {
@@ -4627,6 +4630,51 @@ LABEL {
 LABEL {
   NAME    "L_F464";
   ADDR    $F464;
+};
+
+LABEL {
+  NAME    "L_F4AD";
+  ADDR    $F4AD;
+};
+
+LABEL {
+  NAME    "L_F4BC";
+  ADDR    $F4BC;
+};
+
+LABEL {
+  NAME    "L_F4C5";
+  ADDR    $F4C5;
+};
+
+LABEL {
+  NAME    "L_F4EA";
+  ADDR    $F4EA;
+};
+
+LABEL {
+  NAME    "L_F4F7";
+  ADDR    $F4F7;
+};
+
+LABEL {
+  NAME    "L_F503";
+  ADDR    $F503;
+};
+
+LABEL {
+  NAME    "L_F509";
+  ADDR    $F509;
+};
+
+LABEL {
+  NAME    "L_F50A";
+  ADDR    $F50A;
+};
+
+LABEL {
+  NAME    "L_F512";
+  ADDR    $F512;
 };
 
 LABEL {

@@ -212,13 +212,24 @@ gives only:
 - whip → ids `$67`–`$6F`
 
 The three ids **`$64`, `$65`, `$66`** (frame indices 6, 7, 8) sit in the gap between the walk
-block and the whip block and are **never produced by any state's formula** — even though each
-has a valid metasprite definition (`$BC5F` / `$BC6E` / `$BC78`). They are an unused animation:
-three full-body poses of the final boss, distinct from both the walk and whip frames.
+block and the whip block and are **never produced by any _reachable_ state's formula** — even
+though each has a valid metasprite definition (`$BC5F` / `$BC6E` / `$BC78`). They are an unused
+animation: three full-body poses of the final boss, distinct from both the walk and whip frames.
+
+**The formula that produces them exists — as dead code.** `DEAD_Boss8_Phase2_AnimFrame_CutState`
+(`$AE42`, tagged `[code]`; see dead-code.md) is an unreachable fourth branch of
+`Boss8_Phase2_ComputeAnimFrame`: `$0670 = 6/7/8` chosen by the attack-timer `$51`
+(`≥$30`→6, `≥$18`→7, else 8), i.e. exactly ids `$5E+6/7/8` = `$64`/`$65`/`$66`. It is a structural
+sibling of the live **whip** state (`$AE1B`, same "pick a frame by an `$51` tier" shape, but
+thresholds `$24`/`$2A` landing on the whip block `$67`+). The `$50`-dispatch at `$ADFA` only
+selects states 0/1/2/3 and never branches to `$AE42`, so this alternate 3-pose attack never runs —
+the orphan sprites and the orphan formula are two halves of the same cut attack.
 
 ![Cut final-boss metasprites $64/$65/$66](img/area-8_ovhd_boss_phase-2_cut-metasprites.png)
 
-Animated (reconstruction, body lead-in + the cut tail):
+Animated — now driven by the recovered formula's own logic: as the countdown attack timer `$51`
+descends, the poses play in tier order `$64`→`$65`→`$66` (`$64` = the open-ended `≥$30` windup;
+`$65`/`$66` = equal 24-wide tiers `$18`–`$2F` / `<$18`), after a short body-walk lead-in:
 
 ![Area 8 boss cut attack](img/area-8_ovhd_boss_phase-2_cut-attack.gif)
 
@@ -236,6 +247,102 @@ So no live code path ever loads `$64`/`$65`/`$66` into the renderer. They render
 phase-2 sprite palette (flat `$07,$26,$30` = maroon / salmon / white) from CHR even bank
 `$10` / odd bank `$1C`.
 
+### It is a whole cut **state**, not just an orphan animation (corrected 2026-07-12)
+
+> **Supersedes an earlier claim on this page.** This section previously said the dead animation
+> handler "spawns nothing (there is no separate cut-attack behaviour to restore, only the poses)",
+> and that a distinct attack "would need a new `$50` state value, a picker branch that selects it,
+> and its own dispatch case in `ComputeAnimFrame` — plus invented offensive logic the ROM never
+> had." **All of that is wrong.** The `$50` state value, its setter, its tick handler, its
+> dispatch case *and* a projectile spawn hook are all in the ROM. The recommended one-byte patch
+> (`TLAZUTYO`, retargeting the *whip's* anim branch) merely re-skinned the whip; it is superseded
+> by the three-byte patch below, which enables the real state.
+
+Phase 2's `$50` state machine has a **fourth state** that is fully dispatched but that nothing can
+ever enter:
+
+| Piece | Address | Status |
+|---|---|---|
+| State setter (`$50=4`, timer `$51=$37`) | `$AD99` | present, **callerless** — `DEAD_Boss8_Phase2_SetState4` |
+| State tick + timer | `$AD55` | present and **dispatched** (`$ACC9`: `CMP #$04 / BEQ`) |
+| Animation frame picker | `$AE42` | present, **never branched to** — `DEAD_Boss8_Phase2_AnimFrame_CutState` |
+| 3 body poses | metasprites `$64`/`$65`/`$66` | present, unreferenced |
+| Projectile spawn hook | `$AD5C` | **gutted** (below) |
+| Projectile ObjType + handler | — | **removed from the ROM** |
+
+`DEAD_Boss8_Phase2_SetState4` is a structural sibling of the three live
+`_Boss8_Phase2_PickNextState__StateN` setters and sits immediately after them in address order:
+
+```
+$AD90  A9 03 85 50 A9 3B 85 51 60   ; State3 (whip):  $50=3, $51=$3B   [live]
+$AD99  A9 04 85 50 A9 37 85 51 60   ; State4:         $50=4, $51=$37   [callerless]
+```
+
+**The spawn hook is the smoking gun.** `S4_Tick`'s tail:
+
+```
+$AD5C  A5 51     LDA $51
+$AD5E  C9 02     CMP #$02
+$AD60  D0 00     BNE $AD62      ; <-- branch offset ZERO: both paths reach the same RTS
+$AD62  60        RTS
+```
+
+Structurally identical to the **live whip's** fire hook (`LDA $51 / CMP #$24 / BNE done /
+LDA #$82 / JSR $C1F5 / done: RTS`) with the body excised: five bytes (`A9 xx 20 F5 C1` — load a
+child ObjType, quick-spawn it) were deleted and the `BNE`'s operand zeroed from `$05` to `$00`. A
+compare whose two outcomes are the same instruction is not something an assembler emits; it is
+what you get when you delete the body of an `if` and neglect to delete the `if`.
+
+**Timing — and which pose is on screen when it fires.** `$51` starts at `$37` (55) and counts
+down. Within a frame, `Boss8_Phase2_StateDispatch` (which decrements `$51`) runs *before*
+`Boss8_Phase2_Render` → `…_ComputeAnimFrame` (which reads it), so both see the same value. The dead
+picker's tiers (`≥$30`→6, `≥$18`→7, else 8) give:
+
+| `$51` | frames | `$0670` | metasprite | phase |
+|---|---|---|---|---|
+| `$36`–`$30` | 7 | 6 | `$64` | windup |
+| `$2F`–`$18` | 24 | 7 | `$65` | charge |
+| `$17`–`$01` | 23 | 8 | `$66` | release — **the spawn lands here, at `$51==$02`** |
+| `$00` | — | — | — | `JMP Boss8_Phase2_PickNextState` |
+
+So the projectile leaves on the **`$66` release pose**, two frames before the state hands back.
+State 4 has no hard-coded successor — like states 2 and 3 it expires into
+`Boss8_Phase2_PickNextState`, which re-rolls movement / whip / telegraph. A 55-frame windup →
+charge → release cycle that ends by launching something is exactly the shape of the **cut beam
+weapon** whose art sits unreferenced in the same CHR bank (section below), and the `$66` pose
+carries the **extended arm with an open palm** the beam would be delivered from.
+
+**The projectile itself is unrecoverable.** Bank 4's dispatch table has 134 entries, ends at
+ObjType `$86` (Jason room-door exit) and contains **no null slots** — unlike bank 6, which left
+`$0000` holes at `$37`/`$57` when ObjTypes were removed. The cut projectile's ObjType, handler and
+dispatch slot were all removed and the table compacted, so the deleted `#$xx` byte has no forensic
+residue. Only its art survives.
+
+### Reactivating state 4 (static-only — not emulator-verified)
+
+Three byte patches. All three compare bytes are **unique to bank 4** across the seven switchable
+banks, so there is no cross-bank misfire.
+
+| Patch | Game Genie | Effect |
+|---|---|---|
+| `$AD47`: `$63` → `$99` | **`OPGZNILV`** | whip-state expiry jumps to `DEAD_Boss8_Phase2_SetState4` instead of `PickNextState`, so the cycle becomes movement → whip → **state 4** → re-roll |
+| `$ADFD`: `$02` → `$04` | **`GEYXSIZA`** | `ComputeAnimFrame`'s `$50`-dispatch tests state 4… |
+| `$ADFF`: `$5A` → `$42` | **`ZKYXNSZI`** | …and branches to `DEAD_Boss8_Phase2_AnimFrame_CutState` (`$AE42`) |
+
+Code 1 alone enters state 4, but with the *walk* animation (there is no state-4 arm in
+`ComputeAnimFrame`). Codes 2+3 add one by **reusing the state-2 arm**: state 2 then falls through
+to the walk anim, losing its dedicated standing frame. That trade is deliberate — inserting a
+fourth `CMP`/`BEQ` pair needs 4 bytes the bank does not have, and a Game Genie cannot resize code.
+A relocatable build (`--relocatable`) could add the arm properly.
+
+The **spawn hook stays dead** under all three patches: re-arming it needs a projectile object that
+no longer exists. Firing an existing type (e.g. the whip `$82`) is possible via a trampoline in
+bank 4's `$FF` tail padding, but that is an invented child type, not a restoration.
+
+> Verified statically (byte decode of the patched ROM + `encodegenie` round-trip + cross-bank
+> compare-byte collision check); **not** confirmed in an emulator (Mesen doesn't run in this
+> project's container). Test in-game before relying on it.
+
 ### Regenerate
 
 ```
@@ -243,12 +350,14 @@ bash scripts/chr-rom-explorations/area8-boss-cut-attack-gif.sh
 # → image-dumps/area8_boss_cut_attack.gif  (image-dumps/ is gitignored; the script is the source)
 ```
 
-The committed copies under `docs/wip/img/` are produced from that script and from:
+The committed copies under `docs/misc/img/` are produced from that script (copy
+`image-dumps/area8_boss_cut_attack.gif` → `docs/misc/img/area-8_ovhd_boss_phase-2_cut-attack.gif`)
+and from:
 
 ```
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" ovhd sheet \
   --ids 64,65,66 --chr-bank 10 --chr-odd 1C --8x16 --palette 07,26,30 --scale 4 \
-  --out docs/wip/img/area8-boss-cut-metasprites.png
+  --out docs/misc/img/area-8_ovhd_boss_phase-2_cut-metasprites.png
 ```
 
 ## Area 8 final boss (phase 2) — cut **beam weapon** (CHR `$1C`)
@@ -303,12 +412,23 @@ charge stays player-red (per-part palettes). The full-beam hold cycles rather th
 
 ### Static proof (unreferenced)
 
-All the beam tiles (`$10–$21`, `$30–$51`, `$60`, `$90–$a3`, `$ac–$bf`) live in CHR `$1C` but are
-drawn by **no** phase-2 boss metasprite (`metasprite ovhd findtile <t>` → none in the `$53`–`$6F`
-range) and are **not** in the Cat0A boss-room background — `mapusage`'s "Final Boss (Area 8)
-Sprite + BG CHR" pass lists them under `$1C` **unused**. (By contrast the whip tiles `$70/$71`,
-`$80/$81` **are** drawn in-game — by the whip's custom tile-staging, not a metasprite — and are
-folded into the phase-2 `seen` set as `ExtraSeen`.)
+The beam tiles live in CHR `$1C` but are drawn by **no** phase-2 boss metasprite
+(`metasprite ovhd findtile <t>` → none in the `$53`–`$6F` range) and are **not** in the Cat0A
+boss-room background — `mapusage`'s "Final Boss (Area 8) Sprite + BG CHR" pass lists them under
+`$1C` **unused**. (By contrast the whip tiles `$70/$71`, `$80/$81` **are** drawn in-game — by the
+whip's custom tile-staging, not a metasprite — and are folded into the phase-2 `seen` set as
+`ExtraSeen`.)
+
+> **Corrected 2026-07-12 — the beam tile list is not a contiguous range.** This paragraph used to
+> summarise the beam as "`$10–$21`, `$30–$51`, `$60`, `$90–$a3`, `$ac–$bf`". The `$30–$51` span
+> over-claims: tiles **`$46`–`$49`, `$4E`/`$4F`** inside it belong to the **cut state-4 poses**, not
+> the beam — they are limb art drawn by metasprites `$64`/`$65` (see the cut-metasprite section
+> above), and `findtile` reports them against those ids. The beam's actual tiles are the segment and
+> charge pairs enumerated in the descriptions above: `$10/$11` + `$20/$21` (downward segment),
+> `$30/$31` + `$40/$41` + `$50/$51` + `$60` (diagonal segment + connector), `$90/$91` + `$A0/$A1` +
+> `$A2/$A3` (charge-up), plus the end-caps. **CHR `$1C` holds two disjoint cut assets** — the beam
+> weapon (unreachable from any metasprite) and the state-4 pose limbs (reachable via `$64`/`$65`/`$66`
+> once state 4 is re-enabled). They share no tiles.
 
 ### Regenerate
 

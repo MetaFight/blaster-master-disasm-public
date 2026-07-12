@@ -116,42 +116,6 @@ RANGE {
 
 RANGE {
   START  $8DD5;
-  END    $9007;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $9008;
-  END    $9008;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $9009;
-  END    $916C;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $916D;
-  END    $916D;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $916E;
-  END    $92D9;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $92DA;
-  END    $92DA;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $92DB;
   END    $94F9;
   TYPE   CODE;
 };
@@ -164,12 +128,12 @@ RANGE {
 
 RANGE {
   START  $94FC;
-  END    $963E;
+  END    $963F;
   TYPE   CODE;
 };
 
 RANGE {
-  START  $963F;
+  START  $9640;
   END    $9640;
   TYPE   BYTETABLE;
 };
@@ -368,18 +332,6 @@ RANGE {
 
 RANGE {
   START  $9E9E;
-  END    $9FF4;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $9FF5;
-  END    $9FF7;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $9FF8;
   END    $A0EA;
   TYPE   CODE;
 };
@@ -392,18 +344,6 @@ RANGE {
 
 RANGE {
   START  $A0F6;
-  END    $A27F;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $A280;
-  END    $A29D;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $A29E;
   END    $A326;
   TYPE   CODE;
 };
@@ -440,18 +380,6 @@ RANGE {
 
 RANGE {
   START  $A4DE;
-  END    $A5C0;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $A5C1;
-  END    $A5C1;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $A5C2;
   END    $A6BE;
   TYPE   CODE;
 };
@@ -464,66 +392,18 @@ RANGE {
 
 RANGE {
   START  $A6D7;
-  END    $A749;
+  END    $A8CD;
   TYPE   CODE;
 };
 
 RANGE {
-  START  $A74A;
-  END    $A74A;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $A74B;
-  END    $A7C9;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $A7CA;
-  END    $A7CA;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $A7CB;
-  END    $A86C;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $A86D;
-  END    $A86D;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $A86E;
-  END    $A8CC;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $A8CD;
+  START  $A8CE;
   END    $A8D1;
   TYPE   BYTETABLE;
 };
 
 RANGE {
   START  $A8D2;
-  END    $AA58;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $AA59;
-  END    $AA59;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $AA5A;
   END    $AB02;
   TYPE   CODE;
 };
@@ -536,96 +416,48 @@ RANGE {
 
 RANGE {
   START  $AB13;
-  END    $ACF9;
+  END    $ADDF;
   TYPE   CODE;
 };
 
 RANGE {
-  START  $ACFA;
-  END    $ACFA;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $ACFB;
-  END    $ADDE;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $ADDF;
+  START  $ADE0;
   END    $ADE3;
   TYPE   BYTETABLE;
 };
 
 RANGE {
   START  $ADE4;
-  END    $AE76;
+  END    $AF31;
   TYPE   CODE;
 };
 
 RANGE {
-  START  $AE77;
-  END    $AE77;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $AE78;
-  END    $AF30;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $AF31;
+  START  $AF32;
   END    $AF39;
   TYPE   BYTETABLE;
 };
 
 RANGE {
   START  $AF3A;
-  END    $AFFA;
+  END    $B165;
   TYPE   CODE;
 };
 
 RANGE {
-  START  $AFFB;
-  END    $AFFB;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $AFFC;
-  END    $B074;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $B075;
-  END    $B075;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $B076;
-  END    $B164;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $B165;
+  START  $B166;
   END    $B16D;
   TYPE   BYTETABLE;
 };
 
 RANGE {
   START  $B16E;
-  END    $B1D8;
+  END    $B1D9;
   TYPE   CODE;
 };
 
 RANGE {
-  START  $B1D9;
+  START  $B1DA;
   END    $B1DD;
   TYPE   BYTETABLE;
 };
@@ -656,18 +488,6 @@ RANGE {
 
 RANGE {
   START  $B337;
-  END    $B9FE;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $B9FF;
-  END    $B9FF;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $BA00;
   END    $BA6F;
   TYPE   CODE;
 };
@@ -692,18 +512,6 @@ RANGE {
 
 RANGE {
   START  $BBA7;
-  END    $BBE4;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $BBE5;
-  END    $BBF4;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $BBF5;
   END    $BC1C;
   TYPE   CODE;
 };
@@ -712,6 +520,16 @@ RANGE {
   START  $BC1D;
   END    $BFFF;
   TYPE   BYTETABLE;
+};
+
+LABEL {
+  NAME    "L_8000";
+  ADDR    $8000;
+};
+
+LABEL {
+  NAME    "L_8124";
+  ADDR    $8124;
 };
 
 LABEL {
@@ -727,6 +545,11 @@ LABEL {
 LABEL {
   NAME    "L_815B";
   ADDR    $815B;
+};
+
+LABEL {
+  NAME    "L_815F";
+  ADDR    $815F;
 };
 
 LABEL {
@@ -1290,6 +1113,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_882A";
+  ADDR    $882A;
+};
+
+LABEL {
   NAME    "L_8835";
   ADDR    $8835;
 };
@@ -1407,6 +1235,11 @@ LABEL {
 LABEL {
   NAME    "L_89E0";
   ADDR    $89E0;
+};
+
+LABEL {
+  NAME    "L_89E5";
+  ADDR    $89E5;
 };
 
 LABEL {
@@ -1547,6 +1380,11 @@ LABEL {
 LABEL {
   NAME    "L_8C4D";
   ADDR    $8C4D;
+};
+
+LABEL {
+  NAME    "L_8C64";
+  ADDR    $8C64;
 };
 
 LABEL {
@@ -1742,6 +1580,11 @@ LABEL {
 LABEL {
   NAME    "L_8E94";
   ADDR    $8E94;
+};
+
+LABEL {
+  NAME    "L_8E97";
+  ADDR    $8E97;
 };
 
 LABEL {
@@ -2415,8 +2258,23 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_976D";
+  ADDR    $976D;
+};
+
+LABEL {
   NAME    "L_977F";
   ADDR    $977F;
+};
+
+LABEL {
+  NAME    "L_9780";
+  ADDR    $9780;
+};
+
+LABEL {
+  NAME    "L_9788";
+  ADDR    $9788;
 };
 
 LABEL {
@@ -2477,6 +2335,11 @@ LABEL {
 LABEL {
   NAME    "L_9881";
   ADDR    $9881;
+};
+
+LABEL {
+  NAME    "L_9882";
+  ADDR    $9882;
 };
 
 LABEL {
@@ -2565,6 +2428,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_99CC";
+  ADDR    $99CC;
+};
+
+LABEL {
   NAME    "L_99DF";
   ADDR    $99DF;
 };
@@ -2625,6 +2493,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_9AEB";
+  ADDR    $9AEB;
+};
+
+LABEL {
   NAME    "L_9B29";
   ADDR    $9B29;
 };
@@ -2680,6 +2553,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_9BD2";
+  ADDR    $9BD2;
+};
+
+LABEL {
   NAME    "L_9BD8";
   ADDR    $9BD8;
 };
@@ -2697,6 +2575,16 @@ LABEL {
 LABEL {
   NAME    "L_9C14";
   ADDR    $9C14;
+};
+
+LABEL {
+  NAME    "L_9C15";
+  ADDR    $9C15;
+};
+
+LABEL {
+  NAME    "L_9C1C";
+  ADDR    $9C1C;
 };
 
 LABEL {
@@ -2762,6 +2650,16 @@ LABEL {
 LABEL {
   NAME    "L_9D09";
   ADDR    $9D09;
+};
+
+LABEL {
+  NAME    "L_9D0C";
+  ADDR    $9D0C;
+};
+
+LABEL {
+  NAME    "L_9D3B";
+  ADDR    $9D3B;
 };
 
 LABEL {
@@ -2880,8 +2778,18 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_9E93";
+  ADDR    $9E93;
+};
+
+LABEL {
   NAME    "L_9E9E";
   ADDR    $9E9E;
+};
+
+LABEL {
+  NAME    "L_9EA4";
+  ADDR    $9EA4;
 };
 
 LABEL {
@@ -3125,6 +3033,16 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_A28A";
+  ADDR    $A28A;
+};
+
+LABEL {
+  NAME    "L_A299";
+  ADDR    $A299;
+};
+
+LABEL {
   NAME    "L_A29E";
   ADDR    $A29E;
 };
@@ -3195,6 +3113,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_A3E2";
+  ADDR    $A3E2;
+};
+
+LABEL {
   NAME    "L_A402";
   ADDR    $A402;
 };
@@ -3257,6 +3180,16 @@ LABEL {
 LABEL {
   NAME    "L_A4D3";
   ADDR    $A4D3;
+};
+
+LABEL {
+  NAME    "L_A4DB";
+  ADDR    $A4DB;
+};
+
+LABEL {
+  NAME    "L_A4DE";
+  ADDR    $A4DE;
 };
 
 LABEL {
@@ -3422,6 +3355,11 @@ LABEL {
 LABEL {
   NAME    "L_A6BC";
   ADDR    $A6BC;
+};
+
+LABEL {
+  NAME    "L_A6D7";
+  ADDR    $A6D7;
 };
 
 LABEL {
@@ -4786,6 +4724,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_B832";
+  ADDR    $B832;
+};
+
+LABEL {
   NAME    "L_B842";
   ADDR    $B842;
 };
@@ -4951,6 +4894,16 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_BA70";
+  ADDR    $BA70;
+};
+
+LABEL {
+  NAME    "L_BA88";
+  ADDR    $BA88;
+};
+
+LABEL {
   NAME    "L_BA95";
   ADDR    $BA95;
 };
@@ -5071,8 +5024,18 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_BBF4";
+  ADDR    $BBF4;
+};
+
+LABEL {
   NAME    "L_BBF5";
   ADDR    $BBF5;
+};
+
+LABEL {
+  NAME    "L_BBF8";
+  ADDR    $BBF8;
 };
 
 LABEL {
