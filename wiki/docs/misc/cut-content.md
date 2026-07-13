@@ -42,14 +42,14 @@ bash scripts/chr-rom-explorations/unused-metasprites-0c-0d.sh
 # → image-dumps/tank_unused_metasprites_0c_0d.png  (image-dumps/ is gitignored; the script is the source)
 ```
 
-The committed copy under `docs/wip/img/` renders the pair `--gray` (white/gray/black — no sprite
+The committed copy under `docs/misc/img/` renders the pair `--gray` (white/gray/black — no sprite
 sub-palette is recoverable for content that never renders) from CHR bank `$00` (tank areas
 A1/A4/A7; the tiles are duplicated identically across the tank CHR banks):
 
 ```
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" tank sheet \
   --ids 0c,0d --chr-bank 00 --gray --scale 8 --cols 2 \
-  --out docs/wip/img/chr-00_tank_cut-enemy_alt-bomber.png
+  --out docs/misc/img/chr-00_tank_cut-enemy_alt-bomber.png
 
 # build the per-game-frame ballistic arc (dx = 4 - 3t leftward, dy = 14 + round(0.2 t²) gravity)
 frames="0d"; delays="100"
@@ -59,7 +59,7 @@ for t in $(seq 0 18); do
 done
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" tank gif "$frames" \
   --chr-bank 00 --gray --scale 8 --delay "$delays" \
-  --out docs/wip/img/chr-00_tank_cut-enemy_alt-bomber.gif
+  --out docs/misc/img/chr-00_tank_cut-enemy_alt-bomber.gif
 ```
 
 The bomb is the `t6d` raw-tile part: a bare CHR tile `$6D` composited
@@ -101,11 +101,11 @@ for content that never renders) from CHR bank `$01`:
 ```
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" tank sheet \
   --ids 6e,6f --chr-bank 01 --gray --scale 6 --cols 2 \
-  --out docs/wip/img/chr-01_tank_cut-enemy_moai.png
+  --out docs/misc/img/chr-01_tank_cut-enemy_moai.png
 
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" tank gif 6e,6f \
   --chr-bank 01 --gray --delay 24 --scale 6 \
-  --out docs/wip/img/chr-01_tank_cut-enemy_moai.gif
+  --out docs/misc/img/chr-01_tank_cut-enemy_moai.gif
 ```
 
 ## Area 5 — Tank — cut metasprite frames `$AB` — `$AF`
@@ -144,11 +144,11 @@ for content that never renders) from CHR bank `$02` (tank Area 5):
 ```
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" tank sheet \
   --ids ab,ac,ad,ae,af --chr-bank 02 --gray --scale 6 --cols 5 \
-  --out docs/wip/img/area-5_tank_cut-enemy.png
+  --out docs/misc/img/area-5_tank_cut-enemy.png
 
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" tank gif ab,ac,ad,ae,af \
   --chr-bank 02 --gray --delay 24 --scale 6 \
-  --out docs/wip/img/area-5_tank_cut-enemy.gif
+  --out docs/misc/img/area-5_tank_cut-enemy.gif
 ```
 
 ## Area 8 final boss (phase 1) — cut metasprite frames `$57`–`$59`
@@ -189,15 +189,15 @@ The committed sheet and GIFs use the phase-1 boss CHR (even bank `$10` / odd ban
 ```
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" ovhd sheet \
   --ids 57,58,59 --chr-bank 10 --chr-odd 1B --8x16 --palette 07,00,10 --scale 4 --cols 3 \
-  --out docs/wip/img/area-8_ovhd_boss_phase-1_cut-projectile.png
+  --out docs/misc/img/area-8_ovhd_boss_phase-1_cut-projectile.png
 
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" ovhd gif 57,58,59 \
   --chr-bank 10 --chr-odd 1B --8x16 --palette 07,00,10 --delay 20 --scale 4 \
-  --out docs/wip/img/area-8_ovhd_boss_phase-1_cut-projectile.gif
+  --out docs/misc/img/area-8_ovhd_boss_phase-1_cut-projectile.gif
 
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" ovhd gif 57,58,59 \
   --chr-bank 10 --chr-odd 1B --8x16 --palette 07,00,10 --delay 60 --scale 4 \
-  --out docs/wip/img/area-8_ovhd_boss_phase-1_cut-projectile_slow.gif
+  --out docs/misc/img/area-8_ovhd_boss_phase-1_cut-projectile_slow.gif
 ```
 
 ## Area 8 final boss (phase 2) — cut metasprite frames `$64`–`$66`
@@ -441,7 +441,7 @@ These use the `gif` **raw-tile** part `t<tile>` with **in-place** flips (`h`) an
 dotnet run --project tools/Trace6502 -- metasprite "<rom>" ovhd gif \
   "t91@4:0,ta1@4:0,t91h@4:0,ta1h@4:0,ta3+ta3h@8:0,ta1@4:0,ta3+ta3h@8:0,ta1h@4:0" \
   --chr-bank 1C --chr-odd 1C --8x16 --palette 07,26,30 --delay 7 --scale 8 \
-  --out docs/wip/img/area-8_ovhd_boss_phase-2_cut-beam-charging.gif
+  --out docs/misc/img/area-8_ovhd_boss_phase-2_cut-beam-charging.gif
 
 # Downward beam, extending (segments fill in as the end-cap descends)
 seg(){ echo "t11@0:$1+t21@8:$1"; }; end(){ echo "taf@0:$1+tbf@8:$1"; }
@@ -449,7 +449,7 @@ dotnet run --project tools/Trace6502 -- metasprite "<rom>" ovhd gif \
   "$(end 0),$(seg 0)+$(end 16),$(seg 0)+$(seg 16)+$(end 32),\
 $(seg 0)+$(seg 16)+$(seg 32)+$(end 48),$(seg 0)+$(seg 16)+$(seg 32)+$(seg 48)+$(end 64)" \
   --chr-bank 1C --chr-odd 1C --8x16 --palette 07,26,30 --delay 6 --scale 5 \
-  --out docs/wip/img/area-8_ovhd_boss_phase-2_cut-beam-down.gif
+  --out docs/misc/img/area-8_ovhd_boss_phase-2_cut-beam-down.gif
 
 # Diagonal beam, extending down-right ($60-led segment + $60-led end cap, (16,16) pitch)
 dseg(){ local p=$1; echo "t60@$((p-8)):$p+t31@$p:$p+t41@$((p+8)):$p+t51@$((p+16)):$p"; }
@@ -458,11 +458,11 @@ dotnet run --project tools/Trace6502 -- metasprite "<rom>" ovhd gif \
   "$(dend 0),$(dseg 0)+$(dend 16),$(dseg 0)+$(dseg 16)+$(dend 32),\
 $(dseg 0)+$(dseg 16)+$(dseg 32)+$(dend 48),$(dseg 0)+$(dseg 16)+$(dseg 32)+$(dseg 48)+$(dend 64)" \
   --chr-bank 1C --chr-odd 1C --8x16 --palette 07,26,30 --delay 6 --scale 4 \
-  --out docs/wip/img/area-8_ovhd_boss_phase-2_cut-beam-diagonal.gif
+  --out docs/misc/img/area-8_ovhd_boss_phase-2_cut-beam-diagonal.gif
 ```
 
 The **full attack mock-ups** are produced by two committed scripts (each emits three gifs, copied
-to `docs/wip/img/` and renamed):
+to `docs/misc/img/` and renamed):
 - `scripts/chr-rom-explorations/beam_attack.sh` → the realistic version (`*-cut-beam-attack-*.gif`)
 - `scripts/chr-rom-explorations/beam_attack_alt.sh` → the fantasy animated-palette version
   (`*-cut-beam-attack-alt-*.gif`)

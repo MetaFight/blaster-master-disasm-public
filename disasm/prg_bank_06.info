@@ -4123,49 +4123,49 @@ LABEL {
 LABEL {
   NAME    "ObjHandler_Tank_77_Shooter_Main";
   ADDR    $B013;
-  COMMENT "(alpha: not fully human-verified) \n; ObjType $77 — Shooter active. Dual-entry: ObjState 0 JMP→$B04B (skip logic to render/hit tail).\n; Update ($B016): $42/$43=$80 terrain half-extents; JSR $DF68 = advance + BOUNCE off walls\n; (reflects $4C on H-wall bit7, $4D on V-wall bit6 of the $E083 probe). Fire gate: if cooldown\n; $52≠0 → DEC $52, $50=0 (recoil pose), skip; else at $B02E: JSR $E0ED (signed X-dist to player)\n; EOR $4C (Xvel sign) BMI skip (fire only when drifting TOWARD player in X); JSR $E0FA (signed\n; Y-dist) BMI skip (fire only when player at/below); $A0=$3C (Small Red shot) JSR $DF36\n; (rate-limited spawn: frame $11&$4C==0 AND RNG_State&3==0) BEQ skip; on spawn $52=$10 (16-frame\n; cooldown). $50=1. Render tail: $40/$41=$10 16×16 hitbox, $EF2B off-screen despawn, $A30A(desc\n; $10) damage vs HP 16 → $A34D on kill; metasprite $6C (idle/searching) / $6D (recoil, cooldown\n; active).\n; ObjState 0: JMP $B04B → skip logic to shared hit-check";
+  COMMENT "(alpha: not fully human-verified) \n; ObjType $77 — Shooter (Thing $10), active. A free-drifting enemy that bounces off terrain and\n; shoots Small Red shots at the player, but only while its drift already carries it toward them\n; and only at a player level with or below it — so it never fires backwards or upwards, and spends\n; its time circling until the geometry lines up. Each shot costs a 16-frame recoil during which it\n; holds a distinct pose and cannot fire again. HP 16; on death it explodes and may drop a\n; Health-x1 pickup. Dual-entry: ObjState 0 runs the hit/render tail only, ObjState 1 the full body\n; at +3. See docs/entities/tank/76-77_shooter.md\n; ObjState 0: skip all logic, straight to the shared hit/render tail";
 };
 
 LABEL {
   NAME    "_ObjHandler_Tank_77_Shooter_Main__Update__";
   ADDR    $B016;
-  COMMENT "ObjState 1 body: $42=$80/$43=$80 terrain half-extents; JSR $DF68 (advance + bounce off walls:\n; reflect $4C/$4D on collision); LDA $52 (fire cooldown): BEQ $B02E (try fire); else DEC $52;\n; $50=0 (recoil pose); JMP $B04B  [+3 body entry]";
+  COMMENT "ObjState 1 body — drift, then decide whether to fire  [+3 body entry]\n; $42/$43 = $80: terrain-collision half-extents for the move below";
 };
 
 LABEL {
   NAME    "_ObjHandler_Tank_77_Shooter_Main__FireCheck";
   ADDR    $B02E;
-  COMMENT "JSR $E0ED (signed X-dist to player) EOR $4C (Xvel sign): BMI $B047 (only fire when moving TOWARD\n; player in X); JSR $E0FA (signed Y-dist to player): BMI $B047 (only fire when player at/below,\n; Y-dist≥0)";
+  COMMENT "Fire gate — both aim conditions must hold, else fall through unfired\n; signed X-distance to player EOR X-velocity sign: negative = drifting AWAY, so hold fire";
 };
 
 LABEL {
   NAME    "_ObjHandler_Tank_77_Shooter_Main__SetActive";
   ADDR    $B047;
-  COMMENT "$50=1 (idle/searching pose — set on both the skip-fire and post-fire paths)";
+  COMMENT "Searching pose ($50 = 1) — reached whether or not a shot went out";
 };
 
 LABEL {
   NAME    "_ObjHandler_Tank_77_Shooter_Main__HitCheck";
   ADDR    $B04B;
-  COMMENT "$40=$10/$41=$10 (16×16 hitbox); JSR $EF2B (ScreenPos_Compute + player-shot overlap); off-screen\n; → JMP $D7F8 despawn";
+  COMMENT "Shared hit/render tail — also the ObjState 0 entry\n; $40/$41 = $10: 16×16 hitbox";
 };
 
 LABEL {
   NAME    "_ObjHandler_Tank_77_Shooter_Main__Damage";
   ADDR    $B05B;
-  COMMENT "LDA #$10 JSR $A30A (TankEnemy_DamageCheck desc $10, HP 16); on kill JMP $A34D (defeat: explosion\n; + maybe Health-x1 drop)";
+  COMMENT "Apply any hit, and die if it emptied the HP\n; enemy descriptor $10 (HP 16)";
 };
 
 LABEL {
   NAME    "_ObjHandler_Tank_77_Shooter_Main__Render";
   ADDR    $B065;
-  COMMENT "JSR $E04E (OAM attr base 1 + h-flip by $4C sign); LDX #$6C; LDA $50: BNE $B071 ($50≠0 idle→$6C,\n; $50=0 recoil→$6D)";
+  COMMENT "Draw the sprite — pose follows the cooldown, facing follows the drift\n; OAM attr = sprite sub-palette 1, H-flipped by the sign of $4C";
 };
 
 LABEL {
   NAME    "_ObjHandler_Tank_77_Shooter_Main__TileBase";
   ADDR    $B071;
-  COMMENT "TXA ($6C or $6D); JMP $F011";
+  COMMENT "Tail-call the metasprite renderer with the chosen id";
 };
 
 LABEL {
@@ -5049,8 +5049,74 @@ LABEL {
 };
 
 LABEL {
+  NAME    "_note_B01E";
+  ADDR    $B01E;
+  COMMENT "advance by velocity and bounce off walls (reflects $4C on a horizontal wall, $4D on a vertical\n; one)";
+};
+
+LABEL {
+  NAME    "_note_B021";
+  ADDR    $B021;
+  COMMENT "fire cooldown $52 — zero means free to fire";
+};
+
+LABEL {
+  NAME    "_note_B025";
+  ADDR    $B025;
+  COMMENT "still cooling down: tick it and hold the recoil pose ($50 = 0)";
+};
+
+LABEL {
   NAME    "_note_B035";
   ADDR    $B035;
-  COMMENT "$A0=$3C (Small Red projectile); JSR $DF36 fire (internally throttled: frame $11&$4C==0 AND\n; RNG_State&$03==0); BEQ $B047 (didn't fire / no slot); $52=$10 (16-frame cooldown)";
+  COMMENT "signed Y-distance: negative = player is above, so hold fire (it only shoots level or downward)";
+};
+
+LABEL {
+  NAME    "_note_B03A";
+  ADDR    $B03A;
+  COMMENT "child to spawn = ObjType $3C (Small Red shot)";
+};
+
+LABEL {
+  NAME    "_note_B03E";
+  ADDR    $B03E;
+  COMMENT "rate-limited spawn — throttles internally on the frame counter and RNG; Z = no shot this frame";
+};
+
+LABEL {
+  NAME    "_note_B043";
+  ADDR    $B043;
+  COMMENT "shot away: start the 16-frame recoil cooldown";
+};
+
+LABEL {
+  NAME    "_note_B053";
+  ADDR    $B053;
+  COMMENT "screen position + overlap against the player's shots";
+};
+
+LABEL {
+  NAME    "_note_B058";
+  ADDR    $B058;
+  COMMENT "off-screen: despawn";
+};
+
+LABEL {
+  NAME    "_note_B062";
+  ADDR    $B062;
+  COMMENT "killed: explosion, and maybe a Health-x1 drop";
+};
+
+LABEL {
+  NAME    "_note_B06A";
+  ADDR    $B06A;
+  COMMENT "pose select: $50 non-zero (searching) keeps metasprite $6C…";
+};
+
+LABEL {
+  NAME    "_note_B070";
+  ADDR    $B070;
+  COMMENT "…$50 == 0 (recoiling) bumps it to $6D";
 };
 

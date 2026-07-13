@@ -91,7 +91,7 @@ L_81F4: lda     $50                             ; 81F4
         lda     #$01                            ; 8201
         sta     $50                             ; 8203
         lda     #$3B                            ; 8205
-        jsr     LDECC                           ; 8207
+        jsr     Enqueue_Sound_Command           ; 8207
 L_820A: jsr     LD2AB                           ; 820A
         and     #$40                            ; 820D
         beq     L_8215                          ; 820F
@@ -545,7 +545,7 @@ L855E:  .byte   $D0                             ; 855E
         ora     #$08                            ; 8577
         sta     $C5                             ; 8579
         lda     #$51                            ; 857B
-        jsr     LDECC                           ; 857D
+        jsr     Enqueue_Sound_Command           ; 857D
 L_8580: inc     $51                             ; 8580
         bne     L_8586                          ; 8582
         dec     $51                             ; 8584
@@ -613,7 +613,7 @@ L_8611: sta     $53                             ; 8611
         lda     #$20                            ; 8617
         sta     $4F                             ; 8619
         lda     #$33                            ; 861B
-        jsr     LDECC                           ; 861D
+        jsr     Enqueue_Sound_Command           ; 861D
 L_8620: rts                                     ; 8620
 
 ; ----------------------------------------------------------------------------
@@ -658,7 +658,7 @@ L_8644: lda     $03D0                           ; 8644
         lda     #$E4                            ; 866D
         sta     $4D                             ; 866F
         lda     #$3E                            ; 8671
-        jsr     LDECC                           ; 8673
+        jsr     Enqueue_Sound_Command           ; 8673
 L_8676: rts                                     ; 8676
 
 ; ----------------------------------------------------------------------------
@@ -904,7 +904,7 @@ L_880B: lda     $F3                             ; 880B
         sta     $0400,x                         ; 881E
         jsr     LD7C0                           ; 8821
         lda     #$34                            ; 8824
-        jsr     LDECC                           ; 8826
+        jsr     Enqueue_Sound_Command           ; 8826
 L_8829: rts                                     ; 8829
 
 ; ----------------------------------------------------------------------------

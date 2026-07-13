@@ -437,7 +437,7 @@ L_9882: nop                                     ; 9882
         sta     $51                             ; 9899
         sta     $52                             ; 989B
         lda     #$2F                            ; 989D
-        jsr     LDECC                           ; 989F
+        jsr     Enqueue_Sound_Command           ; 989F
         rts                                     ; 98A2
 
 ; ----------------------------------------------------------------------------
@@ -586,7 +586,7 @@ L_99DF: tax                                     ; 99DF
         sta     $47                             ; 99E3
         inc     $46                             ; 99E5
         lda     #$4D                            ; 99E7
-        jsr     LDECC                           ; 99E9
+        jsr     Enqueue_Sound_Command           ; 99E9
         rts                                     ; 99EC
 
 ; ----------------------------------------------------------------------------
@@ -692,7 +692,7 @@ L_9AEB: nop                                     ; 9AEB
         nop                                     ; 9AED
         jsr     LD790                           ; 9AEE
         lda     #$2F                            ; 9AF1
-        jsr     LDECC                           ; 9AF3
+        jsr     Enqueue_Sound_Command           ; 9AF3
         inc     $46                             ; 9AF6
         jsr     L_9707                          ; 9AF8
         lda     #$00                            ; 9AFB
@@ -782,7 +782,7 @@ L_9B95: nop                                     ; 9B95
         lda     #$4B                            ; 9BA0
         sta     $46                             ; 9BA2
         lda     #$28                            ; 9BA4
-        jsr     LDECC                           ; 9BA6
+        jsr     Enqueue_Sound_Command           ; 9BA6
         rts                                     ; 9BA9
 
 ; ----------------------------------------------------------------------------
@@ -826,7 +826,7 @@ L_9BD8: nop                                     ; 9BD8
         lda     #$4D                            ; 9BE3
         sta     $46                             ; 9BE5
         lda     #$28                            ; 9BE7
-        jsr     LDECC                           ; 9BE9
+        jsr     Enqueue_Sound_Command           ; 9BE9
         rts                                     ; 9BEC
 
 ; ----------------------------------------------------------------------------
@@ -989,17 +989,17 @@ L_9CE8: dex                                     ; 9CE8
         lsr     a                               ; 9CF1
         bcs     L_9CFC                          ; 9CF2
         lda     #$2C                            ; 9CF4
-        jsr     LDECC                           ; 9CF6
+        jsr     Enqueue_Sound_Command           ; 9CF6
         jmp     L_9D09                          ; 9CF9
 
 ; ----------------------------------------------------------------------------
 L_9CFC: lda     #$3F                            ; 9CFC
-        jsr     LDECC                           ; 9CFE
+        jsr     Enqueue_Sound_Command           ; 9CFE
         jmp     L_9D09                          ; 9D01
 
 ; ----------------------------------------------------------------------------
 L_9D04: lda     #$40                            ; 9D04
-        jsr     LDECC                           ; 9D06
+        jsr     Enqueue_Sound_Command           ; 9D06
 L_9D09: jmp     LD804                           ; 9D09
 
 ; ----------------------------------------------------------------------------
@@ -1132,7 +1132,7 @@ L_9DFF: lda     L9E21                           ; 9DFF
         lda     #$00                            ; 9E09
         jsr     LCEC6                           ; 9E0B
         lda     #$41                            ; 9E0E
-        jsr     LDECC                           ; 9E10
+        jsr     Enqueue_Sound_Command           ; 9E10
         jmp     L_9E1A                          ; 9E13
 
 ; ----------------------------------------------------------------------------
@@ -1167,7 +1167,7 @@ L_9E45: jsr     LD68D                           ; 9E45
 L_9E48: lda     #$80                            ; 9E48
         jsr     LCEC6                           ; 9E4A
         lda     #$41                            ; 9E4D
-        jsr     LDECC                           ; 9E4F
+        jsr     Enqueue_Sound_Command           ; 9E4F
         jmp     L_9E59                          ; 9E52
 
 ; ----------------------------------------------------------------------------
@@ -1192,7 +1192,7 @@ L_9E60: lda     $09                             ; 9E60
         jsr     LD71F                           ; 9E72
         bne     L_9E85                          ; 9E75
         lda     #$44                            ; 9E77
-        jsr     LDECC                           ; 9E79
+        jsr     Enqueue_Sound_Command           ; 9E79
         lda     $08                             ; 9E7C
         ora     $03FE                           ; 9E7E
         sta     $03FE                           ; 9E81
@@ -1240,7 +1240,7 @@ L_9EBE: rts                                     ; 9EBE
         jsr     LD2B9                           ; 9ED5
         inc     $46                             ; 9ED8
         lda     #$25                            ; 9EDA
-        jsr     LDECC                           ; 9EDC
+        jsr     Enqueue_Sound_Command           ; 9EDC
 L_9EDF: rts                                     ; 9EDF
 
 ; ----------------------------------------------------------------------------
@@ -1290,7 +1290,7 @@ L_9F15: clc                                     ; 9F15
 ; ----------------------------------------------------------------------------
 L_9F2E: jsr     L_9B90                          ; 9F2E
         lda     #$27                            ; 9F31
-        jsr     LDECC                           ; 9F33
+        jsr     Enqueue_Sound_Command           ; 9F33
         jmp     LD81C                           ; 9F36
 
 ; ----------------------------------------------------------------------------
@@ -1309,7 +1309,7 @@ L_9F2E: jsr     L_9B90                          ; 9F2E
         jsr     LD2B9                           ; 9F4F
         inc     $46                             ; 9F52
         lda     #$25                            ; 9F54
-        jsr     LDECC                           ; 9F56
+        jsr     Enqueue_Sound_Command           ; 9F56
 L_9F59: rts                                     ; 9F59
 
 ; ----------------------------------------------------------------------------
@@ -1359,7 +1359,7 @@ L_9F8F: clc                                     ; 9F8F
 ; ----------------------------------------------------------------------------
 L_9FA8: jsr     L_9B90                          ; 9FA8
         lda     #$27                            ; 9FAB
-        jsr     LDECC                           ; 9FAD
+        jsr     Enqueue_Sound_Command           ; 9FAD
         lda     #$06                            ; 9FB0
         jsr     L_A2E9                          ; 9FB2
         lda     #$63                            ; 9FB5
@@ -1607,7 +1607,7 @@ L_A14D: lda     #$20                            ; A14D
 ; ----------------------------------------------------------------------------
 L_A15F: jsr     L_9B90                          ; A15F
         lda     #$27                            ; A162
-        jsr     LDECC                           ; A164
+        jsr     Enqueue_Sound_Command           ; A164
         lda     #$06                            ; A167
         jsr     L_A2E9                          ; A169
         lda     #$63                            ; A16C
@@ -1831,7 +1831,7 @@ L_A423: lda     $11                             ; A423
         and     #$0F                            ; A425
         bne     L_A42E                          ; A427
         lda     #$42                            ; A429
-        jsr     LDECC                           ; A42B
+        jsr     Enqueue_Sound_Command           ; A42B
 L_A42E: jsr     LE0ED                           ; A42E
         sta     $01                             ; A431
         eor     $4C                             ; A433
@@ -1870,7 +1870,7 @@ L_A44E: lda     #$11                            ; A44E
 
 ; ----------------------------------------------------------------------------
 L_A477: lda     #$29                            ; A477
-        jsr     LDECC                           ; A479
+        jsr     Enqueue_Sound_Command           ; A479
         lda     #$E0                            ; A47C
         sta     $4D                             ; A47E
 L_A480: inc     $50                             ; A480
@@ -2069,7 +2069,7 @@ L_A59A: lda     $50                             ; A59A
         lda     $51                             ; A5CD
         beq     L_A5DB                          ; A5CF
         lda     #$43                            ; A5D1
-        jsr     LDECC                           ; A5D3
+        jsr     Enqueue_Sound_Command           ; A5D3
         dec     $51                             ; A5D6
         jmp     L_A605                          ; A5D8
 
@@ -2327,7 +2327,7 @@ L_A802: lda     #$04                            ; A802
 
 ; ----------------------------------------------------------------------------
 L_A821: lda     #$29                            ; A821
-        jsr     LDECC                           ; A823
+        jsr     Enqueue_Sound_Command           ; A823
         jsr     LE0ED                           ; A826
         bmi     L_A830                          ; A829
         lda     #$C8                            ; A82B
@@ -2396,7 +2396,7 @@ L_A888: sta     $4C                             ; A888
         lda     $11                             ; A894
         bmi     L_A89F                          ; A896
         lda     #$29                            ; A898
-        jsr     LDECC                           ; A89A
+        jsr     Enqueue_Sound_Command           ; A89A
         dec     $46                             ; A89D
 L_A89F: lda     #$10                            ; A89F
         sta     $40                             ; A8A1
@@ -2474,7 +2474,7 @@ L_A913: lda     $11                             ; A913
         and     #$0F                            ; A915
         bne     L_A91E                          ; A917
         lda     #$42                            ; A919
-        jsr     LDECC                           ; A91B
+        jsr     Enqueue_Sound_Command           ; A91B
 L_A91E: jsr     LE0ED                           ; A91E
         sta     $01                             ; A921
         eor     $4C                             ; A923
@@ -2513,7 +2513,7 @@ L_A93E: lda     #$11                            ; A93E
 
 ; ----------------------------------------------------------------------------
 L_A967: lda     #$29                            ; A967
-        jsr     LDECC                           ; A969
+        jsr     Enqueue_Sound_Command           ; A969
         lda     #$D2                            ; A96C
         sta     $4D                             ; A96E
 L_A970: inc     $50                             ; A970
@@ -2634,7 +2634,7 @@ L_AA3B: lda     #$41                            ; AA3B
         and     #$1F                            ; AA47
         bne     L_AA50                          ; AA49
         lda     #$20                            ; AA4B
-        jsr     LDECC                           ; AA4D
+        jsr     Enqueue_Sound_Command           ; AA4D
 L_AA50: lda     #$88                            ; AA50
         bne     L_AA56                          ; AA52
 L_AA54: lda     #$89                            ; AA54
@@ -3181,7 +3181,7 @@ L_ADFE: rts                                     ; ADFE
         and     #$07                            ; AE10
         bne     L_AE19                          ; AE12
         lda     #$45                            ; AE14
-        jsr     LDECC                           ; AE16
+        jsr     Enqueue_Sound_Command           ; AE16
 L_AE19: jsr     LDF68                           ; AE19
         bpl     L_AE21                          ; AE1C
         jsr     LE0D8                           ; AE1E
@@ -3473,91 +3473,108 @@ _ObjHandler_Tank_76_Shooter_Init__Done:
 
 ; ----------------------------------------------------------------------------
 ; (alpha: not fully human-verified) 
-; ObjType $77 — Shooter active. Dual-entry: ObjState 0 JMP→$B04B (skip logic to render/hit tail).
-; Update ($B016): $42/$43=$80 terrain half-extents; JSR $DF68 = advance + BOUNCE off walls
-; (reflects $4C on H-wall bit7, $4D on V-wall bit6 of the $E083 probe). Fire gate: if cooldown
-; $52≠0 → DEC $52, $50=0 (recoil pose), skip; else at $B02E: JSR $E0ED (signed X-dist to player)
-; EOR $4C (Xvel sign) BMI skip (fire only when drifting TOWARD player in X); JSR $E0FA (signed
-; Y-dist) BMI skip (fire only when player at/below); $A0=$3C (Small Red shot) JSR $DF36
-; (rate-limited spawn: frame $11&$4C==0 AND RNG_State&3==0) BEQ skip; on spawn $52=$10 (16-frame
-; cooldown). $50=1. Render tail: $40/$41=$10 16×16 hitbox, $EF2B off-screen despawn, $A30A(desc
-; $10) damage vs HP 16 → $A34D on kill; metasprite $6C (idle/searching) / $6D (recoil, cooldown
-; active).
-; ObjState 0: JMP $B04B → skip logic to shared hit-check
+; ObjType $77 — Shooter (Thing $10), active. A free-drifting enemy that bounces off terrain and
+; shoots Small Red shots at the player, but only while its drift already carries it toward them
+; and only at a player level with or below it — so it never fires backwards or upwards, and spends
+; its time circling until the geometry lines up. Each shot costs a 16-frame recoil during which it
+; holds a distinct pose and cannot fire again. HP 16; on death it explodes and may drop a
+; Health-x1 pickup. Dual-entry: ObjState 0 runs the hit/render tail only, ObjState 1 the full body
+; at +3. See docs/entities/tank/76-77_shooter.md
+; ObjState 0: skip all logic, straight to the shared hit/render tail
 ObjHandler_Tank_77_Shooter_Main:
         jmp     _ObjHandler_Tank_77_Shooter_Main__HitCheck; B013
 
 ; ----------------------------------------------------------------------------
-; ObjState 1 body: $42=$80/$43=$80 terrain half-extents; JSR $DF68 (advance + bounce off walls:
-; reflect $4C/$4D on collision); LDA $52 (fire cooldown): BEQ $B02E (try fire); else DEC $52;
-; $50=0 (recoil pose); JMP $B04B  [+3 body entry]
+; ObjState 1 body — drift, then decide whether to fire  [+3 body entry]
+; $42/$43 = $80: terrain-collision half-extents for the move below
 _ObjHandler_Tank_77_Shooter_Main__Update__:
         lda     #$80                            ; B016
         sta     $42                             ; B018
         lda     #$80                            ; B01A
         sta     $43                             ; B01C
+; advance by velocity and bounce off walls (reflects $4C on a horizontal wall, $4D on a vertical
+; one)
+_note_B01E:
         jsr     LDF68                           ; B01E
+; fire cooldown $52 — zero means free to fire
+_note_B021:
         lda     $52                             ; B021
         beq     _ObjHandler_Tank_77_Shooter_Main__FireCheck; B023
+; still cooling down: tick it and hold the recoil pose ($50 = 0)
+_note_B025:
         dec     $52                             ; B025
         lda     #$00                            ; B027
         sta     $50                             ; B029
         jmp     _ObjHandler_Tank_77_Shooter_Main__HitCheck; B02B
 
 ; ----------------------------------------------------------------------------
-; JSR $E0ED (signed X-dist to player) EOR $4C (Xvel sign): BMI $B047 (only fire when moving TOWARD
-; player in X); JSR $E0FA (signed Y-dist to player): BMI $B047 (only fire when player at/below,
-; Y-dist≥0)
+; Fire gate — both aim conditions must hold, else fall through unfired
+; signed X-distance to player EOR X-velocity sign: negative = drifting AWAY, so hold fire
 _ObjHandler_Tank_77_Shooter_Main__FireCheck:
         jsr     LE0ED                           ; B02E
         eor     $4C                             ; B031
         bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B033
-; $A0=$3C (Small Red projectile); JSR $DF36 fire (internally throttled: frame $11&$4C==0 AND
-; RNG_State&$03==0); BEQ $B047 (didn't fire / no slot); $52=$10 (16-frame cooldown)
+; signed Y-distance: negative = player is above, so hold fire (it only shoots level or downward)
 _note_B035:
         jsr     LE0FA                           ; B035
         bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B038
+; child to spawn = ObjType $3C (Small Red shot)
+_note_B03A:
         lda     #$3C                            ; B03A
         sta     $A0                             ; B03C
+; rate-limited spawn — throttles internally on the frame counter and RNG; Z = no shot this frame
+_note_B03E:
         jsr     LDF36                           ; B03E
         beq     _ObjHandler_Tank_77_Shooter_Main__SetActive; B041
+; shot away: start the 16-frame recoil cooldown
+_note_B043:
         lda     #$10                            ; B043
         sta     $52                             ; B045
-; $50=1 (idle/searching pose — set on both the skip-fire and post-fire paths)
+; Searching pose ($50 = 1) — reached whether or not a shot went out
 _ObjHandler_Tank_77_Shooter_Main__SetActive:
         lda     #$01                            ; B047
         sta     $50                             ; B049
-; $40=$10/$41=$10 (16×16 hitbox); JSR $EF2B (ScreenPos_Compute + player-shot overlap); off-screen
-; → JMP $D7F8 despawn
+; Shared hit/render tail — also the ObjState 0 entry
+; $40/$41 = $10: 16×16 hitbox
 _ObjHandler_Tank_77_Shooter_Main__HitCheck:
         lda     #$10                            ; B04B
         sta     $40                             ; B04D
         lda     #$10                            ; B04F
         sta     $41                             ; B051
+; screen position + overlap against the player's shots
+_note_B053:
         jsr     LEF2B                           ; B053
         beq     _ObjHandler_Tank_77_Shooter_Main__Damage; B056
+; off-screen: despawn
+_note_B058:
         jmp     LD7F8                           ; B058
 
 ; ----------------------------------------------------------------------------
-; LDA #$10 JSR $A30A (TankEnemy_DamageCheck desc $10, HP 16); on kill JMP $A34D (defeat: explosion
-; + maybe Health-x1 drop)
+; Apply any hit, and die if it emptied the HP
+; enemy descriptor $10 (HP 16)
 _ObjHandler_Tank_77_Shooter_Main__Damage:
         lda     #$10                            ; B05B
         jsr     L_A30A                          ; B05D
         beq     _ObjHandler_Tank_77_Shooter_Main__Render; B060
+; killed: explosion, and maybe a Health-x1 drop
+_note_B062:
         jmp     L_A34D                          ; B062
 
 ; ----------------------------------------------------------------------------
-; JSR $E04E (OAM attr base 1 + h-flip by $4C sign); LDX #$6C; LDA $50: BNE $B071 ($50≠0 idle→$6C,
-; $50=0 recoil→$6D)
+; Draw the sprite — pose follows the cooldown, facing follows the drift
+; OAM attr = sprite sub-palette 1, H-flipped by the sign of $4C
 _ObjHandler_Tank_77_Shooter_Main__Render:
         lda     #$01                            ; B065
         jsr     LE04E                           ; B067
+; pose select: $50 non-zero (searching) keeps metasprite $6C…
+_note_B06A:
         ldx     #$6C                            ; B06A
         lda     $50                             ; B06C
         bne     _ObjHandler_Tank_77_Shooter_Main__TileBase; B06E
+; …$50 == 0 (recoiling) bumps it to $6D
+_note_B070:
         inx                                     ; B070
-; TXA ($6C or $6D); JMP $F011
+; Tail-call the metasprite renderer with the chosen id
 _ObjHandler_Tank_77_Shooter_Main__TileBase:
         txa                                     ; B071
         jmp     LF011                           ; B072
@@ -3820,7 +3837,7 @@ L_B20B: rts                                     ; B20B
         lda     #$00                            ; B235
         sta     $0407,x                         ; B237
         lda     #$24                            ; B23A
-        jsr     LDECC                           ; B23C
+        jsr     Enqueue_Sound_Command           ; B23C
 L_B23F: lda     #$10                            ; B23F
         sta     $40                             ; B241
         lda     #$10                            ; B243
@@ -3908,7 +3925,7 @@ L_B2A7: rts                                     ; B2A7
         lda     #$00                            ; B2D1
         sta     $0407,x                         ; B2D3
         lda     #$24                            ; B2D6
-        jsr     LDECC                           ; B2D8
+        jsr     Enqueue_Sound_Command           ; B2D8
 L_B2DB: lda     #$10                            ; B2DB
         sta     $40                             ; B2DD
         lda     #$10                            ; B2DF
@@ -4101,7 +4118,7 @@ L_B418: and     #$40                            ; B418
 L_B420: dec     $51                             ; B420
         bne     L_B457                          ; B422
         lda     #$46                            ; B424
-        jsr     LDECC                           ; B426
+        jsr     Enqueue_Sound_Command           ; B426
         inc     $50                             ; B429
         jsr     LEB71                           ; B42B
         and     #$07                            ; B42E
@@ -4430,7 +4447,7 @@ L_B63B: rts                                     ; B63B
         lda     #$00                            ; B665
         sta     $0407,x                         ; B667
         lda     #$24                            ; B66A
-        jsr     LDECC                           ; B66C
+        jsr     Enqueue_Sound_Command           ; B66C
 L_B66F: lda     #$10                            ; B66F
         sta     $40                             ; B671
         lda     #$10                            ; B673
@@ -4761,7 +4778,7 @@ L_B8C8: lda     $11                             ; B8C8
         and     #$0F                            ; B8CA
         bne     L_B8D3                          ; B8CC
         lda     #$4C                            ; B8CE
-        jsr     LDECC                           ; B8D0
+        jsr     Enqueue_Sound_Command           ; B8D0
 L_B8D3: lda     $11                             ; B8D3
         and     #$04                            ; B8D5
         beq     L_B8DE                          ; B8D7
@@ -4948,7 +4965,7 @@ L_B9DA: lda     $50                             ; B9DA
         lda     $51                             ; BA0B
         beq     L_BA19                          ; BA0D
         lda     #$43                            ; BA0F
-        jsr     LDECC                           ; BA11
+        jsr     Enqueue_Sound_Command           ; BA11
         dec     $51                             ; BA14
         jmp     L_BA43                          ; BA16
 
@@ -5081,7 +5098,7 @@ L_BB01: lda     $51                             ; BB01
         sta     $51                             ; BB07
         dec     $3F                             ; BB09
         lda     #$31                            ; BB0B
-        jsr     LDECC                           ; BB0D
+        jsr     Enqueue_Sound_Command           ; BB0D
 L_BB10: lda     #$42                            ; BB10
         sta     $44                             ; BB12
         jsr     LD77D                           ; BB14
@@ -5127,7 +5144,7 @@ L_BB56: lda     $03FE                           ; BB56
         jsr     LD851                           ; BB60
         jsr     LCBA9                           ; BB63
         lda     #$32                            ; BB66
-        jsr     LDECC                           ; BB68
+        jsr     Enqueue_Sound_Command           ; BB68
 L_BB6B: lda     $C5                             ; BB6B
         and     #$FB                            ; BB6D
         sta     $C5                             ; BB6F

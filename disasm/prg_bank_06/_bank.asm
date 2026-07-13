@@ -51,7 +51,7 @@ LD81C           := $D81C
 LD823           := $D823
 LD82C           := $D82C
 LD851           := $D851
-LDECC           := $DECC
+Enqueue_Sound_Command := $DECC
 LDF0F           := $DF0F
 LDF36           := $DF36
 LDF46           := $DF46
@@ -89,10 +89,11 @@ LF029           := $F029
 
 .segment        "BANK06": absolute
 
+.include "dispatch.asm"
 .include "jason-small.asm"
 .include "object-handler.asm"
 .include "sophia.asm"
-.include "various.asm"
+.include "ungrouped.asm"
 
 ; Emit every group's code in address order (see GroupSplitter).
         MAC_L_8000

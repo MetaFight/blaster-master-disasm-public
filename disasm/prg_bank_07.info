@@ -607,6 +607,11 @@ RANGE {
 };
 
 LABEL {
+  NAME    "L_C000";
+  ADDR    $C000;
+};
+
+LABEL {
   NAME    "L_C24F";
   ADDR    $C24F;
 };
@@ -3025,6 +3030,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_E01B";
+  ADDR    $E01B;
+};
+
+LABEL {
   NAME    "L_E02F";
   ADDR    $E02F;
 };
@@ -3828,6 +3838,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_EA56";
+  ADDR    $EA56;
+};
+
+LABEL {
   NAME    "L_EA60";
   ADDR    $EA60;
 };
@@ -3835,6 +3850,11 @@ LABEL {
 LABEL {
   NAME    "L_EA63";
   ADDR    $EA63;
+};
+
+LABEL {
+  NAME    "L_EA6F";
+  ADDR    $EA6F;
 };
 
 LABEL {
@@ -3980,6 +4000,11 @@ LABEL {
 LABEL {
   NAME    "L_EB57";
   ADDR    $EB57;
+};
+
+LABEL {
+  NAME    "L_EB64";
+  ADDR    $EB64;
 };
 
 LABEL {
@@ -4630,6 +4655,11 @@ LABEL {
 LABEL {
   NAME    "L_F464";
   ADDR    $F464;
+};
+
+LABEL {
+  NAME    "L_F465";
+  ADDR    $F465;
 };
 
 LABEL {

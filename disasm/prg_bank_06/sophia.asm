@@ -11,7 +11,7 @@ L_8C64: jmp     L_8C8B                          ; 8C64
         lda     #$06                            ; 8C73
         sta     $D4                             ; 8C75
         lda     #$4A                            ; 8C77
-        jsr     LDECC                           ; 8C79
+        jsr     Enqueue_Sound_Command           ; 8C79
 L_8C7C: inc     $51                             ; 8C7C
         lda     $51                             ; 8C7E
         cmp     #$50                            ; 8C80
@@ -889,7 +889,7 @@ L_9317: lda     #$02                            ; 9317
         cmp     #$03                            ; 931F
         bne     L_9328                          ; 9321
         lda     #$30                            ; 9323
-        jsr     LDECC                           ; 9325
+        jsr     Enqueue_Sound_Command           ; 9325
 L_9328: dec     $92                             ; 9328
         lda     $4D                             ; 932A
         sec                                     ; 932C

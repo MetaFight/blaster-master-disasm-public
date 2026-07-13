@@ -66,7 +66,7 @@ JSR $DF68             ; advance + bounce
 ```
 
 `$DF68` (`Obj_MoveBounce`) moves the object and **reflects its velocity off level geometry**. It
-calls the terrain probe `$E083` (`Obj_TerrainProbe`), which returns a flags byte in `$9A`:
+calls the terrain probe `$E083` (`Obj_MoveAndCollide`), which returns a flags byte in `$9A`:
 **bit 7 = horizontal wall → negate `$4C`** (X velocity), **bit 6 = vertical wall/floor → negate
 `$4D`** (Y velocity). The Shooter therefore ricochets around the room, keeping its speed. (This is
 *not* gravity — it has no downward acceleration.)
@@ -164,7 +164,7 @@ projectiles-ballistics.md).
   (signed Y-distance to player), `$E1BD` = `Obj_AngleToVelocity` (angle `$47` + speed Y → velocity;
   internals `Trig_CosByAngle` `$E1D2` / `Trig_SinByAngle` `$E1D5` / `Trig_ScaleBySpeed` `$E196` /
   `Mul8_HighByte` `$E182` over `Trig_QuarterSineTable` `$E202`), `$DF68` = `Obj_MoveBounce` (move +
-  reflect velocity on wall collision, via `Obj_TerrainProbe` `$E083`), `$DF36` =
+  reflect velocity on wall collision, via `Obj_MoveAndCollide` `$E083`), `$DF36` =
   `Obj_SpawnChild_A0_Throttled` (rate-limited child spawn), `$E04E` = `Obj_SetAttrFlipX`
   (OAM attr / h-flip by X-velocity sign).
 - The fire-timing analysis in "Can the player predict the shot?" was verified byte-for-byte:

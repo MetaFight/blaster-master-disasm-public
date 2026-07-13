@@ -1,45 +1,3 @@
-.macro MAC_L_8000
-L_8000: .byte   $02                             ; 8000
-        .byte   $80,$24,$81,$24,$81,$DB,$92,$64 ; 8001
-        .byte   $8C,$09,$90,$6E,$91,$97,$8E,$B0 ; 8009
-        .byte   $8C,$F8,$8A,$36,$8B,$74,$8B,$B2 ; 8011
-        .byte   $8B,$E5,$89,$0F,$8A,$1D,$8A,$2E ; 8019
-        .byte   $8A,$58,$8A,$66,$8A,$6D,$97,$88 ; 8021
-        .byte   $97,$82,$98,$A8,$98,$CC,$99,$F0 ; 8029
-        .byte   $99,$EB,$9A,$2F,$9B,$5C,$81,$5F ; 8031
-        .byte   $85,$77,$86,$13,$87,$3D,$87,$4D ; 8039
-        .byte   $87,$5E,$87,$88,$87,$98,$87,$3B ; 8041
-        .byte   $9D,$4C,$9D,$3B,$9D,$5F,$9D,$3B ; 8049
-        .byte   $9D,$72,$9D,$2A,$88,$50,$88,$1C ; 8051
-        .byte   $9C,$23,$9C,$38,$9C,$3F,$9C,$2A ; 8059
-        .byte   $9C,$31,$9C,$46,$9C,$4D,$9C,$54 ; 8061
-        .byte   $9C,$68,$9C,$A4,$9E,$00,$00,$BF ; 8069
-        .byte   $9E,$E0,$9E,$39,$9F,$5A,$9F,$DA ; 8071
-        .byte   $9F,$F9,$9F,$2F,$A0,$47,$A0,$89 ; 8079
-        .byte   $A0,$B6,$A0,$F6,$A0,$22,$A1,$91 ; 8081
-        .byte   $A1,$AD,$A1,$F1,$A1,$02,$A2,$37 ; 8089
-        .byte   $A2,$4D,$A2,$95,$9B,$AA,$9B,$D8 ; 8091
-        .byte   $9B,$ED,$9B,$FF,$B1,$0C,$B2,$9B ; 8099
-        .byte   $B2,$A8,$B2,$2F,$B6,$3C,$B6,$E2 ; 80A1
-        .byte   $A3,$0B,$A4,$DE,$A4,$00,$00,$0E ; 80A9
-        .byte   $A5,$3A,$A5,$C2,$A5,$D7,$A6,$E4 ; 80B1
-        .byte   $A6,$4B,$A7,$6A,$A7,$CB,$A7,$EE ; 80B9
-        .byte   $A7,$6E,$A8,$D2,$A8,$FB,$A8,$CB ; 80C1
-        .byte   $A9,$DE,$A9,$5A,$AA,$6C,$AA,$13 ; 80C9
-        .byte   $AB,$24,$AB,$CF,$AB,$EC,$AB,$3C ; 80D1
-        .byte   $AC,$63,$AC,$FB,$AC,$08,$AD,$E4 ; 80D9
-        .byte   $AD,$FF,$AD,$78,$AE,$95,$AE,$3A ; 80E1
-        .byte   $AF,$61,$AF,$FC,$AF,$13,$B0,$76 ; 80E9
-        .byte   $B0,$95,$B0,$6E,$B1,$8F,$B1,$50 ; 80F1
-        .byte   $B2,$EC,$B2,$37,$B3,$4F,$B3,$E3 ; 80F9
-        .byte   $B3,$FE,$B3,$94,$B4,$A3,$B4,$3A ; 8101
-        .byte   $B5,$78,$B5,$8B,$B5,$80,$B6,$E4 ; 8109
-        .byte   $B6,$F4,$B6,$32,$B8,$43,$B8,$1A ; 8111
-        .byte   $B9,$4A,$B9,$7A,$B9,$00,$BA,$88 ; 8119
-        .byte   $BA,$A4,$BA                     ; 8121
-; ----------------------------------------------------------------------------
-.endmacro
-
 .macro MAC_L_888C
 L_888C: lda     $F3                             ; 888C
         and     #$20                            ; 888E
@@ -69,7 +27,7 @@ L_888C: lda     $F3                             ; 888C
         lda     #$00                            ; 88C7
         sta     $50                             ; 88C9
         lda     #$3E                            ; 88CB
-        jsr     LDECC                           ; 88CD
+        jsr     Enqueue_Sound_Command           ; 88CD
         lda     #$1B                            ; 88D0
         sta     $46                             ; 88D2
         lda     #$F0                            ; 88D4
@@ -191,7 +149,7 @@ L_8997: and     #$7F                            ; 8997
         lda     #$00                            ; 89B1
 L_89B3: sta     $53                             ; 89B3
         lda     #$3C                            ; 89B5
-        jsr     LDECC                           ; 89B7
+        jsr     Enqueue_Sound_Command           ; 89B7
 L_89BA: rts                                     ; 89BA
 
 ; ----------------------------------------------------------------------------
@@ -495,12 +453,12 @@ L_9486: stx     $4D                             ; 9486
 L_948B: lda     $F3                             ; 948B
         bpl     L_94DD                          ; 948D
         lda     #$2E                            ; 948F
-        jsr     LDECC                           ; 9491
+        jsr     Enqueue_Sound_Command           ; 9491
         jmp     L_949C                          ; 9494
 
 ; ----------------------------------------------------------------------------
 L_9497: lda     #$2D                            ; 9497
-        jsr     LDECC                           ; 9499
+        jsr     Enqueue_Sound_Command           ; 9499
 L_949C: inc     $50                             ; 949C
         lda     L9640                           ; 949E
         sta     $8F                             ; 94A1
@@ -912,7 +870,7 @@ L_975D: lda     #$21                            ; 975D
 L_9763: lda     #$22                            ; 9763
         ldx     #$02                            ; 9765
 L_9767: stx     $B9                             ; 9767
-        jsr     LDECC                           ; 9769
+        jsr     Enqueue_Sound_Command           ; 9769
 L_976C: rts                                     ; 976C
 
 ; ----------------------------------------------------------------------------
@@ -1014,13 +972,13 @@ L_9AEA: rts                                     ; 9AEA
 
 .macro MAC_L_9B81
 L_9B81: lda     #$28                            ; 9B81
-        jsr     LDECC                           ; 9B83
+        jsr     Enqueue_Sound_Command           ; 9B83
         lda     #$4A                            ; 9B86
         jmp     LD851                           ; 9B88
 
 ; ----------------------------------------------------------------------------
 L_9B8B: lda     #$28                            ; 9B8B
-        jsr     LDECC                           ; 9B8D
+        jsr     Enqueue_Sound_Command           ; 9B8D
 L_9B90: lda     #$4C                            ; 9B90
         jmp     LD851                           ; 9B92
 
@@ -1059,7 +1017,7 @@ L9E97:  .byte   $99                             ; 9E97
 L9E98:  .byte   $9E,$22,$6A,$6B,$7A,$7B         ; 9E98
 ; ----------------------------------------------------------------------------
 L_9E9E: lda     #$23                            ; 9E9E
-        jsr     LDECC                           ; 9EA0
+        jsr     Enqueue_Sound_Command           ; 9EA0
         rts                                     ; 9EA3
 
 ; ----------------------------------------------------------------------------
@@ -1140,7 +1098,7 @@ L_A30A: jsr     L_A2FA                          ; A30A
         lda     $53                             ; A318
         bne     L_A324                          ; A31A
         lda     #$1D                            ; A31C
-        jsr     LDECC                           ; A31E
+        jsr     Enqueue_Sound_Command           ; A31E
         lda     #$FF                            ; A321
         rts                                     ; A323
 
