@@ -98,6 +98,18 @@ RANGE {
 
 RANGE {
   START  $C7F8;
+  END    $C7F9;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $C7FA;
+  END    $C7FD;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $C7FE;
   END    $C815;
   TYPE   BYTETABLE;
 };
@@ -170,6 +182,12 @@ RANGE {
 
 RANGE {
   START  $CF00;
+  END    $CF01;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $CF02;
   END    $CF06;
   TYPE   BYTETABLE;
 };
@@ -278,6 +296,18 @@ RANGE {
 
 RANGE {
   START  $DD76;
+  END    $DD77;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $DD78;
+  END    $DD7D;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $DD7E;
   END    $DEC1;
   TYPE   BYTETABLE;
 };
@@ -380,12 +410,12 @@ RANGE {
 
 RANGE {
   START  $E6E9;
-  END    $EBF4;
+  END    $EBF3;
   TYPE   CODE;
 };
 
 RANGE {
-  START  $EBF5;
+  START  $EBF4;
   END    $EC33;
   TYPE   BYTETABLE;
 };
@@ -494,6 +524,18 @@ RANGE {
 
 RANGE {
   START  $F702;
+  END    $F705;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $F706;
+  END    $F707;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $F708;
   END    $F71B;
   TYPE   BYTETABLE;
 };
@@ -506,6 +548,12 @@ RANGE {
 
 RANGE {
   START  $F7C2;
+  END    $F7C3;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $F7C4;
   END    $F7D0;
   TYPE   BYTETABLE;
 };
@@ -518,6 +566,12 @@ RANGE {
 
 RANGE {
   START  $F82C;
+  END    $F82D;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $F82E;
   END    $F832;
   TYPE   BYTETABLE;
 };
@@ -542,6 +596,18 @@ RANGE {
 
 RANGE {
   START  $F96F;
+  END    $F970;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $F971;
+  END    $F980;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $F981;
   END    $F9A4;
   TYPE   BYTETABLE;
 };
@@ -554,6 +620,12 @@ RANGE {
 
 RANGE {
   START  $FAF8;
+  END    $FAF9;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $FAFA;
   END    $FBD5;
   TYPE   BYTETABLE;
 };
@@ -590,6 +662,12 @@ RANGE {
 
 RANGE {
   START  $FCF9;
+  END    $FCFA;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $FCFB;
   END    $FFF3;
   TYPE   BYTETABLE;
 };
@@ -603,7 +681,7 @@ RANGE {
 RANGE {
   START  $FFFA;
   END    $FFFF;
-  TYPE   BYTETABLE;
+  TYPE   ADDRTABLE;
 };
 
 LABEL {
@@ -699,6 +777,11 @@ LABEL {
 LABEL {
   NAME    "L_C430";
   ADDR    $C430;
+};
+
+LABEL {
+  NAME    "L_C438";
+  ADDR    $C438;
 };
 
 LABEL {
@@ -964,6 +1047,11 @@ LABEL {
 LABEL {
   NAME    "L_C7BA";
   ADDR    $C7BA;
+};
+
+LABEL {
+  NAME    "L_C7BE";
+  ADDR    $C7BE;
 };
 
 LABEL {
@@ -3522,6 +3610,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_E6BE";
+  ADDR    $E6BE;
+};
+
+LABEL {
   NAME    "L_E6BF";
   ADDR    $E6BF;
 };
@@ -4013,7 +4106,7 @@ LABEL {
 };
 
 LABEL {
-  NAME    "NMI";
+  NAME    "L_EB7E";
   ADDR    $EB7E;
 };
 
@@ -4050,6 +4143,11 @@ LABEL {
 LABEL {
   NAME    "L_EBD2";
   ADDR    $EBD2;
+};
+
+LABEL {
+  NAME    "L_EBF4";
+  ADDR    $EBF4;
 };
 
 LABEL {
@@ -4748,6 +4846,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_F5AE";
+  ADDR    $F5AE;
+};
+
+LABEL {
   NAME    "L_F5D9";
   ADDR    $F5D9;
 };
@@ -5183,7 +5286,12 @@ LABEL {
 };
 
 LABEL {
-  NAME    "Reset";
+  NAME    "L_FEC0";
+  ADDR    $FEC0;
+};
+
+LABEL {
+  NAME    "L_FFF4";
   ADDR    $FFF4;
 };
 

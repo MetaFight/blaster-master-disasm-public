@@ -8,12 +8,12 @@ SEGMENT {
 
 RANGE {
   START  $8000;
-  END    $8002;
-  TYPE   CODE;
+  END    $8005;
+  TYPE   ADDRTABLE;
 };
 
 RANGE {
-  START  $8003;
+  START  $8006;
   END    $8A68;
   TYPE   BYTETABLE;
 };
@@ -68,18 +68,6 @@ RANGE {
 
 RANGE {
   START  $8BE2;
-  END    $8BE2;
-  TYPE   CODE;
-};
-
-RANGE {
-  START  $8BE3;
-  END    $8BE4;
-  TYPE   BYTETABLE;
-};
-
-RANGE {
-  START  $8BE5;
   END    $8BF8;
   TYPE   CODE;
 };
@@ -134,6 +122,18 @@ RANGE {
 
 RANGE {
   START  $8F05;
+  END    $8F06;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $8F07;
+  END    $8F0E;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $8F0F;
   END    $8F20;
   TYPE   BYTETABLE;
 };
@@ -242,6 +242,18 @@ RANGE {
 
 RANGE {
   START  $95B5;
+  END    $95B6;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $95B7;
+  END    $95B8;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $95B9;
   END    $95CE;
   TYPE   BYTETABLE;
 };
@@ -254,6 +266,18 @@ RANGE {
 
 RANGE {
   START  $96C2;
+  END    $96D3;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $96D4;
+  END    $96D5;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $96D6;
   END    $96F0;
   TYPE   BYTETABLE;
 };
@@ -266,6 +290,12 @@ RANGE {
 
 RANGE {
   START  $9945;
+  END    $9946;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $9947;
   END    $998A;
   TYPE   BYTETABLE;
 };
@@ -410,6 +440,12 @@ RANGE {
 
 RANGE {
   START  $A381;
+  END    $A382;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $A383;
   END    $A393;
   TYPE   BYTETABLE;
 };
@@ -422,6 +458,12 @@ RANGE {
 
 RANGE {
   START  $A3BE;
+  END    $A3BF;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $A3C0;
   END    $A3D0;
   TYPE   BYTETABLE;
 };
@@ -590,6 +632,12 @@ RANGE {
 
 RANGE {
   START  $B324;
+  END    $B325;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $B326;
   END    $B365;
   TYPE   BYTETABLE;
 };
@@ -724,6 +772,11 @@ RANGE {
   START  $BF8A;
   END    $BFFF;
   TYPE   BYTETABLE;
+};
+
+LABEL {
+  NAME    "L_8000";
+  ADDR    $8000;
 };
 
 LABEL {

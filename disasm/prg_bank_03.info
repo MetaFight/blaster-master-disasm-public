@@ -8,6 +8,138 @@ SEGMENT {
 
 RANGE {
   START  $8000;
+  END    $8001;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $8002;
+  END    $8003;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $8004;
+  END    $A19A;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $A19B;
+  END    $A1A0;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $A1A1;
+  END    $A330;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $A331;
+  END    $A336;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $A337;
+  END    $A4BA;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $A4BB;
+  END    $A4C0;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $A4C1;
+  END    $A728;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $A729;
+  END    $A72E;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $A72F;
+  END    $AF18;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $AF19;
+  END    $AF1E;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $AF1F;
+  END    $B117;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $B118;
+  END    $B11D;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $B11E;
+  END    $B2A1;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $B2A2;
+  END    $B2A7;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $B2A8;
+  END    $B40D;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $B40E;
+  END    $B413;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $B414;
+  END    $B56D;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $B56E;
+  END    $B573;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $B574;
+  END    $B691;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $B692;
+  END    $B697;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $B698;
   END    $BFFF;
   TYPE   BYTETABLE;
 };

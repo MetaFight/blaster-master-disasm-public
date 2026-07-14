@@ -14,6 +14,18 @@ RANGE {
 
 RANGE {
   START  $83EE;
+  END    $84AF;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $84B0;
+  END    $8559;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $855A;
   END    $BDF5;
   TYPE   BYTETABLE;
 };

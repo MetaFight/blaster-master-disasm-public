@@ -1,3 +1,22 @@
+.macro MAC_L_CDBA
+L_CDBA: jsr     L_DEC2                          ; CDBA
+        lda     $14                             ; CDBD
+        and     #$07                            ; CDBF
+        tax                                     ; CDC1
+        lda     LCDC8,x                         ; CDC2
+        jmp     Enqueue_Sound_Command           ; CDC5
+
+; ----------------------------------------------------------------------------
+LCDC8:  .byte   $06,$04,$02,$13,$07,$05,$37,$2B ; CDC8
+; ----------------------------------------------------------------------------
+; Per-frame palette-wipe animator;
+; 
+; if bit 7 of ScreenFade_Flags ($15) set: DEC ScreenFade_Counter ($B6, 8→0, fade-in);
+; if bit 6 set: INC $B6 (0→9, fade-out);
+; 
+; each step subtracts $B6×8 from $0650–$066F palette shadow
+.endmacro
+
 .macro MAC_L_DEC2
 L_DEC2: jsr     L_DF05                          ; DEC2
         jsr     LBFE5                           ; DEC5

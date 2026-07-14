@@ -8,14 +8,32 @@ SEGMENT {
 
 RANGE {
   START  $8000;
-  END    $8000;
-  TYPE   CODE;
+  END    $806D;
+  TYPE   ADDRTABLE;
 };
 
 RANGE {
-  START  $8001;
-  END    $8123;
+  START  $806E;
+  END    $806F;
   TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $8070;
+  END    $80AD;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $80AE;
+  END    $80AF;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $80B0;
+  END    $8123;
+  TYPE   ADDRTABLE;
 };
 
 RANGE {
@@ -26,6 +44,18 @@ RANGE {
 
 RANGE {
   START  $8540;
+  END    $8541;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $8542;
+  END    $8545;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $8546;
   END    $855E;
   TYPE   BYTETABLE;
 };
@@ -50,6 +80,12 @@ RANGE {
 
 RANGE {
   START  $8B13;
+  END    $8B14;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $8B15;
   END    $8B2A;
   TYPE   BYTETABLE;
 };
@@ -62,6 +98,12 @@ RANGE {
 
 RANGE {
   START  $8B51;
+  END    $8B52;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $8B53;
   END    $8B68;
   TYPE   BYTETABLE;
 };
@@ -74,6 +116,12 @@ RANGE {
 
 RANGE {
   START  $8B8F;
+  END    $8B90;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $8B91;
   END    $8BA6;
   TYPE   BYTETABLE;
 };
@@ -86,6 +134,12 @@ RANGE {
 
 RANGE {
   START  $8BCD;
+  END    $8BCE;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $8BCF;
   END    $8BE4;
   TYPE   BYTETABLE;
 };
@@ -182,6 +236,18 @@ RANGE {
 
 RANGE {
   START  $996E;
+  END    $996F;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $9970;
+  END    $997F;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $9980;
   END    $99AF;
   TYPE   BYTETABLE;
 };
@@ -266,6 +332,18 @@ RANGE {
 
 RANGE {
   START  $9D0C;
+  END    $9D1D;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $9D1E;
+  END    $9D1F;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $9D20;
   END    $9D3A;
   TYPE   BYTETABLE;
 };
@@ -314,6 +392,12 @@ RANGE {
 
 RANGE {
   START  $9E21;
+  END    $9E22;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $9E23;
   END    $9E27;
   TYPE   BYTETABLE;
 };
@@ -326,6 +410,24 @@ RANGE {
 
 RANGE {
   START  $9E90;
+  END    $9E91;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $9E92;
+  END    $9E96;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $9E97;
+  END    $9E98;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $9E99;
   END    $9E9D;
   TYPE   BYTETABLE;
 };
@@ -362,6 +464,12 @@ RANGE {
 
 RANGE {
   START  $A368;
+  END    $A369;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $A36A;
   END    $A3E1;
   TYPE   BYTETABLE;
 };
@@ -518,6 +626,12 @@ RANGE {
 
 RANGE {
   START  $BC1D;
+  END    $BC1E;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $BC1F;
   END    $BFFF;
   TYPE   BYTETABLE;
 };
@@ -548,8 +662,8 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_815F";
-  ADDR    $815F;
+  NAME    "L_815C";
+  ADDR    $815C;
 };
 
 LABEL {
@@ -1113,11 +1227,6 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_882A";
-  ADDR    $882A;
-};
-
-LABEL {
   NAME    "L_8835";
   ADDR    $8835;
 };
@@ -1235,11 +1344,6 @@ LABEL {
 LABEL {
   NAME    "L_89E0";
   ADDR    $89E0;
-};
-
-LABEL {
-  NAME    "L_89E5";
-  ADDR    $89E5;
 };
 
 LABEL {
@@ -1510,6 +1614,11 @@ LABEL {
 LABEL {
   NAME    "L_8DC0";
   ADDR    $8DC0;
+};
+
+LABEL {
+  NAME    "L_8DC3";
+  ADDR    $8DC3;
 };
 
 LABEL {
@@ -2503,6 +2612,16 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_9B2F";
+  ADDR    $9B2F;
+};
+
+LABEL {
+  NAME    "L_9B32";
+  ADDR    $9B32;
+};
+
+LABEL {
   NAME    "L_9B47";
   ADDR    $9B47;
 };
@@ -2553,11 +2672,6 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_9BD2";
-  ADDR    $9BD2;
-};
-
-LABEL {
   NAME    "L_9BD8";
   ADDR    $9BD8;
 };
@@ -2575,11 +2689,6 @@ LABEL {
 LABEL {
   NAME    "L_9C14";
   ADDR    $9C14;
-};
-
-LABEL {
-  NAME    "L_9C15";
-  ADDR    $9C15;
 };
 
 LABEL {
@@ -2650,11 +2759,6 @@ LABEL {
 LABEL {
   NAME    "L_9D09";
   ADDR    $9D09;
-};
-
-LABEL {
-  NAME    "L_9D0C";
-  ADDR    $9D0C;
 };
 
 LABEL {
@@ -2775,11 +2879,6 @@ LABEL {
 LABEL {
   NAME    "L_9E85";
   ADDR    $9E85;
-};
-
-LABEL {
-  NAME    "L_9E93";
-  ADDR    $9E93;
 };
 
 LABEL {
@@ -3013,6 +3112,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_A237";
+  ADDR    $A237;
+};
+
+LABEL {
   NAME    "L_A24C";
   ADDR    $A24C;
 };
@@ -3030,6 +3134,11 @@ LABEL {
 LABEL {
   NAME    "L_A27D";
   ADDR    $A27D;
+};
+
+LABEL {
+  NAME    "L_A280";
+  ADDR    $A280;
 };
 
 LABEL {
@@ -3180,11 +3289,6 @@ LABEL {
 LABEL {
   NAME    "L_A4D3";
   ADDR    $A4D3;
-};
-
-LABEL {
-  NAME    "L_A4DB";
-  ADDR    $A4DB;
 };
 
 LABEL {
@@ -3358,6 +3462,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_A6BF";
+  ADDR    $A6BF;
+};
+
+LABEL {
   NAME    "L_A6D7";
   ADDR    $A6D7;
 };
@@ -3408,6 +3517,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_A74B";
+  ADDR    $A74B;
+};
+
+LABEL {
   NAME    "L_A75D";
   ADDR    $A75D;
 };
@@ -3450,6 +3564,11 @@ LABEL {
 LABEL {
   NAME    "L_A7C6";
   ADDR    $A7C6;
+};
+
+LABEL {
+  NAME    "L_A7CB";
+  ADDR    $A7CB;
 };
 
 LABEL {
@@ -3513,6 +3632,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_A86E";
+  ADDR    $A86E;
+};
+
+LABEL {
   NAME    "L_A886";
   ADDR    $A886;
 };
@@ -3535,6 +3659,11 @@ LABEL {
 LABEL {
   NAME    "L_A8B9";
   ADDR    $A8B9;
+};
+
+LABEL {
+  NAME    "L_A8D2";
+  ADDR    $A8D2;
 };
 
 LABEL {
@@ -3603,6 +3732,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_A9CB";
+  ADDR    $A9CB;
+};
+
+LABEL {
   NAME    "L_A9DD";
   ADDR    $A9DD;
 };
@@ -3653,6 +3787,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_AA5A";
+  ADDR    $AA5A;
+};
+
+LABEL {
   NAME    "L_AA6B";
   ADDR    $AA6B;
 };
@@ -3690,6 +3829,11 @@ LABEL {
 LABEL {
   NAME    "L_AAEE";
   ADDR    $AAEE;
+};
+
+LABEL {
+  NAME    "L_AB13";
+  ADDR    $AB13;
 };
 
 LABEL {
@@ -3763,6 +3907,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_ABCF";
+  ADDR    $ABCF;
+};
+
+LABEL {
   NAME    "L_ABEB";
   ADDR    $ABEB;
 };
@@ -3785,6 +3934,11 @@ LABEL {
 LABEL {
   NAME    "L_AC38";
   ADDR    $AC38;
+};
+
+LABEL {
+  NAME    "L_AC3C";
+  ADDR    $AC3C;
 };
 
 LABEL {
@@ -3855,6 +4009,11 @@ LABEL {
 LABEL {
   NAME    "L_ACF6";
   ADDR    $ACF6;
+};
+
+LABEL {
+  NAME    "L_ACFB";
+  ADDR    $ACFB;
 };
 
 LABEL {
@@ -3948,6 +4107,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_ADE4";
+  ADDR    $ADE4;
+};
+
+LABEL {
   NAME    "L_ADFE";
   ADDR    $ADFE;
 };
@@ -3985,6 +4149,11 @@ LABEL {
 LABEL {
   NAME    "L_AE63";
   ADDR    $AE63;
+};
+
+LABEL {
+  NAME    "L_AE78";
+  ADDR    $AE78;
 };
 
 LABEL {
@@ -4030,6 +4199,11 @@ LABEL {
 LABEL {
   NAME    "L_AF1D";
   ADDR    $AF1D;
+};
+
+LABEL {
+  NAME    "L_AF3A";
+  ADDR    $AF3A;
 };
 
 LABEL {
@@ -4169,6 +4343,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_B076";
+  ADDR    $B076;
+};
+
+LABEL {
   NAME    "L_B094";
   ADDR    $B094;
 };
@@ -4239,6 +4418,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_B16E";
+  ADDR    $B16E;
+};
+
+LABEL {
   NAME    "L_B180";
   ADDR    $B180;
 };
@@ -4289,6 +4473,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_B1FF";
+  ADDR    $B1FF;
+};
+
+LABEL {
   NAME    "L_B20B";
   ADDR    $B20B;
 };
@@ -4319,6 +4508,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_B29B";
+  ADDR    $B29B;
+};
+
+LABEL {
   NAME    "L_B2A7";
   ADDR    $B2A7;
 };
@@ -4346,6 +4540,11 @@ LABEL {
 LABEL {
   NAME    "L_B322";
   ADDR    $B322;
+};
+
+LABEL {
+  NAME    "L_B337";
+  ADDR    $B337;
 };
 
 LABEL {
@@ -4414,6 +4613,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_B3E3";
+  ADDR    $B3E3;
+};
+
+LABEL {
   NAME    "L_B3FD";
   ADDR    $B3FD;
 };
@@ -4461,6 +4665,11 @@ LABEL {
 LABEL {
   NAME    "L_B491";
   ADDR    $B491;
+};
+
+LABEL {
+  NAME    "L_B494";
+  ADDR    $B494;
 };
 
 LABEL {
@@ -4516,6 +4725,11 @@ LABEL {
 LABEL {
   NAME    "L_B56E";
   ADDR    $B56E;
+};
+
+LABEL {
+  NAME    "L_B578";
+  ADDR    $B578;
 };
 
 LABEL {
@@ -4584,6 +4798,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_B62F";
+  ADDR    $B62F;
+};
+
+LABEL {
   NAME    "L_B63B";
   ADDR    $B63B;
 };
@@ -4616,6 +4835,11 @@ LABEL {
 LABEL {
   NAME    "L_B6D2";
   ADDR    $B6D2;
+};
+
+LABEL {
+  NAME    "L_B6E4";
+  ADDR    $B6E4;
 };
 
 LABEL {
@@ -4809,6 +5033,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "L_B91A";
+  ADDR    $B91A;
+};
+
+LABEL {
   NAME    "L_B92D";
   ADDR    $B92D;
 };
@@ -4891,11 +5120,6 @@ LABEL {
 LABEL {
   NAME    "L_BA5D";
   ADDR    $BA5D;
-};
-
-LABEL {
-  NAME    "L_BA70";
-  ADDR    $BA70;
 };
 
 LABEL {
