@@ -107,11 +107,12 @@ L_AFF7: txa                                     ; AFF7
 
 ; ----------------------------------------------------------------------------
 ; (alpha: not fully human-verified) 
-; ObjType $76 — Shooter (Thing $10, 'Gray Shooter') init. ObjState 0: JMP $B012→RTS. ObjState 1:
-; JSR TankEnemy_Init ($A2E9, descriptor $10: HP $10, death drop $2C Health-x1); JSR Step_RNG
-; ($EB71) → $47 = random launch ANGLE (0–255 = full circle); LDY #$14 (speed magnitude) → JSR
-; $E1BD converts angle $47 + speed into a velocity vector $4C/$4D (random-direction straight-line
-; launch); $52=0 (clear fire cooldown); RTS. $A2E9's INC $46 → $77 active.
-; ObjState 0: JMP $B012 → RTS (dormant)
+; ObjType $76 — Shooter (Thing $10, 'Gray Shooter'), init. Launches the Shooter on a random
+; straight line: a heading drawn from the RNG and a fixed speed, with its gun already loaded.
+; Every Shooter therefore starts drifting in a different direction, and it is the Main handler's
+; terrain bouncing that turns that into the circling patrol the player sees. TankEnemy_Init
+; advances it to ObjType $77, so this runs for exactly one frame. Dual-entry: the +0 (fade/freeze)
+; entry lands on the body's own RTS — this Init draws nothing. See
+; docs/entities/tank/76-77_shooter.md
 .endmacro
 

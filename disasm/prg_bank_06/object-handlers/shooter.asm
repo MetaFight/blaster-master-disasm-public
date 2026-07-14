@@ -3,15 +3,23 @@ ObjHandler_Tank_76_Shooter_Init:
         jmp     _ObjHandler_Tank_76_Shooter_Init__Done; AFFC
 
 ; ----------------------------------------------------------------------------
-; init body: JSR TankEnemy_Init ($A2E9) desc $10 (HP $10); JSR $EB71 → $47 = random launch angle;
-; LDY #$14 speed → JSR $E1BD angle→velocity vector $4C/$4D; $52=0; RTS  [+3 body entry]
+; Normal-play body — pick a random heading and launch  [+3 body entry]
+; enemy descriptor $10: HP 16, and a $80/256 (50%) chance of a Health-x1 ($2C) drop.
+; TankEnemy_Init also does INC $46, so the next frame runs ObjType $77
 _ObjHandler_Tank_76_Shooter_Init__Update__:
         lda     #$10                            ; AFFF
         jsr     L_A2E9                          ; B001
+; $47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG
+_note_B004:
         jsr     LEB71                           ; B004
         sta     $47                             ; B007
+; speed $14, converted with the heading into the velocity pair $4C/$4D. This is the only place the
+; Shooter's velocity is set; nothing steers it afterwards
+_note_B009:
         ldy     #$14                            ; B009
         jsr     LE1BD                           ; B00B
+; gun ready — no recoil to work off
+_note_B00E:
         lda     #$00                            ; B00E
         sta     $52                             ; B010
 ; Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
@@ -25,14 +33,15 @@ _ObjHandler_Tank_76_Shooter_Init__Done:
 ; and only at a player level with or below it — so it never fires backwards or upwards, and spends
 ; its time circling until the geometry lines up. Each shot costs a 16-frame recoil during which it
 ; holds a distinct pose and cannot fire again. HP 16; on death it explodes and may drop a
-; Health-x1 pickup. Dual-entry: ObjState 0 runs the hit/render tail only, ObjState 1 the full body
-; at +3. See docs/entities/tank/76-77_shooter.md
-; ObjState 0: skip all logic, straight to the shared hit/render tail
+; Health-x1 pickup. Dual-entry: in normal play ($15 == 0) the object loop enters at +3 and runs
+; the whole body; while a fade or freeze is up ($15 != 0) it enters at +0, which skips straight to
+; the hit/render tail. See docs/entities/tank/76-77_shooter.md
+; +0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail
 ObjHandler_Tank_77_Shooter_Main:
         jmp     _ObjHandler_Tank_77_Shooter_Main__HitCheck; B013
 
 ; ----------------------------------------------------------------------------
-; ObjState 1 body — drift, then decide whether to fire  [+3 body entry]
+; Normal-play body — drift, then decide whether to fire  [+3 body entry]
 ; $42/$43 = $80: terrain-collision half-extents for the move below
 _ObjHandler_Tank_77_Shooter_Main__Update__:
         lda     #$80                            ; B016
@@ -81,7 +90,7 @@ _note_B043:
 _ObjHandler_Tank_77_Shooter_Main__SetActive:
         lda     #$01                            ; B047
         sta     $50                             ; B049
-; Shared hit/render tail — also the ObjState 0 entry
+; Shared hit/render tail — also the +0 (fade/freeze) entry
 ; $40/$41 = $10: 16×16 hitbox
 _ObjHandler_Tank_77_Shooter_Main__HitCheck:
         lda     #$10                            ; B04B
