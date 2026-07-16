@@ -34,6 +34,7 @@ MMC1_PrgBank_FFFF  := $FFFF
 .include "05_game-screen/object-system.asm"
 .include "06_pause-screen.asm"
 .include "_ungrouped.asm"
+.include "bank-tail.asm"
 .include "camera.asm"
 .include "continue-screen.asm"
 .include "data.asm"
@@ -67,7 +68,7 @@ MMC1_PrgBank_FFFF  := $FFFF
         MAC_L_C5B2
         MAC_L_C642
         MAC_L_C7BE
-        MAC_L_C7D8
+        MAC_L_C7C7
         MAC_L_C816
         MAC_L_C8DF
         MAC_L_C9D6
@@ -141,4 +142,4 @@ MMC1_PrgBank_FFFF  := $FFFF
         MAC_L_F833
         MAC_L_F9D5
         MAC_L_FEC0
-        MAC_L_FFF4
+        MAC_L_FFD8

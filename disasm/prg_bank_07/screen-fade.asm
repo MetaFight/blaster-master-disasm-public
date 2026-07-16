@@ -1,11 +1,16 @@
 .macro MAC_L_CDD0
+; ----------------------------------------------------------------------------
+; Per-frame palette-wipe animator;
+; 
+; if bit 7 of ScreenFade_Flags ($15) set: DEC ScreenFade_Counter ($B6, 8→0, fade-in);
+; if bit 6 set: INC $B6 (0→9, fade-out);
+; 
+; each step subtracts $B6×8 from $0650–$066F palette shadow
 ScreenFade_Step:
         lda     $15                             ; CDD0
 ; bits 6 and 7
-_note_CDD2:
         and     #$C0                            ; CDD2
 ; Neither bit set, so abort.
-_note_CDD4:
         beq     _ScreenFade_Step__Return        ; CDD4
         lda     $19                             ; CDD6
         bne     _ScreenFade_Step__Return        ; CDD8
@@ -13,7 +18,6 @@ _note_CDD4:
         bmi     _ScreenFade_Step__Fade_In       ; CDDC
         lda     $B6                             ; CDDE
 ; is completly faded out?
-_note_CDE0:
         cmp     #$09                            ; CDE0
         bcs     _ScreenFade_Step__On_Completely_Faded_Out; CDE2
 _ScreenFade_Step__Fade_Out:
@@ -38,7 +42,6 @@ _ScreenFade_Step__Apply_To_Palette_Entry_X:
         sbc     L0000                           ; CDFC
         bcs     _ScreenFade_Step__Save_Palette_Entry; CDFE
 ; Clamp to $0F on underflow
-_note_CE00:
         lda     #$0F                            ; CE00
 _ScreenFade_Step__Save_Palette_Entry:
         sta     $58,x                           ; CE02
@@ -88,6 +91,5 @@ L_CE3F: jsr     WaitNMI                         ; CE3F
         bvs     L_CE3F                          ; CE47
         rts                                     ; CE49
 
-; ----------------------------------------------------------------------------
 .endmacro
 

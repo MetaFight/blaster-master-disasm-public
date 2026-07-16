@@ -1,4 +1,5 @@
 .macro MAC_L_CE4A
+; ----------------------------------------------------------------------------
 L_CE4A: pha                                     ; CE4A
         jsr     WaitNMI                         ; CE4B
         pla                                     ; CE4E
@@ -7,13 +8,13 @@ L_CE4A: pha                                     ; CE4A
         bne     L_CE4A                          ; CE52
         rts                                     ; CE54
 
-; ----------------------------------------------------------------------------
 .endmacro
 
 .macro MAC_L_E936
+; ----------------------------------------------------------------------------
+; Set NmiFrameFlag bit 7 then spin until NMI handler clears it; guarantees 60 Hz pacing
 WaitNMI:lda     #$80                            ; E936
 ; Set $12 bit7, then spin until the NMI handler clears it (waits exactly one frame).
-_note_E938:
         sta     $12                             ; E938
 _WaitNMI__Loop:
         bit     $12                             ; E93A
@@ -34,10 +35,10 @@ L_E949: lda     $FF                             ; E949
         sta     $2000                           ; E94F
         rts                                     ; E952
 
-; ----------------------------------------------------------------------------
 .endmacro
 
 .macro MAC_L_EB7E
+; ----------------------------------------------------------------------------
 L_EB7E: pha                                     ; EB7E
         txa                                     ; EB7F
         pha                                     ; EB80
@@ -109,6 +110,7 @@ L_EBD2: lda     $58,x                           ; EBD2
 .endmacro
 
 .macro MAC_L_EC34
+; ----------------------------------------------------------------------------
 L_EC34: jsr     L_F1CA                          ; EC34
         jsr     L_E6BF                          ; EC37
         lda     $D4                             ; EC3A
@@ -128,6 +130,5 @@ L_EC51: lda     #$05                            ; EC51
         inc     $10                             ; EC5E
         rts                                     ; EC60
 
-; ----------------------------------------------------------------------------
 .endmacro
 

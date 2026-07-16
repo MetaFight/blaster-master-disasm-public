@@ -3595,16 +3595,17 @@ LABEL {
 LABEL {
   NAME    "OAM_Copy_To_PPU";
   ADDR    $E697;
+  COMMENT "Uploads the $0200 sprite page to PPU OAM. If the mode flag $E6BE is 0, triggers a full 256-byte\n; sprite DMA via $4014 (OAMADDR reset to 0); otherwise copies 64 bytes/frame manually through\n; OAMDATA ($2004), advancing the quarter index $F0 ($00/$40/$80/$C0) so the page uploads over four\n; frames.";
 };
 
 LABEL {
-  NAME    "_OAM_Copy_To_PPU__Manually";
+  NAME    "_DEAD_OAM_Copy_To_PPU__Manually";
   ADDR    $E6A7;
-  COMMENT "Dead code?\n; \n; TODO:  Check if this is used in PAL";
+  COMMENT "Dead in the shipped US ROM — the alternate manual OAM upload path (stream $0200 → OAM data port\n; $2004), reached only when Hardcoded_Flag ($E6BE) ≠ 0, which it never is; the $4014 sprite-DMA\n; fall-through above is what actually runs.";
 };
 
 LABEL {
-  NAME    "_OAM_Copy_To_PPU__ManualLoop";
+  NAME    "_DEAD_OAM_Copy_To_PPU__ManualLoop";
   ADDR    $E6B1;
   COMMENT "Copy 64 bytes $0200+X → OAM data port ($2004).";
 };
@@ -5291,54 +5292,59 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_FFF4";
+  NAME    "L_FFD8";
+  ADDR    $FFD8;
+};
+
+LABEL {
+  NAME    "Reset";
   ADDR    $FFF4;
 };
 
 LABEL {
-  NAME    "_note_CDD2";
+  NAME    "";
   ADDR    $CDD2;
   COMMENT "bits 6 and 7";
 };
 
 LABEL {
-  NAME    "_note_CDD4";
+  NAME    "";
   ADDR    $CDD4;
   COMMENT "Neither bit set, so abort.";
 };
 
 LABEL {
-  NAME    "_note_CDE0";
+  NAME    "";
   ADDR    $CDE0;
   COMMENT "is completly faded out?";
 };
 
 LABEL {
-  NAME    "_note_CE00";
+  NAME    "";
   ADDR    $CE00;
   COMMENT "Clamp to $0F on underflow";
 };
 
 LABEL {
-  NAME    "_note_DECF";
+  NAME    "";
   ADDR    $DECF;
   COMMENT "Save X to stack";
 };
 
 LABEL {
-  NAME    "_note_DEDF";
+  NAME    "";
   ADDR    $DEDF;
   COMMENT "Write sound command Id to empty slot";
 };
 
 LABEL {
-  NAME    "_note_DEE9";
+  NAME    "";
   ADDR    $DEE9;
   COMMENT "Restore X from stack";
 };
 
 LABEL {
-  NAME    "_note_E938";
+  NAME    "";
   ADDR    $E938;
   COMMENT "Set $12 bit7, then spin until the NMI handler clears it (waits exactly one frame).";
 };

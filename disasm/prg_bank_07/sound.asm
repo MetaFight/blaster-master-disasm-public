@@ -1,4 +1,5 @@
 .macro MAC_L_CDBA
+; ----------------------------------------------------------------------------
 L_CDBA: jsr     L_DEC2                          ; CDBA
         lda     $14                             ; CDBD
         and     #$07                            ; CDBF
@@ -8,16 +9,10 @@ L_CDBA: jsr     L_DEC2                          ; CDBA
 
 ; ----------------------------------------------------------------------------
 LCDC8:  .byte   $06,$04,$02,$13,$07,$05,$37,$2B ; CDC8
-; ----------------------------------------------------------------------------
-; Per-frame palette-wipe animator;
-; 
-; if bit 7 of ScreenFade_Flags ($15) set: DEC ScreenFade_Counter ($B6, 8→0, fade-in);
-; if bit 6 set: INC $B6 (0→9, fade-out);
-; 
-; each step subtracts $B6×8 from $0650–$066F palette shadow
 .endmacro
 
 .macro MAC_L_DEC2
+; ----------------------------------------------------------------------------
 L_DEC2: jsr     L_DF05                          ; DEC2
         jsr     LBFE5                           ; DEC5
         jsr     L_DF0A                          ; DEC8
@@ -30,7 +25,6 @@ Enqueue_Sound_Command:
         sta     $E1                             ; DECC
         txa                                     ; DECE
 ; Save X to stack
-_note_DECF:
         pha                                     ; DECF
         ldx     #$07                            ; DED0
 _Enqueue_Sound_Command__Find_Empty_Slot_Loop:
@@ -42,7 +36,6 @@ _Enqueue_Sound_Command__Find_Empty_Slot_Loop:
 _Enqueue_Sound_Command__On_Empty_Slot_Found:
         lda     $E1                             ; DEDD
 ; Write sound command Id to empty slot
-_note_DEDF:
         sta     $0370,x                         ; DEDF
         jmp     _Enqueue_Sound_Command__On_Success; DEE2
 
@@ -54,7 +47,6 @@ _Enqueue_Sound_Command__On_Empty_Slot_Not_Found:
 _Enqueue_Sound_Command__On_Success:
         pla                                     ; DEE8
 ; Restore X from stack
-_note_DEE9:
         tax                                     ; DEE9
         rts                                     ; DEEA
 
@@ -74,6 +66,5 @@ L_DEF7: pla                                     ; DEF7
         bpl     L_DEED                          ; DF00
         jmp     LBFF1                           ; DF02
 
-; ----------------------------------------------------------------------------
 .endmacro
 

@@ -90,6 +90,7 @@ LF029           := $F029
 .segment        "BANK06": absolute
 
 .include "_ungrouped.asm"
+.include "bank-tail.asm"
 .include "dead.asm"
 .include "dispatch.asm"
 .include "object-handlers/_ungrouped.asm"
@@ -197,3 +198,4 @@ LF029           := $F029
         MAC_L_B832
         MAC_L_B91A
         MAC_L_BA88
+        MAC_L_BC21

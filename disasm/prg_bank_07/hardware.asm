@@ -1,7 +1,12 @@
 .macro MAC_L_E697
+; ----------------------------------------------------------------------------
+; Uploads the $0200 sprite page to PPU OAM. If the mode flag $E6BE is 0, triggers a full 256-byte
+; sprite DMA via $4014 (OAMADDR reset to 0); otherwise copies 64 bytes/frame manually through
+; OAMDATA ($2004), advancing the quarter index $F0 ($00/$40/$80/$C0) so the page uploads over four
+; frames.
 OAM_Copy_To_PPU:
         lda     L_E6BE                          ; E697
-        bne     _OAM_Copy_To_PPU__Manually      ; E69A
+        bne     _DEAD_OAM_Copy_To_PPU__Manually ; E69A
         lda     #$00                            ; E69C
         sta     $2003                           ; E69E
         lda     #$02                            ; E6A1
@@ -9,29 +14,29 @@ OAM_Copy_To_PPU:
         rts                                     ; E6A6
 
 ; ----------------------------------------------------------------------------
-; Dead code?
-; 
-; TODO:  Check if this is used in PAL
-_OAM_Copy_To_PPU__Manually:
+; Dead in the shipped US ROM — the alternate manual OAM upload path (stream $0200 → OAM data port
+; $2004), reached only when Hardcoded_Flag ($E6BE) ≠ 0, which it never is; the $4014 sprite-DMA
+; fall-through above is what actually runs.
+_DEAD_OAM_Copy_To_PPU__Manually:
         lda     $F0                             ; E6A7
         and     #$C0                            ; E6A9
         sta     $2003                           ; E6AB
         tax                                     ; E6AE
         ldy     #$40                            ; E6AF
 ; Copy 64 bytes $0200+X → OAM data port ($2004).
-_OAM_Copy_To_PPU__ManualLoop:
+_DEAD_OAM_Copy_To_PPU__ManualLoop:
         lda     $0200,x                         ; E6B1
         sta     $2004                           ; E6B4
         inx                                     ; E6B7
         dey                                     ; E6B8
-        bne     _OAM_Copy_To_PPU__ManualLoop    ; E6B9
+        bne     _DEAD_OAM_Copy_To_PPU__ManualLoop; E6B9
         stx     $F0                             ; E6BB
         rts                                     ; E6BD
 
-; ----------------------------------------------------------------------------
 .endmacro
 
 .macro MAC_L_E6BF
+; ----------------------------------------------------------------------------
 L_E6BF: lda     $FF                             ; E6BF
         and     #$FE                            ; E6C1
         sta     $FF                             ; E6C3
@@ -47,10 +52,10 @@ L_E6BF: lda     $FF                             ; E6BF
         sta     $2005                           ; E6DA
         rts                                     ; E6DD
 
-; ----------------------------------------------------------------------------
 .endmacro
 
 .macro MAC_L_E6E9
+; ----------------------------------------------------------------------------
 L_E6E9: lda     $FE                             ; E6E9
         ora     #$1E                            ; E6EB
         sta     $FE                             ; E6ED
@@ -63,10 +68,10 @@ L_E6F0: lda     $FE                             ; E6F0
         sta     $2001                           ; E6F6
         rts                                     ; E6F9
 
-; ----------------------------------------------------------------------------
 .endmacro
 
 .macro MAC_L_E797
+; ----------------------------------------------------------------------------
 L_E797: lda     $01                             ; E797
         pha                                     ; E799
         lda     L0000                           ; E79A
@@ -231,10 +236,10 @@ L_E89F: lda     $FF                             ; E89F
         sta     $FF                             ; E8A6
         rts                                     ; E8A8
 
-; ----------------------------------------------------------------------------
 .endmacro
 
 .macro MAC_L_EA03
+; ----------------------------------------------------------------------------
 L_EA03: jsr     L_E6FA                          ; EA03
         jsr     L_E6F0                          ; EA06
         lda     #$00                            ; EA09
@@ -262,10 +267,10 @@ L_EA30: sta     $2007                           ; EA30
         bne     L_EA30                          ; EA37
         rts                                     ; EA39
 
-; ----------------------------------------------------------------------------
 .endmacro
 
 .macro MAC_L_EC61
+; ----------------------------------------------------------------------------
 L_EC61: lda     #$F0                            ; EC61
         ldx     #$00                            ; EC63
         stx     $3C                             ; EC65
@@ -318,10 +323,10 @@ L_EC9B: lda     $0600,x                         ; EC9B
         sta     $3C                             ; ECB1
 L_ECB3: rts                                     ; ECB3
 
-; ----------------------------------------------------------------------------
 .endmacro
 
 .macro MAC_L_F192
+; ----------------------------------------------------------------------------
 L_F192: ldx     $19                             ; F192
         sta     $0300,x                         ; F194
         inx                                     ; F197
@@ -438,6 +443,5 @@ L_F255: lda     $2002                           ; F255
         sta     $2001                           ; F26D
         jmp     L_C24F                          ; F270
 
-; ----------------------------------------------------------------------------
 .endmacro
 

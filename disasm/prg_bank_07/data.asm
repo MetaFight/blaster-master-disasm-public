@@ -34,11 +34,5 @@ L_FEC0: .byte   $00,$00,$19,$BD,$FE,$7E,$33,$9B ; FEC0
         .byte   $F8,$01,$07,$1F,$E2,$F0,$0F,$00 ; FFC0
         .byte   $F0,$E0,$3F,$70,$F0,$FD,$3F,$F8 ; FFC8
         .byte   $F8,$81,$0F,$80,$9F,$C7,$1F,$00 ; FFD0
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; FFD8
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; FFE0
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; FFE8
-        .byte   $FF,$FF,$FF                     ; FFF0
-LFFF3:  .byte   $FF                             ; FFF3
-; ----------------------------------------------------------------------------
 .endmacro
 

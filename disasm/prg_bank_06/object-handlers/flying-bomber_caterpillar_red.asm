@@ -1,4 +1,5 @@
 .macro MAC_L_AF3A
+; ----------------------------------------------------------------------------
 L_AF3A: jmp     L_AF60                          ; AF3A
 
 ; ----------------------------------------------------------------------------
@@ -105,14 +106,5 @@ L_AFF7: txa                                     ; AFF7
 ; ----------------------------------------------------------------------------
         rts                                     ; AFFB
 
-; ----------------------------------------------------------------------------
-; (alpha: not fully human-verified) 
-; ObjType $76 — Shooter (Thing $10, 'Gray Shooter'), init. Launches the Shooter on a random
-; straight line: a heading drawn from the RNG and a fixed speed, with its gun already loaded.
-; Every Shooter therefore starts drifting in a different direction, and it is the Main handler's
-; terrain bouncing that turns that into the circling patrol the player sees. TankEnemy_Init
-; advances it to ObjType $77, so this runs for exactly one frame. Dual-entry: the +0 (fade/freeze)
-; entry lands on the body's own RTS — this Init draws nothing. See
-; docs/entities/tank/76-77_shooter.md
 .endmacro
 

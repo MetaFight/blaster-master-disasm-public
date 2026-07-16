@@ -1532,13 +1532,13 @@ NesPrgRom:1AFD1:L_AFD1
 NesPrgRom:1AFE1:L_AFE1
 NesPrgRom:1AFEB:L_AFEB
 NesPrgRom:1AFF7:L_AFF7
-NesPrgRom:1AFFC:ObjHandler_Tank_76_Shooter_Init:(alpha: not fully human-verified) \nObjType $76 — Shooter (Thing $10, "Gray Shooter"), init. Launches the Shooter on a random straight line: a heading drawn from the RNG and a fixed speed, with its gun already loaded. Every Shooter therefore starts drifting in a different direction, and it is the Main handler's terrain bouncing that turns that into the circling patrol the player sees. TankEnemy_Init advances it to ObjType $77, so this runs for exactly one frame. Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this Init draws nothing. See docs/entities/tank/76-77_shooter.md
+NesPrgRom:1AFFC:ObjHandler_Tank_76_Shooter_Init:(alpha: not fully human-verified) ObjType $76 — Shooter (Thing $10, "Gray Shooter"), init. Launches the Shooter on a random straight line: a heading drawn from the RNG and a fixed speed, with its gun already loaded. Every Shooter therefore starts drifting in a different direction, and it is the Main handler's terrain bouncing that turns that into the circling patrol the player sees. TankEnemy_Init advances it to ObjType $77, so this runs for exactly one frame. Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this Init draws nothing. See docs/entities/tank/76-77_shooter.md
 NesPrgRom:1AFFF:_ObjHandler_Tank_76_Shooter_Init__Update__:Normal-play body — pick a random heading and launch  [+3 body entry]\nenemy descriptor $10: HP 16, and a $80/256 (50%) chance of a Health-x1 ($2C) drop. TankEnemy_Init also does INC $46, so the next frame runs ObjType $77
 NesPrgRom:1B004::$47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG
 NesPrgRom:1B009::speed $14, converted with the heading into the velocity pair $4C/$4D. This is the only place the Shooter's velocity is set; nothing steers it afterwards
 NesPrgRom:1B00E::gun ready — no recoil to work off
 NesPrgRom:1B012:_ObjHandler_Tank_76_Shooter_Init__Done:Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
-NesPrgRom:1B013:ObjHandler_Tank_77_Shooter_Main:(alpha: not fully human-verified) \nObjType $77 — Shooter (Thing $10), active. A free-drifting enemy that bounces off terrain and shoots Small Red shots at the player, but only while its drift already carries it toward them and only at a player level with or below it — so it never fires backwards or upwards, and spends its time circling until the geometry lines up. Each shot costs a 16-frame recoil during which it holds a distinct pose and cannot fire again. HP 16; on death it explodes and may drop a Health-x1 pickup. Dual-entry: in normal play ($15 == 0) the object loop enters at +3 and runs the whole body; while a fade or freeze is up ($15 != 0) it enters at +0, which skips straight to the hit/render tail. See docs/entities/tank/76-77_shooter.md\n+0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail
+NesPrgRom:1B013:ObjHandler_Tank_77_Shooter_Main:(alpha: not fully human-verified) ObjType $77 — Shooter (Thing $10), active. A free-drifting enemy that bounces off terrain and shoots Small Red shots at the player, but only while its drift already carries it toward them and only at a player level with or below it — so it never fires backwards or upwards, and spends its time circling until the geometry lines up. Each shot costs a 16-frame recoil during which it holds a distinct pose and cannot fire again. HP 16; on death it explodes and may drop a Health-x1 pickup. Dual-entry: in normal play ($15 == 0) the object loop enters at +3 and runs the whole body; while a fade or freeze is up ($15 != 0) it enters at +0, which skips straight to the hit/render tail. See docs/entities/tank/76-77_shooter.md\n+0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail
 NesPrgRom:1B016:_ObjHandler_Tank_77_Shooter_Main__Update__:Normal-play body — drift, then decide whether to fire  [+3 body entry]\n$42/$43 = $80: terrain-collision half-extents for the move below
 NesPrgRom:1B01E::advance by velocity and bounce off walls (reflects $4C on a horizontal wall, $4D on a vertical one)
 NesPrgRom:1B021::fire cooldown $52 — zero means free to fire
@@ -1744,6 +1744,7 @@ NesPrgRom:1BBF5:L_BBF5
 NesPrgRom:1BBF8:L_BBF8
 NesPrgRom:1BC0C:L_BC0C
 NesPrgRom:1BC18:L_BC18
+NesPrgRom:1BC21:L_BC21
 NesPrgRom:1C000:L_C000
 NesPrgRom:1C24F:L_C24F
 NesPrgRom:1C264:L_C264
@@ -2332,9 +2333,9 @@ NesPrgRom:1E664:L_E664
 NesPrgRom:1E678:L_E678
 NesPrgRom:1E68C:L_E68C
 NesPrgRom:1E692:L_E692
-NesPrgRom:1E697:OAM_Copy_To_PPU
-NesPrgRom:1E6A7:_OAM_Copy_To_PPU__Manually:Dead code?\n\nTODO:  Check if this is used in PAL
-NesPrgRom:1E6B1:_OAM_Copy_To_PPU__ManualLoop:Copy 64 bytes $0200+X → OAM data port ($2004).
+NesPrgRom:1E697:OAM_Copy_To_PPU:Uploads the $0200 sprite page to PPU OAM. If the mode flag $E6BE is 0, triggers a full 256-byte sprite DMA via $4014 (OAMADDR reset to 0); otherwise copies 64 bytes/frame manually through OAMDATA ($2004), advancing the quarter index $F0 ($00/$40/$80/$C0) so the page uploads over four frames.
+NesPrgRom:1E6A7:_DEAD_OAM_Copy_To_PPU__Manually:Dead in the shipped US ROM — the alternate manual OAM upload path (stream $0200 → OAM data port $2004), reached only when Hardcoded_Flag ($E6BE) ≠ 0, which it never is; the $4014 sprite-DMA fall-through above is what actually runs.
+NesPrgRom:1E6B1:_DEAD_OAM_Copy_To_PPU__ManualLoop:Copy 64 bytes $0200+X → OAM data port ($2004).
 NesPrgRom:1E6BE:L_E6BE
 NesPrgRom:1E6BF:L_E6BF
 NesPrgRom:1E6DE:L_E6DE
@@ -2672,4 +2673,5 @@ NesPrgRom:1FCC1:L_FCC1
 NesPrgRom:1FCE1:L_FCE1
 NesPrgRom:1FCF2:L_FCF2
 NesPrgRom:1FEC0:L_FEC0
-NesPrgRom:1FFF4:L_FFF4
+NesPrgRom:1FFD8:L_FFD8
+NesPrgRom:1FFF4:Reset

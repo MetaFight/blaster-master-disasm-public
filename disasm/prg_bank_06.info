@@ -4279,7 +4279,7 @@ LABEL {
 LABEL {
   NAME    "ObjHandler_Tank_76_Shooter_Init";
   ADDR    $AFFC;
-  COMMENT "(alpha: not fully human-verified) \n; ObjType $76 — Shooter (Thing $10, 'Gray Shooter'), init. Launches the Shooter on a random\n; straight line: a heading drawn from the RNG and a fixed speed, with its gun already loaded.\n; Every Shooter therefore starts drifting in a different direction, and it is the Main handler's\n; terrain bouncing that turns that into the circling patrol the player sees. TankEnemy_Init\n; advances it to ObjType $77, so this runs for exactly one frame. Dual-entry: the +0 (fade/freeze)\n; entry lands on the body's own RTS — this Init draws nothing. See\n; docs/entities/tank/76-77_shooter.md";
+  COMMENT "(alpha: not fully human-verified) ObjType $76 — Shooter (Thing $10, 'Gray Shooter'), init.\n; Launches the Shooter on a random straight line: a heading drawn from the RNG and a fixed speed,\n; with its gun already loaded. Every Shooter therefore starts drifting in a different direction,\n; and it is the Main handler's terrain bouncing that turns that into the circling patrol the\n; player sees. TankEnemy_Init advances it to ObjType $77, so this runs for exactly one frame.\n; Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this Init draws nothing.\n; See docs/entities/tank/76-77_shooter.md";
 };
 
 LABEL {
@@ -4297,7 +4297,7 @@ LABEL {
 LABEL {
   NAME    "ObjHandler_Tank_77_Shooter_Main";
   ADDR    $B013;
-  COMMENT "(alpha: not fully human-verified) \n; ObjType $77 — Shooter (Thing $10), active. A free-drifting enemy that bounces off terrain and\n; shoots Small Red shots at the player, but only while its drift already carries it toward them\n; and only at a player level with or below it — so it never fires backwards or upwards, and spends\n; its time circling until the geometry lines up. Each shot costs a 16-frame recoil during which it\n; holds a distinct pose and cannot fire again. HP 16; on death it explodes and may drop a\n; Health-x1 pickup. Dual-entry: in normal play ($15 == 0) the object loop enters at +3 and runs\n; the whole body; while a fade or freeze is up ($15 != 0) it enters at +0, which skips straight to\n; the hit/render tail. See docs/entities/tank/76-77_shooter.md\n; +0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail";
+  COMMENT "(alpha: not fully human-verified) ObjType $77 — Shooter (Thing $10), active. A free-drifting\n; enemy that bounces off terrain and shoots Small Red shots at the player, but only while its\n; drift already carries it toward them and only at a player level with or below it — so it never\n; fires backwards or upwards, and spends its time circling until the geometry lines up. Each shot\n; costs a 16-frame recoil during which it holds a distinct pose and cannot fire again. HP 16; on\n; death it explodes and may drop a Health-x1 pickup. Dual-entry: in normal play ($15 == 0) the\n; object loop enters at +3 and runs the whole body; while a fade or freeze is up ($15 != 0) it\n; enters at +0, which skips straight to the hit/render tail. See\n; docs/entities/tank/76-77_shooter.md\n; +0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail";
 };
 
 LABEL {
@@ -5273,91 +5273,96 @@ LABEL {
 };
 
 LABEL {
-  NAME    "_note_B004";
+  NAME    "L_BC21";
+  ADDR    $BC21;
+};
+
+LABEL {
+  NAME    "";
   ADDR    $B004;
   COMMENT "$47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG";
 };
 
 LABEL {
-  NAME    "_note_B009";
+  NAME    "";
   ADDR    $B009;
   COMMENT "speed $14, converted with the heading into the velocity pair $4C/$4D. This is the only place the\n; Shooter's velocity is set; nothing steers it afterwards";
 };
 
 LABEL {
-  NAME    "_note_B00E";
+  NAME    "";
   ADDR    $B00E;
   COMMENT "gun ready — no recoil to work off";
 };
 
 LABEL {
-  NAME    "_note_B01E";
+  NAME    "";
   ADDR    $B01E;
   COMMENT "advance by velocity and bounce off walls (reflects $4C on a horizontal wall, $4D on a vertical\n; one)";
 };
 
 LABEL {
-  NAME    "_note_B021";
+  NAME    "";
   ADDR    $B021;
   COMMENT "fire cooldown $52 — zero means free to fire";
 };
 
 LABEL {
-  NAME    "_note_B025";
+  NAME    "";
   ADDR    $B025;
   COMMENT "still cooling down: tick it and hold the recoil pose ($50 = 0)";
 };
 
 LABEL {
-  NAME    "_note_B035";
+  NAME    "";
   ADDR    $B035;
   COMMENT "signed Y-distance: negative = player is above, so hold fire (it only shoots level or downward)";
 };
 
 LABEL {
-  NAME    "_note_B03A";
+  NAME    "";
   ADDR    $B03A;
   COMMENT "child to spawn = ObjType $3C (Small Red shot)";
 };
 
 LABEL {
-  NAME    "_note_B03E";
+  NAME    "";
   ADDR    $B03E;
   COMMENT "rate-limited spawn — throttles internally on the frame counter and RNG; Z = no shot this frame";
 };
 
 LABEL {
-  NAME    "_note_B043";
+  NAME    "";
   ADDR    $B043;
   COMMENT "shot away: start the 16-frame recoil cooldown";
 };
 
 LABEL {
-  NAME    "_note_B053";
+  NAME    "";
   ADDR    $B053;
   COMMENT "screen position + overlap against the player's shots";
 };
 
 LABEL {
-  NAME    "_note_B058";
+  NAME    "";
   ADDR    $B058;
   COMMENT "off-screen: despawn";
 };
 
 LABEL {
-  NAME    "_note_B062";
+  NAME    "";
   ADDR    $B062;
   COMMENT "killed: explosion, and maybe a Health-x1 drop";
 };
 
 LABEL {
-  NAME    "_note_B06A";
+  NAME    "";
   ADDR    $B06A;
   COMMENT "pose select: $50 non-zero (searching) keeps metasprite $6C…";
 };
 
 LABEL {
-  NAME    "_note_B070";
+  NAME    "";
   ADDR    $B070;
   COMMENT "…$50 == 0 (recoiling) bumps it to $6D";
 };

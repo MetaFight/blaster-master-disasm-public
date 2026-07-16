@@ -1,4 +1,5 @@
 .macro MAC_L_E8A9
+; ----------------------------------------------------------------------------
 L_E8A9: lda     $F7                             ; E8A9
         sta     $F5                             ; E8AB
         lda     $F8                             ; E8AD
@@ -72,7 +73,5 @@ L_E920: lda     $4016                           ; E920
         bne     L_E920                          ; E933
         rts                                     ; E935
 
-; ----------------------------------------------------------------------------
-; Set NmiFrameFlag bit 7 then spin until NMI handler clears it; guarantees 60 Hz pacing
 .endmacro
 
