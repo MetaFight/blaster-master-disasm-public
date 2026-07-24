@@ -8380,16 +8380,16 @@ hints:
     desc: "BNE _Exit: Sophia is parked in a different area; do not render ghost here"
   - space: prg
     offset: 0x188FC
-    desc: "push LoadedObject_XInt ($49) — save Jason's X integer onto stack"
+    desc: "push LoadedObject_X_MetaTile ($49) — save Jason's X integer onto stack"
   - space: prg
     offset: 0x188FF
-    desc: "push LoadedObject_XFrac ($48) — save Jason's X fraction"
+    desc: "push LoadedObject_X_Pixel ($48) — save Jason's X fraction"
   - space: prg
     offset: 0x18902
-    desc: "push LoadedObject_YFrac ($4B)"
+    desc: "push LoadedObject_Y_Pixel ($4B)"
   - space: prg
     offset: 0x18905
-    desc: "push LoadedObject_YInt ($4A)"
+    desc: "push LoadedObject_Y_MetaTile ($4A)"
   - space: prg
     offset: 0x18908
     desc: "push LoadedObject_Facing ($47) — save Jason's direction"
@@ -8398,7 +8398,7 @@ hints:
     desc: "push LoadedObject_ActiveFlag ($4F)"
   - space: prg
     offset: 0x1890E
-    desc: "load SophiaSavedXFrac ($03D0) → overwrite Jason's $48 (LoadedObject_XFrac)"
+    desc: "load SophiaSavedXFrac ($03D0) → overwrite Jason's $48 (LoadedObject_X_Pixel)"
   - space: prg
     offset: 0x18913
     desc: "load SophiaSavedXInt ($03D1) → $49"
@@ -15885,19 +15885,19 @@ hints:
     desc: "PPU_ClearAndReset: disable rendering; blank 2 KB nametable at PPU $2000; clear ObjActiveFlag"
   - space: prg
     offset: 0x1C371
-    desc: "camera X frac ← Jason's LoadedObject_XFrac ($48)"
+    desc: "camera X frac ← Jason's LoadedObject_X_Pixel ($48)"
   - space: prg
     offset: 0x1C375
-    desc: "camera X int ← Jason's LoadedObject_XInt ($49)"
+    desc: "camera X int ← Jason's LoadedObject_X_MetaTile ($49)"
   - space: prg
     offset: 0x1C37A
     desc: "subtract $0800 subpixels (= 8 tiles × 256) from camera X to center Jason horizontally"
   - space: prg
     offset: 0x1C386
-    desc: "camera Y frac ← Jason's LoadedObject_YFrac ($4A)"
+    desc: "camera Y frac ← Jason's LoadedObject_Y_Pixel ($4A)"
   - space: prg
     offset: 0x1C38A
-    desc: "camera Y int ← Jason's LoadedObject_YInt ($4B)"
+    desc: "camera Y int ← Jason's LoadedObject_Y_MetaTile ($4B)"
   - space: prg
     offset: 0x1C38E
     desc: "subtract $0780 subpixels (= 7.5 tiles) from camera Y to center Jason vertically"
@@ -23656,34 +23656,45 @@ hints:
     offset: 0x0046
     name: LoadedObject_Type
     desc: "Active slot's object type"
+    status: verified
   - space: ram
     offset: 0x0047
     name: LoadedObject_Facing
-    desc: "Which way this object is pointing. Working copy of slot byte +1 ($0401,X, PlayerObj_Facing), loaded by RunObjectHandler's slot copy-in ($C8DF). Despite its former name (Slot_ObjState_Copy) it is NOT a state — the state/phase byte is $50 (LoadedObject_Phase). The ENCODING is ObjType-defined, so read it against the handler that owns it: (a) 8-bit heading angle, 0–255 = full circle — the shared enemy physics convention, consumed by Obj_AngleToVelocity ($E1BD, $4C/$4D = cos/sin × speed), Obj_ReflectHeading ($E0D0/$E0D8, mirrors it off a wall) and Obj_TurnHeading ($E07B, += $52); ~29 call sites across banks 04/06, e.g. the Shooter ($76 seeds it from the RNG) and the Jellyfish ($80 seeds it to $B8 and jets along it). (b) 2-bit direction index 0–3, masked AND #$03 and used as a table index — overhead player (Obj_StepPositionByFacing $8E95) and Boss3 Photophage (FindLiveSegment $A309 scans directions with INC $47). (c) facing bit-flags in bits 7/6, tested with BIT — tank Jason (_ObjHandler_Tank_1B_Jason__FaceFromInput $818E). It does NOT gate the handler's dual entry: that is $15 (ScreenFade_Flags) at RunObjectHandler $C9C4."
+    desc: "Which way this object is pointing. Working copy of slot byte +1 ($0401,X, PlayerObj_Facing), loaded by RunObjectHandler's slot copy-in ($C8DF). The ENCODING is ObjType-defined, so read it against the handler that owns it: (a) 8-bit heading angle, 0–255 = full circle — the shared enemy physics convention, consumed by Obj_AngleToVelocity ($E1BD, $4C/$4D = cos/sin × speed), Obj_ReflectHeading ($E0D0/$E0D8, mirrors it off a wall) and Obj_TurnHeading ($E07B, += $52); ~29 call sites across banks 04/06, e.g. the Shooter ($76 seeds it from the RNG) and the Jellyfish ($80 seeds it to $B8 and jets along it). (b) 2-bit direction index 0–3, masked AND #$03 and used as a table index — overhead player (Obj_StepPositionByFacing $8E95) and Boss3 Photophage (FindLiveSegment $A309 scans directions with INC $47). (c) facing bit-flags in bits 7/6, tested with BIT — tank Jason (_ObjHandler_Tank_1B_Jason__FaceFromInput $818E). It does NOT gate the handler's dual entry: that is $15 (ScreenFade_Flags) at RunObjectHandler $C9C4."
   - space: ram
     offset: 0x0048
-    name: LoadedObject_XFrac
-    desc: "Object X position, fractional"
+    name: LoadedObject_X_Pixel
+    desc: |-
+      Object X position in pixels.
+      Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+    status: verified
   - space: ram
     offset: 0x0049
-    name: LoadedObject_XInt
-    desc: "Object X position, integer"
+    name: LoadedObject_X_MetaTile
+    desc: "Object X position in MetaTiles (16px)"
+    status: verified
   - space: ram
     offset: 0x004A
-    name: LoadedObject_YFrac
-    desc: "Object Y position, fractional"
+    name: LoadedObject_Y_Pixel
+    desc: |-
+      Object Y position in pixels.
+      Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+    status: verified
   - space: ram
     offset: 0x004B
-    name: LoadedObject_YInt
-    desc: "Object Y position, integer"
+    name: LoadedObject_Y_MetaTile
+    desc: "Object Y position in MetaTiles (16px)"
+    status: verified
   - space: ram
     offset: 0x004C
     name: LoadedObject_XVel
     desc: "Object X velocity"
+    status: verified
   - space: ram
     offset: 0x004D
     name: LoadedObject_YVel
     desc: "Object Y velocity"
+    status: verified
   - space: ram
     offset: 0x004E
     name: LoadedObject_TileIndex
@@ -23695,7 +23706,7 @@ hints:
   - space: ram
     offset: 0x0050
     name: LoadedObject_Phase
-    desc: "The object's state / phase — which branch of its own state machine it is in. Working copy of slot byte +10 ($040A,X, PlayerObj_Phase). Formerly Slot_ObjDirState_Copy (\"Direction / facing state\"), which was wrong in both halves: the direction byte is $47 (LoadedObject_Facing), and this one carries no facing at all. Meaning is ObjType-defined: the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase — e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose."
+    desc: "The object's state / phase — which branch of its own state machine it is in. Working copy of slot byte +10 ($040A,X, PlayerObj_Phase). Meaning is ObjType-defined: the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase — e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose."
   - space: ram
     offset: 0x0051
     name: LoadedObject_AnimFrame
@@ -23707,15 +23718,18 @@ hints:
   - space: ram
     offset: 0x0053
     name: LoadedObject_Health
-    desc: "Entity HP; for slot 0: Sophia/Jason health, set to $FF on SELECT exit from Sophia, decremented on damage; 0 with ObjActiveFlag=0 → ObjType transitions to 28 (death); for enemy slots: enemy HP / explosion-state flag"
+    desc: "Entity HP"
+    status: verified
   - space: ram
     offset: 0x0056
     name: ObjectSlot_Offset
     desc: "Byte offset of the active slot"
+    status: verified
   - space: ram
     offset: 0x0057
     name: ObjectSlot_Index
     desc: "Index of the active slot"
+    status: verified
   - space: ram
     offset: 0x0058
     name: WR_Context_Dependent_58
@@ -24772,15 +24786,15 @@ hints:
   - space: ram
     offset: 0x03F6
     name: CkptSave_ObjXInt
-    desc: "Checkpoint save of LoadedObject_XInt ($49); written by SaveCheckpoint ($C5B7), restored by RestoreCheckpoint ($C5FF)"
+    desc: "Checkpoint save of LoadedObject_X_MetaTile ($49); written by SaveCheckpoint ($C5B7), restored by RestoreCheckpoint ($C5FF)"
   - space: ram
     offset: 0x03F7
     name: CkptSave_ObjYFrac
-    desc: "Checkpoint save of LoadedObject_YFrac ($4A); written by SaveCheckpoint ($C5BC), restored by RestoreCheckpoint ($C604)"
+    desc: "Checkpoint save of LoadedObject_Y_Pixel ($4A); written by SaveCheckpoint ($C5BC), restored by RestoreCheckpoint ($C604)"
   - space: ram
     offset: 0x03F8
     name: CkptSave_ObjYInt
-    desc: "Checkpoint save of LoadedObject_YInt ($4B); written by SaveCheckpoint ($C5C1), restored by RestoreCheckpoint ($C609)"
+    desc: "Checkpoint save of LoadedObject_Y_MetaTile ($4B); written by SaveCheckpoint ($C5C1), restored by RestoreCheckpoint ($C609)"
   - space: ram
     offset: 0x03F9
     name: CkptSave_Area
@@ -24864,47 +24878,63 @@ hints:
   - space: ram
     offset: 0x0400
     name: PlayerObj_Type
-    desc: "Slot 0 (player) ObjType. Also the object-table base for $0400,X indexed access across all 18 slots. $03=Sophia (tank)/OvhdJason (overhead); death/Doorway/embark states per section"
+    desc: "Slot 0 (player) ObjType. Also the object-table base for $0400,X indexed access across all 18 slots."
+    status: verified
   - space: ram
     offset: 0x0401
     name: PlayerObj_Facing
-    desc: "Slot 0 (player) facing; base of $0401,X — the object's DIRECTION byte for every slot, mirrored into ZP $47 (LoadedObject_Facing) by the slot copy-in. Encoding is ObjType-defined (8-bit heading angle / 2-bit direction index / facing bit-flags) — see $47 for the full breakdown. Formerly PlayerObjState; it is not a state (that is $040A, PlayerObj_Phase)."
+    desc: "Slot 0 (player) facing; base of $0401,X — the object's DIRECTION byte for every slot.  Encoding is ObjType-defined (8-bit heading angle / 2-bit direction index / facing bit-flags) — see $47 for the full breakdown."
+    status: verified
   - space: ram
     offset: 0x0402
-    name: PlayerObj_XFrac
-    desc: "Player X position, fractional byte (1/16 px); base of $0402,X"
+    name: PlayerObj_X_Pixel
+    desc: |-
+      Player X position in pixels.
+      Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+    status: verified
   - space: ram
     offset: 0x0403
-    name: PlayerObj_XInt
-    desc: "Player X position, integer (16-px metatile units); read absolutely by enemy AI to home on the player; base of $0403,X"
+    name: PlayerObj_X_MetaTile
+    desc: "Player X position in MetaTiles (16px)"
+    status: verified
   - space: ram
     offset: 0x0404
-    name: PlayerObj_YFrac
-    desc: "Player Y position, fractional byte; base of $0404,X"
+    name: PlayerObj_Y_Pixel
+    desc: |-
+      Player Y position in pixels.
+      Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+    status: verified
   - space: ram
     offset: 0x0405
-    name: PlayerObj_YInt
-    desc: "Player Y position, integer; read absolutely by enemy AI to home on the player; base of $0405,X"
+    name: PlayerObj_Y_MetaTile
+    desc: "Player Y position in MetaTiles (16px)"
+    status: verified
   - space: ram
     offset: 0x0406
     name: PlayerObj_XVel
-    desc: "Player X velocity; base of $0406,X"
+    desc: |-
+      Player X velocity in pixels / frame.
+      Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
+    status: verified
   - space: ram
     offset: 0x0407
     name: PlayerObj_YVel
-    desc: "Player Y velocity; base of $0407,X"
+    desc: |-
+      Player Y velocity in pixels / frame.
+      Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
+    status: verified
   - space: ram
     offset: 0x0408
     name: PlayerObj_TileIndex
-    desc: "Player metatile-map collision index; base of $0408,X"
+    desc: "Player metatile-map collision index"
   - space: ram
     offset: 0x0409
     name: PlayerObj_ActiveFlag
-    desc: "Player post-hit invincibility/stun timer; base of $0409,X"
+    desc: "Player post-damage invincibility frames (cues flashing damage animation)"
   - space: ram
     offset: 0x040A
     name: PlayerObj_Phase
-    desc: "Slot 0 (player) physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); base of $040A,X — the object's STATE/PHASE byte for every slot, mirrored into ZP $50 (LoadedObject_Phase). Enemies use it as a behaviour phase (Jellyfish sink/jet, Kamikaze Orb patrol/charge). Formerly PlayerDirState; it carries no direction (that is $0401, PlayerObj_Facing)."
+    desc: "Slot 0 (player) physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); base of $040A,X — the object's STATE/PHASE byte for every slot, mirrored into ZP $50 (LoadedObject_Phase). Enemies use it as a behaviour phase (Jellyfish sink/jet, Kamikaze Orb patrol/charge)"
   - space: ram
     offset: 0x040B
     name: PlayerObj_AnimFrame
@@ -24916,7 +24946,8 @@ hints:
   - space: ram
     offset: 0x040D
     name: PlayerObj_Health
-    desc: "Player HP (Sophia/Jason). Read by the HUD health gauge (HUD_RenderSprites) and E-Cannister/PickUp grants; $00 with PlayerObj_ActiveFlag=0 → death path. Formerly documented as the \"MainHealth\" alias"
+    desc: "Player HP (Sophia/Jason). Read by the HUD health gauge (HUD_RenderSprites) and E-Cannister/PickUp grants."
+    status: verified
   - space: ram
     offset: 0x040E
     end: 0x041B

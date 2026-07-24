@@ -2675,3 +2675,22 @@ NesPrgRom:1FCF2:L_FCF2
 NesPrgRom:1FEC0:L_FEC0
 NesPrgRom:1FFD8:L_FFD8
 NesPrgRom:1FFF4:Reset
+NesInternalRam:0046:LoadedObject_Type:Active slot's object type
+NesInternalRam:0048:LoadedObject_X_Pixel:Object X position in pixels.\nType: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+NesInternalRam:0049:LoadedObject_X_MetaTile:Object X position in MetaTiles (16px)
+NesInternalRam:004A:LoadedObject_Y_Pixel:Object Y position in pixels.\nType: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+NesInternalRam:004B:LoadedObject_Y_MetaTile:Object Y position in MetaTiles (16px)
+NesInternalRam:004C:LoadedObject_XVel:Object X velocity
+NesInternalRam:004D:LoadedObject_YVel:Object Y velocity
+NesInternalRam:0053:LoadedObject_Health:Entity HP
+NesInternalRam:0056:ObjectSlot_Offset:Byte offset of the active slot
+NesInternalRam:0057:ObjectSlot_Index:Index of the active slot
+NesInternalRam:0400:PlayerObj_Type:Slot 0 (player) ObjType. Also the object-table base for $0400,X indexed access across all 18 slots.
+NesInternalRam:0401:PlayerObj_Facing:Slot 0 (player) facing; base of $0401,X — the object's DIRECTION byte for every slot.  Encoding is ObjType-defined (8-bit heading angle / 2-bit direction index / facing bit-flags) — see $47 for the full breakdown.
+NesInternalRam:0402:PlayerObj_X_Pixel:Player X position in pixels.\nType: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+NesInternalRam:0403:PlayerObj_X_MetaTile:Player X position in MetaTiles (16px)
+NesInternalRam:0404:PlayerObj_Y_Pixel:Player Y position in pixels.\nType: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+NesInternalRam:0405:PlayerObj_Y_MetaTile:Player Y position in MetaTiles (16px)
+NesInternalRam:0406:PlayerObj_XVel:Player X velocity in pixels / frame.\nType: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
+NesInternalRam:0407:PlayerObj_YVel:Player Y velocity in pixels / frame.\nType: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
+NesInternalRam:040D:PlayerObj_Health:Player HP (Sophia/Jason). Read by the HUD health gauge (HUD_RenderSprites) and E-Cannister/PickUp grants.
