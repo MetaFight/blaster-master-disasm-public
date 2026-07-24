@@ -5,10 +5,10 @@ L_976D: jmp     L_977F                          ; 976D
 ; ----------------------------------------------------------------------------
         jsr     L_9707                          ; 9770
         lda     L_9780,x                        ; 9773
-        sta     LoadedObject_XVel               ; 9776
+        sta     LoadedObj_XVel                  ; 9776
         lda     L9784,x                         ; 9778
-        sta     LoadedObject_YVel               ; 977B
-        inc     LoadedObject_Type               ; 977D
+        sta     LoadedObj_YVel                  ; 977B
+        inc     LoadedObj_Type                  ; 977D
 L_977F: rts                                     ; 977F
 
 .endmacro
@@ -39,8 +39,8 @@ L_97A2: jsr     LD2AB                           ; 97A2
         beq     L_97C0                          ; 97AF
         jsr     LCEDD                           ; 97B1
         lda     #$80                            ; 97B4
-        sta     LoadedObject_X_Pixel            ; 97B6
-        sta     LoadedObject_Y_Pixel            ; 97B8
+        sta     LoadedObj_X_Pixel               ; 97B6
+        sta     LoadedObj_Y_Pixel               ; 97B8
         jsr     LD82C                           ; 97BA
         jmp     L_9BD8                          ; 97BD
 
@@ -105,10 +105,10 @@ L_9882: nop                                     ; 9882
         jsr     LD790                           ; 9885
         jsr     L_9707                          ; 9888
         lda     L98A4,x                         ; 988B
-        sta     LoadedObject_XVel               ; 988E
+        sta     LoadedObj_XVel                  ; 988E
         lda     L98A3,x                         ; 9890
-        sta     LoadedObject_YVel               ; 9893
-        inc     LoadedObject_Type               ; 9895
+        sta     LoadedObj_YVel                  ; 9893
+        inc     LoadedObj_Type                  ; 9895
         lda     #$C0                            ; 9897
         sta     $51                             ; 9899
         sta     $52                             ; 989B
@@ -142,20 +142,20 @@ L_98BD: lda     $52                             ; 98BD
         beq     L_9916                          ; 98CA
 L_98CC: lda     PlayerObj_X_MetaTile,x          ; 98CC
         sec                                     ; 98CF
-        sbc     LoadedObject_X_MetaTile         ; 98D0
+        sbc     LoadedObj_X_MetaTile            ; 98D0
         asl     a                               ; 98D2
         beq     L_98E9                          ; 98D3
         bmi     L_98DF                          ; 98D5
-        lda     LoadedObject_XVel               ; 98D7
+        lda     LoadedObj_XVel                  ; 98D7
         clc                                     ; 98D9
         adc     #$02                            ; 98DA
         jmp     L_98E4                          ; 98DC
 
 ; ----------------------------------------------------------------------------
-L_98DF: lda     LoadedObject_XVel               ; 98DF
+L_98DF: lda     LoadedObj_XVel                  ; 98DF
         sec                                     ; 98E1
         sbc     #$02                            ; 98E2
-L_98E4: sta     LoadedObject_XVel               ; 98E4
+L_98E4: sta     LoadedObj_XVel                  ; 98E4
         jmp     L_98F0                          ; 98E6
 
 ; ----------------------------------------------------------------------------
@@ -165,20 +165,20 @@ L_98E9: lda     #$10                            ; 98E9
 L_98F0: ldx     $50                             ; 98F0
         lda     PlayerObj_Y_MetaTile,x          ; 98F2
         sec                                     ; 98F5
-        sbc     LoadedObject_Y_MetaTile         ; 98F6
+        sbc     LoadedObj_Y_MetaTile            ; 98F6
         asl     a                               ; 98F8
         beq     L_990F                          ; 98F9
         bmi     L_9905                          ; 98FB
-        lda     LoadedObject_YVel               ; 98FD
+        lda     LoadedObj_YVel                  ; 98FD
         clc                                     ; 98FF
         adc     #$02                            ; 9900
         jmp     L_990A                          ; 9902
 
 ; ----------------------------------------------------------------------------
-L_9905: lda     LoadedObject_YVel               ; 9905
+L_9905: lda     LoadedObj_YVel                  ; 9905
         sec                                     ; 9907
         sbc     #$02                            ; 9908
-L_990A: sta     LoadedObject_YVel               ; 990A
+L_990A: sta     LoadedObj_YVel                  ; 990A
         jmp     L_9916                          ; 990C
 
 ; ----------------------------------------------------------------------------
@@ -213,11 +213,11 @@ L_9933: lda     #$00                            ; 9933
         ldx     $50                             ; 9947
         lda     PlayerObj_X_MetaTile,x          ; 9949
         sec                                     ; 994C
-        sbc     LoadedObject_X_MetaTile         ; 994D
+        sbc     LoadedObj_X_MetaTile            ; 994D
         sta     $00                             ; 994F
         lda     PlayerObj_Y_MetaTile,x          ; 9951
         sec                                     ; 9954
-        sbc     LoadedObject_Y_MetaTile         ; 9955
+        sbc     LoadedObj_Y_MetaTile            ; 9955
         sta     $01                             ; 9957
         jsr     LD161                           ; 9959
         sta     $47                             ; 995C
@@ -268,7 +268,7 @@ L_99CC: nop                                     ; 99CC
 L_99DF: tax                                     ; 99DF
         lda     L99ED,x                         ; 99E0
         sta     $47                             ; 99E3
-        inc     LoadedObject_Type               ; 99E5
+        inc     LoadedObj_Type                  ; 99E5
         lda     #$4D                            ; 99E7
         jsr     Enqueue_Sound_Command           ; 99E9
         rts                                     ; 99EC
@@ -293,7 +293,7 @@ L99F0:  jmp     L_9A0E                          ; 99F0
         jmp     LD82C                           ; 9A09
 
 ; ----------------------------------------------------------------------------
-L_9A0C: inc     LoadedObject_Y_MetaTile         ; 9A0C
+L_9A0C: inc     LoadedObj_Y_MetaTile            ; 9A0C
 L_9A0E: lda     #$10                            ; 9A0E
         sta     $40                             ; 9A10
         lda     #$10                            ; 9A12
@@ -377,32 +377,32 @@ L_9AEB: nop                                     ; 9AEB
         jsr     LD790                           ; 9AEE
         lda     #$2F                            ; 9AF1
         jsr     Enqueue_Sound_Command           ; 9AF3
-        inc     LoadedObject_Type               ; 9AF6
+        inc     LoadedObj_Type                  ; 9AF6
         jsr     L_9707                          ; 9AF8
         lda     #$00                            ; 9AFB
-        sta     LoadedObject_XVel               ; 9AFD
-        sta     LoadedObject_YVel               ; 9AFF
+        sta     LoadedObj_XVel                  ; 9AFD
+        sta     LoadedObj_YVel                  ; 9AFF
         lda     ObjectSlot_Index                ; 9B01
         cmp     #$03                            ; 9B03
         beq     L_9B29                          ; 9B05
         ldx     $47                             ; 9B07
         lda     L9B2A,x                         ; 9B09
-        sta     LoadedObject_XVel               ; 9B0C
+        sta     LoadedObj_XVel                  ; 9B0C
         lda     L9B2B,x                         ; 9B0E
-        sta     LoadedObject_YVel               ; 9B11
+        sta     LoadedObj_YVel                  ; 9B11
         lda     ObjectSlot_Index                ; 9B13
         cmp     #$04                            ; 9B15
         beq     L_9B29                          ; 9B17
         lda     #$00                            ; 9B19
         sec                                     ; 9B1B
         sec                                     ; 9B1C
-        sbc     LoadedObject_XVel               ; 9B1D
-        sta     LoadedObject_XVel               ; 9B1F
+        sbc     LoadedObj_XVel                  ; 9B1D
+        sta     LoadedObj_XVel                  ; 9B1F
         lda     #$00                            ; 9B21
         sec                                     ; 9B23
         sec                                     ; 9B24
-        sbc     LoadedObject_YVel               ; 9B25
-        sta     LoadedObject_YVel               ; 9B27
+        sbc     LoadedObj_YVel                  ; 9B25
+        sta     LoadedObj_YVel                  ; 9B27
 L_9B29: rts                                     ; 9B29
 
 ; ----------------------------------------------------------------------------
@@ -416,12 +416,12 @@ L_9B32: jsr     LD324                           ; 9B32
         ldx     $47                             ; 9B35
         lda     L9B7D,x                         ; 9B37
         clc                                     ; 9B3A
-        adc     LoadedObject_XVel               ; 9B3B
-        sta     LoadedObject_XVel               ; 9B3D
+        adc     LoadedObj_XVel                  ; 9B3B
+        sta     LoadedObj_XVel                  ; 9B3D
         lda     L9B7C,x                         ; 9B3F
         clc                                     ; 9B42
-        adc     LoadedObject_YVel               ; 9B43
-        sta     LoadedObject_YVel               ; 9B45
+        adc     LoadedObj_YVel                  ; 9B43
+        sta     LoadedObj_YVel                  ; 9B45
 L_9B47: lda     #$10                            ; 9B47
         sta     $40                             ; 9B49
         lda     #$10                            ; 9B4B
@@ -467,7 +467,7 @@ L_9EA4: jmp     L_9EBE                          ; 9EA4
         jsr     LE1BD                           ; 9EB1
         jsr     LD2B9                           ; 9EB4
         lda     #$39                            ; 9EB7
-        sta     LoadedObject_Type               ; 9EB9
+        sta     LoadedObj_Type                  ; 9EB9
         jsr     L_9E9E                          ; 9EBB
 L_9EBE: rts                                     ; 9EBE
 
@@ -485,7 +485,7 @@ L9EBF:  jmp     L_9EDF                          ; 9EBF
         ldy     #$28                            ; 9ED0
         jsr     LE1BD                           ; 9ED2
         jsr     LD2B9                           ; 9ED5
-        inc     LoadedObject_Type               ; 9ED8
+        inc     LoadedObj_Type                  ; 9ED8
         lda     #$25                            ; 9EDA
         jsr     Enqueue_Sound_Command           ; 9EDC
 L_9EDF: rts                                     ; 9EDF
@@ -554,7 +554,7 @@ L9F39:  jmp     L_9F59                          ; 9F39
         ldy     #$18                            ; 9F4A
         jsr     LE1BD                           ; 9F4C
         jsr     LD2B9                           ; 9F4F
-        inc     LoadedObject_Type               ; 9F52
+        inc     LoadedObj_Type                  ; 9F52
         lda     #$25                            ; 9F54
         jsr     Enqueue_Sound_Command           ; 9F56
 L_9F59: rts                                     ; 9F59
@@ -610,19 +610,19 @@ L_9FA8: jsr     L_9B90                          ; 9FA8
         lda     #$06                            ; 9FB0
         jsr     L_A2E9                          ; 9FB2
         lda     #$63                            ; 9FB5
-        sta     LoadedObject_Type               ; 9FB7
+        sta     LoadedObj_Type                  ; 9FB7
         lda     #$01                            ; 9FB9
         sta     $50                             ; 9FBB
         lda     #$E8                            ; 9FBD
-        sta     LoadedObject_YVel               ; 9FBF
+        sta     LoadedObj_YVel                  ; 9FBF
         lda     #$11                            ; 9FC1
-        sta     LoadedObject_XVel               ; 9FC3
+        sta     LoadedObj_XVel                  ; 9FC3
         jsr     LE0ED                           ; 9FC5
         bpl     L_9FD1                          ; 9FC8
         lda     #$00                            ; 9FCA
         sec                                     ; 9FCC
-        sbc     LoadedObject_XVel               ; 9FCD
-        sta     LoadedObject_XVel               ; 9FCF
+        sbc     LoadedObj_XVel                  ; 9FCD
+        sta     LoadedObj_XVel                  ; 9FCF
 L_9FD1: lda     #$00                            ; 9FD1
         sta     $51                             ; 9FD3
         sta     $47                             ; 9FD5
@@ -633,7 +633,7 @@ L_9FD1: lda     #$00                            ; 9FD1
 L9FDA:  jmp     L_9FF8                          ; 9FDA
 
 ; ----------------------------------------------------------------------------
-        inc     LoadedObject_Type               ; 9FDD
+        inc     LoadedObj_Type                  ; 9FDD
         jsr     LEF2B                           ; 9FDF
         lda     $3E                             ; 9FE2
         sta     $00                             ; 9FE4
@@ -691,8 +691,8 @@ LA02F:  jmp     L_A046                          ; A02F
         eor     #$FF                            ; A03A
         clc                                     ; A03C
         adc     #$01                            ; A03D
-L_A03F: sta     LoadedObject_XVel               ; A03F
-        inc     LoadedObject_Type               ; A041
+L_A03F: sta     LoadedObj_XVel                  ; A03F
+        inc     LoadedObj_Type                  ; A041
         jsr     L_9E9E                          ; A043
 L_A046: rts                                     ; A046
 
@@ -754,7 +754,7 @@ L_A097: cmp     #$10                            ; A097
         jsr     LE0D8                           ; A0A8
 L_A0AB: ldy     #$30                            ; A0AB
         jsr     LE1BD                           ; A0AD
-        inc     LoadedObject_Type               ; A0B0
+        inc     LoadedObj_Type                  ; A0B0
         jsr     L_9E9E                          ; A0B2
 L_A0B5: rts                                     ; A0B5
 
@@ -795,24 +795,24 @@ LA0F6:  jmp     L_A121                          ; A0F6
 
 ; ----------------------------------------------------------------------------
         lda     #$00                            ; A0F9
-        sta     LoadedObject_XVel               ; A0FB
-        sta     LoadedObject_YVel               ; A0FD
+        sta     LoadedObj_XVel                  ; A0FB
+        sta     LoadedObj_YVel                  ; A0FD
         clc                                     ; A0FF
-        lda     LoadedObject_X_Pixel            ; A100
+        lda     LoadedObj_X_Pixel               ; A100
         adc     #$08                            ; A102
-        sta     LoadedObject_X_Pixel            ; A104
+        sta     LoadedObj_X_Pixel               ; A104
         bcc     L_A10A                          ; A106
-        inc     LoadedObject_X_MetaTile         ; A108
+        inc     LoadedObj_X_MetaTile            ; A108
 L_A10A: clc                                     ; A10A
-        lda     LoadedObject_Y_Pixel            ; A10B
+        lda     LoadedObj_Y_Pixel               ; A10B
         adc     #$08                            ; A10D
-        sta     LoadedObject_Y_Pixel            ; A10F
+        sta     LoadedObj_Y_Pixel               ; A10F
         bcc     L_A115                          ; A111
-        inc     LoadedObject_Y_MetaTile         ; A113
+        inc     LoadedObj_Y_MetaTile            ; A113
 L_A115: lda     #$0A                            ; A115
         sta     $51                             ; A117
         jsr     LD2B9                           ; A119
-        inc     LoadedObject_Type               ; A11C
+        inc     LoadedObj_Type                  ; A11C
         jsr     L_9E9E                          ; A11E
 L_A121: rts                                     ; A121
 
@@ -858,19 +858,19 @@ L_A15F: jsr     L_9B90                          ; A15F
         lda     #$06                            ; A167
         jsr     L_A2E9                          ; A169
         lda     #$63                            ; A16C
-        sta     LoadedObject_Type               ; A16E
+        sta     LoadedObj_Type                  ; A16E
         lda     #$01                            ; A170
         sta     $50                             ; A172
         lda     #$E8                            ; A174
-        sta     LoadedObject_YVel               ; A176
+        sta     LoadedObj_YVel                  ; A176
         lda     #$11                            ; A178
-        sta     LoadedObject_XVel               ; A17A
+        sta     LoadedObj_XVel                  ; A17A
         jsr     LE0ED                           ; A17C
         bpl     L_A188                          ; A17F
         lda     #$00                            ; A181
         sec                                     ; A183
-        sbc     LoadedObject_XVel               ; A184
-        sta     LoadedObject_XVel               ; A186
+        sbc     LoadedObj_XVel                  ; A184
+        sta     LoadedObj_XVel                  ; A186
 L_A188: lda     #$00                            ; A188
         sta     $51                             ; A18A
         sta     $47                             ; A18C
@@ -891,7 +891,7 @@ LA191:  jmp     L_A1AC                          ; A191
         ldy     #$20                            ; A1A2
         jsr     LE1BD                           ; A1A4
         jsr     LD2B9                           ; A1A7
-        inc     LoadedObject_Type               ; A1AA
+        inc     LoadedObj_Type                  ; A1AA
 L_A1AC: rts                                     ; A1AC
 
 ; ----------------------------------------------------------------------------
@@ -938,7 +938,7 @@ LA1F1:  jmp     L_A201                          ; A1F1
         ldy     $51                             ; A1F4
         jsr     LE1BD                           ; A1F6
         jsr     LD2B9                           ; A1F9
-        inc     LoadedObject_Type               ; A1FC
+        inc     LoadedObj_Type                  ; A1FC
         jsr     L_9E9E                          ; A1FE
 L_A201: rts                                     ; A201
 

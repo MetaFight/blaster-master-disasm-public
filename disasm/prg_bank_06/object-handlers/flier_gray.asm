@@ -6,7 +6,7 @@ L_B29B: jmp     L_B2A7                          ; B29B
         lda     #$14                            ; B29E
         jsr     L_A2E9                          ; B2A0
         lda     #$51                            ; B2A3
-        sta     LoadedObject_Type               ; B2A5
+        sta     LoadedObj_Type                  ; B2A5
 L_B2A7: rts                                     ; B2A7
 
 ; ----------------------------------------------------------------------------
@@ -59,7 +59,7 @@ LB2EC:  jmp     L_B308                          ; B2EC
         ldy     #$20                            ; B2FB
         jsr     LE1D5                           ; B2FD
         jsr     LE196                           ; B300
-        sta     LoadedObject_YVel               ; B303
+        sta     LoadedObj_YVel                  ; B303
         jsr     LD2DB                           ; B305
 L_B308: lda     #$10                            ; B308
         sta     $40                             ; B30A

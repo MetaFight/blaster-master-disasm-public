@@ -3,7 +3,7 @@
 L_A4DE: jmp     L_A50D                          ; A4DE
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObject_X_MetaTile         ; A4E1
+        lda     LoadedObj_X_MetaTile            ; A4E1
         lsr     a                               ; A4E3
         bcc     L_A4F1                          ; A4E4
         lda     #$A0                            ; A4E6
@@ -25,14 +25,14 @@ L_A4F9: ldy     #$10                            ; A4F9
         lda     #$02                            ; A504
         jsr     L_A2E9                          ; A506
         lda     #$59                            ; A509
-        sta     LoadedObject_Type               ; A50B
+        sta     LoadedObj_Type                  ; A50B
 L_A50D: rts                                     ; A50D
 
 ; ----------------------------------------------------------------------------
 LA50E:  jmp     L_A539                          ; A50E
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObject_X_MetaTile         ; A511
+        lda     LoadedObj_X_MetaTile            ; A511
         lsr     a                               ; A513
         bcc     L_A521                          ; A514
         lda     #$A0                            ; A516
@@ -88,7 +88,7 @@ L_A564: lda     $50                             ; A564
         jsr     LE1BD                           ; A576
         lda     #$10                            ; A579
         sta     $51                             ; A57B
-        inc     LoadedObject_Type               ; A57D
+        inc     LoadedObj_Type                  ; A57D
         rts                                     ; A57F
 
 ; ----------------------------------------------------------------------------
@@ -170,7 +170,7 @@ L_A5F2: clc                                     ; A5F2
         jsr     LE1BD                           ; A5FB
         lda     #$00                            ; A5FE
         sta     $51                             ; A600
-        dec     LoadedObject_Type               ; A602
+        dec     LoadedObj_Type                  ; A602
         rts                                     ; A604
 
 ; ----------------------------------------------------------------------------

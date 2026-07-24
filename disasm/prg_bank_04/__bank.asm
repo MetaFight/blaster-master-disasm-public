@@ -5,25 +5,9 @@
 
         .setcpu "6502"
 
+        .include "../ram.inc"
+
 ; ----------------------------------------------------------------------------
-LoadedObject_Type:= $0046
-LoadedObject_X_Pixel:= $0048
-LoadedObject_X_MetaTile:= $0049
-LoadedObject_Y_Pixel:= $004A
-LoadedObject_Y_MetaTile:= $004B
-LoadedObject_XVel:= $004C
-LoadedObject_YVel:= $004D
-LoadedObject_Health:= $0053
-ObjectSlot_Index:= $0057
-PlayerObj_Type  := $0400
-PlayerObj_Facing:= $0401
-PlayerObj_X_Pixel:= $0402
-PlayerObj_X_MetaTile:= $0403
-PlayerObj_Y_Pixel:= $0404
-PlayerObj_Y_MetaTile:= $0405
-PlayerObj_XVel  := $0406
-PlayerObj_YVel  := $0407
-PlayerObj_Health:= $040D
 LC00C           := $C00C
 LC012           := $C012
 LC015           := $C015

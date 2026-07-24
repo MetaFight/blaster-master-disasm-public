@@ -6,8 +6,8 @@ L_B578: jmp     L_B58A                          ; B578
         lda     #$18                            ; B57B
         jsr     L_A2E9                          ; B57D
         lda     #$00                            ; B580
-        sta     LoadedObject_YVel               ; B582
-        sta     LoadedObject_XVel               ; B584
+        sta     LoadedObj_YVel                  ; B582
+        sta     LoadedObj_XVel                  ; B584
         lda     #$02                            ; B586
         sta     $50                             ; B588
 L_B58A: rts                                     ; B58A
@@ -32,7 +32,7 @@ LB58B:  jmp     L_B5FB                          ; B58B
 
 ; ----------------------------------------------------------------------------
 L_B5AB: lda     #$D8                            ; B5AB
-L_B5AD: sta     LoadedObject_XVel               ; B5AD
+L_B5AD: sta     LoadedObj_XVel                  ; B5AD
         jmp     L_B5FB                          ; B5AF
 
 ; ----------------------------------------------------------------------------
@@ -52,7 +52,7 @@ L_B5C2: jsr     LE083                           ; B5C2
         jmp     L_B5FB                          ; B5CB
 
 ; ----------------------------------------------------------------------------
-L_B5CE: lda     LoadedObject_XVel               ; B5CE
+L_B5CE: lda     LoadedObj_XVel                  ; B5CE
         bne     L_B5FB                          ; B5D0
         dec     $50                             ; B5D2
         jmp     L_B5FB                          ; B5D4
@@ -67,13 +67,13 @@ L_B5D7: lda     #$01                            ; B5D7
         jsr     LE083                           ; B5E5
         bpl     L_B5F1                          ; B5E8
         lda     #$00                            ; B5EA
-        sta     LoadedObject_XVel               ; B5EC
+        sta     LoadedObj_XVel                  ; B5EC
         jmp     L_B5FB                          ; B5EE
 
 ; ----------------------------------------------------------------------------
 L_B5F1: and     #$40                            ; B5F1
         beq     L_B5FB                          ; B5F3
-        lda     LoadedObject_YVel               ; B5F5
+        lda     LoadedObj_YVel                  ; B5F5
         bmi     L_B5FB                          ; B5F7
         dec     $50                             ; B5F9
 L_B5FB: lda     #$10                            ; B5FB

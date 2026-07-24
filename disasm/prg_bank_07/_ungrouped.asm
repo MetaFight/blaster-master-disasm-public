@@ -79,12 +79,12 @@ L_C4BD: lda     $C5                             ; C4BD
 L_C4C8: lda     $14                             ; C4C8
         sta     $D7                             ; C4CA
         lda     #$00                            ; C4CC
-        sta     LoadedObject_XVel               ; C4CE
-        sta     LoadedObject_YVel               ; C4D0
+        sta     LoadedObj_XVel                  ; C4CE
+        sta     LoadedObj_YVel                  ; C4D0
         jsr     L_C78F                          ; C4D2
         lda     #$80                            ; C4D5
-        sta     LoadedObject_X_Pixel            ; C4D7
-        sta     LoadedObject_Y_Pixel            ; C4D9
+        sta     LoadedObj_X_Pixel               ; C4D7
+        sta     LoadedObj_Y_Pixel               ; C4D9
         lda     $14                             ; C4DB
         and     #$08                            ; C4DD
         beq     L_C4ED                          ; C4DF
@@ -95,7 +95,7 @@ L_C4C8: lda     $14                             ; C4C8
 L_C4E9: lda     #$1B                            ; C4E9
         bne     L_C4EF                          ; C4EB
 L_C4ED: lda     #$03                            ; C4ED
-L_C4EF: sta     LoadedObject_Type               ; C4EF
+L_C4EF: sta     LoadedObj_Type                  ; C4EF
         jsr     L_C5B2                          ; C4F1
         lda     $14                             ; C4F4
         cmp     $D7                             ; C4F6
@@ -170,12 +170,12 @@ L_C586: lda     $14                             ; C586
         asl     a                               ; C58A
         tax                                     ; C58B
         lda     LC5A2,x                         ; C58C
-        sta     LoadedObject_X_MetaTile         ; C58F
+        sta     LoadedObj_X_MetaTile            ; C58F
         lda     LC5A3,x                         ; C591
-        sta     LoadedObject_Y_MetaTile         ; C594
+        sta     LoadedObj_Y_MetaTile            ; C594
         lda     #$80                            ; C596
-        sta     LoadedObject_X_Pixel            ; C598
-        sta     LoadedObject_Y_Pixel            ; C59A
+        sta     LoadedObj_X_Pixel               ; C598
+        sta     LoadedObj_Y_Pixel               ; C59A
         jsr     L_C5B2                          ; C59C
         jmp     L_C35E                          ; C59F
 
@@ -350,10 +350,10 @@ L_C7A8: lda     (L0000),y                       ; C7A8
         cmp     $14                             ; C7AA
         bne     L_C7BA                          ; C7AC
         lda     ($02),y                         ; C7AE
-        cmp     LoadedObject_X_MetaTile         ; C7B0
+        cmp     LoadedObj_X_MetaTile            ; C7B0
         bne     L_C7BA                          ; C7B2
         lda     ($04),y                         ; C7B4
-        cmp     LoadedObject_Y_MetaTile         ; C7B6
+        cmp     LoadedObj_Y_MetaTile            ; C7B6
         beq     L_C7C7                          ; C7B8
 L_C7BA: iny                                     ; C7BA
         bne     L_C7A8                          ; C7BB
@@ -369,9 +369,9 @@ L_C7C7: tya                                     ; C7C7
         lda     (L0000),y                       ; C7CB
         sta     $14                             ; C7CD
         lda     ($02),y                         ; C7CF
-        sta     LoadedObject_X_MetaTile         ; C7D1
+        sta     LoadedObj_X_MetaTile            ; C7D1
         lda     ($04),y                         ; C7D3
-        sta     LoadedObject_Y_MetaTile         ; C7D5
+        sta     LoadedObj_Y_MetaTile            ; C7D5
         rts                                     ; C7D7
 
 ; ----------------------------------------------------------------------------
@@ -430,12 +430,12 @@ L_CA14: lda     $14                             ; CA14
         asl     a                               ; CA18
         tax                                     ; CA19
         lda     LCA2B,x                         ; CA1A
-        sta     LoadedObject_X_MetaTile         ; CA1D
+        sta     LoadedObj_X_MetaTile            ; CA1D
         lda     LCA2C,x                         ; CA1F
-        sta     LoadedObject_Y_MetaTile         ; CA22
+        sta     LoadedObj_Y_MetaTile            ; CA22
         lda     #$80                            ; CA24
-        sta     LoadedObject_X_Pixel            ; CA26
-        sta     LoadedObject_Y_Pixel            ; CA28
+        sta     LoadedObj_X_Pixel               ; CA26
+        sta     LoadedObj_Y_Pixel               ; CA28
         rts                                     ; CA2A
 
 ; ----------------------------------------------------------------------------
@@ -490,10 +490,10 @@ L_CA8D: lda     (L0000),y                       ; CA8D
 ; ----------------------------------------------------------------------------
 L_CA95: ldy     #$00                            ; CA95
         beq     L_CA8D                          ; CA97
-L_CA99: sta     LoadedObject_Type               ; CA99
+L_CA99: sta     LoadedObj_Type                  ; CA99
         sty     $8E                             ; CA9B
         lda     ($02),y                         ; CA9D
-        sta     LoadedObject_X_MetaTile         ; CA9F
+        sta     LoadedObj_X_MetaTile            ; CA9F
         sec                                     ; CAA1
         sbc     $1D                             ; CAA2
         and     #$7F                            ; CAA4
@@ -502,7 +502,7 @@ L_CA99: sta     LoadedObject_Type               ; CA99
         cmp     #$1C                            ; CAA9
         bcs     L_CAC0                          ; CAAB
         lda     ($04),y                         ; CAAD
-        sta     LoadedObject_Y_MetaTile         ; CAAF
+        sta     LoadedObj_Y_MetaTile            ; CAAF
         sec                                     ; CAB1
         sbc     $1F                             ; CAB2
         and     #$7F                            ; CAB4
@@ -557,7 +557,7 @@ L_CAF0: inc     $C6                             ; CAF0
 ; ----------------------------------------------------------------------------
 L_CAFF: stx     ObjectSlot_Offset               ; CAFF
         ldy     ObjectSlot_Index                ; CB01
-        ldx     LoadedObject_Type               ; CB03
+        ldx     LoadedObj_Type                  ; CB03
         lda     $FF                             ; CB05
         and     #$20                            ; CB07
         beq     L_CB11                          ; CB09
@@ -582,9 +582,9 @@ L_CB14: sta     $0150,y                         ; CB14
         lda     #$80                            ; CB37
         sta     PlayerObj_X_Pixel,x             ; CB39
         sta     PlayerObj_Y_Pixel,x             ; CB3C
-        lda     LoadedObject_X_MetaTile         ; CB3F
+        lda     LoadedObj_X_MetaTile            ; CB3F
         sta     PlayerObj_X_MetaTile,x          ; CB41
-        lda     LoadedObject_Y_MetaTile         ; CB44
+        lda     LoadedObj_Y_MetaTile            ; CB44
         sta     PlayerObj_Y_MetaTile,x          ; CB46
         lda     $8E                             ; CB49
         sta     $F8,y                           ; CB4B
@@ -775,28 +775,28 @@ L_D07D: lsr     $05                             ; D07D
         beq     L_D085                          ; D081
 L_D083: ldx     #$40                            ; D083
 L_D085: lda     LD0B4,x                         ; D085
-        sta     LoadedObject_XVel               ; D088
+        sta     LoadedObj_XVel                  ; D088
         lda     LD0F5,x                         ; D08A
-        sta     LoadedObject_YVel               ; D08D
+        sta     LoadedObj_YVel                  ; D08D
         lda     #$01                            ; D08F
         bit     $04                             ; D091
         beq     L_D09D                          ; D093
-        ldx     LoadedObject_XVel               ; D095
-        lda     LoadedObject_YVel               ; D097
-        sta     LoadedObject_XVel               ; D099
-        stx     LoadedObject_YVel               ; D09B
+        ldx     LoadedObj_XVel                  ; D095
+        lda     LoadedObj_YVel                  ; D097
+        sta     LoadedObj_XVel                  ; D099
+        stx     LoadedObj_YVel                  ; D09B
 L_D09D: asl     $04                             ; D09D
         bcc     L_D0A8                          ; D09F
         lda     #$00                            ; D0A1
         sec                                     ; D0A3
-        sbc     LoadedObject_YVel               ; D0A4
-        sta     LoadedObject_YVel               ; D0A6
+        sbc     LoadedObj_YVel                  ; D0A4
+        sta     LoadedObj_YVel                  ; D0A6
 L_D0A8: asl     $04                             ; D0A8
         bcc     L_D0B3                          ; D0AA
         lda     #$00                            ; D0AC
         sec                                     ; D0AE
-        sbc     LoadedObject_XVel               ; D0AF
-        sta     LoadedObject_XVel               ; D0B1
+        sbc     LoadedObj_XVel                  ; D0AF
+        sta     LoadedObj_XVel                  ; D0B1
 L_D0B3: rts                                     ; D0B3
 
 ; ----------------------------------------------------------------------------
@@ -820,29 +820,29 @@ LD0F5:  .byte   $40,$40,$40,$40,$40,$40,$40,$40 ; D0F5
         .byte   $2D                             ; D135
 ; ----------------------------------------------------------------------------
 L_D136: lda     #$10                            ; D136
-        bit     LoadedObject_XVel               ; D138
+        bit     LoadedObj_XVel                  ; D138
         bmi     L_D13E                          ; D13A
         lda     #$F0                            ; D13C
 L_D13E: clc                                     ; D13E
-        adc     LoadedObject_XVel               ; D13F
-        sta     LoadedObject_XVel               ; D141
+        adc     LoadedObj_XVel                  ; D13F
+        sta     LoadedObj_XVel                  ; D141
         lda     #$10                            ; D143
-        bit     LoadedObject_YVel               ; D145
+        bit     LoadedObj_YVel                  ; D145
         bmi     L_D150                          ; D147
         lda     #$F0                            ; D149
         clc                                     ; D14B
-        adc     LoadedObject_YVel               ; D14C
-        sta     LoadedObject_YVel               ; D14E
+        adc     LoadedObj_YVel                  ; D14C
+        sta     LoadedObj_YVel                  ; D14E
 L_D150: rts                                     ; D150
 
 ; ----------------------------------------------------------------------------
 L_D151: lda     PlayerObj_X_MetaTile            ; D151
         sec                                     ; D154
-        sbc     LoadedObject_X_MetaTile         ; D155
+        sbc     LoadedObj_X_MetaTile            ; D155
         sta     L0000                           ; D157
         lda     PlayerObj_Y_MetaTile            ; D159
         sec                                     ; D15C
-        sbc     LoadedObject_Y_MetaTile         ; D15D
+        sbc     LoadedObj_Y_MetaTile            ; D15D
         sta     $01                             ; D15F
 L_D161: lda     L0000                           ; D161
         sec                                     ; D163
@@ -886,17 +886,17 @@ L_D1EF: sta     $B7                             ; D1EF
 
 ; ----------------------------------------------------------------------------
 L_D1F8: lda     PlayerObj_X_Pixel               ; D1F8
-        cmp     LoadedObject_X_Pixel            ; D1FB
+        cmp     LoadedObj_X_Pixel               ; D1FB
         lda     PlayerObj_X_MetaTile            ; D1FD
         sec                                     ; D200
-        sbc     LoadedObject_X_MetaTile         ; D201
+        sbc     LoadedObj_X_MetaTile            ; D201
         jsr     L_EB0C                          ; D203
         sta     $45                             ; D206
         lda     PlayerObj_Y_Pixel               ; D208
-        cmp     LoadedObject_Y_Pixel            ; D20B
+        cmp     LoadedObj_Y_Pixel               ; D20B
         lda     PlayerObj_Y_MetaTile            ; D20D
         sec                                     ; D210
-        sbc     LoadedObject_Y_MetaTile         ; D211
+        sbc     LoadedObj_Y_MetaTile            ; D211
         jsr     L_EB0C                          ; D213
         cmp     $45                             ; D216
         bcs     L_D21C                          ; D218
@@ -949,7 +949,7 @@ L_D256: ldx     #$FF                            ; D256
         cmp     #$05                            ; D264
         beq     L_D270                          ; D266
         lda     #$00                            ; D268
-        sta     LoadedObject_Health             ; D26A
+        sta     LoadedObj_Health                ; D26A
         tax                                     ; D26C
 L_D26D: lda     #$00                            ; D26D
         rts                                     ; D26F
@@ -1018,7 +1018,7 @@ L_D2B1: clc                                     ; D2B1
         rts                                     ; D2B8
 
 ; ----------------------------------------------------------------------------
-L_D2B9: lda     LoadedObject_Y_MetaTile         ; D2B9
+L_D2B9: lda     LoadedObj_Y_MetaTile            ; D2B9
         sec                                     ; D2BB
         sbc     $1F                             ; D2BC
         and     #$0F                            ; D2BE
@@ -1030,7 +1030,7 @@ L_D2B9: lda     LoadedObject_Y_MetaTile         ; D2B9
         clc                                     ; D2C6
         adc     $4E                             ; D2C7
         sta     $4E                             ; D2C9
-        lda     LoadedObject_X_MetaTile         ; D2CB
+        lda     LoadedObj_X_MetaTile            ; D2CB
         sec                                     ; D2CD
         sbc     $1D                             ; D2CE
         and     #$1F                            ; D2D0
@@ -1043,44 +1043,44 @@ L_D2B9: lda     LoadedObject_Y_MetaTile         ; D2B9
 
 ; ----------------------------------------------------------------------------
 L_D2DB: jsr     L_D2FE                          ; D2DB
-L_D2DE: lda     LoadedObject_X_MetaTile         ; D2DE
+L_D2DE: lda     LoadedObj_X_MetaTile            ; D2DE
         and     #$7F                            ; D2E0
-        sta     LoadedObject_X_MetaTile         ; D2E2
-        lda     LoadedObject_X_Pixel            ; D2E4
+        sta     LoadedObj_X_MetaTile            ; D2E2
+        lda     LoadedObj_X_Pixel               ; D2E4
         clc                                     ; D2E6
-        adc     LoadedObject_XVel               ; D2E7
-        sta     LoadedObject_X_Pixel            ; D2E9
+        adc     LoadedObj_XVel                  ; D2E7
+        sta     LoadedObj_X_Pixel               ; D2E9
         ror     a                               ; D2EB
-        eor     LoadedObject_XVel               ; D2EC
+        eor     LoadedObj_XVel                  ; D2EC
         bpl     L_D2FD                          ; D2EE
-        lda     LoadedObject_XVel               ; D2F0
+        lda     LoadedObj_XVel                  ; D2F0
         bmi     L_D2F9                          ; D2F2
-        inc     LoadedObject_X_MetaTile         ; D2F4
+        inc     LoadedObj_X_MetaTile            ; D2F4
         inc     $4E                             ; D2F6
         rts                                     ; D2F8
 
 ; ----------------------------------------------------------------------------
-L_D2F9: dec     LoadedObject_X_MetaTile         ; D2F9
+L_D2F9: dec     LoadedObj_X_MetaTile            ; D2F9
         dec     $4E                             ; D2FB
 L_D2FD: rts                                     ; D2FD
 
 ; ----------------------------------------------------------------------------
-L_D2FE: lda     LoadedObject_Y_MetaTile         ; D2FE
+L_D2FE: lda     LoadedObj_Y_MetaTile            ; D2FE
         and     #$7F                            ; D300
-        sta     LoadedObject_Y_MetaTile         ; D302
-        lda     LoadedObject_Y_Pixel            ; D304
+        sta     LoadedObj_Y_MetaTile            ; D302
+        lda     LoadedObj_Y_Pixel               ; D304
         clc                                     ; D306
-        adc     LoadedObject_YVel               ; D307
-        sta     LoadedObject_Y_Pixel            ; D309
+        adc     LoadedObj_YVel                  ; D307
+        sta     LoadedObj_Y_Pixel               ; D309
         ror     a                               ; D30B
-        eor     LoadedObject_YVel               ; D30C
+        eor     LoadedObj_YVel                  ; D30C
         bpl     L_D323                          ; D30E
-        lda     LoadedObject_YVel               ; D310
+        lda     LoadedObj_YVel                  ; D310
         bmi     L_D31A                          ; D312
-        inc     LoadedObject_Y_MetaTile         ; D314
+        inc     LoadedObj_Y_MetaTile            ; D314
         lda     #$11                            ; D316
         bne     L_D31E                          ; D318
-L_D31A: dec     LoadedObject_Y_MetaTile         ; D31A
+L_D31A: dec     LoadedObj_Y_MetaTile            ; D31A
         lda     #$EF                            ; D31C
 L_D31E: clc                                     ; D31E
         adc     $4E                             ; D31F
@@ -1090,57 +1090,57 @@ L_D323: rts                                     ; D323
 ; ----------------------------------------------------------------------------
 L_D324: jsr     L_D349                          ; D324
 L_D327: lda     #$00                            ; D327
-        ldx     LoadedObject_XVel               ; D329
+        ldx     LoadedObj_XVel                  ; D329
         bpl     L_D32F                          ; D32B
         lda     #$FF                            ; D32D
 L_D32F: pha                                     ; D32F
         txa                                     ; D330
         asl     a                               ; D331
         clc                                     ; D332
-        adc     LoadedObject_X_Pixel            ; D333
-        sta     LoadedObject_X_Pixel            ; D335
+        adc     LoadedObj_X_Pixel               ; D333
+        sta     LoadedObj_X_Pixel               ; D335
         pla                                     ; D337
-        adc     LoadedObject_X_MetaTile         ; D338
+        adc     LoadedObj_X_MetaTile            ; D338
         pha                                     ; D33A
         sec                                     ; D33B
-        sbc     LoadedObject_X_MetaTile         ; D33C
+        sbc     LoadedObj_X_MetaTile            ; D33C
         clc                                     ; D33E
         adc     $4E                             ; D33F
         sta     $4E                             ; D341
         pla                                     ; D343
         and     #$7F                            ; D344
-        sta     LoadedObject_X_MetaTile         ; D346
+        sta     LoadedObj_X_MetaTile            ; D346
         rts                                     ; D348
 
 ; ----------------------------------------------------------------------------
 L_D349: lda     #$00                            ; D349
-        ldx     LoadedObject_YVel               ; D34B
+        ldx     LoadedObj_YVel                  ; D34B
         bpl     L_D351                          ; D34D
         lda     #$FF                            ; D34F
 L_D351: pha                                     ; D351
         txa                                     ; D352
         asl     a                               ; D353
         clc                                     ; D354
-        adc     LoadedObject_Y_Pixel            ; D355
-        sta     LoadedObject_Y_Pixel            ; D357
+        adc     LoadedObj_Y_Pixel               ; D355
+        sta     LoadedObj_Y_Pixel               ; D357
         pla                                     ; D359
-        adc     LoadedObject_Y_MetaTile         ; D35A
+        adc     LoadedObj_Y_MetaTile            ; D35A
         pha                                     ; D35C
         sec                                     ; D35D
-        sbc     LoadedObject_Y_MetaTile         ; D35E
-        sta     LoadedObject_Y_MetaTile         ; D360
+        sbc     LoadedObj_Y_MetaTile            ; D35E
+        sta     LoadedObj_Y_MetaTile            ; D360
         asl     a                               ; D362
         asl     a                               ; D363
         asl     a                               ; D364
         asl     a                               ; D365
         clc                                     ; D366
-        adc     LoadedObject_Y_MetaTile         ; D367
+        adc     LoadedObj_Y_MetaTile            ; D367
         clc                                     ; D369
         adc     $4E                             ; D36A
         sta     $4E                             ; D36C
         pla                                     ; D36E
         and     #$7F                            ; D36F
-        sta     LoadedObject_Y_MetaTile         ; D371
+        sta     LoadedObj_Y_MetaTile            ; D371
         rts                                     ; D373
 
 ; ----------------------------------------------------------------------------
@@ -1152,7 +1152,7 @@ L_D37A: jsr     L_D2DE                          ; D37A
 L_D37D: jsr     L_D3A3                          ; D37D
         beq     L_D387                          ; D380
         lda     $42                             ; D382
-        sta     LoadedObject_X_Pixel            ; D384
+        sta     LoadedObj_X_Pixel               ; D384
         rts                                     ; D386
 
 ; ----------------------------------------------------------------------------
@@ -1161,12 +1161,12 @@ L_D387: jsr     L_D394                          ; D387
         lda     #$00                            ; D38C
         sec                                     ; D38E
         sbc     $42                             ; D38F
-        sta     LoadedObject_X_Pixel            ; D391
+        sta     LoadedObj_X_Pixel               ; D391
 L_D393: rts                                     ; D393
 
 ; ----------------------------------------------------------------------------
 L_D394: ldx     $4E                             ; D394
-        lda     LoadedObject_X_Pixel            ; D396
+        lda     LoadedObj_X_Pixel               ; D396
         clc                                     ; D398
         adc     $42                             ; D399
         beq     L_D3AC                          ; D39B
@@ -1176,13 +1176,13 @@ L_D394: ldx     $4E                             ; D394
 
 ; ----------------------------------------------------------------------------
 L_D3A3: ldx     $4E                             ; D3A3
-        lda     LoadedObject_X_Pixel            ; D3A5
+        lda     LoadedObj_X_Pixel               ; D3A5
         cmp     $42                             ; D3A7
         bcs     L_D3AC                          ; D3A9
         dex                                     ; D3AB
 L_D3AC: lda     $0500,x                         ; D3AC
         bmi     L_D393                          ; D3AF
-        lda     LoadedObject_Y_Pixel            ; D3B1
+        lda     LoadedObj_Y_Pixel               ; D3B1
         clc                                     ; D3B3
         adc     $43                             ; D3B4
         bcc     L_D3C6                          ; D3B6
@@ -1194,7 +1194,7 @@ L_D3AC: lda     $0500,x                         ; D3AC
         tay                                     ; D3C0
         lda     $0500,y                         ; D3C1
         bmi     L_D393                          ; D3C4
-L_D3C6: lda     LoadedObject_Y_Pixel            ; D3C6
+L_D3C6: lda     LoadedObj_Y_Pixel               ; D3C6
         sec                                     ; D3C8
         sbc     $43                             ; D3C9
         bcs     L_D3DB                          ; D3CB
@@ -1214,7 +1214,7 @@ L_D3DE: jsr     L_D2FE                          ; D3DE
 L_D3E1: jsr     L_D40B                          ; D3E1
         beq     L_D3EB                          ; D3E4
         lda     $43                             ; D3E6
-        sta     LoadedObject_Y_Pixel            ; D3E8
+        sta     LoadedObj_Y_Pixel               ; D3E8
         rts                                     ; D3EA
 
 ; ----------------------------------------------------------------------------
@@ -1223,12 +1223,12 @@ L_D3EB: jsr     L_D3F8                          ; D3EB
         lda     #$00                            ; D3F0
         sec                                     ; D3F2
         sbc     $43                             ; D3F3
-        sta     LoadedObject_Y_Pixel            ; D3F5
+        sta     LoadedObj_Y_Pixel               ; D3F5
         rts                                     ; D3F7
 
 ; ----------------------------------------------------------------------------
 L_D3F8: ldx     $4E                             ; D3F8
-        lda     LoadedObject_Y_Pixel            ; D3FA
+        lda     LoadedObj_Y_Pixel               ; D3FA
         clc                                     ; D3FC
         adc     $43                             ; D3FD
         beq     L_D418                          ; D3FF
@@ -1241,7 +1241,7 @@ L_D3F8: ldx     $4E                             ; D3F8
 
 ; ----------------------------------------------------------------------------
 L_D40B: ldx     $4E                             ; D40B
-        lda     LoadedObject_Y_Pixel            ; D40D
+        lda     LoadedObj_Y_Pixel               ; D40D
         cmp     $43                             ; D40F
         bcs     L_D418                          ; D411
         txa                                     ; D413
@@ -1250,7 +1250,7 @@ L_D40B: ldx     $4E                             ; D40B
         tax                                     ; D417
 L_D418: lda     $0500,x                         ; D418
         bmi     L_D442                          ; D41B
-        lda     LoadedObject_X_Pixel            ; D41D
+        lda     LoadedObj_X_Pixel               ; D41D
         clc                                     ; D41F
         adc     $42                             ; D420
         bcc     L_D42F                          ; D422
@@ -1260,7 +1260,7 @@ L_D418: lda     $0500,x                         ; D418
         lda     $0500,x                         ; D429
         bmi     L_D442                          ; D42C
         dex                                     ; D42E
-L_D42F: lda     LoadedObject_X_Pixel            ; D42F
+L_D42F: lda     LoadedObj_X_Pixel               ; D42F
         sec                                     ; D431
         sbc     $42                             ; D432
         bcs     L_D440                          ; D434
@@ -1285,7 +1285,7 @@ L_D44E: jsr     L_D452                          ; D44E
 
 ; ----------------------------------------------------------------------------
 L_D452: jsr     L_D47C                          ; D452
-        lda     LoadedObject_XVel               ; D455
+        lda     LoadedObj_XVel                  ; D455
         beq     L_D48C                          ; D457
         bmi     L_D461                          ; D459
         jsr     L_D48F                          ; D45B
@@ -1297,7 +1297,7 @@ L_D461: jsr     L_D4BC                          ; D461
 
 ; ----------------------------------------------------------------------------
 L_D467: jsr     L_D47C                          ; D467
-        lda     LoadedObject_YVel               ; D46A
+        lda     LoadedObj_YVel                  ; D46A
         beq     L_D48C                          ; D46C
         bmi     L_D476                          ; D46E
         jsr     L_D4E6                          ; D470
@@ -1311,9 +1311,9 @@ L_D476: jsr     L_D510                          ; D476
 L_D47C: lda     #$00                            ; D47C
         sta     $0F                             ; D47E
         jsr     L_D5F9                          ; D480
-        lda     LoadedObject_X_MetaTile         ; D483
+        lda     LoadedObj_X_MetaTile            ; D483
         sta     $08                             ; D485
-        lda     LoadedObject_Y_MetaTile         ; D487
+        lda     LoadedObj_Y_MetaTile            ; D487
         sta     $09                             ; D489
         rts                                     ; D48B
 
@@ -1322,13 +1322,13 @@ L_D48C: lda     $0F                             ; D48C
         rts                                     ; D48E
 
 ; ----------------------------------------------------------------------------
-L_D48F: lda     LoadedObject_X_MetaTile         ; D48F
+L_D48F: lda     LoadedObj_X_MetaTile            ; D48F
         pha                                     ; D491
-        lda     LoadedObject_X_Pixel            ; D492
+        lda     LoadedObj_X_Pixel               ; D492
         pha                                     ; D494
-        lda     LoadedObject_Y_MetaTile         ; D495
+        lda     LoadedObj_Y_MetaTile            ; D495
         pha                                     ; D497
-        lda     LoadedObject_Y_Pixel            ; D498
+        lda     LoadedObj_Y_Pixel               ; D498
         pha                                     ; D49A
         jsr     L_D5B8                          ; D49B
         jsr     L_D574                          ; D49E
@@ -1337,131 +1337,131 @@ L_D48F: lda     LoadedObject_X_MetaTile         ; D48F
 
 ; ----------------------------------------------------------------------------
 L_D4A6: pla                                     ; D4A6
-        sta     LoadedObject_Y_Pixel            ; D4A7
+        sta     LoadedObj_Y_Pixel               ; D4A7
         pla                                     ; D4A9
-        sta     LoadedObject_Y_MetaTile         ; D4AA
+        sta     LoadedObj_Y_MetaTile            ; D4AA
         pla                                     ; D4AC
-        sta     LoadedObject_X_Pixel            ; D4AD
+        sta     LoadedObj_X_Pixel               ; D4AD
         pla                                     ; D4AF
-        sta     LoadedObject_X_MetaTile         ; D4B0
+        sta     LoadedObj_X_MetaTile            ; D4B0
         lda     $0A                             ; D4B2
         eor     #$FF                            ; D4B4
         clc                                     ; D4B6
         adc     #$01                            ; D4B7
-        sta     LoadedObject_X_Pixel            ; D4B9
+        sta     LoadedObj_X_Pixel               ; D4B9
         rts                                     ; D4BB
 
 ; ----------------------------------------------------------------------------
-L_D4BC: lda     LoadedObject_X_MetaTile         ; D4BC
+L_D4BC: lda     LoadedObj_X_MetaTile            ; D4BC
         pha                                     ; D4BE
-        lda     LoadedObject_X_Pixel            ; D4BF
+        lda     LoadedObj_X_Pixel               ; D4BF
         pha                                     ; D4C1
-        lda     LoadedObject_Y_MetaTile         ; D4C2
+        lda     LoadedObj_Y_MetaTile            ; D4C2
         pha                                     ; D4C4
-        lda     LoadedObject_Y_Pixel            ; D4C5
+        lda     LoadedObj_Y_Pixel               ; D4C5
         pha                                     ; D4C7
         jsr     L_D5AA                          ; D4C8
         jsr     L_D574                          ; D4CB
         beq     L_D53A                          ; D4CE
         pla                                     ; D4D0
-        sta     LoadedObject_Y_Pixel            ; D4D1
+        sta     LoadedObj_Y_Pixel               ; D4D1
         pla                                     ; D4D3
-        sta     LoadedObject_Y_MetaTile         ; D4D4
+        sta     LoadedObj_Y_MetaTile            ; D4D4
         pla                                     ; D4D6
-        sta     LoadedObject_X_Pixel            ; D4D7
+        sta     LoadedObj_X_Pixel               ; D4D7
         pla                                     ; D4D9
-        sta     LoadedObject_X_MetaTile         ; D4DA
+        sta     LoadedObj_X_MetaTile            ; D4DA
         lda     $0A                             ; D4DC
-        sta     LoadedObject_X_Pixel            ; D4DE
+        sta     LoadedObj_X_Pixel               ; D4DE
         bne     L_D4E5                          ; D4E0
         jsr     L_D679                          ; D4E2
 L_D4E5: rts                                     ; D4E5
 
 ; ----------------------------------------------------------------------------
-L_D4E6: lda     LoadedObject_X_MetaTile         ; D4E6
+L_D4E6: lda     LoadedObj_X_MetaTile            ; D4E6
         pha                                     ; D4E8
-        lda     LoadedObject_X_Pixel            ; D4E9
+        lda     LoadedObj_X_Pixel               ; D4E9
         pha                                     ; D4EB
-        lda     LoadedObject_Y_MetaTile         ; D4EC
+        lda     LoadedObj_Y_MetaTile            ; D4EC
         pha                                     ; D4EE
-        lda     LoadedObject_Y_Pixel            ; D4EF
+        lda     LoadedObj_Y_Pixel               ; D4EF
         pha                                     ; D4F1
         jsr     L_D5DA                          ; D4F2
         jsr     L_D547                          ; D4F5
         beq     L_D53A                          ; D4F8
         pla                                     ; D4FA
-        sta     LoadedObject_Y_Pixel            ; D4FB
+        sta     LoadedObj_Y_Pixel               ; D4FB
         pla                                     ; D4FD
-        sta     LoadedObject_Y_MetaTile         ; D4FE
+        sta     LoadedObj_Y_MetaTile            ; D4FE
         pla                                     ; D500
-        sta     LoadedObject_X_Pixel            ; D501
+        sta     LoadedObj_X_Pixel               ; D501
         pla                                     ; D503
-        sta     LoadedObject_X_MetaTile         ; D504
+        sta     LoadedObj_X_MetaTile            ; D504
         lda     $0C                             ; D506
         eor     #$FF                            ; D508
         clc                                     ; D50A
         adc     #$01                            ; D50B
-        sta     LoadedObject_Y_Pixel            ; D50D
+        sta     LoadedObj_Y_Pixel               ; D50D
         rts                                     ; D50F
 
 ; ----------------------------------------------------------------------------
-L_D510: lda     LoadedObject_X_MetaTile         ; D510
+L_D510: lda     LoadedObj_X_MetaTile            ; D510
         pha                                     ; D512
-        lda     LoadedObject_X_Pixel            ; D513
+        lda     LoadedObj_X_Pixel               ; D513
         pha                                     ; D515
-        lda     LoadedObject_Y_MetaTile         ; D516
+        lda     LoadedObj_Y_MetaTile            ; D516
         pha                                     ; D518
-        lda     LoadedObject_Y_Pixel            ; D519
+        lda     LoadedObj_Y_Pixel               ; D519
         pha                                     ; D51B
         jsr     L_D5CC                          ; D51C
         jsr     L_D547                          ; D51F
         beq     L_D53A                          ; D522
         pla                                     ; D524
-        sta     LoadedObject_Y_Pixel            ; D525
+        sta     LoadedObj_Y_Pixel               ; D525
         pla                                     ; D527
-        sta     LoadedObject_Y_MetaTile         ; D528
+        sta     LoadedObj_Y_MetaTile            ; D528
         pla                                     ; D52A
-        sta     LoadedObject_X_Pixel            ; D52B
+        sta     LoadedObj_X_Pixel               ; D52B
         pla                                     ; D52D
-        sta     LoadedObject_X_MetaTile         ; D52E
+        sta     LoadedObj_X_MetaTile            ; D52E
         lda     $0C                             ; D530
-        sta     LoadedObject_Y_Pixel            ; D532
+        sta     LoadedObj_Y_Pixel               ; D532
         bne     L_D539                          ; D534
         jsr     L_D683                          ; D536
 L_D539: rts                                     ; D539
 
 ; ----------------------------------------------------------------------------
 L_D53A: pla                                     ; D53A
-        sta     LoadedObject_Y_Pixel            ; D53B
+        sta     LoadedObj_Y_Pixel               ; D53B
         pla                                     ; D53D
-        sta     LoadedObject_Y_MetaTile         ; D53E
+        sta     LoadedObj_Y_MetaTile            ; D53E
         pla                                     ; D540
-        sta     LoadedObject_X_Pixel            ; D541
+        sta     LoadedObj_X_Pixel               ; D541
         pla                                     ; D543
-        sta     LoadedObject_X_MetaTile         ; D544
+        sta     LoadedObj_X_MetaTile            ; D544
         rts                                     ; D546
 
 ; ----------------------------------------------------------------------------
-L_D547: lda     LoadedObject_X_MetaTile         ; D547
+L_D547: lda     LoadedObj_X_MetaTile            ; D547
         pha                                     ; D549
-        lda     LoadedObject_X_Pixel            ; D54A
+        lda     LoadedObj_X_Pixel               ; D54A
         pha                                     ; D54C
         jsr     L_D5B8                          ; D54D
-        lda     LoadedObject_X_MetaTile         ; D550
+        lda     LoadedObj_X_MetaTile            ; D550
         sta     $0E                             ; D552
         pla                                     ; D554
-        sta     LoadedObject_X_Pixel            ; D555
+        sta     LoadedObj_X_Pixel               ; D555
         pla                                     ; D557
-        sta     LoadedObject_X_MetaTile         ; D558
+        sta     LoadedObj_X_MetaTile            ; D558
         jsr     L_D5AA                          ; D55A
         jsr     L_D5EE                          ; D55D
 L_D560: lda     $0500,x                         ; D560
         bmi     L_D5A5                          ; D563
         inx                                     ; D565
-        lda     LoadedObject_X_MetaTile         ; D566
+        lda     LoadedObj_X_MetaTile            ; D566
         cmp     $0E                             ; D568
         beq     L_D571                          ; D56A
-        inc     LoadedObject_X_MetaTile         ; D56C
+        inc     LoadedObj_X_MetaTile            ; D56C
         jmp     L_D560                          ; D56E
 
 ; ----------------------------------------------------------------------------
@@ -1469,17 +1469,17 @@ L_D571: lda     #$00                            ; D571
         rts                                     ; D573
 
 ; ----------------------------------------------------------------------------
-L_D574: lda     LoadedObject_Y_MetaTile         ; D574
+L_D574: lda     LoadedObj_Y_MetaTile            ; D574
         pha                                     ; D576
-        lda     LoadedObject_Y_Pixel            ; D577
+        lda     LoadedObj_Y_Pixel               ; D577
         pha                                     ; D579
         jsr     L_D5DA                          ; D57A
-        lda     LoadedObject_Y_MetaTile         ; D57D
+        lda     LoadedObj_Y_MetaTile            ; D57D
         sta     $0E                             ; D57F
         pla                                     ; D581
-        sta     LoadedObject_Y_Pixel            ; D582
+        sta     LoadedObj_Y_Pixel               ; D582
         pla                                     ; D584
-        sta     LoadedObject_Y_MetaTile         ; D585
+        sta     LoadedObj_Y_MetaTile            ; D585
         jsr     L_D5CC                          ; D587
         jsr     L_D5EE                          ; D58A
 L_D58D: lda     $0500,x                         ; D58D
@@ -1488,10 +1488,10 @@ L_D58D: lda     $0500,x                         ; D58D
         clc                                     ; D593
         adc     #$11                            ; D594
         tax                                     ; D596
-        lda     LoadedObject_Y_MetaTile         ; D597
+        lda     LoadedObj_Y_MetaTile            ; D597
         cmp     $0E                             ; D599
         beq     L_D5A2                          ; D59B
-        inc     LoadedObject_Y_MetaTile         ; D59D
+        inc     LoadedObj_Y_MetaTile            ; D59D
         jmp     L_D58D                          ; D59F
 
 ; ----------------------------------------------------------------------------
@@ -1504,49 +1504,49 @@ L_D5A5: lda     #$FF                            ; D5A5
         rts                                     ; D5A9
 
 ; ----------------------------------------------------------------------------
-L_D5AA: lda     LoadedObject_X_Pixel            ; D5AA
+L_D5AA: lda     LoadedObj_X_Pixel               ; D5AA
         sec                                     ; D5AC
         sbc     $0A                             ; D5AD
-        sta     LoadedObject_X_Pixel            ; D5AF
-        lda     LoadedObject_X_MetaTile         ; D5B1
+        sta     LoadedObj_X_Pixel               ; D5AF
+        lda     LoadedObj_X_MetaTile            ; D5B1
         sbc     $0B                             ; D5B3
-        sta     LoadedObject_X_MetaTile         ; D5B5
+        sta     LoadedObj_X_MetaTile            ; D5B5
         rts                                     ; D5B7
 
 ; ----------------------------------------------------------------------------
-L_D5B8: lda     LoadedObject_X_Pixel            ; D5B8
+L_D5B8: lda     LoadedObj_X_Pixel               ; D5B8
         clc                                     ; D5BA
         adc     $0A                             ; D5BB
-        sta     LoadedObject_X_Pixel            ; D5BD
-        lda     LoadedObject_X_MetaTile         ; D5BF
+        sta     LoadedObj_X_Pixel               ; D5BD
+        lda     LoadedObj_X_MetaTile            ; D5BF
         adc     $0B                             ; D5C1
-        sta     LoadedObject_X_MetaTile         ; D5C3
-        lda     LoadedObject_X_Pixel            ; D5C5
+        sta     LoadedObj_X_MetaTile            ; D5C3
+        lda     LoadedObj_X_Pixel               ; D5C5
         bne     L_D5CB                          ; D5C7
-        dec     LoadedObject_X_MetaTile         ; D5C9
+        dec     LoadedObj_X_MetaTile            ; D5C9
 L_D5CB: rts                                     ; D5CB
 
 ; ----------------------------------------------------------------------------
-L_D5CC: lda     LoadedObject_Y_Pixel            ; D5CC
+L_D5CC: lda     LoadedObj_Y_Pixel               ; D5CC
         sec                                     ; D5CE
         sbc     $0C                             ; D5CF
-        sta     LoadedObject_Y_Pixel            ; D5D1
-        lda     LoadedObject_Y_MetaTile         ; D5D3
+        sta     LoadedObj_Y_Pixel               ; D5D1
+        lda     LoadedObj_Y_MetaTile            ; D5D3
         sbc     $0D                             ; D5D5
-        sta     LoadedObject_Y_MetaTile         ; D5D7
+        sta     LoadedObj_Y_MetaTile            ; D5D7
         rts                                     ; D5D9
 
 ; ----------------------------------------------------------------------------
-L_D5DA: lda     LoadedObject_Y_Pixel            ; D5DA
+L_D5DA: lda     LoadedObj_Y_Pixel               ; D5DA
         clc                                     ; D5DC
         adc     $0C                             ; D5DD
-        sta     LoadedObject_Y_Pixel            ; D5DF
-        lda     LoadedObject_Y_MetaTile         ; D5E1
+        sta     LoadedObj_Y_Pixel               ; D5DF
+        lda     LoadedObj_Y_MetaTile            ; D5E1
         adc     $0D                             ; D5E3
-        sta     LoadedObject_Y_MetaTile         ; D5E5
-        lda     LoadedObject_Y_Pixel            ; D5E7
+        sta     LoadedObj_Y_MetaTile            ; D5E5
+        lda     LoadedObj_Y_Pixel               ; D5E7
         bne     L_D5ED                          ; D5E9
-        dec     LoadedObject_Y_MetaTile         ; D5EB
+        dec     LoadedObj_Y_MetaTile            ; D5EB
 L_D5ED: rts                                     ; D5ED
 
 ; ----------------------------------------------------------------------------
@@ -1594,8 +1594,8 @@ L_D627: jsr     L_D37A                          ; D627
         lda     #$00                            ; D62C
         sec                                     ; D62E
         sec                                     ; D62F
-        sbc     LoadedObject_XVel               ; D630
-        sta     LoadedObject_XVel               ; D632
+        sbc     LoadedObj_XVel                  ; D630
+        sta     LoadedObj_XVel                  ; D632
 L_D634: rts                                     ; D634
 
 ; ----------------------------------------------------------------------------
@@ -1604,20 +1604,20 @@ L_D635: jsr     L_D3DE                          ; D635
         lda     #$00                            ; D63A
         sec                                     ; D63C
         sec                                     ; D63D
-        sbc     LoadedObject_YVel               ; D63E
-        sta     LoadedObject_YVel               ; D640
+        sbc     LoadedObj_YVel                  ; D63E
+        sta     LoadedObj_YVel                  ; D640
 L_D642: rts                                     ; D642
 
 ; ----------------------------------------------------------------------------
 L_D643: ldx     $47                             ; D643
-        lda     LoadedObject_X_MetaTile         ; D645
+        lda     LoadedObj_X_MetaTile            ; D645
         clc                                     ; D647
         adc     LD65E,x                         ; D648
-        sta     LoadedObject_X_MetaTile         ; D64B
-        lda     LoadedObject_Y_MetaTile         ; D64D
+        sta     LoadedObj_X_MetaTile            ; D64B
+        lda     LoadedObj_Y_MetaTile            ; D64D
         clc                                     ; D64F
         adc     LD667,x                         ; D650
-        sta     LoadedObject_Y_MetaTile         ; D653
+        sta     LoadedObj_Y_MetaTile            ; D653
         lda     $4E                             ; D655
         clc                                     ; D657
         adc     LD670,x                         ; D658
@@ -1632,17 +1632,17 @@ LD667:  .byte   $00,$FF,$FF,$00,$01,$01,$01,$00 ; D667
 LD670:  .byte   $00,$EF,$F0,$01,$12,$11,$10,$FF ; D670
         .byte   $EE                             ; D678
 ; ----------------------------------------------------------------------------
-L_D679: inc     LoadedObject_X_MetaTile         ; D679
+L_D679: inc     LoadedObj_X_MetaTile            ; D679
         inc     $4E                             ; D67B
         rts                                     ; D67D
 
 ; ----------------------------------------------------------------------------
-L_D67E: dec     LoadedObject_X_MetaTile         ; D67E
+L_D67E: dec     LoadedObj_X_MetaTile            ; D67E
         dec     $4E                             ; D680
         rts                                     ; D682
 
 ; ----------------------------------------------------------------------------
-L_D683: inc     LoadedObject_Y_MetaTile         ; D683
+L_D683: inc     LoadedObj_Y_MetaTile            ; D683
         lda     $4E                             ; D685
         clc                                     ; D687
         adc     #$11                            ; D688
@@ -1650,7 +1650,7 @@ L_D683: inc     LoadedObject_Y_MetaTile         ; D683
         rts                                     ; D68C
 
 ; ----------------------------------------------------------------------------
-L_D68D: dec     LoadedObject_Y_MetaTile         ; D68D
+L_D68D: dec     LoadedObj_Y_MetaTile            ; D68D
         lda     $4E                             ; D68F
         sec                                     ; D691
         sbc     #$11                            ; D692
@@ -1664,12 +1664,12 @@ L_D697: jsr     L_D6CD                          ; D697
         lda     $45                             ; D69C
         cmp     #$7F                            ; D69E
         beq     L_D6C0                          ; D6A0
-        lda     LoadedObject_Health             ; D6A2
+        lda     LoadedObj_Health                ; D6A2
         sec                                     ; D6A4
         sbc     $45                             ; D6A5
         bcs     L_D6AB                          ; D6A7
         lda     #$00                            ; D6A9
-L_D6AB: sta     LoadedObject_Health             ; D6AB
+L_D6AB: sta     LoadedObj_Health                ; D6AB
         bcc     L_D6B7                          ; D6AD
         lda     #$36                            ; D6AF
         jsr     Enqueue_Sound_Command           ; D6B1
@@ -1850,7 +1850,7 @@ L_D7BA: sta     $7C,x                           ; D7BA
 ; ----------------------------------------------------------------------------
 L_D7C0: ldy     #$01                            ; D7C0
 L_D7C2: inx                                     ; D7C2
-        lda     LoadedObject_Type,y             ; D7C3
+        lda     LoadedObj_Type,y                ; D7C3
         sta     PlayerObj_Type,x                ; D7C6
         iny                                     ; D7C9
         cpy     #$0E                            ; D7CA
@@ -1883,7 +1883,7 @@ L_D7E7: sta     PlayerObj_Type,x                ; D7E7
 ; ----------------------------------------------------------------------------
 L_D7EE: lda     #$00                            ; D7EE
         ldx     #$0D                            ; D7F0
-L_D7F2: sta     LoadedObject_Type,x             ; D7F2
+L_D7F2: sta     LoadedObj_Type,x                ; D7F2
         dex                                     ; D7F4
         bne     L_D7F2                          ; D7F5
         rts                                     ; D7F7
@@ -2163,9 +2163,9 @@ L_E712: lda     $C9                             ; E712
         lda     $CA                             ; E715
         rol     a                               ; E717
         sta     $C7                             ; E718
-        lda     LoadedObject_X_Pixel            ; E71A
+        lda     LoadedObj_X_Pixel               ; E71A
         asl     a                               ; E71C
-        lda     LoadedObject_X_MetaTile         ; E71D
+        lda     LoadedObj_X_MetaTile            ; E71D
         rol     a                               ; E71F
         sec                                     ; E720
         sbc     $C7                             ; E721
@@ -2181,9 +2181,9 @@ L_E712: lda     $C9                             ; E712
         asl     $C8                             ; E733
         rol     a                               ; E735
         sta     $C8                             ; E736
-        lda     LoadedObject_Y_Pixel            ; E738
+        lda     LoadedObj_Y_Pixel               ; E738
         asl     a                               ; E73A
-        lda     LoadedObject_Y_MetaTile         ; E73B
+        lda     LoadedObj_Y_MetaTile            ; E73B
         rol     a                               ; E73D
         sec                                     ; E73E
         sbc     $C8                             ; E73F
@@ -2336,11 +2336,11 @@ L_EBF4: .byte   $00,$01,$02,$03,$04,$05,$06,$07 ; EBF4
 
 .macro MAC_L_EF2B
 ; ----------------------------------------------------------------------------
-L_EF2B: lda     LoadedObject_X_Pixel            ; EF2B
+L_EF2B: lda     LoadedObj_X_Pixel               ; EF2B
         sec                                     ; EF2D
         sbc     $1C                             ; EF2E
         sta     $3E                             ; EF30
-        lda     LoadedObject_X_MetaTile         ; EF32
+        lda     LoadedObj_X_MetaTile            ; EF32
         sbc     $1D                             ; EF34
         lsr     a                               ; EF36
         ror     $3E                             ; EF37
@@ -2351,11 +2351,11 @@ L_EF2B: lda     LoadedObject_X_Pixel            ; EF2B
         lsr     a                               ; EF3F
         ror     $3E                             ; EF40
         sta     L0000                           ; EF42
-        lda     LoadedObject_Y_Pixel            ; EF44
+        lda     LoadedObj_Y_Pixel               ; EF44
         sec                                     ; EF46
         sbc     $1E                             ; EF47
         sta     $3F                             ; EF49
-        lda     LoadedObject_Y_MetaTile         ; EF4B
+        lda     LoadedObj_Y_MetaTile            ; EF4B
         sbc     $1F                             ; EF4D
         lsr     a                               ; EF4F
         ror     $3F                             ; EF50
@@ -2406,36 +2406,36 @@ L_EF91: lda     $3F                             ; EF91
         jsr     L_EFF4                          ; EF97
         lda     $3E                             ; EF9A
         asl     a                               ; EF9C
-        rol     LoadedObject_X_MetaTile         ; EF9D
+        rol     LoadedObj_X_MetaTile            ; EF9D
         asl     a                               ; EF9F
-        rol     LoadedObject_X_MetaTile         ; EFA0
+        rol     LoadedObj_X_MetaTile            ; EFA0
         asl     a                               ; EFA2
-        rol     LoadedObject_X_MetaTile         ; EFA3
+        rol     LoadedObj_X_MetaTile            ; EFA3
         asl     a                               ; EFA5
-        rol     LoadedObject_X_MetaTile         ; EFA6
+        rol     LoadedObj_X_MetaTile            ; EFA6
         clc                                     ; EFA8
         adc     $1C                             ; EFA9
-        sta     LoadedObject_X_Pixel            ; EFAB
-        lda     LoadedObject_X_MetaTile         ; EFAD
+        sta     LoadedObj_X_Pixel               ; EFAB
+        lda     LoadedObj_X_MetaTile            ; EFAD
         and     #$0F                            ; EFAF
         adc     $1D                             ; EFB1
-        sta     LoadedObject_X_MetaTile         ; EFB3
+        sta     LoadedObj_X_MetaTile            ; EFB3
         lda     $3F                             ; EFB5
         asl     a                               ; EFB7
-        rol     LoadedObject_Y_MetaTile         ; EFB8
+        rol     LoadedObj_Y_MetaTile            ; EFB8
         asl     a                               ; EFBA
-        rol     LoadedObject_Y_MetaTile         ; EFBB
+        rol     LoadedObj_Y_MetaTile            ; EFBB
         asl     a                               ; EFBD
-        rol     LoadedObject_Y_MetaTile         ; EFBE
+        rol     LoadedObj_Y_MetaTile            ; EFBE
         asl     a                               ; EFC0
-        rol     LoadedObject_Y_MetaTile         ; EFC1
+        rol     LoadedObj_Y_MetaTile            ; EFC1
         clc                                     ; EFC3
         adc     $1E                             ; EFC4
-        sta     LoadedObject_Y_Pixel            ; EFC6
-        lda     LoadedObject_Y_MetaTile         ; EFC8
+        sta     LoadedObj_Y_Pixel               ; EFC6
+        lda     LoadedObj_Y_MetaTile            ; EFC8
         and     #$0F                            ; EFCA
         adc     $1F                             ; EFCC
-        sta     LoadedObject_Y_MetaTile         ; EFCE
+        sta     LoadedObj_Y_MetaTile            ; EFCE
         pla                                     ; EFD0
         sta     $3E                             ; EFD1
         pla                                     ; EFD3

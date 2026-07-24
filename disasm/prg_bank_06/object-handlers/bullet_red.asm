@@ -3,7 +3,7 @@
 L_B91A: jmp     L_B949                          ; B91A
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObject_X_MetaTile         ; B91D
+        lda     LoadedObj_X_MetaTile            ; B91D
         lsr     a                               ; B91F
         bcc     L_B92D                          ; B920
         lda     #$A0                            ; B922
@@ -25,14 +25,14 @@ L_B935: ldy     #$18                            ; B935
         lda     #$1C                            ; B940
         jsr     L_A2E9                          ; B942
         lda     #$8E                            ; B945
-        sta     LoadedObject_Type               ; B947
+        sta     LoadedObj_Type                  ; B947
 L_B949: rts                                     ; B949
 
 ; ----------------------------------------------------------------------------
 LB94A:  jmp     L_B979                          ; B94A
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObject_X_MetaTile         ; B94D
+        lda     LoadedObj_X_MetaTile            ; B94D
         lsr     a                               ; B94F
         bcc     L_B95D                          ; B950
         lda     #$A0                            ; B952
@@ -54,7 +54,7 @@ L_B965: ldy     #$18                            ; B965
         lda     #$1D                            ; B970
         jsr     L_A2E9                          ; B972
         lda     #$8E                            ; B975
-        sta     LoadedObject_Type               ; B977
+        sta     LoadedObj_Type                  ; B977
 L_B979: rts                                     ; B979
 
 ; ----------------------------------------------------------------------------
@@ -90,7 +90,7 @@ L_B9A4: lda     $50                             ; B9A4
         jsr     LE1BD                           ; B9B6
         lda     #$10                            ; B9B9
         sta     $51                             ; B9BB
-        inc     LoadedObject_Type               ; B9BD
+        inc     LoadedObj_Type                  ; B9BD
         rts                                     ; B9BF
 
 ; ----------------------------------------------------------------------------
@@ -171,7 +171,7 @@ L_BA30: clc                                     ; BA30
         jsr     LE1BD                           ; BA39
         lda     #$00                            ; BA3C
         sta     $51                             ; BA3E
-        dec     LoadedObject_Type               ; BA40
+        dec     LoadedObj_Type                  ; BA40
         rts                                     ; BA42
 
 ; ----------------------------------------------------------------------------

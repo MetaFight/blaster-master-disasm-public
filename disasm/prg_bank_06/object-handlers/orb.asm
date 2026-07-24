@@ -35,12 +35,12 @@ LAE95:  jmp     L_AF03                          ; AE95
 
 ; ----------------------------------------------------------------------------
 L_AEB3: lda     $11                             ; AEB3
-        cmp     LoadedObject_Type               ; AEB5
+        cmp     LoadedObj_Type                  ; AEB5
         bne     L_AF03                          ; AEB7
         jsr     LEB71                           ; AEB9
         bcc     L_AF03                          ; AEBC
         lda     #$08                            ; AEBE
-        sta     LoadedObject_YVel               ; AEC0
+        sta     LoadedObj_YVel                  ; AEC0
         jsr     LEB71                           ; AEC2
         bmi     L_AED5                          ; AEC5
         lda     #$00                            ; AEC7
@@ -49,8 +49,8 @@ L_AEB3: lda     $11                             ; AEB3
         sta     $52                             ; AECC
         lda     #$00                            ; AECE
         sec                                     ; AED0
-        sbc     LoadedObject_YVel               ; AED1
-        sta     LoadedObject_YVel               ; AED3
+        sbc     LoadedObj_YVel                  ; AED1
+        sta     LoadedObj_YVel                  ; AED3
 L_AED5: lda     #$01                            ; AED5
         sta     $50                             ; AED7
         jmp     L_AF03                          ; AED9

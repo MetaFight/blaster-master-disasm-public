@@ -6,8 +6,8 @@ L_AB13: jmp     L_AB23                          ; AB13
         lda     #$09                            ; AB16
         jsr     L_A2E9                          ; AB18
         lda     #$00                            ; AB1B
-        sta     LoadedObject_XVel               ; AB1D
-        sta     LoadedObject_YVel               ; AB1F
+        sta     LoadedObj_XVel                  ; AB1D
+        sta     LoadedObj_YVel                  ; AB1F
         sta     $50                             ; AB21
 L_AB23: rts                                     ; AB23
 
@@ -48,7 +48,7 @@ L_AB56: and     #$01                            ; AB56
         and     #$40                            ; AB61
         beq     L_ABA4                          ; AB63
         lda     #$00                            ; AB65
-        sta     LoadedObject_YVel               ; AB67
+        sta     LoadedObj_YVel                  ; AB67
         inc     $50                             ; AB69
         jmp     L_AB9E                          ; AB6B
 

@@ -1833,7 +1833,7 @@ NesPrgRom:1C8AE:L_C8AE
 NesPrgRom:1C8B2:L_C8B2
 NesPrgRom:1C8C8:L_C8C8
 NesPrgRom:1C8D6:L_C8D6
-NesPrgRom:1C8DF:ObjSlot_Load:Copies an entire object slot (14 bytes) from the Object Table at $0400 into Slot_Obj*_Copy.\nSlot 0 is always the player so the RAM labels for that slot are named after the player.
+NesPrgRom:1C8DF:ObjSlot_Load:Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*.\nSlot 0 is always the player so the RAM labels for that slot are named after the player.
 NesPrgRom:1C928:L_C928
 NesPrgRom:1C971:L_C971
 NesPrgRom:1C977:L_C977
@@ -2675,14 +2675,14 @@ NesPrgRom:1FCF2:L_FCF2
 NesPrgRom:1FEC0:L_FEC0
 NesPrgRom:1FFD8:L_FFD8
 NesPrgRom:1FFF4:Reset
-NesInternalRam:0046:LoadedObject_Type:Active slot's object type
-NesInternalRam:0048:LoadedObject_X_Pixel:Object X position in pixels.\nType: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
-NesInternalRam:0049:LoadedObject_X_MetaTile:Object X position in MetaTiles (16px)
-NesInternalRam:004A:LoadedObject_Y_Pixel:Object Y position in pixels.\nType: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
-NesInternalRam:004B:LoadedObject_Y_MetaTile:Object Y position in MetaTiles (16px)
-NesInternalRam:004C:LoadedObject_XVel:Object X velocity
-NesInternalRam:004D:LoadedObject_YVel:Object Y velocity
-NesInternalRam:0053:LoadedObject_Health:Entity HP
+NesInternalRam:0046:LoadedObj_Type:Active slot's object type
+NesInternalRam:0048:LoadedObj_X_Pixel:Object X position in pixels.\nType: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+NesInternalRam:0049:LoadedObj_X_MetaTile:Object X position in MetaTiles (16px)
+NesInternalRam:004A:LoadedObj_Y_Pixel:Object Y position in pixels.\nType: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+NesInternalRam:004B:LoadedObj_Y_MetaTile:Object Y position in MetaTiles (16px)
+NesInternalRam:004C:LoadedObj_XVel:Object X velocity
+NesInternalRam:004D:LoadedObj_YVel:Object Y velocity
+NesInternalRam:0053:LoadedObj_Health:Entity HP
 NesInternalRam:0056:ObjectSlot_Offset:Byte offset of the active slot
 NesInternalRam:0057:ObjectSlot_Index:Index of the active slot
 NesInternalRam:0400:PlayerObj_Type:Slot 0 (player) ObjType. Also the object-table base for $0400,X indexed access across all 18 slots.

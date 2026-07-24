@@ -66,7 +66,7 @@ L_AD63: sta     $50                             ; AD63
 L_AD65: lda     $47                             ; AD65
         ldy     #$24                            ; AD67
         jsr     LE1B1                           ; AD69
-        sta     LoadedObject_XVel               ; AD6C
+        sta     LoadedObj_XVel                  ; AD6C
         lda     #$24                            ; AD6E
         ldx     $50                             ; AD70
         cpx     #$02                            ; AD72
@@ -77,7 +77,7 @@ L_AD65: lda     $47                             ; AD65
 L_AD7A: tay                                     ; AD7A
         lda     $47                             ; AD7B
         jsr     LE1B7                           ; AD7D
-        sta     LoadedObject_YVel               ; AD80
+        sta     LoadedObj_YVel                  ; AD80
         jsr     LE0ED                           ; AD82
         bmi     L_AD8C                          ; AD85
         lda     #$04                            ; AD87
@@ -86,14 +86,14 @@ L_AD7A: tay                                     ; AD7A
 ; ----------------------------------------------------------------------------
 L_AD8C: lda     #$FC                            ; AD8C
 L_AD8E: clc                                     ; AD8E
-        adc     LoadedObject_XVel               ; AD8F
-        sta     LoadedObject_XVel               ; AD91
+        adc     LoadedObj_XVel                  ; AD8F
+        sta     LoadedObj_XVel                  ; AD91
         jsr     LD2DE                           ; AD93
         jsr     LD37D                           ; AD96
         jsr     LD2FE                           ; AD99
         jsr     LD3E1                           ; AD9C
         beq     L_ADA9                          ; AD9F
-        lda     LoadedObject_YVel               ; ADA1
+        lda     LoadedObj_YVel                  ; ADA1
         bpl     L_ADA9                          ; ADA3
         lda     #$00                            ; ADA5
         sta     $50                             ; ADA7

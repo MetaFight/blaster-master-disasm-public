@@ -63,7 +63,7 @@ L_AC98: cmp     #$01                            ; AC98
         eor     #$FF                            ; ACAB
         clc                                     ; ACAD
         adc     #$01                            ; ACAE
-L_ACB0: ldx     LoadedObject_XVel               ; ACB0
+L_ACB0: ldx     LoadedObj_XVel                  ; ACB0
         bmi     L_ACBB                          ; ACB2
         eor     #$FF                            ; ACB4
         clc                                     ; ACB6

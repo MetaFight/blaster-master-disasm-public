@@ -6,8 +6,8 @@ L_B494: jmp     L_B4A2                          ; B494
         lda     #$17                            ; B497
         jsr     L_A2E9                          ; B499
         lda     #$00                            ; B49C
-        sta     LoadedObject_XVel               ; B49E
-        sta     LoadedObject_YVel               ; B4A0
+        sta     LoadedObj_XVel                  ; B49E
+        sta     LoadedObj_YVel                  ; B4A0
 L_B4A2: rts                                     ; B4A2
 
 ; ----------------------------------------------------------------------------
@@ -21,7 +21,7 @@ LB4A3:  jmp     L_B508                          ; B4A3
         jsr     LE120                           ; B4AE
         ldx     #$02                            ; B4B1
         jsr     LE06A                           ; B4B3
-        sta     LoadedObject_YVel               ; B4B6
+        sta     LoadedObj_YVel                  ; B4B6
         lda     #$0A                            ; B4B8
         ldx     #$4D                            ; B4BA
         jsr     LEB14                           ; B4BC
@@ -29,7 +29,7 @@ LB4A3:  jmp     L_B508                          ; B4A3
         pha                                     ; B4C2
         ldx     #$02                            ; B4C3
         jsr     LE06A                           ; B4C5
-        sta     LoadedObject_XVel               ; B4C8
+        sta     LoadedObj_XVel                  ; B4C8
         pla                                     ; B4CA
         bpl     L_B4D2                          ; B4CB
         eor     #$FF                            ; B4CD
@@ -59,8 +59,8 @@ L_B4EE: lda     $11                             ; B4EE
         jsr     LE1D5                           ; B4F7
         jsr     LE196                           ; B4FA
         clc                                     ; B4FD
-        adc     LoadedObject_YVel               ; B4FE
-        sta     LoadedObject_YVel               ; B500
+        adc     LoadedObj_YVel                  ; B4FE
+        sta     LoadedObj_YVel                  ; B500
         jsr     LDF68                           ; B502
         jsr     L_A2D4                          ; B505
 L_B508: lda     #$10                            ; B508
@@ -75,11 +75,11 @@ L_B508: lda     #$10                            ; B508
 L_B518: lda     #$17                            ; B518
         jsr     L_A30A                          ; B51A
         beq     L_B529                          ; B51D
-        inc     LoadedObject_Type               ; B51F
+        inc     LoadedObj_Type                  ; B51F
         lda     #$40                            ; B521
         sta     $51                             ; B523
         lda     #$00                            ; B525
-        sta     LoadedObject_YVel               ; B527
+        sta     LoadedObj_YVel                  ; B527
 L_B529: lda     #$01                            ; B529
         jsr     LE04E                           ; B52B
         lda     $11                             ; B52E

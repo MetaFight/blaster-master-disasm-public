@@ -5368,42 +5368,42 @@ LABEL {
 };
 
 LABEL {
-  NAME    "LoadedObject_Type";
+  NAME    "LoadedObj_Type";
   ADDR    $0046;
 };
 
 LABEL {
-  NAME    "LoadedObject_X_Pixel";
+  NAME    "LoadedObj_X_Pixel";
   ADDR    $0048;
 };
 
 LABEL {
-  NAME    "LoadedObject_X_MetaTile";
+  NAME    "LoadedObj_X_MetaTile";
   ADDR    $0049;
 };
 
 LABEL {
-  NAME    "LoadedObject_Y_Pixel";
+  NAME    "LoadedObj_Y_Pixel";
   ADDR    $004A;
 };
 
 LABEL {
-  NAME    "LoadedObject_Y_MetaTile";
+  NAME    "LoadedObj_Y_MetaTile";
   ADDR    $004B;
 };
 
 LABEL {
-  NAME    "LoadedObject_XVel";
+  NAME    "LoadedObj_XVel";
   ADDR    $004C;
 };
 
 LABEL {
-  NAME    "LoadedObject_YVel";
+  NAME    "LoadedObj_YVel";
   ADDR    $004D;
 };
 
 LABEL {
-  NAME    "LoadedObject_Health";
+  NAME    "LoadedObj_Health";
   ADDR    $0053;
 };
 

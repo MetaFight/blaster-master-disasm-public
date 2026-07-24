@@ -25,7 +25,7 @@ LB6F4:  jmp     L_B787                          ; B6F4
         and     #$40                            ; B708
         beq     L_B710                          ; B70A
         lda     #$00                            ; B70C
-        sta     LoadedObject_YVel               ; B70E
+        sta     LoadedObj_YVel                  ; B70E
 L_B710: jsr     L_B82B                          ; B710
         bne     L_B787                          ; B713
         jsr     LE0FA                           ; B715
@@ -79,10 +79,10 @@ L_B76D: lda     $11                             ; B76D
         jsr     L_B81C                          ; B779
         lda     #$00                            ; B77C
         sec                                     ; B77E
-        sbc     LoadedObject_XVel               ; B77F
-        sta     LoadedObject_XVel               ; B781
+        sbc     LoadedObj_XVel                  ; B77F
+        sta     LoadedObj_XVel                  ; B781
         lda     #$00                            ; B783
-        sta     LoadedObject_YVel               ; B785
+        sta     LoadedObj_YVel                  ; B785
 L_B787: lda     #$18                            ; B787
         sta     $40                             ; B789
         lda     #$10                            ; B78B
@@ -175,7 +175,7 @@ L_B81C: jsr     LE0ED                           ; B81C
 
 ; ----------------------------------------------------------------------------
 L_B826: lda     #$F8                            ; B826
-L_B828: sta     LoadedObject_XVel               ; B828
+L_B828: sta     LoadedObj_XVel                  ; B828
         rts                                     ; B82A
 
 ; ----------------------------------------------------------------------------

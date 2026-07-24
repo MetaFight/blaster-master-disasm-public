@@ -6,7 +6,7 @@ L_B62F: jmp     L_B63B                          ; B62F
         lda     #$19                            ; B632
         jsr     L_A2E9                          ; B634
         lda     #$53                            ; B637
-        sta     LoadedObject_Type               ; B639
+        sta     LoadedObj_Type                  ; B639
 L_B63B: rts                                     ; B63B
 
 ; ----------------------------------------------------------------------------
@@ -68,14 +68,14 @@ L_B69C: lda     $11                             ; B69C
         ldy     #$08                            ; B6A0
         jsr     LE1D5                           ; B6A2
         jsr     LE196                           ; B6A5
-        sta     LoadedObject_YVel               ; B6A8
+        sta     LoadedObj_YVel                  ; B6A8
         jsr     LE083                           ; B6AA
         and     #$80                            ; B6AD
         beq     L_B6B8                          ; B6AF
         lda     #$00                            ; B6B1
         sec                                     ; B6B3
-        sbc     LoadedObject_XVel               ; B6B4
-        sta     LoadedObject_XVel               ; B6B6
+        sbc     LoadedObj_XVel                  ; B6B4
+        sta     LoadedObj_XVel                  ; B6B6
 L_B6B8: lda     #$10                            ; B6B8
         sta     $40                             ; B6BA
         lda     #$10                            ; B6BC

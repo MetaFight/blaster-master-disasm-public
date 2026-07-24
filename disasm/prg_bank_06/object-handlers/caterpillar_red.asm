@@ -8,15 +8,15 @@ L_A8D2: jmp     L_A8FA                          ; A8D2
         lda     #$01                            ; A8DA
         sta     $50                             ; A8DC
         lda     #$00                            ; A8DE
-        sta     LoadedObject_YVel               ; A8E0
+        sta     LoadedObj_YVel                  ; A8E0
         lda     #$11                            ; A8E2
-        sta     LoadedObject_XVel               ; A8E4
+        sta     LoadedObj_XVel                  ; A8E4
         jsr     LE0ED                           ; A8E6
         bpl     L_A8F2                          ; A8E9
         lda     #$00                            ; A8EB
         sec                                     ; A8ED
-        sbc     LoadedObject_XVel               ; A8EE
-        sta     LoadedObject_XVel               ; A8F0
+        sbc     LoadedObj_XVel                  ; A8EE
+        sta     LoadedObj_XVel                  ; A8F0
 L_A8F2: lda     #$00                            ; A8F2
         sta     $51                             ; A8F4
         sta     $47                             ; A8F6
@@ -46,7 +46,7 @@ L_A913: lda     $11                             ; A913
         jsr     Enqueue_Sound_Command           ; A91B
 L_A91E: jsr     LE0ED                           ; A91E
         sta     $01                             ; A921
-        eor     LoadedObject_XVel               ; A923
+        eor     LoadedObj_XVel                  ; A923
         bpl     L_A93E                          ; A925
         lda     #$11                            ; A927
         ldx     $01                             ; A929
@@ -54,7 +54,7 @@ L_A91E: jsr     LE0ED                           ; A91E
         eor     #$FF                            ; A92D
         clc                                     ; A92F
         adc     #$01                            ; A930
-L_A932: sta     LoadedObject_XVel               ; A932
+L_A932: sta     LoadedObj_XVel                  ; A932
         jsr     LEB71                           ; A934
         and     #$0F                            ; A937
         clc                                     ; A939
@@ -76,15 +76,15 @@ L_A93E: lda     #$11                            ; A93E
         sta     $52                             ; A95B
         lda     #$00                            ; A95D
         sec                                     ; A95F
-        sbc     LoadedObject_XVel               ; A960
-        sta     LoadedObject_XVel               ; A962
+        sbc     LoadedObj_XVel                  ; A960
+        sta     LoadedObj_XVel                  ; A962
         jmp     L_A994                          ; A964
 
 ; ----------------------------------------------------------------------------
 L_A967: lda     #$29                            ; A967
         jsr     Enqueue_Sound_Command           ; A969
         lda     #$D2                            ; A96C
-        sta     LoadedObject_YVel               ; A96E
+        sta     LoadedObj_YVel                  ; A96E
 L_A970: inc     $50                             ; A970
         jmp     L_A994                          ; A972
 
@@ -98,11 +98,11 @@ L_A975: lda     #$02                            ; A975
         jsr     LE083                           ; A983
         and     #$40                            ; A986
         beq     L_A994                          ; A988
-        lda     LoadedObject_YVel               ; A98A
+        lda     LoadedObj_YVel                  ; A98A
         bmi     L_A994                          ; A98C
         dec     $50                             ; A98E
         lda     #$00                            ; A990
-        sta     LoadedObject_YVel               ; A992
+        sta     LoadedObj_YVel                  ; A992
 L_A994: lda     #$10                            ; A994
         sta     $40                             ; A996
         lda     #$08                            ; A998

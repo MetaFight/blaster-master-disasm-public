@@ -6,7 +6,7 @@ L_B1FF: jmp     L_B20B                          ; B1FF
         lda     #$13                            ; B202
         jsr     L_A2E9                          ; B204
         lda     #$4F                            ; B207
-        sta     LoadedObject_Type               ; B209
+        sta     LoadedObj_Type                  ; B209
 L_B20B: rts                                     ; B20B
 
 ; ----------------------------------------------------------------------------
@@ -59,7 +59,7 @@ LB250:  jmp     L_B26C                          ; B250
         ldy     #$28                            ; B25F
         jsr     LE1D5                           ; B261
         jsr     LE196                           ; B264
-        sta     LoadedObject_YVel               ; B267
+        sta     LoadedObj_YVel                  ; B267
         jsr     LD2DB                           ; B269
 L_B26C: lda     #$10                            ; B26C
         sta     $40                             ; B26E

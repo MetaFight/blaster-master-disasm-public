@@ -70,7 +70,7 @@ _ObjHandler_Tank_77_Shooter_Main__Update__:
 ; signed X-distance to player EOR X-velocity sign: negative = drifting AWAY, so hold fire
 _ObjHandler_Tank_77_Shooter_Main__FireCheck:
         jsr     LE0ED                           ; B02E
-        eor     LoadedObject_XVel               ; B031
+        eor     LoadedObj_XVel                  ; B031
         bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B033
 ; signed Y-distance: negative = player is above, so hold fire (it only shoots level or downward)
         jsr     LE0FA                           ; B035

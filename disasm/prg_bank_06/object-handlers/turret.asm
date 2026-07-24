@@ -56,11 +56,11 @@ L_AAB4: sta     PlayerObj_Facing,x              ; AAB4
         clc                                     ; AABA
         adc     #$01                            ; AABB
         sta     $040B,x                         ; AABD
-        lda     LoadedObject_Y_Pixel            ; AAC0
+        lda     LoadedObj_Y_Pixel               ; AAC0
         clc                                     ; AAC2
         adc     #$40                            ; AAC3
         sta     PlayerObj_Y_Pixel,x             ; AAC5
-        lda     LoadedObject_Y_MetaTile         ; AAC8
+        lda     LoadedObj_Y_MetaTile            ; AAC8
         adc     #$00                            ; AACA
         sta     PlayerObj_Y_MetaTile,x          ; AACC
         lda     #$46                            ; AACF

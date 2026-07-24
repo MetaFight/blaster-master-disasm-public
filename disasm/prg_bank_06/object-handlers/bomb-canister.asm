@@ -6,8 +6,8 @@ L_B832: jmp     L_B842                          ; B832
         lda     #$1B                            ; B835
         jsr     L_A2E9                          ; B837
         lda     #$00                            ; B83A
-        sta     LoadedObject_YVel               ; B83C
-        sta     LoadedObject_XVel               ; B83E
+        sta     LoadedObj_YVel                  ; B83C
+        sta     LoadedObj_XVel                  ; B83E
         sta     $50                             ; B840
 L_B842: rts                                     ; B842
 
@@ -66,7 +66,7 @@ L_B87E: cmp     #$01                            ; B87E
 
 ; ----------------------------------------------------------------------------
 L_B8A2: lda     #$F0                            ; B8A2
-L_B8A4: sta     LoadedObject_XVel               ; B8A4
+L_B8A4: sta     LoadedObj_XVel                  ; B8A4
         jmp     L_B8EF                          ; B8A6
 
 ; ----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ L_B8E0: sta     $51                             ; B8E0
         and     #$40                            ; B8E7
         beq     L_B8EF                          ; B8E9
         lda     #$00                            ; B8EB
-        sta     LoadedObject_YVel               ; B8ED
+        sta     LoadedObj_YVel                  ; B8ED
 L_B8EF: lda     #$10                            ; B8EF
         sta     $40                             ; B8F1
         lda     #$10                            ; B8F3
@@ -114,8 +114,8 @@ L_B8EF: lda     #$10                            ; B8EF
         beq     L_B906                          ; B8FA
         lda     #$00                            ; B8FC
         sec                                     ; B8FE
-        sbc     LoadedObject_XVel               ; B8FF
-        sta     LoadedObject_XVel               ; B901
+        sbc     LoadedObj_XVel                  ; B8FF
+        sta     LoadedObj_XVel                  ; B901
         jmp     LD7F8                           ; B903
 
 ; ----------------------------------------------------------------------------

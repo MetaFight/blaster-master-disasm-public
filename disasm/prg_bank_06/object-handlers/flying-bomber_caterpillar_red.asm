@@ -64,7 +64,7 @@ L_AF96: cmp     #$01                            ; AF96
         eor     #$FF                            ; AFAC
         clc                                     ; AFAE
         adc     #$01                            ; AFAF
-L_AFB1: ldx     LoadedObject_XVel               ; AFB1
+L_AFB1: ldx     LoadedObj_XVel                  ; AFB1
         bmi     L_AFBC                          ; AFB3
         eor     #$FF                            ; AFB5
         clc                                     ; AFB7

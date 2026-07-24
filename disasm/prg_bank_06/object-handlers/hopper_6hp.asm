@@ -16,8 +16,8 @@ L_A7CB: jmp     L_A7ED                          ; A7CB
 L_A7E1: lda     #$B8                            ; A7E1
 L_A7E3: sta     $47                             ; A7E3
         lda     #$00                            ; A7E5
-        sta     LoadedObject_XVel               ; A7E7
-        sta     LoadedObject_YVel               ; A7E9
+        sta     LoadedObj_XVel                  ; A7E7
+        sta     LoadedObj_YVel                  ; A7E9
         sta     $51                             ; A7EB
 L_A7ED: rts                                     ; A7ED
 
@@ -39,7 +39,7 @@ L_A802: lda     #$04                            ; A802
         jsr     LDFA0                           ; A804
         and     #$40                            ; A807
         beq     L_A840                          ; A809
-        lda     LoadedObject_YVel               ; A80B
+        lda     LoadedObj_YVel                  ; A80B
         bpl     L_A840                          ; A80D
         lda     #$0A                            ; A80F
         sta     $51                             ; A811
@@ -47,7 +47,7 @@ L_A802: lda     #$04                            ; A802
         bcc     L_A821                          ; A816
         lda     $11                             ; A818
         bpl     L_A821                          ; A81A
-        inc     LoadedObject_Type               ; A81C
+        inc     LoadedObj_Type                  ; A81C
         jmp     L_A840                          ; A81E
 
 ; ----------------------------------------------------------------------------
