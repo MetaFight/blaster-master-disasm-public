@@ -11,7 +11,7 @@ L_C438: .byte   $A5,$F4,$29,$80,$D0,$0E,$A5,$F4 ; C438
 ; ----------------------------------------------------------------------------
 L_C465: lda     #$00                            ; C465
         sta     $56                             ; C467
-        jsr     L_C8DF                          ; C469
+        jsr     ObjSlot_Load                    ; C469
         lda     $B7                             ; C46C
         cmp     #$01                            ; C46E
         bne     L_C475                          ; C470
@@ -409,7 +409,7 @@ L_C9D6: lda     #$00                            ; C9D6
 L_C9DA: ldx     $56                             ; C9DA
         lda     $0400,x                         ; C9DC
         beq     L_C9EA                          ; C9DF
-        jsr     L_C8DF                          ; C9E1
+        jsr     ObjSlot_Load                    ; C9E1
         jsr     L_D2B9                          ; C9E4
         jsr     L_C928                          ; C9E7
 L_C9EA: lda     $56                             ; C9EA

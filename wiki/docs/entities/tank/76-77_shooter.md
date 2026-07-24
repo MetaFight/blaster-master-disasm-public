@@ -1,7 +1,8 @@
 # Shooter
 
-> ⚠️ **Alpha — not yet fully verified.** This page has been published for early
-> access but has not completed human verification and may still contain errors.
+> ⚠️ **Alpha — not fully verified.** This page is published for early access. It has
+> either not yet completed human verification, or was verified and has since been
+> modified and is awaiting re-verification. It may still contain errors.
 
 
 The tank-section "Gray Shooter" (external name): a small enemy that is launched in a

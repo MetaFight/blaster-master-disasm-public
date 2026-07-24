@@ -61,7 +61,10 @@ L_C5FA: lda     $03F5                           ; C5FA
 
 .macro MAC_L_C8DF
 ; ----------------------------------------------------------------------------
-L_C8DF: ldy     $56                             ; C8DF
+; Copies an entire object slot (14 bytes) from the Object Table at $4000 into Slot_Obj*_Copy.
+; Slot 0 is always the player so the RAM labels for that slot are named after the player.
+ObjSlot_Load:
+        ldy     $56                             ; C8DF
         lda     $0400,y                         ; C8E1
         sta     $46                             ; C8E4
         lda     $0401,y                         ; C8E6
@@ -131,7 +134,7 @@ L_C971: lda     #$00                            ; C971
 L_C977: ldx     $56                             ; C977
         lda     $0400,x                         ; C979
         beq     L_C990                          ; C97C
-        jsr     L_C8DF                          ; C97E
+        jsr     ObjSlot_Load                    ; C97E
         lda     $4F                             ; C981
         beq     L_C987                          ; C983
         dec     $4F                             ; C985

@@ -1,12 +1,12 @@
 .macro MAC_L_AFFC
 ; ----------------------------------------------------------------------------
-; (alpha: not fully human-verified) ObjType $76 — Shooter (Thing $10, 'Gray Shooter'), init.
-; Launches the Shooter on a random straight line: a heading drawn from the RNG and a fixed speed,
-; with its gun already loaded. Every Shooter therefore starts drifting in a different direction,
-; and it is the Main handler's terrain bouncing that turns that into the circling patrol the
-; player sees. TankEnemy_Init advances it to ObjType $77, so this runs for exactly one frame.
-; Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this Init draws nothing.
-; See docs/entities/tank/76-77_shooter.md
+; (alpha: not fully human-verified / pending re-verification) ObjType $76 — Shooter (Thing $10,
+; 'Gray Shooter'), init. Launches the Shooter on a random straight line: a heading drawn from the
+; RNG and a fixed speed, with its gun already loaded. Every Shooter therefore starts drifting in a
+; different direction, and it is the Main handler's terrain bouncing that turns that into the
+; circling patrol the player sees. TankEnemy_Init advances it to ObjType $77, so this runs for
+; exactly one frame. Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this
+; Init draws nothing. See docs/entities/tank/76-77_shooter.md
 ObjHandler_Tank_76_Shooter_Init:
         jmp     _ObjHandler_Tank_76_Shooter_Init__Done; AFFC
 
@@ -32,18 +32,18 @@ _ObjHandler_Tank_76_Shooter_Init__Done:
         rts                                     ; B012
 
 ; ----------------------------------------------------------------------------
-; (alpha: not fully human-verified) ObjType $77 — Shooter (Thing $10), active. A free-drifting
-; enemy that bounces off terrain and shoots Small Red shots at the player, but only while its
-; drift already carries it toward them and only at a player level with or below it — so it never
-; fires backwards or upwards, and spends its time circling until the geometry lines up. Each shot
-; costs a 16-frame recoil during which it holds a distinct pose and cannot fire again. HP 16; on
-; death it explodes and may drop a Health-x1 pickup. Dual-entry: in normal play ($15 == 0) the
-; object loop enters at +3 and runs the whole body; while a fade or freeze is up ($15 != 0) it
-; enters at +0, which skips straight to the hit/render tail. See
+; (alpha: not fully human-verified / pending re-verification) ObjType $77 — Shooter (Thing $10),
+; active. A free-drifting enemy that bounces off terrain and shoots Small Red shots at the player,
+; but only while its drift already carries it toward them and only at a player level with or below
+; it — so it never fires backwards or upwards, and spends its time circling until the geometry
+; lines up. Each shot costs a 16-frame recoil during which it holds a distinct pose and cannot
+; fire again. HP 16; on death it explodes and may drop a Health-x1 pickup. Dual-entry: in normal
+; play ($15 == 0) the object loop enters at +3 and runs the whole body; while a fade or freeze is
+; up ($15 != 0) it enters at +0, which skips straight to the hit/render tail. See
 ; docs/entities/tank/76-77_shooter.md
 ; +0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail
 ObjHandler_Tank_77_Shooter_Main:
-        jmp     _ObjHandler_Tank_77_Shooter_Main__HitCheck; B013
+        jmp     _ObjHandler_Tank_77_Shooter_Main__Render__; B013
 
 ; ----------------------------------------------------------------------------
 ; Normal-play body — drift, then decide whether to fire  [+3 body entry]
@@ -63,7 +63,7 @@ _ObjHandler_Tank_77_Shooter_Main__Update__:
         dec     $52                             ; B025
         lda     #$00                            ; B027
         sta     $50                             ; B029
-        jmp     _ObjHandler_Tank_77_Shooter_Main__HitCheck; B02B
+        jmp     _ObjHandler_Tank_77_Shooter_Main__Render__; B02B
 
 ; ----------------------------------------------------------------------------
 ; Fire gate — both aim conditions must hold, else fall through unfired
@@ -90,7 +90,7 @@ _ObjHandler_Tank_77_Shooter_Main__SetActive:
         sta     $50                             ; B049
 ; Shared hit/render tail — also the +0 (fade/freeze) entry
 ; $40/$41 = $10: 16×16 hitbox
-_ObjHandler_Tank_77_Shooter_Main__HitCheck:
+_ObjHandler_Tank_77_Shooter_Main__Render__:
         lda     #$10                            ; B04B
         sta     $40                             ; B04D
         lda     #$10                            ; B04F

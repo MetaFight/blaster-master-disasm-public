@@ -93,7 +93,7 @@ L_C3AA: jsr     L_C772                          ; C3AA
         beq     L_C3D5                          ; C3C6
         lda     #$00                            ; C3C8
         sta     $56                             ; C3CA
-        jsr     L_C8DF                          ; C3CC
+        jsr     ObjSlot_Load                    ; C3CC
         jsr     L0000                           ; C3CF
         jmp     L_C465                          ; C3D2
 

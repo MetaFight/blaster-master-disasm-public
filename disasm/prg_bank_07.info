@@ -1125,8 +1125,9 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_C8DF";
+  NAME    "ObjSlot_Load";
   ADDR    $C8DF;
+  COMMENT "Copies an entire object slot (14 bytes) from the Object Table at $4000 into Slot_Obj*_Copy.\n; Slot 0 is always the player so the RAM labels for that slot are named after the player.";
 };
 
 LABEL {
