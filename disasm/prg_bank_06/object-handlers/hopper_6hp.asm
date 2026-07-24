@@ -14,10 +14,10 @@ L_A7CB: jmp     L_A7ED                          ; A7CB
 
 ; ----------------------------------------------------------------------------
 L_A7E1: lda     #$B8                            ; A7E1
-L_A7E3: sta     $47                             ; A7E3
+L_A7E3: sta     LoadedObj_Facing                ; A7E3
         lda     #$00                            ; A7E5
-        sta     LoadedObj_XVel                  ; A7E7
-        sta     LoadedObj_YVel                  ; A7E9
+        sta     LoadedObj_Velocity_X            ; A7E7
+        sta     LoadedObj_Velocity_Y            ; A7E9
         sta     $51                             ; A7EB
 L_A7ED: rts                                     ; A7ED
 
@@ -39,7 +39,7 @@ L_A802: lda     #$04                            ; A802
         jsr     LDFA0                           ; A804
         and     #$40                            ; A807
         beq     L_A840                          ; A809
-        lda     LoadedObj_YVel                  ; A80B
+        lda     LoadedObj_Velocity_Y            ; A80B
         bpl     L_A840                          ; A80D
         lda     #$0A                            ; A80F
         sta     $51                             ; A811
@@ -60,7 +60,7 @@ L_A821: lda     #$29                            ; A821
 
 ; ----------------------------------------------------------------------------
 L_A830: lda     #$B8                            ; A830
-L_A832: sta     $47                             ; A832
+L_A832: sta     LoadedObj_Facing                ; A832
         jsr     LEB71                           ; A834
         and     #$0F                            ; A837
         clc                                     ; A839

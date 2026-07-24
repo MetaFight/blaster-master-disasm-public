@@ -25,7 +25,7 @@ LB6F4:  jmp     L_B787                          ; B6F4
         and     #$40                            ; B708
         beq     L_B710                          ; B70A
         lda     #$00                            ; B70C
-        sta     LoadedObj_YVel                  ; B70E
+        sta     LoadedObj_Velocity_Y            ; B70E
 L_B710: jsr     L_B82B                          ; B710
         bne     L_B787                          ; B713
         jsr     LE0FA                           ; B715
@@ -58,18 +58,18 @@ L_B72D: lda     $11                             ; B72D
 ; ----------------------------------------------------------------------------
 L_B74B: lda     #$A8                            ; B74B
 L_B74D: ldx     $09                             ; B74D
-        sta     PlayerObj_Facing,x              ; B74F
+        sta     ObjectTable + ObjSlot::Facing,x ; B74F
         jsr     LEB71                           ; B752
         ldx     #$04                            ; B755
         jsr     LE06A                           ; B757
         ldx     $09                             ; B75A
         clc                                     ; B75C
-        adc     PlayerObj_Facing,x              ; B75D
-        sta     PlayerObj_Facing,x              ; B760
+        adc     ObjectTable + ObjSlot::Facing,x ; B75D
+        sta     ObjectTable + ObjSlot::Facing,x ; B760
         lda     #$28                            ; B763
         sta     $040B,x                         ; B765
         lda     #$46                            ; B768
-        sta     PlayerObj_Type,x                ; B76A
+        sta     ObjectTable + ObjSlot::Type,x   ; B76A
 L_B76D: lda     $11                             ; B76D
         cmp     #$55                            ; B76F
         bne     L_B787                          ; B771
@@ -79,10 +79,10 @@ L_B76D: lda     $11                             ; B76D
         jsr     L_B81C                          ; B779
         lda     #$00                            ; B77C
         sec                                     ; B77E
-        sbc     LoadedObj_XVel                  ; B77F
-        sta     LoadedObj_XVel                  ; B781
+        sbc     LoadedObj_Velocity_X            ; B77F
+        sta     LoadedObj_Velocity_X            ; B781
         lda     #$00                            ; B783
-        sta     LoadedObj_YVel                  ; B785
+        sta     LoadedObj_Velocity_Y            ; B785
 L_B787: lda     #$18                            ; B787
         sta     $40                             ; B789
         lda     #$10                            ; B78B
@@ -175,7 +175,7 @@ L_B81C: jsr     LE0ED                           ; B81C
 
 ; ----------------------------------------------------------------------------
 L_B826: lda     #$F8                            ; B826
-L_B828: sta     LoadedObj_XVel                  ; B828
+L_B828: sta     LoadedObj_Velocity_X            ; B828
         rts                                     ; B82A
 
 ; ----------------------------------------------------------------------------

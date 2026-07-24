@@ -8,18 +8,18 @@ L_A3E2: jmp     L_A40A                          ; A3E2
         lda     #$01                            ; A3EA
         sta     $50                             ; A3EC
         lda     #$00                            ; A3EE
-        sta     LoadedObj_YVel                  ; A3F0
+        sta     LoadedObj_Velocity_Y            ; A3F0
         lda     #$0F                            ; A3F2
-        sta     LoadedObj_XVel                  ; A3F4
+        sta     LoadedObj_Velocity_X            ; A3F4
         jsr     LE0ED                           ; A3F6
         bpl     L_A402                          ; A3F9
         lda     #$00                            ; A3FB
         sec                                     ; A3FD
-        sbc     LoadedObj_XVel                  ; A3FE
-        sta     LoadedObj_XVel                  ; A400
+        sbc     LoadedObj_Velocity_X            ; A3FE
+        sta     LoadedObj_Velocity_X            ; A400
 L_A402: lda     #$00                            ; A402
         sta     $51                             ; A404
-        sta     $47                             ; A406
+        sta     LoadedObj_Facing                ; A406
         sta     $52                             ; A408
 L_A40A: rts                                     ; A40A
 
@@ -46,7 +46,7 @@ L_A423: lda     $11                             ; A423
         jsr     Enqueue_Sound_Command           ; A42B
 L_A42E: jsr     LE0ED                           ; A42E
         sta     $01                             ; A431
-        eor     LoadedObj_XVel                  ; A433
+        eor     LoadedObj_Velocity_X            ; A433
         bpl     L_A44E                          ; A435
         lda     #$0F                            ; A437
         ldx     $01                             ; A439
@@ -54,7 +54,7 @@ L_A42E: jsr     LE0ED                           ; A42E
         eor     #$FF                            ; A43D
         clc                                     ; A43F
         adc     #$01                            ; A440
-L_A442: sta     LoadedObj_XVel                  ; A442
+L_A442: sta     LoadedObj_Velocity_X            ; A442
         jsr     LEB71                           ; A444
         and     #$0F                            ; A447
         clc                                     ; A449
@@ -76,15 +76,15 @@ L_A44E: lda     #$11                            ; A44E
         sta     $52                             ; A46B
         lda     #$00                            ; A46D
         sec                                     ; A46F
-        sbc     LoadedObj_XVel                  ; A470
-        sta     LoadedObj_XVel                  ; A472
+        sbc     LoadedObj_Velocity_X            ; A470
+        sta     LoadedObj_Velocity_X            ; A472
         jmp     L_A4A4                          ; A474
 
 ; ----------------------------------------------------------------------------
 L_A477: lda     #$29                            ; A477
         jsr     Enqueue_Sound_Command           ; A479
         lda     #$E0                            ; A47C
-        sta     LoadedObj_YVel                  ; A47E
+        sta     LoadedObj_Velocity_Y            ; A47E
 L_A480: inc     $50                             ; A480
         jmp     L_A4A4                          ; A482
 
@@ -98,11 +98,11 @@ L_A485: lda     #$02                            ; A485
         jsr     LE083                           ; A493
         and     #$40                            ; A496
         beq     L_A4A4                          ; A498
-        lda     LoadedObj_YVel                  ; A49A
+        lda     LoadedObj_Velocity_Y            ; A49A
         bmi     L_A4A4                          ; A49C
         dec     $50                             ; A49E
         lda     #$00                            ; A4A0
-        sta     LoadedObj_YVel                  ; A4A2
+        sta     LoadedObj_Velocity_Y            ; A4A2
 L_A4A4: lda     #$10                            ; A4A4
         sta     $40                             ; A4A6
         lda     #$08                            ; A4A8
@@ -124,11 +124,11 @@ L_A4BE: lda     #$01                            ; A4BE
         bpl     L_A4D3                          ; A4C5
         lda     #$0C                            ; A4C7
         sta     $51                             ; A4C9
-        dec     $47                             ; A4CB
+        dec     LoadedObj_Facing                ; A4CB
         bpl     L_A4D3                          ; A4CD
         lda     #$02                            ; A4CF
-        sta     $47                             ; A4D1
-L_A4D3: ldx     $47                             ; A4D3
+        sta     LoadedObj_Facing                ; A4D1
+L_A4D3: ldx     LoadedObj_Facing                ; A4D3
         lda     LA4DB,x                         ; A4D5
         jmp     LF011                           ; A4D8
 

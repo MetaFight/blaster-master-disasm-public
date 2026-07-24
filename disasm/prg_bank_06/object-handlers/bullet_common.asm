@@ -16,7 +16,7 @@ L_A683: and     #$03                            ; A683
         bpl     L_A68F                          ; A68B
         eor     #$C0                            ; A68D
 L_A68F: tax                                     ; A68F
-        lda     $47                             ; A690
+        lda     LoadedObj_Facing                ; A690
         cpx     #$00                            ; A692
         bne     L_A69C                          ; A694
         sec                                     ; A696
@@ -28,7 +28,7 @@ L_A69C: cpx     #$C0                            ; A69C
         bne     L_A6B9                          ; A69E
         clc                                     ; A6A0
         adc     #$40                            ; A6A1
-L_A6A3: sta     $47                             ; A6A3
+L_A6A3: sta     LoadedObj_Facing                ; A6A3
         ldy     $05                             ; A6A5
         jsr     LE1BD                           ; A6A7
         jmp     L_A6B9                          ; A6AA

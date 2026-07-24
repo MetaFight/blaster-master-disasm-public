@@ -29,9 +29,9 @@ LB63C:  jmp     L_B66F                          ; B63C
         jsr     L_A29E                          ; B65B
         beq     L_B66F                          ; B65E
         lda     #$87                            ; B660
-        sta     PlayerObj_Type,x                ; B662
+        sta     ObjectTable + ObjSlot::Type,x   ; B662
         lda     #$00                            ; B665
-        sta     PlayerObj_YVel,x                ; B667
+        sta     ObjectTable + ObjSlot::Velocity_Y,x ; B667
         lda     #$24                            ; B66A
         jsr     Enqueue_Sound_Command           ; B66C
 L_B66F: lda     #$10                            ; B66F
@@ -68,14 +68,14 @@ L_B69C: lda     $11                             ; B69C
         ldy     #$08                            ; B6A0
         jsr     LE1D5                           ; B6A2
         jsr     LE196                           ; B6A5
-        sta     LoadedObj_YVel                  ; B6A8
+        sta     LoadedObj_Velocity_Y            ; B6A8
         jsr     LE083                           ; B6AA
         and     #$80                            ; B6AD
         beq     L_B6B8                          ; B6AF
         lda     #$00                            ; B6B1
         sec                                     ; B6B3
-        sbc     LoadedObj_XVel                  ; B6B4
-        sta     LoadedObj_XVel                  ; B6B6
+        sbc     LoadedObj_Velocity_X            ; B6B4
+        sta     LoadedObj_Velocity_X            ; B6B6
 L_B6B8: lda     #$10                            ; B6B8
         sta     $40                             ; B6BA
         lda     #$10                            ; B6BC

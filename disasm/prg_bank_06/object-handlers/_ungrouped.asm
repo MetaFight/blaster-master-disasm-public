@@ -15,7 +15,7 @@ L_8124: jmp     L_815B                          ; 8124
         rts                                     ; 813B
 
 ; ----------------------------------------------------------------------------
-L_813C: lda     LoadedObj_X_MetaTile            ; 813C
+L_813C: lda     LoadedObj_Position_X_MetaTile   ; 813C
         sec                                     ; 813E
         sbc     $1D                             ; 813F
         clc                                     ; 8141
@@ -23,7 +23,7 @@ L_813C: lda     LoadedObj_X_MetaTile            ; 813C
         and     #$7F                            ; 8144
         cmp     #$20                            ; 8146
         bcs     L_8158                          ; 8148
-        lda     LoadedObj_Y_MetaTile            ; 814A
+        lda     LoadedObj_Position_Y_MetaTile   ; 814A
         sec                                     ; 814C
         sbc     $1F                             ; 814D
         clc                                     ; 814F
@@ -44,7 +44,7 @@ L_A237: jmp     L_A24C                          ; A237
 
 ; ----------------------------------------------------------------------------
         lda     $9D                             ; A23A
-        sta     $47                             ; A23C
+        sta     LoadedObj_Facing                ; A23C
         lda     $9E                             ; A23E
         tay                                     ; A240
         jsr     LE1BD                           ; A241

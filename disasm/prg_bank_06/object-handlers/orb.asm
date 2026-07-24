@@ -7,7 +7,7 @@ L_AE78: jmp     L_AE94                          ; AE78
         jsr     L_A2E9                          ; AE7D
         jsr     LEB71                           ; AE80
         and     #$80                            ; AE83
-        sta     $47                             ; AE85
+        sta     LoadedObj_Facing                ; AE85
         ldy     #$10                            ; AE87
         jsr     LE1BD                           ; AE89
         lda     #$00                            ; AE8C
@@ -40,7 +40,7 @@ L_AEB3: lda     $11                             ; AEB3
         jsr     LEB71                           ; AEB9
         bcc     L_AF03                          ; AEBC
         lda     #$08                            ; AEBE
-        sta     LoadedObj_YVel                  ; AEC0
+        sta     LoadedObj_Velocity_Y            ; AEC0
         jsr     LEB71                           ; AEC2
         bmi     L_AED5                          ; AEC5
         lda     #$00                            ; AEC7
@@ -49,8 +49,8 @@ L_AEB3: lda     $11                             ; AEB3
         sta     $52                             ; AECC
         lda     #$00                            ; AECE
         sec                                     ; AED0
-        sbc     LoadedObj_YVel                  ; AED1
-        sta     LoadedObj_YVel                  ; AED3
+        sbc     LoadedObj_Velocity_Y            ; AED1
+        sta     LoadedObj_Velocity_Y            ; AED3
 L_AED5: lda     #$01                            ; AED5
         sta     $50                             ; AED7
         jmp     L_AF03                          ; AED9
@@ -90,7 +90,7 @@ L_AF13: lda     #$0E                            ; AF13
 ; ----------------------------------------------------------------------------
 L_AF1D: lda     #$01                            ; AF1D
         sta     $44                             ; AF1F
-        lda     $47                             ; AF21
+        lda     LoadedObj_Facing                ; AF21
         ldx     #$05                            ; AF23
         jsr     LE060                           ; AF25
         and     #$07                            ; AF28

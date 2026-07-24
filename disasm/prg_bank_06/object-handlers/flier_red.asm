@@ -29,9 +29,9 @@ LB20C:  jmp     L_B23F                          ; B20C
         jsr     L_A29E                          ; B22B
         beq     L_B23F                          ; B22E
         lda     #$7C                            ; B230
-        sta     PlayerObj_Type,x                ; B232
+        sta     ObjectTable + ObjSlot::Type,x   ; B232
         lda     #$00                            ; B235
-        sta     PlayerObj_YVel,x                ; B237
+        sta     ObjectTable + ObjSlot::Velocity_Y,x ; B237
         lda     #$24                            ; B23A
         jsr     Enqueue_Sound_Command           ; B23C
 L_B23F: lda     #$10                            ; B23F
@@ -59,7 +59,7 @@ LB250:  jmp     L_B26C                          ; B250
         ldy     #$28                            ; B25F
         jsr     LE1D5                           ; B261
         jsr     LE196                           ; B264
-        sta     LoadedObj_YVel                  ; B267
+        sta     LoadedObj_Velocity_Y            ; B267
         jsr     LD2DB                           ; B269
 L_B26C: lda     #$10                            ; B26C
         sta     $40                             ; B26E

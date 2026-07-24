@@ -19,7 +19,7 @@ _ObjHandler_Tank_76_Shooter_Init__Update__:
         jsr     L_A2E9                          ; B001
 ; $47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG
         jsr     LEB71                           ; B004
-        sta     $47                             ; B007
+        sta     LoadedObj_Facing                ; B007
 ; speed $14, converted with the heading into the velocity pair $4C/$4D. This is the only place the
 ; Shooter's velocity is set; nothing steers it afterwards
         ldy     #$14                            ; B009
@@ -70,7 +70,7 @@ _ObjHandler_Tank_77_Shooter_Main__Update__:
 ; signed X-distance to player EOR X-velocity sign: negative = drifting AWAY, so hold fire
 _ObjHandler_Tank_77_Shooter_Main__FireCheck:
         jsr     LE0ED                           ; B02E
-        eor     LoadedObj_XVel                  ; B031
+        eor     LoadedObj_Velocity_X            ; B031
         bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B033
 ; signed Y-distance: negative = player is above, so hold fire (it only shoots level or downward)
         jsr     LE0FA                           ; B035

@@ -36,11 +36,11 @@ LBAA4:  jmp     L_BACF                          ; BAA4
         sta     $9D                             ; BABE
         lda     #$30                            ; BAC0
         sta     $9E                             ; BAC2
-        inc     LoadedObj_Y_MetaTile            ; BAC4
+        inc     LoadedObj_Position_Y_MetaTile   ; BAC4
         lda     #$48                            ; BAC6
         sta     $A0                             ; BAC8
         jsr     LDF46                           ; BACA
-        dec     LoadedObj_Y_MetaTile            ; BACD
+        dec     LoadedObj_Position_Y_MetaTile   ; BACD
 L_BACF: lda     #$1E                            ; BACF
         sta     $D4                             ; BAD1
         lda     #$20                            ; BAD3
@@ -225,7 +225,7 @@ L_BC0C: ldy     #$02                            ; BC0C
         lda     ($A6),y                         ; BC0E
         jsr     LDF0F                           ; BC10
         lda     #$2C                            ; BC13
-        sta     PlayerObj_Type,x                ; BC15
+        sta     ObjectTable + ObjSlot::Type,x   ; BC15
 L_BC18: lda     #$4C                            ; BC18
         sta     LoadedObj_Type                  ; BC1A
         rts                                     ; BC1C

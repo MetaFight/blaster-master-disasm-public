@@ -31,11 +31,11 @@ L_C334: lda     #$00                            ; C334
         sta     $B7                             ; C33A
         sta     $C3                             ; C33C
         sta     $90                             ; C33E
-        sta     LoadedObj_XVel                  ; C340
-        sta     LoadedObj_YVel                  ; C342
+        sta     LoadedObj_Velocity_X            ; C340
+        sta     LoadedObj_Velocity_Y            ; C342
         sta     $50                             ; C344
         sta     $4F                             ; C346
-        sta     $47                             ; C348
+        sta     LoadedObj_Facing                ; C348
         sta     $94                             ; C34A
         sta     $8F                             ; C34C
         lda     #$FF                            ; C34E
@@ -51,9 +51,9 @@ L_C35E: lda     #$00                            ; C35E
         jsr     L_C659                          ; C368
         jsr     L_E6FA                          ; C36B
         jsr     L_EA03                          ; C36E
-        lda     LoadedObj_X_Pixel               ; C371
+        lda     LoadedObj_Position_X_Pixel      ; C371
         sta     $1C                             ; C373
-        lda     LoadedObj_X_MetaTile            ; C375
+        lda     LoadedObj_Position_X_MetaTile   ; C375
         sta     $1D                             ; C377
         sec                                     ; C379
         lda     $1C                             ; C37A
@@ -62,9 +62,9 @@ L_C35E: lda     #$00                            ; C35E
         lda     $1D                             ; C380
         sbc     #$08                            ; C382
         sta     $1D                             ; C384
-        lda     LoadedObj_Y_Pixel               ; C386
+        lda     LoadedObj_Position_Y_Pixel      ; C386
         sta     $1E                             ; C388
-        lda     LoadedObj_Y_MetaTile            ; C38A
+        lda     LoadedObj_Position_Y_MetaTile   ; C38A
         sta     $1F                             ; C38C
         sec                                     ; C38E
         lda     $1E                             ; C38F

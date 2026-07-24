@@ -4215,32 +4215,37 @@ LABEL {
 };
 
 LABEL {
-  NAME    "LoadedObj_X_Pixel";
+  NAME    "LoadedObj_Facing";
+  ADDR    $0047;
+};
+
+LABEL {
+  NAME    "LoadedObj_Position_X_Pixel";
   ADDR    $0048;
 };
 
 LABEL {
-  NAME    "LoadedObj_X_MetaTile";
+  NAME    "LoadedObj_Position_X_MetaTile";
   ADDR    $0049;
 };
 
 LABEL {
-  NAME    "LoadedObj_Y_Pixel";
+  NAME    "LoadedObj_Position_Y_Pixel";
   ADDR    $004A;
 };
 
 LABEL {
-  NAME    "LoadedObj_Y_MetaTile";
+  NAME    "LoadedObj_Position_Y_MetaTile";
   ADDR    $004B;
 };
 
 LABEL {
-  NAME    "LoadedObj_XVel";
+  NAME    "LoadedObj_Velocity_X";
   ADDR    $004C;
 };
 
 LABEL {
-  NAME    "LoadedObj_YVel";
+  NAME    "LoadedObj_Velocity_Y";
   ADDR    $004D;
 };
 
@@ -4252,50 +4257,5 @@ LABEL {
 LABEL {
   NAME    "ObjectSlot_Index";
   ADDR    $0057;
-};
-
-LABEL {
-  NAME    "PlayerObj_Type";
-  ADDR    $0400;
-};
-
-LABEL {
-  NAME    "PlayerObj_Facing";
-  ADDR    $0401;
-};
-
-LABEL {
-  NAME    "PlayerObj_X_Pixel";
-  ADDR    $0402;
-};
-
-LABEL {
-  NAME    "PlayerObj_X_MetaTile";
-  ADDR    $0403;
-};
-
-LABEL {
-  NAME    "PlayerObj_Y_Pixel";
-  ADDR    $0404;
-};
-
-LABEL {
-  NAME    "PlayerObj_Y_MetaTile";
-  ADDR    $0405;
-};
-
-LABEL {
-  NAME    "PlayerObj_XVel";
-  ADDR    $0406;
-};
-
-LABEL {
-  NAME    "PlayerObj_YVel";
-  ADDR    $0407;
-};
-
-LABEL {
-  NAME    "PlayerObj_Health";
-  ADDR    $040D;
 };
 

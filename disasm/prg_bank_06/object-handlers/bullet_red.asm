@@ -3,20 +3,20 @@
 L_B91A: jmp     L_B949                          ; B91A
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObj_X_MetaTile            ; B91D
+        lda     LoadedObj_Position_X_MetaTile   ; B91D
         lsr     a                               ; B91F
         bcc     L_B92D                          ; B920
         lda     #$A0                            ; B922
         sta     $50                             ; B924
         lda     #$A0                            ; B926
-        sta     $47                             ; B928
+        sta     LoadedObj_Facing                ; B928
         jmp     L_B935                          ; B92A
 
 ; ----------------------------------------------------------------------------
 L_B92D: lda     #$60                            ; B92D
         sta     $50                             ; B92F
         lda     #$E0                            ; B931
-        sta     $47                             ; B933
+        sta     LoadedObj_Facing                ; B933
 L_B935: ldy     #$18                            ; B935
         jsr     LE1BD                           ; B937
         lda     #$00                            ; B93A
@@ -32,20 +32,20 @@ L_B949: rts                                     ; B949
 LB94A:  jmp     L_B979                          ; B94A
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObj_X_MetaTile            ; B94D
+        lda     LoadedObj_Position_X_MetaTile   ; B94D
         lsr     a                               ; B94F
         bcc     L_B95D                          ; B950
         lda     #$A0                            ; B952
         sta     $50                             ; B954
         lda     #$20                            ; B956
-        sta     $47                             ; B958
+        sta     LoadedObj_Facing                ; B958
         jmp     L_B965                          ; B95A
 
 ; ----------------------------------------------------------------------------
 L_B95D: lda     #$60                            ; B95D
         sta     $50                             ; B95F
         lda     #$60                            ; B961
-        sta     $47                             ; B963
+        sta     LoadedObj_Facing                ; B963
 L_B965: ldy     #$18                            ; B965
         jsr     LE1BD                           ; B967
         lda     #$00                            ; B96A
@@ -80,12 +80,12 @@ L_B998: jsr     LE120                           ; B998
         beq     L_B9C0                          ; B9A2
 L_B9A4: lda     $50                             ; B9A4
         clc                                     ; B9A6
-        adc     $47                             ; B9A7
+        adc     LoadedObj_Facing                ; B9A7
         sta     $01                             ; B9A9
         jsr     L_A634                          ; B9AB
         cpx     $01                             ; B9AE
         bne     L_B9C0                          ; B9B0
-        stx     $47                             ; B9B2
+        stx     LoadedObj_Facing                ; B9B2
         ldy     #$60                            ; B9B4
         jsr     LE1BD                           ; B9B6
         lda     #$10                            ; B9B9
@@ -112,7 +112,7 @@ L_B9D0: lda     #$1C                            ; B9D0
 L_B9DA: lda     $50                             ; B9DA
         and     #$80                            ; B9DC
         sta     $00                             ; B9DE
-        lda     $47                             ; B9E0
+        lda     LoadedObj_Facing                ; B9E0
         sec                                     ; B9E2
         sbc     #$20                            ; B9E3
         lsr     a                               ; B9E5
@@ -164,8 +164,8 @@ L_BA19: jsr     LE083                           ; BA19
 L_BA2C: lda     #$A0                            ; BA2C
         ldx     #$A0                            ; BA2E
 L_BA30: clc                                     ; BA30
-        adc     $47                             ; BA31
-        sta     $47                             ; BA33
+        adc     LoadedObj_Facing                ; BA31
+        sta     LoadedObj_Facing                ; BA33
         stx     $50                             ; BA35
         ldy     #$18                            ; BA37
         jsr     LE1BD                           ; BA39
@@ -190,7 +190,7 @@ L_BA53: lda     #$1C                            ; BA53
         jmp     L_A34D                          ; BA5A
 
 ; ----------------------------------------------------------------------------
-L_BA5D: lda     $47                             ; BA5D
+L_BA5D: lda     LoadedObj_Facing                ; BA5D
         lsr     a                               ; BA5F
         lsr     a                               ; BA60
         lsr     a                               ; BA61

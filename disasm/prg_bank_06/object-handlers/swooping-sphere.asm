@@ -47,12 +47,12 @@ L_AD31: jsr     LEB71                           ; AD31
 L_AD40: lda     #$FE                            ; AD40
 L_AD42: sta     $52                             ; AD42
         lda     #$40                            ; AD44
-        sta     $47                             ; AD46
+        sta     LoadedObj_Facing                ; AD46
         inc     $50                             ; AD48
 L_AD4A: jsr     LE07B                           ; AD4A
         and     #$7F                            ; AD4D
         bne     L_AD65                          ; AD4F
-        lda     $47                             ; AD51
+        lda     LoadedObj_Facing                ; AD51
         eor     $52                             ; AD53
         bpl     L_AD65                          ; AD55
         jsr     LEB71                           ; AD57
@@ -63,10 +63,10 @@ L_AD4A: jsr     LE07B                           ; AD4A
 ; ----------------------------------------------------------------------------
 L_AD61: lda     #$02                            ; AD61
 L_AD63: sta     $50                             ; AD63
-L_AD65: lda     $47                             ; AD65
+L_AD65: lda     LoadedObj_Facing                ; AD65
         ldy     #$24                            ; AD67
         jsr     LE1B1                           ; AD69
-        sta     LoadedObj_XVel                  ; AD6C
+        sta     LoadedObj_Velocity_X            ; AD6C
         lda     #$24                            ; AD6E
         ldx     $50                             ; AD70
         cpx     #$02                            ; AD72
@@ -75,9 +75,9 @@ L_AD65: lda     $47                             ; AD65
         clc                                     ; AD77
         adc     #$02                            ; AD78
 L_AD7A: tay                                     ; AD7A
-        lda     $47                             ; AD7B
+        lda     LoadedObj_Facing                ; AD7B
         jsr     LE1B7                           ; AD7D
-        sta     LoadedObj_YVel                  ; AD80
+        sta     LoadedObj_Velocity_Y            ; AD80
         jsr     LE0ED                           ; AD82
         bmi     L_AD8C                          ; AD85
         lda     #$04                            ; AD87
@@ -86,14 +86,14 @@ L_AD7A: tay                                     ; AD7A
 ; ----------------------------------------------------------------------------
 L_AD8C: lda     #$FC                            ; AD8C
 L_AD8E: clc                                     ; AD8E
-        adc     LoadedObj_XVel                  ; AD8F
-        sta     LoadedObj_XVel                  ; AD91
+        adc     LoadedObj_Velocity_X            ; AD8F
+        sta     LoadedObj_Velocity_X            ; AD91
         jsr     LD2DE                           ; AD93
         jsr     LD37D                           ; AD96
         jsr     LD2FE                           ; AD99
         jsr     LD3E1                           ; AD9C
         beq     L_ADA9                          ; AD9F
-        lda     LoadedObj_YVel                  ; ADA1
+        lda     LoadedObj_Velocity_Y            ; ADA1
         bpl     L_ADA9                          ; ADA3
         lda     #$00                            ; ADA5
         sta     $50                             ; ADA7

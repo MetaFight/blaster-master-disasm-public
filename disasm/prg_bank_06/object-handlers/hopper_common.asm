@@ -8,15 +8,15 @@ L_A86E: jmp     L_A89F                          ; A86E
         lda     #$C0                            ; A875
         sta     $43                             ; A877
         lda     #$00                            ; A879
-        sta     LoadedObj_YVel                  ; A87B
-        lda     LoadedObj_XVel                  ; A87D
+        sta     LoadedObj_Velocity_Y            ; A87B
+        lda     LoadedObj_Velocity_X            ; A87D
         bmi     L_A886                          ; A87F
         lda     #$08                            ; A881
         jmp     L_A888                          ; A883
 
 ; ----------------------------------------------------------------------------
 L_A886: lda     #$F8                            ; A886
-L_A888: sta     LoadedObj_XVel                  ; A888
+L_A888: sta     LoadedObj_Velocity_X            ; A888
         jsr     LE02F                           ; A88A
         jsr     LEB71                           ; A88D
         and     #$3F                            ; A890

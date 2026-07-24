@@ -50,21 +50,21 @@ L_AA96: lda     $52                             ; AA96
         lda     #$80                            ; AAAE
         bne     L_AAB4                          ; AAB0
 L_AAB2: lda     #$00                            ; AAB2
-L_AAB4: sta     PlayerObj_Facing,x              ; AAB4
+L_AAB4: sta     ObjectTable + ObjSlot::Facing,x ; AAB4
         lda     $52                             ; AAB7
         asl     a                               ; AAB9
         clc                                     ; AABA
         adc     #$01                            ; AABB
         sta     $040B,x                         ; AABD
-        lda     LoadedObj_Y_Pixel               ; AAC0
+        lda     LoadedObj_Position_Y_Pixel      ; AAC0
         clc                                     ; AAC2
         adc     #$40                            ; AAC3
-        sta     PlayerObj_Y_Pixel,x             ; AAC5
-        lda     LoadedObj_Y_MetaTile            ; AAC8
+        sta     ObjectTable + ObjSlot::Position_Y_Pixel,x ; AAC5
+        lda     LoadedObj_Position_Y_MetaTile   ; AAC8
         adc     #$00                            ; AACA
-        sta     PlayerObj_Y_MetaTile,x          ; AACC
+        sta     ObjectTable + ObjSlot::Position_Y_MetaTile,x ; AACC
         lda     #$46                            ; AACF
-        sta     PlayerObj_Type,x                ; AAD1
+        sta     ObjectTable + ObjSlot::Type,x   ; AAD1
 L_AAD4: lda     #$10                            ; AAD4
         sta     $40                             ; AAD6
         lda     #$10                            ; AAD8

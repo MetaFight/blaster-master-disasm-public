@@ -3,20 +3,20 @@
 L_A4DE: jmp     L_A50D                          ; A4DE
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObj_X_MetaTile            ; A4E1
+        lda     LoadedObj_Position_X_MetaTile   ; A4E1
         lsr     a                               ; A4E3
         bcc     L_A4F1                          ; A4E4
         lda     #$A0                            ; A4E6
         sta     $50                             ; A4E8
         lda     #$A0                            ; A4EA
-        sta     $47                             ; A4EC
+        sta     LoadedObj_Facing                ; A4EC
         jmp     L_A4F9                          ; A4EE
 
 ; ----------------------------------------------------------------------------
 L_A4F1: lda     #$60                            ; A4F1
         sta     $50                             ; A4F3
         lda     #$E0                            ; A4F5
-        sta     $47                             ; A4F7
+        sta     LoadedObj_Facing                ; A4F7
 L_A4F9: ldy     #$10                            ; A4F9
         jsr     LE1BD                           ; A4FB
         lda     #$00                            ; A4FE
@@ -32,20 +32,20 @@ L_A50D: rts                                     ; A50D
 LA50E:  jmp     L_A539                          ; A50E
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObj_X_MetaTile            ; A511
+        lda     LoadedObj_Position_X_MetaTile   ; A511
         lsr     a                               ; A513
         bcc     L_A521                          ; A514
         lda     #$A0                            ; A516
         sta     $50                             ; A518
         lda     #$20                            ; A51A
-        sta     $47                             ; A51C
+        sta     LoadedObj_Facing                ; A51C
         jmp     L_A529                          ; A51E
 
 ; ----------------------------------------------------------------------------
 L_A521: lda     #$60                            ; A521
         sta     $50                             ; A523
         lda     #$60                            ; A525
-        sta     $47                             ; A527
+        sta     LoadedObj_Facing                ; A527
 L_A529: ldy     #$10                            ; A529
         jsr     LE1BD                           ; A52B
         lda     #$00                            ; A52E
@@ -78,12 +78,12 @@ L_A558: jsr     LE120                           ; A558
         beq     L_A580                          ; A562
 L_A564: lda     $50                             ; A564
         clc                                     ; A566
-        adc     $47                             ; A567
+        adc     LoadedObj_Facing                ; A567
         sta     $01                             ; A569
         jsr     L_A634                          ; A56B
         cpx     $01                             ; A56E
         bne     L_A580                          ; A570
-        stx     $47                             ; A572
+        stx     LoadedObj_Facing                ; A572
         ldy     #$40                            ; A574
         jsr     LE1BD                           ; A576
         lda     #$10                            ; A579
@@ -110,7 +110,7 @@ L_A590: lda     #$01                            ; A590
 L_A59A: lda     $50                             ; A59A
         and     #$80                            ; A59C
         sta     $00                             ; A59E
-        lda     $47                             ; A5A0
+        lda     LoadedObj_Facing                ; A5A0
         sec                                     ; A5A2
         sbc     #$20                            ; A5A3
         lsr     a                               ; A5A5
@@ -163,8 +163,8 @@ L_A5DB: jsr     LE083                           ; A5DB
 L_A5EE: lda     #$A0                            ; A5EE
         ldx     #$A0                            ; A5F0
 L_A5F2: clc                                     ; A5F2
-        adc     $47                             ; A5F3
-        sta     $47                             ; A5F5
+        adc     LoadedObj_Facing                ; A5F3
+        sta     LoadedObj_Facing                ; A5F5
         stx     $50                             ; A5F7
         ldy     #$10                            ; A5F9
         jsr     LE1BD                           ; A5FB
@@ -189,7 +189,7 @@ L_A615: lda     #$02                            ; A615
         jmp     L_A34D                          ; A61C
 
 ; ----------------------------------------------------------------------------
-L_A61F: lda     $47                             ; A61F
+L_A61F: lda     LoadedObj_Facing                ; A61F
         lsr     a                               ; A621
         lsr     a                               ; A622
         lsr     a                               ; A623

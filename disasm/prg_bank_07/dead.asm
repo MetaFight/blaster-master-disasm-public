@@ -9,7 +9,7 @@ L_C7BE: inc     $01                             ; C7BE
 
 .macro MAC_L_E01B
 ; ----------------------------------------------------------------------------
-L_E01B: lda     $47                             ; E01B
+L_E01B: lda     LoadedObj_Facing                ; E01B
         lsr     a                               ; E01D
         lsr     a                               ; E01E
         lsr     a                               ; E01F

@@ -9,50 +9,66 @@
 ; Prose lives in hints.yaml and docs/wip/ram-map.md; the one-liners below are a legend.
 
 ; Active slot's object type
-LoadedObj_Type       := $0046
+LoadedObj_Type                := $0046
+; Which way this object is pointing.
+LoadedObj_Facing              := $0047
 ; Object X position in pixels.
 ; Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
-LoadedObj_X_Pixel    := $0048
+LoadedObj_Position_X_Pixel    := $0048
 ; Object X position in MetaTiles (16px)
-LoadedObj_X_MetaTile := $0049
+LoadedObj_Position_X_MetaTile := $0049
 ; Object Y position in pixels.
 ; Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
-LoadedObj_Y_Pixel    := $004A
+LoadedObj_Position_Y_Pixel    := $004A
 ; Object Y position in MetaTiles (16px)
-LoadedObj_Y_MetaTile := $004B
-; Object X velocity
-LoadedObj_XVel       := $004C
-; Object Y velocity
-LoadedObj_YVel       := $004D
+LoadedObj_Position_Y_MetaTile := $004B
+; Object X velocity in pixels / frame.
+; Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
+LoadedObj_Velocity_X          := $004C
+; Object Y velocity in pixels / frame.
+; Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
+LoadedObj_Velocity_Y          := $004D
 ; Entity HP
-LoadedObj_Health     := $0053
+LoadedObj_Health              := $0053
 ; Byte offset of the active slot
-ObjectSlot_Offset    := $0056
+ObjectSlot_Offset             := $0056
 ; Index of the active slot
-ObjectSlot_Index     := $0057
-; Slot 0 (player) ObjType. Also the object-table base for $0400,X indexed access across all 18
-; slots.
-PlayerObj_Type       := $0400
-; Slot 0 (player) facing; base of $0401,X — the object's DIRECTION byte for every slot. 
-; Encoding is ObjType-defined (8-bit heading angle / 2-bit direction index / facing bit-flags)
-; — see $47 for the full breakdown.
-PlayerObj_Facing     := $0401
-; Player X position in pixels.
-; Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
-PlayerObj_X_Pixel    := $0402
-; Player X position in MetaTiles (16px)
-PlayerObj_X_MetaTile := $0403
-; Player Y position in pixels.
-; Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
-PlayerObj_Y_Pixel    := $0404
-; Player Y position in MetaTiles (16px)
-PlayerObj_Y_MetaTile := $0405
-; Player X velocity in pixels / frame.
-; Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-PlayerObj_XVel       := $0406
-; Player Y velocity in pixels / frame.
-; Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-PlayerObj_YVel       := $0407
-; Player HP (Sophia/Jason). Read by the HUD health gauge (HUD_RenderSprites) and
-; E-Cannister/PickUp grants.
-PlayerObj_Health     := $040D
+ObjectSlot_Index              := $0057
+; ObjSlot: The 14-byte record every active object occupies. 18 are packed at $0400 (the object table); slot 0 is the player.
+.struct ObjSlot
+        Type                .byte   ; +$00 (byte)  Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
+        Facing              .byte   ; +$01 (byte)  Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
+        Position_X_Pixel    .byte   ; +$02 (fixed44)  X position in pixels.
+        Position_X_MetaTile .byte   ; +$03 (byte)  X position in metatiles (16px).
+        Position_Y_Pixel    .byte   ; +$04 (fixed44)  Y position in pixels.
+        Position_Y_MetaTile .byte   ; +$05 (byte)  Y position in metatiles (16px).
+        Velocity_X          .byte   ; +$06 (sfixed44)  X velocity in px/frame (signed 4.4: swww.ffff).
+        Velocity_Y          .byte   ; +$07 (sfixed44)  Y velocity in px/frame (signed 4.4: swww.ffff).
+        .res                5       ; +$08..+$0C
+        Health              .byte   ; +$0D (byte)  HP for this entity.
+.endstruct
+; The object table: 18 ObjSlot records (14 bytes each) packed at $0400-$04FB. Slot 0 is
+; reserved for the player (Sophia/Jason); slots 1-17 hold enemies, projectiles, pickups, gates
+; and other objects. Indexed access ($0400,X with X = ObjectSlot_Offset $56) reaches any slot;
+; direct access is slot 0 (PlayerSlot). Before each AI dispatch ObjSlot_Load copies the active
+; slot to ZP $46-$53; ObjSlot_Save writes it back.
+ObjectTable    := $0400   ; ObjSlot[] base — indexed access (any element)
+PlayerSlot     := $0400   ; element 0 — direct access
+Object_Slot_01 := $040E   ; element 1
+Object_Slot_02 := $041C   ; element 2
+Object_Slot_03 := $042A   ; element 3
+Object_Slot_04 := $0438   ; element 4
+Object_Slot_05 := $0446   ; element 5
+Object_Slot_06 := $0454   ; element 6
+Object_Slot_07 := $0462   ; element 7
+Object_Slot_08 := $0470   ; element 8
+Object_Slot_09 := $047E   ; element 9
+Object_Slot_10 := $048C   ; element 10
+Object_Slot_11 := $049A   ; element 11
+Object_Slot_12 := $04A8   ; element 12
+Object_Slot_13 := $04B6   ; element 13
+Object_Slot_14 := $04C4   ; element 14
+Object_Slot_15 := $04D2   ; element 15
+Object_Slot_16 := $04E0   ; element 16
+Object_Slot_17 := $04EE   ; element 17
+
