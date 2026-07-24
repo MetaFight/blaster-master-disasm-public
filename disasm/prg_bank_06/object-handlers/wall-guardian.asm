@@ -36,11 +36,11 @@ LBAA4:  jmp     L_BACF                          ; BAA4
         sta     $9D                             ; BABE
         lda     #$30                            ; BAC0
         sta     $9E                             ; BAC2
-        inc     $4B                             ; BAC4
+        inc     LoadedObject_Y_MetaTile         ; BAC4
         lda     #$48                            ; BAC6
         sta     $A0                             ; BAC8
         jsr     LDF46                           ; BACA
-        dec     $4B                             ; BACD
+        dec     LoadedObject_Y_MetaTile         ; BACD
 L_BACF: lda     #$1E                            ; BACF
         sta     $D4                             ; BAD1
         lda     #$20                            ; BAD3
@@ -165,10 +165,10 @@ LBB9F:  .byte   $B6,$B4,$B2,$B0,$B0,$B2,$B4,$B6 ; BB9F
 L_BBA7: jsr     L_BBB8                          ; BBA7
         ldy     #$00                            ; BBAA
         lda     ($A6),y                         ; BBAC
-        sta     $53                             ; BBAE
+        sta     LoadedObject_Health             ; BBAE
         sty     $4F                             ; BBB0
         jsr     LD2B9                           ; BBB2
-        inc     $46                             ; BBB5
+        inc     LoadedObject_Type               ; BBB5
         rts                                     ; BBB7
 
 ; ----------------------------------------------------------------------------
@@ -188,7 +188,7 @@ L_BBC7: jsr     L_BBB8                          ; BBC7
         jsr     LD697                           ; BBCE
         sta     $45                             ; BBD1
         bne     L_BBE2                          ; BBD3
-        lda     $53                             ; BBD5
+        lda     LoadedObject_Health             ; BBD5
         bne     L_BBE2                          ; BBD7
         jsr     LD804                           ; BBD9
         jsr     L_BBF5                          ; BBDC
@@ -225,9 +225,9 @@ L_BC0C: ldy     #$02                            ; BC0C
         lda     ($A6),y                         ; BC0E
         jsr     LDF0F                           ; BC10
         lda     #$2C                            ; BC13
-        sta     $0400,x                         ; BC15
+        sta     PlayerObj_Type,x                ; BC15
 L_BC18: lda     #$4C                            ; BC18
-        sta     $46                             ; BC1A
+        sta     LoadedObject_Type               ; BC1A
         rts                                     ; BC1C
 
 ; ----------------------------------------------------------------------------

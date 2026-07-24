@@ -1833,7 +1833,7 @@ NesPrgRom:1C8AE:L_C8AE
 NesPrgRom:1C8B2:L_C8B2
 NesPrgRom:1C8C8:L_C8C8
 NesPrgRom:1C8D6:L_C8D6
-NesPrgRom:1C8DF:ObjSlot_Load:Copies an entire object slot (14 bytes) from the Object Table at $4000 into Slot_Obj*_Copy.\nSlot 0 is always the player so the RAM labels for that slot are named after the player.
+NesPrgRom:1C8DF:ObjSlot_Load:Copies an entire object slot (14 bytes) from the Object Table at $0400 into Slot_Obj*_Copy.\nSlot 0 is always the player so the RAM labels for that slot are named after the player.
 NesPrgRom:1C928:L_C928
 NesPrgRom:1C971:L_C971
 NesPrgRom:1C977:L_C977

@@ -8,7 +8,7 @@ L_C816: lda     #$00                            ; C816
         sta     $3E                             ; C821
         lda     #$C0                            ; C823
         sta     $3F                             ; C825
-        lda     $040D                           ; C827
+        lda     PlayerObj_Health                ; C827
         jsr     L_C841                          ; C82A
         lda     #$01                            ; C82D
         sta     $44                             ; C82F
@@ -69,7 +69,7 @@ L_C880: lda     #$01                            ; C880
         sta     $3E                             ; C88B
         lda     #$C0                            ; C88D
         sta     $3F                             ; C88F
-        lda     $040D                           ; C891
+        lda     PlayerObj_Health                ; C891
         jsr     L_C8AE                          ; C894
         lda     $03FC                           ; C897
         and     #$04                            ; C89A

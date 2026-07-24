@@ -17,7 +17,7 @@ L_C301: lda     #$02                            ; C301
         lda     #$FF                            ; C31B
         sta     $C1                             ; C31D
         lda     #$03                            ; C31F
-        sta     $46                             ; C321
+        sta     LoadedObject_Type               ; C321
         jsr     L_C5B2                          ; C323
 L_C326: lda     $06F3                           ; C326
         asl     a                               ; C329
@@ -31,15 +31,15 @@ L_C334: lda     #$00                            ; C334
         sta     $B7                             ; C33A
         sta     $C3                             ; C33C
         sta     $90                             ; C33E
-        sta     $4C                             ; C340
-        sta     $4D                             ; C342
+        sta     LoadedObject_XVel               ; C340
+        sta     LoadedObject_YVel               ; C342
         sta     $50                             ; C344
         sta     $4F                             ; C346
         sta     $47                             ; C348
         sta     $94                             ; C34A
         sta     $8F                             ; C34C
         lda     #$FF                            ; C34E
-        sta     $53                             ; C350
+        sta     LoadedObject_Health             ; C350
         sta     $03FF                           ; C352
         jsr     L_D7E3                          ; C355
         jsr     L_CBA9                          ; C358
@@ -51,9 +51,9 @@ L_C35E: lda     #$00                            ; C35E
         jsr     L_C659                          ; C368
         jsr     L_E6FA                          ; C36B
         jsr     L_EA03                          ; C36E
-        lda     $48                             ; C371
+        lda     LoadedObject_X_Pixel            ; C371
         sta     $1C                             ; C373
-        lda     $49                             ; C375
+        lda     LoadedObject_X_MetaTile         ; C375
         sta     $1D                             ; C377
         sec                                     ; C379
         lda     $1C                             ; C37A
@@ -62,9 +62,9 @@ L_C35E: lda     #$00                            ; C35E
         lda     $1D                             ; C380
         sbc     #$08                            ; C382
         sta     $1D                             ; C384
-        lda     $4A                             ; C386
+        lda     LoadedObject_Y_Pixel            ; C386
         sta     $1E                             ; C388
-        lda     $4B                             ; C38A
+        lda     LoadedObject_Y_MetaTile         ; C38A
         sta     $1F                             ; C38C
         sec                                     ; C38E
         lda     $1E                             ; C38F
@@ -83,7 +83,7 @@ L_C3AA: jsr     L_C772                          ; C3AA
         lda     #$00                            ; C3AD
         sta     $8E                             ; C3AF
         lda     #$00                            ; C3B1
-        sta     $56                             ; C3B3
+        sta     ObjectSlot_Offset               ; C3B3
         jsr     L_C928                          ; C3B5
         jsr     L_C9D6                          ; C3B8
         jsr     L_D7B6                          ; C3BB
@@ -92,7 +92,7 @@ L_C3AA: jsr     L_C772                          ; C3AA
         bit     LE6E1                           ; C3C3
         beq     L_C3D5                          ; C3C6
         lda     #$00                            ; C3C8
-        sta     $56                             ; C3CA
+        sta     ObjectSlot_Offset               ; C3CA
         jsr     ObjSlot_Load                    ; C3CC
         jsr     L0000                           ; C3CF
         jmp     L_C465                          ; C3D2

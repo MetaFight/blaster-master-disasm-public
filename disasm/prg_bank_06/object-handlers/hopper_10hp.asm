@@ -5,7 +5,7 @@ L_B16E: jmp     L_B18E                          ; B16E
 ; ----------------------------------------------------------------------------
         lda     #$12                            ; B171
         jsr     L_A2E9                          ; B173
-        lda     $49                             ; B176
+        lda     LoadedObject_X_MetaTile         ; B176
         lsr     a                               ; B178
         bcc     L_B180                          ; B179
         lda     #$F4                            ; B17B
@@ -13,9 +13,9 @@ L_B16E: jmp     L_B18E                          ; B16E
 
 ; ----------------------------------------------------------------------------
 L_B180: lda     #$0C                            ; B180
-L_B182: sta     $4C                             ; B182
+L_B182: sta     LoadedObject_XVel               ; B182
         lda     #$00                            ; B184
-        sta     $4D                             ; B186
+        sta     LoadedObject_YVel               ; B186
         lda     #$00                            ; B188
         sta     $50                             ; B18A
         sta     $51                             ; B18C
@@ -77,13 +77,13 @@ L_B1DE: lda     #$11                            ; B1DE
         beq     L_B1F6                          ; B1EA
         lda     #$00                            ; B1EC
         sec                                     ; B1EE
-        sbc     $4C                             ; B1EF
-        sta     $4C                             ; B1F1
+        sbc     LoadedObject_XVel               ; B1EF
+        sta     LoadedObject_XVel               ; B1F1
         jmp     L_B1FE                          ; B1F3
 
 ; ----------------------------------------------------------------------------
 L_B1F6: lda     #$E0                            ; B1F6
-        sta     $4D                             ; B1F8
+        sta     LoadedObject_YVel               ; B1F8
         lda     #$00                            ; B1FA
         sta     $50                             ; B1FC
 L_B1FE: rts                                     ; B1FE

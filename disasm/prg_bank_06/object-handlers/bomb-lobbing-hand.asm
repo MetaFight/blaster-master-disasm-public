@@ -6,11 +6,11 @@ L_B337: jmp     L_B34E                          ; B337
         lda     #$15                            ; B33A
         jsr     L_A2E9                          ; B33C
         sec                                     ; B33F
-        lda     $4A                             ; B340
+        lda     LoadedObject_Y_Pixel            ; B340
         sbc     #$30                            ; B342
-        sta     $4A                             ; B344
+        sta     LoadedObject_Y_Pixel            ; B344
         bcs     L_B34A                          ; B346
-        dec     $4B                             ; B348
+        dec     LoadedObject_Y_MetaTile         ; B348
 L_B34A: lda     #$00                            ; B34A
         sta     $50                             ; B34C
 L_B34E: rts                                     ; B34E
@@ -24,7 +24,7 @@ LB34F:  jmp     L_B3AF                          ; B34F
         lda     #$C0                            ; B356
         sta     $43                             ; B358
         jsr     LE0ED                           ; B35A
-        sta     $4C                             ; B35D
+        sta     LoadedObject_XVel               ; B35D
         bpl     L_B366                          ; B35F
         eor     #$FF                            ; B361
         clc                                     ; B363
@@ -48,7 +48,7 @@ L_B37A: cmp     #$05                            ; B37A
         clc                                     ; B387
         adc     #$08                            ; B388
         sta     $9E                             ; B38A
-        lda     $4C                             ; B38C
+        lda     LoadedObject_XVel               ; B38C
         bmi     L_B395                          ; B38E
         lda     #$F0                            ; B390
         jmp     L_B397                          ; B392

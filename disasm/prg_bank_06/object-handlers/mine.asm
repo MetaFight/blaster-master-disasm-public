@@ -6,8 +6,8 @@ L_A9CB: jmp     L_A9DD                          ; A9CB
         lda     #$07                            ; A9CE
         jsr     L_A2E9                          ; A9D0
         lda     #$00                            ; A9D3
-        sta     $4C                             ; A9D5
-        sta     $4D                             ; A9D7
+        sta     LoadedObject_XVel               ; A9D5
+        sta     LoadedObject_YVel               ; A9D7
         lda     #$01                            ; A9D9
         sta     $50                             ; A9DB
 L_A9DD: rts                                     ; A9DD
@@ -25,7 +25,7 @@ LA9DE:  jmp     L_AA03                          ; A9DE
         jsr     LE005                           ; A9ED
         beq     L_A9F8                          ; A9F0
         lda     #$00                            ; A9F2
-        sta     $4C                             ; A9F4
+        sta     LoadedObject_XVel               ; A9F4
         beq     L_AA03                          ; A9F6
 L_A9F8: inc     $50                             ; A9F8
 L_A9FA: lda     #$11                            ; A9FA

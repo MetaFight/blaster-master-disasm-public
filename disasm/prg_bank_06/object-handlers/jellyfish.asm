@@ -8,9 +8,9 @@ L_B3E3: jmp     L_B3FD                          ; B3E3
         lda     #$B8                            ; B3EB
         sta     $47                             ; B3ED
         lda     #$08                            ; B3EF
-        sta     $4D                             ; B3F1
+        sta     LoadedObject_YVel               ; B3F1
         lda     #$00                            ; B3F3
-        sta     $4C                             ; B3F5
+        sta     LoadedObject_XVel               ; B3F5
         sta     $50                             ; B3F7
         lda     #$40                            ; B3F9
         sta     $51                             ; B3FB
@@ -35,7 +35,7 @@ LB3FE:  jmp     L_B457                          ; B3FE
 L_B418: and     #$40                            ; B418
         beq     L_B420                          ; B41A
         lda     #$04                            ; B41C
-        sta     $4D                             ; B41E
+        sta     LoadedObject_YVel               ; B41E
 L_B420: dec     $51                             ; B420
         bne     L_B457                          ; B422
         lda     #$46                            ; B424
@@ -55,11 +55,11 @@ L_B43A: lda     #$01                            ; B43A
         jsr     LDFD1                           ; B43E
         jsr     LE083                           ; B441
         jsr     L_A2D4                          ; B444
-        lda     $4D                             ; B447
+        lda     LoadedObject_YVel               ; B447
         cmp     #$04                            ; B449
         bcs     L_B457                          ; B44B
         lda     #$04                            ; B44D
-        sta     $4D                             ; B44F
+        sta     LoadedObject_YVel               ; B44F
         dec     $50                             ; B451
         lda     #$70                            ; B453
         sta     $51                             ; B455

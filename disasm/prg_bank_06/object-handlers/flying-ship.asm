@@ -6,15 +6,15 @@ L_ABCF: jmp     L_ABEB                          ; ABCF
         lda     #$0A                            ; ABD2
         jsr     L_A2E9                          ; ABD4
         lda     #$10                            ; ABD7
-        sta     $4C                             ; ABD9
+        sta     LoadedObject_XVel               ; ABD9
         lda     #$00                            ; ABDB
-        sta     $4D                             ; ABDD
+        sta     LoadedObject_YVel               ; ABDD
         jsr     LE0ED                           ; ABDF
         bpl     L_ABEB                          ; ABE2
         lda     #$00                            ; ABE4
         sec                                     ; ABE6
-        sbc     $4C                             ; ABE7
-        sta     $4C                             ; ABE9
+        sbc     LoadedObject_XVel               ; ABE7
+        sta     LoadedObject_XVel               ; ABE9
 L_ABEB: rts                                     ; ABEB
 
 ; ----------------------------------------------------------------------------

@@ -8,7 +8,7 @@ L_9B95: nop                                     ; 9B95
         lda     #$0A                            ; 9B9C
         sta     $51                             ; 9B9E
         lda     #$4B                            ; 9BA0
-        sta     $46                             ; 9BA2
+        sta     LoadedObject_Type               ; 9BA2
         lda     #$28                            ; 9BA4
         jsr     Enqueue_Sound_Command           ; 9BA6
         rts                                     ; 9BA9
@@ -51,7 +51,7 @@ L_9BD8: nop                                     ; 9BD8
         lda     #$0C                            ; 9BDF
         sta     $51                             ; 9BE1
         lda     #$4D                            ; 9BE3
-        sta     $46                             ; 9BE5
+        sta     LoadedObject_Type               ; 9BE5
         lda     #$28                            ; 9BE7
         jsr     Enqueue_Sound_Command           ; 9BE9
         rts                                     ; 9BEC

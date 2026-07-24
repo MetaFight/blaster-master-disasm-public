@@ -8,9 +8,9 @@ L_ADE4: jmp     L_ADFE                          ; ADE4
         lda     #$B8                            ; ADEC
         sta     $47                             ; ADEE
         lda     #$08                            ; ADF0
-        sta     $4D                             ; ADF2
+        sta     LoadedObject_YVel               ; ADF2
         lda     #$00                            ; ADF4
-        sta     $4C                             ; ADF6
+        sta     LoadedObject_XVel               ; ADF6
         sta     $50                             ; ADF8
         lda     #$40                            ; ADFA
         sta     $51                             ; ADFC
@@ -46,11 +46,11 @@ L_AE2F: lda     #$02                            ; AE2F
         jsr     LDFA0                           ; AE31
         bpl     L_AE39                          ; AE34
         jsr     LE0D8                           ; AE36
-L_AE39: lda     $4D                             ; AE39
+L_AE39: lda     LoadedObject_YVel               ; AE39
         cmp     #$04                            ; AE3B
         bcs     L_AE49                          ; AE3D
         lda     #$04                            ; AE3F
-        sta     $4D                             ; AE41
+        sta     LoadedObject_YVel               ; AE41
         dec     $50                             ; AE43
         lda     #$40                            ; AE45
         sta     $51                             ; AE47

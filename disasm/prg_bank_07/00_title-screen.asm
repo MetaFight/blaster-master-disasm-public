@@ -15,7 +15,7 @@ L_C267: sta     L0000,x                         ; C267
         sta     $0100,x                         ; C269
         sta     $0200,x                         ; C26C
         sta     $0300,x                         ; C26F
-        sta     $0400,x                         ; C272
+        sta     PlayerObj_Type,x                ; C272
         sta     $0500,x                         ; C275
         sta     $0600,x                         ; C278
         sta     $0700,x                         ; C27B

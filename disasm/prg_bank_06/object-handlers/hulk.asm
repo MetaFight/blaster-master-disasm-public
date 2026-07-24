@@ -5,7 +5,7 @@ L_A74B: jmp     L_A769                          ; A74B
 ; ----------------------------------------------------------------------------
         lda     #$04                            ; A74E
         jsr     L_A2E9                          ; A750
-        lda     $49                             ; A753
+        lda     LoadedObject_X_MetaTile         ; A753
         lsr     a                               ; A755
         bcc     L_A75D                          ; A756
         lda     #$F4                            ; A758
@@ -13,9 +13,9 @@ L_A74B: jmp     L_A769                          ; A74B
 
 ; ----------------------------------------------------------------------------
 L_A75D: lda     #$0C                            ; A75D
-L_A75F: sta     $4C                             ; A75F
+L_A75F: sta     LoadedObject_XVel               ; A75F
         lda     #$00                            ; A761
-        sta     $4D                             ; A763
+        sta     LoadedObject_YVel               ; A763
         sta     $50                             ; A765
         sta     $51                             ; A767
 L_A769: rts                                     ; A769
@@ -35,9 +35,9 @@ LA76A:  jmp     L_A79E                          ; A76A
         inc     $50                             ; A77E
 L_A780: jsr     LDF68                           ; A780
         jsr     LE0ED                           ; A783
-        eor     $4C                             ; A786
+        eor     LoadedObject_XVel               ; A786
         bmi     L_A79B                          ; A788
-        lda     $4C                             ; A78A
+        lda     LoadedObject_XVel               ; A78A
         and     #$80                            ; A78C
         sta     $9D                             ; A78E
         lda     #$20                            ; A790

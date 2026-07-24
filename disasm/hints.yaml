@@ -16420,7 +16420,7 @@ hints:
     offset: 0x1C8DF
     name: ObjSlot_Load
     desc: |-
-      Copies an entire object slot (14 bytes) from the Object Table at $4000 into Slot_Obj*_Copy.
+      Copies an entire object slot (14 bytes) from the Object Table at $0400 into Slot_Obj*_Copy.
       Slot 0 is always the player so the RAM labels for that slot are named after the player.
     status: verified
   - space: prg

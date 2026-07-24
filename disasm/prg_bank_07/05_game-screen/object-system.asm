@@ -1,18 +1,18 @@
 .macro MAC_L_C5B2
 ; ----------------------------------------------------------------------------
-L_C5B2: lda     $48                             ; C5B2
+L_C5B2: lda     LoadedObject_X_Pixel            ; C5B2
         sta     $03F5                           ; C5B4
-        lda     $49                             ; C5B7
+        lda     LoadedObject_X_MetaTile         ; C5B7
         sta     $03F6                           ; C5B9
-        lda     $4A                             ; C5BC
+        lda     LoadedObject_Y_Pixel            ; C5BC
         sta     $03F7                           ; C5BE
-        lda     $4B                             ; C5C1
+        lda     LoadedObject_Y_MetaTile         ; C5C1
         sta     $03F8                           ; C5C3
         lda     $14                             ; C5C6
         sta     $03F9                           ; C5C8
         lda     $C1                             ; C5CB
         sta     $03FA                           ; C5CD
-        lda     $46                             ; C5D0
+        lda     LoadedObject_Type               ; C5D0
         sta     $0350                           ; C5D2
         lda     $03D0                           ; C5D5
         sta     $0378                           ; C5D8
@@ -30,19 +30,19 @@ L_C5B2: lda     $48                             ; C5B2
 
 ; ----------------------------------------------------------------------------
 L_C5FA: lda     $03F5                           ; C5FA
-        sta     $48                             ; C5FD
+        sta     LoadedObject_X_Pixel            ; C5FD
         lda     $03F6                           ; C5FF
-        sta     $49                             ; C602
+        sta     LoadedObject_X_MetaTile         ; C602
         lda     $03F7                           ; C604
-        sta     $4A                             ; C607
+        sta     LoadedObject_Y_Pixel            ; C607
         lda     $03F8                           ; C609
-        sta     $4B                             ; C60C
+        sta     LoadedObject_Y_MetaTile         ; C60C
         lda     $03F9                           ; C60E
         sta     $14                             ; C611
         lda     $03FA                           ; C613
         sta     $C1                             ; C616
         lda     $0350                           ; C618
-        sta     $46                             ; C61B
+        sta     LoadedObject_Type               ; C61B
         lda     $0378                           ; C61D
         sta     $03D0                           ; C620
         lda     $0379                           ; C623
@@ -61,26 +61,26 @@ L_C5FA: lda     $03F5                           ; C5FA
 
 .macro MAC_L_C8DF
 ; ----------------------------------------------------------------------------
-; Copies an entire object slot (14 bytes) from the Object Table at $4000 into Slot_Obj*_Copy.
+; Copies an entire object slot (14 bytes) from the Object Table at $0400 into Slot_Obj*_Copy.
 ; Slot 0 is always the player so the RAM labels for that slot are named after the player.
 ObjSlot_Load:
-        ldy     $56                             ; C8DF
-        lda     $0400,y                         ; C8E1
-        sta     $46                             ; C8E4
-        lda     $0401,y                         ; C8E6
+        ldy     ObjectSlot_Offset               ; C8DF
+        lda     PlayerObj_Type,y                ; C8E1
+        sta     LoadedObject_Type               ; C8E4
+        lda     PlayerObj_Facing,y              ; C8E6
         sta     $47                             ; C8E9
-        lda     $0402,y                         ; C8EB
-        sta     $48                             ; C8EE
-        lda     $0403,y                         ; C8F0
-        sta     $49                             ; C8F3
-        lda     $0404,y                         ; C8F5
-        sta     $4A                             ; C8F8
-        lda     $0405,y                         ; C8FA
-        sta     $4B                             ; C8FD
-        lda     $0406,y                         ; C8FF
-        sta     $4C                             ; C902
-        lda     $0407,y                         ; C904
-        sta     $4D                             ; C907
+        lda     PlayerObj_X_Pixel,y             ; C8EB
+        sta     LoadedObject_X_Pixel            ; C8EE
+        lda     PlayerObj_X_MetaTile,y          ; C8F0
+        sta     LoadedObject_X_MetaTile         ; C8F3
+        lda     PlayerObj_Y_Pixel,y             ; C8F5
+        sta     LoadedObject_Y_Pixel            ; C8F8
+        lda     PlayerObj_Y_MetaTile,y          ; C8FA
+        sta     LoadedObject_Y_MetaTile         ; C8FD
+        lda     PlayerObj_XVel,y                ; C8FF
+        sta     LoadedObject_XVel               ; C902
+        lda     PlayerObj_YVel,y                ; C904
+        sta     LoadedObject_YVel               ; C907
         lda     $0408,y                         ; C909
         sta     $4E                             ; C90C
         lda     $0409,y                         ; C90E
@@ -91,28 +91,28 @@ ObjSlot_Load:
         sta     $51                             ; C91B
         lda     $040C,y                         ; C91D
         sta     $52                             ; C920
-        lda     $040D,y                         ; C922
-        sta     $53                             ; C925
+        lda     PlayerObj_Health,y              ; C922
+        sta     LoadedObject_Health             ; C925
         rts                                     ; C927
 
 ; ----------------------------------------------------------------------------
-L_C928: ldy     $56                             ; C928
-        lda     $46                             ; C92A
-        sta     $0400,y                         ; C92C
+L_C928: ldy     ObjectSlot_Offset               ; C928
+        lda     LoadedObject_Type               ; C92A
+        sta     PlayerObj_Type,y                ; C92C
         lda     $47                             ; C92F
-        sta     $0401,y                         ; C931
-        lda     $48                             ; C934
-        sta     $0402,y                         ; C936
-        lda     $49                             ; C939
-        sta     $0403,y                         ; C93B
-        lda     $4A                             ; C93E
-        sta     $0404,y                         ; C940
-        lda     $4B                             ; C943
-        sta     $0405,y                         ; C945
-        lda     $4C                             ; C948
-        sta     $0406,y                         ; C94A
-        lda     $4D                             ; C94D
-        sta     $0407,y                         ; C94F
+        sta     PlayerObj_Facing,y              ; C931
+        lda     LoadedObject_X_Pixel            ; C934
+        sta     PlayerObj_X_Pixel,y             ; C936
+        lda     LoadedObject_X_MetaTile         ; C939
+        sta     PlayerObj_X_MetaTile,y          ; C93B
+        lda     LoadedObject_Y_Pixel            ; C93E
+        sta     PlayerObj_Y_Pixel,y             ; C940
+        lda     LoadedObject_Y_MetaTile         ; C943
+        sta     PlayerObj_Y_MetaTile,y          ; C945
+        lda     LoadedObject_XVel               ; C948
+        sta     PlayerObj_XVel,y                ; C94A
+        lda     LoadedObject_YVel               ; C94D
+        sta     PlayerObj_YVel,y                ; C94F
         lda     $4E                             ; C952
         sta     $0408,y                         ; C954
         lda     $4F                             ; C957
@@ -123,16 +123,16 @@ L_C928: ldy     $56                             ; C928
         sta     $040B,y                         ; C963
         lda     $52                             ; C966
         sta     $040C,y                         ; C968
-        lda     $53                             ; C96B
-        sta     $040D,y                         ; C96D
+        lda     LoadedObject_Health             ; C96B
+        sta     PlayerObj_Health,y              ; C96D
         rts                                     ; C970
 
 ; ----------------------------------------------------------------------------
 L_C971: lda     #$00                            ; C971
-        sta     $56                             ; C973
-        sta     $57                             ; C975
-L_C977: ldx     $56                             ; C977
-        lda     $0400,x                         ; C979
+        sta     ObjectSlot_Offset               ; C973
+        sta     ObjectSlot_Index                ; C975
+L_C977: ldx     ObjectSlot_Offset               ; C977
+        lda     PlayerObj_Type,x                ; C979
         beq     L_C990                          ; C97C
         jsr     ObjSlot_Load                    ; C97E
         lda     $4F                             ; C981
@@ -141,12 +141,12 @@ L_C977: ldx     $56                             ; C977
 L_C987: jsr     L_C9A4                          ; C987
         jsr     L_C928                          ; C98A
         jsr     L_EC73                          ; C98D
-L_C990: lda     $56                             ; C990
+L_C990: lda     ObjectSlot_Offset               ; C990
         clc                                     ; C992
         adc     #$0E                            ; C993
-        sta     $56                             ; C995
-        inc     $57                             ; C997
-        lda     $57                             ; C999
+        sta     ObjectSlot_Offset               ; C995
+        inc     ObjectSlot_Index                ; C997
+        lda     ObjectSlot_Index                ; C999
         cmp     #$12                            ; C99B
         bcc     L_C977                          ; C99D
         lda     #$00                            ; C99F
@@ -169,7 +169,7 @@ L_C9AE: txa                                     ; C9AE
         lsr     a                               ; C9B7
         and     #$0F                            ; C9B8
         sta     $D3                             ; C9BA
-        lda     $46                             ; C9BC
+        lda     LoadedObject_Type               ; C9BC
         sec                                     ; C9BE
         sbc     #$01                            ; C9BF
         jsr     L_EB51                          ; C9C1
@@ -187,15 +187,15 @@ L_C9D3: jmp     (L007A)                         ; C9D3
 
 .macro MAC_L_D7F8
 ; ----------------------------------------------------------------------------
-L_D7F8: ldx     $57                             ; D7F8
-        lda     $46                             ; D7FA
+L_D7F8: ldx     ObjectSlot_Index                ; D7F8
+        lda     LoadedObject_Type               ; D7FA
         sta     $0150,x                         ; D7FC
         lda     #$02                            ; D7FF
-        sta     $46                             ; D801
+        sta     LoadedObject_Type               ; D801
         rts                                     ; D803
 
 ; ----------------------------------------------------------------------------
-L_D804: ldy     $57                             ; D804
+L_D804: ldy     ObjectSlot_Index                ; D804
         cpy     #$08                            ; D806
         bcc     L_D81C                          ; D808
         inc     $C6                             ; D80A
@@ -207,16 +207,16 @@ L_D804: ldy     $57                             ; D804
         lda     #$FF                            ; D817
         sta     $F8,y                           ; D819
 L_D81C: lda     #$00                            ; D81C
-        sta     $46                             ; D81E
+        sta     LoadedObject_Type               ; D81E
         sta     $4F                             ; D820
         rts                                     ; D822
 
 ; ----------------------------------------------------------------------------
-L_D823: ldy     $57                             ; D823
+L_D823: ldy     ObjectSlot_Index                ; D823
         lda     #$FF                            ; D825
         sta     $F8,y                           ; D827
         bne     L_D81C                          ; D82A
-L_D82C: lda     $57                             ; D82C
+L_D82C: lda     ObjectSlot_Index                ; D82C
         sec                                     ; D82E
         sbc     #$01                            ; D82F
         cmp     #$05                            ; D831
@@ -225,13 +225,13 @@ L_D82C: lda     $57                             ; D82C
         jmp     L_D81C                          ; D838
 
 ; ----------------------------------------------------------------------------
-L_D83B: lda     $49                             ; D83B
+L_D83B: lda     LoadedObject_X_MetaTile         ; D83B
         sta     L0000                           ; D83D
-        lda     $4B                             ; D83F
+        lda     LoadedObject_Y_MetaTile         ; D83F
         sta     $01                             ; D841
-        lda     $0403                           ; D843
+        lda     PlayerObj_X_MetaTile            ; D843
         sta     $02                             ; D846
-        lda     $0405                           ; D848
+        lda     PlayerObj_Y_MetaTile            ; D848
         sta     $03                             ; D84B
         jsr     L_D02D                          ; D84D
         rts                                     ; D850
@@ -249,7 +249,7 @@ L_D851: pha                                     ; D851
         pla                                     ; D862
         tax                                     ; D863
         pla                                     ; D864
-        sta     $0400,x                         ; D865
+        sta     PlayerObj_Type,x                ; D865
         rts                                     ; D868
 
 ; ----------------------------------------------------------------------------
@@ -261,10 +261,10 @@ L_D869: pla                                     ; D869
 L_D86D: ldx     #$4C                            ; D86D
         lda     #$40                            ; D86F
         jsr     L_EB14                          ; D871
-        lda     $4D                             ; D874
+        lda     LoadedObject_YVel               ; D874
         sec                                     ; D876
         sbc     #$40                            ; D877
-        sta     $4D                             ; D879
+        sta     LoadedObject_YVel               ; D879
         ldx     #$4D                            ; D87B
         lda     #$40                            ; D87D
         jsr     L_EB14                          ; D87F
@@ -291,8 +291,8 @@ L_DF24: lda     #$00                            ; DF24
 
 ; ----------------------------------------------------------------------------
 L_DF27: ldy     #$00                            ; DF27
-L_DF29: lda     $46,y                           ; DF29
-        sta     $0400,x                         ; DF2C
+L_DF29: lda     LoadedObject_Type,y             ; DF29
+        sta     PlayerObj_Type,x                ; DF2C
         inx                                     ; DF2F
         iny                                     ; DF30
         cpy     #$0E                            ; DF31
@@ -318,7 +318,7 @@ L_DF46: lda     L0000                           ; DF46
         jsr     L_D7CF                          ; DF4F
         beq     L_DF62                          ; DF52
         lda     $A0                             ; DF54
-        sta     $0400,x                         ; DF56
+        sta     PlayerObj_Type,x                ; DF56
         jsr     L_D7C0                          ; DF59
         pla                                     ; DF5C
         sta     L0000                           ; DF5D
@@ -336,8 +336,8 @@ L_DF68: jsr     L_E083                          ; DF68
         bpl     L_DF77                          ; DF6B
         lda     #$00                            ; DF6D
         sec                                     ; DF6F
-        sbc     $4C                             ; DF70
-        sta     $4C                             ; DF72
+        sbc     LoadedObject_XVel               ; DF70
+        sta     LoadedObject_XVel               ; DF72
         jmp     L_DF81                          ; DF74
 
 ; ----------------------------------------------------------------------------
@@ -345,8 +345,8 @@ L_DF77: asl     a                               ; DF77
         bpl     L_DF81                          ; DF78
         lda     #$00                            ; DF7A
         sec                                     ; DF7C
-        sbc     $4D                             ; DF7D
-        sta     $4D                             ; DF7F
+        sbc     LoadedObject_YVel               ; DF7D
+        sta     LoadedObject_YVel               ; DF7F
 L_DF81: lda     $9A                             ; DF81
         rts                                     ; DF83
 
@@ -355,8 +355,8 @@ L_DF84: jsr     L_E0A5                          ; DF84
         bpl     L_DF93                          ; DF87
         lda     #$00                            ; DF89
         sec                                     ; DF8B
-        sbc     $4C                             ; DF8C
-        sta     $4C                             ; DF8E
+        sbc     LoadedObject_XVel               ; DF8C
+        sta     LoadedObject_XVel               ; DF8E
         jmp     L_DF9D                          ; DF90
 
 ; ----------------------------------------------------------------------------
@@ -364,8 +364,8 @@ L_DF93: asl     a                               ; DF93
         bpl     L_DF9D                          ; DF94
         lda     #$00                            ; DF96
         sec                                     ; DF98
-        sbc     $4D                             ; DF99
-        sta     $4D                             ; DF9B
+        sbc     LoadedObject_YVel               ; DF99
+        sta     LoadedObject_YVel               ; DF9B
 L_DF9D: lda     $9A                             ; DF9D
         rts                                     ; DF9F
 
@@ -381,9 +381,9 @@ L_DFA0: ldy     #$00                            ; DFA0
 ; ----------------------------------------------------------------------------
 L_DFAC: pla                                     ; DFAC
         clc                                     ; DFAD
-        adc     $4D                             ; DFAE
+        adc     LoadedObject_YVel               ; DFAE
         bvs     L_DFB4                          ; DFB0
-        sta     $4D                             ; DFB2
+        sta     LoadedObject_YVel               ; DFB2
 L_DFB4: jsr     L_DF84                          ; DFB4
         and     #$40                            ; DFB7
         beq     L_DFC0                          ; DFB9
@@ -400,12 +400,12 @@ L_DFC0: lda     #$28                            ; DFC0
 
 ; ----------------------------------------------------------------------------
 L_DFD1: clc                                     ; DFD1
-        adc     $4D                             ; DFD2
-        sta     $4D                             ; DFD4
+        adc     LoadedObject_YVel               ; DFD2
+        sta     LoadedObject_YVel               ; DFD4
         txa                                     ; DFD6
         clc                                     ; DFD7
-        adc     $4C                             ; DFD8
-        sta     $4C                             ; DFDA
+        adc     LoadedObject_XVel               ; DFD8
+        sta     LoadedObject_XVel               ; DFDA
         rts                                     ; DFDC
 
 ; ----------------------------------------------------------------------------
@@ -436,10 +436,10 @@ L_E005: lda     #$02                            ; E005
         jsr     L_DFA0                          ; E007
         asl     a                               ; E00A
         bpl     L_E018                          ; E00B
-        lda     $4D                             ; E00D
+        lda     LoadedObject_YVel               ; E00D
         bpl     L_E018                          ; E00F
         lda     #$00                            ; E011
-        sta     $4D                             ; E013
+        sta     LoadedObject_YVel               ; E013
         lda     #$FF                            ; E015
         rts                                     ; E017
 
@@ -463,21 +463,21 @@ L_E03B: lda     #$11                            ; E03B
         bmi     L_E04D                          ; E040
         lda     #$00                            ; E042
         sec                                     ; E044
-        sbc     $4C                             ; E045
-        sta     $4C                             ; E047
+        sbc     LoadedObject_XVel               ; E045
+        sta     LoadedObject_XVel               ; E047
         lda     #$20                            ; E049
         sta     $51                             ; E04B
 L_E04D: rts                                     ; E04D
 
 ; ----------------------------------------------------------------------------
-L_E04E: ldx     $4C                             ; E04E
+L_E04E: ldx     LoadedObject_XVel               ; E04E
         bmi     L_E054                          ; E050
         eor     #$40                            ; E052
 L_E054: sta     $44                             ; E054
         rts                                     ; E056
 
 ; ----------------------------------------------------------------------------
-L_E057: ldx     $4D                             ; E057
+L_E057: ldx     LoadedObject_YVel               ; E057
         bpl     L_E05D                          ; E059
         eor     #$80                            ; E05B
 L_E05D: sta     $44                             ; E05D
@@ -541,9 +541,9 @@ L_E0C4: lda     $9A                             ; E0C4
 
 ; ----------------------------------------------------------------------------
 L_E0C7: tay                                     ; E0C7
-        lda     $4D                             ; E0C8
+        lda     LoadedObject_YVel               ; E0C8
         jsr     L_E196                          ; E0CA
-        sta     $4D                             ; E0CD
+        sta     LoadedObject_YVel               ; E0CD
         rts                                     ; E0CF
 
 ; ----------------------------------------------------------------------------
@@ -571,21 +571,21 @@ L_E0E5: lda     #$00                            ; E0E5
         rts                                     ; E0EC
 
 ; ----------------------------------------------------------------------------
-L_E0ED: lda     $0402                           ; E0ED
+L_E0ED: lda     PlayerObj_X_Pixel               ; E0ED
         sec                                     ; E0F0
-        sbc     $48                             ; E0F1
+        sbc     LoadedObject_X_Pixel            ; E0F1
         tax                                     ; E0F3
-        lda     $0403                           ; E0F4
-        sbc     $49                             ; E0F7
+        lda     PlayerObj_X_MetaTile            ; E0F4
+        sbc     LoadedObject_X_MetaTile         ; E0F7
         rts                                     ; E0F9
 
 ; ----------------------------------------------------------------------------
-L_E0FA: lda     $0404                           ; E0FA
+L_E0FA: lda     PlayerObj_Y_Pixel               ; E0FA
         sec                                     ; E0FD
-        sbc     $4A                             ; E0FE
+        sbc     LoadedObject_Y_Pixel            ; E0FE
         tax                                     ; E100
-        lda     $0405                           ; E101
-        sbc     $4B                             ; E104
+        lda     PlayerObj_Y_MetaTile            ; E101
+        sbc     LoadedObject_Y_MetaTile         ; E104
         rts                                     ; E106
 
 ; ----------------------------------------------------------------------------
@@ -679,11 +679,11 @@ L_E152: lda     L0000                           ; E152
 L_E1BD: lda     $47                             ; E1BD
         jsr     L_E1D2                          ; E1BF
         jsr     L_E196                          ; E1C2
-        sta     $4C                             ; E1C5
+        sta     LoadedObject_XVel               ; E1C5
         lda     $47                             ; E1C7
         jsr     L_E1D5                          ; E1C9
         jsr     L_E196                          ; E1CC
-        sta     $4D                             ; E1CF
+        sta     LoadedObject_YVel               ; E1CF
         rts                                     ; E1D1
 
 .endmacro

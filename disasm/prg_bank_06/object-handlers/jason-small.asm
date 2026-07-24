@@ -7,7 +7,7 @@ L_815C: jmp     L_848F                          ; 815C
         sta     $42                             ; 8161
         lda     #$80                            ; 8163
         sta     $43                             ; 8165
-        lda     $53                             ; 8167
+        lda     LoadedObject_Health             ; 8167
         bne     L_817A                          ; 8169
         lda     $50                             ; 816B
         cmp     #$01                            ; 816D
@@ -18,7 +18,7 @@ L_815C: jmp     L_848F                          ; 815C
 L_8177: jmp     L_848F                          ; 8177
 
 ; ----------------------------------------------------------------------------
-L_817A: lda     $53                             ; 817A
+L_817A: lda     LoadedObject_Health             ; 817A
         beq     L_819A                          ; 817C
         lda     $F7                             ; 817E
         and     #$03                            ; 8180
@@ -68,7 +68,7 @@ L_81CB: lda     $D9                             ; 81CB
         bne     L_81F4                          ; 81CD
         lda     $50                             ; 81CF
         bne     L_81F4                          ; 81D1
-        lda     $4C                             ; 81D3
+        lda     LoadedObject_XVel               ; 81D3
         beq     L_81F4                          ; 81D5
         bpl     L_81EB                          ; 81D7
         bmi     L_81F2                          ; 81D9
@@ -79,19 +79,19 @@ L_81E1: bit     $47                             ; 81E1
         bvs     L_81F4                          ; 81E3
         bpl     L_81F2                          ; 81E5
         bmi     L_81EB                          ; 81E7
-L_81E9: dec     $4C                             ; 81E9
-L_81EB: dec     $4C                             ; 81EB
+L_81E9: dec     LoadedObject_XVel               ; 81E9
+L_81EB: dec     LoadedObject_XVel               ; 81EB
         jmp     L_81F4                          ; 81ED
 
 ; ----------------------------------------------------------------------------
-L_81F0: inc     $4C                             ; 81F0
-L_81F2: inc     $4C                             ; 81F2
+L_81F0: inc     LoadedObject_XVel               ; 81F0
+L_81F2: inc     LoadedObject_XVel               ; 81F2
 L_81F4: lda     $50                             ; 81F4
         bne     L_820A                          ; 81F6
         lda     $F3                             ; 81F8
         bpl     L_820A                          ; 81FA
         lda     L855E                           ; 81FC
-        sta     $4D                             ; 81FF
+        sta     LoadedObject_YVel               ; 81FF
         lda     #$01                            ; 8201
         sta     $50                             ; 8203
         lda     #$3B                            ; 8205
@@ -111,7 +111,7 @@ L_8217: ldx     #$4C                            ; 8217
         bit     $47                             ; 8225
         bvs     L_823F                          ; 8227
         lda     #$01                            ; 8229
-        bit     $4C                             ; 822B
+        bit     LoadedObject_XVel               ; 822B
         bpl     L_8231                          ; 822D
         lda     #$FF                            ; 822F
 L_8231: jsr     LD2B1                           ; 8231
@@ -122,7 +122,7 @@ L_8231: jsr     LD2B1                           ; 8231
 
 ; ----------------------------------------------------------------------------
 L_823F: lda     #$00                            ; 823F
-        sta     $4C                             ; 8241
+        sta     LoadedObject_XVel               ; 8241
 L_8243: jmp     L_826F                          ; 8243
 
 ; ----------------------------------------------------------------------------
@@ -136,7 +136,7 @@ L_8246: lda     #$80                            ; 8246
         lda     #$00                            ; 8254
         sta     $50                             ; 8256
         lda     #$80                            ; 8258
-        sta     $4A                             ; 825A
+        sta     LoadedObject_Y_Pixel            ; 825A
 L_825C: lda     #$00                            ; 825C
         bit     $47                             ; 825E
         bvs     L_826A                          ; 8260
@@ -144,10 +144,10 @@ L_825C: lda     #$00                            ; 825C
         lda     #$FC                            ; 8264
         bne     L_826A                          ; 8266
 L_8268: lda     #$04                            ; 8268
-L_826A: sta     $4C                             ; 826A
+L_826A: sta     LoadedObject_XVel               ; 826A
         jsr     LD37A                           ; 826C
-L_826F: inc     $4D                             ; 826F
-        inc     $4D                             ; 8271
+L_826F: inc     LoadedObject_YVel               ; 826F
+        inc     LoadedObject_YVel               ; 8271
         lda     #$40                            ; 8273
         ldx     #$4D                            ; 8275
         jsr     LEB14                           ; 8277
@@ -170,10 +170,10 @@ L_828C: sta     $50                             ; 828C
 L_829E: jmp     L_848C                          ; 829E
 
 ; ----------------------------------------------------------------------------
-L_82A1: lda     $4D                             ; 82A1
+L_82A1: lda     LoadedObject_YVel               ; 82A1
         bpl     L_82AC                          ; 82A3
         lda     #$00                            ; 82A5
-        sta     $4D                             ; 82A7
+        sta     LoadedObject_YVel               ; 82A7
         jmp     L_848C                          ; 82A9
 
 ; ----------------------------------------------------------------------------
@@ -181,28 +181,28 @@ L_82AC: lda     $50                             ; 82AC
         cmp     #$01                            ; 82AE
         bne     L_82B4                          ; 82B0
         dec     $50                             ; 82B2
-L_82B4: lda     $4D                             ; 82B4
+L_82B4: lda     LoadedObject_YVel               ; 82B4
         cmp     #$32                            ; 82B6
         bcs     L_82C0                          ; 82B8
         lda     #$00                            ; 82BA
-        sta     $4D                             ; 82BC
+        sta     LoadedObject_YVel               ; 82BC
         beq     L_82E4                          ; 82BE
 L_82C0: lda     #$01                            ; 82C0
         sta     $50                             ; 82C2
         lda     #$08                            ; 82C4
         sta     $4F                             ; 82C6
-        lda     $4D                             ; 82C8
+        lda     LoadedObject_YVel               ; 82C8
         cmp     #$40                            ; 82CA
         bcs     L_82D5                          ; 82CC
-        lda     $53                             ; 82CE
+        lda     LoadedObject_Health             ; 82CE
         sec                                     ; 82D0
         sbc     #$40                            ; 82D1
         bcs     L_82D7                          ; 82D3
 L_82D5: lda     #$00                            ; 82D5
-L_82D7: sta     $53                             ; 82D7
+L_82D7: sta     LoadedObject_Health             ; 82D7
         lda     #$E0                            ; 82D9
-        sta     $4D                             ; 82DB
-        lda     $53                             ; 82DD
+        sta     LoadedObject_YVel               ; 82DB
+        lda     LoadedObject_Health             ; 82DD
         bne     L_82E4                          ; 82DF
         jmp     L_834A                          ; 82E1
 
@@ -229,7 +229,7 @@ L_82FC: txa                                     ; 82FC
         lda     #$02                            ; 8309
         sta     $50                             ; 830B
         lda     #$C0                            ; 830D
-        sta     $4A                             ; 830F
+        sta     LoadedObject_Y_Pixel            ; 830F
         jmp     L_834A                          ; 8311
 
 ; ----------------------------------------------------------------------------
@@ -257,7 +257,7 @@ L_8332: jsr     LD2AB                           ; 8332
 
 ; ----------------------------------------------------------------------------
 L_833C: lda     #$F0                            ; 833C
-        sta     $4D                             ; 833E
+        sta     LoadedObject_YVel               ; 833E
         lda     #$04                            ; 8340
         sta     $50                             ; 8342
         jmp     L_834A                          ; 8344
@@ -268,9 +268,9 @@ L_834A: jmp     L_848C                          ; 834A
 
 ; ----------------------------------------------------------------------------
 L_834D: lda     #$80                            ; 834D
-        sta     $48                             ; 834F
+        sta     LoadedObject_X_Pixel            ; 834F
         lda     #$00                            ; 8351
-        sta     $4C                             ; 8353
+        sta     LoadedObject_XVel               ; 8353
         jsr     LD2AB                           ; 8355
         jsr     LD283                           ; 8358
         beq     L_8363                          ; 835B
@@ -285,12 +285,12 @@ L_8363: ldx     #$00                            ; 8363
         cmp     #$04                            ; 836D
         beq     L_8373                          ; 836F
         ldx     #$F8                            ; 8371
-L_8373: stx     $4D                             ; 8373
+L_8373: stx     LoadedObject_YVel               ; 8373
         jsr     LD2FE                           ; 8375
-        lda     $4D                             ; 8378
+        lda     LoadedObject_YVel               ; 8378
         beq     L_83AE                          ; 837A
         bmi     L_8390                          ; 837C
-        lda     $4A                             ; 837E
+        lda     LoadedObject_Y_Pixel            ; 837E
         bpl     L_83AE                          ; 8380
         lda     #$11                            ; 8382
         jsr     LD2B1                           ; 8384
@@ -298,7 +298,7 @@ L_8373: stx     $4D                             ; 8373
         jsr     LD283                           ; 8389
         beq     L_83AE                          ; 838C
         bne     L_83A4                          ; 838E
-L_8390: lda     $4A                             ; 8390
+L_8390: lda     LoadedObject_Y_Pixel            ; 8390
         bpl     L_83AE                          ; 8392
         cmp     #$90                            ; 8394
         bcs     L_83AE                          ; 8396
@@ -308,7 +308,7 @@ L_8390: lda     $4A                             ; 8390
         jsr     LD283                           ; 839F
         bne     L_83AE                          ; 83A2
 L_83A4: lda     #$80                            ; 83A4
-        sta     $4A                             ; 83A6
+        sta     LoadedObject_Y_Pixel            ; 83A6
         lda     #$00                            ; 83A8
         sta     $50                             ; 83AA
         bne     L_83AE                          ; 83AC
@@ -317,7 +317,7 @@ L_83AE: lda     $F3                             ; 83AE
         lda     #$01                            ; 83B2
         sta     $50                             ; 83B4
         lda     #$E0                            ; 83B6
-        sta     $4D                             ; 83B8
+        sta     LoadedObject_YVel               ; 83B8
 L_83BA: jmp     L_848F                          ; 83BA
 
 ; ----------------------------------------------------------------------------
@@ -332,24 +332,24 @@ L_83BD: lda     #$40                            ; 83BD
 L_83CD: lda     $10                             ; 83CD
         lsr     a                               ; 83CF
         bcs     L_83DF                          ; 83D0
-        lda     $4C                             ; 83D2
+        lda     LoadedObject_XVel               ; 83D2
         beq     L_83DF                          ; 83D4
         bmi     L_83DD                          ; 83D6
-L_83D8: dec     $4C                             ; 83D8
+L_83D8: dec     LoadedObject_XVel               ; 83D8
         jmp     L_83DF                          ; 83DA
 
 ; ----------------------------------------------------------------------------
-L_83DD: inc     $4C                             ; 83DD
+L_83DD: inc     LoadedObject_XVel               ; 83DD
 L_83DF: lda     #$10                            ; 83DF
         ldx     #$4C                            ; 83E1
         jsr     LEB14                           ; 83E3
         jsr     LD37A                           ; 83E6
         beq     L_841B                          ; 83E9
-        lda     $4A                             ; 83EB
+        lda     LoadedObject_Y_Pixel            ; 83EB
         cmp     #$41                            ; 83ED
         bcs     L_841B                          ; 83EF
         lda     #$F0                            ; 83F1
-        bit     $4C                             ; 83F3
+        bit     LoadedObject_XVel               ; 83F3
         bpl     L_83F9                          ; 83F5
         lda     #$EE                            ; 83F7
 L_83F9: jsr     LD2B1                           ; 83F9
@@ -358,56 +358,56 @@ L_83F9: jsr     LD2B1                           ; 83F9
         lda     #$00                            ; 8400
         sta     $50                             ; 8402
         lda     #$80                            ; 8404
-        sta     $4A                             ; 8406
-        dec     $4B                             ; 8408
+        sta     LoadedObject_Y_Pixel            ; 8406
+        dec     LoadedObject_Y_MetaTile         ; 8408
         lda     $4E                             ; 840A
         sec                                     ; 840C
         sbc     #$11                            ; 840D
         sta     $4E                             ; 840F
         lda     #$E0                            ; 8411
-        bit     $4C                             ; 8413
+        bit     LoadedObject_XVel               ; 8413
         bpl     L_8419                          ; 8415
         lda     #$20                            ; 8417
-L_8419: sta     $48                             ; 8419
+L_8419: sta     LoadedObject_X_Pixel            ; 8419
 L_841B: lda     $F7                             ; 841B
         and     #$0C                            ; 841D
         cmp     #$04                            ; 841F
         beq     L_8434                          ; 8421
         cmp     #$08                            ; 8423
         beq     L_842F                          ; 8425
-        lda     $4D                             ; 8427
+        lda     LoadedObject_YVel               ; 8427
         cmp     #$10                            ; 8429
         beq     L_8436                          ; 842B
         bmi     L_8434                          ; 842D
-L_842F: dec     $4D                             ; 842F
+L_842F: dec     LoadedObject_YVel               ; 842F
         jmp     L_8436                          ; 8431
 
 ; ----------------------------------------------------------------------------
-L_8434: inc     $4D                             ; 8434
-L_8436: lda     $4D                             ; 8436
+L_8434: inc     LoadedObject_YVel               ; 8434
+L_8436: lda     LoadedObject_YVel               ; 8436
         bmi     L_8444                          ; 8438
         cmp     #$20                            ; 843A
         bcc     L_844C                          ; 843C
         lda     #$20                            ; 843E
-        sta     $4D                             ; 8440
+        sta     LoadedObject_YVel               ; 8440
         bne     L_844C                          ; 8442
 L_8444: cmp     #$F0                            ; 8444
         bcs     L_844C                          ; 8446
         lda     #$F0                            ; 8448
-        sta     $4D                             ; 844A
+        sta     LoadedObject_YVel               ; 844A
 L_844C: jsr     LD3DE                           ; 844C
         beq     L_8465                          ; 844F
-        lda     $4D                             ; 8451
+        lda     LoadedObject_YVel               ; 8451
         bmi     L_845F                          ; 8453
         lda     #$80                            ; 8455
-        sta     $4A                             ; 8457
+        sta     LoadedObject_Y_Pixel            ; 8457
         lda     #$00                            ; 8459
         sta     $50                             ; 845B
         beq     L_847C                          ; 845D
 L_845F: lda     #$10                            ; 845F
-        sta     $4D                             ; 8461
+        sta     LoadedObject_YVel               ; 8461
         bne     L_847C                          ; 8463
-L_8465: lda     $4A                             ; 8465
+L_8465: lda     LoadedObject_Y_Pixel            ; 8465
         cmp     #$40                            ; 8467
         bcs     L_847C                          ; 8469
         lda     #$EF                            ; 846B
@@ -415,9 +415,9 @@ L_8465: lda     $4A                             ; 8465
         and     #$40                            ; 8470
         bne     L_847C                          ; 8472
         lda     #$40                            ; 8474
-        sta     $4A                             ; 8476
+        sta     LoadedObject_Y_Pixel            ; 8476
         lda     #$08                            ; 8478
-        sta     $4D                             ; 847A
+        sta     LoadedObject_YVel               ; 847A
 L_847C: lda     $F3                             ; 847C
         bpl     L_848C                          ; 847E
         jsr     LD2AB                           ; 8480
@@ -433,12 +433,12 @@ L_848F: lda     #$08                            ; 848F
         jsr     LCBDF                           ; 8497
         jsr     LEF2B                           ; 849A
         jsr     L_85E2                          ; 849D
-        lda     $53                             ; 84A0
+        lda     LoadedObject_Health             ; 84A0
         bne     L_84B6                          ; 84A2
         lda     $4F                             ; 84A4
         bne     L_84B6                          ; 84A6
         lda     #$1C                            ; 84A8
-        sta     $46                             ; 84AA
+        sta     LoadedObject_Type               ; 84AA
         lda     #$00                            ; 84AC
         sta     $51                             ; 84AE
         lda     $C5                             ; 84B0
@@ -461,13 +461,13 @@ L_84B6: lda     $47                             ; 84B6
 
 ; ----------------------------------------------------------------------------
 L_84CF: ldx     #$00                            ; 84CF
-        lda     $4A                             ; 84D1
+        lda     LoadedObject_Y_Pixel            ; 84D1
         bpl     L_84D7                          ; 84D3
         ldx     #$40                            ; 84D5
 L_84D7: stx     $44                             ; 84D7
         lda     #$67                            ; 84D9
         bne     L_8515                          ; 84DB
-L_84DD: lda     $4C                             ; 84DD
+L_84DD: lda     LoadedObject_XVel               ; 84DD
         beq     L_8500                          ; 84DF
         lda     $D9                             ; 84E1
         beq     L_84EB                          ; 84E3
@@ -492,7 +492,7 @@ L_8500: lda     #$60                            ; 8500
         bne     L_8515                          ; 8502
 L_8504: lda     #$61                            ; 8504
         bne     L_8515                          ; 8506
-L_8508: lda     $48                             ; 8508
+L_8508: lda     LoadedObject_X_Pixel            ; 8508
         rol     a                               ; 850A
         rol     a                               ; 850B
         rol     a                               ; 850C
@@ -592,7 +592,7 @@ L85CA:  .byte   $03,$00,$01,$02,$03,$00,$01,$02 ; 85CA
 ; ----------------------------------------------------------------------------
 L_85E2: lda     $4F                             ; 85E2
         bne     L_8621                          ; 85E4
-        lda     $53                             ; 85E6
+        lda     LoadedObject_Health             ; 85E6
         beq     L_8621                          ; 85E8
         lda     #$7F                            ; 85EA
         jsr     LD7A0                           ; 85EC
@@ -611,10 +611,10 @@ L_85FB: and     #$7F                            ; 85FB
         clc                                     ; 8607
         adc     #$01                            ; 8608
         clc                                     ; 860A
-        adc     $53                             ; 860B
+        adc     LoadedObject_Health             ; 860B
         bcs     L_8611                          ; 860D
         lda     #$00                            ; 860F
-L_8611: sta     $53                             ; 8611
+L_8611: sta     LoadedObject_Health             ; 8611
         lda     #$01                            ; 8613
         sta     $50                             ; 8615
         lda     #$20                            ; 8617
@@ -633,9 +633,9 @@ L_8624: lda     $F3                             ; 8624
         lda     $03D4                           ; 862A
         cmp     $14                             ; 862D
         bne     L_8676                          ; 862F
-        lda     $48                             ; 8631
+        lda     LoadedObject_X_Pixel            ; 8631
         sta     $00                             ; 8633
-        lda     $49                             ; 8635
+        lda     LoadedObject_X_MetaTile         ; 8635
         sta     $01                             ; 8637
         sec                                     ; 8639
         lda     $00                             ; 863A
@@ -651,19 +651,19 @@ L_8644: lda     $03D0                           ; 8644
         bne     L_8676                          ; 864F
         lda     $03D3                           ; 8651
         sec                                     ; 8654
-        sbc     $4B                             ; 8655
+        sbc     LoadedObject_Y_MetaTile         ; 8655
         asl     a                               ; 8657
         bne     L_8676                          ; 8658
         lda     #$1D                            ; 865A
-        sta     $46                             ; 865C
+        sta     LoadedObject_Type               ; 865C
         lda     $03D0                           ; 865E
-        sta     $48                             ; 8661
+        sta     LoadedObject_X_Pixel            ; 8661
         lda     $03D1                           ; 8663
-        sta     $49                             ; 8666
+        sta     LoadedObject_X_MetaTile         ; 8666
         lda     #$16                            ; 8668
         sta     $03D6                           ; 866A
         lda     #$E4                            ; 866D
-        sta     $4D                             ; 866F
+        sta     LoadedObject_YVel               ; 866F
         lda     #$3E                            ; 8671
         jsr     Enqueue_Sound_Command           ; 8673
 L_8676: rts                                     ; 8676
@@ -676,26 +676,26 @@ L8677:  jmp     L_86CC                          ; 8677
         sta     $42                             ; 867C
         lda     #$80                            ; 867E
         sta     $43                             ; 8680
-        inc     $4D                             ; 8682
-        inc     $4D                             ; 8684
+        inc     LoadedObject_YVel               ; 8682
+        inc     LoadedObject_YVel               ; 8684
         jsr     LD3DE                           ; 8686
         lda     $03D6                           ; 8689
         bne     L_86CC                          ; 868C
         lda     #$03                            ; 868E
-        sta     $46                             ; 8690
+        sta     LoadedObject_Type               ; 8690
         lda     $03FF                           ; 8692
-        sta     $53                             ; 8695
+        sta     LoadedObject_Health             ; 8695
         lda     #$00                            ; 8697
-        sta     $4C                             ; 8699
-        sta     $4D                             ; 869B
+        sta     LoadedObject_XVel               ; 8699
+        sta     LoadedObject_YVel               ; 869B
         lda     $03D0                           ; 869D
-        sta     $48                             ; 86A0
+        sta     LoadedObject_X_Pixel            ; 86A0
         lda     $03D1                           ; 86A2
-        sta     $49                             ; 86A5
+        sta     LoadedObject_X_MetaTile         ; 86A5
         lda     $03D2                           ; 86A7
-        sta     $4A                             ; 86AA
+        sta     LoadedObject_Y_Pixel            ; 86AA
         lda     $03D3                           ; 86AC
-        sta     $4B                             ; 86AF
+        sta     LoadedObject_Y_MetaTile         ; 86AF
         lda     $03D5                           ; 86B1
         sta     $47                             ; 86B4
         jsr     LD2B9                           ; 86B6
@@ -745,7 +745,7 @@ L_86EE: lda     $1C                             ; 86EE
         ldx     $47                             ; 870A
         bpl     L_8710                          ; 870C
         lda     #$21                            ; 870E
-L_8710: sta     $46                             ; 8710
+L_8710: sta     LoadedObject_Type               ; 8710
         rts                                     ; 8712
 
 ; ----------------------------------------------------------------------------
@@ -757,17 +757,17 @@ L8713:  jmp     L_8737                          ; 8713
         cmp     #$1C                            ; 871A
         bne     L_8737                          ; 871C
         clc                                     ; 871E
-        lda     $48                             ; 871F
+        lda     LoadedObject_X_Pixel            ; 871F
         adc     #$80                            ; 8721
-        sta     $48                             ; 8723
-        lda     $49                             ; 8725
+        sta     LoadedObject_X_Pixel            ; 8723
+        lda     LoadedObject_X_MetaTile         ; 8725
         adc     #$08                            ; 8727
-        sta     $49                             ; 8729
+        sta     LoadedObject_X_MetaTile         ; 8729
         lda     $4E                             ; 872B
         clc                                     ; 872D
         adc     #$09                            ; 872E
         sta     $4E                             ; 8730
-        inc     $46                             ; 8732
+        inc     LoadedObject_Type               ; 8732
         jmp     L_8740                          ; 8734
 
 ; ----------------------------------------------------------------------------
@@ -780,7 +780,7 @@ L873D:  jmp     L_874A                          ; 873D
 ; ----------------------------------------------------------------------------
 L_8740: jsr     LCD28                           ; 8740
         bne     L_8747                          ; 8743
-        inc     $46                             ; 8745
+        inc     LoadedObject_Type               ; 8745
 L_8747: jsr     LD1AD                           ; 8747
 L_874A: jmp     L_88E9                          ; 874A
 
@@ -791,7 +791,7 @@ L874D:  jmp     L_875B                          ; 874D
         dec     $51                             ; 8750
         bne     L_875B                          ; 8752
         lda     #$1B                            ; 8754
-        sta     $46                             ; 8756
+        sta     LoadedObject_Type               ; 8756
         jsr     LC5B2                           ; 8758
 L_875B: jmp     L_87A9                          ; 875B
 
@@ -804,17 +804,17 @@ L875E:  jmp     L_8782                          ; 875E
         cmp     #$1C                            ; 8765
         bne     L_8782                          ; 8767
         sec                                     ; 8769
-        lda     $48                             ; 876A
+        lda     LoadedObject_X_Pixel            ; 876A
         sbc     #$80                            ; 876C
-        sta     $48                             ; 876E
-        lda     $49                             ; 8770
+        sta     LoadedObject_X_Pixel            ; 876E
+        lda     LoadedObject_X_MetaTile         ; 8770
         sbc     #$08                            ; 8772
-        sta     $49                             ; 8774
+        sta     LoadedObject_X_MetaTile         ; 8774
         lda     $4E                             ; 8776
         sec                                     ; 8778
         sbc     #$09                            ; 8779
         sta     $4E                             ; 877B
-        inc     $46                             ; 877D
+        inc     LoadedObject_Type               ; 877D
         jmp     L_878B                          ; 877F
 
 ; ----------------------------------------------------------------------------
@@ -827,7 +827,7 @@ L8788:  jmp     L_8795                          ; 8788
 ; ----------------------------------------------------------------------------
 L_878B: jsr     LCD28                           ; 878B
         bne     L_8792                          ; 878E
-        inc     $46                             ; 8790
+        inc     LoadedObject_Type               ; 8790
 L_8792: jsr     LD1AD                           ; 8792
 L_8795: jmp     L_88E9                          ; 8795
 
@@ -838,7 +838,7 @@ L8798:  jmp     L_87A6                          ; 8798
         dec     $51                             ; 879B
         bne     L_87A6                          ; 879D
         lda     #$1B                            ; 879F
-        sta     $46                             ; 87A1
+        sta     LoadedObject_Type               ; 87A1
         jsr     LC5B2                           ; 87A3
 L_87A6: jmp     L_87DA                          ; 87A6
 
@@ -908,7 +908,7 @@ L_880B: lda     $F3                             ; 880B
         jsr     LD7CF                           ; 8817
         beq     L_8829                          ; 881A
         lda     #$2A                            ; 881C
-        sta     $0400,x                         ; 881E
+        sta     PlayerObj_Type,x                ; 881E
         jsr     LD7C0                           ; 8821
         lda     #$34                            ; 8824
         jsr     Enqueue_Sound_Command           ; 8826
@@ -922,19 +922,19 @@ L882A:  nop                                     ; 882A
         lda     $47                             ; 882F
         bpl     L_8835                          ; 8831
         ldx     #$D0                            ; 8833
-L_8835: stx     $4C                             ; 8835
+L_8835: stx     LoadedObject_XVel               ; 8835
         lda     #$00                            ; 8837
-        sta     $4D                             ; 8839
+        sta     LoadedObject_YVel               ; 8839
         clc                                     ; 883B
-        lda     $4A                             ; 883C
+        lda     LoadedObject_Y_Pixel            ; 883C
         adc     #$20                            ; 883E
-        sta     $4A                             ; 8840
+        sta     LoadedObject_Y_Pixel            ; 8840
         bcc     L_8846                          ; 8842
-        inc     $4B                             ; 8844
+        inc     LoadedObject_Y_MetaTile         ; 8844
 L_8846: jsr     LD2B9                           ; 8846
         lda     #$20                            ; 8849
         sta     $51                             ; 884B
-        inc     $46                             ; 884D
+        inc     LoadedObject_Type               ; 884D
         rts                                     ; 884F
 
 ; ----------------------------------------------------------------------------

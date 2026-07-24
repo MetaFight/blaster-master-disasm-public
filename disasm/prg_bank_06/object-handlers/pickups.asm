@@ -47,7 +47,7 @@ L9C54:  nop                                     ; 9C54
         bne     L_9C5B                          ; 9C59
 L_9C5B: sta     $50                             ; 9C5B
         lda     #$35                            ; 9C5D
-        sta     $46                             ; 9C5F
+        sta     LoadedObject_Type               ; 9C5F
         lda     #$FF                            ; 9C61
         sta     $51                             ; 9C63
         jmp     LD2B9                           ; 9C65
