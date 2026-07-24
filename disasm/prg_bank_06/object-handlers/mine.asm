@@ -63,10 +63,10 @@ L_AA2D: lda     #$44                            ; AA2D
         sta     $00                             ; AA39
 L_AA3B: lda     #$41                            ; AA3B
         sta     $44                             ; AA3D
-        lda     $11                             ; AA3F
+        lda     Global_FrameCounter             ; AA3F
         and     #$20                            ; AA41
         beq     L_AA54                          ; AA43
-        lda     $11                             ; AA45
+        lda     Global_FrameCounter             ; AA45
         and     #$1F                            ; AA47
         bne     L_AA50                          ; AA49
         lda     #$20                            ; AA4B

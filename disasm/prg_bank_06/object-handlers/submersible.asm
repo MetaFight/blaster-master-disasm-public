@@ -19,7 +19,7 @@ LB63C:  jmp     L_B66F                          ; B63C
         sta     $43                             ; B645
         jsr     LEF2B                           ; B647
         bne     L_B66F                          ; B64A
-        lda     $11                             ; B64C
+        lda     Global_FrameCounter             ; B64C
         and     #$3F                            ; B64E
         bne     L_B66F                          ; B650
         jsr     LEB71                           ; B652
@@ -62,7 +62,7 @@ LB680:  jmp     L_B6B8                          ; B680
         jmp     LD81C                           ; B699
 
 ; ----------------------------------------------------------------------------
-L_B69C: lda     $11                             ; B69C
+L_B69C: lda     Global_FrameCounter             ; B69C
         asl     a                               ; B69E
         asl     a                               ; B69F
         ldy     #$08                            ; B6A0
@@ -93,7 +93,7 @@ L_B6C8: lda     #$19                            ; B6C8
 ; ----------------------------------------------------------------------------
 L_B6D2: lda     #$01                            ; B6D2
         jsr     LE04E                           ; B6D4
-        lda     $11                             ; B6D7
+        lda     Global_FrameCounter             ; B6D7
         lsr     a                               ; B6D9
         lsr     a                               ; B6DA
         lsr     a                               ; B6DB

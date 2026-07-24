@@ -19,7 +19,7 @@ LB20C:  jmp     L_B23F                          ; B20C
         sta     $43                             ; B215
         jsr     LEF2B                           ; B217
         bne     L_B23F                          ; B21A
-        lda     $11                             ; B21C
+        lda     Global_FrameCounter             ; B21C
         and     #$1F                            ; B21E
         bne     L_B23F                          ; B220
         jsr     LEB71                           ; B222
@@ -53,7 +53,7 @@ LB250:  jmp     L_B26C                          ; B250
         sta     $42                             ; B255
         lda     #$80                            ; B257
         sta     $43                             ; B259
-        lda     $11                             ; B25B
+        lda     Global_FrameCounter             ; B25B
         asl     a                               ; B25D
         asl     a                               ; B25E
         ldy     #$28                            ; B25F
@@ -78,7 +78,7 @@ L_B27C: lda     #$13                            ; B27C
 ; ----------------------------------------------------------------------------
 L_B286: lda     #$00                            ; B286
         jsr     LE04E                           ; B288
-        lda     $11                             ; B28B
+        lda     Global_FrameCounter             ; B28B
         lsr     a                               ; B28D
         and     #$03                            ; B28E
         tax                                     ; B290

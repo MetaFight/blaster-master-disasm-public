@@ -120,7 +120,7 @@ L_EC34: jsr     L_F1CA                          ; EC34
         lda     $FE                             ; EC44
         sta     $2001                           ; EC46
         jsr     L_EC61                          ; EC49
-        inc     $11                             ; EC4C
+        inc     Global_FrameCounter             ; EC4C
         jsr     L_E8A9                          ; EC4E
 L_EC51: lda     #$05                            ; EC51
         jsr     L_E63C                          ; EC53

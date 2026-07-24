@@ -58,7 +58,7 @@ L9C68:  jmp     L_9C7D                          ; 9C68
 ; ----------------------------------------------------------------------------
         jsr     LD2AB                           ; 9C6B
         bmi     L_9CBC                          ; 9C6E
-        lda     $11                             ; 9C70
+        lda     Global_FrameCounter             ; 9C70
         and     #$03                            ; 9C72
         bne     L_9C7D                          ; 9C74
         dec     $51                             ; 9C76

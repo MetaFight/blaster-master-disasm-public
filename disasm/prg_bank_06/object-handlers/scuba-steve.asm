@@ -49,7 +49,7 @@ L_B4DD: ldx     #$4C                            ; B4DD
         lda     #$3C                            ; B4E7
         sta     $A0                             ; B4E9
         jsr     LDF36                           ; B4EB
-L_B4EE: lda     $11                             ; B4EE
+L_B4EE: lda     Global_FrameCounter             ; B4EE
         asl     a                               ; B4F0
         asl     a                               ; B4F1
         asl     a                               ; B4F2
@@ -82,7 +82,7 @@ L_B518: lda     #$17                            ; B518
         sta     LoadedObj_Velocity_Y            ; B527
 L_B529: lda     #$01                            ; B529
         jsr     LE04E                           ; B52B
-        lda     $11                             ; B52E
+        lda     Global_FrameCounter             ; B52E
         lsr     a                               ; B530
         lsr     a                               ; B531
         and     #$01                            ; B532
@@ -99,7 +99,7 @@ LB53A:  jmp     L_B557                          ; B53A
         lda     #$40                            ; B541
         sta     $43                             ; B543
         dec     $51                             ; B545
-        lda     $11                             ; B547
+        lda     Global_FrameCounter             ; B547
         and     #$01                            ; B549
         bne     L_B557                          ; B54B
         lda     #$01                            ; B54D

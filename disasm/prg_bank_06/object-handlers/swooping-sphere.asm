@@ -120,7 +120,7 @@ L_ADC3: jsr     LE0ED                           ; ADC3
 ; ----------------------------------------------------------------------------
 L_ADCD: lda     #$41                            ; ADCD
 L_ADCF: sta     $44                             ; ADCF
-        lda     $11                             ; ADD1
+        lda     Global_FrameCounter             ; ADD1
         lsr     a                               ; ADD3
         lsr     a                               ; ADD4
         lsr     a                               ; ADD5

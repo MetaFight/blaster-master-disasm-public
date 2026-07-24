@@ -64,7 +64,7 @@ L_A7AE: lda     #$04                            ; A7AE
 L_A7B8: lda     #$01                            ; A7B8
         jsr     LE04E                           ; A7BA
         ldx     #$7E                            ; A7BD
-        lda     $11                             ; A7BF
+        lda     Global_FrameCounter             ; A7BF
         and     #$10                            ; A7C1
         beq     L_A7C6                          ; A7C3
         inx                                     ; A7C5

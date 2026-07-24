@@ -45,7 +45,7 @@ L_A802: lda     #$04                            ; A802
         sta     $51                             ; A811
         jsr     LEB71                           ; A813
         bcc     L_A821                          ; A816
-        lda     $11                             ; A818
+        lda     Global_FrameCounter             ; A818
         bpl     L_A821                          ; A81A
         inc     LoadedObj_Type                  ; A81C
         jmp     L_A840                          ; A81E

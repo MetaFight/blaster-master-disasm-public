@@ -123,7 +123,7 @@ L_A59A: lda     $50                             ; A59A
         lda     L_A6BF,x                        ; A5AD
         ora     #$01                            ; A5B0
         sta     $44                             ; A5B2
-        lda     $11                             ; A5B4
+        lda     Global_FrameCounter             ; A5B4
         lsr     a                               ; A5B6
         lsr     a                               ; A5B7
         lsr     a                               ; A5B8

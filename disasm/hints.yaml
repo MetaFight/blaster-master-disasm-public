@@ -20691,30 +20691,13 @@ hints:
     offset: 0x1C8DF
     name: ObjSlot_Load
     status: verified
-    desc: |-
-      Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*.
-      Slot 0 is always the player so the RAM labels for that slot are named after the player.
+    desc: "Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*."
 
   - space: prg
     offset: 0x1C928
     name: ObjSlot_Save
-    desc: "Save ZP object state $46–$53 (14 bytes) to $0400,Y (object table slot Y); symmetric with ObjSlot_Load ($C8DF)"
-
-  - space: prg
-    offset: 0x1C92A
-    desc: "bytes 0-1: ObjType/ObjDir ($46/$47)"
-
-  - space: prg
-    offset: 0x1C934
-    desc: "bytes 2-5: ObjXFrac/XInt/YFrac/YInt ($48-$4B)"
-
-  - space: prg
-    offset: 0x1C948
-    desc: "bytes 6-7: ObjXVel/ObjYVel ($4C/$4D)"
-
-  - space: prg
-    offset: 0x1C952
-    desc: "bytes 8-13: ObjTileIndex, ObjActiveFlag, ObjPhase, ObjAnimFrame, $52, ObjHealth ($4E-$53)"
+    status: verified
+    desc: "Save LoadedObj_* back to ObjectTable."
 
   - space: prg
     offset: 0x1C971
@@ -24034,22 +24017,28 @@ hints:
     offset: 0x1E697
     name: OAM_Copy_To_PPU
     status: verified
-    desc: "Uploads the $0200 sprite page to PPU OAM. If the mode flag $E6BE is 0, triggers a full 256-byte sprite DMA via $4014 (OAMADDR reset to 0); otherwise copies 64 bytes/frame manually through OAMDATA ($2004), advancing the quarter index $F0 ($00/$40/$80/$C0) so the page uploads over four frames."
+    desc: |-
+      Uploads the $0200 sprite page to PPU OAM. 
+      If the mode flag OAM_Flag__HARDCODED_00 is 0, triggers a full 256-byte sprite DMA via $4014 (OAMADDR reset to 0); 
+      otherwise copies 64 bytes/frame manually through OAMDATA ($2004), advancing the quarter index $F0 ($00/$40/$80/$C0) so the page uploads over four frames.
 
   - space: prg
     offset: 0x1E6A7
     name: _DEAD_OAM_Copy_To_PPU__Manually
-    desc: "Dead in the shipped US ROM — the alternate manual OAM upload path (stream $0200 → OAM data port $2004), reached only when Hardcoded_Flag ($E6BE) ≠ 0, which it never is; the $4014 sprite-DMA fall-through above is what actually runs."
+    status: verified
+    desc: "Dead in the shipped US ROM — the alternate manual OAM upload path (stream $0200 → OAM data port $2004), reached only when OAM_Flag__HARDCODED_00 ($E6BE) ≠ 0, which it never is; the $4014 sprite-DMA fall-through above is what actually runs."
 
   - space: prg
     offset: 0x1E6B1
     name: _DEAD_OAM_Copy_To_PPU__ManualLoop
+    status: verified
     desc: "Copy 64 bytes $0200+X → OAM data port ($2004)."
 
   - space: prg
     offset: 0x1E6BE
-    name: Hardcoded_Flag
-    desc: "Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA Hardcoded_Flag / BNE, so with $00 the branch never fires: OAM always goes out via $4014 sprite DMA (not the manual copy path), and the staging blit always uses NmiFrameFlag ($11) bit 0 frame parity to alternate slot direction rather than a forced direction. Patching this byte non-zero enables the two dead alternate paths."
+    name: OAM_Flag__HARDCODED_00
+    status: verified
+    desc: "Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA OAM_Flag__HARDCODED_00 / BNE, so with $00 the branch never fires: OAM always goes out via $4014 sprite DMA (not the manual copy path), and the staging blit always uses NmiFrameFlag ($11) bit 0 frame parity to alternate slot direction rather than a forced direction. Patching this byte non-zero enables the two dead alternate paths."
 
   - space: prg
     offset: 0x1E6BF
@@ -24916,7 +24905,7 @@ hints:
 
   - space: prg
     offset: 0x1EC75
-    desc: "BEQ: staging buffer empty; return without touching OAM"
+    desc: "Return early if nothing staged"
 
   - space: prg
     offset: 0x1EC77
@@ -27227,7 +27216,8 @@ hints:
 
   - space: ram
     offset: 0x0011
-    name: WR_Context_Dependent_11
+    name: Global_FrameCounter
+    status: verified
     desc: |-
       in OvhdJason_SpriteAttr ($8E15): [r] TBD
 
@@ -27361,7 +27351,7 @@ hints:
 
       in Obj_GravityMoveBounce ($DFA0): [r] TBD
 
-      in PaletteSanitizeTable ($EBF4): [rw] TBD
+      in PaletteSanitizeTable ($EBF4): [rw] false positive
 
       in OAM_BlitFromStaging ($EC73): [r] TBD
 
@@ -29687,7 +29677,7 @@ hints:
 
   - space: ram
     offset: 0x00A6
-    name: WallGuardian_RecordPtr
+    name: WallGuardian_RecordPtrLo
     desc: "Pointer (low) to the current Wall Guardian per-instance record; $A6/$A7 = WallGuardian_RecordBasePtr + index*2 (WallGuardian_RecordPtr $BBB8). record[0] = starting HP, record[1] = hit-flash OAM attribute byte. The drop code also reads record[2]/record[3], but the stride is 2 and only record 0 exists, so those land in the $FF bank padding"
 
   - space: ram

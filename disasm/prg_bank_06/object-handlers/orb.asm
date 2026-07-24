@@ -34,7 +34,7 @@ LAE95:  jmp     L_AF03                          ; AE95
         jmp     L_AF03                          ; AEB0
 
 ; ----------------------------------------------------------------------------
-L_AEB3: lda     $11                             ; AEB3
+L_AEB3: lda     Global_FrameCounter             ; AEB3
         cmp     LoadedObj_Type                  ; AEB5
         bne     L_AF03                          ; AEB7
         jsr     LEB71                           ; AEB9

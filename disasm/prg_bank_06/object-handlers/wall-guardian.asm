@@ -21,7 +21,7 @@ L_BAA3: rts                                     ; BAA3
 LBAA4:  jmp     L_BACF                          ; BAA4
 
 ; ----------------------------------------------------------------------------
-        lda     $11                             ; BAA7
+        lda     Global_FrameCounter             ; BAA7
         cmp     #$A0                            ; BAA9
         bcc     L_BACF                          ; BAAB
         and     #$0F                            ; BAAD
@@ -93,7 +93,7 @@ L_BB2B: jsr     LEDF5                           ; BB2B
         lda     $3F                             ; BB2F
         adc     #$10                            ; BB31
         sta     $3F                             ; BB33
-        lda     $11                             ; BB35
+        lda     Global_FrameCounter             ; BB35
         cmp     #$A0                            ; BB37
         bcc     L_BB41                          ; BB39
         jsr     L_BB78                          ; BB3B
@@ -133,7 +133,7 @@ L_BB78: lda     #$B8                            ; BB78
         rts                                     ; BB7C
 
 ; ----------------------------------------------------------------------------
-L_BB7D: lda     $11                             ; BB7D
+L_BB7D: lda     Global_FrameCounter             ; BB7D
         and     #$04                            ; BB7F
         beq     L_BB88                          ; BB81
         lda     #$B8                            ; BB83

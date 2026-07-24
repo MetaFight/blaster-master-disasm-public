@@ -26,7 +26,7 @@ LADFF:  jmp     L_AE49                          ; ADFF
         sta     $43                             ; AE08
         lda     $50                             ; AE0A
         bne     L_AE2F                          ; AE0C
-        lda     $11                             ; AE0E
+        lda     Global_FrameCounter             ; AE0E
         and     #$07                            ; AE10
         bne     L_AE19                          ; AE12
         lda     #$45                            ; AE14
@@ -71,7 +71,7 @@ L_AE59: lda     #$0D                            ; AE59
 ; ----------------------------------------------------------------------------
 L_AE63: lda     #$01                            ; AE63
         jsr     LE04E                           ; AE65
-        lda     $11                             ; AE68
+        lda     Global_FrameCounter             ; AE68
         ldx     #$02                            ; AE6A
         jsr     LE060                           ; AE6C
         and     #$01                            ; AE6F

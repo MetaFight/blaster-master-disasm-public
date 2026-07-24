@@ -1127,12 +1127,13 @@ LABEL {
 LABEL {
   NAME    "ObjSlot_Load";
   ADDR    $C8DF;
-  COMMENT "Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*.\n; Slot 0 is always the player so the RAM labels for that slot are named after the player.";
+  COMMENT "Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*.";
 };
 
 LABEL {
-  NAME    "L_C928";
+  NAME    "ObjSlot_Save";
   ADDR    $C928;
+  COMMENT "Save LoadedObj_* back to ObjectTable.";
 };
 
 LABEL {
@@ -3596,13 +3597,13 @@ LABEL {
 LABEL {
   NAME    "OAM_Copy_To_PPU";
   ADDR    $E697;
-  COMMENT "Uploads the $0200 sprite page to PPU OAM. If the mode flag $E6BE is 0, triggers a full 256-byte\n; sprite DMA via $4014 (OAMADDR reset to 0); otherwise copies 64 bytes/frame manually through\n; OAMDATA ($2004), advancing the quarter index $F0 ($00/$40/$80/$C0) so the page uploads over four\n; frames.";
+  COMMENT "Uploads the $0200 sprite page to PPU OAM. \n; If the mode flag OAM_Flag__HARDCODED_00 is 0, triggers a full 256-byte sprite DMA via $4014\n; (OAMADDR reset to 0); \n; otherwise copies 64 bytes/frame manually through OAMDATA ($2004), advancing the quarter index\n; $F0 ($00/$40/$80/$C0) so the page uploads over four frames.";
 };
 
 LABEL {
   NAME    "_DEAD_OAM_Copy_To_PPU__Manually";
   ADDR    $E6A7;
-  COMMENT "Dead in the shipped US ROM — the alternate manual OAM upload path (stream $0200 → OAM data port\n; $2004), reached only when Hardcoded_Flag ($E6BE) ≠ 0, which it never is; the $4014 sprite-DMA\n; fall-through above is what actually runs.";
+  COMMENT "Dead in the shipped US ROM — the alternate manual OAM upload path (stream $0200 → OAM data port\n; $2004), reached only when OAM_Flag__HARDCODED_00 ($E6BE) ≠ 0, which it never is; the $4014\n; sprite-DMA fall-through above is what actually runs.";
 };
 
 LABEL {
@@ -3612,8 +3613,9 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_E6BE";
+  NAME    "OAM_Flag__HARDCODED_00";
   ADDR    $E6BE;
+  COMMENT "Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by\n; OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA OAM_Flag__HARDCODED_00 /\n; BNE, so with $00 the branch never fires: OAM always goes out via $4014 sprite DMA (not the\n; manual copy path), and the staging blit always uses NmiFrameFlag ($11) bit 0 frame parity to\n; alternate slot direction rather than a forced direction. Patching this byte non-zero enables the\n; two dead alternate paths.";
 };
 
 LABEL {
@@ -5348,6 +5350,11 @@ LABEL {
   NAME    "";
   ADDR    $E938;
   COMMENT "Set $12 bit7, then spin until the NMI handler clears it (waits exactly one frame).";
+};
+
+LABEL {
+  NAME    "Global_FrameCounter";
+  ADDR    $0011;
 };
 
 LABEL {

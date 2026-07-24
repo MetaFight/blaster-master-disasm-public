@@ -421,7 +421,7 @@ L_8CCA: lda     #$00                            ; 8CCA
         beq     L_8CF2                          ; 8CD7
         cmp     #$02                            ; 8CD9
         beq     L_8CEB                          ; 8CDB
-        lda     $11                             ; 8CDD
+        lda     Global_FrameCounter             ; 8CDD
         and     #$03                            ; 8CDF
         bne     L_8D03                          ; 8CE1
         lda     LoadedObj_Velocity_X            ; 8CE3

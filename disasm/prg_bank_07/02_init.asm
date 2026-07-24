@@ -9,7 +9,7 @@ L_C301: lda     #$02                            ; C301
         lda     #$00                            ; C308
         sta     $13                             ; C30A
         sta     $10                             ; C30C
-        sta     $11                             ; C30E
+        sta     Global_FrameCounter             ; C30E
         sta     $06F0                           ; C310
         sta     $06F1                           ; C313
         sta     $06F2                           ; C316
@@ -84,7 +84,7 @@ L_C3AA: jsr     L_C772                          ; C3AA
         sta     $8E                             ; C3AF
         lda     #$00                            ; C3B1
         sta     ObjectSlot_Offset               ; C3B3
-        jsr     L_C928                          ; C3B5
+        jsr     ObjSlot_Save                    ; C3B5
         jsr     L_C9D6                          ; C3B8
         jsr     L_D7B6                          ; C3BB
         jsr     L_CE0F                          ; C3BE

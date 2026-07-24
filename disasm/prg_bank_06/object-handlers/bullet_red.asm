@@ -124,7 +124,7 @@ L_B9DA: lda     $50                             ; B9DA
         tax                                     ; B9EC
         lda     LBA70,x                         ; B9ED
         sta     $44                             ; B9F0
-        lda     $11                             ; B9F2
+        lda     Global_FrameCounter             ; B9F2
         lsr     a                               ; B9F4
         lsr     a                               ; B9F5
         lsr     a                               ; B9F6

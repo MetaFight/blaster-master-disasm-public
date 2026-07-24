@@ -62,7 +62,6 @@ L_C5FA: lda     $03F5                           ; C5FA
 .macro MAC_L_C8DF
 ; ----------------------------------------------------------------------------
 ; Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*.
-; Slot 0 is always the player so the RAM labels for that slot are named after the player.
 ObjSlot_Load:
         ldy     ObjectSlot_Offset               ; C8DF
         lda     ObjectTable + ObjSlot::Type,y   ; C8E1
@@ -96,7 +95,9 @@ ObjSlot_Load:
         rts                                     ; C927
 
 ; ----------------------------------------------------------------------------
-L_C928: ldy     ObjectSlot_Offset               ; C928
+; Save LoadedObj_* back to ObjectTable.
+ObjSlot_Save:
+        ldy     ObjectSlot_Offset               ; C928
         lda     LoadedObj_Type                  ; C92A
         sta     ObjectTable + ObjSlot::Type,y   ; C92C
         lda     LoadedObj_Facing                ; C92F
@@ -139,7 +140,7 @@ L_C977: ldx     ObjectSlot_Offset               ; C977
         beq     L_C987                          ; C983
         dec     $4F                             ; C985
 L_C987: jsr     L_C9A4                          ; C987
-        jsr     L_C928                          ; C98A
+        jsr     ObjSlot_Save                    ; C98A
         jsr     L_EC73                          ; C98D
 L_C990: lda     ObjectSlot_Offset               ; C990
         clc                                     ; C992
@@ -300,7 +301,7 @@ L_DF29: lda     LoadedObj_Type,y                ; DF29
         rts                                     ; DF35
 
 ; ----------------------------------------------------------------------------
-L_DF36: lda     $11                             ; DF36
+L_DF36: lda     Global_FrameCounter             ; DF36
         and     #$4C                            ; DF38
         bne     L_DF43                          ; DF3A
         jsr     L_EB71                          ; DF3C
@@ -373,7 +374,7 @@ L_DF9D: lda     $9A                             ; DF9D
 L_DFA0: ldy     #$00                            ; DFA0
         pha                                     ; DFA2
         tya                                     ; DFA3
-        and     $11                             ; DFA4
+        and     Global_FrameCounter             ; DFA4
         beq     L_DFAC                          ; DFA6
         pla                                     ; DFA8
         jmp     L_DFB4                          ; DFA9

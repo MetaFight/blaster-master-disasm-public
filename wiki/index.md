@@ -9,7 +9,7 @@ either they have not completed it yet, or they were verified and have since been
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 5 / 848 (1%) |
+| **M4** — Verified subroutines (public, clean) | 6 / 848 (1%) |
 | **M6** — Verified docs (public, clean) | 2 / 117 (2%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -17,7 +17,7 @@ either they have not completed it yet, or they were verified and have since been
 
 This wiki publishes **4** pages, of which **2** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-07-24 20:51 UTC_
+_Generated: 2026-07-24 23:01 UTC_
 
 ## Pages
 

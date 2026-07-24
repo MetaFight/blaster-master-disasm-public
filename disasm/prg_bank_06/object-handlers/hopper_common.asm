@@ -21,7 +21,7 @@ L_A888: sta     LoadedObj_Velocity_X            ; A888
         jsr     LEB71                           ; A88D
         and     #$3F                            ; A890
         bne     L_A89F                          ; A892
-        lda     $11                             ; A894
+        lda     Global_FrameCounter             ; A894
         bmi     L_A89F                          ; A896
         lda     #$29                            ; A898
         jsr     Enqueue_Sound_Command           ; A89A
@@ -43,7 +43,7 @@ L_A8AF: lda     #$05                            ; A8AF
 ; ----------------------------------------------------------------------------
 L_A8B9: lda     #$01                            ; A8B9
         jsr     LE04E                           ; A8BB
-        lda     $11                             ; A8BE
+        lda     Global_FrameCounter             ; A8BE
         lsr     a                               ; A8C0
         lsr     a                               ; A8C1
         lsr     a                               ; A8C2

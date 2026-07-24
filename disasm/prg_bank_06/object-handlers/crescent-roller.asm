@@ -41,7 +41,7 @@ L_B724: cmp     #$05                            ; B724
 L_B72A: jmp     L_B787                          ; B72A
 
 ; ----------------------------------------------------------------------------
-L_B72D: lda     $11                             ; B72D
+L_B72D: lda     Global_FrameCounter             ; B72D
         and     #$4C                            ; B72F
         bne     L_B76D                          ; B731
         jsr     LEB71                           ; B733
@@ -70,7 +70,7 @@ L_B74D: ldx     $09                             ; B74D
         sta     $040B,x                         ; B765
         lda     #$46                            ; B768
         sta     ObjectTable + ObjSlot::Type,x   ; B76A
-L_B76D: lda     $11                             ; B76D
+L_B76D: lda     Global_FrameCounter             ; B76D
         cmp     #$55                            ; B76F
         bne     L_B787                          ; B771
         dec     $50                             ; B773
@@ -113,7 +113,7 @@ L_B7AB: lda     $3F                             ; B7AB
         lda     $3F                             ; B7B7
         adc     #$04                            ; B7B9
         sta     $3F                             ; B7BB
-        lda     $11                             ; B7BD
+        lda     Global_FrameCounter             ; B7BD
         lsr     a                               ; B7BF
         lsr     a                               ; B7C0
         lsr     a                               ; B7C1

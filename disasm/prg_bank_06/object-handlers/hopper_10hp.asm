@@ -53,7 +53,7 @@ L_B1BB: lda     #$12                            ; B1BB
 ; ----------------------------------------------------------------------------
 L_B1C5: lda     #$01                            ; B1C5
         jsr     LE04E                           ; B1C7
-        lda     $11                             ; B1CA
+        lda     Global_FrameCounter             ; B1CA
         lsr     a                               ; B1CC
         lsr     a                               ; B1CD
         lsr     a                               ; B1CE

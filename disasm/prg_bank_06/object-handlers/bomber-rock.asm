@@ -67,7 +67,7 @@ L_AB78: cmp     #$04                            ; AB78
         adc     #$01                            ; AB84
 L_AB86: cmp     #$08                            ; AB86
         bcs     L_AB9E                          ; AB88
-        lda     $11                             ; AB8A
+        lda     Global_FrameCounter             ; AB8A
         and     #$1F                            ; AB8C
         bne     L_AB97                          ; AB8E
         lda     #$38                            ; AB90

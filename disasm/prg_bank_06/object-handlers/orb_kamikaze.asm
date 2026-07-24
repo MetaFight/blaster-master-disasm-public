@@ -61,7 +61,7 @@ L_B0D2: jsr     LE0ED                           ; B0D2
         jmp     L_B13B                          ; B0EA
 
 ; ----------------------------------------------------------------------------
-L_B0ED: lda     $11                             ; B0ED
+L_B0ED: lda     Global_FrameCounter             ; B0ED
         and     #$3F                            ; B0EF
         bne     L_B0F6                          ; B0F1
         jsr     LDFDD                           ; B0F3
@@ -119,7 +119,7 @@ L_B14B: lda     #$11                            ; B14B
 ; ----------------------------------------------------------------------------
 L_B155: lda     #$01                            ; B155
         sta     $44                             ; B157
-        lda     $11                             ; B159
+        lda     Global_FrameCounter             ; B159
         lsr     a                               ; B15B
         and     #$07                            ; B15C
         tax                                     ; B15E

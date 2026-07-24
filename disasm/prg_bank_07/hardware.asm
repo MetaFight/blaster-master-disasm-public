@@ -1,11 +1,12 @@
 .macro MAC_L_E697
 ; ----------------------------------------------------------------------------
-; Uploads the $0200 sprite page to PPU OAM. If the mode flag $E6BE is 0, triggers a full 256-byte
-; sprite DMA via $4014 (OAMADDR reset to 0); otherwise copies 64 bytes/frame manually through
-; OAMDATA ($2004), advancing the quarter index $F0 ($00/$40/$80/$C0) so the page uploads over four
-; frames.
+; Uploads the $0200 sprite page to PPU OAM. 
+; If the mode flag OAM_Flag__HARDCODED_00 is 0, triggers a full 256-byte sprite DMA via $4014
+; (OAMADDR reset to 0); 
+; otherwise copies 64 bytes/frame manually through OAMDATA ($2004), advancing the quarter index
+; $F0 ($00/$40/$80/$C0) so the page uploads over four frames.
 OAM_Copy_To_PPU:
-        lda     L_E6BE                          ; E697
+        lda     OAM_Flag__HARDCODED_00          ; E697
         bne     _DEAD_OAM_Copy_To_PPU__Manually ; E69A
         lda     #$00                            ; E69C
         sta     $2003                           ; E69E
@@ -15,8 +16,8 @@ OAM_Copy_To_PPU:
 
 ; ----------------------------------------------------------------------------
 ; Dead in the shipped US ROM — the alternate manual OAM upload path (stream $0200 → OAM data port
-; $2004), reached only when Hardcoded_Flag ($E6BE) ≠ 0, which it never is; the $4014 sprite-DMA
-; fall-through above is what actually runs.
+; $2004), reached only when OAM_Flag__HARDCODED_00 ($E6BE) ≠ 0, which it never is; the $4014
+; sprite-DMA fall-through above is what actually runs.
 _DEAD_OAM_Copy_To_PPU__Manually:
         lda     $F0                             ; E6A7
         and     #$C0                            ; E6A9
@@ -286,9 +287,9 @@ L_EC69: sta     $0200,x                         ; EC69
 ; ----------------------------------------------------------------------------
 L_EC73: lda     $3C                             ; EC73
         beq     L_ECB3                          ; EC75
-        lda     L_E6BE                          ; EC77
+        lda     OAM_Flag__HARDCODED_00          ; EC77
         bne     L_EC81                          ; EC7A
-        lda     $11                             ; EC7C
+        lda     Global_FrameCounter             ; EC7C
         lsr     a                               ; EC7E
         bcs     L_EC8A                          ; EC7F
 L_EC81: lda     $3D                             ; EC81

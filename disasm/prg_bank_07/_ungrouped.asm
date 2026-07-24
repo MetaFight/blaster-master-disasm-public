@@ -411,7 +411,7 @@ L_C9DA: ldx     ObjectSlot_Offset               ; C9DA
         beq     L_C9EA                          ; C9DF
         jsr     ObjSlot_Load                    ; C9E1
         jsr     L_D2B9                          ; C9E4
-        jsr     L_C928                          ; C9E7
+        jsr     ObjSlot_Save                    ; C9E7
 L_C9EA: lda     ObjectSlot_Offset               ; C9EA
         clc                                     ; C9EC
         adc     #$0E                            ; C9ED
@@ -2120,7 +2120,14 @@ L_E06A: cmp     #$80                            ; E06A
 
 .macro MAC_L_E6BE
 ; ----------------------------------------------------------------------------
-L_E6BE: .byte   $00                             ; E6BE
+; Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by
+; OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA OAM_Flag__HARDCODED_00 /
+; BNE, so with $00 the branch never fires: OAM always goes out via $4014 sprite DMA (not the
+; manual copy path), and the staging blit always uses NmiFrameFlag ($11) bit 0 frame parity to
+; alternate slot direction rather than a forced direction. Patching this byte non-zero enables the
+; two dead alternate paths.
+OAM_Flag__HARDCODED_00:
+        .byte   $00                             ; E6BE
 .endmacro
 
 .macro MAC_L_E6DE

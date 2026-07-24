@@ -26,7 +26,7 @@ LABEC:  jmp     L_AC10                          ; ABEC
         lda     #$80                            ; ABF3
         sta     $43                             ; ABF5
         jsr     LDF68                           ; ABF7
-        lda     $11                             ; ABFA
+        lda     Global_FrameCounter             ; ABFA
         and     #$4F                            ; ABFC
         bne     L_AC10                          ; ABFE
         jsr     LE0FA                           ; AC00
@@ -54,7 +54,7 @@ L_AC20: lda     #$0A                            ; AC20
 L_AC2A: lda     #$01                            ; AC2A
         jsr     LE04E                           ; AC2C
         ldx     #$78                            ; AC2F
-        lda     $11                             ; AC31
+        lda     Global_FrameCounter             ; AC31
         and     #$10                            ; AC33
         beq     L_AC38                          ; AC35
         inx                                     ; AC37

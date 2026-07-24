@@ -847,7 +847,7 @@ L_8E2D: sta     $45                             ; 8E2D
         bne     L_8E51                          ; 8E3B
         lda     LoadedObj_Health                ; 8E3D
         beq     L_8E51                          ; 8E3F
-        lda     $11                             ; 8E41
+        lda     Global_FrameCounter             ; 8E41
         lsr     a                               ; 8E43
         lsr     a                               ; 8E44
         lsr     a                               ; 8E45
@@ -1178,7 +1178,7 @@ L906B:  .byte   $C0,$00,$40,$80                 ; 906B
         bcc     L_908C                          ; 9087
         jsr     LC01E                           ; 9089
 L_908C: jsr     LC024                           ; 908C
-        lda     $11                             ; 908F
+        lda     Global_FrameCounter             ; 908F
         lsr     a                               ; 9091
         bcs     L_90A2                          ; 9092
         dec     $50                             ; 9094
@@ -1270,7 +1270,7 @@ L9116:  .byte   $00,$40,$00,$C0                 ; 9116
         sta     $43                             ; 9123
         dec     $51                             ; 9125
         bne     L_9137                          ; 9127
-        lda     $11                             ; 9129
+        lda     Global_FrameCounter             ; 9129
         asl     a                               ; 912B
         asl     a                               ; 912C
         asl     a                               ; 912D
@@ -2030,7 +2030,7 @@ L_960E: sta     $50                             ; 960E
 ; ----------------------------------------------------------------------------
         jsr     LC138                           ; 961E
         bmi     L_9672                          ; 9621
-        lda     $11                             ; 9623
+        lda     Global_FrameCounter             ; 9623
         and     #$03                            ; 9625
         bne     L_9630                          ; 9627
         dec     $51                             ; 9629
@@ -2539,7 +2539,7 @@ L_99DA: lda     #$20                            ; 99DA
         sta     $42                             ; 9A05
         lda     #$80                            ; 9A07
         sta     $43                             ; 9A09
-        lda     $11                             ; 9A0B
+        lda     Global_FrameCounter             ; 9A0B
         and     #$01                            ; 9A0D
         bne     L_9A2B                          ; 9A0F
         lda     $50                             ; 9A11
@@ -2623,7 +2623,7 @@ L_9A7C: rts                                     ; 9A7C
         sta     $42                             ; 9A90
         lda     #$80                            ; 9A92
         sta     $43                             ; 9A94
-        lda     $11                             ; 9A96
+        lda     Global_FrameCounter             ; 9A96
         and     #$03                            ; 9A98
         bne     L_9AB6                          ; 9A9A
         lda     $50                             ; 9A9C
@@ -2762,7 +2762,7 @@ L_9B77: lda     $4F                             ; 9B77
         bcs     L_9B94                          ; 9B7B
         inc     $51                             ; 9B7D
         jsr     LC01E                           ; 9B7F
-        lda     $11                             ; 9B82
+        lda     Global_FrameCounter             ; 9B82
         and     #$4F                            ; 9B84
         bne     L_9B94                          ; 9B86
         lda     #$73                            ; 9B88
@@ -2958,7 +2958,7 @@ L_9CCB: lda     #$C9                            ; 9CCB
         lda     $14                             ; 9CF0
         cmp     #$02                            ; 9CF2
         bcc     L_9D27                          ; 9CF4
-        lda     $11                             ; 9CF6
+        lda     Global_FrameCounter             ; 9CF6
         and     #$07                            ; 9CF8
         bne     L_9D27                          ; 9CFA
         lda     $3F                             ; 9CFC
@@ -3719,7 +3719,7 @@ L_A25A: ldx     #$04                            ; A25A
         sec                                     ; A268
         sbc     LoadedObj_Velocity_Y            ; A269
         sta     LoadedObj_Velocity_Y            ; A26B
-L_A26D: lda     $11                             ; A26D
+L_A26D: lda     Global_FrameCounter             ; A26D
         and     #$4F                            ; A26F
         bne     L_A282                          ; A271
         jsr     LC1B3                           ; A273
@@ -4153,7 +4153,7 @@ L_A568: lda     $10                             ; A568
         bne     L_A5EF                          ; A58F
         lda     LoadedObj_Health                ; A591
         beq     L_A5EF                          ; A593
-        lda     $11                             ; A595
+        lda     Global_FrameCounter             ; A595
         and     #$3F                            ; A597
         bne     L_A5C1                          ; A599
         lda     PlayerSlot + ObjSlot::Position_X_MetaTile ; A59B
@@ -4193,7 +4193,7 @@ L_A5DD: jsr     LC027                           ; A5DD
         ldx     #$04                            ; A5E0
         ldy     #$06                            ; A5E2
         jsr     LC00C                           ; A5E4
-        lda     $11                             ; A5E7
+        lda     Global_FrameCounter             ; A5E7
         and     #$0F                            ; A5E9
         bne     L_A5EF                          ; A5EB
         inc     $51                             ; A5ED
@@ -4263,7 +4263,7 @@ L_A65C: pha                                     ; A65C
 
 ; ----------------------------------------------------------------------------
 L_A667: clc                                     ; A667
-        adc     $11                             ; A668
+        adc     Global_FrameCounter             ; A668
         sta     $00                             ; A66A
         lda     $3F                             ; A66C
         pha                                     ; A66E
@@ -4463,11 +4463,11 @@ L_A7A2: lda     #$1F                            ; A7A2
         lda     #$0F                            ; A7AA
         cpx     #$20                            ; A7AC
         bcs     L_A7B8                          ; A7AE
-        lda     $11                             ; A7B0
+        lda     Global_FrameCounter             ; A7B0
         and     #$C0                            ; A7B2
         beq     L_A7C5                          ; A7B4
         lda     #$07                            ; A7B6
-L_A7B8: and     $11                             ; A7B8
+L_A7B8: and     Global_FrameCounter             ; A7B8
         bne     L_A7C5                          ; A7BA
         inc     LoadedObj_Position_Y_MetaTile   ; A7BC
         lda     #$7D                            ; A7BE
@@ -4661,7 +4661,7 @@ LA8FB:  .byte   $A8,$04,$A9,$11,$A9,$1E,$A9,$2B ; A8FB
         sta     $51                             ; A93D
         lda     #$50                            ; A93F
         sta     $50                             ; A941
-        lda     $11                             ; A943
+        lda     Global_FrameCounter             ; A943
         and     #$3F                            ; A945
         cmp     #$20                            ; A947
         bcc     L_A953                          ; A949
@@ -4813,7 +4813,7 @@ L_A9F9: sta     $45                             ; A9F9
         beq     L_AA4D                          ; AA3E
         lda     $03FD                           ; AA40
         bne     L_AA4D                          ; AA43
-        lda     $11                             ; AA45
+        lda     Global_FrameCounter             ; AA45
         and     #$03                            ; AA47
         bne     L_AA4D                          ; AA49
         inc     $51                             ; AA4B
@@ -5185,7 +5185,7 @@ L_ACD0: dec     $51                             ; ACD0
         jmp     L_AD63                          ; ACD4
 
 ; ----------------------------------------------------------------------------
-L_ACD7: lda     $11                             ; ACD7
+L_ACD7: lda     Global_FrameCounter             ; ACD7
         and     #$0F                            ; ACD9
         cmp     #$05                            ; ACDB
         bne     L_AD1F                          ; ACDD
@@ -5222,7 +5222,7 @@ L_AD14: lda     LoadedObj_Velocity_Y            ; AD14
         jsr     LC1B3                           ; AD18
         and     #$0F                            ; AD1B
         sta     LoadedObj_Velocity_Y            ; AD1D
-L_AD1F: lda     $11                             ; AD1F
+L_AD1F: lda     Global_FrameCounter             ; AD1F
         and     #$08                            ; AD21
         beq     L_AD39                          ; AD23
         jsr     LC03F                           ; AD25
@@ -5358,7 +5358,7 @@ L_ADF7: sta     $0671                           ; ADF7
         beq     L_AE5A                          ; ADFE
         cmp     #$03                            ; AE00
         beq     L_AE1B                          ; AE02
-        lda     $11                             ; AE04
+        lda     Global_FrameCounter             ; AE04
         lsr     a                               ; AE06
         lsr     a                               ; AE07
         lsr     a                               ; AE08
@@ -5567,7 +5567,7 @@ L_AF66: rts                                     ; AF66
         sta     $42                             ; AF6C
         lda     #$80                            ; AF6E
         sta     $43                             ; AF70
-        lda     $11                             ; AF72
+        lda     Global_FrameCounter             ; AF72
         and     #$03                            ; AF74
         cmp     $50                             ; AF76
         bne     L_AF96                          ; AF78
@@ -5580,7 +5580,7 @@ L_AF66: rts                                     ; AF66
         jmp     LC114                           ; AF85
 
 ; ----------------------------------------------------------------------------
-L_AF88: lda     $11                             ; AF88
+L_AF88: lda     Global_FrameCounter             ; AF88
         asl     a                               ; AF8A
         asl     a                               ; AF8B
         clc                                     ; AF8C
@@ -6238,7 +6238,7 @@ L_B3E2: lda     #$10                            ; B3E2
         pha                                     ; B3F2
         lda     LoadedObj_Position_Y_Pixel      ; B3F3
         pha                                     ; B3F5
-        lda     $11                             ; B3F6
+        lda     Global_FrameCounter             ; B3F6
         asl     a                               ; B3F8
         asl     a                               ; B3F9
         clc                                     ; B3FA
@@ -6320,7 +6320,7 @@ L_B44E: rts                                     ; B44E
         jsr     LC1B3                           ; B492
         and     #$03                            ; B495
         bne     L_B4A9                          ; B497
-        lda     $11                             ; B499
+        lda     Global_FrameCounter             ; B499
         and     #$CF                            ; B49B
         bne     L_B4A9                          ; B49D
         jsr     LC12F                           ; B49F
@@ -6341,12 +6341,12 @@ L_B4B9: lda     #$05                            ; B4B9
         jsr     LC138                           ; B4BE
         jsr     LC0A2                           ; B4C1
         bne     L_B4CC                          ; B4C4
-        lda     $11                             ; B4C6
+        lda     Global_FrameCounter             ; B4C6
         and     #$03                            ; B4C8
         bne     L_B4E0                          ; B4CA
 L_B4CC: lda     #$01                            ; B4CC
         sta     $44                             ; B4CE
-        lda     $11                             ; B4D0
+        lda     Global_FrameCounter             ; B4D0
         and     #$08                            ; B4D2
         bne     L_B4DB                          ; B4D4
         lda     #$46                            ; B4D6
@@ -6377,7 +6377,7 @@ L_B4ED: rts                                     ; B4ED
         sta     $42                             ; B4F3
         lda     #$80                            ; B4F5
         sta     $43                             ; B4F7
-        lda     $11                             ; B4F9
+        lda     Global_FrameCounter             ; B4F9
         and     #$1F                            ; B4FB
         bne     L_B54F                          ; B4FD
         jsr     LC1B3                           ; B4FF
@@ -6434,7 +6434,7 @@ L_B55F: rts                                     ; B55F
         sta     $42                             ; B565
         lda     #$80                            ; B567
         sta     $43                             ; B569
-        lda     $11                             ; B56B
+        lda     Global_FrameCounter             ; B56B
         asl     a                               ; B56D
         asl     a                               ; B56E
         asl     a                               ; B56F
@@ -6456,7 +6456,7 @@ L_B58D: lda     #$06                            ; B58D
         jsr     L_B2E1                          ; B58F
         lda     #$41                            ; B592
         jsr     LC075                           ; B594
-        lda     $11                             ; B597
+        lda     Global_FrameCounter             ; B597
         lsr     a                               ; B599
         lsr     a                               ; B59A
         lsr     a                               ; B59B
@@ -6549,7 +6549,7 @@ L_B633: lda     #$07                            ; B633
         sta     $44                             ; B63A
         lda     #$37                            ; B63C
         sta     $45                             ; B63E
-        lda     $11                             ; B640
+        lda     Global_FrameCounter             ; B640
         and     #$04                            ; B642
         bne     L_B648                          ; B644
         inc     $45                             ; B646
@@ -6562,7 +6562,7 @@ L_B648: lda     $45                             ; B648
 ; ----------------------------------------------------------------------------
         lda     #$08                            ; B650
         jsr     L_B2B4                          ; B652
-        ldx     $11                             ; B655
+        ldx     Global_FrameCounter             ; B655
         inx                                     ; B657
         stx     $51                             ; B658
 L_B65A: rts                                     ; B65A
@@ -6575,7 +6575,7 @@ L_B65A: rts                                     ; B65A
         sta     $42                             ; B660
         lda     #$80                            ; B662
         sta     $43                             ; B664
-        lda     $11                             ; B666
+        lda     Global_FrameCounter             ; B666
         eor     $51                             ; B668
         and     #$7F                            ; B66A
         bne     L_B680                          ; B66C
@@ -6601,7 +6601,7 @@ L_B690: lda     #$08                            ; B690
         lda     #$01                            ; B695
         sta     $44                             ; B697
         ldx     #$2E                            ; B699
-        lda     $11                             ; B69B
+        lda     Global_FrameCounter             ; B69B
         and     #$10                            ; B69D
         beq     L_B6A2                          ; B69F
         inx                                     ; B6A1
@@ -6624,14 +6624,14 @@ L_B6AE: rts                                     ; B6AE
         sta     $42                             ; B6B4
         lda     #$80                            ; B6B6
         sta     $43                             ; B6B8
-        lda     $11                             ; B6BA
+        lda     Global_FrameCounter             ; B6BA
         and     #$1F                            ; B6BC
         bne     L_B6E0                          ; B6BE
         jsr     LC12F                           ; B6C0
         beq     L_B6E0                          ; B6C3
         lda     #$50                            ; B6C5
         sta     ObjectTable + ObjSlot::Type,x   ; B6C7
-        lda     $11                             ; B6CA
+        lda     Global_FrameCounter             ; B6CA
         and     #$20                            ; B6CC
         sta     $040A,x                         ; B6CE
         lda     LoadedObj_Position_Y_Pixel      ; B6D1
@@ -6654,7 +6654,7 @@ L_B6F0: lda     #$09                            ; B6F0
         jsr     L_B2C5                          ; B6F2
         lda     #$01                            ; B6F5
         sta     $44                             ; B6F7
-        lda     $11                             ; B6F9
+        lda     Global_FrameCounter             ; B6F9
         lsr     a                               ; B6FB
         lsr     a                               ; B6FC
         lsr     a                               ; B6FD
@@ -6714,12 +6714,12 @@ L_B757: lda     #$0A                            ; B757
         jsr     LC138                           ; B75C
         jsr     LC0A2                           ; B75F
         bne     L_B76A                          ; B762
-        lda     $11                             ; B764
+        lda     Global_FrameCounter             ; B764
         and     #$03                            ; B766
         bne     L_B77D                          ; B768
 L_B76A: lda     #$01                            ; B76A
         sta     $44                             ; B76C
-        lda     $11                             ; B76E
+        lda     Global_FrameCounter             ; B76E
         lsr     a                               ; B770
         lsr     a                               ; B771
         lsr     a                               ; B772
@@ -6781,7 +6781,7 @@ L_B7CD: lda     #$0B                            ; B7CD
         jsr     L_B2C5                          ; B7CF
         lda     #$01                            ; B7D2
         sta     $44                             ; B7D4
-        lda     $11                             ; B7D6
+        lda     Global_FrameCounter             ; B7D6
         lsr     a                               ; B7D8
         lsr     a                               ; B7D9
         lsr     a                               ; B7DA
@@ -6846,7 +6846,7 @@ L_B83F: lda     #$0C                            ; B83F
         lda     #$01                            ; B844
         sta     $44                             ; B846
         ldx     #$4B                            ; B848
-        lda     $11                             ; B84A
+        lda     Global_FrameCounter             ; B84A
         and     #$20                            ; B84C
         beq     L_B851                          ; B84E
         inx                                     ; B850
@@ -6873,7 +6873,7 @@ L_B865: rts                                     ; B865
         sta     $42                             ; B86B
         lda     #$80                            ; B86D
         sta     $43                             ; B86F
-        lda     $11                             ; B871
+        lda     Global_FrameCounter             ; B871
         and     #$1F                            ; B873
         bne     L_B87C                          ; B875
         lda     #$47                            ; B877
@@ -7648,7 +7648,7 @@ L_BDAD: lda     #$0D                            ; BDAD
         jsr     L_BE3E                          ; BDBB
 L_BDBE: lda     #$01                            ; BDBE
         sta     $44                             ; BDC0
-        lda     $11                             ; BDC2
+        lda     Global_FrameCounter             ; BDC2
         and     #$1F                            ; BDC4
         bne     L_BDD3                          ; BDC6
         jsr     LC1B3                           ; BDC8
@@ -7790,7 +7790,7 @@ L_BEC7: lda     $3F                             ; BEC7
         sec                                     ; BEC9
         sbc     #$12                            ; BECA
         sta     $3F                             ; BECC
-        lda     $11                             ; BECE
+        lda     Global_FrameCounter             ; BECE
         asl     a                               ; BED0
         ldy     #$06                            ; BED1
         jsr     LC1B6                           ; BED3
@@ -7801,7 +7801,7 @@ L_BEC7: lda     $3F                             ; BEC7
         lda     #$01                            ; BEDE
         sta     $44                             ; BEE0
         ldx     #$25                            ; BEE2
-        lda     $11                             ; BEE4
+        lda     Global_FrameCounter             ; BEE4
         and     #$08                            ; BEE6
         beq     L_BEEB                          ; BEE8
         inx                                     ; BEEA
@@ -7849,7 +7849,7 @@ L_BEF7: rts                                     ; BEF7
         jsr     LC1B3                           ; BF3B
         and     #$40                            ; BF3E
         bne     L_BF52                          ; BF40
-        lda     $11                             ; BF42
+        lda     Global_FrameCounter             ; BF42
         and     #$CF                            ; BF44
         bne     L_BF52                          ; BF46
         jsr     LC12F                           ; BF48
@@ -7870,12 +7870,12 @@ L_BF62: lda     #$0F                            ; BF62
         jsr     LC138                           ; BF67
         jsr     LC0A2                           ; BF6A
         bne     L_BF75                          ; BF6D
-        lda     $11                             ; BF6F
+        lda     Global_FrameCounter             ; BF6F
         and     #$03                            ; BF71
         bne     L_BF89                          ; BF73
 L_BF75: lda     #$00                            ; BF75
         sta     $44                             ; BF77
-        lda     $11                             ; BF79
+        lda     Global_FrameCounter             ; BF79
         and     #$08                            ; BF7B
         bne     L_BF84                          ; BF7D
         lda     #$46                            ; BF7F

@@ -19,7 +19,7 @@ LB2A8:  jmp     L_B2DB                          ; B2A8
         sta     $43                             ; B2B1
         jsr     LEF2B                           ; B2B3
         bne     L_B2DB                          ; B2B6
-        lda     $11                             ; B2B8
+        lda     Global_FrameCounter             ; B2B8
         and     #$1F                            ; B2BA
         bne     L_B2DB                          ; B2BC
         jsr     LEB71                           ; B2BE
@@ -53,7 +53,7 @@ LB2EC:  jmp     L_B308                          ; B2EC
         sta     $42                             ; B2F1
         lda     #$80                            ; B2F3
         sta     $43                             ; B2F5
-        lda     $11                             ; B2F7
+        lda     Global_FrameCounter             ; B2F7
         asl     a                               ; B2F9
         asl     a                               ; B2FA
         ldy     #$20                            ; B2FB
@@ -78,7 +78,7 @@ L_B318: lda     #$14                            ; B318
 ; ----------------------------------------------------------------------------
 L_B322: lda     #$01                            ; B322
         jsr     LE04E                           ; B324
-        lda     $11                             ; B327
+        lda     Global_FrameCounter             ; B327
         lsr     a                               ; B329
         and     #$03                            ; B32A
         tax                                     ; B32C

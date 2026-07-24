@@ -86,12 +86,12 @@ L_B8A9: jsr     LEB71                           ; B8A9
         jmp     L_B8EF                          ; B8C5
 
 ; ----------------------------------------------------------------------------
-L_B8C8: lda     $11                             ; B8C8
+L_B8C8: lda     Global_FrameCounter             ; B8C8
         and     #$0F                            ; B8CA
         bne     L_B8D3                          ; B8CC
         lda     #$4C                            ; B8CE
         jsr     Enqueue_Sound_Command           ; B8D0
-L_B8D3: lda     $11                             ; B8D3
+L_B8D3: lda     Global_FrameCounter             ; B8D3
         and     #$04                            ; B8D5
         beq     L_B8DE                          ; B8D7
         lda     #$A8                            ; B8D9

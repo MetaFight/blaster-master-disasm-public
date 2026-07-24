@@ -5368,6 +5368,11 @@ LABEL {
 };
 
 LABEL {
+  NAME    "Global_FrameCounter";
+  ADDR    $0011;
+};
+
+LABEL {
   NAME    "LoadedObj_Type";
   ADDR    $0046;
 };
