@@ -69,7 +69,7 @@ _ObjHandler_Tank_77_Shooter_Main__Update__:
 ; Fire gate — both aim conditions must hold, else fall through unfired
 ; signed X-distance to player EOR X-velocity sign: negative = drifting AWAY, so hold fire
 _ObjHandler_Tank_77_Shooter_Main__FireCheck:
-        jsr     LE0ED                           ; B02E
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B02E
         eor     LoadedObj_Velocity_X            ; B031
         bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B033
 ; signed Y-distance: negative = player is above, so hold fire (it only shoots level or downward)

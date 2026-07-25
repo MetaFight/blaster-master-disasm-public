@@ -34,7 +34,7 @@ LA76A:  jmp     L_A79E                          ; A76A
         beq     L_A79E                          ; A77C
         inc     $50                             ; A77E
 L_A780: jsr     LDF68                           ; A780
-        jsr     LE0ED                           ; A783
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A783
         eor     LoadedObj_Velocity_X            ; A786
         bmi     L_A79B                          ; A788
         lda     LoadedObj_Velocity_X            ; A78A

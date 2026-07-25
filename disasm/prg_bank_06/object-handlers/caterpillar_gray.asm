@@ -11,7 +11,7 @@ L_A3E2: jmp     L_A40A                          ; A3E2
         sta     LoadedObj_Velocity_Y            ; A3F0
         lda     #$0F                            ; A3F2
         sta     LoadedObj_Velocity_X            ; A3F4
-        jsr     LE0ED                           ; A3F6
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A3F6
         bpl     L_A402                          ; A3F9
         lda     #$00                            ; A3FB
         sec                                     ; A3FD
@@ -44,7 +44,7 @@ L_A423: lda     Global_FrameCounter             ; A423
         bne     L_A42E                          ; A427
         lda     #$42                            ; A429
         jsr     Enqueue_Sound_Command           ; A42B
-L_A42E: jsr     LE0ED                           ; A42E
+L_A42E: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; A42E
         sta     $01                             ; A431
         eor     LoadedObj_Velocity_X            ; A433
         bpl     L_A44E                          ; A435

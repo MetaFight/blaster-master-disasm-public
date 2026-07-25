@@ -28,7 +28,7 @@ LA6E4:  jmp     L_A71F                          ; A6E4
 L_A6FF: lsr     a                               ; A6FF
         sta     $00                             ; A700
         inc     $00                             ; A702
-        jsr     LE0ED                           ; A704
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A704
         bpl     L_A70E                          ; A707
         eor     #$FF                            ; A709
         clc                                     ; A70B

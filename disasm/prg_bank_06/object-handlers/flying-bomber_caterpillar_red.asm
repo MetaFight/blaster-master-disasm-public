@@ -5,7 +5,7 @@ L_AF3A: jmp     L_AF60                          ; AF3A
 ; ----------------------------------------------------------------------------
         lda     #$0F                            ; AF3D
         jsr     L_A2E9                          ; AF3F
-        jsr     LE0ED                           ; AF42
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AF42
         and     #$80                            ; AF45
         sta     LoadedObj_Facing                ; AF47
         bpl     L_AF4F                          ; AF49
@@ -46,7 +46,7 @@ L_AF81: ldy     #$28                            ; AF81
         jmp     L_AFD1                          ; AF89
 
 ; ----------------------------------------------------------------------------
-L_AF8C: jsr     LE0ED                           ; AF8C
+L_AF8C: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; AF8C
         bpl     L_AF96                          ; AF8F
         eor     #$FF                            ; AF91
         clc                                     ; AF93

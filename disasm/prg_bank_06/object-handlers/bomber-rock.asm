@@ -28,7 +28,7 @@ LAB24:  jmp     L_ABA4                          ; AB24
         adc     #$01                            ; AB3B
 L_AB3D: cmp     #$04                            ; AB3D
         bcs     L_AB9E                          ; AB3F
-        jsr     LE0ED                           ; AB41
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AB41
         bpl     L_AB4B                          ; AB44
         eor     #$FF                            ; AB46
         clc                                     ; AB48
@@ -60,7 +60,7 @@ L_AB6E: jsr     LE0FA                           ; AB6E
         adc     #$01                            ; AB76
 L_AB78: cmp     #$04                            ; AB78
         bcs     L_AB9E                          ; AB7A
-        jsr     LE0ED                           ; AB7C
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AB7C
         bpl     L_AB86                          ; AB7F
         eor     #$FF                            ; AB81
         clc                                     ; AB83

@@ -24,7 +24,7 @@ LAD08:  jmp     L_ADA9                          ; AD08
         jmp     L_ADA9                          ; AD1C
 
 ; ----------------------------------------------------------------------------
-L_AD1F: jsr     LE0ED                           ; AD1F
+L_AD1F: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; AD1F
         tax                                     ; AD22
         bpl     L_AD2A                          ; AD23
         eor     #$FF                            ; AD25
@@ -78,7 +78,7 @@ L_AD7A: tay                                     ; AD7A
         lda     LoadedObj_Facing                ; AD7B
         jsr     LE1B7                           ; AD7D
         sta     LoadedObj_Velocity_Y            ; AD80
-        jsr     LE0ED                           ; AD82
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AD82
         bmi     L_AD8C                          ; AD85
         lda     #$04                            ; AD87
         jmp     L_AD8E                          ; AD89
@@ -112,7 +112,7 @@ L_ADB9: lda     #$0C                            ; ADB9
         jmp     L_A34D                          ; ADC0
 
 ; ----------------------------------------------------------------------------
-L_ADC3: jsr     LE0ED                           ; ADC3
+L_ADC3: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; ADC3
         bmi     L_ADCD                          ; ADC6
         lda     #$01                            ; ADC8
         jmp     L_ADCF                          ; ADCA

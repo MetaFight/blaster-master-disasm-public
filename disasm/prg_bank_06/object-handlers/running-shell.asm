@@ -25,7 +25,7 @@ LB58B:  jmp     L_B5FB                          ; B58B
         jsr     LE0FA                           ; B59A
         bne     L_B5FB                          ; B59D
         inc     $50                             ; B59F
-        jsr     LE0ED                           ; B5A1
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B5A1
         bmi     L_B5AB                          ; B5A4
         lda     #$28                            ; B5A6
         jmp     L_B5AD                          ; B5A8

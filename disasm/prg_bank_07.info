@@ -3245,8 +3245,9 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_E0ED";
+  NAME    "LoadedObj__Get_DeltaToPlayer_X";
   ADDR    $E0ED;
+  COMMENT "Signed X-distance from this object to the player:  Returns X = pixel/frac byte, A = metatile\n; byte (carries the sign).";
 };
 
 LABEL {

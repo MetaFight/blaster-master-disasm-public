@@ -33,7 +33,7 @@ L_B860: cmp     #$02                            ; B860
         jmp     L_B8EF                          ; B864
 
 ; ----------------------------------------------------------------------------
-L_B867: jsr     LE0ED                           ; B867
+L_B867: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; B867
         bpl     L_B871                          ; B86A
         eor     #$FF                            ; B86C
         clc                                     ; B86E
@@ -59,7 +59,7 @@ L_B87E: cmp     #$01                            ; B87E
         cpx     #$30                            ; B892
         bne     L_B8A9                          ; B894
         inc     $50                             ; B896
-        jsr     LE0ED                           ; B898
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B898
         bpl     L_B8A2                          ; B89B
         lda     #$10                            ; B89D
         jmp     L_B8A4                          ; B89F

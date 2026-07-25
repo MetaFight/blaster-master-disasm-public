@@ -74,7 +74,7 @@ LA53A:  jmp     L_A580                          ; A53A
 L_A558: jsr     LE120                           ; A558
         and     #$FC                            ; A55B
         bne     L_A580                          ; A55D
-        jsr     LE0ED                           ; A55F
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A55F
         beq     L_A580                          ; A562
 L_A564: lda     $50                             ; A564
         clc                                     ; A566

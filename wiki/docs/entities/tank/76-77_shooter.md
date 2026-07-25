@@ -79,7 +79,7 @@ Firing is gated by a cooldown, two aiming tests, and a further internal throttle
 1. **Cooldown**: if `$52 ≠ 0`, decrement it, force `$50 = 0` (recoil pose), and skip to render —
    no fire this frame.
 2. When `$52 == 0`, evaluate the aiming gates:
-   - `JSR $E0ED` (`Obj_DeltaToPlayerX`) → **signed X-distance to the player** (player_X − obj_X).
+   - `JSR $E0ED` (`LoadedObj__Get_DeltaToPlayer_X`) → **signed X-distance to the player** (player_X − obj_X).
      `EOR $4C` then `BMI skip`: fire only when the sign of the X-distance matches the sign of the
      X-velocity — i.e. **only while drifting toward Sophia horizontally**.
    - `JSR $E0FA` (`Obj_DeltaToPlayerY`) → **signed Y-distance to the player**. `BMI skip`: fire
@@ -161,7 +161,7 @@ projectiles-ballistics.md).
 
 - ObjType chain `$76 → $77` confirmed from the bank-06 dispatch table and disassembly.
 - Helper semantics used above (verified by decoding bank 07, now labelled in the MLB):
-  `$E0ED` = `Obj_DeltaToPlayerX` (signed X-distance to player), `$E0FA` = `Obj_DeltaToPlayerY`
+  `$E0ED` = `LoadedObj__Get_DeltaToPlayer_X` (signed X-distance to player), `$E0FA` = `Obj_DeltaToPlayerY`
   (signed Y-distance to player), `$E1BD` = `Obj_AngleToVelocity` (angle `$47` + speed Y → velocity;
   internals `Trig_CosByAngle` `$E1D2` / `Trig_SinByAngle` `$E1D5` / `Trig_ScaleBySpeed` `$E196` /
   `Mul8_HighByte` `$E182` over `Trig_QuarterSineTable` `$E202`), `$DF68` = `Obj_MoveBounce` (move +

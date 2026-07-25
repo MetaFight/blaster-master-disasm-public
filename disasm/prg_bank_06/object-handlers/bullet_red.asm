@@ -76,7 +76,7 @@ LB97A:  jmp     L_B9C0                          ; B97A
 L_B998: jsr     LE120                           ; B998
         and     #$FC                            ; B99B
         bne     L_B9C0                          ; B99D
-        jsr     LE0ED                           ; B99F
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B99F
         beq     L_B9C0                          ; B9A2
 L_B9A4: lda     $50                             ; B9A4
         clc                                     ; B9A6

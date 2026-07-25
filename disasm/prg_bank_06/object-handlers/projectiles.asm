@@ -617,7 +617,7 @@ L_9FA8: jsr     L_9B90                          ; 9FA8
         sta     LoadedObj_Velocity_Y            ; 9FBF
         lda     #$11                            ; 9FC1
         sta     LoadedObj_Velocity_X            ; 9FC3
-        jsr     LE0ED                           ; 9FC5
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; 9FC5
         bpl     L_9FD1                          ; 9FC8
         lda     #$00                            ; 9FCA
         sec                                     ; 9FCC
@@ -707,7 +707,7 @@ LA047:  jmp     L_A063                          ; A047
         lda     #$02                            ; A052
         jsr     LDFA0                           ; A054
         bne     L_A083                          ; A057
-        jsr     LE0ED                           ; A059
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A059
         bne     L_A063                          ; A05C
         jsr     LE0FA                           ; A05E
         beq     L_A083                          ; A061
@@ -736,7 +736,7 @@ L_A083: jsr     L_9B81                          ; A083
 LA089:  jmp     L_A0B5                          ; A089
 
 ; ----------------------------------------------------------------------------
-        jsr     LE0ED                           ; A08C
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A08C
         tay                                     ; A08F
         bpl     L_A097                          ; A090
         eor     #$FF                            ; A092
@@ -865,7 +865,7 @@ L_A15F: jsr     L_9B90                          ; A15F
         sta     LoadedObj_Velocity_Y            ; A176
         lda     #$11                            ; A178
         sta     LoadedObj_Velocity_X            ; A17A
-        jsr     LE0ED                           ; A17C
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A17C
         bpl     L_A188                          ; A17F
         lda     #$00                            ; A181
         sec                                     ; A183

@@ -1,25 +1,40 @@
 .macro MAC_L_A7CB
 ; ----------------------------------------------------------------------------
-L_A7CB: jmp     L_A7ED                          ; A7CB
+; ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy: takes its stats
+; from tank-enemy descriptor $05, faces the player, primes its hop-interval timer, and advances to
+; the Main $60. Draws nothing; the +0 (fade/freeze) entry jumps to the terminal RTS. See
+; docs/entities/tank/5f-61_hopper-6hp.md
+ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:
+        jmp     _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done; A7CB
 
 ; ----------------------------------------------------------------------------
+; Load enemy from descriptor ($05), face the player, go live as $60
+_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__:
         lda     #$05                            ; A7CE
         jsr     L_A2E9                          ; A7D0
+; hop-interval timer $52 = $30
         lda     #$30                            ; A7D3
         sta     $52                             ; A7D5
-        jsr     LE0ED                           ; A7D7
-        bpl     L_A7E1                          ; A7DA
+; Get x-delta to player to figure out where to face
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A7D7
+        bpl     _ObjHandler_Tank_5F_GrayHopper6HP_Init__Facing_Right; A7DA
+; Player is to the left, so face left
         lda     #$C8                            ; A7DC
-        jmp     L_A7E3                          ; A7DE
+        jmp     _ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing; A7DE
 
 ; ----------------------------------------------------------------------------
-L_A7E1: lda     #$B8                            ; A7E1
-L_A7E3: sta     LoadedObj_Facing                ; A7E3
+; Player is to the right, so face right
+_ObjHandler_Tank_5F_GrayHopper6HP_Init__Facing_Right:
+        lda     #$B8                            ; A7E1
+_ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing:
+        sta     LoadedObj_Facing                ; A7E3
         lda     #$00                            ; A7E5
         sta     LoadedObj_Velocity_X            ; A7E7
         sta     LoadedObj_Velocity_Y            ; A7E9
         sta     $51                             ; A7EB
-L_A7ED: rts                                     ; A7ED
+; Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
+_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done:
+        rts                                     ; A7ED
 
 ; ----------------------------------------------------------------------------
 LA7EE:  jmp     L_A840                          ; A7EE
@@ -53,7 +68,7 @@ L_A802: lda     #$04                            ; A802
 ; ----------------------------------------------------------------------------
 L_A821: lda     #$29                            ; A821
         jsr     Enqueue_Sound_Command           ; A823
-        jsr     LE0ED                           ; A826
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A826
         bmi     L_A830                          ; A829
         lda     #$C8                            ; A82B
         jmp     L_A832                          ; A82D

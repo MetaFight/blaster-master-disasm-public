@@ -5,7 +5,7 @@ L_AC3C: jmp     L_AC62                          ; AC3C
 ; ----------------------------------------------------------------------------
         lda     #$0B                            ; AC3F
         jsr     L_A2E9                          ; AC41
-        jsr     LE0ED                           ; AC44
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AC44
         and     #$80                            ; AC47
         sta     LoadedObj_Facing                ; AC49
         bpl     L_AC51                          ; AC4B
@@ -46,7 +46,7 @@ L_AC83: ldy     #$28                            ; AC83
         jmp     L_ACD0                          ; AC8B
 
 ; ----------------------------------------------------------------------------
-L_AC8E: jsr     LE0ED                           ; AC8E
+L_AC8E: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; AC8E
         bpl     L_AC98                          ; AC91
         eor     #$FF                            ; AC93
         clc                                     ; AC95

@@ -1390,10 +1390,14 @@ NesPrgRom:1A79E:L_A79E
 NesPrgRom:1A7AE:L_A7AE
 NesPrgRom:1A7B8:L_A7B8
 NesPrgRom:1A7C6:L_A7C6
-NesPrgRom:1A7CB:L_A7CB
-NesPrgRom:1A7E1:L_A7E1
-NesPrgRom:1A7E3:L_A7E3
-NesPrgRom:1A7ED:L_A7ED
+NesPrgRom:1A7CB:ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy: takes its stats from tank-enemy descriptor $05, faces the player, primes its hop-interval timer, and advances to the Main $60. Draws nothing; the +0 (fade/freeze) entry jumps to the terminal RTS. See docs/entities/tank/5f-61_hopper-6hp.md
+NesPrgRom:1A7CE:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__:Load enemy from descriptor ($05), face the player, go live as $60
+NesPrgRom:1A7D3::hop-interval timer $52 = $30
+NesPrgRom:1A7D7::Get x-delta to player to figure out where to face
+NesPrgRom:1A7DC::Player is to the left, so face left
+NesPrgRom:1A7E1:_ObjHandler_Tank_5F_GrayHopper6HP_Init__Facing_Right:Player is to the right, so face right
+NesPrgRom:1A7E3:_ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing
+NesPrgRom:1A7ED:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done:Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
 NesPrgRom:1A802:L_A802
 NesPrgRom:1A821:L_A821
 NesPrgRom:1A830:L_A830
@@ -2263,7 +2267,7 @@ NesPrgRom:1E0C7:L_E0C7
 NesPrgRom:1E0D0:L_E0D0
 NesPrgRom:1E0D8:L_E0D8
 NesPrgRom:1E0E5:L_E0E5
-NesPrgRom:1E0ED:L_E0ED
+NesPrgRom:1E0ED:LoadedObj__Get_DeltaToPlayer_X:Signed X-distance from this object to the player:  Returns X = pixel/frac byte, A = metatile byte (carries the sign).
 NesPrgRom:1E0FA:L_E0FA
 NesPrgRom:1E107:L_E107
 NesPrgRom:1E120:L_E120

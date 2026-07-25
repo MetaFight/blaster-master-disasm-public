@@ -30,7 +30,7 @@ L_B710: jsr     L_B82B                          ; B710
         bne     L_B787                          ; B713
         jsr     LE0FA                           ; B715
         bne     L_B72A                          ; B718
-        jsr     LE0ED                           ; B71A
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B71A
         bpl     L_B724                          ; B71D
         eor     #$FF                            ; B71F
         clc                                     ; B721
@@ -50,7 +50,7 @@ L_B72D: lda     Global_FrameCounter             ; B72D
         jsr     LDF0F                           ; B73A
         beq     L_B76D                          ; B73D
         stx     $09                             ; B73F
-        jsr     LE0ED                           ; B741
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B741
         bmi     L_B74B                          ; B744
         lda     #$E8                            ; B746
         jmp     L_B74D                          ; B748
@@ -138,7 +138,7 @@ L_B7AB: lda     $3F                             ; B7AB
 ; ----------------------------------------------------------------------------
 L_B7E3: lda     $3F                             ; B7E3
         pha                                     ; B7E5
-        jsr     LE0ED                           ; B7E6
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B7E6
         bmi     L_B7F0                          ; B7E9
         lda     #$41                            ; B7EB
         jmp     L_B7F2                          ; B7ED
@@ -168,7 +168,7 @@ L_B7F2: sta     $44                             ; B7F2
         rts                                     ; B81B
 
 ; ----------------------------------------------------------------------------
-L_B81C: jsr     LE0ED                           ; B81C
+L_B81C: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; B81C
         bmi     L_B826                          ; B81F
         lda     #$08                            ; B821
         jmp     L_B828                          ; B823

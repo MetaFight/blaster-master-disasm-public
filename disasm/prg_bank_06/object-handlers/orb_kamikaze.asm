@@ -10,7 +10,7 @@ L_B076: jmp     L_B094                          ; B076
         sta     LoadedObj_Velocity_Y            ; B082
         lda     #$10                            ; B084
         sta     LoadedObj_Velocity_X            ; B086
-        jsr     LE0ED                           ; B088
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B088
         bpl     L_B094                          ; B08B
         lda     #$00                            ; B08D
         sec                                     ; B08F
@@ -26,7 +26,7 @@ LB095:  jmp     L_B13B                          ; B095
         sta     $42                             ; B09A
         lda     #$80                            ; B09C
         sta     $43                             ; B09E
-        jsr     LE0ED                           ; B0A0
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B0A0
         bne     L_B0B0                          ; B0A3
         jsr     LE0FA                           ; B0A5
         bne     L_B0B0                          ; B0A8
@@ -47,7 +47,7 @@ L_B0C9: lda     LoadedObj_Velocity_Y            ; B0C9
         bne     L_B0D2                          ; B0CB
         jsr     LE0FA                           ; B0CD
         bmi     L_B13B                          ; B0D0
-L_B0D2: jsr     LE0ED                           ; B0D2
+L_B0D2: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; B0D2
         eor     LoadedObj_Velocity_X            ; B0D5
         bmi     L_B13B                          ; B0D7
         lda     #$01                            ; B0D9
@@ -65,7 +65,7 @@ L_B0ED: lda     Global_FrameCounter             ; B0ED
         and     #$3F                            ; B0EF
         bne     L_B0F6                          ; B0F1
         jsr     LDFDD                           ; B0F3
-L_B0F6: jsr     LE0ED                           ; B0F6
+L_B0F6: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; B0F6
         bmi     L_B101                          ; B0F9
         clc                                     ; B0FB
         adc     #$20                            ; B0FC

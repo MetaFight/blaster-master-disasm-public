@@ -9,7 +9,7 @@ L_ABCF: jmp     L_ABEB                          ; ABCF
         sta     LoadedObj_Velocity_X            ; ABD9
         lda     #$00                            ; ABDB
         sta     LoadedObj_Velocity_Y            ; ABDD
-        jsr     LE0ED                           ; ABDF
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; ABDF
         bpl     L_ABEB                          ; ABE2
         lda     #$00                            ; ABE4
         sec                                     ; ABE6

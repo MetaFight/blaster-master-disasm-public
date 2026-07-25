@@ -1296,7 +1296,7 @@ hints:
   - space: prg
     offset: 0x10A69
     name: ObjHandler_Ovhd_04_OvhdJason_Death_OutOfHealth
-    desc: "ObjType $04 — OvhdJason death animation: Out of Health (entered from $03 main when HP reaches 0; no spawn target). 24×16 on-screen check; attr $44=0; JSR $93BD stage main sprite; advance anim frame $51 (saturates at $FF); at $51==$A0 enqueue death sound $02; tile = OvhdJason_DeathTileTable[min($51>>2,$17)] + $1B → JMP $C063. [Lua-verified identity: cause = HP loss; the prior \"facing left\" label described only the sprite (no H-flip), not the trigger.]"
+    desc: "ObjType $04 — OvhdJason death animation: Out of Health (entered from the $03 main when HP reaches 0; no spawn target). Plays the death sprite animation and, at the $A0 frame mark, fires the death transition. [Lua-verified identity: cause = HP loss; the prior \"facing left\" label described only the sprite (no H-flip), not the trigger.]"
 
   - space: prg
     offset: 0x10A6C
@@ -1354,7 +1354,7 @@ hints:
   - space: prg
     offset: 0x10ABB
     name: ObjHandler_Ovhd_05_OvhdJason_Death_Drowning
-    desc: "ObjType $05 — OvhdJason death animation: Drowning (entered from $03 main on water/deep-tile contact; no spawn target). Like $04 but attr $44=1 (H-flip) and adds a secondary effect sprite (tiles $D0+, the drowning splash) for early frames ($51<$20) via $C192; 24×16 on-screen check; JSR $93BD; advance anim frame $51; at $51==$A0 enqueue death sound $02; tile = OvhdJason_DeathTileTable[min($51>>2,$17)]. [Lua-verified identity: cause = water contact; the secondary sprite is the drowning splash. Prior \"facing right\" label described only the H-flip.]"
+    desc: "ObjType $05 — OvhdJason death animation: Drowning (entered from the $03 main on water/deep-tile contact; no spawn target). Like $04 (Out of Health) but H-flipped and with an added drowning-splash effect sprite during the early frames; at the $A0 frame mark it fires the death transition. [Lua-verified identity: cause = water contact; the secondary sprite is the drowning splash. Prior \"facing right\" label described only the H-flip.]"
 
   - space: prg
     offset: 0x10ABE
@@ -1415,7 +1415,7 @@ hints:
   - space: prg
     offset: 0x10AF1
     name: ObjHandler_Ovhd_01_02_DeferredSpawn
-    desc: "ObjTypes $01/$02 — dormant deferred-spawn marker (no spawn target). $01 (+0) JMP→$8B28 (RTS). $02 path: 32×32 on-screen check ($C0FF) — when on-screen, morph into the real ObjType stored in per-slot table $0150,X (deferred activation). When off-screen: proximity check (X & Y dist vs camera, &$7F) — if player out of range (≥$20) JMP $C0E7 (out-of-range handler), else RTS (stay dormant)"
+    desc: "ObjTypes $01/$02 — dormant deferred-spawn marker (no spawn target). The $01 render pass is a no-op. The $02 path waits until the slot is on-screen, then morphs into the real ObjType stashed for it in the per-slot table $0150,X; while off-screen it stays dormant unless the player wanders out of range, when it hands off to the out-of-range handler."
 
   - space: prg
     offset: 0x10AF4
@@ -1563,9 +1563,7 @@ hints:
     offset: 0x10BE3
     name: ObjHandler_Ovhd_85_EntryPad
     isCodeSeed: true
-    desc: |-
-      2x NOP - slot pad (the +0 entry of ObjHandler_Ovhd_85 at $8BE2 is a bare RTS; the two $EA NOPs fill the 3-byte +0 slot so the +3 update body lands at $8BE5).
-      NOP NOP (padding bytes after the ObjType $86 RTS)
+    desc: "Two padding bytes filling the +0 dispatch slot of ObjHandler_Ovhd_85, so its +3 update body lands at $8BE5 (the +0 entry itself is a bare return)."
 
   - space: prg
     offset: 0x10BE5
@@ -1675,7 +1673,7 @@ hints:
   - space: prg
     offset: 0x10C3B
     name: Player_Movement_Overhead_8C3B_Sub
-    desc: "OvhdJason on-foot movement (overhead). Reads 8-way input + tile attributes ($C138); X velocity from $8D9B/$8DAD, Y from $8DA4/$8DB6 (indexed by input dir $79); per-axis solid-tile collision vs $0500 attribute map (AND #$08 = solid) → block + set facing $47; commit move + scroll via $8B29; fire weapon via $8E5B. Ref: Displaced Gamers"
+    desc: "OvhdJason's on-foot movement (overhead sections). Reads the 8-way input and the tile under the player, picks a velocity for that direction (accumulating it on ice, setting it instantly otherwise), applies per-axis solid-tile collision and updates facing, commits the move with room scrolling, and fires the weapon. Ref: Displaced Gamers"
 
   - space: prg
     offset: 0x10C46
@@ -1812,13 +1810,11 @@ hints:
   - space: prg
     offset: 0x10DBF
     name: OvhdJason_SpriteUpdate
-    desc: |-
-      Shared sprite update: set sprite half-size ($40/$41=$18/$10); ScreenPos_Compute ($C15F); on-screen check; draw tank sprite via animation engine ($C1E6); manage ObjHealth/$53 countdown; check A button ($F7 bit 7) for hover override
-      LDA #$18 / STA $40: sprite bounding half-width = 24 px
+    desc: "Shared sprite update for the overhead player: sets its bounding box, computes screen position, runs the animation engine to draw the sprite when on-screen, and reads the A button for the hover override."
 
   - space: prg
     offset: 0x10DC3
-    desc: "LDA #$10 / STA $41: sprite bounding half-height = 16 px"
+    desc: "sprite bounding box: $40 = $18 (half-width 24px), $41 = $10 (half-height 16px)"
 
   - space: prg
     offset: 0x10DC7
@@ -1990,7 +1986,7 @@ hints:
   - space: prg
     offset: 0x10E5B
     name: OvhdJason_FireWeapon
-    desc: "OvhdJason weapon fire (called by $03 main at $8D81). Exit if no fire button ($F3 & $C0 == 0); weapon level from $C3 → $BB (0–7); find free shot slot via $C1D7 (X=$0E base); spawn shot ObjType by level — $06 (gun lv<4), $09 (4–5), $0C (≥6), or $0F (charged, $F3 bit7); $C0D8 finalize"
+    desc: "OvhdJason weapon fire (called by the $03 main). On a fire button press it reads the current weapon level, finds a free shot slot, and spawns the shot ObjType for that level (or the charged shot when the charge button is held)."
 
   - space: prg
     offset: 0x10E61
@@ -2049,7 +2045,11 @@ hints:
   - space: prg
     offset: 0x10ECE
     name: OvhdShot_CurveWave_HitRender
-    desc: "Shared hit-check + metasprite render for the curve ($0A) and wave ($0D) shots. Point $7A/$7B at the shot metasprite table ($8F07); JSR $C0FF on-screen (BEQ continue, else JMP $C117 despawn)."
+    desc: "Shared hit-check + metasprite render for the Curve ($0A) and Wave ($0D) player shots. Points $7A/$7B at the shot metasprite table ($8F07), culls off-screen, despawns on enemy collision, and draws the shot's metasprite by facing (skipping the draw on an attr-04 tile)."
+
+  - space: prg
+    offset: 0x10ED8
+    desc: "off-screen → despawn ($C117)"
 
   - space: prg
     offset: 0x10EE2
@@ -2086,7 +2086,15 @@ hints:
   - space: prg
     offset: 0x10F21
     name: OvhdShot_Render_8F21
-    desc: "Render an OvhdJason gun shot sprite (called by shot handlers $08/$0B). TileRead + TileCheck_Attr04 draw gate ($C138/$C0A2; attr-04 tile → skip draw); attr $44 = OvhdShot_RenderAttrByDir[$47] (+$02 if charged weapon $BB==7), tile $45 = OvhdShot_RenderTileByDir[$47]; $3F-=9; JMP $C1AD stage sprite"
+    desc: "Render an OvhdJason gun-shot sprite (called by shot handlers $08/$0B). Skips the draw if the shot sits on an attr-04 tile; otherwise picks the sprite attribute and tile by the shot's facing (with a charged-weapon tint) and stages it."
+
+  - space: prg
+    offset: 0x10F29
+    desc: "attr $44 = OvhdShot_RenderAttrByDir[facing $47]"
+
+  - space: prg
+    offset: 0x10F30
+    desc: "charged weapon ($BB==7): OR $02 into attr $44 (tint)"
 
   - space: prg
     offset: 0x10F3C
@@ -2130,9 +2138,11 @@ hints:
     name: OvhdJasonShot_DoubleVelForGun3
     isCodeSeed: true
     isDead: true
-    desc: |-
-      Callerless 16-byte routine - `LDA $BB / CMP #$03 / BCC +$0A / ASL $4C / ASL $4D` - that DOUBLES a Jason shot's X and Y velocity when the gun level ($BB) is 3 or higher, then falls through to $8F8B. It sits directly after the `jmp ..._Finalize` at $8F78, so nothing reaches it and no bank references it. A cut "higher gun levels fire faster shots" mechanic - the shipped game varies the shot's ObjType by gun level instead, but never its speed.
-      $BB≥3 → double shot velocity (faster gun)
+    desc: "Callerless 16-byte routine that would double a Jason shot's velocity at gun level 3+, then fall through to the shot finalize. Nothing reaches it (it sits directly after the finalize jump) and no bank references it — a cut \"higher gun levels fire faster shots\" mechanic; the shipped game instead varies the shot's ObjType by gun level, never its speed."
+
+  - space: prg
+    offset: 0x10F81
+    desc: "double XVel $4C and YVel $4D"
 
   - space: prg
     offset: 0x10F8B
@@ -2245,7 +2255,7 @@ hints:
   - space: prg
     offset: 0x10FF3
     name: OvhdShot_TileCollide
-    desc: "Shot wall/tile collision: read tile ($C138); BPL no-wall; JSR $C09C tile-hit test → nonzero: $C111 hit SFX, $9329 wall-impact effect, JMP $C117 despawn"
+    desc: "Shot wall/tile collision: if the shot has hit a solid tile, plays the hit SFX, spawns the wall-impact effect, and despawns the shot."
 
   - space: prg
     offset: 0x10FF6
@@ -2276,7 +2286,7 @@ hints:
   - space: prg
     offset: 0x11007
     name: OvhdShot_AbortIfDespawned
-    desc: "If shot ObjType $46==0 (removed), pop caller's return address (PLA PLA) to abort the handler two frames up; else RTS"
+    desc: "If the shot has been despawned (ObjType $46==0), aborts the calling handler two stack frames up; otherwise returns normally."
 
   - space: prg
     offset: 0x11009
@@ -2572,7 +2582,7 @@ hints:
   - space: prg
     offset: 0x111F2
     name: OvhdWaveShot_PerpOffset
-    desc: "Perpendicular wave displacement for the level-6 beam: sign from A (BPL→+, else −) into $45; magnitude = phase ×16 via ASL/ROL $45 ×4; exits via shared $9236 (RTS)"
+    desc: "Computes the perpendicular wave displacement for the level-6 beam: takes a sign from A and a magnitude that is the wave phase scaled up ×16, returning a signed 16-bit offset in $45:A. Exits via the shared RTS at $9236."
 
   - space: prg
     offset: 0x111F8
@@ -2758,7 +2768,7 @@ hints:
   - space: prg
     offset: 0x112AF
     name: Player_Projectiles_Overhead_92AF
-    desc: "Active-timer path: DEC $51; BPL → still positive → ScreenCheck; expired → despawn via LC117"
+    desc: "The grenade-explosion update body (+3 entry): ticks the blast-duration timer, despawning when it expires and otherwise continuing to the render/hit block."
 
   - space: prg
     offset: 0x112B6
@@ -2849,7 +2859,7 @@ hints:
   - space: prg
     offset: 0x11329
     name: OvhdSpawn_SmallExplosion
-    desc: "sound $28; LDA #$12; JMP $C1F5 — spawn Small Explosion (ObjType $12) at this position (called e.g. by OvhdShot_TileCollide)"
+    desc: "Spawns a Small Explosion (ObjType $12) at this position with the explosion SFX (called e.g. by OvhdShot_TileCollide)."
 
   - space: prg
     offset: 0x1132B
@@ -2862,7 +2872,7 @@ hints:
   - space: prg
     offset: 0x11333
     name: OvhdSpawn_BigExplosion
-    desc: "sound $28; LDA #$14; JMP $C1F5 — spawn Big Explosion (ObjType $14) at this position"
+    desc: "Spawns a Big Explosion (ObjType $14) at this position with the explosion SFX."
 
   - space: prg
     offset: 0x11335
@@ -2875,12 +2885,16 @@ hints:
   - space: prg
     offset: 0x1133D
     name: ObjHandler_Ovhd_12_Small_Explosion_Init
-    desc: "ObjType $12 — small explosion init; dual-entry: +0 = NOP×3 preamble. $51=9 (anim duration); INC $46→$13 (main); RTS"
+    desc: "ObjType $12 — small explosion init. Seeds the animation duration then morphs the slot to the Small Explosion Main ($13). The +0 render-slot is padding that falls through into the +3 body, so both dispatch entries run the same init."
 
   - space: prg
     offset: 0x11340
     name: _ObjHandler_Ovhd_12_Small_Explosion_Init__Update__
-    desc: "+3 body entry (normal-play; +0 preamble runs only during a fade)"
+    desc: "$51 = 9 (animation frames remaining)  [+3 body entry; the +0 slot is padding that falls through to here]"
+
+  - space: prg
+    offset: 0x11344
+    desc: "morph to $13 Main next frame (INC ObjType $46)"
 
   - space: prg
     offset: 0x11347
@@ -2944,12 +2958,16 @@ hints:
   - space: prg
     offset: 0x1138B
     name: ObjHandler_Ovhd_14_Big_Explosion_Init
-    desc: "ObjType $14 — big explosion init; dual-entry: +0 = NOP×3 preamble. $51=3 (anim duration); INC $46→$15 (main); RTS"
+    desc: "ObjType $14 — big explosion init. Seeds the animation duration then morphs the slot to the Big Explosion Main ($15). The +0 render-slot is padding that falls through into the +3 body, so both dispatch entries run the same init."
 
   - space: prg
     offset: 0x1138E
     name: _ObjHandler_Ovhd_14_Big_Explosion_Init__Update__
-    desc: "+3 body entry (normal-play; +0 preamble runs only during a fade)"
+    desc: "$51 = 3 (animation frames remaining)  [+3 body entry; the +0 slot is padding that falls through to here]"
+
+  - space: prg
+    offset: 0x11392
+    desc: "morph to $15 Main next frame (INC ObjType $46)"
 
   - space: prg
     offset: 0x11395
@@ -3179,7 +3197,7 @@ hints:
   - space: prg
     offset: 0x115CF
     name: ObjHandler_Ovhd_1A_Pick_up_Pow_x1_Init
-    desc: "ObjType $1A — Thing $21 (P, health x1); overhead-pickup dispatcher head. NOP×3 pad; LDA #disc (pickup type 0–8); falls to OvhdPickup_SharedInit ($960E) which stores $50=disc and morphs to shared main $23"
+    desc: "ObjType $1A — Thing $21 (P, health ×1), init. Loads its pickup-type discriminator (0) and falls through to the shared pickup init (OvhdPickup_SharedInit); the +0 render slot is padding. This is the first of the overhead-pickup init heads ($1A–$22), each of which just loads its own discriminator and falls into the shared init."
 
   - space: prg
     offset: 0x115D2
@@ -3269,7 +3287,7 @@ hints:
   - space: prg
     offset: 0x1160E
     name: OvhdPickup_SharedInit
-    desc: "Shared overhead-pickup init: STA $50 (pickup-type discriminator 0–8 from caller); $46=$23 (become shared pickup main); $51=$FF lifetime; JMP $C1EC"
+    desc: "Shared init for every overhead pickup ($1A–$22): takes the caller's pickup-type discriminator (0–8) in A and stashes it in $50, morphs the slot to the shared Pickup Main ($23), and arms the pickup lifetime before computing its tile index."
 
   - space: prg
     offset: 0x11610
@@ -3412,21 +3430,33 @@ hints:
   - space: prg
     offset: 0x116F1
     name: ObjHandler_Ovhd_5C_Area_4_Boss_Init
-    desc: "ObjType $5C — Area 4 boss \"Fred\" init (also used in Area 7; selected via Boss_ObjTypeByArea[3]/[6]). Clears render state $0670/$0671, $0672=$FF (attack-script index), $51=1 timer, HP $53=$60; INC ObjType $5C→$5D."
+    desc: "ObjType $5C — Area 4 boss \"Fred\" init (also used in Area 7; selected via Boss_ObjTypeByArea[3]/[6]). Clears the boss render/script state, seeds its phase timer and HP, and morphs the slot to its Main ($5D). The +0 render-slot is padding that falls through into the +3 body."
 
   - space: prg
     offset: 0x116F4
     name: _ObjHandler_Ovhd_5C_Area_4_Boss_Init__Update__
-    desc: "+3 body entry (normal-play; +0 preamble runs only during a fade)"
+    desc: "$0670 = $0671 = 0 (render state clear)  [+3 body entry; the +0 slot is padding that falls through to here]"
+
+  - space: prg
+    offset: 0x116FC
+    desc: "$0672 = $FF (attack-script index reset)"
+
+  - space: prg
+    offset: 0x11701
+    desc: "$51 = 1 (phase timer)"
 
   - space: prg
     offset: 0x11705
-    desc: "LDA #$60 → ObjHealth ($53): spawn HP for Lvl4/7 boss (Fred) = 96 decimal; esc0rtd3w ROM notes (file 0x11716)"
+    desc: "ObjHealth $53 = $60 — spawn HP for the Lvl4/7 boss (Fred) = 96 decimal"
+
+  - space: prg
+    offset: 0x11709
+    desc: "morph to $5D Main next frame (INC ObjType $46)"
 
   - space: prg
     offset: 0x1170C
     name: ObjHandler_Ovhd_5D_Area_4_Boss_Main
-    desc: "ObjType $5D — Area 4 (& 7) boss \"Fred\" main. +0 JMP→render ($9899). Script-driven: when phase timer $51 expires it advances an area-specific attack-pattern script (Boss4_AttackPattern $9947 when $14==3, else Boss7_AttackPattern $9959) whose next byte → action $50; $50 dispatch: 1=jump (random reposition $49/$4B + launch velocity via $C05A/$C0F6, SFX $12), 2=$980B, 3=$9832, 4=$985B, 5=$987A (the various shots). HP $53=$60; 128×192 hitbox region. [\"jumps around, shoots various things\".]"
+    desc: "ObjType $5D — Area 4 (& 7) boss \"Fred\", active. Script-driven: when its action timer expires it advances an area-specific attack-pattern script, whose next action code drives the $50 dispatch (jump-and-reposition, or one of several shot patterns). HP tracked in $53. [\"jumps around, shoots various things\".] Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x1170F
@@ -3795,7 +3825,7 @@ hints:
   - space: prg
     offset: 0x11B4B
     name: ObjHandler_Ovhd_5E_Area_2_Boss_Init
-    desc: "ObjType $5E — Area 2 boss init (also used in Area 6; selected via Boss_ObjTypeByArea). [Area corrected from Lua's \"Area 1?\" via the $9FE6 table.] Sets HP $53=$40, velocity $4C=8/$4D=3; INC ObjType $5E→$5F."
+    desc: "ObjType $5E — Area 2 boss init (also used in Area 6; selected via Boss_ObjTypeByArea). [Area corrected from Lua's \"Area 1?\" via the $9FE6 table.] Runs the shared enemy init, seeds the boss HP and initial velocity, and morphs the slot to its Main ($5F)."
 
   - space: prg
     offset: 0x11B4E
@@ -3830,9 +3860,11 @@ hints:
   - space: prg
     offset: 0x11B67
     name: Boss2_Movement_9B67_Sub
-    desc: |-
-      Active path (by Displaced Gamers): set 128×128 hitbox; L_A07B collision; hop movement + projectile spawn
-      active path: set 128×128 hitbox ($42=$80, $43=$80)
+    desc: "Boss 2 active movement (Displaced Gamers): while not touching the player it hops and periodically fires a projectile ($73); a player-contact hit skips the attack that frame."
+
+  - space: prg
+    offset: 0x11B6B
+    desc: "$42 = $43 = $80 (collision box for the L_A07B player-contact check below)"
 
   - space: prg
     offset: 0x11B6F
@@ -3914,7 +3946,7 @@ hints:
   - space: prg
     offset: 0x11C19
     name: Obj_RenderSprites
-    desc: "LSR $51 twice → bits 3:2 become bits 1:0 → $45 (OAM Y-group selector); JSR $9EB3 to stage 4 sprites for the current animation frame"
+    desc: "Renders the boss body: derives the OAM Y-group selector from the animation frame ($51) and stages its 4-sprite body."
 
   - space: prg
     offset: 0x11C1D
@@ -4009,7 +4041,7 @@ hints:
   - space: prg
     offset: 0x11D77
     name: Boss2_PincerArms_RenderBothArms
-    desc: "Render Boss 2's left+right pincer arms by calling Boss2_PincerArms_RenderArm ($9C23) twice, mirrored: first with attr $44=$42 and base position +$18 (arm index $00), then $44=$02 and -$18 (arm index $14). Called from _Boss2_PincerArms__Render ($9BAA)."
+    desc: "Renders Boss 2's left and right pincer arms by calling Boss2_PincerArms_RenderArm twice, mirrored — each with its own OAM attribute, anchor offset and arm slot base. Called from _Boss2_PincerArms__Render ($9BAA)."
 
   - space: prg
     offset: 0x11D7D
@@ -4084,9 +4116,11 @@ hints:
   - space: prg
     offset: 0x11E1D
     name: Boss2_Projectiles_9E1D_Sub
-    desc: |-
-      Active path (by Displaced Gamers): set 128×128 hitbox; LC01E apply directional velocity
-      active path: set 128×128 hitbox ($42=$80, $43=$80)
+    desc: "Boss-2 projectile (Small Diamond Shot) active path: sets its collision box and applies its directional velocity."
+
+  - space: prg
+    offset: 0x11E21
+    desc: "$42 = $43 = $80 (collision box)"
 
   - space: prg
     offset: 0x11E25
@@ -4456,17 +4490,33 @@ hints:
   - space: prg
     offset: 0x12137
     name: ObjHandler_Ovhd_60_Area_3_Boss_Init
-    desc: "ObjType $60 — Area 3 boss \"Photophage\" init (selected via Boss_ObjTypeByArea[2]). Builds a 16-segment body (\"robot blocks\"): per-segment HP $0670[0..15]=$08, X positions = Photophage_SegXTable ($A176)+CameraXInt $1D → $0680[], Y = Photophage_SegYTable ($A186)+CameraYInt $1F → $0690[]; sets $06A0/$06A3/$06A4=$10, state $50=0, timer $51=$0F. INC ObjType $60→$61."
+    desc: "ObjType $60 — Area 3 boss \"Photophage\" init (selected via Boss_ObjTypeByArea[2]). Lays out the 16-segment body (\"robot blocks\") from the per-segment offset tables, seeds the shared boss collision/state variables, and morphs the slot to its Main ($61). Each segment is independently damageable."
 
   - space: prg
     offset: 0x1213A
     name: _ObjHandler_Ovhd_60_Area_3_Boss_Init__Update__
-    desc: "+3 body entry (normal-play; +0 preamble runs only during a fade)"
+    desc: "$53 = $08 — per-segment HP working copy  [+3 body entry; +0 preamble runs only during a fade]"
 
   - space: prg
     offset: 0x12140
     name: _Boss3_Photophage_Init__SegLoop
-    desc: "loop X=$0F..0 filling per-segment HP/X/Y arrays ($0670/$0680/$0690)"
+    desc: "X = $0F..0: HP $0670[X]=$08, X-pos $0680[X] = SegXTable[X]+CameraXInt $1D, Y-pos $0690[X] = SegYTable[X]+CameraYInt $1F"
+
+  - space: prg
+    offset: 0x1215A
+    desc: "segment collision box: $06A0 = $06A3 = $06A4 = $10"
+
+  - space: prg
+    offset: 0x12165
+    desc: "state $50 = 0, segment counters $06A1/$06A2 = 0"
+
+  - space: prg
+    offset: 0x1216F
+    desc: "phase timer $51 = $0F"
+
+  - space: prg
+    offset: 0x12173
+    desc: "morph to $61 Main next frame (INC ObjType $46)"
 
   - space: prg
     offset: 0x12176
@@ -4745,7 +4795,7 @@ hints:
   - space: prg
     offset: 0x123E3
     name: Boss3_Photophage_LoadSegmentVars
-    desc: "Load collision vars for segment $06A1&$0F: $48/$4A=0, $49=$0680,X, $4B=$0690,X, $53(HP)=$0670,X."
+    desc: "Loads the active segment's collision variables (position and HP) from the per-segment arrays into the working slot."
 
   - space: prg
     offset: 0x123E9
@@ -4829,7 +4879,11 @@ hints:
   - space: prg
     offset: 0x124C3
     name: Boss3_Photophage_RequestChrBank
-    desc: "Request the boss CHR bank: $FC=$08, $23=$01 (CHR reload flag)."
+    desc: "Requests the Photophage boss CHR bank and flags a CHR reload."
+
+  - space: prg
+    offset: 0x124C5
+    desc: "$FC = $08 (boss CHR bank)"
 
   - space: prg
     offset: 0x124C7
@@ -4954,12 +5008,28 @@ hints:
   - space: prg
     offset: 0x12571
     name: ObjHandler_Ovhd_62_Area_1_Boss_Init
-    desc: "ObjType $62 — Area 1 boss \"Mother Brain\" init (selected via Boss_ObjTypeByArea[0]). [Area corrected from Lua's \"Area 2?\" via the $9FE6 table.] Sets HP $53=$80, clears $50/$51, velocity $4C=0/$4D=8; INC ObjType $62→$63."
+    desc: "ObjType $62 — Area 1 boss \"Mother Brain\" init (selected via Boss_ObjTypeByArea[0]). [Area corrected from Lua's \"Area 2?\" via the $9FE6 table.] Seeds the boss HP, clears its state, sets an initial downward velocity, and morphs the slot to its Main ($63). The +0 render-slot is padding that falls through into the +3 body."
 
   - space: prg
     offset: 0x12574
     name: _ObjHandler_Ovhd_62_Area_1_Boss_Init__Update__
-    desc: "+3 body entry (normal-play; +0 preamble runs only during a fade)"
+    desc: "ObjHealth $53 = $80  [+3 body entry; the +0 slot is padding that falls through to here]"
+
+  - space: prg
+    offset: 0x12578
+    desc: "$50 = $51 = 0 (state/timer clear)"
+
+  - space: prg
+    offset: 0x12580
+    desc: "$4C = 0 (X velocity)"
+
+  - space: prg
+    offset: 0x12582
+    desc: "$4D = $08 (Y velocity, downward)"
+
+  - space: prg
+    offset: 0x12586
+    desc: "morph to $63 Main next frame (INC ObjType $46)"
 
   - space: prg
     offset: 0x12589
@@ -5116,12 +5186,32 @@ hints:
   - space: prg
     offset: 0x126B3
     name: ObjHandler_Ovhd_64_Area_5_Boss_Init
-    desc: "ObjType $64 — Area 5 boss \"Big Crab\" init (selected via Boss_ObjTypeByArea[4]). HP $53=$50, timer $51=$40, state $50=5, XVel/YVel=0; INC ObjType $64→$65."
+    desc: "ObjType $64 — Area 5 boss \"Big Crab\" init (selected via Boss_ObjTypeByArea[4]). Seeds the boss HP, phase timer and initial state, zeroes its velocity, and morphs the slot to its Main ($65). The +0 render-slot is padding that falls through into the +3 body."
 
   - space: prg
     offset: 0x126B6
     name: _ObjHandler_Ovhd_64_Area_5_Boss_Init__Update__
-    desc: "+3 body entry (normal-play; +0 preamble runs only during a fade)"
+    desc: "ObjHealth $53 = $50  [+3 body entry; the +0 slot is padding that falls through to here]"
+
+  - space: prg
+    offset: 0x126BA
+    desc: "$51 = $40 (phase timer)"
+
+  - space: prg
+    offset: 0x126BE
+    desc: "$50 = 5 (initial state)"
+
+  - space: prg
+    offset: 0x126C2
+    desc: "$4C = 0 (X velocity)"
+
+  - space: prg
+    offset: 0x126C6
+    desc: "$4D = 0 (Y velocity)"
+
+  - space: prg
+    offset: 0x126CA
+    desc: "morph to $65 Main next frame (INC ObjType $46)"
 
   - space: prg
     offset: 0x126CD
@@ -5204,7 +5294,15 @@ hints:
     name: Boss5_BigCrab_InitState4
     isCodeSeed: true
     isDead: true
-    desc: "Unreached (cut) Big Crab state-4 init, parallel to _Boss5_BigCrab_StateLogic__InitPause2 ($A730): timer $51 = ($C1B3 RNG & $38)+$10, then $50=4; RTS. Big Crab never enters state 4 — no code reaches $A73F (refs empty);"
+    desc: "Unreached (cut) Big Crab state-4 init, parallel to _Boss5_BigCrab_StateLogic__InitPause2 ($A730): would seed a random pause timer and enter state 4. Big Crab never enters state 4 — no code reaches $A73F (refs empty)."
+
+  - space: prg
+    offset: 0x12747
+    desc: "timer $51 = (RNG $C1B3 & $38) + $10"
+
+  - space: prg
+    offset: 0x12749
+    desc: "$50 = 4 (state 4)"
 
   - space: prg
     offset: 0x1274E
@@ -5234,7 +5332,7 @@ hints:
   - space: prg
     offset: 0x1279A
     name: Boss5_BigCrab_Pause
-    desc: "States 1/2 (pause): DEC $51; on expiry → enter idle ($A7C6); else RTS."
+    desc: "Big Crab states 1/2 (pause): counts the pause timer ($51) down and returns to idle when it expires."
 
   - space: prg
     offset: 0x1279F
@@ -5259,7 +5357,7 @@ hints:
   - space: prg
     offset: 0x127C6
     name: Boss5_BigCrab_EnterIdle
-    desc: "Enter idle (state 5): $51=$20, $50=5."
+    desc: "Puts the Big Crab into its idle state (5) with a dwell timer."
 
   - space: prg
     offset: 0x127CA
@@ -5363,7 +5461,7 @@ hints:
   - space: prg
     offset: 0x12965
     name: ObjHandler_Ovhd_7E_Area_5_Boss_Bubble_Shot_Main
-    desc: "ObjType $7E — Area 5 boss (Big Crab) Bubble Shot main [lua]. +0 JMP→__Render. Drifts (velocity by hitbox size $4F), decelerating once sub-timer $51 expires ($C0F0); lifetime $50 → on expiry or on Sophia contact morphs to $7F (popping). Renders an expanding bubble whose frame comes from BubbleShot_TileByPhase[$51>>1]."
+    desc: "ObjType $7E — Area 5 boss (Big Crab) Bubble Shot, active. Drifts and decelerates once its sub-timer expires, and pops (morphing to $7F) when its lifetime runs out or it touches the player. Renders as an expanding bubble. Dual-entry: +0 is the render/contact block, +3 the normal-play body."
 
   - space: prg
     offset: 0x12968
@@ -5469,7 +5567,7 @@ hints:
   - space: prg
     offset: 0x12A03
     name: ObjHandler_Ovhd_66_Area_8_Boss_Phase1_Init
-    desc: "ObjType $66 — Area 8 (final) boss, phase 1 init (Boss_ObjTypeByArea[7]; $5A gives area 8 special prespawn at $14==7). HP $53=$3C; state $50/$51=0; positions at camera center ($1C/$1D+8, $1F+5); INC ObjType $66→$67."
+    desc: "ObjType $66 — Area 8 (final) boss, phase 1 init (Boss_ObjTypeByArea[7]; the $5A area-8 special prespawn runs first when $14==7). Runs the shared enemy init, seeds the boss HP and clears its state, positions it near the top-centre of the camera, and morphs the slot to its Main ($67)."
 
   - space: prg
     offset: 0x12A06
@@ -5535,7 +5633,7 @@ hints:
   - space: prg
     offset: 0x12A72
     name: Boss8_Phase1_SetChrBank
-    desc: "Request the boss CHR banks: $FC=$08, $23=$01 (CHR reload flag)."
+    desc: "Requests the phase-1 boss CHR bank and flags a CHR reload."
 
   - space: prg
     offset: 0x12A76
@@ -5554,7 +5652,31 @@ hints:
   - space: prg
     offset: 0x12A91
     name: Boss8_Phase1_DamageCheck
-    desc: "Player-shot damage: 40×64 body hitbox ($40=$28/$41=$40, $C090). If still unhit ($4F==0), test the weak point $20px below ($40/$41=$10, $3F+=$20, $C093 DispatchSlot_31_Call_Enemy_Damage_Sub); on a weak-point hit set hit-flash $4F=$10."
+    desc: "Runs the phase-1 boss's two damage zones against the player's shots: a large body box, then — if not already hit this frame — a smaller weak point set below it. A weak-point hit starts the hit-flash. Skipped while the boss is dead or fading."
+
+  - space: prg
+    offset: 0x12A9A
+    desc: "40×64 body box ($40=$28, $41=$40) → $C090 body-damage check (A=$30)"
+
+  - space: prg
+    offset: 0x12AA7
+    desc: "already hit this frame ($4F set) → skip the weak-point test"
+
+  - space: prg
+    offset: 0x12AAB
+    desc: "16×16 weak-point box ($40=$41=$10)"
+
+  - space: prg
+    offset: 0x12AB3
+    desc: "weak point sits $20px below the body ($3F+$20 for the test, restored after)"
+
+  - space: prg
+    offset: 0x12ABB
+    desc: "$C093 weak-point damage check (DispatchSlot_31_Call_Enemy_Damage_Sub, A=$30)"
+
+  - space: prg
+    offset: 0x12AC7
+    desc: "on a weak-point hit: $4F = $10 (start hit-flash)"
 
   - space: prg
     offset: 0x12ACB
@@ -5564,7 +5686,15 @@ hints:
   - space: prg
     offset: 0x12ACC
     name: Boss8_Phase1_FireEggShot
-    desc: "During a burst, when the attack-cycle counter $0670==$10 spawn the phase-1 Egg Shot (ObjType $80 via $C1F5), nudging $4B (INC/DEC) so it emerges just below the body. Skipped while fading ($03FD!=0)."
+    desc: "During a burst, when the attack-cycle counter reaches its fire mark, spawns the phase-1 Egg Shot (ObjType $80) just below the body. Skipped while fading."
+
+  - space: prg
+    offset: 0x12AD1
+    desc: "only fires at the attack-cycle mark ($0670 == $10)"
+
+  - space: prg
+    offset: 0x12AD8
+    desc: "nudge Y down one ($4B) so the shot emerges just below the body, spawn Egg Shot $80 ($C1F5), then restore Y"
 
   - space: prg
     offset: 0x12AE1
@@ -5624,7 +5754,19 @@ hints:
   - space: prg
     offset: 0x12B72
     name: Boss8_Phase1_BodyContact
-    desc: "Contact-damage the player against the large body: skip if fading ($03FD!=0); else stage a 240×80 region ($40=$F0/$41=$50) at offset $3E=$80/$3F=$28, A=$70 → $C141."
+    desc: "Contact-damages the player against the boss's large body region. Skipped while fading."
+
+  - space: prg
+    offset: 0x12B77
+    desc: "240×80 contact region ($40=$F0, $41=$50)"
+
+  - space: prg
+    offset: 0x12B85
+    desc: "region offset from the object origin ($3E=$80, $3F=$28; saved/restored around the call)"
+
+  - space: prg
+    offset: 0x12B8D
+    desc: "$C141 contact-damage the player (A=$70)"
 
   - space: prg
     offset: 0x12B98
@@ -5634,7 +5776,7 @@ hints:
   - space: prg
     offset: 0x12B99
     name: Boss8_Phase1_LoadPalette
-    desc: "Load the boss palette: copy 16 bytes Boss8_Phase1_Palette → $0650/$58 (BG), then re-copy its first 4 bytes → $0668/$70 (sprite), then JMP $9F41 (flash apply)."
+    desc: "Loads the phase-1 boss palette (the 16 BG bytes, its first row reused as the sprite palette), then applies the flash."
 
   - space: prg
     offset: 0x12B9B
@@ -5654,7 +5796,7 @@ hints:
   - space: prg
     offset: 0x12BC6
     name: ObjHandler_Ovhd_80_Area_8_Boss_Phase1_Egg_Shot_Init
-    desc: "ObjType $80 — Projectile: Area 8 final boss phase-1 Egg Shot, init [lua; renamed from \"Unknown\"]. Fired by $67 (phase 1). Despawn if too many entities ($57≥$0C); else set lifetime $51=$0A, downward velocity $4D=$20, random horizontal drift $4C∈[−$20,+$1F] ($C1B3 RNG); INC→$81."
+    desc: "ObjType $80 — Area 8 final boss phase-1 Egg Shot, init [renamed from \"Unknown\"]. Fired by the phase-1 boss ($67). Despawns immediately if too many entities are live; otherwise arms its lifetime and a downward velocity with a random horizontal drift, then morphs to its Main ($81)."
 
   - space: prg
     offset: 0x12BC9
@@ -5677,7 +5819,7 @@ hints:
   - space: prg
     offset: 0x12BE7
     name: ObjHandler_Ovhd_81_Area_8_Boss_Phase1_Egg_Shot_Main
-    desc: "ObjType $81 — Area 8 boss phase-1 Egg Shot main [lua]. +0 JMP→__Render. Body: 192×192 despawn bound ($42/$43=$C0); gravity ($4D+=2, clamp to $60 via $C14D); apply velocity ($C03F); wall bounce ($C16B). Render+contact (24×24): despawn in boss-context fade ($03FD); on-screen test ($C0FF) — off-screen ticks lifetime $51 / vertical bounce; contact-damage player ($C141) + bounce; draw tile Boss8_EggShot_TileTable[($10>>2)&3] ($5A–$5D)."
+    desc: "ObjType $81 — Area 8 boss phase-1 Egg Shot, active. A gravity-driven projectile that falls, bounces off walls, and (while off-screen) bounces vertically until its lifetime runs out. Damages the player on contact. Dual-entry: +0 is the render/contact block, +3 the normal-play body."
 
   - space: prg
     offset: 0x12BEA
@@ -5742,7 +5884,11 @@ hints:
     name: Boss8_EggShot_BecomeBigExplosion
     isCodeSeed: true
     isDead: true
-    desc: "Callerless 5-byte routine `LDA #$14 / STA $46 / RTS` - morphs the running object into ObjType $14 (Big Explosion - Init). Sits immediately after the Area-8 phase-1 Egg Shot ($81) render tail, so it is almost certainly the cut impact behaviour for that projectile (turn into a Big Explosion instead of simply despawning). No reference from any bank."
+    desc: "Callerless 5-byte routine that morphs the running object into ObjType $14 (Big Explosion – Init). Sits immediately after the Area-8 phase-1 Egg Shot ($81) render tail, so it is almost certainly the cut impact behaviour for that projectile (turn into a Big Explosion instead of simply despawning). No reference from any bank."
+
+  - space: prg
+    offset: 0x12C51
+    desc: "morph to ObjType $14 (Big Explosion) — STA $46"
 
   - space: prg
     offset: 0x12C54
@@ -5823,7 +5969,7 @@ hints:
   - space: prg
     offset: 0x12CAC
     name: Boss8_Phase2_SetChrBank
-    desc: "Request the boss CHR banks: $FC=$08, $23=$01 (CHR reload flag), $D5=$1C (final-boss player/sprite bank)."
+    desc: "Requests the phase-2 boss CHR banks and flags a CHR reload."
 
   - space: prg
     offset: 0x12CB0
@@ -5836,7 +5982,7 @@ hints:
   - space: prg
     offset: 0x12CB9
     name: Boss8_Phase2_StateDispatch
-    desc: "AI router on state $50: 2→S2_Tick, 3→S3_Tick (whip), 4→S4_Tick, else (0/1) movement+re-aim AI."
+    desc: "AI router on the boss's state ($50): dispatches to the telegraph, whip, and recovery ticks, or (states 0/1) the movement-and-re-aim AI."
 
   - space: prg
     offset: 0x12CC2
@@ -5916,7 +6062,15 @@ hints:
   - space: prg
     offset: 0x12D63
     name: Boss8_Phase2_PickNextState
-    desc: "Timer expired → choose next state: usually back to movement (state 1, $51=$40); when in range to the player ($C105==2, $C159<5) roll $C1B3&$0F: <6 stay movement, <$0F → whip (state 3, $51=$3B), else → telegraph (state 2, $51=$20)."
+    desc: "Timer expired: choose the boss's next state. Defaults to movement (state 1); only when the boss is in the player's quadrant and close does it roll the RNG to maybe switch to a whip attack (state 3) or a telegraph (state 2)."
+
+  - space: prg
+    offset: 0x12D71
+    desc: "in range (player quadrant $C105==2, distance $C159<5): roll $C1B3 & $0F — <6 stay in movement, <$0F → whip (state 3), else telegraph (state 2)"
+
+  - space: prg
+    offset: 0x12D7C
+    desc: "telegraph: state $50 = 2, phase timer $51 = $20"
 
   - space: prg
     offset: 0x12D87
@@ -5933,12 +6087,36 @@ hints:
     name: Boss8_Phase2_SetState4
     isCodeSeed: true
     isDead: true
-    desc: "Callerless 9-byte routine `LDA #$04 / STA $50 / LDA #$37 / STA $51 / RTS` - the missing fourth sibling of the Boss8_Phase2_PickNextState__StateN family (state 1 $AD87, state 2 $AD7E, state 3 $AD90). It would enter state 4 (recovery) with timer $51=$37. Nothing calls it, which is why Boss8_Phase2_StateDispatch's state-4 arm (_Boss8_Phase2_StateDispatch__S4_Tick, $AD55) can never fire: the recovery state is dispatched but unreachable. Cut content."
+    desc: "The missing fourth sibling of the Boss8_Phase2_PickNextState__StateN family (state 1 $AD87, state 2 $AD7E, state 3 $AD90): a callerless 9-byte routine that would enter state 4 (recovery). Nothing calls it, which is why Boss8_Phase2_StateDispatch's state-4 arm (_Boss8_Phase2_StateDispatch__S4_Tick, $AD55) can never fire — the recovery state is dispatched but unreachable. Cut content."
+
+  - space: prg
+    offset: 0x12D9B
+    desc: "$50 = 4 (recovery state)"
+
+  - space: prg
+    offset: 0x12D9F
+    desc: "$51 = $37 (recovery timer)"
 
   - space: prg
     offset: 0x12DA2
     name: Boss8_Phase2_Render
-    desc: "Render the boss body: 48x56 hitbox ($40=$30/$41=$38); $C0FF contact; pick anim frame (Boss8_Phase2_ComputeAnimFrame); when not flashing/offscreen run the hit-flash test ($3F-8, $C093) — on hit set $4F=$10 and play SFX $4B ($C216); draw the body sprite (tile $0670+$5E, attr $44=2) via $C063."
+    desc: "Renders the phase-2 boss body and runs its damage handling: checks player contact, picks the animation frame, and — unless already flashing or in a boss-context fade — runs the hit-flash test, flagging a hit and playing the hit SFX, before drawing the body sprite."
+
+  - space: prg
+    offset: 0x12DAA
+    desc: "48×56 contact box ($40=$30, $41=$38) → $C0FF player-contact check"
+
+  - space: prg
+    offset: 0x12DB0
+    desc: "skip the hit-flash test while in a boss-context fade ($03FD) or already flashing ($4F)"
+
+  - space: prg
+    offset: 0x12DB5
+    desc: "raise the hit-test point 8px ($3F−8) for the $C093 shot-overlap test (A=$40)"
+
+  - space: prg
+    offset: 0x12DC4
+    desc: "on hit: $4F = $10 (start hit-flash), play SFX $4B ($C216)"
 
   - space: prg
     offset: 0x12DCF
@@ -5953,12 +6131,20 @@ hints:
   - space: prg
     offset: 0x12DE7
     name: Boss8_Phase2_ComputeAnimFrame
-    desc: "Pick the body animation frame into $0670. First set HP tier $0671 (HP>=$80→1, >=$40→2, else 0), then branch by state: 2→walk-pause, 3→whip frames, else walk (frame = (($11>>4)&1) + $0671*2)."
+    desc: "Picks the phase-2 boss's body animation frame from its HP tier and current state (walk / walk-pause / whip), into $0670."
+
+  - space: prg
+    offset: 0x12DE9
+    desc: "HP tier → $0671: HP ≥ $80 → 1, ≥ $40 → 2, else 0"
 
   - space: prg
     offset: 0x12DF7
     name: _Boss8_Phase2_ComputeAnimFrame__Store
-    desc: "Store HP tier into $0671, then compute the per-state frame."
+    desc: "Store HP tier into $0671, then branch by state ($50)."
+
+  - space: prg
+    offset: 0x12E04
+    desc: "walk frame = (($11>>4)&1) + $0671×2 (HP tier ×2 + a 1-bit animation phase)"
 
   - space: prg
     offset: 0x12E1B
@@ -5985,7 +6171,7 @@ hints:
     name: Boss8_Phase2_AnimFrame_CutState
     isCodeSeed: true
     isDead: true
-    desc: "Unreachable (cut) Boss8 phase-2 anim-frame block: $0670 = 6/7/8 by attack-timer $51 (>=$30->6, >=$18->7, else 8); RTS. Render adds $5E ($ADE1), so these are the CUT final-boss metasprites $64/$65/$66 (defs $BC5F/$BC6E/$BC78) — the orphan 3-pose attack animation in docs/misc/cut-content.md, whose producing formula this IS (structural sibling of the live whip state $AE1B). The ComputeAnimFrame $50-dispatch ($ADFA) only branches to states 0/1 (default $AE04), 2 ($AE5A), 3 ($AE1B) — never $AE42. No refs;"
+    desc: "Unreachable (cut) Boss8 phase-2 anim-frame block — the producing formula for the CUT final-boss 3-pose attack metasprites $64/$65/$66 (defs $BC5F/$BC6E/$BC78; the orphan animation in docs/misc/cut-content.md). The render tail adds $5E ($ADE1). Structural sibling of the live whip state ($AE1B), but the ComputeAnimFrame $50-dispatch ($ADFA) only ever branches to states 0/1/2/3, never here — no refs."
 
   - space: prg
     offset: 0x12E4C
@@ -6014,7 +6200,7 @@ hints:
   - space: prg
     offset: 0x12E62
     name: Boss8_Phase2_LoadPalette
-    desc: "Load the boss palette: copy 16 bytes LAE7F → $0650/$58 and 4 bytes LAE8F → $0668/$70, then JMP $9F41 (flash apply)."
+    desc: "Loads the phase-2 boss palette (16 BG bytes plus a 4-byte sprite row), then applies the flash."
 
   - space: prg
     offset: 0x12E64
@@ -6039,7 +6225,7 @@ hints:
   - space: prg
     offset: 0x12E93
     name: ObjHandler_Ovhd_82_Area_8_Boss_Phase2_Whip_Init
-    desc: "ObjType $82 — Area 8 final boss phase-2 Whip attack, init [lua; renamed from \"Unknown\"]. Used by $69 (phase 2). Aims at Sophia ($C05A), then collapses the X-aim component $4C into a 3-way lash-direction code ($4C: 0=down, 1=right, 2=left): |x|<$18 → down, x≥+$18 → right, x≤−$18 → left. SFX $50. → $83."
+    desc: "ObjType $82 — Area 8 final boss phase-2 Whip attack, init [renamed from \"Unknown\"]. Fired by the phase-2 boss ($69). Aims at the player, then collapses that aim into a 3-way lash direction (down/left/right), plays the SFX, and morphs to its Main ($83)."
 
   - space: prg
     offset: 0x12E96
@@ -6086,7 +6272,7 @@ hints:
   - space: prg
     offset: 0x12EC5
     name: ObjHandler_Ovhd_83_Area_8_Boss_Phase2_Whip_Main
-    desc: "ObjType $83 — Area 8 boss phase-2 Whip attack main [lua]. +0 JMP→DrawSegments. Body: extend phase grows the lash one segment every 7 frames (INC $51; on each 7-tick DEC the length budget $50) until $50 hits 0, then the retract phase counts $51 back down and despawns. DrawSegments draws a chain of $51 segments (each 16px further down) in the $4C direction (0=down $71 / 1=right $81 H-flip / 2=left $81); the tip contact-damages Sophia ($C141). Off the bottom of the room ($3F≥$E8) the chain stops."
+    desc: "ObjType $83 — Area 8 boss phase-2 Whip attack, active. A lash that grows one segment at a time up to a length budget, then retracts and despawns. The chain extends in one of three directions (down/left/right); its tip contact-damages the player, and it stops at the bottom of the room. Dual-entry: +0 draws the segments, +3 the normal-play body."
 
   - space: prg
     offset: 0x12EC8
@@ -6131,12 +6317,32 @@ hints:
   - space: prg
     offset: 0x12F45
     name: ObjHandler_Ovhd_4E_Spinner_Shot_Init
-    desc: "ObjType $4E — Projectile: Spinner Shot, init [lua] (4 fired in a burst by the Spinner $38). Spin phase $52=$50<<6; lifetime $51=$10; XVel/YVel 0; INC ObjType $4E→$4F; SFX $1B."
+    desc: "ObjType $4E — Spinner Shot projectile, init (4 fired in a burst by the Spinner $38). Seeds the shot's spin phase from its burst-slot index and its lifetime, zeroes its velocity, plays the spawn SFX, and morphs to its Main ($4F). Dual-entry: the +0 render pass is a bare RTS."
 
   - space: prg
     offset: 0x12F48
     name: _ObjHandler_Ovhd_4E_Spinner_Shot_Init__Update__
-    desc: "+3 body entry (normal-play; +0 preamble runs only during a fade)"
+    desc: "spin phase $52 = $50 << 6 — the burst-slot index (0-3) becomes a starting angle 90° apart  [+3 body entry]"
+
+  - space: prg
+    offset: 0x12F52
+    desc: "lifetime $51 = $10"
+
+  - space: prg
+    offset: 0x12F56
+    desc: "zero velocity ($4C = $4D = 0) — the Main advances the angle, radius comes later"
+
+  - space: prg
+    offset: 0x12F5C
+    desc: "morph to $4F Main (INC ObjType $46)"
+
+  - space: prg
+    offset: 0x12F5E
+    desc: "$C1EC: finalise the spawn (tilemap index)"
+
+  - space: prg
+    offset: 0x12F61
+    desc: "play spawn SFX $1B"
 
   - space: prg
     offset: 0x12F66
@@ -6146,7 +6352,7 @@ hints:
   - space: prg
     offset: 0x12F67
     name: ObjHandler_Ovhd_4F_Spinner_Shot_Main
-    desc: "ObjType $4F — Projectile: Spinner Shot, main [lua]. Spirals outward: flight angle $47=$11×4+$52 advances on its phase tick, velocity from angle ($C1EF), MoveXY; lifetime $51 grows +3/tick → despawn at $70; render tile $4E."
+    desc: "ObjType $4F — Spinner Shot projectile, active. Spirals outward: its flight angle advances each phase tick while its lifetime grows, until it despawns. Dual-entry: +0 is the render/hit block, +3 the normal-play body."
 
   - space: prg
     offset: 0x12F6A
@@ -6176,7 +6382,7 @@ hints:
   - space: prg
     offset: 0x12FB9
     name: ObjHandler_Ovhd_50_Cross_Shooter_Shot_Init
-    desc: "ObjType $50 — Projectile: Cross Shooter Shot, init [lua] (fired by Cross Shooter $3A; direction flag in $50). INC ObjType $50→$51; sets velocity (H or V) by direction; SFX $1B."
+    desc: "ObjType $50 — Cross Shooter Shot projectile, init (fired by the Cross Shooter $3A; direction flag in $50). Sets a horizontal or vertical velocity by that flag (also launching a mirrored twin), plays the spawn SFX, and morphs to its Main ($51)."
 
   - space: prg
     offset: 0x12FBC
@@ -6217,7 +6423,7 @@ hints:
   - space: prg
     offset: 0x12FF6
     name: ObjHandler_Ovhd_51_Cross_Shooter_Shot_Main
-    desc: "ObjType $51 — Projectile: Cross Shooter Shot, main [lua]. $C024 move; $C138 player-hit (BMI → damage path $9329 + despawn); 16×16 bounds; off-screen → despawn; render tile $4E."
+    desc: "ObjType $51 — Cross Shooter Shot projectile, active. Flies under its movement routine and damages the player on contact; despawns off-screen. Dual-entry: +0 is the render/hit block, +3 the normal-play body."
 
   - space: prg
     offset: 0x12FF9
@@ -6262,7 +6468,7 @@ hints:
   - space: prg
     offset: 0x1302F
     name: ObjHandler_Ovhd_52_Slider_Laser_Init
-    desc: "ObjType $52 — Projectile: Slider Laser, init [lua] (fired downward by the Slider $40). YVel $4D=$40 (down); INC ObjType $52→$53; SFX $52."
+    desc: "ObjType $52 — Slider Laser projectile, init (fired downward by the Slider $40). Sets a downward velocity, plays the spawn SFX, and morphs to its Main ($53)."
 
   - space: prg
     offset: 0x13032
@@ -6325,7 +6531,7 @@ hints:
   - space: prg
     offset: 0x13074
     name: ObjHandler_Ovhd_54_Spitter_Shot_Init
-    desc: "ObjType $54 — Projectile: Spitter Shot, init [lua] (one of the 8-shot spread fired by Spitter $43; its angle is passed in $51). Copy angle $51→$47; set velocity from angle table index $11 ($C1EF); INC ObjType $54→$55; SFX $1B."
+    desc: "ObjType $54 — Spitter Shot projectile, init (one of the 8-shot spread fired by the Spitter $43; its angle is passed in $51). Sets the shot's flight direction from that angle and its velocity, plays the spawn SFX, and morphs to its Main ($55)."
 
   - space: prg
     offset: 0x13077
@@ -6392,7 +6598,7 @@ hints:
   - space: prg
     offset: 0x130BE
     name: ObjHandler_Ovhd_56_Th2C_Shot_Init
-    desc: "ObjType $56 — Orphaned orb projectile (maps from Thing $2C), init [not in lua]. Renders the same red/black/white orb (tile $4E) as the Spitter Shot $54/$55 — confirmed functional by forcing a slot to $56 in Mesen. Never instantiated in normal play: no area places Thing $2C and no code writes #$56. Set velocity from angle table index $18 ($C1EF); INC ObjType $56→$57. See docs/wip/missing-object-types.md."
+    desc: "ObjType $56 — orphaned orb projectile (maps from Thing $2C), init [not in lua]. Sets its velocity from its angle and morphs to its Main ($57). Never instantiated in normal play (no area places Thing $2C and no code writes #$56); renders the same red/black/white orb (tile $4E) as the Spitter Shot $54/$55, confirmed functional by forcing a slot to $56 in Mesen. See docs/wip/missing-object-types.md."
 
   - space: prg
     offset: 0x130C1
@@ -6411,12 +6617,12 @@ hints:
   - space: prg
     offset: 0x130CC
     name: ObjHandler_Ovhd_57_Th2C_Shot_Main
-    desc: "ObjType $57 — Orphaned orb projectile (maps from Thing $2C), main [not in lua]. $C030 move+collide (despawn on hit); 16×16 bounds; off-screen → despawn; render orb tile $4E (same family as Spitter Shot $55 / cut $4B). Never instantiated in normal play; see docs/wip/missing-object-types.md."
+    desc: "ObjType $57 — orphaned orb projectile (maps from Thing $2C), active [not in lua]. Moves with wall-collision (despawning on impact), despawns off-screen, and renders the orb (tile $4E, same family as Spitter Shot $55 / cut $4B). Never instantiated in normal play; see docs/wip/missing-object-types.md. Dual-entry: +0 is the render/hit block, +3 the normal-play body."
 
   - space: prg
     offset: 0x130CF
     name: _ObjHandler_Ovhd_57_Th2C_Shot_Main__Update__
-    desc: "+3 body entry (normal-play; +0 preamble runs only during a fade)"
+    desc: "$C030 move + collide (despawn on wall hit)  [+3 body entry]"
 
   - space: prg
     offset: 0x130DF
@@ -6431,7 +6637,7 @@ hints:
   - space: prg
     offset: 0x130FF
     name: ObjHandler_Ovhd_58_Gray_Gumdrop_Shot_Init
-    desc: "ObjType $58 — Projectile: Gray Gumdrop Shot, init [lua] (aimed bullet fired by Charging Robot $36, Red Gumdrop $47, and the Gray Gumdrop). INC ObjType $58→$59; ScreenPos_Compute; compute velocity from spawner pos toward the player ($C05D using $3E/$3F & $7C/$7D), halve via Math_ASR; SFX $1A."
+    desc: "ObjType $58 — Gray Gumdrop Shot projectile, init (aimed bullet fired by the Charging Robot $36, Red Gumdrop $47, and the Gray Gumdrop). Computes a velocity aimed at the player, plays the spawn SFX, and morphs to its Main ($59)."
 
   - space: prg
     offset: 0x13102
@@ -6470,7 +6676,7 @@ hints:
   - space: prg
     offset: 0x13132
     name: ObjHandler_Ovhd_59_Gray_Gumdrop_Shot_Main
-    desc: "ObjType $59 — Projectile: Gray Gumdrop Shot, main [lua]. $C01E MoveXY (apply bullet velocity); $C138 tile check (BPL no hit; else $9333 damage + despawn); 8×8 hitbox; off-screen → despawn; render tile $4E."
+    desc: "ObjType $59 — Gray Gumdrop Shot projectile, active. A straight-flying bullet that damages the player on contact (then despawns) and despawns off-screen. Dual-entry: +0 is the render/hit block, +3 the normal-play body."
 
   - space: prg
     offset: 0x13135
@@ -6518,9 +6724,7 @@ hints:
   - space: prg
     offset: 0x1316B
     name: ObjHandler_Ovhd_16_ECanister1_Init
-    desc: |-
-      ObjType $16 — [DEAD/cut content — nothing ever spawns ObjType $16; lua: "Pick-up – E-Cannister 1"]. +0 JMP→RTS. Body: force ObjType $46=$17 (the pickup main).
-      +0 render-pass entry: JMP→RTS
+    desc: "ObjType $16 init — the cut E-Cannister 1 pickup [dead: nothing spawns ObjType $16; lua: \"Pick-up – E-Cannister 1\"]. Immediately morphs the slot to its Main handler ($17). Dual-entry: the render pass is a no-op, the update pass runs the body below."
 
   - space: prg
     offset: 0x1316E
@@ -6572,9 +6776,7 @@ hints:
   - space: prg
     offset: 0x131A3
     name: ObjHandler_Ovhd_18_ECanister2_Init
-    desc: |-
-      ObjType $18 — [DEAD/cut content; lua: "Pick-up – E-Cannister 2"]. +0 JMP→RTS. Body: force ObjType $46=$19.
-      +0 render-pass entry: JMP→RTS
+    desc: "ObjType $18 init — the cut E-Cannister 2 pickup [dead: nothing spawns ObjType $18; lua: \"Pick-up – E-Cannister 2\"]. Immediately morphs the slot to its Main handler ($19). Dual-entry: the render pass is a no-op, the update pass runs the body below."
 
   - space: prg
     offset: 0x131A6
@@ -6664,7 +6866,11 @@ hints:
   - space: prg
     offset: 0x13243
     name: Obj_WallReflectX
-    desc: "X-axis wall-collision reflect (shared by Gray Gumdrop $31 / Robot $25 / Red Gumdrop $47). Save HP $53 + hit-flag $4F; test the moved X position for a solid tile ($C138/$C09F); on collision reverse X (XVel $4C = −$48, re-apply via $C027); restore HP/hit-flag."
+    desc: "X-axis wall-collision reflect (shared by Gray Gumdrop $31 / Robot $25 / Red Gumdrop $47): if the moved X position hits a solid tile, reverses X velocity and re-applies the move. Preserves HP and hit-flag across the test."
+
+  - space: prg
+    offset: 0x13251
+    desc: "on collision: reverse X — XVel $4C = −$48, re-apply the move ($C027)"
 
   - space: prg
     offset: 0x1325D
@@ -6674,7 +6880,11 @@ hints:
   - space: prg
     offset: 0x13264
     name: Obj_WallReflectY
-    desc: "Y-axis wall-collision reflect (Y twin of Obj_WallReflectX). Save HP $53 + hit-flag $4F; test the moved Y position for a solid tile ($C138/$C09F); on collision reverse Y (YVel $4D = −$4A, re-apply via $C03F); restore HP/hit-flag."
+    desc: "Y-axis wall-collision reflect (Y twin of Obj_WallReflectX): if the moved Y position hits a solid tile, reverses Y velocity and re-applies the move. Preserves HP and hit-flag across the test."
+
+  - space: prg
+    offset: 0x13272
+    desc: "on collision: reverse Y — YVel $4D = −$4A, re-apply the move ($C03F)"
 
   - space: prg
     offset: 0x1327E
@@ -6735,7 +6945,7 @@ hints:
   - space: prg
     offset: 0x132C5
     name: OvhdEnemy_DamageCheck
-    desc: "Shared overhead-enemy damage check. A = descriptor index; desc[1] = HP. JSR Enemy_Damage_Check_Sub ($C144) applies pending player-shot damage; returns 0 = no hit, 1 = hit but still alive, $FF = killed. On kill: if desc[0]==0 JSR OvhdEnemy_Defeat ($B2F7) — spawn drop + convert slot to ObjType $14 (Big Explosion). Returns A = hit status for the caller."
+    desc: "Shared overhead-enemy damage check. A = descriptor index (its HP is descriptor field 1). Applies any pending player-shot damage (Enemy_Damage_Check_Sub $C144) and returns the hit status to the caller: no hit (0), hit but still alive (1), or killed ($FF). On a kill, when the descriptor's kind byte (field 0) is 0 it runs the normal defeat — spawn the drop and convert the slot to a Big Explosion ($14)."
 
   - space: prg
     offset: 0x132DB
@@ -6917,9 +7127,7 @@ hints:
   - space: prg
     offset: 0x1344F
     name: ObjHandler_Ovhd_31_Gray_Gumdrop_Main
-    desc: |-
-      ObjType $31 — Gumdrop (Thing $05) active. +0 JMP→render block. Update body: homes on the player — XVel $4C from X-seek ($C04B, signed delta-to-player ×8) clamped ±$3F (Speed_Limit) then ÷8 (Math_ASR×3), applied via MoveX ($C027) + terrain bounce ($B243); same for YVel $4D via $C054 / MoveY ($C03F) / $B264. Render: 16×16 hitbox; OvhdEnemy_DamageCheck desc 5 (HP $10 → drop ObjType $1A Pow x1 + Big Explosion); 2-frame animation (tiles $46/$47 by frame bit3).
-      +0 render-pass entry: JMP→render block $B4A9
+    desc: "ObjType $31 — Gumdrop (Thing $05), active. Homes on the player on both axes, bouncing off terrain. Damageable (descriptor 5, HP $10 → drops a Pow x1 pickup); 2-frame animation. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x13452
@@ -6983,8 +7191,7 @@ hints:
     offset: 0x134EE
     name: ObjHandler_Ovhd_33_Flier_Spawner_Main
     desc: |-
-      ObjType $33 — Flier Spawner (Thing $06) active. +0 JMP→render. Update: every 32 frames ($11&$1F==0) with random gate ($C1B3 & $18 == 0), find a free slot ($C12F) and spawn an ObjType $34 Flier at the camera edge ($1C/$1D), random left/right ($0406=$30 or $D0) and random Y offset; play sound $24. No DamageCheck — the spawner cannot be killed. Render just culls off-screen.
-      +0 render-pass entry: JMP→render block $B54F
+      ObjType $33 — Flier Spawner (Thing $06), active. Periodically (on a timed + random gate) spawns a Flier ($34) at a camera edge, entering from a random side at a random height, with a spawn SFX. Cannot be killed (runs no damage check); its render only culls off-screen. Dual-entry: +0 is the render block, +3 the normal-play body.
 
   - space: prg
     offset: 0x134F1
@@ -7038,9 +7245,7 @@ hints:
   - space: prg
     offset: 0x13560
     name: ObjHandler_Ovhd_34_Flier_Main
-    desc: |-
-      ObjType $34 — Flier (Thing $06), spawned by the $33 spawner. +0 JMP→render. Update: vertical sine drift (sine table via $C1FE/$C20D → YVel $4D, MoveXY). 1-hit-kill: OvhdEnemy_DamageCheck_OneHit desc 6 (drops ObjType $1A on death). Render: $C075 + 2-frame animation (tiles $42/$43 by $11 bit3).
-      +0 render-pass entry: JMP→render block $B57D
+    desc: "ObjType $34 — Flier (Thing $06), spawned by the $33 spawner. Drifts vertically on a sine wave. 1-hit-kill (descriptor 6, drops a Pow x1 pickup); 2-frame animation. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x13563
@@ -7104,9 +7309,7 @@ hints:
   - space: prg
     offset: 0x135F0
     name: ObjHandler_Ovhd_36_Charging_Robot_Main
-    desc: |-
-      ObjType $36 — Charging Robot (Thing $07) active. +0 JMP→render. Update: when roughly level with the player (|Δy|<2 via $C04E) and off cooldown ($52==0), find a slot ($C12F) and fire an ObjType $58 projectile, then set cooldown $52=8; descend via MoveXY ($C01E). Render: 16×16 hitbox, OvhdEnemy_DamageCheck desc 7 (HP $20), 2-frame animation (tiles $37/$38 by $11 bit2); despawn off-screen.
-      +0 render-pass entry: JMP→render block $B623
+    desc: "ObjType $36 — Charging Robot (Thing $07), active. Descends the screen and, when roughly level with the player and off cooldown, fires a projectile ($58). Damageable (descriptor 7, HP $20); 2-frame animation; despawns off-screen. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x135F3
@@ -7166,8 +7369,7 @@ hints:
     offset: 0x1365B
     name: ObjHandler_Ovhd_38_Spinner_Main
     desc: |-
-      ObjType $38 — Spinner (Thing $08) active. +0 JMP→render. Update: on its phase tick (($11 EOR $51) & $7F == 0, ~every 128 frames), fire a 4-shot radial burst — loop 4× spawning ObjType $4E (Spinner shot) via $C12F. Render: 16×16 hitbox, OvhdEnemy_DamageCheck desc 8 (HP $20), 2-frame animation (tiles $2E/$2F by $11 bit4); despawn off-screen.
-      +0 render-pass entry: JMP→render block $B680
+      ObjType $38 — Spinner (Thing $08), active. On its phase tick (~every 128 frames) it fires a 4-shot radial burst of Spinner shots ($4E). Damageable (descriptor 8, HP $20); 2-frame animation; despawns off-screen. Dual-entry: +0 is the render block, +3 the normal-play body.
 
   - space: prg
     offset: 0x1365E
@@ -7220,9 +7422,7 @@ hints:
   - space: prg
     offset: 0x136AF
     name: ObjHandler_Ovhd_3A_Cross_Shooter_Main
-    desc: |-
-      ObjType $3A — Cross Shooter (Thing $09) active. +0 JMP→render. Update: every 32 frames ($11&$1F==0) spawn an ObjType $50 (Cross Shooter shot) via $C12F, tagging its direction flag $040A,X with $11&$20 and spawning it $40 above ($0404/$0405 = ObjY−$40). Render: 16×16 hitbox, OvhdEnemy_DamageCheck desc 9 (HP $20), 4-frame animation (tiles from $B708 = $34,$32,$33,$32 by $11>>4&3); despawn off-screen.
-      +0 render-pass entry: JMP→render block $B6E0
+    desc: "ObjType $3A — Cross Shooter (Thing $09), active. Periodically fires a Cross Shooter shot ($50) from just above itself, alternating the shot's direction flag each time. Damageable (descriptor 9, HP $20) with a 4-frame animation; despawns off-screen. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x136B2
@@ -7274,9 +7474,7 @@ hints:
   - space: prg
     offset: 0x13719
     name: ObjHandler_Ovhd_3C_Vertical_Camera_Main
-    desc: |-
-      ObjType $3C — Vertical Camera (Thing $0A) active. +0 JMP→render. A stationary turret that lunges along the player's column: while idle ($50==0) it waits until the player shares its column (Δx==0 via $C045), then commits ($50=1), zeroes XVel and sets YVel toward the player (Δy sign via $C04E: up=$C8 / down=$38); moves via $C02D until it hits a wall (then $50 back to 0). Render: 16×16 hitbox, OvhdEnemy_DamageCheck desc A (HP $18), 4-frame animation (tiles $B77E = $2A–$2D); despawn off-screen.
-      +0 render-pass entry: JMP→render block $B747
+    desc: "ObjType $3C — Vertical Camera (Thing $0A), active. A stationary turret that lunges along the player's column: while idle it waits until the player shares its column, then charges toward them, stopping when it hits a wall. Damageable (descriptor A, HP $18) with a 4-frame animation; despawns off-screen. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x1371C
@@ -7353,9 +7551,7 @@ hints:
   - space: prg
     offset: 0x1378F
     name: ObjHandler_Ovhd_3E_Horizontal_Camera_Main
-    desc: |-
-      ObjType $3E — Horizontal Camera (Thing $0B) active. +0 JMP→render. Mirror of the Vertical Camera but lunges along the player's row: while idle it waits until the player shares its row (Δy==0 via $C04E), then commits ($50=1), zeroes YVel and sets XVel toward the player (Δx sign via $C045: left=$C8 / right=$38); moves via $C02D until it hits a wall. Render: 16×16 hitbox, OvhdEnemy_DamageCheck desc B (HP $18), 4-frame animation (shared OvhdCamera_AnimTiles $2A–$2D); despawn off-screen.
-      +0 render-pass entry: JMP→render block $B7BD
+    desc: "ObjType $3E — Horizontal Camera (Thing $0B), active. Mirror of the Vertical Camera but lunges along the player's row: while idle it waits until the player shares its row, then charges toward them, stopping when it hits a wall. Damageable (descriptor B, HP $18) with a 4-frame animation; despawns off-screen. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x13792
@@ -7417,9 +7613,7 @@ hints:
   - space: prg
     offset: 0x137F6
     name: ObjHandler_Ovhd_40_Slider_Main
-    desc: |-
-      ObjType $40 — Slider (Thing $0C) active. +0 JMP→render. Update: slides horizontally (MoveX via $C039); on its fire tick (cooldown $51==0 and $C048 & $FC == 0) sets cooldown $51=$40 and spawns an ObjType $52 (Slider laser) via $C12F, seeding the laser's $0406 with the slider's $0406÷2. Render: 16×16 hitbox, OvhdEnemy_DamageCheck desc C (HP $20), 2-frame animation (tiles $4B/$4C by $11 bit5); despawn off-screen.
-      +0 render-pass entry: JMP→render block $B82F
+    desc: "ObjType $40 — Slider (Thing $0C), active. Slides horizontally and, on its fire tick, launches a Slider laser ($52) aligned to its own heading. Damageable (descriptor C, HP $20) with a 2-frame animation; despawns off-screen. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x137F9
@@ -7458,7 +7652,7 @@ hints:
   - space: prg
     offset: 0x13855
     name: ObjHandler_Ovhd_24_Robot_Init
-    desc: "ObjType $24 — Thing $00 (Robot) init; dual-entry: +0 JMP→$B865 (RTS). Clear $51/$47/$50; JSR $B2B4 mode 0 (shared overhead-enemy init); RTS"
+    desc: "ObjType $24 — Robot (Thing $00) init. Clears the animation/facing/step state, runs the shared overhead-enemy init with descriptor 0, and morphs the slot to the Robot Main ($25). Dual-entry: the render pass is a no-op."
 
   - space: prg
     offset: 0x13858
@@ -7640,7 +7834,7 @@ hints:
   - space: prg
     offset: 0x13922
     name: ObjHandler_Ovhd_26_Eye_Init
-    desc: "ObjType $26 — Thing $01 (Eye) init; dual-entry: +0 JMP→$B930 (RTS). Clear $47/$51; JSR $B2B4 mode 1 (shared overhead-enemy init); RTS"
+    desc: "ObjType $26 — Eye (Thing $01) init. Clears the facing/phase state, runs the shared overhead-enemy init with descriptor 1, and morphs the slot to the Eye Main ($27). Dual-entry: the render pass is a no-op."
 
   - space: prg
     offset: 0x13925
@@ -7657,7 +7851,7 @@ hints:
 
   - space: prg
     offset: 0x1392D
-    desc: "read spawn record 1: copies spawn pos to $48-$4B, advances ObjType to 39 (Eye_Main)"
+    desc: "JSR OvhdEnemy_Init desc 1 (Eye): loads descriptor 1, copies spawn pos to $48-$4B, morphs ObjType $26→$27 (Eye Main)"
 
   - space: prg
     offset: 0x13930
@@ -7667,7 +7861,7 @@ hints:
   - space: prg
     offset: 0x13931
     name: ObjHandler_Ovhd_27_Eye_Main
-    desc: "ObjType $27 — Thing $01 (Eye) active; dual-entry: +0 JMP→$B998 (hit/render). Floating drift AI: $51 bit6 locked after contact; every 64f OvhdSpawn_Child4C; drift vel from $B9B0/$B9B1 by $47 + RNG noise [-8,+7], clamp ±$20; $C165/$C171 boundary bounce; blink animation (open tile $3F / closed $41)"
+    desc: "ObjType $27 — Eye (Thing $01), active. Floats and drifts by a per-direction velocity plus RNG noise, bouncing off the room boundaries, and periodically spawns a child ($4C). Locks its oscillation once the player has made contact; blinks between open and closed tiles. Dual-entry: +0 is the hit/render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x13934
@@ -7855,7 +8049,7 @@ hints:
   - space: prg
     offset: 0x13A47
     name: ObjHandler_Ovhd_2A_Robed_Skeleton_Teleport
-    desc: "ObjType $2A — Thing $02 (Robed Skeleton) teleport/step phase; dual-entry: +0 JMP→$BA47 body. Steps tile-by-tile in a random direction (LBADE/LBADA/LBAD9 deltas) with $50 cooldown, blocked by solid tiles ($0500 flags); $51 wrap → revert to $29 (countdown); spawns child via OvhdSpawn_Child4C; tile $3D"
+    desc: "ObjType $2A — Robed Skeleton (Thing $02), teleport/step phase. Steps tile-by-tile in a random direction on a cooldown, blocked by solid tiles, and spawns a child ($4C) at each new step; when its step counter wraps it reverts to the $29 phase. Dual-entry: the +3 body runs the step logic."
 
   - space: prg
     offset: 0x13A4A
@@ -7881,7 +8075,7 @@ hints:
 
   - space: prg
     offset: 0x13A5C
-    desc: "$51 wrapped: reset to $40, dec $46 (ObjType -1 → back to 41, Robed_Skeleton_Main)"
+    desc: "$51 wrapped: reset to $40, dec $46 (ObjType −1 → back to $29, Robed Skeleton countdown phase)"
 
   - space: prg
     offset: 0x13A62
@@ -7953,41 +8147,47 @@ hints:
   - space: prg
     offset: 0x13AE7
     name: OvhdRobedSkeleton_StageFrame3D
-    desc: |-
-      Shared Robed Skeleton render tail — sprite attr $44 = $02, metasprite $3D. Reached from the $29 Main's blink/alternate-frame paths ($BA35/$BA3B) and from the $2A Teleport handler ($BAD6); the companion frame (attr $01, metasprite $3B) is _ObjHandler_Ovhd_29_Robed_Skeleton_Main__StageFrame3B.
-      sprite attr $44=2, tile $3D via LC063
+    desc: "Shared Robed Skeleton render tail: draws the skeleton's frame-B sprite (metasprite $3D, sub-palette 2). Reached from the $29 Main's blink/alternate-frame paths ($BA35/$BA3B) and from the $2A Teleport handler ($BAD6); the companion frame (sub-palette 1, metasprite $3B) is _ObjHandler_Ovhd_29_Robed_Skeleton_Main__StageFrame3B."
 
   - space: prg
     offset: 0x13AF0
     name: ObjHandler_Ovhd_2B_Eye_Spawner_Init_1
-    desc: "ObjType $2B — Thing $03 (Eye Spawn) init step 1; dual-entry: +0 JMP→$BB13 (RTS). Find a free child slot (offset $62, type $D2 via $C1D7); no slot → RTS; else proceed to spawn setup ($2C)"
+    desc: "ObjType $2B — Eye Spawner (Thing $03), init step 1. If a free child slot exists it spawns an Eye Spawner step-2 ($2C) into it; then (shared with the render pass) runs its own contact box and despawns on player contact. Dual-entry: the +0 render pass jumps straight to the contact block."
 
   - space: prg
     offset: 0x13AF3
     name: _ObjHandler_Ovhd_2B_Eye_Spawner_Init_1__Update__
-    desc: "slot offset = $62, match type = $D2; find slot via LC1D7  [+3 body entry]"
+    desc: "find a free child slot: match type $D2, slot-offset base $62, via $C1D7  [+3 body entry]"
 
   - space: prg
     offset: 0x13AFC
-    desc: "no matching slot: skip spawn"
+    desc: "no matching slot → skip the spawn, fall to the contact block"
 
   - space: prg
     offset: 0x13B00
-    desc: "set ObjType $2C in found slot"
+    desc: "spawn: found slot $0400,X = ObjType $2C (Eye Spawner step 2)"
 
   - space: prg
     offset: 0x13B03
     name: _ObjHandler_Ovhd_2B_Eye_Spawner_Init_1__Render__
-    desc: "hitbox half-width = $10  [render block (+0 JMP target)]"
+    desc: "contact block, also the +0 render entry's JMP target: $40 = $10 (contact box half-width)"
 
   - space: prg
     offset: 0x13B07
-    desc: "hitbox half-height = $10"
+    desc: "$41 = $10 (contact box half-height)"
+
+  - space: prg
+    offset: 0x13B0B
+    desc: "$C0FF: does the player overlap this contact box?"
+
+  - space: prg
+    offset: 0x13B10
+    desc: "on contact → despawn (JMP $C114)"
 
   - space: prg
     offset: 0x13B13
     name: _ObjHandler_Ovhd_2B_Eye_Spawner_Init_1__Done
-    desc: "RTS (no free slot to spawn into)"
+    desc: "RTS (no contact)"
 
   - space: prg
     offset: 0x13B14
@@ -8124,12 +8324,20 @@ hints:
   - space: prg
     offset: 0x13BA9
     name: OvhdSpawn_Child48
-    desc: "Overhead spawn helper (called by Robot $25): find free slot (X=$A8, type $D2 via $C1D7); BEQ no-slot; spawn ObjType $48 into $0400,X; JSR $C0D8 finalize; SFX $1A"
+    desc: "Overhead spawn helper (called by Robot $25): if a child slot is free, spawns an ObjType $48 (Robot Shot) into it with a spawn SFX."
+
+  - space: prg
+    offset: 0x13BB4
+    desc: "spawn ObjType $48 into the free slot ($0400,X), then finalize ($C0D8)"
+
+  - space: prg
+    offset: 0x13BBC
+    desc: "play spawn SFX $1A"
 
   - space: prg
     offset: 0x13BC1
     name: _OvhdSpawn_Child48__NoSlot
-    desc: "RTS"
+    desc: "RTS (no free slot)"
 
   - space: prg
     offset: 0x13BC2
@@ -8214,12 +8422,28 @@ hints:
   - space: prg
     offset: 0x13C65
     name: ObjHandler_Ovhd_4A_Unknown_Shot_Init
-    desc: "ObjType $4A — Projectile: Unknown orb Shot, init [not in lua; CONFIRMED cut content — cut twin of the Spitter Shot $54/$55]. Angled projectile: dir from angle $47 via cos/sin ($C0CC/$C201) → XVel/YVel; $53=$10, $4F=0; INC ObjType $4A→$4B. Unspawnable: only spawner DEAD_OvhdSpawn_Fan4A is unreferenced; no code writes #$4A; the spawn-target table maps no Thing Type to $4A. Renders identically to live Spitter Shot $55 (tile $4E). See docs/wip/missing-object-types.md."
+    desc: "ObjType $4A — cut Unknown-orb Shot, init [not in lua; CONFIRMED cut content — cut twin of the Spitter Shot $54/$55]. Sets the projectile's velocity from its angle and morphs to its Main ($4B). Unspawnable: its only spawner DEAD_OvhdSpawn_Fan4A is unreferenced, no code writes #$4A, and the spawn-target table maps no Thing Type to it. Renders identically to the live Spitter Shot $55 (tile $4E). See docs/wip/missing-object-types.md."
 
   - space: prg
     offset: 0x13C68
     name: _ObjHandler_Ovhd_4A_Unknown_Shot_Init__Update__
-    desc: "+3 body entry (normal-play; +0 preamble runs only during a fade)"
+    desc: "$53 = $10 (HP)  [+3 body entry]"
+
+  - space: prg
+    offset: 0x13C6C
+    desc: "$4F = 0"
+
+  - space: prg
+    offset: 0x13C70
+    desc: "morph to $4B Main (INC ObjType $46)"
+
+  - space: prg
+    offset: 0x13C75
+    desc: "XVel $4C = cos(angle $47) via $C0CC"
+
+  - space: prg
+    offset: 0x13C7C
+    desc: "YVel $4D = sin(angle $47) via $C201"
 
   - space: prg
     offset: 0x13C83
@@ -8229,7 +8453,7 @@ hints:
   - space: prg
     offset: 0x13C84
     name: ObjHandler_Ovhd_4B_Unknown_Shot_Main
-    desc: "ObjType $4B — Projectile: Unknown Shot, main [not in lua; likely DEAD]. Moves via $C165/$C171 (despawn on edge); 16×16 hitbox; apply shot damage ($C144 HP $10) → despawn on hit; render tile $4E. Reached only from the dead $4A; see missing-object-types.md."
+    desc: "ObjType $4B — cut Unknown Shot, active [not in lua; likely DEAD]. Flies straight, despawning at the room edge, and contact-damages the player before despawning on hit. Reached only from the dead $4A; see missing-object-types.md. Dual-entry: +0 is the render/hit block, +3 the normal-play body."
 
   - space: prg
     offset: 0x13C87
@@ -8266,7 +8490,11 @@ hints:
   - space: prg
     offset: 0x13CC5
     name: OvhdSpawn_Child4C
-    desc: "Shared overhead spawn helper (called by Eye $27, Robed Skeleton $2A, Eye-Spawner $2D): find free slot (X=$8C, type $D2 via $C1D7); BEQ no-slot; spawn ObjType $4C into $0400,X; JMP $C0D8 finalize"
+    desc: "Shared overhead spawn helper (called by Eye $27, Robed Skeleton $2A, Eye-Spawner $2D): if a child slot is free, spawns an ObjType $4C into it and finalizes."
+
+  - space: prg
+    offset: 0x13CD0
+    desc: "spawn ObjType $4C into the free slot ($0400,X), then finalize ($C0D8)"
 
   - space: prg
     offset: 0x13CD8
@@ -8291,7 +8519,7 @@ hints:
   - space: prg
     offset: 0x13D09
     name: ObjHandler_Ovhd_4D_Aimed_Shot_Main
-    desc: "ObjType $4D — Projectile: Aimed Shot, main [lua]. +0 JMP→render. Straight flight; X/Y edge checks ($C165/$C171) despawn at boundary; 8×8 hitbox; apply shot damage ($C144 HP $10) → despawn on hit; render tile $4E (via $C1AD)."
+    desc: "ObjType $4D — Aimed Shot projectile, active. Flies straight and despawns when it leaves the room boundary; contact-damages the player and despawns on hit. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x13D0C
@@ -8343,7 +8571,7 @@ hints:
     name: OvhdShot4D_OrphanRTS
     isCodeSeed: true
     isDead: true
-    desc: "Single unreachable $60 (RTS) after the ObjType $4D aimed-shot draw tail (tail-calls JMP $C1AD at $BD46). Orphan-RTS idiom: a `jsr X / rts` pair peephole-optimised to `jmp X` (opcode $20 to $4C) without deleting the trailing RTS. No refs; explicitly seeded as code so it decodes as `rts`. 20 instances found 2026-07-12, joining the 4 already documented in docs/misc/dead-code.md."
+    desc: "An unreachable return byte left after the ObjType $4D aimed-shot draw tail: the preceding routine's tail call was peephole-optimised into a direct jump (to $C1AD at $BD46) without removing the trailing return, so this byte is never executed. Seeded as code so it decodes correctly. One of the orphan-return instances catalogued in docs/misc/dead-code.md."
 
   - space: prg
     offset: 0x13D4A
@@ -8368,9 +8596,7 @@ hints:
   - space: prg
     offset: 0x13D69
     name: ObjHandler_Ovhd_42_Spitter_Main
-    desc: |-
-      ObjType $42 — Spitter (Thing $0D) idle/main [lua]. +0 JMP→render. Stationary; when the player gets adjacent (max(|Δx|,|Δy|) < 2 via $C045/$C04E) it begins a spit attack (JSR Spitter_SpitInit → ObjType $43). Also starts a spit on being hit, and on a timed/random gate ($11&$1F==0 & random). Render: 16×16 hitbox; manual damage (ParamPtr+$C144 mode D) so the custom defeat applies; 2-frame mouth animation (tiles $39/$3A).
-      +0 render-pass entry: JMP→render block $B9D9
+    desc: "ObjType $42 — Spitter (Thing $0D), idle/active. Stationary; begins a spit attack (morphing to $43) when the player gets adjacent, when it is hit, or on a timed random gate. Damageable through a custom defeat path so its own death logic applies; 2-frame mouth animation. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x13D6C
@@ -8469,7 +8695,7 @@ hints:
   - space: prg
     offset: 0x13E3E
     name: Spitter_SpitInit
-    desc: "Begin a spit attack: pick a start angle from Spitter_SpitAngleTable[$C105] → $50; $51=8 shots; $52=$20; set ObjType $46=$43 (Attacking)."
+    desc: "Begins the Spitter's spit attack: picks a randomised start angle and arms the shot count and spread, then morphs the slot to the Attacking main ($43)."
 
   - space: prg
     offset: 0x13E41
@@ -8497,9 +8723,7 @@ hints:
   - space: prg
     offset: 0x13E61
     name: ObjHandler_Ovhd_45_Zombie_Head_Main
-    desc: |-
-      ObjType $45 — Zombie Head (Thing $0E) active [lua]. +0 JMP→render. Large bobbing/wandering head: XVel from sine ($C048) and YVel from sine ($C051), each clamped ±$3F and ÷8, applied via $C02D (move+collide). $42/$43=$C0 (large terrain box). Render: 24×24 hitbox; OvhdEnemy_DamageCheck desc E (HP $30); drawn as a two-tile-tall sprite (upper at $3F+8, lower at $3F−$12) — tiles $4C and $25/$26 (by $11 bit3).
-      +0 render-pass entry: JMP→render block $BE95
+    desc: "ObjType $45 — Zombie Head (Thing $0E), active. A large head that bobs and wanders on two sine-driven velocity components, bouncing off terrain. Damageable (descriptor E, HP $30), drawn as a two-tile-tall sprite. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x13E64
@@ -8552,9 +8776,7 @@ hints:
   - space: prg
     offset: 0x13EF8
     name: ObjHandler_Ovhd_47_Red_Gumdrop_Main
-    desc: |-
-      ObjType $47 — Red Gumdrop (Thing $0F) active [lua]. +0 JMP→render. Like the Gray Gumdrop ($31) it homes on the player (X/Y seek $C04B/$C054 clamped ±$3F ÷8, MoveX/MoveY + terrain bounce $B243/$B264) but additionally fires: on a random+timed gate it spawns an ObjType $58 (Gray Gumdrop Shot). Render: 16×16 hitbox; OvhdEnemy_DamageCheck desc F (HP $20); 2-frame animation (tiles $46/$47).
-      +0 render-pass entry: JMP→render block $BF52
+    desc: "ObjType $47 — Red Gumdrop (Thing $0F), active. Like the Gray Gumdrop ($31) it homes on the player and bounces off terrain, but additionally fires a Gray Gumdrop Shot ($58) on a random timed gate. Damageable (descriptor F, HP $20); 2-frame animation. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x13EFB
@@ -14701,7 +14923,46 @@ hints:
   - space: prg
     offset: 0x1A36A
     name: TankEnemy_DescTable
-    desc: "30 x 4-byte tank-enemy descriptors ($A36A-$A3E1), indexed by descriptor index via TankEnemy_DescPtr (accessed only via computed ($A1) pointer). Per descriptor: [0]=behavior flag (->$53), [1]=HP, [2]=drop pickup ObjType ($2C Health-x1 / $2E Hover-fuel-x1), [3]=drop-chance threshold (drop when RNG_State <threshold). Index->enemy: 00=GrayCaterpillar($54) 01=unused 02=GrayBullet($56/$58) 03=RedCatDropper($5B) 04=Hulk($5D) 05=GrayHopper6($5F) 06=RedCaterpillar($62) 07=Mine($64) 08=Turret($66) 09=BomberRock($68) 0A=FlyingShip($6A) 0B=FlyingBomber($6C) 0C=SwoopingSphere($6E) 0D=Bee($70) 0E=Orb($72) 0F=FlyingRedCatBomber($74) 10=Shooter($76) 11=KamikazeOrb($78) 12=GrayHopper10($7A) 13=RedFlierSpawner($4E) 14=GrayFlierSpawner($50) 15=BombLobbingHand($7E) 16=Jellyfish($80) 17=ScubaSteve($82) 18=RunningShell($85) 19=SubmersibleSpawner($52) 1A=CrescentRoller($88) 1B=BombCanister($8A) 1C=RedBulletA($8C) 1D=RedBulletB($8D). Tank parallel of OvhdEnemy_DescTable ($B326). See docs/entities/tank/_shared-enemy-system.md."
+    desc: |-
+      30 x 4-byte tank-enemy descriptors ($A36A-$A3E1), indexed by descriptor index via TankEnemy_DescPtr (accessed only via computed ($A1) pointer).
+      
+      Per descriptor:
+        [0]=behavior flag (->$53), [1]=HP
+        [2]=drop pickup ObjType ($2C Health-x1 / $2E Hover-fuel-x1)
+        [3]=drop-chance threshold (drop when RNG_State <threshold). 
+      
+      Index->enemy:
+        00=GrayCaterpillar($54)
+        01=unused
+        02=GrayBullet($56/$58)
+        03=RedCatDropper($5B)
+        04=Hulk($5D)
+        05=GrayHopper6($5F)
+        06=RedCaterpillar($62)
+        07=Mine($64)
+        08=Turret($66)
+        09=BomberRock($68)
+        0A=FlyingShip($6A)
+        0B=FlyingBomber($6C)
+        0C=SwoopingSphere($6E)
+        0D=Bee($70) 0E=Orb($72)
+        0F=FlyingRedCatBomber($74)
+        10=Shooter($76)
+        11=KamikazeOrb($78)
+        12=GrayHopper10($7A)
+        13=RedFlierSpawner($4E)
+        14=GrayFlierSpawner($50)
+        15=BombLobbingHand($7E)
+        16=Jellyfish($80)
+        17=ScubaSteve($82)
+        18=RunningShell($85)
+        19=SubmersibleSpawner($52)
+        1A=CrescentRoller($88)
+        1B=BombCanister($8A)
+        1C=RedBulletA($8C)
+        1D=RedBulletB($8D).
+      
+      Tank parallel of OvhdEnemy_DescTable ($B326). See docs/entities/tank/_shared-enemy-system.md.
 
   - space: prg
     offset: 0x1A3E2
@@ -14726,7 +14987,7 @@ hints:
   - space: prg
     offset: 0x1A3F6
     desc: |-
-      aim the initial crawl at the player: negate the walk velocity $4C when the player is to the left (Obj_DeltaToPlayerX)
+      aim the initial crawl at the player: negate the walk velocity $4C when the player is to the left (LoadedObj__Get_DeltaToPlayer_X)
       JSR $E0ED: X-proximity; if negative (player to left): negate $4C → walk left
 
   - space: prg
@@ -15165,7 +15426,7 @@ hints:
 
   - space: prg
     offset: 0x1A704
-    desc: "drop only if |X-distance| falls inside that cone (Obj_DeltaToPlayerX)"
+    desc: "drop only if |X-distance| falls inside that cone (LoadedObj__Get_DeltaToPlayer_X)"
 
   - space: prg
     offset: 0x1A70E
@@ -15264,7 +15525,7 @@ hints:
 
   - space: prg
     offset: 0x1A783
-    desc: "fire gate: X-distance to the player vs the walk direction $4C — fires only when walking toward the player (Obj_DeltaToPlayerX, an X delta, not Y)"
+    desc: "fire gate: X-distance to the player vs the walk direction $4C — fires only when walking toward the player (LoadedObj__Get_DeltaToPlayer_X, an X delta, not Y)"
 
   - space: prg
     offset: 0x1A78A
@@ -15305,38 +15566,45 @@ hints:
   - space: prg
     offset: 0x1A7CB
     name: ObjHandler_Tank_5F_Gray_Hopper_6HP_Init
+    status: verified
     desc: "ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy: takes its stats from tank-enemy descriptor $05, faces the player, primes its hop-interval timer, and advances to the Main $60. Draws nothing; the +0 (fade/freeze) entry jumps to the terminal RTS. See docs/entities/tank/5f-61_hopper-6hp.md"
 
   - space: prg
     offset: 0x1A7CE
     name: _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__
-    desc: |-
-      Normal-play body — take the descriptor, face the player, go live as $60  [+3 body entry]
-      descriptor index $05; TankEnemy_Init also does the INC $46 that advances to $60
+    status: verified
+    desc: Load enemy from descriptor ($05), face the player, go live as $60
 
   - space: prg
     offset: 0x1A7D3
+    status: verified
     desc: "hop-interval timer $52 = $30"
 
   - space: prg
     offset: 0x1A7D7
-    desc: |-
-      face the player: hop heading $47 = $B8 (player to the right) or $C8 (to the left)
-      JSR $E0ED: Y-delta; BPL $A7E1 (player at/below); else LDA #$C8 (faster hop)
+    status: verified
+    desc: "Get x-delta to player to figure out where to face"
+
+  - space: prg
+    offset: 0x1A7DC
+    status: verified
+    desc: "Player is to the left, so face left"
 
   - space: prg
     offset: 0x1A7E1
-    name: _ObjHandler_Tank_5F_GrayHopper6HP_Init__VelLow
-    desc: "LDA #$B8 — slower hop velocity (player at/below)"
+    name: _ObjHandler_Tank_5F_GrayHopper6HP_Init__Facing_Right
+    status: verified
+    desc: "Player is to the right, so face right"
 
   - space: prg
     offset: 0x1A7E3
-    name: _ObjHandler_Tank_5F_GrayHopper6HP_Init__VelStore
-    desc: "STA $47; $4C/$4D/$51=0; RTS"
+    name: _ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing
+    status: verified
 
   - space: prg
     offset: 0x1A7ED
     name: _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done
+    status: verified
     desc: "Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing."
 
   - space: prg
@@ -15476,7 +15744,7 @@ hints:
 
   - space: prg
     offset: 0x1A8E6
-    desc: "aim the initial crawl at the player: negate the walk velocity $4C when the player is to the left (Obj_DeltaToPlayerX)"
+    desc: "aim the initial crawl at the player: negate the walk velocity $4C when the player is to the left (LoadedObj__Get_DeltaToPlayer_X)"
 
   - space: prg
     offset: 0x1A8F2
@@ -15781,7 +16049,7 @@ hints:
   - space: prg
     offset: 0x1AB33
     desc: |-
-      trigger: player within 4 tiles vertically (Obj_DeltaToPlayerY) and 3 horizontally (Obj_DeltaToPlayerX) — the old gloss had the two axes swapped
+      trigger: player within 4 tiles vertically (Obj_DeltaToPlayerY) and 3 horizontally (LoadedObj__Get_DeltaToPlayer_X) — the old gloss had the two axes swapped
       approach: JSR $E0FA X-dist; abs → CMP #$04: BCS $AB9E (X too far)
 
   - space: prg
@@ -15936,7 +16204,7 @@ hints:
 
   - space: prg
     offset: 0x1AC44
-    desc: "signed X-distance to the player (Obj_DeltaToPlayerX — an X delta, despite the old \"Y-dir\" gloss); its sign becomes the heading $47 = $00 (player to the right) or $80 (to the left)"
+    desc: "signed X-distance to the player (LoadedObj__Get_DeltaToPlayer_X — an X delta, despite the old \"Y-dir\" gloss); its sign becomes the heading $47 = $00 (player to the right) or $80 (to the left)"
 
   - space: prg
     offset: 0x1AC51
@@ -15982,7 +16250,7 @@ hints:
     name: _ObjHandler_Tank_6D_FlyingBomber_Main__ApproachPhase
     desc: |-
       Drop gate — must be horizontally lined up with the player and off cooldown, else just fly on
-      signed X-distance to the player (Obj_DeltaToPlayerX, an X delta — not Y), taken absolute
+      signed X-distance to the player (LoadedObj__Get_DeltaToPlayer_X, an X delta — not Y), taken absolute
 
   - space: prg
     offset: 0x1AC98
@@ -16445,7 +16713,7 @@ hints:
 
   - space: prg
     offset: 0x1AF42
-    desc: "signed X-distance to the player (Obj_DeltaToPlayerX — an X delta, despite the old \"Y-dist\" gloss); its sign becomes the heading $47 = $00 (player right) or $80 (left)"
+    desc: "signed X-distance to the player (LoadedObj__Get_DeltaToPlayer_X — an X delta, despite the old \"Y-dist\" gloss); its sign becomes the heading $47 = $00 (player right) or $80 (left)"
 
   - space: prg
     offset: 0x1AF4F
@@ -16493,7 +16761,7 @@ hints:
     name: _ObjHandler_Tank_75_Flying_RC_Bomber_Main__ApproachPhase
     desc: |-
       Drop gate — must be horizontally lined up with the player and off cooldown, else just fly on
-      signed X-distance to the player (Obj_DeltaToPlayerX, an X delta — not Y), taken absolute
+      signed X-distance to the player (LoadedObj__Get_DeltaToPlayer_X, an X delta — not Y), taken absolute
 
   - space: prg
     offset: 0x1AF96
@@ -17238,7 +17506,7 @@ hints:
     name: _ObjHandler_Tank_7F_Bomb_Lobbing_Hand_Main__Update__
     desc: |-
       Normal-play body — if the player is in range, lob a bomb at them  [+3 body entry]
-      signed X-distance to the player (Obj_DeltaToPlayerX — an X delta, despite the old "Y-dist" gloss); kept in $4C for the aim, and its magnitude → $00
+      signed X-distance to the player (LoadedObj__Get_DeltaToPlayer_X — an X delta, despite the old "Y-dist" gloss); kept in $4C for the aim, and its magnitude → $00
 
   - space: prg
     offset: 0x1B366
@@ -19016,7 +19284,7 @@ hints:
   - space: prg
     offset: 0x1C045
     name: DispatchSlot_17_Obj_DeltaToPlayerX
-    desc: "Dispatch table slot $17 — the fixed bank's public entry point for Obj_DeltaToPlayerX ($E0ED). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
+    desc: "Dispatch table slot $17 — the fixed bank's public entry point for LoadedObj__Get_DeltaToPlayer_X ($E0ED). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
 
   - space: prg
     offset: 0x1C048
@@ -20108,18 +20376,7 @@ hints:
   - space: prg
     offset: 0x1C3D5
     name: GameLoop_Frame
-    desc: |-
-      Per-frame loop body:
-      WaitNMI →
-      ObjectLoop →
-      TileColumns_Update →
-      ScreenFade_Step →
-      SpawnPtrs_CondUpdate →
-      HUD_RenderSprites →
-      HUD_ColorCycle →
-      ScreenFade_Counter/DemoFlag/START checks →
-      BIT $FFF3 loop-back
-      WaitNMI ($E936): sync frame to NMI; then run per-frame subsystems
+    desc: "The per-frame game-loop body. Each iteration syncs to the NMI, then runs the frame's subsystems in order — the object loop, tile-column streaming, screen fade, spawn-pointer updates, and the HUD render / colour-cycle — then handles the fade-complete, demo/attract, and START-button checks before looping back."
 
   - space: prg
     offset: 0x1C3EA
@@ -20268,11 +20525,15 @@ hints:
   - space: prg
     offset: 0x1C4C8
     name: TunnelTransition
-    desc: "B7=$01 dispatch target: save CurrentArea→$D7; clear $4C/$4D (velocities); JSR TunnelAreaSwitch ($C78F) to find Tunnel partner and update CurrentArea ($14); reset Jason pos ($48/$4A=$80); check new $14&$08: bank06 area+$C1=0 → ObjType=$1B(27=JasonOnFoot), else ObjType=3(OvhdJason); SaveCheckpoint; clear enemies+camera+sound if area changed; JMP AreaInit ($C35E)"
+    desc: "The $B7=$01 dispatch target — a Tunnel transition. Finds the tunnel-partner area, moves the player there (choosing the on-foot or overhead form for the destination), saves a checkpoint, and re-inits the area — clearing enemies/camera/sound and picking the transition SFX/music when the area actually changes."
 
   - space: prg
     offset: 0x1C4D2
     desc: "Save current area → $D7, clear velocity; JSR TunnelAreaSwitch finds the tunnel-partner area → $14."
+
+  - space: prg
+    offset: 0x1C4D5
+    desc: "reset Jason position ($48 = $4A = $80)"
 
   - space: prg
     offset: 0x1C4E9
@@ -20288,6 +20549,10 @@ hints:
     offset: 0x1C4EF
     name: _TunnelTransition__StoreObjType
     desc: "$46 = new slot ObjType: 3=OvhdJason, or $1B=JasonOnFoot when entering a tank area with $C1==0."
+
+  - space: prg
+    offset: 0x1C4F1
+    desc: "SaveCheckpoint ($C5B2) — snapshot the new area for respawn"
 
   - space: prg
     offset: 0x1C4F4
@@ -20311,7 +20576,7 @@ hints:
   - space: prg
     offset: 0x1C52A
     name: B7_02_DeathHandler
-    desc: "$B7=$02 dispatch target — player death: DEC LivesRemaining; survive→RestoreCheckpoint+area music; game-over→ContinueGate check→ContinueInit"
+    desc: "The $B7=$02 dispatch target — player death. Decrements LivesRemaining: if lives remain, respawns at the checkpoint with the area music; if out of lives, runs the continue prompt or falls through to game-over."
 
   - space: prg
     offset: 0x1C537
@@ -20594,7 +20859,7 @@ hints:
     name: TunnelAreaSwitch_NextPage
     isCodeSeed: true
     isDead: true
-    desc: "Callerless 9-byte block `INC $01 / INC $03 / INC $05 / JMP $C7A8` - the cut page-crossing continuation of TunnelAreaSwitch's tunnel-pair search. $01/$03/$05 are the high bytes of the three ZP sub-table pointers ($00-$05), so this advances all three arrays by one page and re-enters the scan loop. The live loop instead RTSes when the Y index wraps ($C7BD), capping the search at 256 entries - the RTS reads as a one-byte patch that severed this fall-through. Never executed."
+    desc: "Callerless 9-byte block — the cut page-crossing continuation of TunnelAreaSwitch's tunnel-pair search. $01/$03/$05 are the high bytes of the three ZP sub-table pointers ($00-$05), so it advances all three arrays by one page and re-enters the scan loop. The live loop instead returns when the Y index wraps ($C7BD), capping the search at 256 entries — that return reads as a one-byte patch that severed this fall-through. Never executed."
 
   - space: prg
     offset: 0x1C7C7
@@ -21218,7 +21483,7 @@ hints:
   - space: prg
     offset: 0x1CE0F
     name: ScreenFade_TriggerFadeIn
-    desc: "Set ScreenFade_Flags bit 7 (fade-in), ScreenFade_Counter=$08; JSR Palette_BlackOut ($E6FA); JSR NMI_Enable ($E93F); JSR WaitNMI ($E936); JMP PPU_RenderingEnable ($E6E9)"
+    desc: "Begins a screen fade-in: sets the fade-in flag and step counter, blacks out the palette, then enables NMI, waits one frame, and turns rendering back on."
 
   - space: prg
     offset: 0x1CE11
@@ -21299,7 +21564,7 @@ hints:
   - space: prg
     offset: 0x1CE4A
     name: WaitNMI_Frames
-    desc: "Wait A NMI frames; PHA/JSR WaitNMI/PLA/SEC/SBC #1/BNE loop"
+    desc: "Busy-waits A NMI frames, counting the frame count down to zero."
 
   - space: prg
     offset: 0x1CE4B
@@ -21658,9 +21923,7 @@ hints:
   - space: prg
     offset: 0x1D1EF
     name: SetTransition
-    desc: |-
-      STA Transition ($B7); ORA #$40 on ScreenFade_Flags ($15) to start palette fade-out; RTS. Every transition goes through here — screen fades to black, then Transition_Dispatch fires when ScreenFade_Counter reaches 9
-      STA $B7: write new game mode to Transition register
+    desc: "Starts a game-mode transition: records the target mode in Transition ($B7) and begins the palette fade-out. Every transition goes through here — the screen fades to black, then Transition_Dispatch fires once the fade completes (ScreenFade_Counter reaches 9)."
 
   - space: prg
     offset: 0x1D1F3
@@ -22676,7 +22939,23 @@ hints:
   - space: prg
     offset: 0x1D908
     name: MapStream_SetupCoords
-    desc: "Compute the map coordinate and tile-buffer offset for the column/row about to be streamed, applying the per-direction delta ($39 = 0 up / 1 right / 2 down / 3 left): $04 = ($22+ColDelta)&$3F, $05 = wrap($23+RowDelta), $08/$09 = $24/$25 + delta (world col/row), $0C = $26 + BaseOffsetDelta (offset into the $0500 tile shadow). Falls into MapStream_ResolveChain."
+    desc: "Computes the map coordinate and tile-buffer offset for the column/row about to be streamed, applying the per-direction scroll delta ($39 = 0 up / 1 right / 2 down / 3 left). Falls into MapStream_ResolveChain."
+
+  - space: prg
+    offset: 0x1D916
+    desc: "$04 = (map col $22 + ColDelta) & $3F — the column to stream"
+
+  - space: prg
+    offset: 0x1D926
+    desc: "$05 = wrap(map row $23 + RowDelta) — the row to stream"
+
+  - space: prg
+    offset: 0x1D92E
+    desc: "$08 = world col = $24 + ColDelta"
+
+  - space: prg
+    offset: 0x1D936
+    desc: "$09 = world row = $25 + RowDelta"
 
   - space: prg
     offset: 0x1D943
@@ -23137,7 +23416,11 @@ hints:
   - space: prg
     offset: 0x1DF0F
     name: Obj_SpawnFromZP
-    desc: "Spawn a child object. Set scan limit $00=$D2 and X=$70, then JSR FindEmptyObjectSlot ($D7CF); BEQ→no free slot, return A=0/Z=1. On success clone the 14-byte ($0E) current-object record from ZP $0046.. into $0400,X (child inherits parent position/fields) via $DF27, then return A=1/Z=0 with X=found slot offset. Callers usually override $0400,X (child ObjType) afterward. Reached directly by tank handlers (JSR $DF0F) and via dispatch alias $C12F (JMP $DF0F) by overhead handlers; tank wrapper $A29E layers RNG/direction on top. NOTE: was previously mislabeled SoundVoice_FrameUpdate — that sound attribution was incorrect (all real callers are bank-06 enemy spawn sites)"
+    desc: "Spawns a child object by cloning the current object's 14-byte record (ZP $0046..) into the first free slot ($0400,X), so the child inherits the parent's position and fields. Returns A=1/Z=0 with X = the found slot offset on success, or A=0/Z=1 if no slot was free (callers usually override the child's ObjType afterward). Reached directly by tank handlers (JSR $DF0F) and via dispatch alias $C12F by overhead handlers; the tank wrapper $A29E layers RNG/direction on top. NOTE: was previously mislabeled SoundVoice_FrameUpdate — that sound attribution was incorrect (all real callers are bank-06 enemy spawn sites)."
+
+  - space: prg
+    offset: 0x1DF15
+    desc: "find the first empty object slot (scan from X=$70, limit $00=$D2)"
 
   - space: prg
     offset: 0x1DF24
@@ -23171,7 +23454,15 @@ hints:
   - space: prg
     offset: 0x1DF46
     name: Obj_SpawnChild_A0
-    desc: "Spawn a child object whose ObjType is taken from ZP $A0. Preserve ZP $00 (PHA), set scan limit $00=$D2 and X=$70, JSR FindEmptyObjectSlot ($D7CF); no free slot → _Obj_SpawnChild_A0__NoSlot ($DF62). On success write $A0→$0400,X (child ObjType) and clone the parent's fields 1–13 via Obj_CopyFieldsToSlot ($D7C0), restore $00, return A=$FF/Z=0. Unlike Obj_SpawnFromZP ($DF0F) this preserves $00 and takes the child ObjType from $A0 (not the parent's $46). Dispatch alias $C1FB."
+    desc: "Spawns a child object whose ObjType is taken from ZP $A0, cloning the parent's fields 1–13 into the first free slot ($0400,X). Returns A=$FF/Z=0 on success, or A=$00/Z=1 if no slot was free. Unlike Obj_SpawnFromZP ($DF0F) this preserves ZP $00 and takes the child ObjType from $A0 (not the parent's $46). Dispatch alias $C1FB."
+
+  - space: prg
+    offset: 0x1DF4F
+    desc: "find the first empty object slot (scan from X=$70, limit $00=$D2)"
+
+  - space: prg
+    offset: 0x1DF54
+    desc: "child ObjType = $A0 → $0400,X, then clone the parent's fields 1–13 (Obj_CopyFieldsToSlot)"
 
   - space: prg
     offset: 0x1DF62
@@ -23215,7 +23506,7 @@ hints:
   - space: prg
     offset: 0x1DFA0
     name: Obj_GravityMoveBounce
-    desc: "Ballistic step: add gravity A to YVel $4D (skipped on signed overflow), move at double speed with wall reflection (Obj_MoveBounce_Double $DF84); on a floor/ceiling hit damp the bounce to 1/4 (Obj_ScaleVelY, factor $40); clamp both velocities to +/-$28 (Speed_Limit_Sub). Returns the wall flags ($9A). The LDY #$00 / TYA / AND $11 prologue is a vestigial rate gate that always passes (gravity applies every frame). Dispatch slot $C120 (no callers in USA ROM); reached in-bank from Obj_FallAndLand ($E005)."
+    desc: "Ballistic step: adds gravity (A) to YVel, moves at double speed with wall reflection, damps the bounce to 1/4 on a floor/ceiling hit, and clamps both velocities to ±$28. Returns the wall flags. Its entry prologue is a vestigial rate gate that always passes (gravity applies every frame). Dispatch slot $C120 (no callers in USA ROM); reached in-bank from Obj_FallAndLand ($E005)."
 
   - space: prg
     offset: 0x1DFAC
@@ -23240,7 +23531,7 @@ hints:
   - space: prg
     offset: 0x1DFDD
     name: Obj_SlopeToPlayer
-    desc: "$52 = max(1, |dX| / |dY|) to the player - the integer slope ratio from the Obj_DeltaToPlayerX/Y high bytes via Div8 ($E16B). Dispatch slot $C150 - no callers in USA ROM."
+    desc: "$52 = max(1, |dX| / |dY|) to the player - the integer slope ratio from the LoadedObj__Get_DeltaToPlayer_X/Y high bytes via Div8 ($E16B). Dispatch slot $C150 - no callers in USA ROM."
 
   - space: prg
     offset: 0x1DFE7
@@ -23277,7 +23568,11 @@ hints:
     name: OctantLookup
     isCodeSeed: true
     isDead: true
-    desc: "DEAD CODE - never referenced/walked (emitted as data): LDA $47 / 5xLSR (heading → octant 0-7) / TAX / LDA $E027,X / RTS, with the 8-byte table at $E027 = $01,$41,$40,$3F,$FF,$EE,$EF,$F0. A heading-octant → byte lookup nothing calls."
+    desc: "DEAD CODE — never referenced (emitted as data by default; seeded here so it decodes). Reduces the object heading ($47) to one of 8 octants and returns the matching byte from OctantLookup_Table. Nothing calls it."
+
+  - space: prg
+    offset: 0x1E023
+    desc: "octant = heading $47 >> 5; index OctantLookup_Table"
 
   - space: prg
     offset: 0x1E027
@@ -23303,7 +23598,7 @@ hints:
   - space: prg
     offset: 0x1E04E
     name: Obj_SetAttrFlipX
-    desc: "Set sprite OAM attribute $44 = A, XOR-ing in the horizontal-flip bit ($40) when $4C (X direction/velocity) is non-negative (BMI on $4C skips the EOR). One call sets palette + facing. Used by e.g. the Fliers: Red $7C does LDA #$00 → pal 0 (white/$15 red), Gray $7D does LDA #$01 → pal 1 (white/$00 gray)"
+    desc: "Sets the sprite OAM attribute ($44) to A, adding the horizontal-flip bit when the object faces right (X velocity $4C non-negative). One call sets both palette and facing — e.g. the Fliers pass their palette index (Red $7C = pal 0, Gray $7D = pal 1)."
 
   - space: prg
     offset: 0x1E052
@@ -23419,12 +23714,9 @@ hints:
 
   - space: prg
     offset: 0x1E0ED
-    name: Obj_DeltaToPlayerX
-    desc: "Signed X-distance from this object to the player: player fixed-point X ($0402/$0403) minus this object's X ($48/$49). Returns X = low/frac byte, A = high/integer byte (carries the sign). Enemy aiming primitive — e.g. the Shooter's horizontal fire-gate does EOR $4C then BMI, firing only while its Xvel points toward the player."
-
-  - space: prg
-    offset: 0x1E0F1
-    desc: "Signed X-distance to player: player X ($0402/$0403) − this obj X ($48/$49); returns X=low, A=high/sign."
+    name: LoadedObj__Get_DeltaToPlayer_X
+    status: verified
+    desc: "Signed X-distance from this object to the player:  Returns X = pixel/frac byte, A = metatile byte (carries the sign)."
 
   - space: prg
     offset: 0x1E0FA
@@ -23438,7 +23730,7 @@ hints:
   - space: prg
     offset: 0x1E107
     name: Obj_DeltaToPlayerX_Div16
-    desc: "Signed X-distance to the player / 16: recombines Obj_DeltaToPlayerX's 16-bit result (A=int, X=frac) as (int<<4)|(frac>>4); preserves $00. Homing-velocity primitive. Dispatch slot $C048; callers: Rotating Camera $2F, Slider $40 fire, Zombie Head $45."
+    desc: "Signed X-distance to the player / 16: recombines LoadedObj__Get_DeltaToPlayer_X's 16-bit result (A=int, X=frac) as (int<<4)|(frac>>4); preserves $00. Homing-velocity primitive. Dispatch slot $C048; callers: Rotating Camera $2F, Slider $40 fire, Zombie Head $45."
 
   - space: prg
     offset: 0x1E120
@@ -23448,7 +23740,7 @@ hints:
   - space: prg
     offset: 0x1E139
     name: Obj_DeltaToPlayerX_Div32
-    desc: "Signed X-distance to the player / 32 ((int<<3)|(frac>>5) of Obj_DeltaToPlayerX); preserves $00. Dispatch slot $C04B; callers: Gray Gumdrop $31, Red Gumdrop $47."
+    desc: "Signed X-distance to the player / 32 ((int<<3)|(frac>>5) of LoadedObj__Get_DeltaToPlayer_X); preserves $00. Dispatch slot $C04B; callers: Gray Gumdrop $31, Red Gumdrop $47."
 
   - space: prg
     offset: 0x1E152
@@ -23912,9 +24204,7 @@ hints:
   - space: prg
     offset: 0x1E61B
     name: BankSave_Switch
-    desc: |-
-      Save A → ActiveBank ($DB); push X/Y; set NmiFrameFlag=$40 (busy); JSR MMC1_WritePRG; if NmiFrameFlag bit 5 set (NMI deferred during switch) JSR NmiFrameWork; clear NmiFrameFlag; pop Y/X; RTS
-      STA $DB (ActiveBank): save target bank number before X/Y push clobbers A
+    desc: "Switches the PRG bank (A = target) and records it in ActiveBank ($DB). Raises the NMI busy flag across the switch so an NMI firing mid-switch is deferred, then replays the deferred frame work afterward. Preserves X/Y."
 
   - space: prg
     offset: 0x1E61D
@@ -24421,9 +24711,7 @@ hints:
   - space: prg
     offset: 0x1E953
     name: Nametable_RLE_Decompress
-    desc: |-
-      RLE decompress stream at DispatchPtr ($7A/$7B) → PPU $2007; stream format: $00=end; positive byte N ($01–$7F) → RLE run, repeat the next byte N times ($E974); negative byte N ($80–$FF) → literal copy of the next ((N−1)&$7F)+1 bytes ($E986: the copy loop decrements then ANDs #$7F, so $81→1 … $FF→127, and $80 wraps to 128, NOT 0); disables NMI+rendering before write; re-enables NMI on sentinel $00
-      NMI_Disable + PPU_RenderingDisable; PPU_ClearAndReset; set PPU address to $2000
+    desc: "Decompresses an RLE nametable stream at DispatchPtr ($7A/$7B) straight to PPU $2007, disabling NMI and rendering during the write and re-enabling NMI on the end sentinel. The stream format is documented at the byte-classification comment below."
 
   - space: prg
     offset: 0x1E95E
@@ -24436,7 +24724,7 @@ hints:
 
   - space: prg
     offset: 0x1E963
-    desc: "BMI: high bit set = RLE run (count in bits 6:0); else = literal count"
+    desc: "stream byte classification (format): $00 = end; $01–$7F = RLE run, repeat the next byte N times; $80–$FF = literal copy of ((N−1)&$7F)+1 bytes — the copy loop decrements then ANDs #$7F, so $81→1 … $FF→127, and $80 wraps to 128, NOT 0"
 
   - space: prg
     offset: 0x1E96B
@@ -24491,7 +24779,7 @@ hints:
   - space: prg
     offset: 0x1E9CF
     name: Nametable_Load_FadeIn
-    desc: "PHA; JSR PPU_ClearAndReset ($EA03); bank-switch to bank 03; PLA; dispatch to category A nametable; decompress → PPU $2000; JSR ScreenFade_TriggerFadeIn ($CE0F); loop (ScreenFade_Step+WaitNMI) until ScreenFade_Counter=0; restore bank. Used by IntroScreen (cat 1) and elsewhere."
+    desc: "Clears the screen, loads nametable category A from bank 3 and decompresses it to the nametable, then triggers and runs a fade-in to completion (restoring the previous bank). Used by IntroScreen (cat 1) and elsewhere."
 
   - space: prg
     offset: 0x1E9D3
@@ -24505,9 +24793,7 @@ hints:
   - space: prg
     offset: 0x1EA03
     name: PPU_ClearAndReset
-    desc: |-
-      JSR PPU_RenderingDisable ($E6F0); clear $FD/$F1/$FC/$4F (ObjActiveFlag); update PPU_CTRL shadow; reset PPU address latch via $2002 read; write 2 KB zeros to PPU $2000 (blank nametable)
-      JSR Palette_BlackOut: fill runtime palette buffer with $0F so no stale colors leak onto screen
+    desc: "Blanks the screen for a nametable load: black-outs the palette buffer, disables rendering, clears the active-object and PPU-state flags, resets the PPU address latch, and zeroes the whole nametable."
 
   - space: prg
     offset: 0x1EA06
@@ -24595,7 +24881,7 @@ hints:
     name: DispatchPtr_AdvanceJmp
     isCodeSeed: true
     isDead: true
-    desc: "DEAD CODE - never referenced (emitted as data, 13 bytes): TYA / ADC $7A / STA $7A / BCC / INC $7B / JMP ($007A) - advance DispatchPtr by Y then jump through it. Unused jump-through-stream primitive (cousin of the live DispatchPtr_AdvanceY $EB44 and the dead $EB64 trampoline)."
+    desc: "DEAD CODE — never referenced (emitted as data by default; seeded here so it decodes). An unused jump-through-stream primitive: advances DispatchPtr ($7A/$7B) by Y and then jumps indirectly through it. Cousin of the live DispatchPtr_AdvanceY ($EB44) and the dead $EB64 trampoline."
 
   - space: prg
     offset: 0x1EA60
@@ -24705,9 +24991,7 @@ hints:
   - space: prg
     offset: 0x1EB14
     name: Speed_Limit_Sub
-    desc: |-
-      Clamp signed velocity ZP[$00+X] to [-A, +A]: if velocity > A set to A; if velocity < -A set to -A; X=ZP index, A=positive speed limit; da65 misidentifies $D5 $00 as .db bytes (it is CMP $00,X)
-      LDY $00,X: load current velocity to test sign; BMI → negative path
+    desc: "Clamps the signed velocity ZP[$00+X] into [-A, +A] — X is the ZP index, A the positive speed limit. (da65 misreads the opcode $D5 in this routine as `.db` data; it is a compare.)"
 
   - space: prg
     offset: 0x1EB18
@@ -24791,9 +25075,7 @@ hints:
   - space: prg
     offset: 0x1EB51
     name: BankDispatch_Index
-    desc: |-
-      A = object-type index into 16-bit pointer table at DispatchPtr; ASL A (×2 — each entry is a lo/hi pair); if carry: INC DispatchPtrHi (table spans page boundary); read lo/hi → DispatchPtr; LDY #$00; enables JMP (DispatchPtr)
-      ASL A: multiply index by 2; each pointer table entry is 2 bytes (lo, hi)
+    desc: "Indexes the 16-bit pointer table at DispatchPtr ($7A/$7B) by the object-type index in A, leaving the selected entry in DispatchPtr ready for an indirect jump through it. Handles a table that crosses a page boundary."
 
   - space: prg
     offset: 0x1EB53
@@ -24809,12 +25091,12 @@ hints:
     name: Bank3Dispatch_Trampoline
     isCodeSeed: true
     isDead: true
-    desc: "DEAD CODE - never referenced (13 bytes as data): PHA / LDA #$31 / JSR BankDispatch_Switch / PLA / JSR BankDispatch_Index / JMP (DispatchPtr) - switch to bank 3 table 1, resolve entry A, jump through it. The dead alternative dispatch trampoline flagged in TODO - confirmed unreferenced via refs over banks 4-7."
+    desc: "DEAD CODE — never referenced (emitted as data by default; seeded here so it decodes). A dead alternative dispatch trampoline: switches to bank 3 table 1, resolves the dispatch entry for A, and jumps through it. Confirmed unreferenced via refs over banks 4-7 (the trampoline flagged in TODO)."
 
   - space: prg
     offset: 0x1EB71
     name: Step_RNG
-    desc: "Steps the pseudo-random number generator (RNG) state $13 (RNG_State): $13 := ($13×5 − 1) mod 256, an 8-bit LCG (ASL×2 = $13×4; ADC $13 = $13×5; SEC/SBC #1). Returns the new byte in A. Reached via the getter slot DispatchSlot_91_Step_RNG ($C1B3) and directly by Obj_SpawnFromZP ($DF3C), StorySequence_FramePaced ($E4A6, reused as a frame-pacing tick → $58) and $F573; bank-06 enemy drop logic (TankEnemy_SpawnDrop $A350) also JSRs here. Consumers use low bits for random magnitude, bit 7 for a random sign/direction. (Formerly annotated \"sound processing\" — incorrect; no sound-engine caller.) See docs/misc/rng.md."
+    desc: "Steps the pseudo-random number generator state $13 (RNG_State) by one 8-bit LCG step and returns the new byte in A. Reached via the getter slot DispatchSlot_91_Step_RNG ($C1B3) and directly by Obj_SpawnFromZP ($DF3C), StorySequence_FramePaced ($E4A6, reused as a frame-pacing tick into $58) and $F573; bank-06 enemy drop logic (TankEnemy_SpawnDrop $A350) also calls here. Consumers use the low bits for a random magnitude, bit 7 for a random sign/direction. (Formerly annotated \"sound processing\" — incorrect; no sound-engine caller.) See docs/misc/rng.md."
 
   - space: prg
     offset: 0x1EB73
@@ -24823,7 +25105,7 @@ hints:
   - space: prg
     offset: 0x1EB7E
     name: NMI
-    desc: "Hardware NMI (VBlank) handler, vector $FFFA. Push A/X/Y; BIT NmiFrameFlag ($12): bit 6 set (BankSave_Switch mid-bank-switch) → _NMI__Deferred records a deferred NMI ($12=$20) and returns without doing frame work; otherwise JSR NmiFrameWork ($EB98) — bit 7 selects full update vs light render — then restore registers and RTI via _NMI__Restore ($EB91)."
+    desc: "Hardware NMI (VBlank) handler, vector $FFFA. Saves the registers, and if a bank switch is in progress (NmiFrameFlag bit 6) records a deferred NMI and returns; otherwise runs the frame-update work (NmiFrameWork) — bit 7 selecting a full update vs a light render — before restoring the registers and returning."
 
   - space: prg
     offset: 0x1EB8D
@@ -24843,7 +25125,7 @@ hints:
   - space: prg
     offset: 0x1EB98
     name: NmiFrameWork
-    desc: "Core NMI frame-update work; called by NMI handler (normal frame) or BankSave_Switch (deferred replay); BIT NmiFrameFlag: bit7 set→FullUpdate; bit7 clear→JMP EC51 (light render path)"
+    desc: "Core NMI frame-update work; called by the NMI handler (normal frame) or by BankSave_Switch (deferred replay). NmiFrameFlag bit 7 selects a full-frame update vs the light render path."
 
   - space: prg
     offset: 0x1EB9A
@@ -25195,7 +25477,7 @@ hints:
   - space: prg
     offset: 0x1EF2B
     name: ScreenPos_Compute
-    desc: "Compute screen-relative XY into $3E/$3F via ScreenPos_Adjust; call with $40=half-width,$41=half-height; returns $00=on-screen,$FF=off-screen"
+    desc: "Computes the object's screen-relative position into $3E/$3F (via ScreenPos_Adjust) and reports whether it is on-screen. Callers pass the sprite half-width ($40) and half-height ($41); it returns A = $00 when on-screen, $FF when off."
 
   - space: prg
     offset: 0x1EF30
@@ -25247,7 +25529,7 @@ hints:
   - space: prg
     offset: 0x1F011
     name: MetaSprite_Render
-    desc: "If $FF bit 5 set → bank 1 entry $0A; else → bank 4 entry $01; JSR BankDispatch_Switch to load pointer table; JSR MetaSprite_RenderNoBank ($F029) indexed by A; restore bank"
+    desc: "Renders a metasprite (id in A), selecting the correct metasprite pointer table by sprite size ($FF bit 5) — the 8×16 overhead table or the 8×8 tank table — then restoring the previous bank."
 
   - space: prg
     offset: 0x1F014
@@ -25753,7 +26035,7 @@ hints:
     name: StageSelect_Run
     isCodeSeed: true
     isDead: true
-    desc: "DEAD CODE — full stage-select main loop; renders \"SELECT START AREA/AND/PRESS START\" strings; D-pad nav; sets CurrentArea; enabled by GG XTVYGGAV ($F464: RTS→NOP)"
+    desc: "DEAD CODE — the full stage-select main loop: renders the \"SELECT START AREA / AND / PRESS START\" strings, does D-pad navigation, and sets CurrentArea. Enabled only by Game Genie XTVYGGAV, which patches the guarding return at $F464 into a no-op."
 
   - space: prg
     offset: 0x1F4AD
@@ -25960,7 +26242,7 @@ hints:
   - space: prg
     offset: 0x1F668
     name: IntroAnim_CHRDispatch
-    desc: "Set $3E/$3F=$AB7C (OAM-arrangement ptr for $EC73); $44=0 (sprite sub-palette 0); render a tank-table metasprite (id in A) via MetaSprite_Render ($F011) — during the intro $FF&$20=0 so $EA3A selects Metasprite_Table_Tank ($8907), CHR bank $1D; JMP OAM_BlitFromStaging ($EC73). A = ids $93-$9B from IntroAnim_MetaspriteIdTable. See docs/execution-flow/05-intro-animation.md"
+    desc: "Renders one intro-animation metasprite (id in A) and blits it to OAM, using OAM arrangement $AB7C and sprite sub-palette 0. During the intro the tank metasprite table ($8907) / CHR bank $1D is selected. A = ids $93-$9B from IntroAnim_MetaspriteIdTable. See docs/execution-flow/05-intro-animation.md"
 
   - space: prg
     offset: 0x1F669
@@ -25969,7 +26251,7 @@ hints:
   - space: prg
     offset: 0x1F67C
     name: IntroScreen_LoadPalette
-    desc: "JSR $E6FA; copy 28 bytes from $F68B → palette shadow $0650–$066B (7×4-byte intro palette slots)"
+    desc: "Loads the 28-byte intro-screen palette (7 sub-palette slots) into the palette shadow, blanking the palette first."
 
   - space: prg
     offset: 0x1F67F

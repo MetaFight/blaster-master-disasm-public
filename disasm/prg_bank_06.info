@@ -3567,23 +3567,32 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_A7CB";
+  NAME    "ObjHandler_Tank_5F_Gray_Hopper_6HP_Init";
   ADDR    $A7CB;
+  COMMENT "ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy: takes its stats\n; from tank-enemy descriptor $05, faces the player, primes its hop-interval timer, and advances to\n; the Main $60. Draws nothing; the +0 (fade/freeze) entry jumps to the terminal RTS. See\n; docs/entities/tank/5f-61_hopper-6hp.md";
 };
 
 LABEL {
-  NAME    "L_A7E1";
+  NAME    "_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__";
+  ADDR    $A7CE;
+  COMMENT "Load enemy from descriptor ($05), face the player, go live as $60";
+};
+
+LABEL {
+  NAME    "_ObjHandler_Tank_5F_GrayHopper6HP_Init__Facing_Right";
   ADDR    $A7E1;
+  COMMENT "Player is to the right, so face right";
 };
 
 LABEL {
-  NAME    "L_A7E3";
+  NAME    "_ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing";
   ADDR    $A7E3;
 };
 
 LABEL {
-  NAME    "L_A7ED";
+  NAME    "_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done";
   ADDR    $A7ED;
+  COMMENT "Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.";
 };
 
 LABEL {
@@ -5275,6 +5284,24 @@ LABEL {
 LABEL {
   NAME    "L_BC21";
   ADDR    $BC21;
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A7D3;
+  COMMENT "hop-interval timer $52 = $30";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A7D7;
+  COMMENT "Get x-delta to player to figure out where to face";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A7DC;
+  COMMENT "Player is to the left, so face left";
 };
 
 LABEL {

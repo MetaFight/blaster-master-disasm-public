@@ -23,7 +23,7 @@ LB34F:  jmp     L_B3AF                          ; B34F
         sta     $42                             ; B354
         lda     #$C0                            ; B356
         sta     $43                             ; B358
-        jsr     LE0ED                           ; B35A
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B35A
         sta     LoadedObj_Velocity_X            ; B35D
         bpl     L_B366                          ; B35F
         eor     #$FF                            ; B361

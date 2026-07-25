@@ -410,7 +410,7 @@ L_DFD1: clc                                     ; DFD1
         rts                                     ; DFDC
 
 ; ----------------------------------------------------------------------------
-L_DFDD: jsr     L_E0ED                          ; DFDD
+L_DFDD: jsr     LoadedObj__Get_DeltaToPlayer_X  ; DFDD
         bpl     L_DFE7                          ; DFE0
         eor     #$FF                            ; DFE2
         clc                                     ; DFE4
@@ -572,7 +572,10 @@ L_E0E5: lda     #$00                            ; E0E5
         rts                                     ; E0EC
 
 ; ----------------------------------------------------------------------------
-L_E0ED: lda     PlayerSlot + ObjSlot::Position_X_Pixel ; E0ED
+; Signed X-distance from this object to the player:  Returns X = pixel/frac byte, A = metatile
+; byte (carries the sign).
+LoadedObj__Get_DeltaToPlayer_X:
+        lda     PlayerSlot + ObjSlot::Position_X_Pixel ; E0ED
         sec                                     ; E0F0
         sbc     LoadedObj_Position_X_Pixel      ; E0F1
         tax                                     ; E0F3
@@ -592,7 +595,7 @@ L_E0FA: lda     PlayerSlot + ObjSlot::Position_Y_Pixel ; E0FA
 ; ----------------------------------------------------------------------------
 L_E107: lda     L0000                           ; E107
         pha                                     ; E109
-        jsr     L_E0ED                          ; E10A
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; E10A
         asl     a                               ; E10D
         asl     a                               ; E10E
         asl     a                               ; E10F
@@ -634,7 +637,7 @@ L_E120: lda     L0000                           ; E120
 ; ----------------------------------------------------------------------------
 L_E139: lda     L0000                           ; E139
         pha                                     ; E13B
-        jsr     L_E0ED                          ; E13C
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; E13C
         asl     a                               ; E13F
         asl     a                               ; E140
         asl     a                               ; E141

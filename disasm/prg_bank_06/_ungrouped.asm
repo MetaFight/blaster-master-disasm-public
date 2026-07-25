@@ -454,7 +454,7 @@ LA36A:  .byte   $04,$08,$2C,$60,$08,$10,$2C,$80 ; A36A
 ; ----------------------------------------------------------------------------
 L_A634: lda     $00                             ; A634
         pha                                     ; A636
-        jsr     LE0ED                           ; A637
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A637
         bpl     L_A641                          ; A63A
         eor     #$FF                            ; A63C
         clc                                     ; A63E
@@ -467,7 +467,7 @@ L_A641: sta     $00                             ; A641
         adc     #$01                            ; A64B
 L_A64D: cmp     $00                             ; A64D
         bcs     L_A660                          ; A64F
-        jsr     LE0ED                           ; A651
+        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A651
         bmi     L_A65B                          ; A654
         ldx     #$00                            ; A656
         jmp     L_A66C                          ; A658
