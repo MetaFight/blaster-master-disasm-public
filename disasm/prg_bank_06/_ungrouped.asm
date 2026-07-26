@@ -15,13 +15,13 @@ L_888C: lda     $F3                             ; 888C
         sta     $03D4                           ; 88A6
         lda     LoadedObj_Facing                ; 88A9
         sta     $03D5                           ; 88AB
-        lda     LoadedObj_Position_X_Pixel      ; 88AE
+        lda     LoadedObj_Position_X_Lo         ; 88AE
         sta     $03D0                           ; 88B0
-        lda     LoadedObj_Position_X_MetaTile   ; 88B3
+        lda     LoadedObj_Position_X_Hi         ; 88B3
         sta     $03D1                           ; 88B5
-        lda     LoadedObj_Position_Y_Pixel      ; 88B8
+        lda     LoadedObj_Position_Y_Lo         ; 88B8
         sta     $03D2                           ; 88BA
-        lda     LoadedObj_Position_Y_MetaTile   ; 88BD
+        lda     LoadedObj_Position_Y_Hi         ; 88BD
         sta     $03D3                           ; 88BF
         lda     #$1E                            ; 88C2
         sta     $03D6                           ; 88C4
@@ -37,7 +37,7 @@ L_888C: lda     $F3                             ; 888C
         jsr     LD2B1                           ; 88DA
         bmi     L_88E3                          ; 88DD
         lda     #$00                            ; 88DF
-        sta     LoadedObj_Position_Y_Pixel      ; 88E1
+        sta     LoadedObj_Position_Y_Lo         ; 88E1
 L_88E3: pla                                     ; 88E3
         pla                                     ; 88E4
         jsr     L_88E9                          ; 88E5
@@ -52,26 +52,26 @@ L_88F1: lda     $C1                             ; 88F1
         lda     $14                             ; 88F5
         cmp     $03D4                           ; 88F7
         bne     L_894D                          ; 88FA
-        lda     LoadedObj_Position_X_MetaTile   ; 88FC
+        lda     LoadedObj_Position_X_Hi         ; 88FC
         pha                                     ; 88FE
-        lda     LoadedObj_Position_X_Pixel      ; 88FF
+        lda     LoadedObj_Position_X_Lo         ; 88FF
         pha                                     ; 8901
-        lda     LoadedObj_Position_Y_MetaTile   ; 8902
+        lda     LoadedObj_Position_Y_Hi         ; 8902
         pha                                     ; 8904
-        lda     LoadedObj_Position_Y_Pixel      ; 8905
+        lda     LoadedObj_Position_Y_Lo         ; 8905
         pha                                     ; 8907
         lda     LoadedObj_Facing                ; 8908
         pha                                     ; 890A
         lda     $4F                             ; 890B
         pha                                     ; 890D
         lda     $03D0                           ; 890E
-        sta     LoadedObj_Position_X_Pixel      ; 8911
+        sta     LoadedObj_Position_X_Lo         ; 8911
         lda     $03D1                           ; 8913
-        sta     LoadedObj_Position_X_MetaTile   ; 8916
+        sta     LoadedObj_Position_X_Hi         ; 8916
         lda     $03D2                           ; 8918
-        sta     LoadedObj_Position_Y_Pixel      ; 891B
+        sta     LoadedObj_Position_Y_Lo         ; 891B
         lda     $03D3                           ; 891D
-        sta     LoadedObj_Position_Y_MetaTile   ; 8920
+        sta     LoadedObj_Position_Y_Hi         ; 8920
         lda     $03D5                           ; 8922
         sta     LoadedObj_Facing                ; 8925
         lda     #$00                            ; 8927
@@ -88,13 +88,13 @@ L_893B: pla                                     ; 893B
         pla                                     ; 893E
         sta     LoadedObj_Facing                ; 893F
         pla                                     ; 8941
-        sta     LoadedObj_Position_Y_Pixel      ; 8942
+        sta     LoadedObj_Position_Y_Lo         ; 8942
         pla                                     ; 8944
-        sta     LoadedObj_Position_Y_MetaTile   ; 8945
+        sta     LoadedObj_Position_Y_Hi         ; 8945
         pla                                     ; 8947
-        sta     LoadedObj_Position_X_Pixel      ; 8948
+        sta     LoadedObj_Position_X_Lo         ; 8948
         pla                                     ; 894A
-        sta     LoadedObj_Position_X_MetaTile   ; 894B
+        sta     LoadedObj_Position_X_Hi         ; 894B
 L_894D: rts                                     ; 894D
 
 ; ----------------------------------------------------------------------------
@@ -245,21 +245,21 @@ L_9707: ldx     #$00                            ; 9707
         bpl     L_9711                          ; 970D
         ldx     #$FF                            ; 970F
 L_9711: clc                                     ; 9711
-        adc     LoadedObj_Position_X_Pixel      ; 9712
-        sta     LoadedObj_Position_X_Pixel      ; 9714
+        adc     LoadedObj_Position_X_Lo         ; 9712
+        sta     LoadedObj_Position_X_Lo         ; 9714
         txa                                     ; 9716
-        adc     LoadedObj_Position_X_MetaTile   ; 9717
-        sta     LoadedObj_Position_X_MetaTile   ; 9719
+        adc     LoadedObj_Position_X_Hi         ; 9717
+        sta     LoadedObj_Position_X_Hi         ; 9719
         ldx     #$00                            ; 971B
         lda     $BD                             ; 971D
         bpl     L_9723                          ; 971F
         ldx     #$FF                            ; 9721
 L_9723: clc                                     ; 9723
-        adc     LoadedObj_Position_Y_Pixel      ; 9724
-        sta     LoadedObj_Position_Y_Pixel      ; 9726
+        adc     LoadedObj_Position_Y_Lo         ; 9724
+        sta     LoadedObj_Position_Y_Lo         ; 9726
         txa                                     ; 9728
-        adc     LoadedObj_Position_Y_MetaTile   ; 9729
-        sta     LoadedObj_Position_Y_MetaTile   ; 972B
+        adc     LoadedObj_Position_Y_Hi         ; 9729
+        sta     LoadedObj_Position_Y_Hi         ; 972B
         jsr     LD2B9                           ; 972D
         lda     $BE                             ; 9730
         and     #$03                            ; 9732
@@ -345,9 +345,9 @@ L_A2B3: lda     #$00                            ; A2B3
 L_A2BC: clc                                     ; A2BC
         adc     $1D                             ; A2BD
         ldx     $05                             ; A2BF
-        sta     ObjectTable + ObjSlot::Position_X_MetaTile,x ; A2C1
+        sta     ObjectTable + ObjSlot::Position_X_Hi,x ; A2C1
         lda     $1C                             ; A2C4
-        sta     ObjectTable + ObjSlot::Position_X_Pixel,x ; A2C6
+        sta     ObjectTable + ObjSlot::Position_X_Lo,x ; A2C6
         lda     $06                             ; A2C9
         sta     ObjectTable + ObjSlot::Velocity_X,x ; A2CB
         lda     #$01                            ; A2CE
@@ -364,8 +364,8 @@ L_A2D4: lda     #$00                            ; A2D4
         cmp     #$40                            ; A2DB
         beq     L_A2E8                          ; A2DD
         lda     #$00                            ; A2DF
-        sta     LoadedObj_Position_Y_Pixel      ; A2E1
-        inc     LoadedObj_Position_Y_MetaTile   ; A2E3
+        sta     LoadedObj_Position_Y_Lo         ; A2E1
+        inc     LoadedObj_Position_Y_Hi         ; A2E3
         jsr     LD2B9                           ; A2E5
 L_A2E8: rts                                     ; A2E8
 

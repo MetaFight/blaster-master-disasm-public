@@ -5369,22 +5369,22 @@ LABEL {
 };
 
 LABEL {
-  NAME    "LoadedObj_Position_X_Pixel";
+  NAME    "LoadedObj_Position_X_Lo";
   ADDR    $0048;
 };
 
 LABEL {
-  NAME    "LoadedObj_Position_X_MetaTile";
+  NAME    "LoadedObj_Position_X_Hi";
   ADDR    $0049;
 };
 
 LABEL {
-  NAME    "LoadedObj_Position_Y_Pixel";
+  NAME    "LoadedObj_Position_Y_Lo";
   ADDR    $004A;
 };
 
 LABEL {
-  NAME    "LoadedObj_Position_Y_MetaTile";
+  NAME    "LoadedObj_Position_Y_Hi";
   ADDR    $004B;
 };
 

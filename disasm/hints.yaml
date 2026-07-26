@@ -8,10 +8,10 @@ structs:
     fields:
       - { name: Type, type: byte, status: verified, desc: "Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler." }
       - { name: Facing, type: byte, status: verified, desc: "Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags)." }
-      - { name: Position_X_Pixel, type: fixed44, status: verified, desc: "X position in pixels." }
-      - { name: Position_X_MetaTile, type: byte, status: verified, desc: "X position in metatiles (16px)." }
-      - { name: Position_Y_Pixel, type: fixed44, status: verified, desc: "Y position in pixels." }
-      - { name: Position_Y_MetaTile, type: byte, status: verified, desc: "Y position in metatiles (16px)." }
+      - { name: Position_X_Lo, type: fixed44, status: verified, desc: "The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position." }
+      - { name: Position_X_Hi, type: sbyte, status: verified, desc: "The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position." }
+      - { name: Position_Y_Lo, type: fixed44, status: verified, desc: "The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position." }
+      - { name: Position_Y_Hi, type: sbyte, status: verified, desc: "The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position." }
       - { name: Velocity_X, type: sfixed44, status: verified, desc: "X velocity in px/frame (signed 4.4: swww.ffff)." }
       - { name: Velocity_Y, type: sfixed44, status: verified, desc: "Y velocity in px/frame (signed 4.4: swww.ffff)." }
       - { name: TileIndex, type: byte, desc: "Metatile-map collision index." }
@@ -10835,19 +10835,19 @@ hints:
 
   - space: prg
     offset: 0x188FC
-    desc: "push LoadedObj_Position_X_MetaTile ($49) — save Jason's X integer onto stack"
+    desc: "push LoadedObj_Position_X_Hi ($49) — save Jason's X integer onto stack"
 
   - space: prg
     offset: 0x188FF
-    desc: "push LoadedObj_Position_X_Pixel ($48) — save Jason's X fraction"
+    desc: "push LoadedObj_Position_X_Lo ($48) — save Jason's X fraction"
 
   - space: prg
     offset: 0x18902
-    desc: "push LoadedObj_Position_Y_Pixel ($4B)"
+    desc: "push LoadedObj_Position_Y_Lo ($4B)"
 
   - space: prg
     offset: 0x18905
-    desc: "push LoadedObj_Position_Y_MetaTile ($4A)"
+    desc: "push LoadedObj_Position_Y_Hi ($4A)"
 
   - space: prg
     offset: 0x18908
@@ -10859,7 +10859,7 @@ hints:
 
   - space: prg
     offset: 0x1890E
-    desc: "load SophiaSavedXFrac ($03D0) → overwrite Jason's $48 (LoadedObj_Position_X_Pixel)"
+    desc: "load SophiaSavedXFrac ($03D0) → overwrite Jason's $48 (LoadedObj_Position_X_Lo)"
 
   - space: prg
     offset: 0x18913
@@ -12795,7 +12795,7 @@ hints:
   - space: prg
     offset: 0x1979F
     name: _ObjHandler_Tank_14_Tank_Shot_Main__PhysVariantB
-    desc: "ObjSubType $B9 ≥ 3 (diagonal shot): move via JSR $D324 (MoveXY_v2); subtypes 0–2 used JSR $D2DB"
+    desc: "ObjSubType $B9 ≥ 3 (diagonal shot): move via JSR $D324 (Apply_Velocity_XY); subtypes 0–2 used JSR $D2DB"
 
   - space: prg
     offset: 0x197A2
@@ -19228,8 +19228,8 @@ hints:
 
   - space: prg
     offset: 0x1C024
-    name: DispatchSlot_0C_MoveXY_v2
-    desc: "Dispatch table slot $0C — the fixed bank's public entry point for MoveXY_v2 ($D324). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
+    name: DispatchSlot_0C_Apply_Velocity_XY
+    desc: "Dispatch table slot $0C — the fixed bank's public entry point for Apply_Velocity_XY ($D324). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
 
   - space: prg
     offset: 0x1C027
@@ -19238,8 +19238,8 @@ hints:
 
   - space: prg
     offset: 0x1C02A
-    name: DispatchSlot_0E_MoveX_Double
-    desc: "Dispatch table slot $0E — the fixed bank's public entry point for MoveX_Double ($D327). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
+    name: DispatchSlot_0E_Apply_Velocity_X
+    desc: "Dispatch table slot $0E — the fixed bank's public entry point for Apply_Velocity_X ($D327). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
 
   - space: prg
     offset: 0x1C02D
@@ -19278,8 +19278,8 @@ hints:
 
   - space: prg
     offset: 0x1C042
-    name: DispatchSlot_16_MoveY_Double
-    desc: "Dispatch table slot $16 — the fixed bank's public entry point for MoveY_Double ($D349). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
+    name: DispatchSlot_16_Apply_Velocity_Y
+    desc: "Dispatch table slot $16 — the fixed bank's public entry point for Apply_Velocity_Y ($D349). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
 
   - space: prg
     offset: 0x1C045
@@ -20282,11 +20282,11 @@ hints:
 
   - space: prg
     offset: 0x1C371
-    desc: "camera X frac ← Jason's LoadedObj_Position_X_Pixel ($48)"
+    desc: "camera X frac ← Jason's LoadedObj_Position_X_Lo ($48)"
 
   - space: prg
     offset: 0x1C375
-    desc: "camera X int ← Jason's LoadedObj_Position_X_MetaTile ($49)"
+    desc: "camera X int ← Jason's LoadedObj_Position_X_Hi ($49)"
 
   - space: prg
     offset: 0x1C37A
@@ -20294,11 +20294,11 @@ hints:
 
   - space: prg
     offset: 0x1C386
-    desc: "camera Y frac ← Jason's LoadedObj_Position_Y_Pixel ($4A)"
+    desc: "camera Y frac ← Jason's LoadedObj_Position_Y_Lo ($4A)"
 
   - space: prg
     offset: 0x1C38A
-    desc: "camera Y int ← Jason's LoadedObj_Position_Y_MetaTile ($4B)"
+    desc: "camera Y int ← Jason's LoadedObj_Position_Y_Hi ($4B)"
 
   - space: prg
     offset: 0x1C38E
@@ -22198,31 +22198,44 @@ hints:
 
   - space: prg
     offset: 0x1D324
-    name: MoveXY_v2
-    desc: "Combined ×2 tile-tracked move: JSR MoveY_Double ($D349) then fall through into MoveX_Double ($D327). Applies double velocity to both axes while keeping tile index $4E in sync; used by fast diagonal projectiles (Tank Shot subtype ≥3, Multi-Warhead). Distinct from MoveXY ($D2DB) which moves ×1."
+    name: Apply_Velocity_XY
+    desc: |-
+      Applies the LoadedObject's X and Y velocities to the position registers following 16-bit fixed-point arithmetic.
+      Also keeps track of TileIndex correctly.
 
   - space: prg
     offset: 0x1D327
-    name: MoveX_Double
-    desc: "Apply 2× signed XVel $4C to X position $48/$49, adjusting tilemap column $4E and keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of MoveXY_v2."
+    name: Apply_Velocity_X
+    desc: "Apply signed LoadedObj_X_Velocity to LoadedObj_X_Velocity X position $48/$49, adjusting tilemap column $4E and keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Velocity_XY."
 
   - space: prg
-    offset: 0x1D329
-    desc: "X move: add 2× signed XVel $4C to X pos $48/$49, adjusting tilemap column $4E."
+    offset: 0x1D32B
+    desc: "If Velocity_X is positive, use sign-extension byte $00, otherwise use $FF"
+
+  - space: prg
+    offset: 0x1D331
+    desc: "The next few (9) instructions seem to be magic required when adding 8-bit signed Velocity_X and 16-bit signed Position_X values (sfixed4.4 + sfixed12.4)."
+
+  - space: prg
+    offset: 0x1D337
+    desc: "Retrieve the sign-extension byte from the stack to carry the magic into the x-metatile value."
+
+  - space: prg
+    offset: 0x1D33F
+    desc: "Updated the TileIndex accordingly."
 
   - space: prg
     offset: 0x1D32F
-    name: _MoveX_Double__PushSign
-    desc: "PHA the sign-extension byte ($00 or $FF) then add 2×XVel"
+    name: _Apply_Velocity_X__OnSignExtensionByteChosen
 
   - space: prg
     offset: 0x1D349
-    name: MoveY_Double
-    desc: "Apply 2× signed YVel $4D to Y position $4A/$4B, adjusting tilemap index $4E by 16×row (row stride $11) and keeping $4B in 0-$7F. Dispatch $C042; Y half of MoveXY_v2."
+    name: Apply_Velocity_Y
+    desc: "Apply 2× signed YVel $4D to Y position $4A/$4B, adjusting tilemap index $4E by 16×row (row stride $11) and keeping $4B in 0-$7F. Dispatch $C042; Y half of Apply_Velocity_XY."
 
   - space: prg
     offset: 0x1D351
-    name: _MoveY_Double__PushSign
+    name: _Apply_Velocity_Y__PushSign
     desc: "PHA the sign-extension byte ($00 or $FF) then add 2×YVel"
 
   - space: prg
@@ -23491,7 +23504,27 @@ hints:
   - space: prg
     offset: 0x1DF84
     name: Obj_MoveBounce_Double
-    desc: "Double-speed variant of Obj_MoveBounce ($DF68): advance via Obj_MoveAndCollide_Double ($E0A5, MoveX_Double/MoveY_Double) and reflect velocity off the wall flags - bit7 (side wall) negates XVel $4C, bit6 (floor/ceiling) negates YVel $4D. Returns the wall flags in A/$9A. Dispatch slot $C03C (no callers in USA ROM); reached in-bank from Obj_GravityMoveBounce ($DFA0)."
+    desc: "Double-speed variant of Obj_MoveBounce ($DF68): advance via Obj_MoveAndCollide_Double ($E0A5, Apply_Velocity_X/Apply_Velocity_Y) and reflect velocity off the wall flags - bit7 (side wall) negates XVel $4C, bit6 (floor/ceiling) negates YVel $4D. Returns the wall flags in A/$9A. Dispatch slot $C03C (no callers in USA ROM); reached in-bank from Obj_GravityMoveBounce ($DFA0)."
+
+  - space: prg
+    offset: 0x1DF89
+    desc: |-
+      Handle X-bounce
+      Set Accumulator to 0, then subtract X-Velocity to get the mirrored value
+
+  - space: prg
+    offset: 0x1DF8E
+    desc: Save mirrored X-Velocity
+
+  - space: prg
+    offset: 0x1DF96
+    desc: |-
+      Handle Y-bounce
+      Set Accumulator to 0, then subtract Y-Velocity to get the mirrored value
+
+  - space: prg
+    offset: 0x1DF9B
+    desc: Save mirrored X-Velocity
 
   - space: prg
     offset: 0x1DF93
@@ -23675,7 +23708,7 @@ hints:
   - space: prg
     offset: 0x1E0A5
     name: Obj_MoveAndCollide_Double
-    desc: "Double-speed Obj_MoveAndCollide: MoveX_Double + CollisionX → $9A bit7 (side wall); MoveY_Double + CollisionY → bit6 (floor/ceiling); returns $9A. Dispatch slot $C030; used by the overhead projectile handlers (Slider Laser $53, Spitter Shot $55, Th2C Shot $57) and in-bank by Obj_MoveBounce_Double ($DF84)."
+    desc: "Double-speed Obj_MoveAndCollide: Apply_Velocity_X + CollisionX → $9A bit7 (side wall); Apply_Velocity_Y + CollisionY → bit6 (floor/ceiling); returns $9A. Dispatch slot $C030; used by the overhead projectile handlers (Slider Laser $53, Spitter Shot $55, Th2C Shot $57) and in-bank by Obj_MoveBounce_Double ($DF84)."
 
   - space: prg
     offset: 0x1E0B2
@@ -25178,12 +25211,7 @@ hints:
   - space: prg
     offset: 0x1EC73
     name: OAM_BlitFromStaging
-    desc: |-
-      If $3C=0 return;
-      compute OAM destination offset into $3D (±$3C based on $E6BE direction and $11 frame-counter bit);
-      copy $3C bytes from $0600 staging buffer → $0200+$3D;
-      clear $3C
-      LDA OAM_Staging_Entry_Length ($3C): byte count of staged sprite data; 0 = nothing to blit
+    desc: "Blits the staged sprite data (from the $0600 staging buffer) into OAM ($0200), then clears the staging length. The destination slot alternates each frame (or follows a caller-forced direction) so successive frames' sprites don't collide. No-op when nothing is staged."
 
   - space: prg
     offset: 0x1EC75
@@ -25269,9 +25297,7 @@ hints:
   - space: prg
     offset: 0x1ECB4
     name: Sprite_Stage
-    desc: |-
-      Write one sprite quad into $0600 staging buffer at offset $3C: $3F→Y, $45→tile, $44→attr, $3E→X; advance $3C by 4
-      LDX $3C: X = OAM_Staging_Entry_Length (current write offset into $0600 staging buffer)
+    desc: "Stages one sprite into the $0600 OAM staging buffer at the current offset ($3C), advancing the offset by 4. The caller supplies screen Y ($3F), tile ($45), attribute ($44) and screen X ($3E)."
 
   - space: prg
     offset: 0x1ECB6
@@ -28760,217 +28786,112 @@ hints:
     name: WR_Context_Dependent_42
     desc: |-
       in ObjHandler_Ovhd_84_Jason_Room_Door_Enter ($8B96): [w] TBD
-
       in ObjHandler_Ovhd_86_Jason_Room_Door_Exit ($8BFD): [w] TBD
-
       in Player_Movement_Overhead_8C3B_Sub ($8C3B): [w] TBD
-
       in ObjHandler_Ovhd_07_Jason_Shot_Gun_0123_Init_2 ($8F9F): [w] TBD
-
       in ObjHandler_Ovhd_08_Jason_Shot_Gun_0123_Main ($8FC0): [w] TBD
-
       in ObjHandler_Ovhd_0A_Jason_Curve_Shot_Gun_45_Init_2 ($903B): [w] TBD
-
       in ObjHandler_Ovhd_0B_Jason_Curve_Shot_Gun_45_Main ($906F): [w] TBD
-
       in ObjHandler_Ovhd_0D_Jason_Wave_Shot_Gun_6_Init_2 ($911A): [w] TBD
-
       in ObjHandler_Ovhd_10_Jason_Grenade_Main ($923C): [w] TBD
-
       in ObjHandler_Ovhd_13_Small_Explosion_Main ($9347): [w] TBD
-
       in ObjHandler_Ovhd_5D_Area_4_Boss_Main ($970C): [w] TBD
-
       in ObjHandler_Ovhd_6C_Area_4_Boss_Triple_Shot_Main ($99AD): [w] TBD
-
       in ObjHandler_Ovhd_6E_Area_7_Boss_Fire_Tongue_Attack_Main ($9A00): [w] TBD
-
       in ObjHandler_Ovhd_70_Area_4_Boss_Tongue_Attack_Main ($9A8B): [w] TBD
-
       in ObjHandler_Ovhd_72_Area_4_Boss_Aimed_Shot_Main ($9B14): [w] TBD
-
       in Boss2_Movement_9B67_Sub ($9B67): [w] TBD
-
       in Boss2_Projectiles_9E1D_Sub ($9E1D): [w] TBD
-
       in ObjHandler_Ovhd_7A_Area_3_Boss_Triple_Shot_Main ($A509): [w] TBD
-
       in ObjHandler_Ovhd_81_Area_8_Boss_Phase1_Egg_Shot_Main ($ABE7): [w] TBD
-
       in ObjHandler_Ovhd_4F_Spinner_Shot_Main ($AF67): [w] TBD
-
       in ObjHandler_Ovhd_51_Cross_Shooter_Shot_Main ($AFF6): [w] TBD
-
       in ObjHandler_Ovhd_53_Slider_Laser_Main ($B041): [w] TBD
-
       in ObjHandler_Ovhd_55_Spitter_Shot_Main ($B08B): [w] TBD
-
       in ObjHandler_Ovhd_57_Th2C_Shot_Main ($B0CC): [w] TBD
-
       in ObjHandler_Ovhd_59_Gray_Gumdrop_Shot_Main ($B132): [w] TBD
-
       in ObjHandler_Ovhd_17_ECanister1_Main ($B173): [w] TBD
-
       in ObjHandler_Ovhd_19_ECanister2_Main ($B1AB): [w] TBD
-
       in ObjHandler_Ovhd_2F_Rotating_Camera_Main ($B393): [w] TBD
-
       in ObjHandler_Ovhd_31_Gray_Gumdrop_Main ($B44F): [w] TBD
-
       in ObjHandler_Ovhd_33_Flier_Spawner_Main ($B4EE): [w] TBD
-
       in ObjHandler_Ovhd_34_Flier_Main ($B560): [w] TBD
-
       in ObjHandler_Ovhd_36_Charging_Robot_Main ($B5F0): [w] TBD
-
       in ObjHandler_Ovhd_38_Spinner_Main ($B65B): [w] TBD
-
       in ObjHandler_Ovhd_3A_Cross_Shooter_Main ($B6AF): [w] TBD
-
       in ObjHandler_Ovhd_3C_Vertical_Camera_Main ($B719): [w] TBD
-
       in ObjHandler_Ovhd_3E_Horizontal_Camera_Main ($B78F): [w] TBD
-
       in ObjHandler_Ovhd_40_Slider_Main ($B7F6): [w] TBD
-
       in ObjHandler_Ovhd_25_Robot_Main ($B866): [w] TBD
-
       in ObjHandler_Ovhd_27_Eye_Main ($B931): [w] TBD
-
       in ObjHandler_Ovhd_2A_Robed_Skeleton_Teleport ($BA47): [w] TBD
-
       in ObjHandler_Ovhd_2D_Eye_Spawner_Main ($BB75): [w] TBD
-
       in ObjHandler_Ovhd_49_Robot_Shot_Main ($BBE8): [w] TBD
-
       in ObjHandler_Ovhd_4B_Unknown_Shot_Main ($BC84): [w] TBD
-
       in ObjHandler_Ovhd_4D_Aimed_Shot_Main ($BD09): [w] TBD
-
       in ObjHandler_Ovhd_42_Spitter_Main ($BD69): [w] TBD
-
       in ObjHandler_Ovhd_43_Spitter_Attacking ($BDE7): [w] TBD
-
       in ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [w] TBD
-
       in ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [w] TBD
-
       in ObjHandler_Tank_1B_Jason ($815C): [w] TBD
-
       in ObjHandler_Tank_1C_Jason_Death_Animation ($855F): [w] TBD
-
       in ObjHandler_Tank_1D_Jason_Embarking ($8677): [w] TBD
-
       in ObjHandler_Tank_2B_Jason_Shot_Main ($8850): [w] TBD
-
       in ObjHandler_Tank_04_Sophia_DeathExplosion ($8C64): [w] TBD
-
       in ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD
-
       in ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [w] TBD
-
       in ObjHandler_Tank_05_Sophia_LeftWall ($9009): [w] TBD
-
       in ObjHandler_Tank_06_Sophia_RightWall ($916E): [w] TBD
-
       in ObjHandler_Tank_03_Sophia_Upright ($92DB): [w] TBD
-
       in ObjHandler_Tank_14_Tank_Shot_Main ($9788): [w] TBD
-
       in ObjHandler_Tank_16_Homing_Missile_Main ($98A8): [w] TBD
-
       in ObjHandler_Tank_18_Lightning_Main ($99F0): [w] TBD
-
       in ObjHandler_Tank_39_Big_Gray_Main ($9EE0): [w] TBD
-
       in ObjHandler_Tank_3B_Red_Caterpillar_Bomb_Main ($9F5A): [w] TBD
-
       in ObjHandler_Tank_3D_Small_Red_Main ($9FF9): [w] TBD
-
       in DEAD_ObjHandler_Tank_3F_ScatterShot_Main ($A047): [w] TBD
-
       in DEAD_ObjHandler_Tank_41_AimedShot_Main ($A0B6): [w] TBD
-
       in ObjHandler_Tank_43_Red_Caterpillar_Shell_Main ($A122): [w] TBD
-
       in ObjHandler_Tank_45_Mine_Shrapnel_Main ($A1AD): [w] TBD
-
       in ObjHandler_Tank_47_Turret_Shot_Main ($A202): [w] TBD
-
       in ObjHandler_Tank_49_Various_Main ($A24D): [w] TBD
-
       in ObjHandler_Tank_55_Gray_Caterpillar_Main ($A40B): [w] TBD
-
       in ObjHandler_Tank_59_Gray_Bullet_Main ($A53A): [w] TBD
-
       in ObjHandler_Tank_5A_Gray_Bullet_Attacking ($A5C2): [w] TBD
-
       in ObjHandler_Tank_5C_Red_Caterpillar_Dropper_Main ($A6E4): [w] TBD
-
       in ObjHandler_Tank_5E_Hulk_Main ($A76A): [w] TBD
-
       in ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking ($A7EE): [w] TBD
-
       in ObjHandler_Common_61_Patrolling_Horizontally ($A86E): [w] TBD
-
       in ObjHandler_Tank_63_Red_Caterpillar_Main ($A8FB): [w] TBD
-
       in ObjHandler_Tank_65_Mine_Main ($A9DE): [w] TBD
-
       in ObjHandler_Tank_67_Turret_Main ($AA6C): [w] TBD
-
       in ObjHandler_Tank_69_Bomber_Rock_Main ($AB24): [w] TBD
-
       in ObjHandler_Tank_6B_Flying_Ship_Main ($ABEC): [w] TBD
-
       in ObjHandler_Tank_6D_Flying_Bomber_Main ($AC63): [w] TBD
-
       in ObjHandler_Tank_6F_Swooping_Sphere_Main ($AD08): [w] TBD
-
       in ObjHandler_Tank_71_Bee_Main ($ADFF): [w] TBD
-
       in ObjHandler_Tank_73_Orb_Main ($AE95): [w] TBD
-
       in ObjHandler_Tank_75_Flying_Red_Caterpillar_Bomber ($AF61): [w] TBD
-
       in ObjHandler_Tank_77_Shooter_Main ($B013): [w] TBD
-
       in ObjHandler_Tank_79_Kamikaze_Orb_Main ($B095): [w] TBD
-
       in ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling ($B18F): [w] TBD
-
       in ObjHandler_Tank_4F_Red_Flier_Spawner_Main ($B20C): [w] TBD
-
       in ObjHandler_Tank_7C_Red_Flier ($B250): [w] TBD
-
       in ObjHandler_Tank_51_Gray_Flier_Spawner_Main ($B2A8): [w] TBD
-
       in ObjHandler_Tank_7D_Gray_Flier_Main ($B2EC): [w] TBD
-
       in ObjHandler_Tank_7F_Bomb_Lobbing_Hand_Main ($B34F): [w] TBD
-
       in ObjHandler_Tank_81_Jellyfish_Main ($B3FE): [w] TBD
-
       in ObjHandler_Tank_83_Scuba_Steve_Main ($B4A3): [w] TBD
-
       in ObjHandler_Tank_84_Scuba_Steve_Dead ($B53A): [w] TBD
-
       in ObjHandler_Tank_86_Running_Shell_Main ($B58B): [w] TBD
-
       in ObjHandler_Tank_53_Submersible_Spawner_Main ($B63C): [w] TBD
-
       in ObjHandler_Tank_87_Submersible_Main ($B680): [w] TBD
-
       in ObjHandler_Tank_89_Crescent_Roller_Main ($B6F4): [w] TBD
-
       in ObjHandler_Tank_8B_Bomb_Canister_Main ($B843): [w] TBD
-
       in ObjHandler_Tank_8E_Red_Bullet_Main ($B97A): [w] TBD
-
       in ObjHandler_Tank_8F_Red_Bullet_Locked ($BA00): [w] TBD
 
       in CollisionX ($D37D): [r] TBD
-
       in CollisionY ($D3E1): [r] TBD
 
   - space: ram
@@ -29482,31 +29403,27 @@ hints:
 
   - space: ram
     offset: 0x0048
-    name: LoadedObj_Position_X_Pixel
+    name: LoadedObj_Position_X_Lo
     status: verified
-    desc: |-
-      Object X position in pixels.
-      Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+    desc: The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
 
   - space: ram
     offset: 0x0049
-    name: LoadedObj_Position_X_MetaTile
+    name: LoadedObj_Position_X_Hi
     status: verified
-    desc: "Object X position in MetaTiles (16px)"
+    desc: The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
 
   - space: ram
     offset: 0x004A
-    name: LoadedObj_Position_Y_Pixel
+    name: LoadedObj_Position_Y_Lo
     status: verified
-    desc: |-
-      Object Y position in pixels.
-      Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
+    desc: The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
 
   - space: ram
     offset: 0x004B
-    name: LoadedObj_Position_Y_MetaTile
+    name: LoadedObj_Position_Y_Hi
     status: verified
-    desc: "Object Y position in MetaTiles (16px)"
+    desc: The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
 
   - space: ram
     offset: 0x004C
@@ -30752,17 +30669,17 @@ hints:
   - space: ram
     offset: 0x03F6
     name: CkptSave_ObjXInt
-    desc: "Checkpoint save of LoadedObj_Position_X_MetaTile ($49); written by SaveCheckpoint ($C5B7), restored by RestoreCheckpoint ($C5FF)"
+    desc: "Checkpoint save of LoadedObj_Position_X_Hi ($49); written by SaveCheckpoint ($C5B7), restored by RestoreCheckpoint ($C5FF)"
 
   - space: ram
     offset: 0x03F7
     name: CkptSave_ObjYFrac
-    desc: "Checkpoint save of LoadedObj_Position_Y_Pixel ($4A); written by SaveCheckpoint ($C5BC), restored by RestoreCheckpoint ($C604)"
+    desc: "Checkpoint save of LoadedObj_Position_Y_Lo ($4A); written by SaveCheckpoint ($C5BC), restored by RestoreCheckpoint ($C604)"
 
   - space: ram
     offset: 0x03F8
     name: CkptSave_ObjYInt
-    desc: "Checkpoint save of LoadedObj_Position_Y_MetaTile ($4B); written by SaveCheckpoint ($C5C1), restored by RestoreCheckpoint ($C609)"
+    desc: "Checkpoint save of LoadedObj_Position_Y_Hi ($4B); written by SaveCheckpoint ($C5C1), restored by RestoreCheckpoint ($C609)"
 
   - space: ram
     offset: 0x03F9

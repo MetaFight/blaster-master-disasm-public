@@ -76,45 +76,47 @@
 ; in Obj_GravityMoveBounce ($DFA0): [r] TBD
 ; in PaletteSanitizeTable ($EBF4): [rw] false positive
 ; in OAM_BlitFromStaging ($EC73): [r] TBD
-Global_FrameCounter           := $0011
+Global_FrameCounter     := $0011
 ; Active slot's object type
-LoadedObj_Type                := $0046
+LoadedObj_Type          := $0046
 ; Which way this object is pointing.
-LoadedObj_Facing              := $0047
-; Object X position in pixels.
-; Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
-LoadedObj_Position_X_Pixel    := $0048
-; Object X position in MetaTiles (16px)
-LoadedObj_Position_X_MetaTile := $0049
-; Object Y position in pixels.
-; Type: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
-LoadedObj_Position_Y_Pixel    := $004A
-; Object Y position in MetaTiles (16px)
-LoadedObj_Position_Y_MetaTile := $004B
+LoadedObj_Facing        := $0047
+; The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF)
+; representing the object's X-position.
+LoadedObj_Position_X_Lo := $0048
+; The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff)
+; representing the object's X-position.
+LoadedObj_Position_X_Hi := $0049
+; The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF)
+; representing the object's Y-position.
+LoadedObj_Position_Y_Lo := $004A
+; The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff)
+; representing the object's X-position.
+LoadedObj_Position_Y_Hi := $004B
 ; Object X velocity in pixels / frame.
 ; Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-LoadedObj_Velocity_X          := $004C
+LoadedObj_Velocity_X    := $004C
 ; Object Y velocity in pixels / frame.
 ; Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-LoadedObj_Velocity_Y          := $004D
+LoadedObj_Velocity_Y    := $004D
 ; Entity HP
-LoadedObj_Health              := $0053
+LoadedObj_Health        := $0053
 ; Byte offset of the active slot
-ObjectSlot_Offset             := $0056
+ObjectSlot_Offset       := $0056
 ; Index of the active slot
-ObjectSlot_Index              := $0057
+ObjectSlot_Index        := $0057
 ; ObjSlot: The 14-byte record every active object occupies. 18 are packed at $0400 (the object table); slot 0 is the player.
 .struct ObjSlot
-        Type                .byte   ; +$00 (byte)  Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
-        Facing              .byte   ; +$01 (byte)  Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-        Position_X_Pixel    .byte   ; +$02 (fixed44)  X position in pixels.
-        Position_X_MetaTile .byte   ; +$03 (byte)  X position in metatiles (16px).
-        Position_Y_Pixel    .byte   ; +$04 (fixed44)  Y position in pixels.
-        Position_Y_MetaTile .byte   ; +$05 (byte)  Y position in metatiles (16px).
-        Velocity_X          .byte   ; +$06 (sfixed44)  X velocity in px/frame (signed 4.4: swww.ffff).
-        Velocity_Y          .byte   ; +$07 (sfixed44)  Y velocity in px/frame (signed 4.4: swww.ffff).
-        .res                5       ; +$08..+$0C
-        Health              .byte   ; +$0D (byte)  HP for this entity.
+        Type          .byte   ; +$00 (byte)  Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
+        Facing        .byte   ; +$01 (byte)  Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
+        Position_X_Lo .byte   ; +$02 (fixed44)  The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+        Position_X_Hi .byte   ; +$03 (sbyte)  The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+        Position_Y_Lo .byte   ; +$04 (fixed44)  The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+        Position_Y_Hi .byte   ; +$05 (sbyte)  The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
+        Velocity_X    .byte   ; +$06 (sfixed44)  X velocity in px/frame (signed 4.4: swww.ffff).
+        Velocity_Y    .byte   ; +$07 (sfixed44)  Y velocity in px/frame (signed 4.4: swww.ffff).
+        .res          5       ; +$08..+$0C
+        Health        .byte   ; +$0D (byte)  HP for this entity.
 .endstruct
 ; The object table: 18 ObjSlot records (14 bytes each) packed at $0400-$04FB. Slot 0 is
 ; reserved for the player (Sophia/Jason); slots 1-17 hold enemies, projectiles, pickups, gates

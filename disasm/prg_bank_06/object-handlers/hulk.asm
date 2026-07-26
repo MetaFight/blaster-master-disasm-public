@@ -5,7 +5,7 @@ L_A74B: jmp     L_A769                          ; A74B
 ; ----------------------------------------------------------------------------
         lda     #$04                            ; A74E
         jsr     L_A2E9                          ; A750
-        lda     LoadedObj_Position_X_MetaTile   ; A753
+        lda     LoadedObj_Position_X_Hi         ; A753
         lsr     a                               ; A755
         bcc     L_A75D                          ; A756
         lda     #$F4                            ; A758

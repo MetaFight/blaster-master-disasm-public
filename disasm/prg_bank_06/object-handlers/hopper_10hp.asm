@@ -5,7 +5,7 @@ L_B16E: jmp     L_B18E                          ; B16E
 ; ----------------------------------------------------------------------------
         lda     #$12                            ; B171
         jsr     L_A2E9                          ; B173
-        lda     LoadedObj_Position_X_MetaTile   ; B176
+        lda     LoadedObj_Position_X_Hi         ; B176
         lsr     a                               ; B178
         bcc     L_B180                          ; B179
         lda     #$F4                            ; B17B

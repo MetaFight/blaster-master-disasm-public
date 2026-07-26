@@ -3,7 +3,7 @@
 L_B91A: jmp     L_B949                          ; B91A
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObj_Position_X_MetaTile   ; B91D
+        lda     LoadedObj_Position_X_Hi         ; B91D
         lsr     a                               ; B91F
         bcc     L_B92D                          ; B920
         lda     #$A0                            ; B922
@@ -32,7 +32,7 @@ L_B949: rts                                     ; B949
 LB94A:  jmp     L_B979                          ; B94A
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObj_Position_X_MetaTile   ; B94D
+        lda     LoadedObj_Position_X_Hi         ; B94D
         lsr     a                               ; B94F
         bcc     L_B95D                          ; B950
         lda     #$A0                            ; B952

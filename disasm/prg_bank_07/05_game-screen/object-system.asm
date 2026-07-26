@@ -1,12 +1,12 @@
 .macro MAC_L_C5B2
 ; ----------------------------------------------------------------------------
-L_C5B2: lda     LoadedObj_Position_X_Pixel      ; C5B2
+L_C5B2: lda     LoadedObj_Position_X_Lo         ; C5B2
         sta     $03F5                           ; C5B4
-        lda     LoadedObj_Position_X_MetaTile   ; C5B7
+        lda     LoadedObj_Position_X_Hi         ; C5B7
         sta     $03F6                           ; C5B9
-        lda     LoadedObj_Position_Y_Pixel      ; C5BC
+        lda     LoadedObj_Position_Y_Lo         ; C5BC
         sta     $03F7                           ; C5BE
-        lda     LoadedObj_Position_Y_MetaTile   ; C5C1
+        lda     LoadedObj_Position_Y_Hi         ; C5C1
         sta     $03F8                           ; C5C3
         lda     $14                             ; C5C6
         sta     $03F9                           ; C5C8
@@ -30,13 +30,13 @@ L_C5B2: lda     LoadedObj_Position_X_Pixel      ; C5B2
 
 ; ----------------------------------------------------------------------------
 L_C5FA: lda     $03F5                           ; C5FA
-        sta     LoadedObj_Position_X_Pixel      ; C5FD
+        sta     LoadedObj_Position_X_Lo         ; C5FD
         lda     $03F6                           ; C5FF
-        sta     LoadedObj_Position_X_MetaTile   ; C602
+        sta     LoadedObj_Position_X_Hi         ; C602
         lda     $03F7                           ; C604
-        sta     LoadedObj_Position_Y_Pixel      ; C607
+        sta     LoadedObj_Position_Y_Lo         ; C607
         lda     $03F8                           ; C609
-        sta     LoadedObj_Position_Y_MetaTile   ; C60C
+        sta     LoadedObj_Position_Y_Hi         ; C60C
         lda     $03F9                           ; C60E
         sta     $14                             ; C611
         lda     $03FA                           ; C613
@@ -68,14 +68,14 @@ ObjSlot_Load:
         sta     LoadedObj_Type                  ; C8E4
         lda     ObjectTable + ObjSlot::Facing,y ; C8E6
         sta     LoadedObj_Facing                ; C8E9
-        lda     ObjectTable + ObjSlot::Position_X_Pixel,y ; C8EB
-        sta     LoadedObj_Position_X_Pixel      ; C8EE
-        lda     ObjectTable + ObjSlot::Position_X_MetaTile,y ; C8F0
-        sta     LoadedObj_Position_X_MetaTile   ; C8F3
-        lda     ObjectTable + ObjSlot::Position_Y_Pixel,y ; C8F5
-        sta     LoadedObj_Position_Y_Pixel      ; C8F8
-        lda     ObjectTable + ObjSlot::Position_Y_MetaTile,y ; C8FA
-        sta     LoadedObj_Position_Y_MetaTile   ; C8FD
+        lda     ObjectTable + ObjSlot::Position_X_Lo,y ; C8EB
+        sta     LoadedObj_Position_X_Lo         ; C8EE
+        lda     ObjectTable + ObjSlot::Position_X_Hi,y ; C8F0
+        sta     LoadedObj_Position_X_Hi         ; C8F3
+        lda     ObjectTable + ObjSlot::Position_Y_Lo,y ; C8F5
+        sta     LoadedObj_Position_Y_Lo         ; C8F8
+        lda     ObjectTable + ObjSlot::Position_Y_Hi,y ; C8FA
+        sta     LoadedObj_Position_Y_Hi         ; C8FD
         lda     ObjectTable + ObjSlot::Velocity_X,y ; C8FF
         sta     LoadedObj_Velocity_X            ; C902
         lda     ObjectTable + ObjSlot::Velocity_Y,y ; C904
@@ -102,14 +102,14 @@ ObjSlot_Save:
         sta     ObjectTable + ObjSlot::Type,y   ; C92C
         lda     LoadedObj_Facing                ; C92F
         sta     ObjectTable + ObjSlot::Facing,y ; C931
-        lda     LoadedObj_Position_X_Pixel      ; C934
-        sta     ObjectTable + ObjSlot::Position_X_Pixel,y ; C936
-        lda     LoadedObj_Position_X_MetaTile   ; C939
-        sta     ObjectTable + ObjSlot::Position_X_MetaTile,y ; C93B
-        lda     LoadedObj_Position_Y_Pixel      ; C93E
-        sta     ObjectTable + ObjSlot::Position_Y_Pixel,y ; C940
-        lda     LoadedObj_Position_Y_MetaTile   ; C943
-        sta     ObjectTable + ObjSlot::Position_Y_MetaTile,y ; C945
+        lda     LoadedObj_Position_X_Lo         ; C934
+        sta     ObjectTable + ObjSlot::Position_X_Lo,y ; C936
+        lda     LoadedObj_Position_X_Hi         ; C939
+        sta     ObjectTable + ObjSlot::Position_X_Hi,y ; C93B
+        lda     LoadedObj_Position_Y_Lo         ; C93E
+        sta     ObjectTable + ObjSlot::Position_Y_Lo,y ; C940
+        lda     LoadedObj_Position_Y_Hi         ; C943
+        sta     ObjectTable + ObjSlot::Position_Y_Hi,y ; C945
         lda     LoadedObj_Velocity_X            ; C948
         sta     ObjectTable + ObjSlot::Velocity_X,y ; C94A
         lda     LoadedObj_Velocity_Y            ; C94D
@@ -226,13 +226,13 @@ L_D82C: lda     ObjectSlot_Index                ; D82C
         jmp     L_D81C                          ; D838
 
 ; ----------------------------------------------------------------------------
-L_D83B: lda     LoadedObj_Position_X_MetaTile   ; D83B
+L_D83B: lda     LoadedObj_Position_X_Hi         ; D83B
         sta     L0000                           ; D83D
-        lda     LoadedObj_Position_Y_MetaTile   ; D83F
+        lda     LoadedObj_Position_Y_Hi         ; D83F
         sta     $01                             ; D841
-        lda     PlayerSlot + ObjSlot::Position_X_MetaTile ; D843
+        lda     PlayerSlot + ObjSlot::Position_X_Hi ; D843
         sta     $02                             ; D846
-        lda     PlayerSlot + ObjSlot::Position_Y_MetaTile ; D848
+        lda     PlayerSlot + ObjSlot::Position_Y_Hi ; D848
         sta     $03                             ; D84B
         jsr     L_D02D                          ; D84D
         rts                                     ; D850
@@ -575,21 +575,21 @@ L_E0E5: lda     #$00                            ; E0E5
 ; Signed X-distance from this object to the player:  Returns X = pixel/frac byte, A = metatile
 ; byte (carries the sign).
 LoadedObj__Get_DeltaToPlayer_X:
-        lda     PlayerSlot + ObjSlot::Position_X_Pixel ; E0ED
+        lda     PlayerSlot + ObjSlot::Position_X_Lo ; E0ED
         sec                                     ; E0F0
-        sbc     LoadedObj_Position_X_Pixel      ; E0F1
+        sbc     LoadedObj_Position_X_Lo         ; E0F1
         tax                                     ; E0F3
-        lda     PlayerSlot + ObjSlot::Position_X_MetaTile ; E0F4
-        sbc     LoadedObj_Position_X_MetaTile   ; E0F7
+        lda     PlayerSlot + ObjSlot::Position_X_Hi ; E0F4
+        sbc     LoadedObj_Position_X_Hi         ; E0F7
         rts                                     ; E0F9
 
 ; ----------------------------------------------------------------------------
-L_E0FA: lda     PlayerSlot + ObjSlot::Position_Y_Pixel ; E0FA
+L_E0FA: lda     PlayerSlot + ObjSlot::Position_Y_Lo ; E0FA
         sec                                     ; E0FD
-        sbc     LoadedObj_Position_Y_Pixel      ; E0FE
+        sbc     LoadedObj_Position_Y_Lo         ; E0FE
         tax                                     ; E100
-        lda     PlayerSlot + ObjSlot::Position_Y_MetaTile ; E101
-        sbc     LoadedObj_Position_Y_MetaTile   ; E104
+        lda     PlayerSlot + ObjSlot::Position_Y_Hi ; E101
+        sbc     LoadedObj_Position_Y_Hi         ; E104
         rts                                     ; E106
 
 ; ----------------------------------------------------------------------------

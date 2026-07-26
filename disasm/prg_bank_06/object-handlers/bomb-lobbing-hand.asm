@@ -6,11 +6,11 @@ L_B337: jmp     L_B34E                          ; B337
         lda     #$15                            ; B33A
         jsr     L_A2E9                          ; B33C
         sec                                     ; B33F
-        lda     LoadedObj_Position_Y_Pixel      ; B340
+        lda     LoadedObj_Position_Y_Lo         ; B340
         sbc     #$30                            ; B342
-        sta     LoadedObj_Position_Y_Pixel      ; B344
+        sta     LoadedObj_Position_Y_Lo         ; B344
         bcs     L_B34A                          ; B346
-        dec     LoadedObj_Position_Y_MetaTile   ; B348
+        dec     LoadedObj_Position_Y_Hi         ; B348
 L_B34A: lda     #$00                            ; B34A
         sta     $50                             ; B34C
 L_B34E: rts                                     ; B34E

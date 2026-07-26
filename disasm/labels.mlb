@@ -2682,10 +2682,10 @@ NesPrgRom:1FFF4:Reset
 NesInternalRam:0011:Global_FrameCounter:in OvhdJason_SpriteAttr ($8E15): [r] TBD\n\nin ObjHandler_Ovhd_0B_Jason_Curve_Shot_Gun_45_Main ($906F): [r] TBD\n\nin ObjHandler_Ovhd_0D_Jason_Wave_Shot_Gun_6_Init_2 ($911A): [r] TBD\n\nin ObjHandler_Ovhd_23_Pickup_Main ($961B): [r] TBD\n\nin ObjHandler_Ovhd_6E_Area_7_Boss_Fire_Tongue_Attack_Main ($9A00): [r] TBD\n\nin ObjHandler_Ovhd_70_Area_4_Boss_Tongue_Attack_Main ($9A8B): [r] TBD\n\nin Boss2_Movement_9B67_Sub ($9B67): [r] TBD\n\nin Boss2_PincerArms_RenderArm ($9C23): [r] TBD\n\nin ObjHandler_Ovhd_61_EntryPad ($A197): [r] TBD\n\nin Boss1_MotherBrain_Main_Body ($A58C): [r] TBD\n\nin Boss1_MotherBrain_RenderBody ($A65A): [r] TBD\n\nin Boss5_BigCrab_FireBubble ($A7A2): [r] TBD\n\nin ObjHandler_Ovhd_7D_Area_5_Boss_Bubble_Shot_Init ($A938): [r] TBD\n\nin ObjHandler_Ovhd_67_EntryPad ($AA35): [r] TBD\n\nin Boss8_Phase2_StateDispatch ($ACB9): [r] TBD\n\nin Boss8_Phase2_ComputeAnimFrame ($ADE7): [r] TBD\n\nin ObjHandler_Ovhd_4F_Spinner_Shot_Main ($AF67): [r] TBD\n\nin ObjHandler_Ovhd_2F_Rotating_Camera_Main ($B393): [r] TBD\n\nin ObjHandler_Ovhd_31_Gray_Gumdrop_Main ($B44F): [r] TBD\n\nin ObjHandler_Ovhd_33_Flier_Spawner_Main ($B4EE): [r] TBD\n\nin ObjHandler_Ovhd_34_Flier_Main ($B560): [r] TBD\n\nin ObjHandler_Ovhd_36_Charging_Robot_Main ($B5F0): [r] TBD\n\nin ObjHandler_Ovhd_37_Spinner_Init ($B64D): [r] TBD\n\nin ObjHandler_Ovhd_38_Spinner_Main ($B65B): [r] TBD\n\nin ObjHandler_Ovhd_3A_Cross_Shooter_Main ($B6AF): [r] TBD\n\nin ObjHandler_Ovhd_3C_Vertical_Camera_Main ($B719): [r] TBD\n\nin ObjHandler_Ovhd_3E_Horizontal_Camera_Main ($B78F): [r] TBD\n\nin ObjHandler_Ovhd_40_Slider_Main ($B7F6): [r] TBD\n\nin ObjHandler_Ovhd_25_Robot_Main ($B866): [r] TBD\n\nin ObjHandler_Ovhd_42_Spitter_Main ($BD69): [r] TBD\n\nin ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [r] TBD\n\nin ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [r] TBD\n\nin ObjHandler_Tank_08_Sophia_Dive ($8CB0): [r] TBD\n\nin ObjHandler_Common_35_PickUp_Active ($9C68): [r] TBD\n\nin ObjHandler_Tank_55_Gray_Caterpillar_Main ($A40B): [r] TBD\n\nin ObjHandler_Tank_59_Gray_Bullet_Main ($A53A): [r] TBD\n\nin ObjHandler_Tank_5E_Hulk_Main ($A76A): [r] TBD\n\nin ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking ($A7EE): [r] TBD\n\nin ObjHandler_Common_61_Patrolling_Horizontally ($A86E): [r] TBD\n\nin ObjHandler_Tank_63_Red_Caterpillar_Main ($A8FB): [r] TBD\n\nin ObjHandler_Tank_65_Mine_Main ($A9DE): [r] TBD\n\nin ObjHandler_Tank_69_Bomber_Rock_Main ($AB24): [r] TBD\n\nin ObjHandler_Tank_6B_Flying_Ship_Main ($ABEC): [r] TBD\n\nin ObjHandler_Tank_6F_Swooping_Sphere_Main ($AD08): [r] TBD\n\nin ObjHandler_Tank_71_Bee_Main ($ADFF): [r] TBD\n\nin ObjHandler_Tank_73_Orb_Main ($AE95): [r] TBD\n\nin ObjHandler_Tank_79_Kamikaze_Orb_Main ($B095): [r] TBD\n\nin ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling ($B18F): [r] TBD\n\nin ObjHandler_Tank_4F_Red_Flier_Spawner_Main ($B20C): [r] TBD\n\nin ObjHandler_Tank_7C_Red_Flier ($B250): [r] TBD\n\nin ObjHandler_Tank_51_Gray_Flier_Spawner_Main ($B2A8): [r] TBD\n\nin ObjHandler_Tank_7D_Gray_Flier_Main ($B2EC): [r] TBD\n\nin ObjHandler_Tank_81_Jellyfish_Main ($B3FE): [r] TBD\n\nin ObjHandler_Tank_83_Scuba_Steve_Main ($B4A3): [r] TBD\n\nin ObjHandler_Tank_84_Scuba_Steve_Dead ($B53A): [r] TBD\n\nin ObjHandler_Tank_86_Running_Shell_Main ($B58B): [r] TBD\n\nin ObjHandler_Tank_53_Submersible_Spawner_Main ($B63C): [r] TBD\n\nin ObjHandler_Tank_87_Submersible_Main ($B680): [r] TBD\n\nin ObjHandler_Tank_89_Crescent_Roller_Main ($B6F4): [r] TBD\n\nin ObjHandler_Tank_8B_Bomb_Canister_Main ($B843): [r] TBD\n\nin ObjHandler_Tank_8E_Red_Bullet_Main ($B97A): [r] TBD\n\nin ObjHandler_Tank_91_Wall_Guardian_Main ($BAA4): [r] TBD\n\nin WallGuardian_TileAnim_Mid ($BB7D): [r] TBD\n\nin LevelInit ($C301): [w] TBD\n\nin Obj_SpawnChild_A0_Throttled ($DF36): [r] TBD\n\nin Obj_GravityMoveBounce ($DFA0): [r] TBD\n\nin PaletteSanitizeTable ($EBF4): [rw] false positive\n\nin OAM_BlitFromStaging ($EC73): [r] TBD
 NesInternalRam:0046:LoadedObj_Type:Active slot's object type
 NesInternalRam:0047:LoadedObj_Facing:Which way this object is pointing.
-NesInternalRam:0048:LoadedObj_Position_X_Pixel:Object X position in pixels.\nType: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
-NesInternalRam:0049:LoadedObj_Position_X_MetaTile:Object X position in MetaTiles (16px)
-NesInternalRam:004A:LoadedObj_Position_Y_Pixel:Object Y position in pixels.\nType: 8-bit Unsigned Fixed Point.  4 MSb are whole, 4 LSb are fractional (wwww.ffff)
-NesInternalRam:004B:LoadedObj_Position_Y_MetaTile:Object Y position in MetaTiles (16px)
+NesInternalRam:0048:LoadedObj_Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:0049:LoadedObj_Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:004A:LoadedObj_Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:004B:LoadedObj_Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
 NesInternalRam:004C:LoadedObj_Velocity_X:Object X velocity in pixels / frame.\nType: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
 NesInternalRam:004D:LoadedObj_Velocity_Y:Object Y velocity in pixels / frame.\nType: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
 NesInternalRam:0053:LoadedObj_Health:Entity HP
@@ -2693,163 +2693,163 @@ NesInternalRam:0056:ObjectSlot_Offset:Byte offset of the active slot
 NesInternalRam:0057:ObjectSlot_Index:Index of the active slot
 NesInternalRam:0400:PlayerSlot__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0401:PlayerSlot__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:0402:PlayerSlot__Position_X_Pixel:X position in pixels.
-NesInternalRam:0403:PlayerSlot__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:0404:PlayerSlot__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:0405:PlayerSlot__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:0402:PlayerSlot__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:0403:PlayerSlot__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:0404:PlayerSlot__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:0405:PlayerSlot__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0406:PlayerSlot__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0407:PlayerSlot__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:040D:PlayerSlot__Health:HP for this entity.
 NesInternalRam:040E:Object_Slot_01__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:040F:Object_Slot_01__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:0410:Object_Slot_01__Position_X_Pixel:X position in pixels.
-NesInternalRam:0411:Object_Slot_01__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:0412:Object_Slot_01__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:0413:Object_Slot_01__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:0410:Object_Slot_01__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:0411:Object_Slot_01__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:0412:Object_Slot_01__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:0413:Object_Slot_01__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0414:Object_Slot_01__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0415:Object_Slot_01__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:041B:Object_Slot_01__Health:HP for this entity.
 NesInternalRam:041C:Object_Slot_02__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:041D:Object_Slot_02__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:041E:Object_Slot_02__Position_X_Pixel:X position in pixels.
-NesInternalRam:041F:Object_Slot_02__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:0420:Object_Slot_02__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:0421:Object_Slot_02__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:041E:Object_Slot_02__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:041F:Object_Slot_02__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:0420:Object_Slot_02__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:0421:Object_Slot_02__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0422:Object_Slot_02__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0423:Object_Slot_02__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0429:Object_Slot_02__Health:HP for this entity.
 NesInternalRam:042A:Object_Slot_03__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:042B:Object_Slot_03__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:042C:Object_Slot_03__Position_X_Pixel:X position in pixels.
-NesInternalRam:042D:Object_Slot_03__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:042E:Object_Slot_03__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:042F:Object_Slot_03__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:042C:Object_Slot_03__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:042D:Object_Slot_03__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:042E:Object_Slot_03__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:042F:Object_Slot_03__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0430:Object_Slot_03__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0431:Object_Slot_03__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0437:Object_Slot_03__Health:HP for this entity.
 NesInternalRam:0438:Object_Slot_04__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0439:Object_Slot_04__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:043A:Object_Slot_04__Position_X_Pixel:X position in pixels.
-NesInternalRam:043B:Object_Slot_04__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:043C:Object_Slot_04__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:043D:Object_Slot_04__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:043A:Object_Slot_04__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:043B:Object_Slot_04__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:043C:Object_Slot_04__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:043D:Object_Slot_04__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:043E:Object_Slot_04__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:043F:Object_Slot_04__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0445:Object_Slot_04__Health:HP for this entity.
 NesInternalRam:0446:Object_Slot_05__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0447:Object_Slot_05__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:0448:Object_Slot_05__Position_X_Pixel:X position in pixels.
-NesInternalRam:0449:Object_Slot_05__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:044A:Object_Slot_05__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:044B:Object_Slot_05__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:0448:Object_Slot_05__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:0449:Object_Slot_05__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:044A:Object_Slot_05__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:044B:Object_Slot_05__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:044C:Object_Slot_05__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:044D:Object_Slot_05__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0453:Object_Slot_05__Health:HP for this entity.
 NesInternalRam:0454:Object_Slot_06__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0455:Object_Slot_06__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:0456:Object_Slot_06__Position_X_Pixel:X position in pixels.
-NesInternalRam:0457:Object_Slot_06__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:0458:Object_Slot_06__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:0459:Object_Slot_06__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:0456:Object_Slot_06__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:0457:Object_Slot_06__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:0458:Object_Slot_06__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:0459:Object_Slot_06__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:045A:Object_Slot_06__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:045B:Object_Slot_06__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0461:Object_Slot_06__Health:HP for this entity.
 NesInternalRam:0462:Object_Slot_07__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0463:Object_Slot_07__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:0464:Object_Slot_07__Position_X_Pixel:X position in pixels.
-NesInternalRam:0465:Object_Slot_07__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:0466:Object_Slot_07__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:0467:Object_Slot_07__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:0464:Object_Slot_07__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:0465:Object_Slot_07__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:0466:Object_Slot_07__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:0467:Object_Slot_07__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0468:Object_Slot_07__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0469:Object_Slot_07__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:046F:Object_Slot_07__Health:HP for this entity.
 NesInternalRam:0470:Object_Slot_08__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0471:Object_Slot_08__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:0472:Object_Slot_08__Position_X_Pixel:X position in pixels.
-NesInternalRam:0473:Object_Slot_08__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:0474:Object_Slot_08__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:0475:Object_Slot_08__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:0472:Object_Slot_08__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:0473:Object_Slot_08__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:0474:Object_Slot_08__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:0475:Object_Slot_08__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0476:Object_Slot_08__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0477:Object_Slot_08__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:047D:Object_Slot_08__Health:HP for this entity.
 NesInternalRam:047E:Object_Slot_09__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:047F:Object_Slot_09__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:0480:Object_Slot_09__Position_X_Pixel:X position in pixels.
-NesInternalRam:0481:Object_Slot_09__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:0482:Object_Slot_09__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:0483:Object_Slot_09__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:0480:Object_Slot_09__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:0481:Object_Slot_09__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:0482:Object_Slot_09__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:0483:Object_Slot_09__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0484:Object_Slot_09__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0485:Object_Slot_09__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:048B:Object_Slot_09__Health:HP for this entity.
 NesInternalRam:048C:Object_Slot_10__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:048D:Object_Slot_10__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:048E:Object_Slot_10__Position_X_Pixel:X position in pixels.
-NesInternalRam:048F:Object_Slot_10__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:0490:Object_Slot_10__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:0491:Object_Slot_10__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:048E:Object_Slot_10__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:048F:Object_Slot_10__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:0490:Object_Slot_10__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:0491:Object_Slot_10__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0492:Object_Slot_10__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0493:Object_Slot_10__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0499:Object_Slot_10__Health:HP for this entity.
 NesInternalRam:049A:Object_Slot_11__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:049B:Object_Slot_11__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:049C:Object_Slot_11__Position_X_Pixel:X position in pixels.
-NesInternalRam:049D:Object_Slot_11__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:049E:Object_Slot_11__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:049F:Object_Slot_11__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:049C:Object_Slot_11__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:049D:Object_Slot_11__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:049E:Object_Slot_11__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:049F:Object_Slot_11__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04A0:Object_Slot_11__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04A1:Object_Slot_11__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04A7:Object_Slot_11__Health:HP for this entity.
 NesInternalRam:04A8:Object_Slot_12__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04A9:Object_Slot_12__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:04AA:Object_Slot_12__Position_X_Pixel:X position in pixels.
-NesInternalRam:04AB:Object_Slot_12__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:04AC:Object_Slot_12__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:04AD:Object_Slot_12__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:04AA:Object_Slot_12__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:04AB:Object_Slot_12__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:04AC:Object_Slot_12__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:04AD:Object_Slot_12__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04AE:Object_Slot_12__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04AF:Object_Slot_12__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04B5:Object_Slot_12__Health:HP for this entity.
 NesInternalRam:04B6:Object_Slot_13__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04B7:Object_Slot_13__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:04B8:Object_Slot_13__Position_X_Pixel:X position in pixels.
-NesInternalRam:04B9:Object_Slot_13__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:04BA:Object_Slot_13__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:04BB:Object_Slot_13__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:04B8:Object_Slot_13__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:04B9:Object_Slot_13__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:04BA:Object_Slot_13__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:04BB:Object_Slot_13__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04BC:Object_Slot_13__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04BD:Object_Slot_13__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04C3:Object_Slot_13__Health:HP for this entity.
 NesInternalRam:04C4:Object_Slot_14__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04C5:Object_Slot_14__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:04C6:Object_Slot_14__Position_X_Pixel:X position in pixels.
-NesInternalRam:04C7:Object_Slot_14__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:04C8:Object_Slot_14__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:04C9:Object_Slot_14__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:04C6:Object_Slot_14__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:04C7:Object_Slot_14__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:04C8:Object_Slot_14__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:04C9:Object_Slot_14__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04CA:Object_Slot_14__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04CB:Object_Slot_14__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04D1:Object_Slot_14__Health:HP for this entity.
 NesInternalRam:04D2:Object_Slot_15__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04D3:Object_Slot_15__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:04D4:Object_Slot_15__Position_X_Pixel:X position in pixels.
-NesInternalRam:04D5:Object_Slot_15__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:04D6:Object_Slot_15__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:04D7:Object_Slot_15__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:04D4:Object_Slot_15__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:04D5:Object_Slot_15__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:04D6:Object_Slot_15__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:04D7:Object_Slot_15__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04D8:Object_Slot_15__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04D9:Object_Slot_15__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04DF:Object_Slot_15__Health:HP for this entity.
 NesInternalRam:04E0:Object_Slot_16__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04E1:Object_Slot_16__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:04E2:Object_Slot_16__Position_X_Pixel:X position in pixels.
-NesInternalRam:04E3:Object_Slot_16__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:04E4:Object_Slot_16__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:04E5:Object_Slot_16__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:04E2:Object_Slot_16__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:04E3:Object_Slot_16__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:04E4:Object_Slot_16__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:04E5:Object_Slot_16__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04E6:Object_Slot_16__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04E7:Object_Slot_16__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04ED:Object_Slot_16__Health:HP for this entity.
 NesInternalRam:04EE:Object_Slot_17__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04EF:Object_Slot_17__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-NesInternalRam:04F0:Object_Slot_17__Position_X_Pixel:X position in pixels.
-NesInternalRam:04F1:Object_Slot_17__Position_X_MetaTile:X position in metatiles (16px).
-NesInternalRam:04F2:Object_Slot_17__Position_Y_Pixel:Y position in pixels.
-NesInternalRam:04F3:Object_Slot_17__Position_Y_MetaTile:Y position in metatiles (16px).
+NesInternalRam:04F0:Object_Slot_17__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:04F1:Object_Slot_17__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:04F2:Object_Slot_17__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:04F3:Object_Slot_17__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04F4:Object_Slot_17__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04F5:Object_Slot_17__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04FB:Object_Slot_17__Health:HP for this entity.

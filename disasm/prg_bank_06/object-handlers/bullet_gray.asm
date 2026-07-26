@@ -3,7 +3,7 @@
 L_A4DE: jmp     L_A50D                          ; A4DE
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObj_Position_X_MetaTile   ; A4E1
+        lda     LoadedObj_Position_X_Hi         ; A4E1
         lsr     a                               ; A4E3
         bcc     L_A4F1                          ; A4E4
         lda     #$A0                            ; A4E6
@@ -32,7 +32,7 @@ L_A50D: rts                                     ; A50D
 LA50E:  jmp     L_A539                          ; A50E
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObj_Position_X_MetaTile   ; A511
+        lda     LoadedObj_Position_X_Hi         ; A511
         lsr     a                               ; A513
         bcc     L_A521                          ; A514
         lda     #$A0                            ; A516

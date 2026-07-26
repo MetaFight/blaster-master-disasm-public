@@ -56,13 +56,13 @@ L_AAB4: sta     ObjectTable + ObjSlot::Facing,x ; AAB4
         clc                                     ; AABA
         adc     #$01                            ; AABB
         sta     $040B,x                         ; AABD
-        lda     LoadedObj_Position_Y_Pixel      ; AAC0
+        lda     LoadedObj_Position_Y_Lo         ; AAC0
         clc                                     ; AAC2
         adc     #$40                            ; AAC3
-        sta     ObjectTable + ObjSlot::Position_Y_Pixel,x ; AAC5
-        lda     LoadedObj_Position_Y_MetaTile   ; AAC8
+        sta     ObjectTable + ObjSlot::Position_Y_Lo,x ; AAC5
+        lda     LoadedObj_Position_Y_Hi         ; AAC8
         adc     #$00                            ; AACA
-        sta     ObjectTable + ObjSlot::Position_Y_MetaTile,x ; AACC
+        sta     ObjectTable + ObjSlot::Position_Y_Hi,x ; AACC
         lda     #$46                            ; AACF
         sta     ObjectTable + ObjSlot::Type,x   ; AAD1
 L_AAD4: lda     #$10                            ; AAD4
