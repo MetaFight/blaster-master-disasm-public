@@ -5413,3 +5413,8 @@ LABEL {
   ADDR    $0057;
 };
 
+LABEL {
+  NAME    "Sophia_LookUpAnimation_Counter";
+  ADDR    $0094;
+};
+

@@ -36,7 +36,7 @@ L_C334: lda     #$00                            ; C334
         sta     $50                             ; C344
         sta     $4F                             ; C346
         sta     LoadedObj_Facing                ; C348
-        sta     $94                             ; C34A
+        sta     Sophia_LookUpAnimation_Counter  ; C34A
         sta     $8F                             ; C34C
         lda     #$FF                            ; C34E
         sta     LoadedObj_Health                ; C350

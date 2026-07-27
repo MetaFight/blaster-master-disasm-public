@@ -76,35 +76,48 @@
 ; in Obj_GravityMoveBounce ($DFA0): [r] TBD
 ; in PaletteSanitizeTable ($EBF4): [rw] false positive
 ; in OAM_BlitFromStaging ($EC73): [r] TBD
-Global_FrameCounter     := $0011
+Global_FrameCounter            := $0011
 ; Active slot's object type
-LoadedObj_Type          := $0046
+LoadedObj_Type                 := $0046
 ; Which way this object is pointing.
-LoadedObj_Facing        := $0047
+LoadedObj_Facing               := $0047
 ; The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF)
 ; representing the object's X-position.
-LoadedObj_Position_X_Lo := $0048
+LoadedObj_Position_X_Lo        := $0048
 ; The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff)
 ; representing the object's X-position.
-LoadedObj_Position_X_Hi := $0049
+LoadedObj_Position_X_Hi        := $0049
 ; The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF)
 ; representing the object's Y-position.
-LoadedObj_Position_Y_Lo := $004A
+LoadedObj_Position_Y_Lo        := $004A
 ; The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff)
 ; representing the object's X-position.
-LoadedObj_Position_Y_Hi := $004B
+LoadedObj_Position_Y_Hi        := $004B
 ; Object X velocity in pixels / frame.
 ; Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-LoadedObj_Velocity_X    := $004C
+LoadedObj_Velocity_X           := $004C
 ; Object Y velocity in pixels / frame.
 ; Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-LoadedObj_Velocity_Y    := $004D
+LoadedObj_Velocity_Y           := $004D
 ; Entity HP
-LoadedObj_Health        := $0053
+LoadedObj_Health               := $0053
 ; Byte offset of the active slot
-ObjectSlot_Offset       := $0056
+ObjectSlot_Offset              := $0056
 ; Index of the active slot
-ObjectSlot_Index        := $0057
+ObjectSlot_Index               := $0057
+; Counter for Sophia's "look up" animation.
+; 0x00 is not started
+; 0x0C is completed (looking straight up)
+; in Sophia_Dismount ($888C): [w] TBD
+; in Sophia_DoorwayEntry ($89BE): [w] TBD
+; in ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD
+; in ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [r] TBD
+; in Get_Next_Tile_Call ($907B): [r] TBD
+; in ObjHandler_Tank_06_Sophia_RightWall ($916E): [r] TBD
+; in RenderWeaponSprite ($950D): [r] TBD
+; in Sophia_RenderOffsets ($9641): [rw] TBD
+; in LevelInit ($C301): [w] TBD
+Sophia_LookUpAnimation_Counter := $0094
 ; ObjSlot: The 14-byte record every active object occupies. 18 are packed at $0400 (the object table); slot 0 is the player.
 .struct ObjSlot
         Type          .byte   ; +$00 (byte)  Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.

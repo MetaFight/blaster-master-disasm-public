@@ -10,7 +10,7 @@ L_888C: lda     $F3                             ; 888C
         sta     LoadedObj_Health                ; 889C
         lda     #$00                            ; 889E
         sta     $C1                             ; 88A0
-        sta     $94                             ; 88A2
+        sta     Sophia_LookUpAnimation_Counter  ; 88A2
         lda     $14                             ; 88A4
         sta     $03D4                           ; 88A6
         lda     LoadedObj_Facing                ; 88A9

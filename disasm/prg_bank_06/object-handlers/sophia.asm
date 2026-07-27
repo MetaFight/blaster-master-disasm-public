@@ -11,7 +11,7 @@ L_89BE: lda     $1C                             ; 89BE
         and     #$C0                            ; 89CC
         sta     $1E                             ; 89CE
         lda     #$00                            ; 89D0
-        sta     $94                             ; 89D2
+        sta     Sophia_LookUpAnimation_Counter  ; 89D2
         sta     $51                             ; 89D4
         sta     $D9                             ; 89D6
         lda     #$10                            ; 89D8
@@ -513,7 +513,7 @@ L_8D77: jsr     LD2B1                           ; 8D77
         lda     #$00                            ; 8D8D
         sta     $50                             ; 8D8F
 L_8D91: lda     #$00                            ; 8D91
-        sta     $94                             ; 8D93
+        sta     Sophia_LookUpAnimation_Counter  ; 8D93
         lda     $F3                             ; 8D95
         and     #$03                            ; 8D97
         cmp     #$01                            ; 8D99
@@ -724,7 +724,7 @@ L_8F64: jsr     LCBDF                           ; 8F64
         sta     $3F                             ; 8F80
         lda     #$40                            ; 8F82
         sta     $44                             ; 8F84
-        lda     $94                             ; 8F86
+        lda     Sophia_LookUpAnimation_Counter  ; 8F86
         lsr     a                               ; 8F88
         lsr     a                               ; 8F89
         clc                                     ; 8F8A
@@ -741,7 +741,7 @@ L_8F64: jsr     LCBDF                           ; 8F64
         clc                                     ; 8F9A
         adc     #$1C                            ; 8F9B
         jsr     LF011                           ; 8F9D
-        lda     $94                             ; 8FA0
+        lda     Sophia_LookUpAnimation_Counter  ; 8FA0
         lsr     a                               ; 8FA2
         and     #$06                            ; 8FA3
         eor     #$FF                            ; 8FA5
@@ -761,7 +761,7 @@ L_8F64: jsr     LCBDF                           ; 8F64
         sta     $3E                             ; 8FBC
         pla                                     ; 8FBE
         sta     $3F                             ; 8FBF
-        lda     $94                             ; 8FC1
+        lda     Sophia_LookUpAnimation_Counter  ; 8FC1
         lsr     a                               ; 8FC3
         and     #$06                            ; 8FC4
         sec                                     ; 8FC6
@@ -775,14 +775,14 @@ L_8F64: jsr     LCBDF                           ; 8F64
         and     #$40                            ; 8FD4
         beq     L_8FDA                          ; 8FD6
         inc     $3F                             ; 8FD8
-L_8FDA: lda     $94                             ; 8FDA
+L_8FDA: lda     Sophia_LookUpAnimation_Counter  ; 8FDA
         beq     L_8FF8                          ; 8FDC
         ldx     #$C0                            ; 8FDE
         bit     LoadedObj_Facing                ; 8FE0
         bmi     L_8FE6                          ; 8FE2
         ldx     #$80                            ; 8FE4
 L_8FE6: stx     $44                             ; 8FE6
-        lda     $94                             ; 8FE8
+        lda     Sophia_LookUpAnimation_Counter  ; 8FE8
         lsr     a                               ; 8FEA
         lsr     a                               ; 8FEB
         cmp     #$03                            ; 8FEC
@@ -924,7 +924,7 @@ L_90C9: jsr     LCBDF                           ; 90C9
         sta     $3E                             ; 90E5
         lda     #$00                            ; 90E7
         sta     $44                             ; 90E9
-        lda     $94                             ; 90EB
+        lda     Sophia_LookUpAnimation_Counter  ; 90EB
         lsr     a                               ; 90ED
         lsr     a                               ; 90EE
         clc                                     ; 90EF
@@ -941,7 +941,7 @@ L_90C9: jsr     LCBDF                           ; 90C9
         clc                                     ; 90FF
         adc     #$1C                            ; 9100
         jsr     LF011                           ; 9102
-        lda     $94                             ; 9105
+        lda     Sophia_LookUpAnimation_Counter  ; 9105
         lsr     a                               ; 9107
         and     #$06                            ; 9108
         eor     #$FF                            ; 910A
@@ -961,7 +961,7 @@ L_90C9: jsr     LCBDF                           ; 90C9
         sta     $3E                             ; 9121
         pla                                     ; 9123
         sta     $3F                             ; 9124
-        lda     $94                             ; 9126
+        lda     Sophia_LookUpAnimation_Counter  ; 9126
         lsr     a                               ; 9128
         and     #$06                            ; 9129
         sec                                     ; 912B
@@ -975,14 +975,14 @@ L_90C9: jsr     LCBDF                           ; 90C9
         and     #$40                            ; 9139
         beq     L_913F                          ; 913B
         dec     $3E                             ; 913D
-L_913F: lda     $94                             ; 913F
+L_913F: lda     Sophia_LookUpAnimation_Counter  ; 913F
         beq     L_915D                          ; 9141
         ldx     #$00                            ; 9143
         bit     LoadedObj_Facing                ; 9145
         bmi     L_914B                          ; 9147
         ldx     #$80                            ; 9149
 L_914B: stx     $44                             ; 914B
-        lda     $94                             ; 914D
+        lda     Sophia_LookUpAnimation_Counter  ; 914D
         lsr     a                               ; 914F
         lsr     a                               ; 9150
         cmp     #$03                            ; 9151
@@ -1128,7 +1128,7 @@ L_9234: jsr     LCBDF                           ; 9234
         sta     $3E                             ; 9250
         lda     #$80                            ; 9252
         sta     $44                             ; 9254
-        lda     $94                             ; 9256
+        lda     Sophia_LookUpAnimation_Counter  ; 9256
         lsr     a                               ; 9258
         lsr     a                               ; 9259
         clc                                     ; 925A
@@ -1145,7 +1145,7 @@ L_9234: jsr     LCBDF                           ; 9234
         clc                                     ; 926A
         adc     #$1C                            ; 926B
         jsr     LF011                           ; 926D
-        lda     $94                             ; 9270
+        lda     Sophia_LookUpAnimation_Counter  ; 9270
         lsr     a                               ; 9272
         and     #$06                            ; 9273
         eor     #$FF                            ; 9275
@@ -1165,7 +1165,7 @@ L_9234: jsr     LCBDF                           ; 9234
         sta     $3E                             ; 928C
         pla                                     ; 928E
         sta     $3F                             ; 928F
-        lda     $94                             ; 9291
+        lda     Sophia_LookUpAnimation_Counter  ; 9291
         lsr     a                               ; 9293
         and     #$06                            ; 9294
         eor     #$FF                            ; 9296
@@ -1180,14 +1180,14 @@ L_9234: jsr     LCBDF                           ; 9234
         and     #$40                            ; 92A6
         beq     L_92AC                          ; 92A8
         dec     $3E                             ; 92AA
-L_92AC: lda     $94                             ; 92AC
+L_92AC: lda     Sophia_LookUpAnimation_Counter  ; 92AC
         beq     L_92CA                          ; 92AE
         ldx     #$C0                            ; 92B0
         bit     LoadedObj_Facing                ; 92B2
         bmi     L_92B8                          ; 92B4
         ldx     #$40                            ; 92B6
 L_92B8: stx     $44                             ; 92B8
-        lda     $94                             ; 92BA
+        lda     Sophia_LookUpAnimation_Counter  ; 92BA
         lsr     a                               ; 92BC
         lsr     a                               ; 92BD
         cmp     #$03                            ; 92BE
@@ -1590,7 +1590,7 @@ L_9588: lda     $1C                             ; 9588
         lsr     a                               ; 9592
         and     #$03                            ; 9593
         sta     $DA                             ; 9595
-L_9597: lda     $94                             ; 9597
+L_9597: lda     Sophia_LookUpAnimation_Counter  ; 9597
         lsr     a                               ; 9599
         lsr     a                               ; 959A
         clc                                     ; 959B
@@ -1603,7 +1603,7 @@ L_9597: lda     $94                             ; 9597
         clc                                     ; 95A7
         adc     #$1C                            ; 95A8
         jsr     LF011                           ; 95AA
-        lda     $94                             ; 95AD
+        lda     Sophia_LookUpAnimation_Counter  ; 95AD
         lsr     a                               ; 95AF
         and     #$06                            ; 95B0
         eor     #$FF                            ; 95B2
@@ -1623,7 +1623,7 @@ L_95C9: pla                                     ; 95C9
         sta     $3E                             ; 95CA
         pla                                     ; 95CC
         sta     $3F                             ; 95CD
-        lda     $94                             ; 95CF
+        lda     Sophia_LookUpAnimation_Counter  ; 95CF
         lsr     a                               ; 95D1
         and     #$06                            ; 95D2
         eor     #$FF                            ; 95D4
@@ -1651,14 +1651,14 @@ L_95E9: lda     $50                             ; 95E9
         and     #$02                            ; 95FB
         bne     L_9601                          ; 95FD
         inc     $3F                             ; 95FF
-L_9601: lda     $94                             ; 9601
+L_9601: lda     Sophia_LookUpAnimation_Counter  ; 9601
         beq     L_961F                          ; 9603
         ldx     #$00                            ; 9605
         bit     LoadedObj_Facing                ; 9607
         bmi     L_960D                          ; 9609
         ldx     #$40                            ; 960B
 L_960D: stx     $44                             ; 960D
-        lda     $94                             ; 960F
+        lda     Sophia_LookUpAnimation_Counter  ; 960F
         lsr     a                               ; 9611
         lsr     a                               ; 9612
         cmp     #$03                            ; 9613
@@ -1705,28 +1705,28 @@ L_9650: ldx     #$01                            ; 9650
         cmp     #$0F                            ; 9654
         beq     L_965A                          ; 9656
         inc     LoadedObj_Facing                ; 9658
-L_965A: lda     $94                             ; 965A
+L_965A: lda     Sophia_LookUpAnimation_Counter  ; 965A
         cmp     #$08                            ; 965C
         bcc     L_9662                          ; 965E
         ldx     #$00                            ; 9660
 L_9662: lda     $F7                             ; 9662
         and     #$08                            ; 9664
         bne     L_9672                          ; 9666
-        dec     $94                             ; 9668
+        dec     Sophia_LookUpAnimation_Counter  ; 9668
         bpl     L_967C                          ; 966A
         lda     #$00                            ; 966C
-        sta     $94                             ; 966E
+        sta     Sophia_LookUpAnimation_Counter  ; 966E
         beq     L_967C                          ; 9670
-L_9672: inc     $94                             ; 9672
+L_9672: inc     Sophia_LookUpAnimation_Counter  ; 9672
         lda     #$0C                            ; 9674
-        cmp     $94                             ; 9676
+        cmp     Sophia_LookUpAnimation_Counter  ; 9676
         bcs     L_967C                          ; 9678
-        sta     $94                             ; 967A
+        sta     Sophia_LookUpAnimation_Counter  ; 967A
 L_967C: lda     #$90                            ; 967C
         sta     $BC                             ; 967E
         lda     #$A0                            ; 9680
         sta     $BD                             ; 9682
-        lda     $94                             ; 9684
+        lda     Sophia_LookUpAnimation_Counter  ; 9684
         beq     L_9694                          ; 9686
         cmp     #$08                            ; 9688
         bcc     L_9694                          ; 968A

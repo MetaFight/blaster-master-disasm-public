@@ -3569,30 +3569,29 @@ LABEL {
 LABEL {
   NAME    "ObjHandler_Tank_5F_Gray_Hopper_6HP_Init";
   ADDR    $A7CB;
-  COMMENT "ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy: takes its stats\n; from tank-enemy descriptor $05, faces the player, primes its hop-interval timer, and advances to\n; the Main $60. Draws nothing; the +0 (fade/freeze) entry jumps to the terminal RTS. See\n; docs/entities/tank/5f-61_hopper-6hp.md";
+  COMMENT "ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy.";
 };
 
 LABEL {
   NAME    "_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__";
   ADDR    $A7CE;
-  COMMENT "Load enemy from descriptor ($05), face the player, go live as $60";
 };
 
 LABEL {
-  NAME    "_ObjHandler_Tank_5F_GrayHopper6HP_Init__Facing_Right";
+  NAME    "_ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight";
   ADDR    $A7E1;
-  COMMENT "Player is to the right, so face right";
+  COMMENT "player is to the RIGHT so set heading to $B8 = $C0 (11.25° tilted CCW from UP) which, again, is\n; AWAY from the player.";
 };
 
 LABEL {
   NAME    "_ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing";
   ADDR    $A7E3;
+  COMMENT "commit the heading, then zero Velocity X/Y and the wind-up timer LoadedObj_AnimFrame";
 };
 
 LABEL {
   NAME    "_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done";
   ADDR    $A7ED;
-  COMMENT "Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.";
 };
 
 LABEL {
@@ -5288,20 +5287,26 @@ LABEL {
 
 LABEL {
   NAME    "";
-  ADDR    $A7D3;
-  COMMENT "hop-interval timer $52 = $30";
+  ADDR    $A7D0;
+  COMMENT "Init the enemy from descriptor $05.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A7D5;
+  COMMENT "LoadedObj_Scratch is the base hop speed.  Set this to $30.";
 };
 
 LABEL {
   NAME    "";
   ADDR    $A7D7;
-  COMMENT "Get x-delta to player to figure out where to face";
+  COMMENT "The next few lines set up the Facing field, but these values are overwritten before ever being\n; used.\n; And, unlike the attack phase, this choses to face AWAY from the player.";
 };
 
 LABEL {
   NAME    "";
   ADDR    $A7DC;
-  COMMENT "Player is to the left, so face left";
+  COMMENT "player is to the LEFT so set heading $C8 (11.25° CW from UP) which is AWAY from the player";
 };
 
 LABEL {
@@ -5447,5 +5452,10 @@ LABEL {
 LABEL {
   NAME    "ObjectSlot_Index";
   ADDR    $0057;
+};
+
+LABEL {
+  NAME    "Sophia_LookUpAnimation_Counter";
+  ADDR    $0094;
 };
 

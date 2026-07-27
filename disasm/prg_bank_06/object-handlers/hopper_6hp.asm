@@ -1,38 +1,38 @@
 .macro MAC_L_A7CB
 ; ----------------------------------------------------------------------------
-; ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy: takes its stats
-; from tank-enemy descriptor $05, faces the player, primes its hop-interval timer, and advances to
-; the Main $60. Draws nothing; the +0 (fade/freeze) entry jumps to the terminal RTS. See
-; docs/entities/tank/5f-61_hopper-6hp.md
+; ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy.
 ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:
         jmp     _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done; A7CB
 
 ; ----------------------------------------------------------------------------
-; Load enemy from descriptor ($05), face the player, go live as $60
 _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__:
         lda     #$05                            ; A7CE
+; Init the enemy from descriptor $05.
         jsr     L_A2E9                          ; A7D0
-; hop-interval timer $52 = $30
         lda     #$30                            ; A7D3
+; LoadedObj_Scratch is the base hop speed.  Set this to $30.
         sta     $52                             ; A7D5
-; Get x-delta to player to figure out where to face
+; The next few lines set up the Facing field, but these values are overwritten before ever being
+; used.
+; And, unlike the attack phase, this choses to face AWAY from the player.
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; A7D7
-        bpl     _ObjHandler_Tank_5F_GrayHopper6HP_Init__Facing_Right; A7DA
-; Player is to the left, so face left
+        bpl     _ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight; A7DA
+; player is to the LEFT so set heading $C8 (11.25° CW from UP) which is AWAY from the player
         lda     #$C8                            ; A7DC
         jmp     _ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing; A7DE
 
 ; ----------------------------------------------------------------------------
-; Player is to the right, so face right
-_ObjHandler_Tank_5F_GrayHopper6HP_Init__Facing_Right:
+; player is to the RIGHT so set heading to $B8 = $C0 (11.25° tilted CCW from UP) which, again, is
+; AWAY from the player.
+_ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight:
         lda     #$B8                            ; A7E1
+; commit the heading, then zero Velocity X/Y and the wind-up timer LoadedObj_AnimFrame
 _ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing:
         sta     LoadedObj_Facing                ; A7E3
         lda     #$00                            ; A7E5
         sta     LoadedObj_Velocity_X            ; A7E7
         sta     LoadedObj_Velocity_Y            ; A7E9
         sta     $51                             ; A7EB
-; Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
 _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done:
         rts                                     ; A7ED
 
