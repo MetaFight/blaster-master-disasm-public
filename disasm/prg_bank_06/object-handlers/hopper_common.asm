@@ -8,15 +8,15 @@ L_A86E: jmp     L_A89F                          ; A86E
         lda     #$C0                            ; A875
         sta     $43                             ; A877
         lda     #$00                            ; A879
-        sta     LoadedObj_Velocity_Y            ; A87B
-        lda     LoadedObj_Velocity_X            ; A87D
+        sta     LoadedObj + Obj::Velocity_Y     ; A87B
+        lda     LoadedObj + Obj::Velocity_X     ; A87D
         bmi     L_A886                          ; A87F
         lda     #$08                            ; A881
         jmp     L_A888                          ; A883
 
 ; ----------------------------------------------------------------------------
 L_A886: lda     #$F8                            ; A886
-L_A888: sta     LoadedObj_Velocity_X            ; A888
+L_A888: sta     LoadedObj + Obj::Velocity_X     ; A888
         jsr     LE02F                           ; A88A
         jsr     LEB71                           ; A88D
         and     #$3F                            ; A890
@@ -25,7 +25,7 @@ L_A888: sta     LoadedObj_Velocity_X            ; A888
         bmi     L_A89F                          ; A896
         lda     #$29                            ; A898
         jsr     Enqueue_Sound_Command           ; A89A
-        dec     LoadedObj_Type                  ; A89D
+        dec     LoadedObj + Obj::Type           ; A89D
 L_A89F: lda     #$10                            ; A89F
         sta     $40                             ; A8A1
         lda     #$18                            ; A8A3

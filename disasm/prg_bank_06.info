@@ -3595,48 +3595,69 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_A802";
+  NAME    "ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking";
+  ADDR    $A7EE;
+  COMMENT "ObjType $60 — Gray Hopper (6 HP), active: the hopping/attack half of the enemy. It falls under\n; gravity; on each floor landing it either settles into the walking state $61 or aims a fresh,\n; near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the\n; ground before the stored hop velocity carries it up — so it bounds across the ground toward the\n; player in bursts.";
+};
+
+LABEL {
+  NAME    "_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__";
+  ADDR    $A7F1;
+  COMMENT "$42 = $80 / $43 = $C0: terrain-collision half-extents (16×24 box) — then gate on the wind-up\n; timer $51";
+};
+
+LABEL {
+  NAME    "_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired";
   ADDR    $A802;
+  COMMENT "wind-up over: take one ballistic step (Obj_GravityMoveBounce with gravity $04, which also\n; reflects and damps the velocity on contact) and test bit 6 of the wall flags it returns — a\n; vertical, i.e. floor-or-ceiling, contact. Clear means still airborne, so just draw.";
 };
 
 LABEL {
-  NAME    "L_A821";
+  NAME    "_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump";
   ADDR    $A821;
+  COMMENT "hop: play sound $29, then aim. The delta is the X distance (LoadedObj__Get_DeltaToPlayer_X =\n; player.X − obj.X), not a Y distance — negative means the player is to the LEFT.";
 };
 
 LABEL {
-  NAME    "L_A830";
+  NAME    "_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft";
   ADDR    $A830;
+  COMMENT "player to the LEFT → heading $B8 = $C0 − $08, tilted 11.25° left of straight up (the $C8 above\n; is the mirror, for a player to the right). This is the correctly-aimed pair; the Init at\n; $A7DC/$A7E1 assigns the same two constants the other way round.";
 };
 
 LABEL {
-  NAME    "L_A832";
+  NAME    "_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch";
   ADDR    $A832;
+  COMMENT "launch: commit the heading to $47 and pass the speed magnitude $52 + (Step_RNG & $0F) = $30..$3F\n; to Obj_AngleToVelocity in Y. This is a velocity computation, not a child spawn — $E1BD resolves\n; heading+speed into $4C/$4D through Trig_QuarterSineTable.\n; Because $B8/$C8 sit only $08 either side of straight up, the components come out about 4:1 in\n; favour of the vertical: |cos| = 25 and |sin| = 125 out of the table's $7F peak, scaled by the\n; speed and shifted down 8, giving $4D ≈ −23..−30 (upward) against $4C ≈ ±4..±6. So it leaps\n; almost straight up and only drifts onto the player.";
 };
 
 LABEL {
-  NAME    "L_A840";
+  NAME    "_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__";
   ADDR    $A840;
+  COMMENT "+0 (fade/freeze) entry, and the tail every other path falls into: $40/$41 give ScreenPos_Compute\n; the box's FULL extent — $10 wide by $18 tall, a 16x24 box, which that routine halves itself. It\n; returns $00 on-screen; anything else means the hopper has scrolled away, so park the slot via\n; Obj_StashTypeSetState02.";
 };
 
 LABEL {
-  NAME    "L_A850";
+  NAME    "_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage";
   ADDR    $A850;
+  COMMENT "on-screen: run the shared damage check against descriptor $05. A non-zero return means this hit\n; killed it — tail-call TankEnemy_Defeat, which does the per-slot bookkeeping and falls into the\n; drop spawner.";
 };
 
 LABEL {
-  NAME    "L_A85A";
+  NAME    "_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render";
   ADDR    $A85A;
+  COMMENT "still alive: $44 = sprite palette 1, plus the horizontal-flip bit when the X velocity $4C is\n; non-negative (Obj_SetAttrFlipX derives the flip from $4C, NOT from the heading $47). Then pick\n; the pose from the wind-up timer.";
 };
 
 LABEL {
-  NAME    "L_A868";
+  NAME    "_ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle";
   ADDR    $A868;
+  COMMENT "$51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose";
 };
 
 LABEL {
-  NAME    "L_A86A";
+  NAME    "_ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile";
   ADDR    $A86A;
+  COMMENT "tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A";
 };
 
 LABEL {
@@ -5311,6 +5332,36 @@ LABEL {
 
 LABEL {
   NAME    "";
+  ADDR    $A7FB;
+  COMMENT "If LoadedObj_AnimFrame (wind-up) is at 0, then proceed to ground check.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A7FD;
+  COMMENT "otherwise, decrement LoadedObj_AnimFrame (wind-up).";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A80B;
+  COMMENT "vertical contact — but floor or ceiling? Obj_GravityMoveBounce reflects YVel on the hit, so\n; after landing $4D is negative (pointing up) and after a ceiling bonk it is positive. Positive →\n; not a landing, keep falling.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A80F;
+  COMMENT "landed: arm the 10-frame wind-up ($51 = $0A), then choose between settling into the walk state\n; $61 (INC $46) and hopping again. Settling needs BOTH Step_RNG's carry set and\n; Global_FrameCounter bit 7 set.\n; The carry is not a coin flip. Step_RNG is $13 = 5×$13 − 1 and returns the borrow of that final\n; SEC/SBC #$01, which is clear only when $13 was $00 on entry; the LCG has full period 256, so\n; that happens exactly once per 256 calls. The BCC is therefore taken ~0.4% of the time and the\n; real decision is $11 bit 7 alone — the hopper walks off any landing that falls in the upper half\n; of the 256-frame counter cycle and re-hops in the lower half, alternating roughly every 2\n; seconds rather than randomly.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A863;
+  COMMENT "$51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted";
+};
+
+LABEL {
+  NAME    "";
   ADDR    $B004;
   COMMENT "$47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG";
 };
@@ -5402,51 +5453,6 @@ LABEL {
 LABEL {
   NAME    "Global_FrameCounter";
   ADDR    $0011;
-};
-
-LABEL {
-  NAME    "LoadedObj_Type";
-  ADDR    $0046;
-};
-
-LABEL {
-  NAME    "LoadedObj_Facing";
-  ADDR    $0047;
-};
-
-LABEL {
-  NAME    "LoadedObj_Position_X_Lo";
-  ADDR    $0048;
-};
-
-LABEL {
-  NAME    "LoadedObj_Position_X_Hi";
-  ADDR    $0049;
-};
-
-LABEL {
-  NAME    "LoadedObj_Position_Y_Lo";
-  ADDR    $004A;
-};
-
-LABEL {
-  NAME    "LoadedObj_Position_Y_Hi";
-  ADDR    $004B;
-};
-
-LABEL {
-  NAME    "LoadedObj_Velocity_X";
-  ADDR    $004C;
-};
-
-LABEL {
-  NAME    "LoadedObj_Velocity_Y";
-  ADDR    $004D;
-};
-
-LABEL {
-  NAME    "LoadedObj_Health";
-  ADDR    $0053;
 };
 
 LABEL {

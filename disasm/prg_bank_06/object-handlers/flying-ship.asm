@@ -6,15 +6,15 @@ L_ABCF: jmp     L_ABEB                          ; ABCF
         lda     #$0A                            ; ABD2
         jsr     L_A2E9                          ; ABD4
         lda     #$10                            ; ABD7
-        sta     LoadedObj_Velocity_X            ; ABD9
+        sta     LoadedObj + Obj::Velocity_X     ; ABD9
         lda     #$00                            ; ABDB
-        sta     LoadedObj_Velocity_Y            ; ABDD
+        sta     LoadedObj + Obj::Velocity_Y     ; ABDD
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; ABDF
         bpl     L_ABEB                          ; ABE2
         lda     #$00                            ; ABE4
         sec                                     ; ABE6
-        sbc     LoadedObj_Velocity_X            ; ABE7
-        sta     LoadedObj_Velocity_X            ; ABE9
+        sbc     LoadedObj + Obj::Velocity_X     ; ABE7
+        sta     LoadedObj + Obj::Velocity_X     ; ABE9
 L_ABEB: rts                                     ; ABEB
 
 ; ----------------------------------------------------------------------------

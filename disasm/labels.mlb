@@ -1399,15 +1399,22 @@ NesPrgRom:1A7DC::player is to the LEFT so set heading $C8 (11.25° CW from UP) w
 NesPrgRom:1A7E1:_ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight:player is to the RIGHT so set heading to $B8 = $C0 (11.25° tilted CCW from UP) which, again, is AWAY from the player.
 NesPrgRom:1A7E3:_ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing:commit the heading, then zero Velocity X/Y and the wind-up timer LoadedObj_AnimFrame
 NesPrgRom:1A7ED:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done
-NesPrgRom:1A802:L_A802
-NesPrgRom:1A821:L_A821
-NesPrgRom:1A830:L_A830
-NesPrgRom:1A832:L_A832
-NesPrgRom:1A840:L_A840
-NesPrgRom:1A850:L_A850
-NesPrgRom:1A85A:L_A85A
-NesPrgRom:1A868:L_A868
-NesPrgRom:1A86A:L_A86A
+NesPrgRom:1A7EE:ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:ObjType $60 — Gray Hopper (6 HP), active: the hopping/attack half of the enemy. It falls under gravity; on each floor landing it either settles into the walking state $61 or aims a fresh, near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the ground before the stored hop velocity carries it up — so it bounds across the ground toward the player in bursts.
+NesPrgRom:1A7F1:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:$42 = $80 / $43 = $C0: terrain-collision half-extents (16×24 box) — then gate on the wind-up timer $51
+NesPrgRom:1A7FB::If LoadedObj_AnimFrame (wind-up) is at 0, then proceed to ground check.
+NesPrgRom:1A7FD::otherwise, decrement LoadedObj_AnimFrame (wind-up).
+NesPrgRom:1A802:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired:wind-up over: take one ballistic step (Obj_GravityMoveBounce with gravity $04, which also reflects and damps the velocity on contact) and test bit 6 of the wall flags it returns — a vertical, i.e. floor-or-ceiling, contact. Clear means still airborne, so just draw.
+NesPrgRom:1A80B::vertical contact — but floor or ceiling? Obj_GravityMoveBounce reflects YVel on the hit, so after landing $4D is negative (pointing up) and after a ceiling bonk it is positive. Positive → not a landing, keep falling.
+NesPrgRom:1A80F::landed: arm the 10-frame wind-up ($51 = $0A), then choose between settling into the walk state $61 (INC $46) and hopping again. Settling needs BOTH Step_RNG's carry set and Global_FrameCounter bit 7 set.\nThe carry is not a coin flip. Step_RNG is $13 = 5×$13 − 1 and returns the borrow of that final SEC/SBC #$01, which is clear only when $13 was $00 on entry; the LCG has full period 256, so that happens exactly once per 256 calls. The BCC is therefore taken ~0.4% of the time and the real decision is $11 bit 7 alone — the hopper walks off any landing that falls in the upper half of the 256-frame counter cycle and re-hops in the lower half, alternating roughly every 2 seconds rather than randomly.
+NesPrgRom:1A821:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump:hop: play sound $29, then aim. The delta is the X distance (LoadedObj__Get_DeltaToPlayer_X = player.X − obj.X), not a Y distance — negative means the player is to the LEFT.
+NesPrgRom:1A830:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft:player to the LEFT → heading $B8 = $C0 − $08, tilted 11.25° left of straight up (the $C8 above is the mirror, for a player to the right). This is the correctly-aimed pair; the Init at $A7DC/$A7E1 assigns the same two constants the other way round.
+NesPrgRom:1A832:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:launch: commit the heading to $47 and pass the speed magnitude $52 + (Step_RNG & $0F) = $30..$3F to Obj_AngleToVelocity in Y. This is a velocity computation, not a child spawn — $E1BD resolves heading+speed into $4C/$4D through Trig_QuarterSineTable.\nBecause $B8/$C8 sit only $08 either side of straight up, the components come out about 4:1 in favour of the vertical: |cos| = 25 and |sin| = 125 out of the table's $7F peak, scaled by the speed and shifted down 8, giving $4D ≈ −23..−30 (upward) against $4C ≈ ±4..±6. So it leaps almost straight up and only drifts onto the player.
+NesPrgRom:1A840:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__:+0 (fade/freeze) entry, and the tail every other path falls into: $40/$41 give ScreenPos_Compute the box's FULL extent — $10 wide by $18 tall, a 16x24 box, which that routine halves itself. It returns $00 on-screen; anything else means the hopper has scrolled away, so park the slot via Obj_StashTypeSetState02.
+NesPrgRom:1A850:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage:on-screen: run the shared damage check against descriptor $05. A non-zero return means this hit killed it — tail-call TankEnemy_Defeat, which does the per-slot bookkeeping and falls into the drop spawner.
+NesPrgRom:1A85A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:still alive: $44 = sprite palette 1, plus the horizontal-flip bit when the X velocity $4C is non-negative (Obj_SetAttrFlipX derives the flip from $4C, NOT from the heading $47). Then pick the pose from the wind-up timer.
+NesPrgRom:1A863::$51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
+NesPrgRom:1A868:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle:$51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose
+NesPrgRom:1A86A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile:tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
 NesPrgRom:1A86E:L_A86E
 NesPrgRom:1A886:L_A886
 NesPrgRom:1A888:L_A888
@@ -2681,15 +2688,20 @@ NesPrgRom:1FEC0:L_FEC0
 NesPrgRom:1FFD8:L_FFD8
 NesPrgRom:1FFF4:Reset
 NesInternalRam:0011:Global_FrameCounter:in OvhdJason_SpriteAttr ($8E15): [r] TBD\n\nin ObjHandler_Ovhd_0B_Jason_Curve_Shot_Gun_45_Main ($906F): [r] TBD\n\nin ObjHandler_Ovhd_0D_Jason_Wave_Shot_Gun_6_Init_2 ($911A): [r] TBD\n\nin ObjHandler_Ovhd_23_Pickup_Main ($961B): [r] TBD\n\nin ObjHandler_Ovhd_6E_Area_7_Boss_Fire_Tongue_Attack_Main ($9A00): [r] TBD\n\nin ObjHandler_Ovhd_70_Area_4_Boss_Tongue_Attack_Main ($9A8B): [r] TBD\n\nin Boss2_Movement_9B67_Sub ($9B67): [r] TBD\n\nin Boss2_PincerArms_RenderArm ($9C23): [r] TBD\n\nin ObjHandler_Ovhd_61_EntryPad ($A197): [r] TBD\n\nin Boss1_MotherBrain_Main_Body ($A58C): [r] TBD\n\nin Boss1_MotherBrain_RenderBody ($A65A): [r] TBD\n\nin Boss5_BigCrab_FireBubble ($A7A2): [r] TBD\n\nin ObjHandler_Ovhd_7D_Area_5_Boss_Bubble_Shot_Init ($A938): [r] TBD\n\nin ObjHandler_Ovhd_67_EntryPad ($AA35): [r] TBD\n\nin Boss8_Phase2_StateDispatch ($ACB9): [r] TBD\n\nin Boss8_Phase2_ComputeAnimFrame ($ADE7): [r] TBD\n\nin ObjHandler_Ovhd_4F_Spinner_Shot_Main ($AF67): [r] TBD\n\nin ObjHandler_Ovhd_2F_Rotating_Camera_Main ($B393): [r] TBD\n\nin ObjHandler_Ovhd_31_Gray_Gumdrop_Main ($B44F): [r] TBD\n\nin ObjHandler_Ovhd_33_Flier_Spawner_Main ($B4EE): [r] TBD\n\nin ObjHandler_Ovhd_34_Flier_Main ($B560): [r] TBD\n\nin ObjHandler_Ovhd_36_Charging_Robot_Main ($B5F0): [r] TBD\n\nin ObjHandler_Ovhd_37_Spinner_Init ($B64D): [r] TBD\n\nin ObjHandler_Ovhd_38_Spinner_Main ($B65B): [r] TBD\n\nin ObjHandler_Ovhd_3A_Cross_Shooter_Main ($B6AF): [r] TBD\n\nin ObjHandler_Ovhd_3C_Vertical_Camera_Main ($B719): [r] TBD\n\nin ObjHandler_Ovhd_3E_Horizontal_Camera_Main ($B78F): [r] TBD\n\nin ObjHandler_Ovhd_40_Slider_Main ($B7F6): [r] TBD\n\nin ObjHandler_Ovhd_25_Robot_Main ($B866): [r] TBD\n\nin ObjHandler_Ovhd_42_Spitter_Main ($BD69): [r] TBD\n\nin ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [r] TBD\n\nin ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [r] TBD\n\nin ObjHandler_Tank_08_Sophia_Dive ($8CB0): [r] TBD\n\nin ObjHandler_Common_35_PickUp_Active ($9C68): [r] TBD\n\nin ObjHandler_Tank_55_Gray_Caterpillar_Main ($A40B): [r] TBD\n\nin ObjHandler_Tank_59_Gray_Bullet_Main ($A53A): [r] TBD\n\nin ObjHandler_Tank_5E_Hulk_Main ($A76A): [r] TBD\n\nin ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking ($A7EE): [r] TBD\n\nin ObjHandler_Common_61_Patrolling_Horizontally ($A86E): [r] TBD\n\nin ObjHandler_Tank_63_Red_Caterpillar_Main ($A8FB): [r] TBD\n\nin ObjHandler_Tank_65_Mine_Main ($A9DE): [r] TBD\n\nin ObjHandler_Tank_69_Bomber_Rock_Main ($AB24): [r] TBD\n\nin ObjHandler_Tank_6B_Flying_Ship_Main ($ABEC): [r] TBD\n\nin ObjHandler_Tank_6F_Swooping_Sphere_Main ($AD08): [r] TBD\n\nin ObjHandler_Tank_71_Bee_Main ($ADFF): [r] TBD\n\nin ObjHandler_Tank_73_Orb_Main ($AE95): [r] TBD\n\nin ObjHandler_Tank_79_Kamikaze_Orb_Main ($B095): [r] TBD\n\nin ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling ($B18F): [r] TBD\n\nin ObjHandler_Tank_4F_Red_Flier_Spawner_Main ($B20C): [r] TBD\n\nin ObjHandler_Tank_7C_Red_Flier ($B250): [r] TBD\n\nin ObjHandler_Tank_51_Gray_Flier_Spawner_Main ($B2A8): [r] TBD\n\nin ObjHandler_Tank_7D_Gray_Flier_Main ($B2EC): [r] TBD\n\nin ObjHandler_Tank_81_Jellyfish_Main ($B3FE): [r] TBD\n\nin ObjHandler_Tank_83_Scuba_Steve_Main ($B4A3): [r] TBD\n\nin ObjHandler_Tank_84_Scuba_Steve_Dead ($B53A): [r] TBD\n\nin ObjHandler_Tank_86_Running_Shell_Main ($B58B): [r] TBD\n\nin ObjHandler_Tank_53_Submersible_Spawner_Main ($B63C): [r] TBD\n\nin ObjHandler_Tank_87_Submersible_Main ($B680): [r] TBD\n\nin ObjHandler_Tank_89_Crescent_Roller_Main ($B6F4): [r] TBD\n\nin ObjHandler_Tank_8B_Bomb_Canister_Main ($B843): [r] TBD\n\nin ObjHandler_Tank_8E_Red_Bullet_Main ($B97A): [r] TBD\n\nin ObjHandler_Tank_91_Wall_Guardian_Main ($BAA4): [r] TBD\n\nin WallGuardian_TileAnim_Mid ($BB7D): [r] TBD\n\nin LevelInit ($C301): [w] TBD\n\nin Obj_SpawnChild_A0_Throttled ($DF36): [r] TBD\n\nin Obj_GravityMoveBounce ($DFA0): [r] TBD\n\nin PaletteSanitizeTable ($EBF4): [rw] false positive\n\nin OAM_BlitFromStaging ($EC73): [r] TBD
-NesInternalRam:0046:LoadedObj_Type:Active slot's object type
-NesInternalRam:0047:LoadedObj_Facing:Which way this object is pointing.
-NesInternalRam:0048:LoadedObj_Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
-NesInternalRam:0049:LoadedObj_Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
-NesInternalRam:004A:LoadedObj_Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
-NesInternalRam:004B:LoadedObj_Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
-NesInternalRam:004C:LoadedObj_Velocity_X:Object X velocity in pixels / frame.\nType: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-NesInternalRam:004D:LoadedObj_Velocity_Y:Object Y velocity in pixels / frame.\nType: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-NesInternalRam:0053:LoadedObj_Health:Entity HP
+NesInternalRam:0046:LoadedObj__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
+NesInternalRam:0047:LoadedObj__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
+NesInternalRam:0048:LoadedObj__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+NesInternalRam:0049:LoadedObj__Position_X_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+NesInternalRam:004A:LoadedObj__Position_Y_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+NesInternalRam:004B:LoadedObj__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
+NesInternalRam:004C:LoadedObj__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:004D:LoadedObj__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:004E:LoadedObj__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:004F:LoadedObj__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:0050:LoadedObj__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:0051:LoadedObj__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:0052:LoadedObj__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:0053:LoadedObj__Health:HP for this entity.
 NesInternalRam:0056:ObjectSlot_Offset:Byte offset of the active slot
 NesInternalRam:0057:ObjectSlot_Index:Index of the active slot
 NesInternalRam:0094:Sophia_LookUpAnimation_Counter:Counter for Sophia's "look up" animation.\n0x00 is not started\n0x0C is completed (looking straight up)\n\nin Sophia_Dismount ($888C): [w] TBD\nin Sophia_DoorwayEntry ($89BE): [w] TBD\nin ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD\nin ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [r] TBD\nin Get_Next_Tile_Call ($907B): [r] TBD\nin ObjHandler_Tank_06_Sophia_RightWall ($916E): [r] TBD\nin RenderWeaponSprite ($950D): [r] TBD\nin Sophia_RenderOffsets ($9641): [rw] TBD\nin LevelInit ($C301): [w] TBD
@@ -2701,6 +2713,11 @@ NesInternalRam:0404:PlayerSlot__Position_Y_Lo:The lower 8-bits of the Signed 16-
 NesInternalRam:0405:PlayerSlot__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0406:PlayerSlot__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0407:PlayerSlot__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:0408:PlayerSlot__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:0409:PlayerSlot__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:040A:PlayerSlot__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:040B:PlayerSlot__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:040C:PlayerSlot__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:040D:PlayerSlot__Health:HP for this entity.
 NesInternalRam:040E:Object_Slot_01__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:040F:Object_Slot_01__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2710,6 +2727,11 @@ NesInternalRam:0412:Object_Slot_01__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0413:Object_Slot_01__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0414:Object_Slot_01__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0415:Object_Slot_01__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:0416:Object_Slot_01__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:0417:Object_Slot_01__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:0418:Object_Slot_01__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:0419:Object_Slot_01__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:041A:Object_Slot_01__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:041B:Object_Slot_01__Health:HP for this entity.
 NesInternalRam:041C:Object_Slot_02__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:041D:Object_Slot_02__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2719,6 +2741,11 @@ NesInternalRam:0420:Object_Slot_02__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0421:Object_Slot_02__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0422:Object_Slot_02__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0423:Object_Slot_02__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:0424:Object_Slot_02__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:0425:Object_Slot_02__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:0426:Object_Slot_02__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:0427:Object_Slot_02__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:0428:Object_Slot_02__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:0429:Object_Slot_02__Health:HP for this entity.
 NesInternalRam:042A:Object_Slot_03__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:042B:Object_Slot_03__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2728,6 +2755,11 @@ NesInternalRam:042E:Object_Slot_03__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:042F:Object_Slot_03__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0430:Object_Slot_03__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0431:Object_Slot_03__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:0432:Object_Slot_03__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:0433:Object_Slot_03__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:0434:Object_Slot_03__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:0435:Object_Slot_03__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:0436:Object_Slot_03__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:0437:Object_Slot_03__Health:HP for this entity.
 NesInternalRam:0438:Object_Slot_04__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0439:Object_Slot_04__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2737,6 +2769,11 @@ NesInternalRam:043C:Object_Slot_04__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:043D:Object_Slot_04__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:043E:Object_Slot_04__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:043F:Object_Slot_04__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:0440:Object_Slot_04__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:0441:Object_Slot_04__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:0442:Object_Slot_04__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:0443:Object_Slot_04__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:0444:Object_Slot_04__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:0445:Object_Slot_04__Health:HP for this entity.
 NesInternalRam:0446:Object_Slot_05__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0447:Object_Slot_05__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2746,6 +2783,11 @@ NesInternalRam:044A:Object_Slot_05__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:044B:Object_Slot_05__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:044C:Object_Slot_05__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:044D:Object_Slot_05__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:044E:Object_Slot_05__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:044F:Object_Slot_05__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:0450:Object_Slot_05__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:0451:Object_Slot_05__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:0452:Object_Slot_05__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:0453:Object_Slot_05__Health:HP for this entity.
 NesInternalRam:0454:Object_Slot_06__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0455:Object_Slot_06__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2755,6 +2797,11 @@ NesInternalRam:0458:Object_Slot_06__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0459:Object_Slot_06__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:045A:Object_Slot_06__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:045B:Object_Slot_06__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:045C:Object_Slot_06__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:045D:Object_Slot_06__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:045E:Object_Slot_06__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:045F:Object_Slot_06__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:0460:Object_Slot_06__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:0461:Object_Slot_06__Health:HP for this entity.
 NesInternalRam:0462:Object_Slot_07__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0463:Object_Slot_07__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2764,6 +2811,11 @@ NesInternalRam:0466:Object_Slot_07__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0467:Object_Slot_07__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0468:Object_Slot_07__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0469:Object_Slot_07__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:046A:Object_Slot_07__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:046B:Object_Slot_07__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:046C:Object_Slot_07__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:046D:Object_Slot_07__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:046E:Object_Slot_07__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:046F:Object_Slot_07__Health:HP for this entity.
 NesInternalRam:0470:Object_Slot_08__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0471:Object_Slot_08__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2773,6 +2825,11 @@ NesInternalRam:0474:Object_Slot_08__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0475:Object_Slot_08__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0476:Object_Slot_08__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0477:Object_Slot_08__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:0478:Object_Slot_08__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:0479:Object_Slot_08__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:047A:Object_Slot_08__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:047B:Object_Slot_08__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:047C:Object_Slot_08__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:047D:Object_Slot_08__Health:HP for this entity.
 NesInternalRam:047E:Object_Slot_09__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:047F:Object_Slot_09__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2782,6 +2839,11 @@ NesInternalRam:0482:Object_Slot_09__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0483:Object_Slot_09__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0484:Object_Slot_09__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0485:Object_Slot_09__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:0486:Object_Slot_09__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:0487:Object_Slot_09__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:0488:Object_Slot_09__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:0489:Object_Slot_09__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:048A:Object_Slot_09__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:048B:Object_Slot_09__Health:HP for this entity.
 NesInternalRam:048C:Object_Slot_10__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:048D:Object_Slot_10__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2791,6 +2853,11 @@ NesInternalRam:0490:Object_Slot_10__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0491:Object_Slot_10__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0492:Object_Slot_10__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0493:Object_Slot_10__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:0494:Object_Slot_10__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:0495:Object_Slot_10__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:0496:Object_Slot_10__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:0497:Object_Slot_10__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:0498:Object_Slot_10__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:0499:Object_Slot_10__Health:HP for this entity.
 NesInternalRam:049A:Object_Slot_11__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:049B:Object_Slot_11__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2800,6 +2867,11 @@ NesInternalRam:049E:Object_Slot_11__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:049F:Object_Slot_11__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04A0:Object_Slot_11__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04A1:Object_Slot_11__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:04A2:Object_Slot_11__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:04A3:Object_Slot_11__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:04A4:Object_Slot_11__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:04A5:Object_Slot_11__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:04A6:Object_Slot_11__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:04A7:Object_Slot_11__Health:HP for this entity.
 NesInternalRam:04A8:Object_Slot_12__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04A9:Object_Slot_12__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2809,6 +2881,11 @@ NesInternalRam:04AC:Object_Slot_12__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04AD:Object_Slot_12__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04AE:Object_Slot_12__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04AF:Object_Slot_12__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:04B0:Object_Slot_12__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:04B1:Object_Slot_12__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:04B2:Object_Slot_12__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:04B3:Object_Slot_12__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:04B4:Object_Slot_12__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:04B5:Object_Slot_12__Health:HP for this entity.
 NesInternalRam:04B6:Object_Slot_13__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04B7:Object_Slot_13__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2818,6 +2895,11 @@ NesInternalRam:04BA:Object_Slot_13__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04BB:Object_Slot_13__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04BC:Object_Slot_13__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04BD:Object_Slot_13__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:04BE:Object_Slot_13__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:04BF:Object_Slot_13__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:04C0:Object_Slot_13__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:04C1:Object_Slot_13__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:04C2:Object_Slot_13__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:04C3:Object_Slot_13__Health:HP for this entity.
 NesInternalRam:04C4:Object_Slot_14__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04C5:Object_Slot_14__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2827,6 +2909,11 @@ NesInternalRam:04C8:Object_Slot_14__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04C9:Object_Slot_14__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04CA:Object_Slot_14__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04CB:Object_Slot_14__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:04CC:Object_Slot_14__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:04CD:Object_Slot_14__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:04CE:Object_Slot_14__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:04CF:Object_Slot_14__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:04D0:Object_Slot_14__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:04D1:Object_Slot_14__Health:HP for this entity.
 NesInternalRam:04D2:Object_Slot_15__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04D3:Object_Slot_15__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2836,6 +2923,11 @@ NesInternalRam:04D6:Object_Slot_15__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04D7:Object_Slot_15__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04D8:Object_Slot_15__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04D9:Object_Slot_15__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:04DA:Object_Slot_15__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:04DB:Object_Slot_15__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:04DC:Object_Slot_15__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:04DD:Object_Slot_15__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:04DE:Object_Slot_15__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:04DF:Object_Slot_15__Health:HP for this entity.
 NesInternalRam:04E0:Object_Slot_16__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04E1:Object_Slot_16__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2845,6 +2937,11 @@ NesInternalRam:04E4:Object_Slot_16__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04E5:Object_Slot_16__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04E6:Object_Slot_16__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04E7:Object_Slot_16__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:04E8:Object_Slot_16__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:04E9:Object_Slot_16__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:04EA:Object_Slot_16__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:04EB:Object_Slot_16__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:04EC:Object_Slot_16__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:04ED:Object_Slot_16__Health:HP for this entity.
 NesInternalRam:04EE:Object_Slot_17__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04EF:Object_Slot_17__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -2854,4 +2951,9 @@ NesInternalRam:04F2:Object_Slot_17__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04F3:Object_Slot_17__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04F4:Object_Slot_17__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04F5:Object_Slot_17__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
+NesInternalRam:04F6:Object_Slot_17__TileIndex:(alpha: not fully human-verified / pending re-verification) Metatile-map collision index.
+NesInternalRam:04F7:Object_Slot_17__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
+NesInternalRam:04F8:Object_Slot_17__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
+NesInternalRam:04F9:Object_Slot_17__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
+NesInternalRam:04FA:Object_Slot_17__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:04FB:Object_Slot_17__Health:HP for this entity.

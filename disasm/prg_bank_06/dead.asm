@@ -8,11 +8,11 @@ L_8DC3: .byte   $00,$00,$01,$01,$01,$00,$FF,$FF ; 8DC3
 .macro MAC_L_A280
 ; ----------------------------------------------------------------------------
 L_A280: clc                                     ; A280
-        lda     PlayerSlot + ObjSlot::Health    ; A281
+        lda     $040D                           ; A281
         adc     #$10                            ; A284
         bcc     L_A28A                          ; A286
         lda     #$FF                            ; A288
-L_A28A: sta     PlayerSlot + ObjSlot::Health    ; A28A
+L_A28A: sta     $040D                           ; A28A
         jmp     LD81C                           ; A28D
 
 ; ----------------------------------------------------------------------------

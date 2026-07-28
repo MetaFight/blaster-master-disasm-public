@@ -4215,51 +4215,6 @@ LABEL {
 };
 
 LABEL {
-  NAME    "LoadedObj_Type";
-  ADDR    $0046;
-};
-
-LABEL {
-  NAME    "LoadedObj_Facing";
-  ADDR    $0047;
-};
-
-LABEL {
-  NAME    "LoadedObj_Position_X_Lo";
-  ADDR    $0048;
-};
-
-LABEL {
-  NAME    "LoadedObj_Position_X_Hi";
-  ADDR    $0049;
-};
-
-LABEL {
-  NAME    "LoadedObj_Position_Y_Lo";
-  ADDR    $004A;
-};
-
-LABEL {
-  NAME    "LoadedObj_Position_Y_Hi";
-  ADDR    $004B;
-};
-
-LABEL {
-  NAME    "LoadedObj_Velocity_X";
-  ADDR    $004C;
-};
-
-LABEL {
-  NAME    "LoadedObj_Velocity_Y";
-  ADDR    $004D;
-};
-
-LABEL {
-  NAME    "LoadedObj_Health";
-  ADDR    $0053;
-};
-
-LABEL {
   NAME    "ObjectSlot_Index";
   ADDR    $0057;
 };

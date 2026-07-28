@@ -99,7 +99,7 @@ L8002:  .addr   L_8124                          ; 8002
         .addr   L_A74B                          ; 80BA
         .addr   LA76A                           ; 80BC
         .addr   ObjHandler_Tank_5F_Gray_Hopper_6HP_Init; 80BE
-        .addr   LA7EE                           ; 80C0
+        .addr   ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking; 80C0
         .addr   L_A86E                          ; 80C2
         .addr   L_A8D2                          ; 80C4
         .addr   LA8FB                           ; 80C6

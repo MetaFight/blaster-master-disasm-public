@@ -77,49 +77,8 @@
 ; in PaletteSanitizeTable ($EBF4): [rw] false positive
 ; in OAM_BlitFromStaging ($EC73): [r] TBD
 Global_FrameCounter            := $0011
-; Active slot's object type
-LoadedObj_Type                 := $0046
-; Which way this object is pointing.
-LoadedObj_Facing               := $0047
-; The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF)
-; representing the object's X-position.
-LoadedObj_Position_X_Lo        := $0048
-; The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff)
-; representing the object's X-position.
-LoadedObj_Position_X_Hi        := $0049
-; The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF)
-; representing the object's Y-position.
-LoadedObj_Position_Y_Lo        := $004A
-; The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff)
-; representing the object's X-position.
-LoadedObj_Position_Y_Hi        := $004B
-; Object X velocity in pixels / frame.
-; Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-LoadedObj_Velocity_X           := $004C
-; Object Y velocity in pixels / frame.
-; Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-LoadedObj_Velocity_Y           := $004D
-; Entity HP
-LoadedObj_Health               := $0053
-; Byte offset of the active slot
-ObjectSlot_Offset              := $0056
-; Index of the active slot
-ObjectSlot_Index               := $0057
-; Counter for Sophia's "look up" animation.
-; 0x00 is not started
-; 0x0C is completed (looking straight up)
-; in Sophia_Dismount ($888C): [w] TBD
-; in Sophia_DoorwayEntry ($89BE): [w] TBD
-; in ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD
-; in ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [r] TBD
-; in Get_Next_Tile_Call ($907B): [r] TBD
-; in ObjHandler_Tank_06_Sophia_RightWall ($916E): [r] TBD
-; in RenderWeaponSprite ($950D): [r] TBD
-; in Sophia_RenderOffsets ($9641): [rw] TBD
-; in LevelInit ($C301): [w] TBD
-Sophia_LookUpAnimation_Counter := $0094
-; ObjSlot: The 14-byte record every active object occupies. 18 are packed at $0400 (the object table); slot 0 is the player.
-.struct ObjSlot
+; Obj: The 14-byte record every active object occupies. 18 are packed at $0400 (the object table); slot 0 is the player.
+.struct Obj
         Type          .byte   ; +$00 (byte)  Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
         Facing        .byte   ; +$01 (byte)  Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
         Position_X_Lo .byte   ; +$02 (fixed44)  The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
@@ -131,12 +90,20 @@ Sophia_LookUpAnimation_Counter := $0094
         .res          5       ; +$08..+$0C
         Health        .byte   ; +$0D (byte)  HP for this entity.
 .endstruct
-; The object table: 18 ObjSlot records (14 bytes each) packed at $0400-$04FB. Slot 0 is
-; reserved for the player (Sophia/Jason); slots 1-17 hold enemies, projectiles, pickups, gates
-; and other objects. Indexed access ($0400,X with X = ObjectSlot_Offset $56) reaches any slot;
+; The 14-byte zero-page working copy of the currently active object slot — the same Obj layout
+; as the $0400 object table. Before each AI dispatch, ObjSlot_Load ($C8DF) copies the active
+; slot ($0400,X with X = ObjectSlot_Offset $56) into $46-$53; ObjSlot_Save ($C928) writes it
+; back after the handler runs. Indexed access (,X/,Y) reaches any field generically (the
+; whole-record copy loops Obj_CopyFieldsToSlot $D7C0, _Obj_SpawnFromZP__CopyRecord $DF27 and
+; ClearObjWorkFields $D7EE); direct (unindexed) access is the single instance (LoadedObj).
+LoadedObject := $0046   ; Obj[] base — indexed access (any element)
+LoadedObj    := $0046   ; element 0 — direct access
+; The object table: 18 Obj records (14 bytes each) packed at $0400-$04FB. Slot 0 is reserved
+; for the player (Sophia/Jason); slots 1-17 hold enemies, projectiles, pickups, gates and
+; other objects. Indexed access ($0400,X with X = ObjectSlot_Offset $56) reaches any slot;
 ; direct access is slot 0 (PlayerSlot). Before each AI dispatch ObjSlot_Load copies the active
 ; slot to ZP $46-$53; ObjSlot_Save writes it back.
-ObjectTable    := $0400   ; ObjSlot[] base — indexed access (any element)
+ObjectTable    := $0400   ; Obj[] base — indexed access (any element)
 PlayerSlot     := $0400   ; element 0 — direct access
 Object_Slot_01 := $040E   ; element 1
 Object_Slot_02 := $041C   ; element 2
@@ -156,3 +123,20 @@ Object_Slot_15 := $04D2   ; element 15
 Object_Slot_16 := $04E0   ; element 16
 Object_Slot_17 := $04EE   ; element 17
 
+; Byte offset of the active slot
+ObjectSlot_Offset              := $0056
+; Index of the active slot
+ObjectSlot_Index               := $0057
+; Counter for Sophia's "look up" animation.
+; 0x00 is not started
+; 0x0C is completed (looking straight up)
+; in Sophia_Dismount ($888C): [w] TBD
+; in Sophia_DoorwayEntry ($89BE): [w] TBD
+; in ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD
+; in ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [r] TBD
+; in Get_Next_Tile_Call ($907B): [r] TBD
+; in ObjHandler_Tank_06_Sophia_RightWall ($916E): [r] TBD
+; in RenderWeaponSprite ($950D): [r] TBD
+; in Sophia_RenderOffsets ($9641): [rw] TBD
+; in LevelInit ($C301): [w] TBD
+Sophia_LookUpAnimation_Counter := $0094

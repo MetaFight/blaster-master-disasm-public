@@ -7,7 +7,7 @@ L_AE78: jmp     L_AE94                          ; AE78
         jsr     L_A2E9                          ; AE7D
         jsr     LEB71                           ; AE80
         and     #$80                            ; AE83
-        sta     LoadedObj_Facing                ; AE85
+        sta     LoadedObj + Obj::Facing         ; AE85
         ldy     #$10                            ; AE87
         jsr     LE1BD                           ; AE89
         lda     #$00                            ; AE8C
@@ -35,12 +35,12 @@ LAE95:  jmp     L_AF03                          ; AE95
 
 ; ----------------------------------------------------------------------------
 L_AEB3: lda     Global_FrameCounter             ; AEB3
-        cmp     LoadedObj_Type                  ; AEB5
+        cmp     LoadedObj + Obj::Type           ; AEB5
         bne     L_AF03                          ; AEB7
         jsr     LEB71                           ; AEB9
         bcc     L_AF03                          ; AEBC
         lda     #$08                            ; AEBE
-        sta     LoadedObj_Velocity_Y            ; AEC0
+        sta     LoadedObj + Obj::Velocity_Y     ; AEC0
         jsr     LEB71                           ; AEC2
         bmi     L_AED5                          ; AEC5
         lda     #$00                            ; AEC7
@@ -49,8 +49,8 @@ L_AEB3: lda     Global_FrameCounter             ; AEB3
         sta     $52                             ; AECC
         lda     #$00                            ; AECE
         sec                                     ; AED0
-        sbc     LoadedObj_Velocity_Y            ; AED1
-        sta     LoadedObj_Velocity_Y            ; AED3
+        sbc     LoadedObj + Obj::Velocity_Y     ; AED1
+        sta     LoadedObj + Obj::Velocity_Y     ; AED3
 L_AED5: lda     #$01                            ; AED5
         sta     $50                             ; AED7
         jmp     L_AF03                          ; AED9
@@ -90,7 +90,7 @@ L_AF13: lda     #$0E                            ; AF13
 ; ----------------------------------------------------------------------------
 L_AF1D: lda     #$01                            ; AF1D
         sta     $44                             ; AF1F
-        lda     LoadedObj_Facing                ; AF21
+        lda     LoadedObj + Obj::Facing         ; AF21
         ldx     #$05                            ; AF23
         jsr     LE060                           ; AF25
         and     #$07                            ; AF28

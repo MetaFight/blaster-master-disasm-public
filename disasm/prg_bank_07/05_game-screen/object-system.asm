@@ -1,18 +1,18 @@
 .macro MAC_L_C5B2
 ; ----------------------------------------------------------------------------
-L_C5B2: lda     LoadedObj_Position_X_Lo         ; C5B2
+L_C5B2: lda     LoadedObj + Obj::Position_X_Lo  ; C5B2
         sta     $03F5                           ; C5B4
-        lda     LoadedObj_Position_X_Hi         ; C5B7
+        lda     LoadedObj + Obj::Position_X_Hi  ; C5B7
         sta     $03F6                           ; C5B9
-        lda     LoadedObj_Position_Y_Lo         ; C5BC
+        lda     LoadedObj + Obj::Position_Y_Lo  ; C5BC
         sta     $03F7                           ; C5BE
-        lda     LoadedObj_Position_Y_Hi         ; C5C1
+        lda     LoadedObj + Obj::Position_Y_Hi  ; C5C1
         sta     $03F8                           ; C5C3
         lda     $14                             ; C5C6
         sta     $03F9                           ; C5C8
         lda     $C1                             ; C5CB
         sta     $03FA                           ; C5CD
-        lda     LoadedObj_Type                  ; C5D0
+        lda     LoadedObj + Obj::Type           ; C5D0
         sta     $0350                           ; C5D2
         lda     $03D0                           ; C5D5
         sta     $0378                           ; C5D8
@@ -30,19 +30,19 @@ L_C5B2: lda     LoadedObj_Position_X_Lo         ; C5B2
 
 ; ----------------------------------------------------------------------------
 L_C5FA: lda     $03F5                           ; C5FA
-        sta     LoadedObj_Position_X_Lo         ; C5FD
+        sta     LoadedObj + Obj::Position_X_Lo  ; C5FD
         lda     $03F6                           ; C5FF
-        sta     LoadedObj_Position_X_Hi         ; C602
+        sta     LoadedObj + Obj::Position_X_Hi  ; C602
         lda     $03F7                           ; C604
-        sta     LoadedObj_Position_Y_Lo         ; C607
+        sta     LoadedObj + Obj::Position_Y_Lo  ; C607
         lda     $03F8                           ; C609
-        sta     LoadedObj_Position_Y_Hi         ; C60C
+        sta     LoadedObj + Obj::Position_Y_Hi  ; C60C
         lda     $03F9                           ; C60E
         sta     $14                             ; C611
         lda     $03FA                           ; C613
         sta     $C1                             ; C616
         lda     $0350                           ; C618
-        sta     LoadedObj_Type                  ; C61B
+        sta     LoadedObj + Obj::Type           ; C61B
         lda     $0378                           ; C61D
         sta     $03D0                           ; C620
         lda     $0379                           ; C623
@@ -64,22 +64,22 @@ L_C5FA: lda     $03F5                           ; C5FA
 ; Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*.
 ObjSlot_Load:
         ldy     ObjectSlot_Offset               ; C8DF
-        lda     ObjectTable + ObjSlot::Type,y   ; C8E1
-        sta     LoadedObj_Type                  ; C8E4
-        lda     ObjectTable + ObjSlot::Facing,y ; C8E6
-        sta     LoadedObj_Facing                ; C8E9
-        lda     ObjectTable + ObjSlot::Position_X_Lo,y ; C8EB
-        sta     LoadedObj_Position_X_Lo         ; C8EE
-        lda     ObjectTable + ObjSlot::Position_X_Hi,y ; C8F0
-        sta     LoadedObj_Position_X_Hi         ; C8F3
-        lda     ObjectTable + ObjSlot::Position_Y_Lo,y ; C8F5
-        sta     LoadedObj_Position_Y_Lo         ; C8F8
-        lda     ObjectTable + ObjSlot::Position_Y_Hi,y ; C8FA
-        sta     LoadedObj_Position_Y_Hi         ; C8FD
-        lda     ObjectTable + ObjSlot::Velocity_X,y ; C8FF
-        sta     LoadedObj_Velocity_X            ; C902
-        lda     ObjectTable + ObjSlot::Velocity_Y,y ; C904
-        sta     LoadedObj_Velocity_Y            ; C907
+        lda     ObjectTable + Obj::Type,y       ; C8E1
+        sta     LoadedObj + Obj::Type           ; C8E4
+        lda     ObjectTable + Obj::Facing,y     ; C8E6
+        sta     LoadedObj + Obj::Facing         ; C8E9
+        lda     ObjectTable + Obj::Position_X_Lo,y ; C8EB
+        sta     LoadedObj + Obj::Position_X_Lo  ; C8EE
+        lda     ObjectTable + Obj::Position_X_Hi,y ; C8F0
+        sta     LoadedObj + Obj::Position_X_Hi  ; C8F3
+        lda     ObjectTable + Obj::Position_Y_Lo,y ; C8F5
+        sta     LoadedObj + Obj::Position_Y_Lo  ; C8F8
+        lda     ObjectTable + Obj::Position_Y_Hi,y ; C8FA
+        sta     LoadedObj + Obj::Position_Y_Hi  ; C8FD
+        lda     ObjectTable + Obj::Velocity_X,y ; C8FF
+        sta     LoadedObj + Obj::Velocity_X     ; C902
+        lda     ObjectTable + Obj::Velocity_Y,y ; C904
+        sta     LoadedObj + Obj::Velocity_Y     ; C907
         lda     $0408,y                         ; C909
         sta     $4E                             ; C90C
         lda     $0409,y                         ; C90E
@@ -90,30 +90,30 @@ ObjSlot_Load:
         sta     $51                             ; C91B
         lda     $040C,y                         ; C91D
         sta     $52                             ; C920
-        lda     ObjectTable + ObjSlot::Health,y ; C922
-        sta     LoadedObj_Health                ; C925
+        lda     ObjectTable + Obj::Health,y     ; C922
+        sta     LoadedObj + Obj::Health         ; C925
         rts                                     ; C927
 
 ; ----------------------------------------------------------------------------
 ; Save LoadedObj_* back to ObjectTable.
 ObjSlot_Save:
         ldy     ObjectSlot_Offset               ; C928
-        lda     LoadedObj_Type                  ; C92A
-        sta     ObjectTable + ObjSlot::Type,y   ; C92C
-        lda     LoadedObj_Facing                ; C92F
-        sta     ObjectTable + ObjSlot::Facing,y ; C931
-        lda     LoadedObj_Position_X_Lo         ; C934
-        sta     ObjectTable + ObjSlot::Position_X_Lo,y ; C936
-        lda     LoadedObj_Position_X_Hi         ; C939
-        sta     ObjectTable + ObjSlot::Position_X_Hi,y ; C93B
-        lda     LoadedObj_Position_Y_Lo         ; C93E
-        sta     ObjectTable + ObjSlot::Position_Y_Lo,y ; C940
-        lda     LoadedObj_Position_Y_Hi         ; C943
-        sta     ObjectTable + ObjSlot::Position_Y_Hi,y ; C945
-        lda     LoadedObj_Velocity_X            ; C948
-        sta     ObjectTable + ObjSlot::Velocity_X,y ; C94A
-        lda     LoadedObj_Velocity_Y            ; C94D
-        sta     ObjectTable + ObjSlot::Velocity_Y,y ; C94F
+        lda     LoadedObj + Obj::Type           ; C92A
+        sta     ObjectTable + Obj::Type,y       ; C92C
+        lda     LoadedObj + Obj::Facing         ; C92F
+        sta     ObjectTable + Obj::Facing,y     ; C931
+        lda     LoadedObj + Obj::Position_X_Lo  ; C934
+        sta     ObjectTable + Obj::Position_X_Lo,y ; C936
+        lda     LoadedObj + Obj::Position_X_Hi  ; C939
+        sta     ObjectTable + Obj::Position_X_Hi,y ; C93B
+        lda     LoadedObj + Obj::Position_Y_Lo  ; C93E
+        sta     ObjectTable + Obj::Position_Y_Lo,y ; C940
+        lda     LoadedObj + Obj::Position_Y_Hi  ; C943
+        sta     ObjectTable + Obj::Position_Y_Hi,y ; C945
+        lda     LoadedObj + Obj::Velocity_X     ; C948
+        sta     ObjectTable + Obj::Velocity_X,y ; C94A
+        lda     LoadedObj + Obj::Velocity_Y     ; C94D
+        sta     ObjectTable + Obj::Velocity_Y,y ; C94F
         lda     $4E                             ; C952
         sta     $0408,y                         ; C954
         lda     $4F                             ; C957
@@ -124,8 +124,8 @@ ObjSlot_Save:
         sta     $040B,y                         ; C963
         lda     $52                             ; C966
         sta     $040C,y                         ; C968
-        lda     LoadedObj_Health                ; C96B
-        sta     ObjectTable + ObjSlot::Health,y ; C96D
+        lda     LoadedObj + Obj::Health         ; C96B
+        sta     ObjectTable + Obj::Health,y     ; C96D
         rts                                     ; C970
 
 ; ----------------------------------------------------------------------------
@@ -133,7 +133,7 @@ L_C971: lda     #$00                            ; C971
         sta     ObjectSlot_Offset               ; C973
         sta     ObjectSlot_Index                ; C975
 L_C977: ldx     ObjectSlot_Offset               ; C977
-        lda     ObjectTable + ObjSlot::Type,x   ; C979
+        lda     $0400,x                         ; C979
         beq     L_C990                          ; C97C
         jsr     ObjSlot_Load                    ; C97E
         lda     $4F                             ; C981
@@ -170,7 +170,7 @@ L_C9AE: txa                                     ; C9AE
         lsr     a                               ; C9B7
         and     #$0F                            ; C9B8
         sta     $D3                             ; C9BA
-        lda     LoadedObj_Type                  ; C9BC
+        lda     LoadedObj + Obj::Type           ; C9BC
         sec                                     ; C9BE
         sbc     #$01                            ; C9BF
         jsr     L_EB51                          ; C9C1
@@ -189,10 +189,10 @@ L_C9D3: jmp     (L007A)                         ; C9D3
 .macro MAC_L_D7F8
 ; ----------------------------------------------------------------------------
 L_D7F8: ldx     ObjectSlot_Index                ; D7F8
-        lda     LoadedObj_Type                  ; D7FA
+        lda     LoadedObj + Obj::Type           ; D7FA
         sta     $0150,x                         ; D7FC
         lda     #$02                            ; D7FF
-        sta     LoadedObj_Type                  ; D801
+        sta     LoadedObj + Obj::Type           ; D801
         rts                                     ; D803
 
 ; ----------------------------------------------------------------------------
@@ -208,7 +208,7 @@ L_D804: ldy     ObjectSlot_Index                ; D804
         lda     #$FF                            ; D817
         sta     $F8,y                           ; D819
 L_D81C: lda     #$00                            ; D81C
-        sta     LoadedObj_Type                  ; D81E
+        sta     LoadedObj + Obj::Type           ; D81E
         sta     $4F                             ; D820
         rts                                     ; D822
 
@@ -226,13 +226,13 @@ L_D82C: lda     ObjectSlot_Index                ; D82C
         jmp     L_D81C                          ; D838
 
 ; ----------------------------------------------------------------------------
-L_D83B: lda     LoadedObj_Position_X_Hi         ; D83B
+L_D83B: lda     LoadedObj + Obj::Position_X_Hi  ; D83B
         sta     L0000                           ; D83D
-        lda     LoadedObj_Position_Y_Hi         ; D83F
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D83F
         sta     $01                             ; D841
-        lda     PlayerSlot + ObjSlot::Position_X_Hi ; D843
+        lda     $0403                           ; D843
         sta     $02                             ; D846
-        lda     PlayerSlot + ObjSlot::Position_Y_Hi ; D848
+        lda     $0405                           ; D848
         sta     $03                             ; D84B
         jsr     L_D02D                          ; D84D
         rts                                     ; D850
@@ -250,7 +250,7 @@ L_D851: pha                                     ; D851
         pla                                     ; D862
         tax                                     ; D863
         pla                                     ; D864
-        sta     ObjectTable + ObjSlot::Type,x   ; D865
+        sta     $0400,x                         ; D865
         rts                                     ; D868
 
 ; ----------------------------------------------------------------------------
@@ -262,10 +262,10 @@ L_D869: pla                                     ; D869
 L_D86D: ldx     #$4C                            ; D86D
         lda     #$40                            ; D86F
         jsr     L_EB14                          ; D871
-        lda     LoadedObj_Velocity_Y            ; D874
+        lda     LoadedObj + Obj::Velocity_Y     ; D874
         sec                                     ; D876
         sbc     #$40                            ; D877
-        sta     LoadedObj_Velocity_Y            ; D879
+        sta     LoadedObj + Obj::Velocity_Y     ; D879
         ldx     #$4D                            ; D87B
         lda     #$40                            ; D87D
         jsr     L_EB14                          ; D87F
@@ -292,8 +292,8 @@ L_DF24: lda     #$00                            ; DF24
 
 ; ----------------------------------------------------------------------------
 L_DF27: ldy     #$00                            ; DF27
-L_DF29: lda     LoadedObj_Type,y                ; DF29
-        sta     ObjectTable + ObjSlot::Type,x   ; DF2C
+L_DF29: lda     LoadedObject + Obj::Type,y      ; DF29
+        sta     $0400,x                         ; DF2C
         inx                                     ; DF2F
         iny                                     ; DF30
         cpy     #$0E                            ; DF31
@@ -319,7 +319,7 @@ L_DF46: lda     L0000                           ; DF46
         jsr     L_D7CF                          ; DF4F
         beq     L_DF62                          ; DF52
         lda     $A0                             ; DF54
-        sta     ObjectTable + ObjSlot::Type,x   ; DF56
+        sta     $0400,x                         ; DF56
         jsr     L_D7C0                          ; DF59
         pla                                     ; DF5C
         sta     L0000                           ; DF5D
@@ -337,8 +337,8 @@ L_DF68: jsr     L_E083                          ; DF68
         bpl     L_DF77                          ; DF6B
         lda     #$00                            ; DF6D
         sec                                     ; DF6F
-        sbc     LoadedObj_Velocity_X            ; DF70
-        sta     LoadedObj_Velocity_X            ; DF72
+        sbc     LoadedObj + Obj::Velocity_X     ; DF70
+        sta     LoadedObj + Obj::Velocity_X     ; DF72
         jmp     L_DF81                          ; DF74
 
 ; ----------------------------------------------------------------------------
@@ -346,8 +346,8 @@ L_DF77: asl     a                               ; DF77
         bpl     L_DF81                          ; DF78
         lda     #$00                            ; DF7A
         sec                                     ; DF7C
-        sbc     LoadedObj_Velocity_Y            ; DF7D
-        sta     LoadedObj_Velocity_Y            ; DF7F
+        sbc     LoadedObj + Obj::Velocity_Y     ; DF7D
+        sta     LoadedObj + Obj::Velocity_Y     ; DF7F
 L_DF81: lda     $9A                             ; DF81
         rts                                     ; DF83
 
@@ -356,8 +356,8 @@ L_DF84: jsr     L_E0A5                          ; DF84
         bpl     L_DF93                          ; DF87
         lda     #$00                            ; DF89
         sec                                     ; DF8B
-        sbc     LoadedObj_Velocity_X            ; DF8C
-        sta     LoadedObj_Velocity_X            ; DF8E
+        sbc     LoadedObj + Obj::Velocity_X     ; DF8C
+        sta     LoadedObj + Obj::Velocity_X     ; DF8E
         jmp     L_DF9D                          ; DF90
 
 ; ----------------------------------------------------------------------------
@@ -365,8 +365,8 @@ L_DF93: asl     a                               ; DF93
         bpl     L_DF9D                          ; DF94
         lda     #$00                            ; DF96
         sec                                     ; DF98
-        sbc     LoadedObj_Velocity_Y            ; DF99
-        sta     LoadedObj_Velocity_Y            ; DF9B
+        sbc     LoadedObj + Obj::Velocity_Y     ; DF99
+        sta     LoadedObj + Obj::Velocity_Y     ; DF9B
 L_DF9D: lda     $9A                             ; DF9D
         rts                                     ; DF9F
 
@@ -382,9 +382,9 @@ L_DFA0: ldy     #$00                            ; DFA0
 ; ----------------------------------------------------------------------------
 L_DFAC: pla                                     ; DFAC
         clc                                     ; DFAD
-        adc     LoadedObj_Velocity_Y            ; DFAE
+        adc     LoadedObj + Obj::Velocity_Y     ; DFAE
         bvs     L_DFB4                          ; DFB0
-        sta     LoadedObj_Velocity_Y            ; DFB2
+        sta     LoadedObj + Obj::Velocity_Y     ; DFB2
 L_DFB4: jsr     L_DF84                          ; DFB4
         and     #$40                            ; DFB7
         beq     L_DFC0                          ; DFB9
@@ -401,12 +401,12 @@ L_DFC0: lda     #$28                            ; DFC0
 
 ; ----------------------------------------------------------------------------
 L_DFD1: clc                                     ; DFD1
-        adc     LoadedObj_Velocity_Y            ; DFD2
-        sta     LoadedObj_Velocity_Y            ; DFD4
+        adc     LoadedObj + Obj::Velocity_Y     ; DFD2
+        sta     LoadedObj + Obj::Velocity_Y     ; DFD4
         txa                                     ; DFD6
         clc                                     ; DFD7
-        adc     LoadedObj_Velocity_X            ; DFD8
-        sta     LoadedObj_Velocity_X            ; DFDA
+        adc     LoadedObj + Obj::Velocity_X     ; DFD8
+        sta     LoadedObj + Obj::Velocity_X     ; DFDA
         rts                                     ; DFDC
 
 ; ----------------------------------------------------------------------------
@@ -437,10 +437,10 @@ L_E005: lda     #$02                            ; E005
         jsr     L_DFA0                          ; E007
         asl     a                               ; E00A
         bpl     L_E018                          ; E00B
-        lda     LoadedObj_Velocity_Y            ; E00D
+        lda     LoadedObj + Obj::Velocity_Y     ; E00D
         bpl     L_E018                          ; E00F
         lda     #$00                            ; E011
-        sta     LoadedObj_Velocity_Y            ; E013
+        sta     LoadedObj + Obj::Velocity_Y     ; E013
         lda     #$FF                            ; E015
         rts                                     ; E017
 
@@ -464,21 +464,21 @@ L_E03B: lda     #$11                            ; E03B
         bmi     L_E04D                          ; E040
         lda     #$00                            ; E042
         sec                                     ; E044
-        sbc     LoadedObj_Velocity_X            ; E045
-        sta     LoadedObj_Velocity_X            ; E047
+        sbc     LoadedObj + Obj::Velocity_X     ; E045
+        sta     LoadedObj + Obj::Velocity_X     ; E047
         lda     #$20                            ; E049
         sta     $51                             ; E04B
 L_E04D: rts                                     ; E04D
 
 ; ----------------------------------------------------------------------------
-L_E04E: ldx     LoadedObj_Velocity_X            ; E04E
+L_E04E: ldx     LoadedObj + Obj::Velocity_X     ; E04E
         bmi     L_E054                          ; E050
         eor     #$40                            ; E052
 L_E054: sta     $44                             ; E054
         rts                                     ; E056
 
 ; ----------------------------------------------------------------------------
-L_E057: ldx     LoadedObj_Velocity_Y            ; E057
+L_E057: ldx     LoadedObj + Obj::Velocity_Y     ; E057
         bpl     L_E05D                          ; E059
         eor     #$80                            ; E05B
 L_E05D: sta     $44                             ; E05D
@@ -496,10 +496,10 @@ L_E071: lda     $52                             ; E071
         rts                                     ; E07A
 
 ; ----------------------------------------------------------------------------
-L_E07B: lda     LoadedObj_Facing                ; E07B
+L_E07B: lda     LoadedObj + Obj::Facing         ; E07B
         clc                                     ; E07D
         adc     $52                             ; E07E
-        sta     LoadedObj_Facing                ; E080
+        sta     LoadedObj + Obj::Facing         ; E080
         rts                                     ; E082
 
 ; ----------------------------------------------------------------------------
@@ -542,9 +542,9 @@ L_E0C4: lda     $9A                             ; E0C4
 
 ; ----------------------------------------------------------------------------
 L_E0C7: tay                                     ; E0C7
-        lda     LoadedObj_Velocity_Y            ; E0C8
+        lda     LoadedObj + Obj::Velocity_Y     ; E0C8
         jsr     L_E196                          ; E0CA
-        sta     LoadedObj_Velocity_Y            ; E0CD
+        sta     LoadedObj + Obj::Velocity_Y     ; E0CD
         rts                                     ; E0CF
 
 ; ----------------------------------------------------------------------------
@@ -555,41 +555,41 @@ L_E0D0: lda     $9A                             ; E0D0
         rts                                     ; E0D7
 
 ; ----------------------------------------------------------------------------
-L_E0D8: lda     LoadedObj_Facing                ; E0D8
+L_E0D8: lda     LoadedObj + Obj::Facing         ; E0D8
         sec                                     ; E0DA
         sbc     #$40                            ; E0DB
         eor     #$FF                            ; E0DD
         clc                                     ; E0DF
         adc     #$41                            ; E0E0
-        sta     LoadedObj_Facing                ; E0E2
+        sta     LoadedObj + Obj::Facing         ; E0E2
         rts                                     ; E0E4
 
 ; ----------------------------------------------------------------------------
 L_E0E5: lda     #$00                            ; E0E5
         sec                                     ; E0E7
-        sbc     LoadedObj_Facing                ; E0E8
-        sta     LoadedObj_Facing                ; E0EA
+        sbc     LoadedObj + Obj::Facing         ; E0E8
+        sta     LoadedObj + Obj::Facing         ; E0EA
         rts                                     ; E0EC
 
 ; ----------------------------------------------------------------------------
 ; Signed X-distance from this object to the player:  Returns X = pixel/frac byte, A = metatile
 ; byte (carries the sign).
 LoadedObj__Get_DeltaToPlayer_X:
-        lda     PlayerSlot + ObjSlot::Position_X_Lo ; E0ED
+        lda     $0402                           ; E0ED
         sec                                     ; E0F0
-        sbc     LoadedObj_Position_X_Lo         ; E0F1
+        sbc     LoadedObj + Obj::Position_X_Lo  ; E0F1
         tax                                     ; E0F3
-        lda     PlayerSlot + ObjSlot::Position_X_Hi ; E0F4
-        sbc     LoadedObj_Position_X_Hi         ; E0F7
+        lda     $0403                           ; E0F4
+        sbc     LoadedObj + Obj::Position_X_Hi  ; E0F7
         rts                                     ; E0F9
 
 ; ----------------------------------------------------------------------------
-L_E0FA: lda     PlayerSlot + ObjSlot::Position_Y_Lo ; E0FA
+L_E0FA: lda     $0404                           ; E0FA
         sec                                     ; E0FD
-        sbc     LoadedObj_Position_Y_Lo         ; E0FE
+        sbc     LoadedObj + Obj::Position_Y_Lo  ; E0FE
         tax                                     ; E100
-        lda     PlayerSlot + ObjSlot::Position_Y_Hi ; E101
-        sbc     LoadedObj_Position_Y_Hi         ; E104
+        lda     $0405                           ; E101
+        sbc     LoadedObj + Obj::Position_Y_Hi  ; E104
         rts                                     ; E106
 
 ; ----------------------------------------------------------------------------
@@ -680,14 +680,14 @@ L_E152: lda     L0000                           ; E152
 
 .macro MAC_L_E1BD
 ; ----------------------------------------------------------------------------
-L_E1BD: lda     LoadedObj_Facing                ; E1BD
+L_E1BD: lda     LoadedObj + Obj::Facing         ; E1BD
         jsr     L_E1D2                          ; E1BF
         jsr     L_E196                          ; E1C2
-        sta     LoadedObj_Velocity_X            ; E1C5
-        lda     LoadedObj_Facing                ; E1C7
+        sta     LoadedObj + Obj::Velocity_X     ; E1C5
+        lda     LoadedObj + Obj::Facing         ; E1C7
         jsr     L_E1D5                          ; E1C9
         jsr     L_E196                          ; E1CC
-        sta     LoadedObj_Velocity_Y            ; E1CF
+        sta     LoadedObj + Obj::Velocity_Y     ; E1CF
         rts                                     ; E1D1
 
 .endmacro

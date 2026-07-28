@@ -28,85 +28,145 @@ _ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight:
         lda     #$B8                            ; A7E1
 ; commit the heading, then zero Velocity X/Y and the wind-up timer LoadedObj_AnimFrame
 _ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing:
-        sta     LoadedObj_Facing                ; A7E3
+        sta     LoadedObj + Obj::Facing         ; A7E3
         lda     #$00                            ; A7E5
-        sta     LoadedObj_Velocity_X            ; A7E7
-        sta     LoadedObj_Velocity_Y            ; A7E9
+        sta     LoadedObj + Obj::Velocity_X     ; A7E7
+        sta     LoadedObj + Obj::Velocity_Y     ; A7E9
         sta     $51                             ; A7EB
 _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done:
         rts                                     ; A7ED
 
 ; ----------------------------------------------------------------------------
-LA7EE:  jmp     L_A840                          ; A7EE
+; ObjType $60 — Gray Hopper (6 HP), active: the hopping/attack half of the enemy. It falls under
+; gravity; on each floor landing it either settles into the walking state $61 or aims a fresh,
+; near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the
+; ground before the stored hop velocity carries it up — so it bounds across the ground toward the
+; player in bursts.
+ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:
+        jmp     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__; A7EE
 
 ; ----------------------------------------------------------------------------
+; $42 = $80 / $43 = $C0: terrain-collision half-extents (16×24 box) — then gate on the wind-up
+; timer $51
+_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:
         lda     #$80                            ; A7F1
         sta     $42                             ; A7F3
         lda     #$C0                            ; A7F5
         sta     $43                             ; A7F7
         lda     $51                             ; A7F9
-        beq     L_A802                          ; A7FB
+; If LoadedObj_AnimFrame (wind-up) is at 0, then proceed to ground check.
+        beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired; A7FB
+; otherwise, decrement LoadedObj_AnimFrame (wind-up).
         dec     $51                             ; A7FD
-        jmp     L_A840                          ; A7FF
+        jmp     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__; A7FF
 
 ; ----------------------------------------------------------------------------
-L_A802: lda     #$04                            ; A802
+; wind-up over: take one ballistic step (Obj_GravityMoveBounce with gravity $04, which also
+; reflects and damps the velocity on contact) and test bit 6 of the wall flags it returns — a
+; vertical, i.e. floor-or-ceiling, contact. Clear means still airborne, so just draw.
+_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired:
+        lda     #$04                            ; A802
         jsr     LDFA0                           ; A804
         and     #$40                            ; A807
-        beq     L_A840                          ; A809
-        lda     LoadedObj_Velocity_Y            ; A80B
-        bpl     L_A840                          ; A80D
+        beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__; A809
+; vertical contact — but floor or ceiling? Obj_GravityMoveBounce reflects YVel on the hit, so
+; after landing $4D is negative (pointing up) and after a ceiling bonk it is positive. Positive →
+; not a landing, keep falling.
+        lda     LoadedObj + Obj::Velocity_Y     ; A80B
+        bpl     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__; A80D
+; landed: arm the 10-frame wind-up ($51 = $0A), then choose between settling into the walk state
+; $61 (INC $46) and hopping again. Settling needs BOTH Step_RNG's carry set and
+; Global_FrameCounter bit 7 set.
+; The carry is not a coin flip. Step_RNG is $13 = 5×$13 − 1 and returns the borrow of that final
+; SEC/SBC #$01, which is clear only when $13 was $00 on entry; the LCG has full period 256, so
+; that happens exactly once per 256 calls. The BCC is therefore taken ~0.4% of the time and the
+; real decision is $11 bit 7 alone — the hopper walks off any landing that falls in the upper half
+; of the 256-frame counter cycle and re-hops in the lower half, alternating roughly every 2
+; seconds rather than randomly.
         lda     #$0A                            ; A80F
         sta     $51                             ; A811
         jsr     LEB71                           ; A813
-        bcc     L_A821                          ; A816
+        bcc     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump; A816
         lda     Global_FrameCounter             ; A818
-        bpl     L_A821                          ; A81A
-        inc     LoadedObj_Type                  ; A81C
-        jmp     L_A840                          ; A81E
+        bpl     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump; A81A
+        inc     LoadedObj + Obj::Type           ; A81C
+        jmp     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__; A81E
 
 ; ----------------------------------------------------------------------------
-L_A821: lda     #$29                            ; A821
+; hop: play sound $29, then aim. The delta is the X distance (LoadedObj__Get_DeltaToPlayer_X =
+; player.X − obj.X), not a Y distance — negative means the player is to the LEFT.
+_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump:
+        lda     #$29                            ; A821
         jsr     Enqueue_Sound_Command           ; A823
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; A826
-        bmi     L_A830                          ; A829
+        bmi     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft; A829
         lda     #$C8                            ; A82B
-        jmp     L_A832                          ; A82D
+        jmp     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch; A82D
 
 ; ----------------------------------------------------------------------------
-L_A830: lda     #$B8                            ; A830
-L_A832: sta     LoadedObj_Facing                ; A832
+; player to the LEFT → heading $B8 = $C0 − $08, tilted 11.25° left of straight up (the $C8 above
+; is the mirror, for a player to the right). This is the correctly-aimed pair; the Init at
+; $A7DC/$A7E1 assigns the same two constants the other way round.
+_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft:
+        lda     #$B8                            ; A830
+; launch: commit the heading to $47 and pass the speed magnitude $52 + (Step_RNG & $0F) = $30..$3F
+; to Obj_AngleToVelocity in Y. This is a velocity computation, not a child spawn — $E1BD resolves
+; heading+speed into $4C/$4D through Trig_QuarterSineTable.
+; Because $B8/$C8 sit only $08 either side of straight up, the components come out about 4:1 in
+; favour of the vertical: |cos| = 25 and |sin| = 125 out of the table's $7F peak, scaled by the
+; speed and shifted down 8, giving $4D ≈ −23..−30 (upward) against $4C ≈ ±4..±6. So it leaps
+; almost straight up and only drifts onto the player.
+_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:
+        sta     LoadedObj + Obj::Facing         ; A832
         jsr     LEB71                           ; A834
         and     #$0F                            ; A837
         clc                                     ; A839
         adc     $52                             ; A83A
         tay                                     ; A83C
         jsr     LE1BD                           ; A83D
-L_A840: lda     #$10                            ; A840
+; +0 (fade/freeze) entry, and the tail every other path falls into: $40/$41 give ScreenPos_Compute
+; the box's FULL extent — $10 wide by $18 tall, a 16x24 box, which that routine halves itself. It
+; returns $00 on-screen; anything else means the hopper has scrolled away, so park the slot via
+; Obj_StashTypeSetState02.
+_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__:
+        lda     #$10                            ; A840
         sta     $40                             ; A842
         lda     #$18                            ; A844
         sta     $41                             ; A846
         jsr     LEF2B                           ; A848
-        beq     L_A850                          ; A84B
+        beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage; A84B
         jmp     LD7F8                           ; A84D
 
 ; ----------------------------------------------------------------------------
-L_A850: lda     #$05                            ; A850
+; on-screen: run the shared damage check against descriptor $05. A non-zero return means this hit
+; killed it — tail-call TankEnemy_Defeat, which does the per-slot bookkeeping and falls into the
+; drop spawner.
+_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage:
+        lda     #$05                            ; A850
         jsr     L_A30A                          ; A852
-        beq     L_A85A                          ; A855
+        beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render; A855
         jmp     L_A34D                          ; A857
 
 ; ----------------------------------------------------------------------------
-L_A85A: lda     #$01                            ; A85A
+; still alive: $44 = sprite palette 1, plus the horizontal-flip bit when the X velocity $4C is
+; non-negative (Obj_SetAttrFlipX derives the flip from $4C, NOT from the heading $47). Then pick
+; the pose from the wind-up timer.
+_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:
+        lda     #$01                            ; A85A
         jsr     LE04E                           ; A85C
         lda     $51                             ; A85F
-        beq     L_A868                          ; A861
+        beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle; A861
+; $51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
         lda     #$02                            ; A863
-        jmp     L_A86A                          ; A865
+        jmp     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile; A865
 
 ; ----------------------------------------------------------------------------
-L_A868: lda     #$03                            ; A868
-L_A86A: jmp     LF011                           ; A86A
+; $51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose
+_ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle:
+        lda     #$03                            ; A868
+; tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
+_ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile:
+        jmp     LF011                           ; A86A
 
 ; ----------------------------------------------------------------------------
         rts                                     ; A86D

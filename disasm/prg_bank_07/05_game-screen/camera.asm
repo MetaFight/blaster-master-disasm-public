@@ -4,15 +4,15 @@ L_CBB4: lda     $1D                             ; CBB4
         sta     L0000                           ; CBB6
         lda     $1F                             ; CBB8
         sta     $01                             ; CBBA
-        lda     LoadedObj_Position_X_Lo         ; CBBC
+        lda     LoadedObj + Obj::Position_X_Lo  ; CBBC
         sta     $1C                             ; CBBE
-        lda     LoadedObj_Position_X_Hi         ; CBC0
+        lda     LoadedObj + Obj::Position_X_Hi  ; CBC0
         sec                                     ; CBC2
         sbc     #$08                            ; CBC3
         sta     $1D                             ; CBC5
-        lda     LoadedObj_Position_Y_Lo         ; CBC7
+        lda     LoadedObj + Obj::Position_Y_Lo  ; CBC7
         sta     $1E                             ; CBC9
-        lda     LoadedObj_Position_Y_Hi         ; CBCB
+        lda     LoadedObj + Obj::Position_Y_Hi  ; CBCB
         sta     $1F                             ; CBCD
         sec                                     ; CBCF
         lda     $1E                             ; CBD0
@@ -28,49 +28,49 @@ L_CBDF: lda     $1D                             ; CBDF
         sta     L0000                           ; CBE1
         lda     $1F                             ; CBE3
         sta     $01                             ; CBE5
-        lda     LoadedObj_Position_X_Lo         ; CBE7
+        lda     LoadedObj + Obj::Position_X_Lo  ; CBE7
         cmp     $1C                             ; CBE9
-        lda     LoadedObj_Position_X_Hi         ; CBEB
+        lda     LoadedObj + Obj::Position_X_Hi  ; CBEB
         sbc     $1D                             ; CBED
         and     #$7F                            ; CBEF
         cmp     #$09                            ; CBF1
         bcs     L_CC03                          ; CBF3
         cmp     #$07                            ; CBF5
         bcs     L_CC0E                          ; CBF7
-        lda     LoadedObj_Position_X_Hi         ; CBF9
+        lda     LoadedObj + Obj::Position_X_Hi  ; CBF9
         sec                                     ; CBFB
         sbc     #$07                            ; CBFC
         sta     $1D                             ; CBFE
         jmp     L_CC0A                          ; CC00
 
 ; ----------------------------------------------------------------------------
-L_CC03: lda     LoadedObj_Position_X_Hi         ; CC03
+L_CC03: lda     LoadedObj + Obj::Position_X_Hi  ; CC03
         sec                                     ; CC05
         sbc     #$09                            ; CC06
         sta     $1D                             ; CC08
-L_CC0A: lda     LoadedObj_Position_X_Lo         ; CC0A
+L_CC0A: lda     LoadedObj + Obj::Position_X_Lo  ; CC0A
         sta     $1C                             ; CC0C
-L_CC0E: lda     LoadedObj_Position_Y_Lo         ; CC0E
+L_CC0E: lda     LoadedObj + Obj::Position_Y_Lo  ; CC0E
         cmp     $1E                             ; CC10
-        lda     LoadedObj_Position_Y_Hi         ; CC12
+        lda     LoadedObj + Obj::Position_Y_Hi  ; CC12
         sbc     $1F                             ; CC14
         and     #$7F                            ; CC16
         cmp     #$0A                            ; CC18
         bcs     L_CC2A                          ; CC1A
         cmp     #$05                            ; CC1C
         bcs     L_CC35                          ; CC1E
-        lda     LoadedObj_Position_Y_Hi         ; CC20
+        lda     LoadedObj + Obj::Position_Y_Hi  ; CC20
         sec                                     ; CC22
         sbc     #$05                            ; CC23
         sta     $1F                             ; CC25
         jmp     L_CC31                          ; CC27
 
 ; ----------------------------------------------------------------------------
-L_CC2A: lda     LoadedObj_Position_Y_Hi         ; CC2A
+L_CC2A: lda     LoadedObj + Obj::Position_Y_Hi  ; CC2A
         sec                                     ; CC2C
         sbc     #$0A                            ; CC2D
         sta     $1F                             ; CC2F
-L_CC31: lda     LoadedObj_Position_Y_Lo         ; CC31
+L_CC31: lda     LoadedObj + Obj::Position_Y_Lo  ; CC31
         sta     $1E                             ; CC33
 L_CC35: lda     $C5                             ; CC35
         and     #$01                            ; CC37
@@ -229,7 +229,7 @@ L_CD28: jsr     L_CD71                          ; CD28
         rts                                     ; CD32
 
 ; ----------------------------------------------------------------------------
-L_CD33: lda     LoadedObj_Position_X_Hi         ; CD33
+L_CD33: lda     LoadedObj + Obj::Position_X_Hi  ; CD33
         sec                                     ; CD35
         sbc     #$02                            ; CD36
         and     #$70                            ; CD38
@@ -271,7 +271,7 @@ L_CD6E: lda     #$FF                            ; CD6E
         rts                                     ; CD70
 
 ; ----------------------------------------------------------------------------
-L_CD71: lda     LoadedObj_Position_Y_Hi         ; CD71
+L_CD71: lda     LoadedObj + Obj::Position_Y_Hi  ; CD71
         sec                                     ; CD73
         sbc     #$02                            ; CD74
         and     #$70                            ; CD76

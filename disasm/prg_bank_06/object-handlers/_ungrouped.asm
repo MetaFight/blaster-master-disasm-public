@@ -11,11 +11,11 @@ L_8124: jmp     L_815B                          ; 8124
         bne     L_813C                          ; 8132
         ldx     ObjectSlot_Index                ; 8134
         lda     $0150,x                         ; 8136
-        sta     LoadedObj_Type                  ; 8139
+        sta     LoadedObj + Obj::Type           ; 8139
         rts                                     ; 813B
 
 ; ----------------------------------------------------------------------------
-L_813C: lda     LoadedObj_Position_X_Hi         ; 813C
+L_813C: lda     LoadedObj + Obj::Position_X_Hi  ; 813C
         sec                                     ; 813E
         sbc     $1D                             ; 813F
         clc                                     ; 8141
@@ -23,7 +23,7 @@ L_813C: lda     LoadedObj_Position_X_Hi         ; 813C
         and     #$7F                            ; 8144
         cmp     #$20                            ; 8146
         bcs     L_8158                          ; 8148
-        lda     LoadedObj_Position_Y_Hi         ; 814A
+        lda     LoadedObj + Obj::Position_Y_Hi  ; 814A
         sec                                     ; 814C
         sbc     $1F                             ; 814D
         clc                                     ; 814F
@@ -44,12 +44,12 @@ L_A237: jmp     L_A24C                          ; A237
 
 ; ----------------------------------------------------------------------------
         lda     $9D                             ; A23A
-        sta     LoadedObj_Facing                ; A23C
+        sta     LoadedObj + Obj::Facing         ; A23C
         lda     $9E                             ; A23E
         tay                                     ; A240
         jsr     LE1BD                           ; A241
         jsr     LD2B9                           ; A244
-        inc     LoadedObj_Type                  ; A247
+        inc     LoadedObj + Obj::Type           ; A247
         jsr     L_9E9E                          ; A249
 L_A24C: rts                                     ; A24C
 

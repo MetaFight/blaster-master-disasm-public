@@ -7,7 +7,7 @@ L_AF3A: jmp     L_AF60                          ; AF3A
         jsr     L_A2E9                          ; AF3F
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; AF42
         and     #$80                            ; AF45
-        sta     LoadedObj_Facing                ; AF47
+        sta     LoadedObj + Obj::Facing         ; AF47
         bpl     L_AF4F                          ; AF49
         lda     #$10                            ; AF4B
         bne     L_AF51                          ; AF4D
@@ -58,13 +58,13 @@ L_AF96: cmp     #$01                            ; AF96
         jsr     LDF0F                           ; AF9E
         beq     L_AFBC                          ; AFA1
         lda     #$3A                            ; AFA3
-        sta     ObjectTable + ObjSlot::Type,x   ; AFA5
+        sta     $0400,x                         ; AFA5
         lda     $52                             ; AFA8
         bpl     L_AFB1                          ; AFAA
         eor     #$FF                            ; AFAC
         clc                                     ; AFAE
         adc     #$01                            ; AFAF
-L_AFB1: ldx     LoadedObj_Velocity_X            ; AFB1
+L_AFB1: ldx     LoadedObj + Obj::Velocity_X     ; AFB1
         bmi     L_AFBC                          ; AFB3
         eor     #$FF                            ; AFB5
         clc                                     ; AFB7

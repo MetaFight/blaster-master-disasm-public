@@ -15,10 +15,10 @@ L_89BE: lda     $1C                             ; 89BE
         sta     $51                             ; 89D4
         sta     $D9                             ; 89D6
         lda     #$10                            ; 89D8
-        ldx     LoadedObj_Facing                ; 89DA
+        ldx     LoadedObj + Obj::Facing         ; 89DA
         bmi     L_89E0                          ; 89DC
         lda     #$0D                            ; 89DE
-L_89E0: sta     LoadedObj_Type                  ; 89E0
+L_89E0: sta     LoadedObj + Obj::Type           ; 89E0
         jmp     L_94FC                          ; 89E2
 
 ; ----------------------------------------------------------------------------
@@ -30,17 +30,17 @@ L89E5:  jmp     L_8A09                          ; 89E5
         cmp     #$25                            ; 89EC
         bne     L_8A09                          ; 89EE
         clc                                     ; 89F0
-        lda     LoadedObj_Position_X_Lo         ; 89F1
+        lda     LoadedObj + Obj::Position_X_Lo  ; 89F1
         adc     #$80                            ; 89F3
-        sta     LoadedObj_Position_X_Lo         ; 89F5
-        lda     LoadedObj_Position_X_Hi         ; 89F7
+        sta     LoadedObj + Obj::Position_X_Lo  ; 89F5
+        lda     LoadedObj + Obj::Position_X_Hi  ; 89F7
         adc     #$09                            ; 89F9
-        sta     LoadedObj_Position_X_Hi         ; 89FB
+        sta     LoadedObj + Obj::Position_X_Hi  ; 89FB
         lda     $4E                             ; 89FD
         clc                                     ; 89FF
         adc     #$09                            ; 8A00
         sta     $4E                             ; 8A02
-        inc     LoadedObj_Type                  ; 8A04
+        inc     LoadedObj + Obj::Type           ; 8A04
         jmp     L_8A12                          ; 8A06
 
 ; ----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ L8A0F:  jmp     L_8A1C                          ; 8A0F
 ; ----------------------------------------------------------------------------
 L_8A12: jsr     LCD28                           ; 8A12
         bne     L_8A19                          ; 8A15
-        inc     LoadedObj_Type                  ; 8A17
+        inc     LoadedObj + Obj::Type           ; 8A17
 L_8A19: jmp     LD1AD                           ; 8A19
 
 ; ----------------------------------------------------------------------------
@@ -66,7 +66,7 @@ L8A1D:  jmp     L_8A2B                          ; 8A1D
         dec     $51                             ; 8A20
         bne     L_8A2B                          ; 8A22
         lda     #$03                            ; 8A24
-        sta     LoadedObj_Type                  ; 8A26
+        sta     LoadedObj + Obj::Type           ; 8A26
         jsr     LC5B2                           ; 8A28
 L_8A2B: jmp     L_8A77                          ; 8A2B
 
@@ -79,17 +79,17 @@ L8A2E:  jmp     L_8A52                          ; 8A2E
         cmp     #$25                            ; 8A35
         bne     L_8A52                          ; 8A37
         sec                                     ; 8A39
-        lda     LoadedObj_Position_X_Lo         ; 8A3A
+        lda     LoadedObj + Obj::Position_X_Lo  ; 8A3A
         sbc     #$80                            ; 8A3C
-        sta     LoadedObj_Position_X_Lo         ; 8A3E
-        lda     LoadedObj_Position_X_Hi         ; 8A40
+        sta     LoadedObj + Obj::Position_X_Lo  ; 8A3E
+        lda     LoadedObj + Obj::Position_X_Hi  ; 8A40
         sbc     #$09                            ; 8A42
-        sta     LoadedObj_Position_X_Hi         ; 8A44
+        sta     LoadedObj + Obj::Position_X_Hi  ; 8A44
         lda     $4E                             ; 8A46
         sec                                     ; 8A48
         sbc     #$09                            ; 8A49
         sta     $4E                             ; 8A4B
-        inc     LoadedObj_Type                  ; 8A4D
+        inc     LoadedObj + Obj::Type           ; 8A4D
         jmp     L_8A5B                          ; 8A4F
 
 ; ----------------------------------------------------------------------------
@@ -102,7 +102,7 @@ L8A58:  jmp     L_8A65                          ; 8A58
 ; ----------------------------------------------------------------------------
 L_8A5B: jsr     LCD28                           ; 8A5B
         bne     L_8A62                          ; 8A5E
-        inc     LoadedObj_Type                  ; 8A60
+        inc     LoadedObj + Obj::Type           ; 8A60
 L_8A62: jmp     LD1AD                           ; 8A62
 
 ; ----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ L8A66:  jmp     L_8A74                          ; 8A66
         dec     $51                             ; 8A69
         bne     L_8A74                          ; 8A6B
         lda     #$03                            ; 8A6D
-        sta     LoadedObj_Type                  ; 8A6F
+        sta     LoadedObj + Obj::Type           ; 8A6F
         jsr     LC5B2                           ; 8A71
 L_8A74: jmp     L_8AB2                          ; 8A74
 
@@ -192,7 +192,7 @@ L_8AED: jsr     LD790                           ; 8AED
         lda     #$00                            ; 8AF0
         sta     $51                             ; 8AF2
         lda     #$09                            ; 8AF4
-        sta     LoadedObj_Type                  ; 8AF6
+        sta     LoadedObj + Obj::Type           ; 8AF6
 L8AF8:  jmp     L_8B0E                          ; 8AF8
 
 ; ----------------------------------------------------------------------------
@@ -218,7 +218,7 @@ L_8B2B: jsr     LD790                           ; 8B2B
         lda     #$00                            ; 8B2E
         sta     $51                             ; 8B30
         lda     #$0A                            ; 8B32
-        sta     LoadedObj_Type                  ; 8B34
+        sta     LoadedObj + Obj::Type           ; 8B34
 L8B36:  jmp     L_8B4C                          ; 8B36
 
 ; ----------------------------------------------------------------------------
@@ -244,7 +244,7 @@ L_8B69: jsr     LD790                           ; 8B69
         lda     #$00                            ; 8B6C
         sta     $51                             ; 8B6E
         lda     #$0B                            ; 8B70
-        sta     LoadedObj_Type                  ; 8B72
+        sta     LoadedObj + Obj::Type           ; 8B72
 L8B74:  jmp     L_8B8A                          ; 8B74
 
 ; ----------------------------------------------------------------------------
@@ -270,7 +270,7 @@ L_8BA7: jsr     LD790                           ; 8BA7
         lda     #$00                            ; 8BAA
         sta     $51                             ; 8BAC
         lda     #$0C                            ; 8BAE
-        sta     LoadedObj_Type                  ; 8BB0
+        sta     LoadedObj + Obj::Type           ; 8BB0
 L8BB2:  jmp     L_8BC8                          ; 8BB2
 
 ; ----------------------------------------------------------------------------
@@ -296,36 +296,36 @@ L_8BE5: ldy     $51                             ; 8BE5
         cpy     #$08                            ; 8BE7
         beq     L_8C00                          ; 8BE9
         lda     ($7A),y                         ; 8BEB
-        sta     LoadedObj_Velocity_X            ; 8BED
+        sta     LoadedObj + Obj::Velocity_X     ; 8BED
         tya                                     ; 8BEF
         clc                                     ; 8BF0
         adc     #$08                            ; 8BF1
         tay                                     ; 8BF3
         lda     ($7A),y                         ; 8BF4
-        sta     LoadedObj_Velocity_Y            ; 8BF6
+        sta     LoadedObj + Obj::Velocity_Y     ; 8BF6
         inc     $51                             ; 8BF8
         jsr     L_8C32                          ; 8BFA
         jmp     LD2DB                           ; 8BFD
 
 ; ----------------------------------------------------------------------------
-L_8C00: lda     LoadedObj_Facing                ; 8C00
+L_8C00: lda     LoadedObj + Obj::Facing         ; 8C00
         bmi     L_8C08                          ; 8C02
         lda     #$0F                            ; 8C04
         bne     L_8C0A                          ; 8C06
 L_8C08: lda     #$80                            ; 8C08
-L_8C0A: sta     LoadedObj_Facing                ; 8C0A
+L_8C0A: sta     LoadedObj + Obj::Facing         ; 8C0A
         lda     $50                             ; 8C0C
         clc                                     ; 8C0E
         adc     #$10                            ; 8C0F
         tay                                     ; 8C11
         lda     ($7A),y                         ; 8C12
-        sta     LoadedObj_Type                  ; 8C14
+        sta     LoadedObj + Obj::Type           ; 8C14
         ldy     #$14                            ; 8C16
         lda     ($7A),y                         ; 8C18
-        sta     LoadedObj_Velocity_X            ; 8C1A
+        sta     LoadedObj + Obj::Velocity_X     ; 8C1A
         iny                                     ; 8C1C
         lda     ($7A),y                         ; 8C1D
-        sta     LoadedObj_Velocity_Y            ; 8C1F
+        sta     LoadedObj + Obj::Velocity_Y     ; 8C1F
         jsr     L_8C32                          ; 8C21
         lda     $45                             ; 8C24
         jsr     L_8C4D                          ; 8C26
@@ -342,15 +342,15 @@ L_8C32: lda     #$01                            ; 8C32
         beq     L_8C3F                          ; 8C36
         lda     #$00                            ; 8C38
         sec                                     ; 8C3A
-        sbc     LoadedObj_Velocity_X            ; 8C3B
-        sta     LoadedObj_Velocity_X            ; 8C3D
+        sbc     LoadedObj + Obj::Velocity_X     ; 8C3B
+        sta     LoadedObj + Obj::Velocity_X     ; 8C3D
 L_8C3F: lda     #$02                            ; 8C3F
         bit     $50                             ; 8C41
         beq     L_8C4C                          ; 8C43
         lda     #$00                            ; 8C45
         sec                                     ; 8C47
-        sbc     LoadedObj_Velocity_Y            ; 8C48
-        sta     LoadedObj_Velocity_Y            ; 8C4A
+        sbc     LoadedObj + Obj::Velocity_Y     ; 8C48
+        sta     LoadedObj + Obj::Velocity_Y     ; 8C4A
 L_8C4C: rts                                     ; 8C4C
 
 .endmacro
@@ -408,7 +408,7 @@ L8CB0:  jmp     L_8DC0                          ; 8CB0
         jsr     L_96C2                          ; 8CBE
         bne     L_8CCA                          ; 8CC1
         lda     #$03                            ; 8CC3
-        sta     LoadedObj_Type                  ; 8CC5
+        sta     LoadedObj + Obj::Type           ; 8CC5
         jmp     L_8DC0                          ; 8CC7
 
 ; ----------------------------------------------------------------------------
@@ -424,17 +424,17 @@ L_8CCA: lda     #$00                            ; 8CCA
         lda     Global_FrameCounter             ; 8CDD
         and     #$03                            ; 8CDF
         bne     L_8D03                          ; 8CE1
-        lda     LoadedObj_Velocity_X            ; 8CE3
+        lda     LoadedObj + Obj::Velocity_X     ; 8CE3
         beq     L_8D03                          ; 8CE5
         bmi     L_8CF4                          ; 8CE7
         bpl     L_8CED                          ; 8CE9
-L_8CEB: dec     LoadedObj_Velocity_X            ; 8CEB
-L_8CED: dec     LoadedObj_Velocity_X            ; 8CED
+L_8CEB: dec     LoadedObj + Obj::Velocity_X     ; 8CEB
+L_8CED: dec     LoadedObj + Obj::Velocity_X     ; 8CED
         jmp     L_8CF6                          ; 8CEF
 
 ; ----------------------------------------------------------------------------
-L_8CF2: inc     LoadedObj_Velocity_X            ; 8CF2
-L_8CF4: inc     LoadedObj_Velocity_X            ; 8CF4
+L_8CF2: inc     LoadedObj + Obj::Velocity_X     ; 8CF2
+L_8CF4: inc     LoadedObj + Obj::Velocity_X     ; 8CF4
 L_8CF6: ldx     #$4C                            ; 8CF6
         lda     #$10                            ; 8CF8
         bit     $F7                             ; 8CFA
@@ -447,65 +447,65 @@ L_8D03: lda     $F7                             ; 8D03
         lda     $F7                             ; 8D09
         and     #$04                            ; 8D0B
         bne     L_8D24                          ; 8D0D
-        inc     LoadedObj_Velocity_Y            ; 8D0F
+        inc     LoadedObj + Obj::Velocity_Y     ; 8D0F
         bmi     L_8D39                          ; 8D11
         lda     #$04                            ; 8D13
-        cmp     LoadedObj_Velocity_Y            ; 8D15
+        cmp     LoadedObj + Obj::Velocity_Y     ; 8D15
         bcs     L_8D39                          ; 8D17
-        sta     LoadedObj_Velocity_Y            ; 8D19
+        sta     LoadedObj + Obj::Velocity_Y     ; 8D19
         bcc     L_8D39                          ; 8D1B
-L_8D1D: dec     LoadedObj_Velocity_Y            ; 8D1D
-        dec     LoadedObj_Velocity_Y            ; 8D1F
+L_8D1D: dec     LoadedObj + Obj::Velocity_Y     ; 8D1D
+        dec     LoadedObj + Obj::Velocity_Y     ; 8D1F
         jmp     L_8D28                          ; 8D21
 
 ; ----------------------------------------------------------------------------
-L_8D24: inc     LoadedObj_Velocity_Y            ; 8D24
-        inc     LoadedObj_Velocity_Y            ; 8D26
-L_8D28: lda     LoadedObj_Health                ; 8D28
+L_8D24: inc     LoadedObj + Obj::Velocity_Y     ; 8D24
+        inc     LoadedObj + Obj::Velocity_Y     ; 8D26
+L_8D28: lda     LoadedObj + Obj::Health         ; 8D28
         bne     L_8D32                          ; 8D2A
         lda     #$30                            ; 8D2C
-        sta     LoadedObj_Velocity_Y            ; 8D2E
+        sta     LoadedObj + Obj::Velocity_Y     ; 8D2E
         bne     L_8D39                          ; 8D30
 L_8D32: ldx     #$4D                            ; 8D32
         lda     #$18                            ; 8D34
         jsr     LEB14                           ; 8D36
 L_8D39: jsr     LD3DE                           ; 8D39
         beq     L_8D4E                          ; 8D3C
-        lda     LoadedObj_Velocity_Y            ; 8D3E
+        lda     LoadedObj + Obj::Velocity_Y     ; 8D3E
         bmi     L_8D48                          ; 8D40
         lda     #$03                            ; 8D42
-        sta     LoadedObj_Type                  ; 8D44
+        sta     LoadedObj + Obj::Type           ; 8D44
         bne     L_8D66                          ; 8D46
 L_8D48: lda     #$10                            ; 8D48
-        sta     LoadedObj_Velocity_Y            ; 8D4A
+        sta     LoadedObj + Obj::Velocity_Y     ; 8D4A
         bne     L_8D66                          ; 8D4C
 L_8D4E: jsr     LD2AB                           ; 8D4E
         and     #$40                            ; 8D51
         bne     L_8D66                          ; 8D53
         lda     #$00                            ; 8D55
-        sta     LoadedObj_Position_Y_Lo         ; 8D57
-        inc     LoadedObj_Position_Y_Hi         ; 8D59
+        sta     LoadedObj + Obj::Position_Y_Lo  ; 8D57
+        inc     LoadedObj + Obj::Position_Y_Hi  ; 8D59
         lda     $4E                             ; 8D5B
         clc                                     ; 8D5D
         adc     #$11                            ; 8D5E
         sta     $4E                             ; 8D60
         lda     #$10                            ; 8D62
-        sta     LoadedObj_Velocity_Y            ; 8D64
+        sta     LoadedObj + Obj::Velocity_Y     ; 8D64
 L_8D66: jsr     LD37A                           ; 8D66
         beq     L_8D91                          ; 8D69
-        lda     LoadedObj_Position_Y_Lo         ; 8D6B
+        lda     LoadedObj + Obj::Position_Y_Lo  ; 8D6B
         bne     L_8D91                          ; 8D6D
         lda     #$F0                            ; 8D6F
-        bit     LoadedObj_Velocity_X            ; 8D71
+        bit     LoadedObj + Obj::Velocity_X     ; 8D71
         bpl     L_8D77                          ; 8D73
         lda     #$EE                            ; 8D75
 L_8D77: jsr     LD2B1                           ; 8D77
         and     #$C0                            ; 8D7A
         bne     L_8D91                          ; 8D7C
         lda     #$80                            ; 8D7E
-        sta     LoadedObj_Position_X_Lo         ; 8D80
-        sta     LoadedObj_Position_Y_Lo         ; 8D82
-        dec     LoadedObj_Position_Y_Hi         ; 8D84
+        sta     LoadedObj + Obj::Position_X_Lo  ; 8D80
+        sta     LoadedObj + Obj::Position_Y_Lo  ; 8D82
+        dec     LoadedObj + Obj::Position_Y_Hi  ; 8D84
         lda     $4E                             ; 8D86
         sec                                     ; 8D88
         sbc     #$11                            ; 8D89
@@ -520,7 +520,7 @@ L_8D91: lda     #$00                            ; 8D91
         beq     L_8DAD                          ; 8D9B
         cmp     #$02                            ; 8D9D
         beq     L_8DA5                          ; 8D9F
-        lda     LoadedObj_Facing                ; 8DA1
+        lda     LoadedObj + Obj::Facing         ; 8DA1
         bpl     L_8DAD                          ; 8DA3
 L_8DA5: ldx     #$03                            ; 8DA5
         lda     #$80                            ; 8DA7
@@ -530,7 +530,7 @@ L_8DAD: ldx     #$01                            ; 8DAD
         lda     #$0F                            ; 8DAF
         ldy     #$70                            ; 8DB1
 L_8DB3: stx     $BE                             ; 8DB3
-        sta     LoadedObj_Facing                ; 8DB5
+        sta     LoadedObj + Obj::Facing         ; 8DB5
         sty     $BC                             ; 8DB7
         lda     #$C0                            ; 8DB9
         sta     $BD                             ; 8DBB
@@ -557,7 +557,7 @@ L_8DD5: lda     #$18                            ; 8DD5
         adc     #$04                            ; 8DEF
         sta     $3F                             ; 8DF1
         lda     #$00                            ; 8DF3
-        ldx     LoadedObj_Facing                ; 8DF5
+        ldx     LoadedObj + Obj::Facing         ; 8DF5
         bmi     L_8DFB                          ; 8DF7
         lda     #$40                            ; 8DF9
 L_8DFB: sta     $44                             ; 8DFB
@@ -584,7 +584,7 @@ L_8E11: txa                                     ; 8E11
         sta     $3F                             ; 8E20
         lda     #$00                            ; 8E22
         sta     $44                             ; 8E24
-        lda     LoadedObj_Facing                ; 8E26
+        lda     LoadedObj + Obj::Facing         ; 8E26
         lsr     a                               ; 8E28
         lsr     a                               ; 8E29
         and     #$03                            ; 8E2A
@@ -606,7 +606,7 @@ L_8E97: jmp     L_8F64                          ; 8E97
         sta     $43                             ; 8EA3
         jsr     L_96C2                          ; 8EA5
         lda     #$80                            ; 8EA8
-        sta     LoadedObj_Position_Y_Lo         ; 8EAA
+        sta     LoadedObj + Obj::Position_Y_Lo  ; 8EAA
         lda     $99                             ; 8EAC
         and     #$0C                            ; 8EAE
         cmp     #$0C                            ; 8EB0
@@ -616,20 +616,20 @@ L_8E97: jmp     L_8F64                          ; 8E97
 ; ----------------------------------------------------------------------------
 L_8EB7: lda     #$00                            ; 8EB7
         sec                                     ; 8EB9
-        sbc     LoadedObj_Velocity_X            ; 8EBA
-        sta     LoadedObj_Velocity_X            ; 8EBC
+        sbc     LoadedObj + Obj::Velocity_X     ; 8EBA
+        sta     LoadedObj + Obj::Velocity_X     ; 8EBC
         jsr     L_8E32                          ; 8EBE
         lda     #$00                            ; 8EC1
         sec                                     ; 8EC3
-        sbc     LoadedObj_Velocity_X            ; 8EC4
-        sta     LoadedObj_Velocity_X            ; 8EC6
+        sbc     LoadedObj + Obj::Velocity_X     ; 8EC4
+        sta     LoadedObj + Obj::Velocity_X     ; 8EC6
         jsr     LD2DE                           ; 8EC8
         jsr     LD37D                           ; 8ECB
         beq     L_8EF8                          ; 8ECE
         lda     #$11                            ; 8ED0
         jsr     LD2B1                           ; 8ED2
         bmi     L_8F2F                          ; 8ED5
-        ldx     LoadedObj_Position_X_Lo         ; 8ED7
+        ldx     LoadedObj + Obj::Position_X_Lo  ; 8ED7
         lda     $F7                             ; 8ED9
         and     #$03                            ; 8EDB
         cmp     #$01                            ; 8EDD
@@ -650,7 +650,7 @@ L_8EF3: sta     $50                             ; 8EF3
 L_8EF8: lda     $F7                             ; 8EF8
         and     #$03                            ; 8EFA
         tax                                     ; 8EFC
-        lda     LoadedObj_Position_X_Lo         ; 8EFD
+        lda     LoadedObj + Obj::Position_X_Lo  ; 8EFD
         cmp     #$40                            ; 8EFF
         bcc     L_8F14                          ; 8F01
         cmp     #$C0                            ; 8F03
@@ -674,7 +674,7 @@ L_8F1F: jsr     LD2B1                           ; 8F1F
         bpl     L_8F2F                          ; 8F25
 L_8F27: pla                                     ; 8F27
         sta     $50                             ; 8F28
-        sty     LoadedObj_Position_X_Lo         ; 8F2A
+        sty     LoadedObj + Obj::Position_X_Lo  ; 8F2A
         jmp     L_8AED                          ; 8F2C
 
 ; ----------------------------------------------------------------------------
@@ -684,11 +684,11 @@ L_8F2F: lda     #$EF                            ; 8F2F
         lda     $F3                             ; 8F36
         bpl     L_8F49                          ; 8F38
         lda     #$20                            ; 8F3A
-        sta     LoadedObj_Velocity_Y            ; 8F3C
+        sta     LoadedObj + Obj::Velocity_Y     ; 8F3C
 L_8F3E: lda     #$02                            ; 8F3E
         sta     $50                             ; 8F40
         lda     #$03                            ; 8F42
-        sta     LoadedObj_Type                  ; 8F44
+        sta     LoadedObj + Obj::Type           ; 8F44
         jmp     L_94FC                          ; 8F46
 
 ; ----------------------------------------------------------------------------
@@ -732,7 +732,7 @@ L_8F64: jsr     LCBDF                           ; 8F64
         sec                                     ; 8F8D
         sbc     #$08                            ; 8F8E
         sta     $3E                             ; 8F90
-        lda     LoadedObj_Position_X_Lo         ; 8F92
+        lda     LoadedObj + Obj::Position_X_Lo  ; 8F92
         asl     a                               ; 8F94
         rol     a                               ; 8F95
         rol     a                               ; 8F96
@@ -769,16 +769,16 @@ L_8F64: jsr     LCBDF                           ; 8F64
         clc                                     ; 8FC9
         adc     $3F                             ; 8FCA
         sta     $3F                             ; 8FCC
-        lda     LoadedObj_Velocity_X            ; 8FCE
+        lda     LoadedObj + Obj::Velocity_X     ; 8FCE
         beq     L_8FDA                          ; 8FD0
-        lda     LoadedObj_Position_X_Lo         ; 8FD2
+        lda     LoadedObj + Obj::Position_X_Lo  ; 8FD2
         and     #$40                            ; 8FD4
         beq     L_8FDA                          ; 8FD6
         inc     $3F                             ; 8FD8
 L_8FDA: lda     Sophia_LookUpAnimation_Counter  ; 8FDA
         beq     L_8FF8                          ; 8FDC
         ldx     #$C0                            ; 8FDE
-        bit     LoadedObj_Facing                ; 8FE0
+        bit     LoadedObj + Obj::Facing         ; 8FE0
         bmi     L_8FE6                          ; 8FE2
         ldx     #$80                            ; 8FE4
 L_8FE6: stx     $44                             ; 8FE6
@@ -793,7 +793,7 @@ L_8FF4: lda     #$24                            ; 8FF4
         bne     L_9005                          ; 8FF6
 L_8FF8: lda     #$C0                            ; 8FF8
         sta     $44                             ; 8FFA
-        lda     LoadedObj_Facing                ; 8FFC
+        lda     LoadedObj + Obj::Facing         ; 8FFC
         lsr     a                               ; 8FFE
         lsr     a                               ; 8FFF
         and     #$03                            ; 9000
@@ -815,12 +815,12 @@ L9009:  jmp     L_90C9                          ; 9009
         jsr     L_96C2                          ; 9014
         jsr     LCF07                           ; 9017
         lda     #$80                            ; 901A
-        sta     LoadedObj_Position_X_Lo         ; 901C
-        lda     LoadedObj_Velocity_Y            ; 901E
-        sta     LoadedObj_Velocity_X            ; 9020
+        sta     LoadedObj + Obj::Position_X_Lo  ; 901C
+        lda     LoadedObj + Obj::Velocity_Y     ; 901E
+        sta     LoadedObj + Obj::Velocity_X     ; 9020
         jsr     L_8E32                          ; 9022
-        lda     LoadedObj_Velocity_X            ; 9025
-        sta     LoadedObj_Velocity_Y            ; 9027
+        lda     LoadedObj + Obj::Velocity_X     ; 9025
+        sta     LoadedObj + Obj::Velocity_Y     ; 9027
         jsr     LD2FE                           ; 9029
         jsr     LD3E1                           ; 902C
         beq     L_9054                          ; 902F
@@ -830,7 +830,7 @@ L9009:  jmp     L_90C9                          ; 9009
         lda     $F7                             ; 9038
         and     #$03                            ; 903A
         tax                                     ; 903C
-        lda     LoadedObj_Velocity_Y            ; 903D
+        lda     LoadedObj + Obj::Velocity_Y     ; 903D
         bmi     L_9049                          ; 903F
         cpx     #$01                            ; 9041
         bne     L_908B                          ; 9043
@@ -846,7 +846,7 @@ L_904F: sta     $50                             ; 904F
 L_9054: lda     $F7                             ; 9054
         and     #$03                            ; 9056
         tax                                     ; 9058
-        lda     LoadedObj_Position_Y_Lo         ; 9059
+        lda     LoadedObj + Obj::Position_Y_Lo  ; 9059
         cmp     #$40                            ; 905B
         bcc     L_9070                          ; 905D
         cmp     #$C0                            ; 905F
@@ -870,7 +870,7 @@ L_907B: jsr     LD2B1                           ; 907B
         bpl     L_908B                          ; 9081
 L_9083: pla                                     ; 9083
         sta     $50                             ; 9084
-        sty     LoadedObj_Position_Y_Lo         ; 9086
+        sty     LoadedObj + Obj::Position_Y_Lo  ; 9086
         jmp     L_8B2B                          ; 9088
 
 ; ----------------------------------------------------------------------------
@@ -885,13 +885,13 @@ L_9097: dex                                     ; 9097
         lda     $0500,x                         ; 9099
         bmi     L_90B1                          ; 909C
 L_909E: lda     #$C0                            ; 909E
-        sta     LoadedObj_Position_X_Lo         ; 90A0
+        sta     LoadedObj + Obj::Position_X_Lo  ; 90A0
         lda     #$00                            ; 90A2
-        sta     LoadedObj_Velocity_X            ; 90A4
+        sta     LoadedObj + Obj::Velocity_X     ; 90A4
         lda     #$02                            ; 90A6
         sta     $50                             ; 90A8
         lda     #$03                            ; 90AA
-        sta     LoadedObj_Type                  ; 90AC
+        sta     LoadedObj + Obj::Type           ; 90AC
         jmp     L_94FC                          ; 90AE
 
 ; ----------------------------------------------------------------------------
@@ -932,7 +932,7 @@ L_90C9: jsr     LCBDF                           ; 90C9
         sec                                     ; 90F2
         sbc     #$08                            ; 90F3
         sta     $3F                             ; 90F5
-        lda     LoadedObj_Position_Y_Lo         ; 90F7
+        lda     LoadedObj + Obj::Position_Y_Lo  ; 90F7
         asl     a                               ; 90F9
         rol     a                               ; 90FA
         rol     a                               ; 90FB
@@ -969,16 +969,16 @@ L_90C9: jsr     LCBDF                           ; 90C9
         clc                                     ; 912E
         adc     $3E                             ; 912F
         sta     $3E                             ; 9131
-        lda     LoadedObj_Velocity_Y            ; 9133
+        lda     LoadedObj + Obj::Velocity_Y     ; 9133
         beq     L_913F                          ; 9135
-        lda     LoadedObj_Position_Y_Lo         ; 9137
+        lda     LoadedObj + Obj::Position_Y_Lo  ; 9137
         and     #$40                            ; 9139
         beq     L_913F                          ; 913B
         dec     $3E                             ; 913D
 L_913F: lda     Sophia_LookUpAnimation_Counter  ; 913F
         beq     L_915D                          ; 9141
         ldx     #$00                            ; 9143
-        bit     LoadedObj_Facing                ; 9145
+        bit     LoadedObj + Obj::Facing         ; 9145
         bmi     L_914B                          ; 9147
         ldx     #$80                            ; 9149
 L_914B: stx     $44                             ; 914B
@@ -993,7 +993,7 @@ L_9159: lda     #$2A                            ; 9159
         bne     L_916A                          ; 915B
 L_915D: lda     #$00                            ; 915D
         sta     $44                             ; 915F
-        lda     LoadedObj_Facing                ; 9161
+        lda     LoadedObj + Obj::Facing         ; 9161
         lsr     a                               ; 9163
         lsr     a                               ; 9164
         and     #$03                            ; 9165
@@ -1015,16 +1015,16 @@ L916E:  jmp     L_9234                          ; 916E
         jsr     LCF07                           ; 9179
         jsr     L_96C2                          ; 917C
         lda     #$80                            ; 917F
-        sta     LoadedObj_Position_X_Lo         ; 9181
+        sta     LoadedObj + Obj::Position_X_Lo  ; 9181
         lda     #$00                            ; 9183
         sec                                     ; 9185
-        sbc     LoadedObj_Velocity_Y            ; 9186
-        sta     LoadedObj_Velocity_X            ; 9188
+        sbc     LoadedObj + Obj::Velocity_Y     ; 9186
+        sta     LoadedObj + Obj::Velocity_X     ; 9188
         jsr     L_8E32                          ; 918A
         lda     #$00                            ; 918D
         sec                                     ; 918F
-        sbc     LoadedObj_Velocity_X            ; 9190
-        sta     LoadedObj_Velocity_Y            ; 9192
+        sbc     LoadedObj + Obj::Velocity_X     ; 9190
+        sta     LoadedObj + Obj::Velocity_Y     ; 9192
         jsr     LD2FE                           ; 9194
         jsr     LD3E1                           ; 9197
         beq     L_91BF                          ; 919A
@@ -1034,7 +1034,7 @@ L916E:  jmp     L_9234                          ; 916E
         lda     $F7                             ; 91A3
         and     #$03                            ; 91A5
         tax                                     ; 91A7
-        lda     LoadedObj_Velocity_Y            ; 91A8
+        lda     LoadedObj + Obj::Velocity_Y     ; 91A8
         bmi     L_91B4                          ; 91AA
         cpx     #$02                            ; 91AC
         bne     L_91F6                          ; 91AE
@@ -1050,7 +1050,7 @@ L_91BA: sta     $50                             ; 91BA
 L_91BF: lda     $F7                             ; 91BF
         and     #$03                            ; 91C1
         tax                                     ; 91C3
-        lda     LoadedObj_Position_Y_Lo         ; 91C4
+        lda     LoadedObj + Obj::Position_Y_Lo  ; 91C4
         cmp     #$40                            ; 91C6
         bcc     L_91DB                          ; 91C8
         cmp     #$C0                            ; 91CA
@@ -1074,7 +1074,7 @@ L_91E6: jsr     LD2B1                           ; 91E6
         bpl     L_91F6                          ; 91EC
 L_91EE: pla                                     ; 91EE
         sta     $50                             ; 91EF
-        sty     LoadedObj_Position_Y_Lo         ; 91F1
+        sty     LoadedObj + Obj::Position_Y_Lo  ; 91F1
         jmp     L_8B2B                          ; 91F3
 
 ; ----------------------------------------------------------------------------
@@ -1089,13 +1089,13 @@ L_9202: inx                                     ; 9202
         lda     $0500,x                         ; 9204
         bmi     L_921C                          ; 9207
 L_9209: lda     #$40                            ; 9209
-        sta     LoadedObj_Position_X_Lo         ; 920B
+        sta     LoadedObj + Obj::Position_X_Lo  ; 920B
         lda     #$00                            ; 920D
-        sta     LoadedObj_Velocity_X            ; 920F
+        sta     LoadedObj + Obj::Velocity_X     ; 920F
         lda     #$02                            ; 9211
         sta     $50                             ; 9213
         lda     #$03                            ; 9215
-        sta     LoadedObj_Type                  ; 9217
+        sta     LoadedObj + Obj::Type           ; 9217
         jmp     L_94FC                          ; 9219
 
 ; ----------------------------------------------------------------------------
@@ -1136,7 +1136,7 @@ L_9234: jsr     LCBDF                           ; 9234
         sec                                     ; 925D
         sbc     #$08                            ; 925E
         sta     $3F                             ; 9260
-        lda     LoadedObj_Position_Y_Lo         ; 9262
+        lda     LoadedObj + Obj::Position_Y_Lo  ; 9262
         asl     a                               ; 9264
         rol     a                               ; 9265
         rol     a                               ; 9266
@@ -1174,16 +1174,16 @@ L_9234: jsr     LCBDF                           ; 9234
         clc                                     ; 929B
         adc     $3E                             ; 929C
         sta     $3E                             ; 929E
-        lda     LoadedObj_Velocity_Y            ; 92A0
+        lda     LoadedObj + Obj::Velocity_Y     ; 92A0
         beq     L_92AC                          ; 92A2
-        lda     LoadedObj_Position_Y_Lo         ; 92A4
+        lda     LoadedObj + Obj::Position_Y_Lo  ; 92A4
         and     #$40                            ; 92A6
         beq     L_92AC                          ; 92A8
         dec     $3E                             ; 92AA
 L_92AC: lda     Sophia_LookUpAnimation_Counter  ; 92AC
         beq     L_92CA                          ; 92AE
         ldx     #$C0                            ; 92B0
-        bit     LoadedObj_Facing                ; 92B2
+        bit     LoadedObj + Obj::Facing         ; 92B2
         bmi     L_92B8                          ; 92B4
         ldx     #$40                            ; 92B6
 L_92B8: stx     $44                             ; 92B8
@@ -1198,7 +1198,7 @@ L_92C6: lda     #$2A                            ; 92C6
         bne     L_92D7                          ; 92C8
 L_92CA: lda     #$C0                            ; 92CA
         sta     $44                             ; 92CC
-        lda     LoadedObj_Facing                ; 92CE
+        lda     LoadedObj + Obj::Facing         ; 92CE
         lsr     a                               ; 92D0
         lsr     a                               ; 92D1
         and     #$03                            ; 92D2
@@ -1221,7 +1221,7 @@ L92DB:  jmp     L_94FC                          ; 92DB
         jsr     L_96C2                          ; 92E9
         jsr     L_96A2                          ; 92EC
         jsr     L_8E32                          ; 92EF
-        lda     LoadedObj_Health                ; 92F2
+        lda     LoadedObj + Obj::Health         ; 92F2
         beq     L_9358                          ; 92F4
         lda     $90                             ; 92F6
         beq     L_9348                          ; 92F8
@@ -1248,7 +1248,7 @@ L_9317: lda     #$02                            ; 9317
         lda     #$30                            ; 9323
         jsr     Enqueue_Sound_Command           ; 9325
 L_9328: dec     $92                             ; 9328
-        lda     LoadedObj_Velocity_Y            ; 932A
+        lda     LoadedObj + Obj::Velocity_Y     ; 932A
         sec                                     ; 932C
         sbc     #$01                            ; 932D
         bpl     L_9343                          ; 932F
@@ -1261,20 +1261,20 @@ L_9328: dec     $92                             ; 9328
 L_933D: cmp     #$F0                            ; 933D
         bcs     L_9343                          ; 933F
         lda     #$F0                            ; 9341
-L_9343: sta     LoadedObj_Velocity_Y            ; 9343
+L_9343: sta     LoadedObj + Obj::Velocity_Y     ; 9343
         jmp     L_9376                          ; 9345
 
 ; ----------------------------------------------------------------------------
-L_9348: lda     LoadedObj_Velocity_Y            ; 9348
+L_9348: lda     LoadedObj + Obj::Velocity_Y     ; 9348
         cmp     #$DC                            ; 934A
         bcc     L_9358                          ; 934C
         bit     $F7                             ; 934E
         bmi     L_9358                          ; 9350
         lda     #$00                            ; 9352
-        sta     LoadedObj_Velocity_Y            ; 9354
+        sta     LoadedObj + Obj::Velocity_Y     ; 9354
         beq     L_9376                          ; 9356
-L_9358: inc     LoadedObj_Velocity_Y            ; 9358
-        inc     LoadedObj_Velocity_Y            ; 935A
+L_9358: inc     LoadedObj + Obj::Velocity_Y     ; 9358
+        inc     LoadedObj + Obj::Velocity_Y     ; 935A
         bit     $98                             ; 935C
         bmi     L_936A                          ; 935E
         lda     #$40                            ; 9360
@@ -1283,15 +1283,15 @@ L_9358: inc     LoadedObj_Velocity_Y            ; 9358
         jmp     L_9376                          ; 9367
 
 ; ----------------------------------------------------------------------------
-L_936A: lda     LoadedObj_Velocity_Y            ; 936A
+L_936A: lda     LoadedObj + Obj::Velocity_Y     ; 936A
         bmi     L_9376                          ; 936C
         cmp     #$08                            ; 936E
         bcc     L_9376                          ; 9370
         lda     #$08                            ; 9372
-        sta     LoadedObj_Velocity_Y            ; 9374
+        sta     LoadedObj + Obj::Velocity_Y     ; 9374
 L_9376: jsr     LD37A                           ; 9376
         bne     L_93DA                          ; 9379
-        lda     LoadedObj_Position_Y_Lo         ; 937B
+        lda     LoadedObj + Obj::Position_Y_Lo  ; 937B
         cmp     #$80                            ; 937D
         beq     L_9384                          ; 937F
         jmp     L_9432                          ; 9381
@@ -1313,7 +1313,7 @@ L_938E: lda     $99                             ; 938E
 L_9399: lda     $F7                             ; 9399
         and     #$03                            ; 939B
         tax                                     ; 939D
-        lda     LoadedObj_Position_X_Lo         ; 939E
+        lda     LoadedObj + Obj::Position_X_Lo  ; 939E
         cmp     #$40                            ; 93A0
         bcc     L_93BB                          ; 93A2
         cmp     #$C0                            ; 93A4
@@ -1344,7 +1344,7 @@ L_93C9: jsr     LD2B1                           ; 93C9
         bmi     L_93D6                          ; 93CC
         pla                                     ; 93CE
         sta     $50                             ; 93CF
-        sty     LoadedObj_Position_X_Lo         ; 93D1
+        sty     LoadedObj + Obj::Position_X_Lo  ; 93D1
         jmp     L_8AED                          ; 93D3
 
 ; ----------------------------------------------------------------------------
@@ -1353,13 +1353,13 @@ L_93D6: pla                                     ; 93D6
 
 ; ----------------------------------------------------------------------------
 L_93DA: lda     #$00                            ; 93DA
-        sta     LoadedObj_Velocity_X            ; 93DC
+        sta     LoadedObj + Obj::Velocity_X     ; 93DC
         lda     $50                             ; 93DE
         bne     L_9432                          ; 93E0
         lda     $F7                             ; 93E2
         and     #$03                            ; 93E4
         tax                                     ; 93E6
-        lda     LoadedObj_Position_X_Lo         ; 93E7
+        lda     LoadedObj + Obj::Position_X_Lo  ; 93E7
         cmp     #$40                            ; 93E9
         beq     L_93FD                          ; 93EB
         cmp     #$C0                            ; 93ED
@@ -1367,13 +1367,13 @@ L_93DA: lda     #$00                            ; 93DA
         cpx     #$02                            ; 93F1
         bne     L_9432                          ; 93F3
         lda     #$80                            ; 93F5
-        sta     LoadedObj_Facing                ; 93F7
+        sta     LoadedObj + Obj::Facing         ; 93F7
         lda     #$FF                            ; 93F9
         bne     L_9407                          ; 93FB
 L_93FD: cpx     #$01                            ; 93FD
         bne     L_9432                          ; 93FF
         lda     #$0F                            ; 9401
-        sta     LoadedObj_Facing                ; 9403
+        sta     LoadedObj + Obj::Facing         ; 9403
         lda     #$01                            ; 9405
 L_9407: jsr     LD2B1                           ; 9407
         jsr     LD238                           ; 940A
@@ -1389,7 +1389,7 @@ L_9416: lda     $99                             ; 9416
         lda     #$EF                            ; 941C
         jsr     LD2B1                           ; 941E
         bmi     L_9432                          ; 9421
-        lda     LoadedObj_Facing                ; 9423
+        lda     LoadedObj + Obj::Facing         ; 9423
         bmi     L_942B                          ; 9425
         lda     #$00                            ; 9427
         beq     L_942D                          ; 9429
@@ -1400,13 +1400,13 @@ L_942D: sta     $50                             ; 942D
 ; ----------------------------------------------------------------------------
 L_9432: jsr     LD3DE                           ; 9432
         beq     L_94A5                          ; 9435
-        lda     LoadedObj_Velocity_Y            ; 9437
+        lda     LoadedObj + Obj::Velocity_Y     ; 9437
         bpl     L_943E                          ; 9439
         jmp     L_94D9                          ; 943B
 
 ; ----------------------------------------------------------------------------
 L_943E: lda     #$00                            ; 943E
-        sta     LoadedObj_Velocity_Y            ; 9440
+        sta     LoadedObj + Obj::Velocity_Y     ; 9440
         jsr     L_888C                          ; 9442
         lda     $90                             ; 9445
         beq     L_9451                          ; 9447
@@ -1439,7 +1439,7 @@ L_9470: dec     $8F                             ; 9470
         lda     $98                             ; 947F
         bpl     L_9486                          ; 9481
         ldx     L94FB                           ; 9483
-L_9486: stx     LoadedObj_Velocity_Y            ; 9486
+L_9486: stx     LoadedObj + Obj::Velocity_Y     ; 9486
         jmp     L_94DD                          ; 9488
 
 ; ----------------------------------------------------------------------------
@@ -1462,7 +1462,7 @@ L_94A5: lda     $98                             ; 94A5
         and     #$02                            ; 94AB
         beq     L_94B5                          ; 94AD
         lda     #$08                            ; 94AF
-        sta     LoadedObj_Type                  ; 94B1
+        sta     LoadedObj + Obj::Type           ; 94B1
         bne     L_94DD                          ; 94B3
 L_94B5: lda     $99                             ; 94B5
         and     #$01                            ; 94B7
@@ -1481,9 +1481,9 @@ L_94CB: lda     $50                             ; 94CB
         lda     #$02                            ; 94D1
         sta     $50                             ; 94D3
         lda     #$10                            ; 94D5
-        sta     LoadedObj_Velocity_Y            ; 94D7
+        sta     LoadedObj + Obj::Velocity_Y     ; 94D7
 L_94D9: lda     #$00                            ; 94D9
-        sta     LoadedObj_Velocity_Y            ; 94DB
+        sta     LoadedObj + Obj::Velocity_Y     ; 94DB
 L_94DD: lda     $91                             ; 94DD
         beq     L_94E3                          ; 94DF
         dec     $91                             ; 94E1
@@ -1546,7 +1546,7 @@ L_9542: lda     $C1                             ; 9542
         sta     $50                             ; 954A
         cmp     #$02                            ; 954C
         bne     L_955F                          ; 954E
-        lda     LoadedObj_Velocity_Y            ; 9550
+        lda     LoadedObj + Obj::Velocity_Y     ; 9550
         bmi     L_9559                          ; 9552
         dec     $3F                             ; 9554
         jmp     L_955F                          ; 9556
@@ -1641,7 +1641,7 @@ L_95C9: pla                                     ; 95C9
 ; ----------------------------------------------------------------------------
 L_95E9: lda     $50                             ; 95E9
         bne     L_9601                          ; 95EB
-        lda     LoadedObj_Velocity_X            ; 95ED
+        lda     LoadedObj + Obj::Velocity_X     ; 95ED
         beq     L_9601                          ; 95EF
         lda     $C1                             ; 95F1
         beq     L_9601                          ; 95F3
@@ -1654,7 +1654,7 @@ L_95E9: lda     $50                             ; 95E9
 L_9601: lda     Sophia_LookUpAnimation_Counter  ; 9601
         beq     L_961F                          ; 9603
         ldx     #$00                            ; 9605
-        bit     LoadedObj_Facing                ; 9607
+        bit     LoadedObj + Obj::Facing         ; 9607
         bmi     L_960D                          ; 9609
         ldx     #$40                            ; 960B
 L_960D: stx     $44                             ; 960D
@@ -1669,7 +1669,7 @@ L_961B: lda     #$24                            ; 961B
         bne     L_963C                          ; 961D
 L_961F: lda     $03D6                           ; 961F
         beq     L_962F                          ; 9622
-        lda     LoadedObj_Facing                ; 9624
+        lda     LoadedObj + Obj::Facing         ; 9624
         lsr     a                               ; 9626
         and     #$40                            ; 9627
         sta     $44                             ; 9629
@@ -1677,7 +1677,7 @@ L_961F: lda     $03D6                           ; 961F
         bne     L_963C                          ; 962D
 L_962F: lda     #$00                            ; 962F
         sta     $44                             ; 9631
-        lda     LoadedObj_Facing                ; 9633
+        lda     LoadedObj + Obj::Facing         ; 9633
         lsr     a                               ; 9635
         lsr     a                               ; 9636
         and     #$03                            ; 9637
@@ -1691,12 +1691,12 @@ L_963C: jmp     LF011                           ; 963C
 ; ----------------------------------------------------------------------------
 L9640:  .byte   $04                             ; 9640
 ; ----------------------------------------------------------------------------
-L_9641: lda     LoadedObj_Facing                ; 9641
+L_9641: lda     LoadedObj + Obj::Facing         ; 9641
         bpl     L_9650                          ; 9643
         ldx     #$03                            ; 9645
         and     #$0F                            ; 9647
         beq     L_965A                          ; 9649
-        dec     LoadedObj_Facing                ; 964B
+        dec     LoadedObj + Obj::Facing         ; 964B
         jmp     L_965A                          ; 964D
 
 ; ----------------------------------------------------------------------------
@@ -1704,7 +1704,7 @@ L_9650: ldx     #$01                            ; 9650
         and     #$0F                            ; 9652
         cmp     #$0F                            ; 9654
         beq     L_965A                          ; 9656
-        inc     LoadedObj_Facing                ; 9658
+        inc     LoadedObj + Obj::Facing         ; 9658
 L_965A: lda     Sophia_LookUpAnimation_Counter  ; 965A
         cmp     #$08                            ; 965C
         bcc     L_9662                          ; 965E
@@ -1734,7 +1734,7 @@ L_967C: lda     #$90                            ; 967C
         sta     $BC                             ; 968E
         lda     #$A0                            ; 9690
         sta     $BD                             ; 9692
-L_9694: lda     LoadedObj_Facing                ; 9694
+L_9694: lda     LoadedObj + Obj::Facing         ; 9694
         bmi     L_96A0                          ; 9696
         lda     #$00                            ; 9698
         sec                                     ; 969A
@@ -1822,7 +1822,7 @@ L_983E: pha                                     ; 983E
         lda     $06F0                           ; 983F
         beq     L_986C                          ; 9842
         ldx     $02                             ; 9844
-        lda     ObjectTable + ObjSlot::Type,x   ; 9846
+        lda     $0400,x                         ; 9846
         cmp     #$54                            ; 9849
         bcc     L_986C                          ; 984B
         ldx     #$1C                            ; 984D
@@ -1839,7 +1839,7 @@ L_983E: pha                                     ; 983E
         lda     $02                             ; 9862
         sta     $040A,x                         ; 9864
         lda     #$15                            ; 9867
-        sta     ObjectTable + ObjSlot::Type,x   ; 9869
+        sta     $0400,x                         ; 9869
 L_986C: pla                                     ; 986C
         clc                                     ; 986D
         adc     #$01                            ; 986E
@@ -1870,7 +1870,7 @@ L_99B0: ldx     #$46                            ; 99B0
         beq     L_99CB                          ; 99BE
         dec     $06F1                           ; 99C0
         lda     #$17                            ; 99C3
-        sta     ObjectTable + ObjSlot::Type,x   ; 99C5
+        sta     $0400,x                         ; 99C5
         jmp     LD7C0                           ; 99C8
 
 ; ----------------------------------------------------------------------------
@@ -1885,10 +1885,10 @@ L_9ACA: lda     $06F2                           ; 9ACA
         beq     L_9AEA                          ; 9ACD
         txa                                     ; 9ACF
         pha                                     ; 9AD0
-        lda     ObjectTable + ObjSlot::Type,x   ; 9AD1
+        lda     $0400,x                         ; 9AD1
         bne     L_9AE1                          ; 9AD4
         lda     #$19                            ; 9AD6
-        sta     ObjectTable + ObjSlot::Type,x   ; 9AD8
+        sta     $0400,x                         ; 9AD8
         jsr     LD7C0                           ; 9ADB
         dec     $06F2                           ; 9ADE
 L_9AE1: pla                                     ; 9AE1

@@ -3,7 +3,7 @@
 # an unknown key is a hard error (a mistyped tag used to be a silent no-op).
 # See REFACTORING.md. Regenerate/validate with HintsTidy.
 structs:
-  - name: ObjSlot
+  - name: Obj
     desc: "The 14-byte record every active object occupies. 18 are packed at $0400 (the object table); slot 0 is the player."
     fields:
       - { name: Type, type: byte, status: verified, desc: "Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler." }
@@ -14,11 +14,11 @@ structs:
       - { name: Position_Y_Hi, type: sbyte, status: verified, desc: "The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position." }
       - { name: Velocity_X, type: sfixed44, status: verified, desc: "X velocity in px/frame (signed 4.4: swww.ffff)." }
       - { name: Velocity_Y, type: sfixed44, status: verified, desc: "Y velocity in px/frame (signed 4.4: swww.ffff)." }
-      - { name: TileIndex, type: byte, desc: "Metatile-map collision index." }
-      - { name: ActiveFlag, type: byte, desc: "Post-damage invincibility frames (drives the flashing damage animation)." }
-      - { name: Phase, type: byte, desc: "State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined)." }
-      - { name: AnimFrame, type: byte, desc: "Animation / timer counter." }
-      - { name: Scratch, type: byte, desc: "Type-specific scratch (slot byte 12)." }
+      - { name: TileIndex, type: byte, status: alpha, desc: "Metatile-map collision index." }
+      - { name: ActiveFlag, type: byte, status: alpha, desc: "Post-damage invincibility frames (drives the flashing damage animation)." }
+      - { name: Phase, type: byte, status: alpha, desc: "State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose." }
+      - { name: AnimFrame, type: byte, status: alpha, desc: "Animation / timer counter." }
+      - { name: Scratch, type: byte, status: alpha, desc: "Type-specific scratch (slot byte 12)." }
       - { name: Health, type: byte, status: verified, desc: "HP for this entity." }
 
 hints:
@@ -5034,7 +5034,7 @@ hints:
   - space: prg
     offset: 0x12589
     name: ObjHandler_Ovhd_63_Area_1_Boss_Main
-    desc: "ObjType $63 — Area 1 boss \"Mother Brain\" main. +0 RTS; update body at +3. Slow homing core: while active ($A07B gate) and alive ($53 HP != 0), every 64 frames ($11&$3F==0) re-aims toward the player ($0403/$0405 vs $49/$4B → XVel/YVel ±6), then MoveX/MoveY with wall bounce ($C00C/$C012). 32×32 vulnerable hitbox; player-shot damage decrements $53; contact → SFX $11; $53==0 → $4F=$C0 (death flash). Body rendered as a multi-segment brain via Boss1_MotherBrain_RenderBody. Render Y clamped to [$20,$B0]."
+    desc: "ObjType $63 — Area 1 boss \"Mother Brain\" main. +0 RTS; update body at +3. Slow homing core: while active ($A07B gate) and alive ($53 HP != 0), every 64 frames ($11&$3F==0) re-aims toward the player ($0403/$0405 vs $49/$4B → XVel/YVel ±6), then Apply_Velocity_X/Apply_Velocity_Y with wall bounce ($C00C/$C012). 32×32 vulnerable hitbox; player-shot damage decrements $53; contact → SFX $11; $53==0 → $4F=$C0 (death flash). Body rendered as a multi-segment brain via Boss1_MotherBrain_RenderBody. Render Y clamped to [$20,$B0]."
 
   - space: prg
     offset: 0x1258A
@@ -5092,7 +5092,7 @@ hints:
   - space: prg
     offset: 0x125DD
     name: _Boss1_MotherBrain__MoveX
-    desc: "JSR MoveX ($C027) + X collision ($C00C)"
+    desc: "JSR Apply_Velocity_X ($C027) + X collision ($C00C)"
 
   - space: prg
     offset: 0x125E7
@@ -7072,7 +7072,7 @@ hints:
 
   - space: prg
     offset: 0x133CE
-    desc: "YVel $4D = Obj_DeltaToPlayerY_Div16 ($C051) shifted right 1 (same proportional chase on Y), clamped to ±$14; MoveXY ($C01E) then commits both axes"
+    desc: "YVel $4D = Obj_DeltaToPlayerY_Div16 ($C051) shifted right 1 (same proportional chase on Y), clamped to ±$14; Apply_Velocity_XY ($C01E) then commits both axes"
 
   - space: prg
     offset: 0x133E2
@@ -7136,11 +7136,11 @@ hints:
 
   - space: prg
     offset: 0x1345A
-    desc: "X homing: $C04B (delta-to-player ×8) → clamp ±$3F → ÷8 (Math_ASR×3) → XVel $4C; MoveX ($C027) + terrain bounce ($B243)"
+    desc: "X homing: $C04B (delta-to-player ×8) → clamp ±$3F → ÷8 (Math_ASR×3) → XVel $4C; Apply_Velocity_X ($C027) + terrain bounce ($B243)"
 
   - space: prg
     offset: 0x13476
-    desc: "Y homing: $C054 (delta-to-player ×8) → clamp ±$3F → ÷8 → YVel $4D; MoveY ($C03F) + terrain bounce ($B264)"
+    desc: "Y homing: $C054 (delta-to-player ×8) → clamp ±$3F → ÷8 → YVel $4D; Apply_Velocity_Y ($C03F) + terrain bounce ($B264)"
 
   - space: prg
     offset: 0x134A9
@@ -7249,7 +7249,7 @@ hints:
   - space: prg
     offset: 0x13563
     name: _ObjHandler_Ovhd_34_Flier_Main__Update__
-    desc: "vertical sine drift: $C1FE/$C20D → YVel $4D; JSR MoveXY ($C01E)  [+3 body entry]"
+    desc: "vertical sine drift: $C1FE/$C20D → YVel $4D; JSR Apply_Velocity_XY ($C01E)  [+3 body entry]"
 
   - space: prg
     offset: 0x1357D
@@ -7332,7 +7332,7 @@ hints:
   - space: prg
     offset: 0x13620
     name: _ObjHandler_Ovhd_36_Charging_Robot_Main__Move
-    desc: "JSR MoveXY ($C01E) — descend"
+    desc: "JSR Apply_Velocity_XY ($C01E) — descend"
 
   - space: prg
     offset: 0x13623
@@ -8783,11 +8783,11 @@ hints:
 
   - space: prg
     offset: 0x13F03
-    desc: "X homing: $C04B → clamp ±$3F → ÷8 → XVel $4C; MoveX ($C027) + bounce ($B243)"
+    desc: "X homing: $C04B → clamp ±$3F → ÷8 → XVel $4C; Apply_Velocity_X ($C027) + bounce ($B243)"
 
   - space: prg
     offset: 0x13F1F
-    desc: "Y homing: $C054 → clamp ±$3F → ÷8 → YVel $4D; MoveY ($C03F) + bounce ($B264)"
+    desc: "Y homing: $C054 → clamp ±$3F → ÷8 → YVel $4D; Apply_Velocity_Y ($C03F) + bounce ($B264)"
 
   - space: prg
     offset: 0x13F3B
@@ -11443,7 +11443,7 @@ hints:
     offset: 0x18BE5
     name: Process_Tank_Rotation_Step
     desc: |-
-      Advance Sophia's tank rotation by one step. Shared by all four rotations ($09/$0A/$0B/$0C) — which one is running is carried entirely in DispatchPtr ($7A/$7B) and the mirror flags in $50, so this routine never needs to know. Steps 0–7 read that step's velocity pair from the table, mirror it for the current orientation and move; step 8 diverts to Process_Tank_Rotation_Complete, which installs the final ObjType and unwinds. Tail-calls MoveXY, so it returns to *its* caller, not to here.
+      Advance Sophia's tank rotation by one step. Shared by all four rotations ($09/$0A/$0B/$0C) — which one is running is carried entirely in DispatchPtr ($7A/$7B) and the mirror flags in $50, so this routine never needs to know. Steps 0–7 read that step's velocity pair from the table, mirror it for the current orientation and move; step 8 diverts to Process_Tank_Rotation_Complete, which installs the final ObjType and unwinds. Tail-calls Apply_Velocity_XY, so it returns to *its* caller, not to here.
       step index $51: 0–7 are arc steps; 8 ends the rotation
 
   - space: prg
@@ -11464,7 +11464,7 @@ hints:
 
   - space: prg
     offset: 0x18BFD
-    desc: "JMP MoveXY ($D2DB): apply rotation velocity to position; returns to caller (not here)"
+    desc: "JMP Apply_Velocity_XY ($D2DB): apply rotation velocity to position; returns to caller (not here)"
 
   - space: prg
     offset: 0x18C00
@@ -12793,7 +12793,7 @@ hints:
   - space: prg
     offset: 0x1979F
     name: _ObjHandler_Tank_14_Tank_Shot_Main__PhysVariantB
-    desc: "ObjSubType $B9 ≥ 3 (diagonal shot): move via JSR $D324 (Apply_Velocity_XY); subtypes 0–2 used JSR $D2DB"
+    desc: "ObjSubType $B9 ≥ 3 (diagonal shot): move via JSR $D324 (Apply_Double_Velocity_XY); subtypes 0–2 used JSR $D2DB"
 
   - space: prg
     offset: 0x197A2
@@ -15614,6 +15614,7 @@ hints:
   - space: prg
     offset: 0x1A7EE
     name: ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking
+    status: verified
     desc: "ObjType $60 — Gray Hopper (6 HP), active: the hopping/attack half of the enemy. It falls under gravity; on each floor landing it either settles into the walking state $61 or aims a fresh, near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the ground before the stored hop velocity carries it up — so it bounds across the ground toward the player in bursts."
     notes: |-
       Damageable via descriptor $05; on defeat it hands off to TankEnemy_Defeat. 
@@ -15623,6 +15624,7 @@ hints:
   - space: prg
     offset: 0x1A7F1
     name: _ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__
+    status: verified
     desc: "$42 = $80 / $43 = $C0: terrain-collision half-extents (16×24 box) — then gate on the wind-up timer $51"
 
   - space: prg
@@ -19248,8 +19250,8 @@ hints:
 
   - space: prg
     offset: 0x1C01E
-    name: DispatchSlot_0A_MoveXY
-    desc: "Dispatch table slot $0A — the fixed bank's public entry point for MoveXY ($D2DB). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
+    name: DispatchSlot_0A_Apply_Velocity_XY
+    desc: "Dispatch table slot $0A — the fixed bank's public entry point for Apply_Velocity_XY ($D2DB). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
 
   - space: prg
     offset: 0x1C021
@@ -19258,18 +19260,18 @@ hints:
 
   - space: prg
     offset: 0x1C024
-    name: DispatchSlot_0C_Apply_Velocity_XY
-    desc: "Dispatch table slot $0C — the fixed bank's public entry point for Apply_Velocity_XY ($D324). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
+    name: DispatchSlot_0C_Apply_Double_Velocity_XY
+    desc: "Dispatch table slot $0C — the fixed bank's public entry point for Apply_Double_Velocity_XY ($D324). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
 
   - space: prg
     offset: 0x1C027
-    name: DispatchSlot_0D_MoveX
-    desc: "Dispatch table slot $0D — the fixed bank's public entry point for MoveX ($D2DE). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
+    name: DispatchSlot_0D_Apply_Velocity_X
+    desc: "Dispatch table slot $0D — the fixed bank's public entry point for Apply_Velocity_X ($D2DE). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
 
   - space: prg
     offset: 0x1C02A
-    name: DispatchSlot_0E_Apply_Velocity_X
-    desc: "Dispatch table slot $0E — the fixed bank's public entry point for Apply_Velocity_X ($D327). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
+    name: DispatchSlot_0E_Apply_Double_Velocity_X
+    desc: "Dispatch table slot $0E — the fixed bank's public entry point for Apply_Double_Velocity_X ($D327). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
 
   - space: prg
     offset: 0x1C02D
@@ -19303,13 +19305,13 @@ hints:
 
   - space: prg
     offset: 0x1C03F
-    name: DispatchSlot_15_MoveY
-    desc: "Dispatch table slot $15 — the fixed bank's public entry point for MoveY ($D2FE). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
+    name: DispatchSlot_15_Apply_Velocity_Y
+    desc: "Dispatch table slot $15 — the fixed bank's public entry point for Apply_Velocity_Y ($D2FE). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
 
   - space: prg
     offset: 0x1C042
-    name: DispatchSlot_16_Apply_Velocity_Y
-    desc: "Dispatch table slot $16 — the fixed bank's public entry point for Apply_Velocity_Y ($D349). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
+    name: DispatchSlot_16_Apply_Double_Velocity_Y
+    desc: "Dispatch table slot $16 — the fixed bank's public entry point for Apply_Double_Velocity_Y ($D349). The switchable banks cannot name a fixed-bank routine directly (it may sit anywhere in $C000–$FFFF), so they call this slot's fixed address."
 
   - space: prg
     offset: 0x1C045
@@ -22158,14 +22160,14 @@ hints:
 
   - space: prg
     offset: 0x1D2DB
-    name: MoveXY
+    name: Apply_Velocity_XY
     desc: "Apply ObjXVel ($4C) and ObjYVel ($4D) to position registers with carry-aware 16-bit fixed-point arithmetic"
 
   - space: prg
     offset: 0x1D2DE
-    name: MoveX
+    name: Apply_Velocity_X
     desc: |-
-      Apply X velocity ($4C, signed) to X position ($48:$49); on page crossing adjust $49 (high byte) and $4E (tile index); symmetric with MoveY ($D2FE)
+      Apply X velocity ($4C, signed) to X position ($48:$49); on page crossing adjust $49 (high byte) and $4E (tile index); symmetric with Apply_Velocity_Y ($D2FE)
       AND #$7F on ObjXInt ($49): clear reserved bit 7 before add
 
   - space: prg
@@ -22178,7 +22180,7 @@ hints:
 
   - space: prg
     offset: 0x1D2EE
-    desc: "BPL _MoveX__Done: no page crossing — skip high-byte adjust"
+    desc: "BPL _Apply_Velocity_X__Done: no page crossing — skip high-byte adjust"
 
   - space: prg
     offset: 0x1D2F0
@@ -22186,15 +22188,15 @@ hints:
 
   - space: prg
     offset: 0x1D2F9
-    name: _MoveX__PageDec
+    name: _Apply_Velocity_X__PageDec
 
   - space: prg
     offset: 0x1D2FD
-    name: _MoveX__Done
+    name: _Apply_Velocity_X__Done
 
   - space: prg
     offset: 0x1D2FE
-    name: MoveY
+    name: Apply_Velocity_Y
     desc: |-
       Apply ObjYVel ($4D) to Y position only ($4A/$4B); if carry into tile row: adjust ObjTileIndex ($4E) by ±17
       clear carry bit from ObjYInt ($4B) before velocity add (tile-row carry flag lives in bit 7)
@@ -22213,30 +22215,30 @@ hints:
 
   - space: prg
     offset: 0x1D31A
-    name: _MoveY__MovedUp
+    name: _Apply_Velocity_Y__MovedUp
     desc: "velocity negative (moving up): DEC ObjYInt ($4B); adjust index -= 17"
 
   - space: prg
     offset: 0x1D31E
-    name: _MoveY__AdjTileIndex
+    name: _Apply_Velocity_Y__AdjTileIndex
     desc: "add ±17 to ObjTileIndex ($4E) to step one tile row"
 
   - space: prg
     offset: 0x1D323
-    name: _MoveY__Exit
+    name: _Apply_Velocity_Y__Exit
     desc: "RTS"
 
   - space: prg
     offset: 0x1D324
-    name: Apply_Velocity_XY
+    name: Apply_Double_Velocity_XY
     desc: |-
-      Applies the LoadedObject's X and Y velocities to the position registers following 16-bit fixed-point arithmetic.
+      Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point arithmetic.
       Also keeps track of TileIndex correctly.
 
   - space: prg
     offset: 0x1D327
-    name: Apply_Velocity_X
-    desc: "Apply signed LoadedObj_X_Velocity to LoadedObj_X_Velocity X position $48/$49, adjusting tilemap column $4E and keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Velocity_XY."
+    name: Apply_Double_Velocity_X
+    desc: "Apply DOUBLE the LoadedObject's X velocity to its position, adjusting tilemap column $4E and keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Double_Velocity_XY."
 
   - space: prg
     offset: 0x1D32B
@@ -22244,11 +22246,11 @@ hints:
 
   - space: prg
     offset: 0x1D32F
-    name: _Apply_Velocity_X__OnSignExtensionByteChosen
+    name: _Apply_Double_Velocity_X__OnSignExtensionByteChosen
 
   - space: prg
     offset: 0x1D331
-    desc: "The next few (9) instructions seem to be magic required when adding 8-bit signed Velocity_X and 16-bit signed Position_X values (sfixed4.4 + sfixed12.4)."
+    desc: "ASL doubles XVel before the add — this is the actual ×2 in \"double speed\"."
 
   - space: prg
     offset: 0x1D337
@@ -22260,12 +22262,12 @@ hints:
 
   - space: prg
     offset: 0x1D349
-    name: Apply_Velocity_Y
-    desc: "Apply 2× signed YVel $4D to Y position $4A/$4B, adjusting tilemap index $4E by 16×row (row stride $11) and keeping $4B in 0-$7F. Dispatch $C042; Y half of Apply_Velocity_XY."
+    name: Apply_Double_Velocity_Y
+    desc: "Apply DOUBLE the LoadedObject's Y velocity to its position, adjusting tilemap index $4E by 16×row (row stride $11) and keeping $4B in 0-$7F. Dispatch $C042; Y half of Apply_Double_Velocity_XY."
 
   - space: prg
     offset: 0x1D351
-    name: _Apply_Velocity_Y__PushSign
+    name: _Apply_Double_Velocity_Y__PushSign
     desc: "PHA the sign-extension byte ($00 or $FF) then add 2×YVel"
 
   - space: prg
@@ -22276,7 +22278,7 @@ hints:
   - space: prg
     offset: 0x1D37A
     name: MoveX_WithCollision
-    desc: "JSR MoveX ($D2DE) then fall into H_Collision_Check — apply XVel then resolve horizontal wall overlap. Dispatch $C165."
+    desc: "JSR Apply_Velocity_X ($D2DE) then fall into H_Collision_Check — apply XVel then resolve horizontal wall overlap. Dispatch $C165."
 
   - space: prg
     offset: 0x1D37D
@@ -23566,7 +23568,7 @@ hints:
   - space: prg
     offset: 0x1DF84
     name: Obj_MoveBounce_Double
-    desc: "Double-speed variant of Obj_MoveBounce ($DF68): advance via Obj_MoveAndCollide_Double ($E0A5, Apply_Velocity_X/Apply_Velocity_Y) and reflect velocity off the wall flags - bit7 (side wall) negates XVel $4C, bit6 (floor/ceiling) negates YVel $4D. Returns the wall flags in A/$9A. Dispatch slot $C03C (no callers in USA ROM); reached in-bank from Obj_GravityMoveBounce ($DFA0)."
+    desc: "Double-speed variant of Obj_MoveBounce ($DF68): advance via Obj_MoveAndCollide_Double ($E0A5, Apply_Double_Velocity_X/Apply_Double_Velocity_Y) and reflect velocity off the wall flags - bit7 (side wall) negates XVel $4C, bit6 (floor/ceiling) negates YVel $4D. Returns the wall flags in A/$9A. Dispatch slot $C03C (no callers in USA ROM); reached in-bank from Obj_GravityMoveBounce ($DFA0)."
 
   - space: prg
     offset: 0x1DF89
@@ -23746,11 +23748,11 @@ hints:
   - space: prg
     offset: 0x1E083
     name: Obj_MoveAndCollide
-    desc: "Advance an object by its velocity and resolve the terrain collision, on both axes: MoveX ($D2DE) + H_Collision_Check ($D37D), then MoveY ($D2FE) + V_Collision_Check ($D3E1). Returns the wall flags in A (also stored $9A): bit7 ($80) = side wall hit, bit6 ($40) = floor/ceiling hit. This is the shared \"step the object\" primitive — calling it MOVES the object; the flags are a by-product, and a caller that only wants them has still moved. Obj_MoveBounce ($DF68) layers velocity reflection on top; Obj_ReflectHeading ($E0D0) does the same in angle space."
+    desc: "Advance an object by its velocity and resolve the terrain collision, on both axes: Apply_Velocity_X ($D2DE) + H_Collision_Check ($D37D), then Apply_Velocity_Y ($D2FE) + V_Collision_Check ($D3E1). Returns the wall flags in A (also stored $9A): bit7 ($80) = side wall hit, bit6 ($40) = floor/ceiling hit. This is the shared \"step the object\" primitive — calling it MOVES the object; the flags are a by-product, and a caller that only wants them has still moved. Obj_MoveBounce ($DF68) layers velocity reflection on top; Obj_ReflectHeading ($E0D0) does the same in angle space."
 
   - space: prg
     offset: 0x1E086
-    desc: "MoveX then H_Collision_Check ($D37D): side-wall hit → $9A bit7; MoveY then V_Collision_Check: floor/ceiling hit → $9A bit6; return $9A."
+    desc: "Apply_Velocity_X then H_Collision_Check ($D37D): side-wall hit → $9A bit7; Apply_Velocity_Y then V_Collision_Check: floor/ceiling hit → $9A bit6; return $9A."
 
   - space: prg
     offset: 0x1E090
@@ -23770,7 +23772,7 @@ hints:
   - space: prg
     offset: 0x1E0A5
     name: Obj_MoveAndCollide_Double
-    desc: "Double-speed Obj_MoveAndCollide: Apply_Velocity_X + H_Collision_Check → $9A bit7 (side wall); Apply_Velocity_Y + V_Collision_Check → bit6 (floor/ceiling); returns $9A. Dispatch slot $C030; used by the overhead projectile handlers (Slider Laser $53, Spitter Shot $55, Th2C Shot $57) and in-bank by Obj_MoveBounce_Double ($DF84)."
+    desc: "Double-speed Obj_MoveAndCollide: Apply_Double_Velocity_X + H_Collision_Check → $9A bit7 (side wall); Apply_Double_Velocity_Y + V_Collision_Check → bit6 (floor/ceiling); returns $9A. Dispatch slot $C030; used by the overhead projectile handlers (Slider Laser $53, Spitter Shot $55, Th2C Shot $57) and in-bank by Obj_MoveBounce_Double ($DF84)."
 
   - space: prg
     offset: 0x1E0B2
@@ -29380,92 +29382,17 @@ hints:
 
   - space: ram
     offset: 0x0046
-    name: LoadedObj_Type
-    status: verified
-    desc: "Active slot's object type"
-
-  - space: ram
-    offset: 0x0047
-    name: LoadedObj_Facing
-    status: verified
-    desc: "Which way this object is pointing."
-    notes: |-
-      (Put these notes in the description once verified)
-      The ENCODING is ObjType-defined, so read it against the handler that owns it:
-        (a) 8-bit heading angle, 0–255 = full circle — the shared enemy physics convention, consumed by Obj_AngleToVelocity ($E1BD, $4C/$4D = cos/sin × speed), Obj_ReflectHeading ($E0D0/$E0D8, mirrors it off a wall) and Obj_TurnHeading ($E07B, += $52); ~29 call sites across banks 04/06, e.g. the Shooter ($76 seeds it from the RNG) and the Jellyfish ($80 seeds it to $B8 and jets along it).
-        (b) 2-bit direction index 0–3, masked AND #$03 and used as a table index — overhead player (Obj_StepPositionByFacing $8E95) and Boss3 Photophage (FindLiveSegment $A309 scans directions with INC $47).
-        (c) facing bit-flags in bits 7/6, tested with BIT — tank Jason (_ObjHandler_Tank_1B_Jason__FaceFromInput $818E). It does NOT gate the handler's dual entry: that is $15 (ScreenFade_Flags) at RunObjectHandler $C9C4."
-
-  - space: ram
-    offset: 0x0048
-    name: LoadedObj_Position_X_Lo
-    status: verified
-    desc: "The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position."
-
-  - space: ram
-    offset: 0x0049
-    name: LoadedObj_Position_X_Hi
-    status: verified
-    desc: "The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position."
-
-  - space: ram
-    offset: 0x004A
-    name: LoadedObj_Position_Y_Lo
-    status: verified
-    desc: "The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position."
-
-  - space: ram
-    offset: 0x004B
-    name: LoadedObj_Position_Y_Hi
-    status: verified
-    desc: "The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position."
-
-  - space: ram
-    offset: 0x004C
-    name: LoadedObj_Velocity_X
-    status: verified
+    end: 0x0053
+    name: LoadedObject
+    status: alpha
+    type: Obj
     desc: |-
-      Object X velocity in pixels / frame.
-      Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-
-  - space: ram
-    offset: 0x004D
-    name: LoadedObj_Velocity_Y
-    status: verified
-    desc: |-
-      Object Y velocity in pixels / frame.
-      Type: 8-bit Signed Fixed Point.  4 LSb are fractional (swww.ffff)
-
-  - space: ram
-    offset: 0x004E
-    name: LoadedObj_TileIndex
-    desc: "Tile / sprite index"
-
-  - space: ram
-    offset: 0x004F
-    name: LoadedObj_ActiveFlag
-    desc: "Active flag"
-
-  - space: ram
-    offset: 0x0050
-    name: LoadedObj_Phase
-    desc: "The object's state / phase — which branch of its own state machine it is in. Working copy of slot byte +10 ($040A,X, ObjSlot::Phase). Meaning is ObjType-defined: the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase — e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose."
-
-  - space: ram
-    offset: 0x0051
-    name: LoadedObj_AnimFrame
-    desc: "Animation frame"
-
-  - space: ram
-    offset: 0x0052
-    name: LoadedObj_Scratch
-    desc: "Per-handler scratch"
-
-  - space: ram
-    offset: 0x0053
-    name: LoadedObj_Health
-    status: verified
-    desc: "Entity HP"
+      The 14-byte zero-page working copy of the currently active object slot — the same Obj
+      layout as the $0400 object table. Before each AI dispatch, ObjSlot_Load ($C8DF) copies the
+      active slot ($0400,X with X = ObjectSlot_Offset $56) into $46-$53; ObjSlot_Save ($C928)
+      writes it back after the handler runs. Indexed access (,X/,Y) reaches any field generically
+      (the whole-record copy loops Obj_CopyFieldsToSlot $D7C0, _Obj_SpawnFromZP__CopyRecord $DF27
+      and ClearObjWorkFields $D7EE); direct (unindexed) access is the single instance (LoadedObj).
 
   - space: ram
     offset: 0x0056
@@ -30765,9 +30692,9 @@ hints:
     end: 0x04FB
     name: ObjectTable
     status: verified
-    type: array<ObjSlot>
+    type: array<Obj>
     desc: |-
-      The object table: 18 ObjSlot records (14 bytes each) packed at $0400-$04FB. Slot 0 is
+      The object table: 18 Obj records (14 bytes each) packed at $0400-$04FB. Slot 0 is
       reserved for the player (Sophia/Jason); slots 1-17 hold enemies, projectiles, pickups,
       gates and other objects. Indexed access ($0400,X with X = ObjectSlot_Offset $56) reaches
       any slot; direct access is slot 0 (PlayerSlot). Before each AI dispatch ObjSlot_Load copies
@@ -31299,21 +31226,22 @@ hints:
     name: APU_FRAME_COUNTER
 
 aliases:
-  - { name: PlayerSlot, offset: 0x0400, type: ObjSlot, desc: "Slot 0 -- the player (Sophia/Jason); direct access to the object table's first record." }
-  - { name: Object_Slot_01, offset: 0x040E, type: ObjSlot }
-  - { name: Object_Slot_02, offset: 0x041C, type: ObjSlot }
-  - { name: Object_Slot_03, offset: 0x042A, type: ObjSlot }
-  - { name: Object_Slot_04, offset: 0x0438, type: ObjSlot }
-  - { name: Object_Slot_05, offset: 0x0446, type: ObjSlot }
-  - { name: Object_Slot_06, offset: 0x0454, type: ObjSlot }
-  - { name: Object_Slot_07, offset: 0x0462, type: ObjSlot }
-  - { name: Object_Slot_08, offset: 0x0470, type: ObjSlot }
-  - { name: Object_Slot_09, offset: 0x047E, type: ObjSlot }
-  - { name: Object_Slot_10, offset: 0x048C, type: ObjSlot }
-  - { name: Object_Slot_11, offset: 0x049A, type: ObjSlot }
-  - { name: Object_Slot_12, offset: 0x04A8, type: ObjSlot }
-  - { name: Object_Slot_13, offset: 0x04B6, type: ObjSlot }
-  - { name: Object_Slot_14, offset: 0x04C4, type: ObjSlot }
-  - { name: Object_Slot_15, offset: 0x04D2, type: ObjSlot }
-  - { name: Object_Slot_16, offset: 0x04E0, type: ObjSlot }
-  - { name: Object_Slot_17, offset: 0x04EE, type: ObjSlot }
+  - { name: LoadedObj, offset: 0x0046, type: Obj, desc: "The active object's zero-page working copy; direct (unindexed) access to its single Obj record. See LoadedObject." }
+  - { name: PlayerSlot, offset: 0x0400, type: Obj, desc: "Slot 0 -- the player (Sophia/Jason); direct access to the object table's first record." }
+  - { name: Object_Slot_01, offset: 0x040E, type: Obj }
+  - { name: Object_Slot_02, offset: 0x041C, type: Obj }
+  - { name: Object_Slot_03, offset: 0x042A, type: Obj }
+  - { name: Object_Slot_04, offset: 0x0438, type: Obj }
+  - { name: Object_Slot_05, offset: 0x0446, type: Obj }
+  - { name: Object_Slot_06, offset: 0x0454, type: Obj }
+  - { name: Object_Slot_07, offset: 0x0462, type: Obj }
+  - { name: Object_Slot_08, offset: 0x0470, type: Obj }
+  - { name: Object_Slot_09, offset: 0x047E, type: Obj }
+  - { name: Object_Slot_10, offset: 0x048C, type: Obj }
+  - { name: Object_Slot_11, offset: 0x049A, type: Obj }
+  - { name: Object_Slot_12, offset: 0x04A8, type: Obj }
+  - { name: Object_Slot_13, offset: 0x04B6, type: Obj }
+  - { name: Object_Slot_14, offset: 0x04C4, type: Obj }
+  - { name: Object_Slot_15, offset: 0x04D2, type: Obj }
+  - { name: Object_Slot_16, offset: 0x04E0, type: Obj }
+  - { name: Object_Slot_17, offset: 0x04EE, type: Obj }

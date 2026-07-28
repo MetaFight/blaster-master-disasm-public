@@ -8,18 +8,18 @@ L_A8D2: jmp     L_A8FA                          ; A8D2
         lda     #$01                            ; A8DA
         sta     $50                             ; A8DC
         lda     #$00                            ; A8DE
-        sta     LoadedObj_Velocity_Y            ; A8E0
+        sta     LoadedObj + Obj::Velocity_Y     ; A8E0
         lda     #$11                            ; A8E2
-        sta     LoadedObj_Velocity_X            ; A8E4
+        sta     LoadedObj + Obj::Velocity_X     ; A8E4
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; A8E6
         bpl     L_A8F2                          ; A8E9
         lda     #$00                            ; A8EB
         sec                                     ; A8ED
-        sbc     LoadedObj_Velocity_X            ; A8EE
-        sta     LoadedObj_Velocity_X            ; A8F0
+        sbc     LoadedObj + Obj::Velocity_X     ; A8EE
+        sta     LoadedObj + Obj::Velocity_X     ; A8F0
 L_A8F2: lda     #$00                            ; A8F2
         sta     $51                             ; A8F4
-        sta     LoadedObj_Facing                ; A8F6
+        sta     LoadedObj + Obj::Facing         ; A8F6
         sta     $52                             ; A8F8
 L_A8FA: rts                                     ; A8FA
 
@@ -46,7 +46,7 @@ L_A913: lda     Global_FrameCounter             ; A913
         jsr     Enqueue_Sound_Command           ; A91B
 L_A91E: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; A91E
         sta     $01                             ; A921
-        eor     LoadedObj_Velocity_X            ; A923
+        eor     LoadedObj + Obj::Velocity_X     ; A923
         bpl     L_A93E                          ; A925
         lda     #$11                            ; A927
         ldx     $01                             ; A929
@@ -54,7 +54,7 @@ L_A91E: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; A91E
         eor     #$FF                            ; A92D
         clc                                     ; A92F
         adc     #$01                            ; A930
-L_A932: sta     LoadedObj_Velocity_X            ; A932
+L_A932: sta     LoadedObj + Obj::Velocity_X     ; A932
         jsr     LEB71                           ; A934
         and     #$0F                            ; A937
         clc                                     ; A939
@@ -76,15 +76,15 @@ L_A93E: lda     #$11                            ; A93E
         sta     $52                             ; A95B
         lda     #$00                            ; A95D
         sec                                     ; A95F
-        sbc     LoadedObj_Velocity_X            ; A960
-        sta     LoadedObj_Velocity_X            ; A962
+        sbc     LoadedObj + Obj::Velocity_X     ; A960
+        sta     LoadedObj + Obj::Velocity_X     ; A962
         jmp     L_A994                          ; A964
 
 ; ----------------------------------------------------------------------------
 L_A967: lda     #$29                            ; A967
         jsr     Enqueue_Sound_Command           ; A969
         lda     #$D2                            ; A96C
-        sta     LoadedObj_Velocity_Y            ; A96E
+        sta     LoadedObj + Obj::Velocity_Y     ; A96E
 L_A970: inc     $50                             ; A970
         jmp     L_A994                          ; A972
 
@@ -98,11 +98,11 @@ L_A975: lda     #$02                            ; A975
         jsr     LE083                           ; A983
         and     #$40                            ; A986
         beq     L_A994                          ; A988
-        lda     LoadedObj_Velocity_Y            ; A98A
+        lda     LoadedObj + Obj::Velocity_Y     ; A98A
         bmi     L_A994                          ; A98C
         dec     $50                             ; A98E
         lda     #$00                            ; A990
-        sta     LoadedObj_Velocity_Y            ; A992
+        sta     LoadedObj + Obj::Velocity_Y     ; A992
 L_A994: lda     #$10                            ; A994
         sta     $40                             ; A996
         lda     #$08                            ; A998
@@ -124,11 +124,11 @@ L_A9AE: lda     #$00                            ; A9AE
         bpl     L_A9C3                          ; A9B5
         lda     #$0C                            ; A9B7
         sta     $51                             ; A9B9
-        dec     LoadedObj_Facing                ; A9BB
+        dec     LoadedObj + Obj::Facing         ; A9BB
         bpl     L_A9C3                          ; A9BD
         lda     #$02                            ; A9BF
-        sta     LoadedObj_Facing                ; A9C1
-L_A9C3: ldx     LoadedObj_Facing                ; A9C3
+        sta     LoadedObj + Obj::Facing         ; A9C1
+L_A9C3: ldx     LoadedObj + Obj::Facing         ; A9C3
         lda     LA4DB,x                         ; A9C5
         jmp     LF011                           ; A9C8
 

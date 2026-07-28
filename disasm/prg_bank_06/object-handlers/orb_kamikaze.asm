@@ -7,15 +7,15 @@ L_B076: jmp     L_B094                          ; B076
         jsr     L_A2E9                          ; B07B
         lda     #$00                            ; B07E
         sta     $50                             ; B080
-        sta     LoadedObj_Velocity_Y            ; B082
+        sta     LoadedObj + Obj::Velocity_Y     ; B082
         lda     #$10                            ; B084
-        sta     LoadedObj_Velocity_X            ; B086
+        sta     LoadedObj + Obj::Velocity_X     ; B086
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; B088
         bpl     L_B094                          ; B08B
         lda     #$00                            ; B08D
         sec                                     ; B08F
-        sbc     LoadedObj_Velocity_X            ; B090
-        sta     LoadedObj_Velocity_X            ; B092
+        sbc     LoadedObj + Obj::Velocity_X     ; B090
+        sta     LoadedObj + Obj::Velocity_X     ; B092
 L_B094: rts                                     ; B094
 
 ; ----------------------------------------------------------------------------
@@ -41,20 +41,20 @@ L_B0B0: lda     $50                             ; B0B0
         beq     L_B0C9                          ; B0C0
         lda     #$00                            ; B0C2
         sec                                     ; B0C4
-        sbc     LoadedObj_Velocity_X            ; B0C5
-        sta     LoadedObj_Velocity_X            ; B0C7
-L_B0C9: lda     LoadedObj_Velocity_Y            ; B0C9
+        sbc     LoadedObj + Obj::Velocity_X     ; B0C5
+        sta     LoadedObj + Obj::Velocity_X     ; B0C7
+L_B0C9: lda     LoadedObj + Obj::Velocity_Y     ; B0C9
         bne     L_B0D2                          ; B0CB
         jsr     LE0FA                           ; B0CD
         bmi     L_B13B                          ; B0D0
 L_B0D2: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; B0D2
-        eor     LoadedObj_Velocity_X            ; B0D5
+        eor     LoadedObj + Obj::Velocity_X     ; B0D5
         bmi     L_B13B                          ; B0D7
         lda     #$01                            ; B0D9
         sta     $50                             ; B0DB
         lda     #$00                            ; B0DD
-        sta     LoadedObj_Velocity_X            ; B0DF
-        sta     LoadedObj_Velocity_Y            ; B0E1
+        sta     LoadedObj + Obj::Velocity_X     ; B0DF
+        sta     LoadedObj + Obj::Velocity_Y     ; B0E1
         jsr     LDFDD                           ; B0E3
         lda     #$01                            ; B0E6
         sta     $51                             ; B0E8
@@ -74,18 +74,18 @@ L_B0F6: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; B0F6
 ; ----------------------------------------------------------------------------
 L_B101: sec                                     ; B101
         sbc     #$20                            ; B102
-L_B104: sta     LoadedObj_Velocity_X            ; B104
+L_B104: sta     LoadedObj + Obj::Velocity_X     ; B104
         dec     $51                             ; B106
         bne     L_B11A                          ; B108
         lda     $52                             ; B10A
         sta     $51                             ; B10C
         jsr     LE0FA                           ; B10E
         bmi     L_B118                          ; B111
-        inc     LoadedObj_Velocity_Y            ; B113
+        inc     LoadedObj + Obj::Velocity_Y     ; B113
         jmp     L_B11A                          ; B115
 
 ; ----------------------------------------------------------------------------
-L_B118: dec     LoadedObj_Velocity_Y            ; B118
+L_B118: dec     LoadedObj + Obj::Velocity_Y     ; B118
 L_B11A: lda     #$40                            ; B11A
         ldx     #$4D                            ; B11C
         jsr     LEB14                           ; B11E
@@ -94,14 +94,14 @@ L_B11A: lda     #$40                            ; B11A
         lda     #$00                            ; B126
         sta     $50                             ; B128
         lda     #$06                            ; B12A
-        sta     LoadedObj_Velocity_Y            ; B12C
+        sta     LoadedObj + Obj::Velocity_Y     ; B12C
         lda     #$10                            ; B12E
-        ldx     LoadedObj_Velocity_X            ; B130
+        ldx     LoadedObj + Obj::Velocity_X     ; B130
         bmi     L_B139                          ; B132
         eor     #$FF                            ; B134
         clc                                     ; B136
         adc     #$01                            ; B137
-L_B139: sta     LoadedObj_Velocity_X            ; B139
+L_B139: sta     LoadedObj + Obj::Velocity_X     ; B139
 L_B13B: lda     #$20                            ; B13B
         sta     $40                             ; B13D
         lda     #$20                            ; B13F

@@ -7,7 +7,7 @@ L_AC3C: jmp     L_AC62                          ; AC3C
         jsr     L_A2E9                          ; AC41
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; AC44
         and     #$80                            ; AC47
-        sta     LoadedObj_Facing                ; AC49
+        sta     LoadedObj + Obj::Facing         ; AC49
         bpl     L_AC51                          ; AC4B
         lda     #$10                            ; AC4D
         bne     L_AC53                          ; AC4F
@@ -63,7 +63,7 @@ L_AC98: cmp     #$01                            ; AC98
         eor     #$FF                            ; ACAB
         clc                                     ; ACAD
         adc     #$01                            ; ACAE
-L_ACB0: ldx     LoadedObj_Velocity_X            ; ACB0
+L_ACB0: ldx     LoadedObj + Obj::Velocity_X     ; ACB0
         bmi     L_ACBB                          ; ACB2
         eor     #$FF                            ; ACB4
         clc                                     ; ACB6

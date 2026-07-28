@@ -6,11 +6,11 @@ L_ADE4: jmp     L_ADFE                          ; ADE4
         lda     #$0D                            ; ADE7
         jsr     L_A2E9                          ; ADE9
         lda     #$B8                            ; ADEC
-        sta     LoadedObj_Facing                ; ADEE
+        sta     LoadedObj + Obj::Facing         ; ADEE
         lda     #$08                            ; ADF0
-        sta     LoadedObj_Velocity_Y            ; ADF2
+        sta     LoadedObj + Obj::Velocity_Y     ; ADF2
         lda     #$00                            ; ADF4
-        sta     LoadedObj_Velocity_X            ; ADF6
+        sta     LoadedObj + Obj::Velocity_X     ; ADF6
         sta     $50                             ; ADF8
         lda     #$40                            ; ADFA
         sta     $51                             ; ADFC
@@ -46,11 +46,11 @@ L_AE2F: lda     #$02                            ; AE2F
         jsr     LDFA0                           ; AE31
         bpl     L_AE39                          ; AE34
         jsr     LE0D8                           ; AE36
-L_AE39: lda     LoadedObj_Velocity_Y            ; AE39
+L_AE39: lda     LoadedObj + Obj::Velocity_Y     ; AE39
         cmp     #$04                            ; AE3B
         bcs     L_AE49                          ; AE3D
         lda     #$04                            ; AE3F
-        sta     LoadedObj_Velocity_Y            ; AE41
+        sta     LoadedObj + Obj::Velocity_Y     ; AE41
         dec     $50                             ; AE43
         lda     #$40                            ; AE45
         sta     $51                             ; AE47
