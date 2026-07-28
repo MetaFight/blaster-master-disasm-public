@@ -7190,8 +7190,7 @@ hints:
   - space: prg
     offset: 0x134EE
     name: ObjHandler_Ovhd_33_Flier_Spawner_Main
-    desc: |-
-      ObjType $33 — Flier Spawner (Thing $06), active. Periodically (on a timed + random gate) spawns a Flier ($34) at a camera edge, entering from a random side at a random height, with a spawn SFX. Cannot be killed (runs no damage check); its render only culls off-screen. Dual-entry: +0 is the render block, +3 the normal-play body.
+    desc: "ObjType $33 — Flier Spawner (Thing $06), active. Periodically (on a timed + random gate) spawns a Flier ($34) at a camera edge, entering from a random side at a random height, with a spawn SFX. Cannot be killed (runs no damage check); its render only culls off-screen. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x134F1
@@ -7368,8 +7367,7 @@ hints:
   - space: prg
     offset: 0x1365B
     name: ObjHandler_Ovhd_38_Spinner_Main
-    desc: |-
-      ObjType $38 — Spinner (Thing $08), active. On its phase tick (~every 128 frames) it fires a 4-shot radial burst of Spinner shots ($4E). Damageable (descriptor 8, HP $20); 2-frame animation; despawns off-screen. Dual-entry: +0 is the render block, +3 the normal-play body.
+    desc: "ObjType $38 — Spinner (Thing $08), active. On its phase tick (~every 128 frames) it fires a 4-shot radial burst of Spinner shots ($4E). Damageable (descriptor 8, HP $20); 2-frame animation; despawns off-screen. Dual-entry: +0 is the render block, +3 the normal-play body."
 
   - space: prg
     offset: 0x1365E
@@ -14925,12 +14923,12 @@ hints:
     name: TankEnemy_DescTable
     desc: |-
       30 x 4-byte tank-enemy descriptors ($A36A-$A3E1), indexed by descriptor index via TankEnemy_DescPtr (accessed only via computed ($A1) pointer).
-      
+
       Per descriptor:
         [0]=behavior flag (->$53), [1]=HP
         [2]=drop pickup ObjType ($2C Health-x1 / $2E Hover-fuel-x1)
         [3]=drop-chance threshold (drop when RNG_State <threshold). 
-      
+
       Index->enemy:
         00=GrayCaterpillar($54)
         01=unused
@@ -14961,7 +14959,7 @@ hints:
         1B=BombCanister($8A)
         1C=RedBulletA($8C)
         1D=RedBulletB($8D).
-      
+
       Tank parallel of OvhdEnemy_DescTable ($B326). See docs/entities/tank/_shared-enemy-system.md.
 
   - space: prg
@@ -15567,7 +15565,7 @@ hints:
     offset: 0x1A7CB
     name: ObjHandler_Tank_5F_Gray_Hopper_6HP_Init
     status: verified
-    desc: ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy.
+    desc: "ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy."
 
   - space: prg
     offset: 0x1A7CE
@@ -15577,7 +15575,7 @@ hints:
   - space: prg
     offset: 0x1A7D0
     status: verified
-    desc: Init the enemy from descriptor $05.
+    desc: "Init the enemy from descriptor $05."
 
   - space: prg
     offset: 0x1A7D5
@@ -15594,13 +15592,13 @@ hints:
   - space: prg
     offset: 0x1A7DC
     status: verified
-    desc: player is to the LEFT so set heading $C8 (11.25° CW from UP) which is AWAY from the player
+    desc: "player is to the LEFT so set heading $C8 (11.25° CW from UP) which is AWAY from the player"
 
   - space: prg
     offset: 0x1A7E1
     name: _ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight
     status: verified
-    desc: player is to the RIGHT so set heading to $B8 = $C0 (11.25° tilted CCW from UP) which, again, is AWAY from the player.
+    desc: "player is to the RIGHT so set heading to $B8 = $C0 (11.25° tilted CCW from UP) which, again, is AWAY from the player."
 
   - space: prg
     offset: 0x1A7E3
@@ -15616,11 +15614,10 @@ hints:
   - space: prg
     offset: 0x1A7EE
     name: ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking
-    desc: |-
-      ObjType $60 — Gray Hopper (6 HP), active: the hopping/attack half of the enemy. It falls under gravity; on each floor landing it either settles into the walking state $61 or aims a fresh, near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the ground before the stored hop velocity carries it up — so it bounds across the ground toward the player in bursts.
+    desc: "ObjType $60 — Gray Hopper (6 HP), active: the hopping/attack half of the enemy. It falls under gravity; on each floor landing it either settles into the walking state $61 or aims a fresh, near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the ground before the stored hop velocity carries it up — so it bounds across the ground toward the player in bursts."
     notes: |-
       Damageable via descriptor $05; on defeat it hands off to TankEnemy_Defeat. 
-      
+
       Its $47 is a HEADING, not a facing index. It is an 8-bit binary angle spanning the full circle in 256 units of 1.40625 degrees each, pointing right at $00 and turning clockwise through down at $40, left at $80 and up at $C0, which Obj_AngleToVelocity resolves into the velocity pair $4C/$4D via Trig_QuarterSineTable. Only two of the 256 headings are ever used here, $B8 and $C8, sitting $08 either side of straight up. The sprite's horizontal flip is NOT taken from $47 — Obj_SetAttrFlipX reads the X velocity $4C.
 
   - space: prg
@@ -22246,6 +22243,10 @@ hints:
     desc: "If Velocity_X is positive, use sign-extension byte $00, otherwise use $FF"
 
   - space: prg
+    offset: 0x1D32F
+    name: _Apply_Velocity_X__OnSignExtensionByteChosen
+
+  - space: prg
     offset: 0x1D331
     desc: "The next few (9) instructions seem to be magic required when adding 8-bit signed Velocity_X and 16-bit signed Position_X values (sfixed4.4 + sfixed12.4)."
 
@@ -22256,10 +22257,6 @@ hints:
   - space: prg
     offset: 0x1D33F
     desc: "Updated the TileIndex accordingly."
-
-  - space: prg
-    offset: 0x1D32F
-    name: _Apply_Velocity_X__OnSignExtensionByteChosen
 
   - space: prg
     offset: 0x1D349
@@ -22324,7 +22321,7 @@ hints:
 
   - space: prg
     offset: 0x1D3AB
-    desc: Otherwise, decrement TileIndex (so we check one tile to the left)
+    desc: "Otherwise, decrement TileIndex (so we check one tile to the left)"
 
   - space: prg
     offset: 0x1D3AC
@@ -23579,7 +23576,12 @@ hints:
 
   - space: prg
     offset: 0x1DF8E
-    desc: Save mirrored X-Velocity
+    desc: "Save mirrored X-Velocity"
+
+  - space: prg
+    offset: 0x1DF93
+    name: _Obj_MoveBounce_Double__CheckVertical
+    desc: "Probe bit6 (floor/ceiling) set → negate YVel $4D."
 
   - space: prg
     offset: 0x1DF96
@@ -23589,12 +23591,7 @@ hints:
 
   - space: prg
     offset: 0x1DF9B
-    desc: Save mirrored X-Velocity
-
-  - space: prg
-    offset: 0x1DF93
-    name: _Obj_MoveBounce_Double__CheckVertical
-    desc: "Probe bit6 (floor/ceiling) set → negate YVel $4D."
+    desc: "Save mirrored X-Velocity"
 
   - space: prg
     offset: 0x1DF9D
@@ -29403,25 +29400,25 @@ hints:
     offset: 0x0048
     name: LoadedObj_Position_X_Lo
     status: verified
-    desc: The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
+    desc: "The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position."
 
   - space: ram
     offset: 0x0049
     name: LoadedObj_Position_X_Hi
     status: verified
-    desc: The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+    desc: "The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position."
 
   - space: ram
     offset: 0x004A
     name: LoadedObj_Position_Y_Lo
     status: verified
-    desc: The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
+    desc: "The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position."
 
   - space: ram
     offset: 0x004B
     name: LoadedObj_Position_Y_Hi
     status: verified
-    desc: The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
+    desc: "The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position."
 
   - space: ram
     offset: 0x004C
