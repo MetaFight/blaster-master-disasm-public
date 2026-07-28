@@ -89,9 +89,9 @@ L_AD8E: clc                                     ; AD8E
         adc     LoadedObj + Obj::Velocity_X     ; AD8F
         sta     LoadedObj + Obj::Velocity_X     ; AD91
         jsr     LD2DE                           ; AD93
-        jsr     LD37D                           ; AD96
+        jsr     H_Collision_Check               ; AD96
         jsr     LD2FE                           ; AD99
-        jsr     LD3E1                           ; AD9C
+        jsr     V_Collision_Check               ; AD9C
         beq     L_ADA9                          ; AD9F
         lda     LoadedObj + Obj::Velocity_Y     ; ADA1
         bpl     L_ADA9                          ; ADA3

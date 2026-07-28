@@ -35,9 +35,9 @@ LB095:  jmp     L_B13B                          ; B095
 L_B0B0: lda     $50                             ; B0B0
         bne     L_B0ED                          ; B0B2
         jsr     LD2FE                           ; B0B4
-        jsr     LD3E1                           ; B0B7
+        jsr     V_Collision_Check               ; B0B7
         jsr     LD2DE                           ; B0BA
-        jsr     LD37D                           ; B0BD
+        jsr     H_Collision_Check               ; B0BD
         beq     L_B0C9                          ; B0C0
         lda     #$00                            ; B0C2
         sec                                     ; B0C4

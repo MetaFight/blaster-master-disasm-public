@@ -1088,23 +1088,35 @@ L_D31E: clc                                     ; D31E
 L_D323: rts                                     ; D323
 
 ; ----------------------------------------------------------------------------
-L_D324: jsr     L_D349                          ; D324
-L_D327: lda     #$00                            ; D327
+; Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point
+; arithmetic.
+; Also keeps track of TileIndex correctly.
+Apply_Double_Velocity_XY:
+        jsr     Apply_Double_Velocity_Y         ; D324
+; Apply DOUBLE the LoadedObject's X velocity to its position, adjusting tilemap column $4E and
+; keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Double_Velocity_XY.
+Apply_Double_Velocity_X:
+        lda     #$00                            ; D327
         ldx     LoadedObj + Obj::Velocity_X     ; D329
-        bpl     L_D32F                          ; D32B
+; If Velocity_X is positive, use sign-extension byte $00, otherwise use $FF
+        bpl     _Apply_Double_Velocity_X__OnSignExtensionByteChosen; D32B
         lda     #$FF                            ; D32D
-L_D32F: pha                                     ; D32F
+_Apply_Double_Velocity_X__OnSignExtensionByteChosen:
+        pha                                     ; D32F
         txa                                     ; D330
+; ASL doubles XVel before the add — this is the actual ×2 in 'double speed'.
         asl     a                               ; D331
         clc                                     ; D332
         adc     LoadedObj + Obj::Position_X_Lo  ; D333
         sta     LoadedObj + Obj::Position_X_Lo  ; D335
+; Retrieve the sign-extension byte from the stack to carry into the x-metatile value.
         pla                                     ; D337
         adc     LoadedObj + Obj::Position_X_Hi  ; D338
         pha                                     ; D33A
         sec                                     ; D33B
         sbc     LoadedObj + Obj::Position_X_Hi  ; D33C
         clc                                     ; D33E
+; Update the TileIndex accordingly.
         adc     $4E                             ; D33F
         sta     $4E                             ; D341
         pla                                     ; D343
@@ -1113,11 +1125,17 @@ L_D32F: pha                                     ; D32F
         rts                                     ; D348
 
 ; ----------------------------------------------------------------------------
-L_D349: lda     #$00                            ; D349
+; Apply DOUBLE the LoadedObject's Y velocity to its position, adjusting tilemap index $4E by
+; 16×row (row stride $11) and keeping $4B in 0-$7F. Dispatch $C042; Y half of
+; Apply_Double_Velocity_XY.
+Apply_Double_Velocity_Y:
+        lda     #$00                            ; D349
         ldx     LoadedObj + Obj::Velocity_Y     ; D34B
-        bpl     L_D351                          ; D34D
+        bpl     _Apply_Double_Velocity_Y__PushSign; D34D
         lda     #$FF                            ; D34F
-L_D351: pha                                     ; D351
+; PHA the sign-extension byte ($00 or $FF) then add 2×YVel
+_Apply_Double_Velocity_Y__PushSign:
+        pha                                     ; D351
         txa                                     ; D352
         asl     a                               ; D353
         clc                                     ; D354
@@ -1144,82 +1162,130 @@ L_D351: pha                                     ; D351
         rts                                     ; D373
 
 ; ----------------------------------------------------------------------------
-L_D374: jsr     L_D3E1                          ; D374
-        jmp     L_D37D                          ; D377
+L_D374: jsr     V_Collision_Check               ; D374
+        jmp     H_Collision_Check               ; D377
 
 ; ----------------------------------------------------------------------------
 L_D37A: jsr     L_D2DE                          ; D37A
-L_D37D: jsr     L_D3A3                          ; D37D
-        beq     L_D387                          ; D380
+; X-axis terrain collision check and response — the horizontal mirror of V_Collision_Check.
+; Tests the level tiles the active object's collision box overlaps and, on a solid hit, snaps
+; the object flush against the blocking tile's edge. Reached through MoveX_WithCollision
+; ($D37A) and Collision_Checks ($D374); dispatch slot $C015.
+; In: LoadedObj_CollisionBox_HalfWidth/_HalfHeight (the box, centred on the object),
+; LoadedObj_Position_X_Lo/_Y_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a
+; hit LoadedObj_Position_X_Lo is rewritten so the box edge sits exactly on the tile boundary.
+; The X axis resolves on the exact edge; the Y axis it tests as a cross-check tolerates ~2 px
+; of overlap before it counts, which is what stops an object catching on tile corners.
+; See docs/misc/terrain-collision.md
+H_Collision_Check:
+        jsr     _H_Collision_Check__TileLeft    ; D37D
+        beq     _H_Collision_Check__CheckRight  ; D380
         lda     $42                             ; D382
         sta     LoadedObj + Obj::Position_X_Lo  ; D384
         rts                                     ; D386
 
 ; ----------------------------------------------------------------------------
-L_D387: jsr     L_D394                          ; D387
-        beq     L_D393                          ; D38A
+; left edge clear → test the right edge (JSR _H_Collision_Check__TileRight); on hit snap $48 =
+; -$42
+_H_Collision_Check__CheckRight:
+        jsr     _H_Collision_Check__TileRight   ; D387
+        beq     _H_Collision_Check__Exit        ; D38A
         lda     #$00                            ; D38C
         sec                                     ; D38E
         sbc     $42                             ; D38F
         sta     LoadedObj + Obj::Position_X_Lo  ; D391
-L_D393: rts                                     ; D393
+; RTS
+_H_Collision_Check__Exit:
+        rts                                     ; D393
 
 ; ----------------------------------------------------------------------------
-L_D394: ldx     $4E                             ; D394
+; compute tile index for X pos + $42 (right edge); if overflow step to next column, then
+; read/classify the tile
+_H_Collision_Check__TileRight:
+        ldx     $4E                             ; D394
         lda     LoadedObj + Obj::Position_X_Lo  ; D396
         clc                                     ; D398
         adc     $42                             ; D399
-        beq     L_D3AC                          ; D39B
-        bcc     L_D3AC                          ; D39D
+        beq     _H_Collision_Check__ReadTile    ; D39B
+        bcc     _H_Collision_Check__ReadTile    ; D39D
         inx                                     ; D39F
-        jmp     L_D3AC                          ; D3A0
+        jmp     _H_Collision_Check__ReadTile    ; D3A0
 
 ; ----------------------------------------------------------------------------
-L_D3A3: ldx     $4E                             ; D3A3
+; compute tile index for X pos vs $42 (left edge); if underflow step to prior column, then
+; read/classify the tile
+_H_Collision_Check__TileLeft:
+        ldx     $4E                             ; D3A3
         lda     LoadedObj + Obj::Position_X_Lo  ; D3A5
         cmp     $42                             ; D3A7
-        bcs     L_D3AC                          ; D3A9
+; branch if LoadedObj's X_Lo (fixed4.4) >= the collision box's HalfWidth.
+; This means we can use LoadedObj's TileIndex as is.
+        bcs     _H_Collision_Check__ReadTile    ; D3A9
+; Otherwise, decrement TileIndex (so we check one tile to the left)
         dex                                     ; D3AB
-L_D3AC: lda     $0500,x                         ; D3AC
-        bmi     L_D393                          ; D3AF
+; Load tile flags into A.  Also check the bottom Y edge ($4A + $43, +$11 row)
+_H_Collision_Check__ReadTile:
+        lda     $0500,x                         ; D3AC
+; Bit 7 (negative) means a solid tile was found.  Skip to Exit tail.
+        bmi     _H_Collision_Check__Exit        ; D3AF
+; Otherwise, do the cross-axis checks
         lda     LoadedObj + Obj::Position_Y_Lo  ; D3B1
         clc                                     ; D3B3
         adc     $43                             ; D3B4
-        bcc     L_D3C6                          ; D3B6
+        bcc     _H_Collision_Check__CheckTop    ; D3B6
         cmp     #$20                            ; D3B8
-        bcc     L_D3C6                          ; D3BA
+        bcc     _H_Collision_Check__CheckTop    ; D3BA
         txa                                     ; D3BC
         clc                                     ; D3BD
         adc     #$11                            ; D3BE
         tay                                     ; D3C0
         lda     $0500,y                         ; D3C1
-        bmi     L_D393                          ; D3C4
-L_D3C6: lda     LoadedObj + Obj::Position_Y_Lo  ; D3C6
+        bmi     _H_Collision_Check__Exit        ; D3C4
+; check the top Y edge ($4A - $43, -$11 row); solid → collision
+_H_Collision_Check__CheckTop:
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D3C6
         sec                                     ; D3C8
         sbc     $43                             ; D3C9
-        bcs     L_D3DB                          ; D3CB
+        bcs     _H_Collision_Check__NoCollide   ; D3CB
         cmp     #$E0                            ; D3CD
-        bcs     L_D3DB                          ; D3CF
+        bcs     _H_Collision_Check__NoCollide   ; D3CF
         txa                                     ; D3D1
         sec                                     ; D3D2
         sbc     #$11                            ; D3D3
         tay                                     ; D3D5
         lda     $0500,y                         ; D3D6
-        bmi     L_D393                          ; D3D9
-L_D3DB: lda     #$00                            ; D3DB
+        bmi     _H_Collision_Check__Exit        ; D3D9
+; all tiles clear → LDA #$00 (Z=1 no collision); RTS
+_H_Collision_Check__NoCollide:
+        lda     #$00                            ; D3DB
         rts                                     ; D3DD
 
 ; ----------------------------------------------------------------------------
 L_D3DE: jsr     L_D2FE                          ; D3DE
-L_D3E1: jsr     L_D40B                          ; D3E1
-        beq     L_D3EB                          ; D3E4
+; Y-axis terrain collision check and response — the vertical mirror of H_Collision_Check.
+; Tests the level tiles the active object's collision box overlaps and, on a solid hit, snaps
+; the object flush against the blocking tile's edge — this is what makes an object land on a
+; floor or stop under a ceiling. Reached through MoveY_WithCollision ($D3DE) and
+; Collision_Checks ($D374); dispatch slot $C018.
+; In: LoadedObj_CollisionBox_HalfHeight/_HalfWidth (the box, centred on the object),
+; LoadedObj_Position_Y_Lo/_X_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a
+; hit LoadedObj_Position_Y_Lo is rewritten so the box edge sits exactly on the tile boundary.
+; See docs/misc/terrain-collision.md
+; check the tile above ($D40B); if solid, snap the position so the box top rests on it
+V_Collision_Check:
+        jsr     _V_Collision_Check__TileAbove   ; D3E1
+; tile above solid: LDA $43 → STA $4A (snap position to tile edge); RTS
+        beq     _V_Collision_Check__CheckBelow  ; D3E4
         lda     $43                             ; D3E6
         sta     LoadedObj + Obj::Position_Y_Lo  ; D3E8
         rts                                     ; D3EA
 
 ; ----------------------------------------------------------------------------
-L_D3EB: jsr     L_D3F8                          ; D3EB
-        beq     L_D442                          ; D3EE
+; check tile below ($D3F8); if solid: snap ObjYFrac = -$43 (push up to tile bottom)
+_V_Collision_Check__CheckBelow:
+        jsr     _V_Collision_Check__TileBelow   ; D3EB
+; tile below solid: 0-$43 → $4A; RTS
+        beq     _V_Collision_Check__Exit        ; D3EE
         lda     #$00                            ; D3F0
         sec                                     ; D3F2
         sbc     $43                             ; D3F3
@@ -1227,50 +1293,74 @@ L_D3EB: jsr     L_D3F8                          ; D3EB
         rts                                     ; D3F7
 
 ; ----------------------------------------------------------------------------
-L_D3F8: ldx     $4E                             ; D3F8
+; compute tile index for position + $43 (bottom edge); if overflow: step to next tile row
+_V_Collision_Check__TileBelow:
+        ldx     $4E                             ; D3F8
         lda     LoadedObj + Obj::Position_Y_Lo  ; D3FA
         clc                                     ; D3FC
         adc     $43                             ; D3FD
-        beq     L_D418                          ; D3FF
-        bcc     L_D418                          ; D401
+; Branch if A is 0
+        beq     _V_Collision_Check__ReadTile    ; D3FF
+; Branch if Y_Lo and HalfHeight didn't overflow
+        bcc     _V_Collision_Check__ReadTile    ; D401
+; otherwise, adjust TileIndex (to one row lower) before testing tile
         txa                                     ; D403
         clc                                     ; D404
         adc     #$11                            ; D405
         tax                                     ; D407
-        jmp     L_D418                          ; D408
+        jmp     _V_Collision_Check__ReadTile    ; D408
 
 ; ----------------------------------------------------------------------------
-L_D40B: ldx     $4E                             ; D40B
+; compute tile index for position vs $43 (top edge); if BCS: step to prior tile row
+_V_Collision_Check__TileAbove:
+        ldx     $4E                             ; D40B
         lda     LoadedObj + Obj::Position_Y_Lo  ; D40D
         cmp     $43                             ; D40F
-        bcs     L_D418                          ; D411
+        bcs     _V_Collision_Check__ReadTile    ; D411
         txa                                     ; D413
         sec                                     ; D414
         sbc     #$11                            ; D415
         tax                                     ; D417
-L_D418: lda     $0500,x                         ; D418
-        bmi     L_D442                          ; D41B
+; Use TileIndex (X) to load the target tile's flags.
+; bit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.
+; Otherwise, check left/right X edge tiles
+_V_Collision_Check__ReadTile:
+        lda     $0500,x                         ; D418
+        bmi     _V_Collision_Check__Exit        ; D41B
+; RIGHT-edge X cross-check: Position_X_Lo + the half-width. If it carries, the right edge has
+; spilled into the next column, so test that tile too — but only once the spill reaches $20 (2
+; px); a shallower overlap is ignored, which is what keeps an object from catching on a tile
+; corner.
+_V_Collision_Check__CheckRight:
         lda     LoadedObj + Obj::Position_X_Lo  ; D41D
         clc                                     ; D41F
         adc     $42                             ; D420
-        bcc     L_D42F                          ; D422
+        bcc     _V_Collision_Check__CheckLeft   ; D422
         cmp     #$20                            ; D424
-        bcc     L_D42F                          ; D426
+        bcc     _V_Collision_Check__CheckLeft   ; D426
         inx                                     ; D428
         lda     $0500,x                         ; D429
-        bmi     L_D442                          ; D42C
+        bmi     _V_Collision_Check__Exit        ; D42C
         dex                                     ; D42E
-L_D42F: lda     LoadedObj + Obj::Position_X_Lo  ; D42F
+; LEFT-edge X cross-check: Position_X_Lo − the half-width. If it borrows, the left edge has
+; crossed into the previous column, so test that tile too — subject to the same 2 px ($E0) corner
+; tolerance as the right edge above.
+_V_Collision_Check__CheckLeft:
+        lda     LoadedObj + Obj::Position_X_Lo  ; D42F
         sec                                     ; D431
         sbc     $42                             ; D432
-        bcs     L_D440                          ; D434
+        bcs     _V_Collision_Check__NoCollide   ; D434
         cmp     #$E0                            ; D436
-        bcs     L_D440                          ; D438
+        bcs     _V_Collision_Check__NoCollide   ; D438
         dex                                     ; D43A
         lda     $0500,x                         ; D43B
-        bmi     L_D442                          ; D43E
-L_D440: lda     #$00                            ; D440
-L_D442: rts                                     ; D442
+        bmi     _V_Collision_Check__Exit        ; D43E
+; all tiles clear; Z=1 → signals no collision to caller
+_V_Collision_Check__NoCollide:
+        lda     #$00                            ; D440
+; RTS (Z=0 from a solid-tile BMI = collision; Z=1 = clear)
+_V_Collision_Check__Exit:
+        rts                                     ; D442
 
 ; ----------------------------------------------------------------------------
 L_D443: jsr     L_D467                          ; D443

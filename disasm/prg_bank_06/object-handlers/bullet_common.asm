@@ -6,12 +6,12 @@ L_A670: sty     $05                             ; A670
         beq     L_A6AD                          ; A677
         dec     $51                             ; A679
         bne     L_A683                          ; A67B
-        lda     $9A                             ; A67D
+        lda     TerrainCollisionFlags           ; A67D
         beq     L_A6BC                          ; A67F
         bne     L_A6B9                          ; A681
 L_A683: and     #$03                            ; A683
         bne     L_A6B9                          ; A685
-        lda     $9A                             ; A687
+        lda     TerrainCollisionFlags           ; A687
         ldx     $50                             ; A689
         bpl     L_A68F                          ; A68B
         eor     #$C0                            ; A68D
@@ -34,7 +34,7 @@ L_A6A3: sta     LoadedObj + Obj::Facing         ; A6A3
         jmp     L_A6B9                          ; A6AA
 
 ; ----------------------------------------------------------------------------
-L_A6AD: lda     $9A                             ; A6AD
+L_A6AD: lda     TerrainCollisionFlags           ; A6AD
         bpl     L_A6B3                          ; A6AF
         eor     #$C0                            ; A6B1
 L_A6B3: bne     L_A6B9                          ; A6B3

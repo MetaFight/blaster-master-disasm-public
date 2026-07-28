@@ -27,7 +27,7 @@ LAE95:  jmp     L_AF03                          ; AE95
         lda     $50                             ; AEA0
         bne     L_AEDC                          ; AEA2
         jsr     LD2DE                           ; AEA4
-        jsr     LD37D                           ; AEA7
+        jsr     H_Collision_Check               ; AEA7
         beq     L_AEB3                          ; AEAA
         lda     #$02                            ; AEAC
         sta     $50                             ; AEAE
@@ -59,7 +59,7 @@ L_AED5: lda     #$01                            ; AED5
 L_AEDC: cmp     #$01                            ; AEDC
         bne     L_AEE6                          ; AEDE
         jsr     LD2FE                           ; AEE0
-        jsr     LD3E1                           ; AEE3
+        jsr     V_Collision_Check               ; AEE3
 L_AEE6: jsr     LE07B                           ; AEE6
         and     #$7F                            ; AEE9
         bne     L_AF03                          ; AEEB

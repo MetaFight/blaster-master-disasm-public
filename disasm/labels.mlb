@@ -2020,30 +2020,44 @@ NesPrgRom:1D2FE:L_D2FE
 NesPrgRom:1D31A:L_D31A
 NesPrgRom:1D31E:L_D31E
 NesPrgRom:1D323:L_D323
-NesPrgRom:1D324:L_D324
-NesPrgRom:1D327:L_D327
-NesPrgRom:1D32F:L_D32F
-NesPrgRom:1D349:L_D349
-NesPrgRom:1D351:L_D351
+NesPrgRom:1D324:Apply_Double_Velocity_XY:Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point arithmetic.\nAlso keeps track of TileIndex correctly.
+NesPrgRom:1D327:Apply_Double_Velocity_X:Apply DOUBLE the LoadedObject's X velocity to its position, adjusting tilemap column $4E and keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Double_Velocity_XY.
+NesPrgRom:1D32B::If Velocity_X is positive, use sign-extension byte $00, otherwise use $FF
+NesPrgRom:1D32F:_Apply_Double_Velocity_X__OnSignExtensionByteChosen
+NesPrgRom:1D331::ASL doubles XVel before the add — this is the actual ×2 in "double speed".
+NesPrgRom:1D337::Retrieve the sign-extension byte from the stack to carry into the x-metatile value.
+NesPrgRom:1D33F::Update the TileIndex accordingly.
+NesPrgRom:1D349:Apply_Double_Velocity_Y:Apply DOUBLE the LoadedObject's Y velocity to its position, adjusting tilemap index $4E by 16×row (row stride $11) and keeping $4B in 0-$7F. Dispatch $C042; Y half of Apply_Double_Velocity_XY.
+NesPrgRom:1D351:_Apply_Double_Velocity_Y__PushSign:PHA the sign-extension byte ($00 or $FF) then add 2×YVel
 NesPrgRom:1D374:L_D374
 NesPrgRom:1D37A:L_D37A
-NesPrgRom:1D37D:L_D37D
-NesPrgRom:1D387:L_D387
-NesPrgRom:1D393:L_D393
-NesPrgRom:1D394:L_D394
-NesPrgRom:1D3A3:L_D3A3
-NesPrgRom:1D3AC:L_D3AC
-NesPrgRom:1D3C6:L_D3C6
-NesPrgRom:1D3DB:L_D3DB
+NesPrgRom:1D37D:H_Collision_Check:X-axis terrain collision check and response — the horizontal mirror of V_Collision_Check.\nTests the level tiles the active object's collision box overlaps and, on a solid hit, snaps\nthe object flush against the blocking tile's edge. Reached through MoveX_WithCollision\n($D37A) and Collision_Checks ($D374); dispatch slot $C015.\nIn: LoadedObj_CollisionBox_HalfWidth/_HalfHeight (the box, centred on the object),\nLoadedObj_Position_X_Lo/_Y_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a\nhit LoadedObj_Position_X_Lo is rewritten so the box edge sits exactly on the tile boundary.\nThe X axis resolves on the exact edge; the Y axis it tests as a cross-check tolerates ~2 px\nof overlap before it counts, which is what stops an object catching on tile corners.\nSee docs/misc/terrain-collision.md
+NesPrgRom:1D387:_H_Collision_Check__CheckRight:left edge clear → test the right edge (JSR _H_Collision_Check__TileRight); on hit snap $48 = -$42
+NesPrgRom:1D393:_H_Collision_Check__Exit:RTS
+NesPrgRom:1D394:_H_Collision_Check__TileRight:compute tile index for X pos + $42 (right edge); if overflow step to next column, then read/classify the tile
+NesPrgRom:1D3A3:_H_Collision_Check__TileLeft:compute tile index for X pos vs $42 (left edge); if underflow step to prior column, then read/classify the tile
+NesPrgRom:1D3A9::branch if LoadedObj's X_Lo (fixed4.4) >= the collision box's HalfWidth.\nThis means we can use LoadedObj's TileIndex as is.
+NesPrgRom:1D3AB::Otherwise, decrement TileIndex (so we check one tile to the left)
+NesPrgRom:1D3AC:_H_Collision_Check__ReadTile:Load tile flags into A.  Also check the bottom Y edge ($4A + $43, +$11 row)
+NesPrgRom:1D3AF::Bit 7 (negative) means a solid tile was found.  Skip to Exit tail.
+NesPrgRom:1D3B1::Otherwise, do the cross-axis checks
+NesPrgRom:1D3C6:_H_Collision_Check__CheckTop:check the top Y edge ($4A - $43, -$11 row); solid → collision
+NesPrgRom:1D3DB:_H_Collision_Check__NoCollide:all tiles clear → LDA #$00 (Z=1 no collision); RTS
 NesPrgRom:1D3DE:L_D3DE
-NesPrgRom:1D3E1:L_D3E1
-NesPrgRom:1D3EB:L_D3EB
-NesPrgRom:1D3F8:L_D3F8
-NesPrgRom:1D40B:L_D40B
-NesPrgRom:1D418:L_D418
-NesPrgRom:1D42F:L_D42F
-NesPrgRom:1D440:L_D440
-NesPrgRom:1D442:L_D442
+NesPrgRom:1D3E1:V_Collision_Check:Y-axis terrain collision check and response — the vertical mirror of H_Collision_Check.\nTests the level tiles the active object's collision box overlaps and, on a solid hit, snaps\nthe object flush against the blocking tile's edge — this is what makes an object land on a\nfloor or stop under a ceiling. Reached through MoveY_WithCollision ($D3DE) and\nCollision_Checks ($D374); dispatch slot $C018.\nIn: LoadedObj_CollisionBox_HalfHeight/_HalfWidth (the box, centred on the object),\nLoadedObj_Position_Y_Lo/_X_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a\nhit LoadedObj_Position_Y_Lo is rewritten so the box edge sits exactly on the tile boundary.\nSee docs/misc/terrain-collision.md\ncheck the tile above ($D40B); if solid, snap the position so the box top rests on it
+NesPrgRom:1D3E4::tile above solid: LDA $43 → STA $4A (snap position to tile edge); RTS
+NesPrgRom:1D3EB:_V_Collision_Check__CheckBelow:check tile below ($D3F8); if solid: snap ObjYFrac = -$43 (push up to tile bottom)
+NesPrgRom:1D3EE::tile below solid: 0-$43 → $4A; RTS
+NesPrgRom:1D3F8:_V_Collision_Check__TileBelow:compute tile index for position + $43 (bottom edge); if overflow: step to next tile row
+NesPrgRom:1D3FF::Branch if A is 0
+NesPrgRom:1D401::Branch if Y_Lo and HalfHeight didn't overflow
+NesPrgRom:1D403::otherwise, adjust TileIndex (to one row lower) before testing tile
+NesPrgRom:1D40B:_V_Collision_Check__TileAbove:compute tile index for position vs $43 (top edge); if BCS: step to prior tile row
+NesPrgRom:1D418:_V_Collision_Check__ReadTile:Use TileIndex (X) to load the target tile's flags.\nbit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.\nOtherwise, check left/right X edge tiles
+NesPrgRom:1D41D:_V_Collision_Check__CheckRight:RIGHT-edge X cross-check: Position_X_Lo + the half-width. If it carries, the right edge has spilled into the next column, so test that tile too — but only once the spill reaches $20 (2 px); a shallower overlap is ignored, which is what keeps an object from catching on a tile corner.
+NesPrgRom:1D42F:_V_Collision_Check__CheckLeft:LEFT-edge X cross-check: Position_X_Lo − the half-width. If it borrows, the left edge has crossed into the previous column, so test that tile too — subject to the same 2 px ($E0) corner tolerance as the right edge above.
+NesPrgRom:1D440:_V_Collision_Check__NoCollide:all tiles clear; Z=1 → signals no collision to caller
+NesPrgRom:1D442:_V_Collision_Check__Exit:RTS (Z=0 from a solid-tile BMI = collision; Z=1 = clear)
 NesPrgRom:1D443:L_D443
 NesPrgRom:1D44E:L_D44E
 NesPrgRom:1D452:L_D452
@@ -2235,9 +2249,14 @@ NesPrgRom:1DF62:L_DF62
 NesPrgRom:1DF68:L_DF68
 NesPrgRom:1DF77:L_DF77
 NesPrgRom:1DF81:L_DF81
-NesPrgRom:1DF84:L_DF84
-NesPrgRom:1DF93:L_DF93
-NesPrgRom:1DF9D:L_DF9D
+NesPrgRom:1DF84:Obj_MoveBounce_Double:Double-speed variant of Obj_MoveBounce ($DF68): advance via Obj_MoveAndCollide_Double ($E0A5, Apply_Double_Velocity_X/Apply_Double_Velocity_Y) and reflect velocity off the wall flags - bit7 (side wall) negates XVel $4C, bit6 (floor/ceiling) negates YVel $4D. Returns the wall flags in A/$9A. Dispatch slot $C03C (no callers in USA ROM); reached in-bank from Obj_GravityMoveBounce ($DFA0).
+NesPrgRom:1DF87::Branch on positive, means branch when bit 7 is 0.  This means no x-collision.
+NesPrgRom:1DF89::On negative, however, handle X-bounce.\nSet Accumulator to 0, then subtract X-Velocity to get the mirrored value
+NesPrgRom:1DF8E::Save mirrored X-Velocity
+NesPrgRom:1DF93:_Obj_MoveBounce_Double__CheckVertical:Probe bit6 (floor/ceiling) set → negate YVel $4D.
+NesPrgRom:1DF96::Handle Y-bounce\nSet Accumulator to 0, then subtract Y-Velocity to get the mirrored value
+NesPrgRom:1DF9B::Save mirrored X-Velocity
+NesPrgRom:1DF9D:_Obj_MoveBounce_Double__Return:Return the wall flags ($9A).
 NesPrgRom:1DFA0:L_DFA0
 NesPrgRom:1DFAC:L_DFAC
 NesPrgRom:1DFB4:L_DFB4
@@ -2267,10 +2286,10 @@ NesPrgRom:1E083:L_E083
 NesPrgRom:1E090:L_E090
 NesPrgRom:1E092:L_E092
 NesPrgRom:1E0A2:L_E0A2
-NesPrgRom:1E0A5:L_E0A5
-NesPrgRom:1E0B2:L_E0B2
-NesPrgRom:1E0B4:L_E0B4
-NesPrgRom:1E0C4:L_E0C4
+NesPrgRom:1E0A5:Obj_MoveAndCollide_Double:Double-speed Obj_MoveAndCollide: Apply_Double_Velocity_X + H_Collision_Check → $9A bit7 (side wall); Apply_Double_Velocity_Y + V_Collision_Check → bit6 (floor/ceiling); returns $9A. Dispatch slot $C030; used by the overhead projectile handlers (Slider Laser $53, Spitter Shot $55, Th2C Shot $57) and in-bank by Obj_MoveBounce_Double ($DF84).
+NesPrgRom:1E0B2:_Obj_MoveAndCollide_Double__NoWallX:No side wall: X flag = 0.
+NesPrgRom:1E0B4:_Obj_MoveAndCollide_Double__StoreX:$9A = side-wall flag (bit7).
+NesPrgRom:1E0C4:_Obj_MoveAndCollide_Double__Return:Copy result (TerrainCollisionFlags) into A and return
 NesPrgRom:1E0C7:L_E0C7
 NesPrgRom:1E0D0:L_E0D0
 NesPrgRom:1E0D8:L_E0D8
@@ -2705,6 +2724,7 @@ NesInternalRam:0053:LoadedObj__Health:HP for this entity.
 NesInternalRam:0056:ObjectSlot_Offset:Byte offset of the active slot
 NesInternalRam:0057:ObjectSlot_Index:Index of the active slot
 NesInternalRam:0094:Sophia_LookUpAnimation_Counter:Counter for Sophia's "look up" animation.\n0x00 is not started\n0x0C is completed (looking straight up)\n\nin Sophia_Dismount ($888C): [w] TBD\nin Sophia_DoorwayEntry ($89BE): [w] TBD\nin ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD\nin ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [r] TBD\nin Get_Next_Tile_Call ($907B): [r] TBD\nin ObjHandler_Tank_06_Sophia_RightWall ($916E): [r] TBD\nin RenderWeaponSprite ($950D): [r] TBD\nin Sophia_RenderOffsets ($9641): [rw] TBD\nin LevelInit ($C301): [w] TBD
+NesInternalRam:009A:TerrainCollisionFlags:Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.\n\nbit 7 set means a collision happened to the left or right.\nbit 6 set means a collision happened above or below.\n\nThe value of LoadedObj's velocity is used to disambiguate the collision side.
 NesInternalRam:0400:PlayerSlot__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0401:PlayerSlot__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
 NesInternalRam:0402:PlayerSlot__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.

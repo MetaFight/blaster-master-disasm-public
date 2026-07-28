@@ -22231,6 +22231,7 @@ hints:
   - space: prg
     offset: 0x1D324
     name: Apply_Double_Velocity_XY
+    status: verified
     desc: |-
       Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point arithmetic.
       Also keeps track of TileIndex correctly.
@@ -22238,6 +22239,7 @@ hints:
   - space: prg
     offset: 0x1D327
     name: Apply_Double_Velocity_X
+    status: verified
     desc: "Apply DOUBLE the LoadedObject's X velocity to its position, adjusting tilemap column $4E and keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Double_Velocity_XY."
 
   - space: prg
@@ -22254,15 +22256,16 @@ hints:
 
   - space: prg
     offset: 0x1D337
-    desc: "Retrieve the sign-extension byte from the stack to carry the magic into the x-metatile value."
+    desc: "Retrieve the sign-extension byte from the stack to carry into the x-metatile value."
 
   - space: prg
     offset: 0x1D33F
-    desc: "Updated the TileIndex accordingly."
+    desc: "Update the TileIndex accordingly."
 
   - space: prg
     offset: 0x1D349
     name: Apply_Double_Velocity_Y
+    status: verified
     desc: "Apply DOUBLE the LoadedObject's Y velocity to its position, adjusting tilemap index $4E by 16×row (row stride $11) and keeping $4B in 0-$7F. Dispatch $C042; Y half of Apply_Double_Velocity_XY."
 
   - space: prg
@@ -22283,6 +22286,7 @@ hints:
   - space: prg
     offset: 0x1D37D
     name: H_Collision_Check
+    status: verified
     desc: |-
       X-axis terrain collision check and response — the horizontal mirror of V_Collision_Check.
       Tests the level tiles the active object's collision box overlaps and, on a solid hit, snaps
@@ -22318,8 +22322,8 @@ hints:
   - space: prg
     offset: 0x1D3A9
     desc: |-
-      Branch if LoadedObj's X tile offset (fixed4.4) >= X Tile Offset to check.
-      This means we can use LoadedObj_TileIndex as is.
+      branch if LoadedObj's X_Lo (fixed4.4) >= the collision box's HalfWidth.
+      This means we can use LoadedObj's TileIndex as is.
 
   - space: prg
     offset: 0x1D3AB
@@ -22333,6 +22337,10 @@ hints:
   - space: prg
     offset: 0x1D3AF
     desc: "Bit 7 (negative) means a solid tile was found.  Skip to Exit tail."
+
+  - space: prg
+    offset: 0x1D3B1
+    desc: "Otherwise, do the cross-axis checks"
 
   - space: prg
     offset: 0x1D3C6
@@ -22352,6 +22360,7 @@ hints:
   - space: prg
     offset: 0x1D3E1
     name: V_Collision_Check
+    status: verified
     desc: |-
       Y-axis terrain collision check and response — the vertical mirror of H_Collision_Check.
       Tests the level tiles the active object's collision box overlaps and, on a solid hit, snaps
@@ -22383,6 +22392,18 @@ hints:
     desc: "compute tile index for position + $43 (bottom edge); if overflow: step to next tile row"
 
   - space: prg
+    offset: 0x1D3FF
+    desc: "Branch if A is 0"
+
+  - space: prg
+    offset: 0x1D401
+    desc: "Branch if Y_Lo and HalfHeight didn't overflow"
+
+  - space: prg
+    offset: 0x1D403
+    desc: "otherwise, adjust TileIndex (to one row lower) before testing tile"
+
+  - space: prg
     offset: 0x1D40B
     name: _V_Collision_Check__TileAbove
     desc: "compute tile index for position vs $43 (top edge); if BCS: step to prior tile row"
@@ -22390,10 +22411,14 @@ hints:
   - space: prg
     offset: 0x1D418
     name: _V_Collision_Check__ReadTile
-    desc: "LDA $0500,X: tile flags; bit 7 set = solid (BMI); also check left/right X edge tiles"
+    desc: |-
+      Use TileIndex (X) to load the target tile's flags.
+      bit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.
+      Otherwise, check left/right X edge tiles
 
   - space: prg
-    offset: 0x1D41F
+    offset: 0x1D41D
+    name: _V_Collision_Check__CheckRight
     desc: "RIGHT-edge X cross-check: Position_X_Lo + the half-width. If it carries, the right edge has spilled into the next column, so test that tile too — but only once the spill reaches $20 (2 px); a shallower overlap is ignored, which is what keeps an object from catching on a tile corner."
 
   - space: prg
@@ -23568,12 +23593,18 @@ hints:
   - space: prg
     offset: 0x1DF84
     name: Obj_MoveBounce_Double
+    status: verified
     desc: "Double-speed variant of Obj_MoveBounce ($DF68): advance via Obj_MoveAndCollide_Double ($E0A5, Apply_Double_Velocity_X/Apply_Double_Velocity_Y) and reflect velocity off the wall flags - bit7 (side wall) negates XVel $4C, bit6 (floor/ceiling) negates YVel $4D. Returns the wall flags in A/$9A. Dispatch slot $C03C (no callers in USA ROM); reached in-bank from Obj_GravityMoveBounce ($DFA0)."
+
+  - space: prg
+    offset: 0x1DF87
+    desc: |-
+      Branch on positive, means branch when bit 7 is 0.  This means no x-collision.
 
   - space: prg
     offset: 0x1DF89
     desc: |-
-      Handle X-bounce
+      On negative, however, handle X-bounce.
       Set Accumulator to 0, then subtract X-Velocity to get the mirrored value
 
   - space: prg
@@ -23606,9 +23637,23 @@ hints:
     desc: "Ballistic step: adds gravity (A) to YVel, moves at double speed with wall reflection, damps the bounce to 1/4 on a floor/ceiling hit, and clamps both velocities to ±$28. Returns the wall flags. Its entry prologue is a vestigial rate gate that always passes (gravity applies every frame). Dispatch slot $C120 (no callers in USA ROM); reached in-bank from Obj_FallAndLand ($E005)."
 
   - space: prg
+    offset: 0x1DFA6
+    desc: "This always branches."
+
+  - space: prg
+    offset: 0x1DFA8
+    desc: "dead"
+
+  - space: prg
+    offset: 0x1DFA9
+    desc: "dead"
+
+  - space: prg
     offset: 0x1DFAC
     name: _Obj_GravityMoveBounce__ApplyGravity
-    desc: "YVel $4D += gravity A; BVS guard skips the store on signed overflow."
+    desc: |-
+      Gravity is popped from stack and added to the LoadedObj's Y velocity.
+      The BVS guard skips the store on signed overflow.
 
   - space: prg
     offset: 0x1DFB4
@@ -23767,11 +23812,12 @@ hints:
   - space: prg
     offset: 0x1E0A2
     name: _Obj_MoveAndCollide__Return
-    desc: "Return the flags ($9A)."
+    desc: "Copy result (TerrainCollisionFlags) into A and return"
 
   - space: prg
     offset: 0x1E0A5
     name: Obj_MoveAndCollide_Double
+    status: verified
     desc: "Double-speed Obj_MoveAndCollide: Apply_Double_Velocity_X + H_Collision_Check → $9A bit7 (side wall); Apply_Double_Velocity_Y + V_Collision_Check → bit6 (floor/ceiling); returns $9A. Dispatch slot $C030; used by the overhead projectile handlers (Slider Laser $53, Spitter Shot $55, Th2C Shot $57) and in-bank by Obj_MoveBounce_Double ($DF84)."
 
   - space: prg
@@ -23787,7 +23833,7 @@ hints:
   - space: prg
     offset: 0x1E0C4
     name: _Obj_MoveAndCollide_Double__Return
-    desc: "Return the flags ($9A)."
+    desc: "Copy result (TerrainCollisionFlags) into A and return"
 
   - space: prg
     offset: 0x1E0C7
@@ -27392,35 +27438,25 @@ hints:
     offset: 0x000A
     name: WR_Context_Dependent_0A
     desc: |-
-      in Boss2_PincerArms_RenderArm ($9C23): [w] TBD
-
-      in Boss2_PincerArms_ArmSegmentStep ($9D38): [r] TBD
-
-      in FineMove_StepXPos ($D48F): [r] TBD
-
-      in FineMove_StepXNeg ($D4BC): [r] TBD
-
-      in FineMove_SubDeltaX ($D5AA): [r] TBD
-
-      in FineMove_AddDeltaX ($D5B8): [r] TBD
-
+      Appears to have 3 distinct uses:
+        FineMove, MapStream, and Boss 2's Pincer Arms
       in FineMove_ComputeDelta ($D5F9): [rw] TBD
-
+      in FineMove_StepXPos ($D48F): [r] TBD
+      in FineMove_StepXNeg ($D4BC): [r] TBD
+      in FineMove_SubDeltaX ($D5AA): [r] TBD
+      in FineMove_AddDeltaX ($D5B8): [r] TBD
+      
       in MapStream_ResolveChain ($D95E): [w] TBD
-
-      in MapStream_DerefL3 ($D98C): [r] TBD
-
-      in MapStream_DerefL2 ($D9AF): [r] TBD
-
-      in MapStream_DerefL1 ($D9D3): [r] TBD
-
-      in MapStream_DerefL0 ($D9F5): [r] TBD
-
       in MapStream_FillRow ($DA15): [rw] TBD
-
       in MapStream_FillColumn ($DAC4): [w] TBD
-
+      in MapStream_DerefL3 ($D98C): [r] TBD
+      in MapStream_DerefL2 ($D9AF): [r] TBD
+      in MapStream_DerefL1 ($D9D3): [r] TBD
+      in MapStream_DerefL0 ($D9F5): [r] TBD
       in MapStream_LogSpecialTile ($DCDD): [r] TBD
+
+      in Boss2_PincerArms_RenderArm ($9C23): [w] TBD
+      in Boss2_PincerArms_ArmSegmentStep ($9D38): [r] TBD
 
   - space: ram
     offset: 0x000B
@@ -29673,21 +29709,15 @@ hints:
 
   - space: ram
     offset: 0x009A
-    name: WR_Context_Dependent_9A
+    name: TerrainCollisionFlags
+    status: verified
     desc: |-
-      in Bullet_OrientStep ($A670): [r] TBD
-
-      in Obj_MoveBounce ($DF68): [r] TBD
-
-      in Obj_MoveBounce_Double ($DF84): [r] TBD
-
-      in Obj_GravityMoveBounce ($DFA0): [r] TBD
-
-      in Obj_MoveAndCollide ($E083): [rw] TBD
-
-      in Obj_MoveAndCollide_Double ($E0A5): [rw] TBD
-
-      in Obj_ReflectHeading ($E0D0): [r] TBD
+      Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.
+      
+      bit 7 set means a collision happened to the left or right.
+      bit 6 set means a collision happened above or below.
+      
+      The value of LoadedObj's velocity is used to disambiguate the collision side.
 
   - space: ram
     offset: 0x009B

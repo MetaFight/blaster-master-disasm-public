@@ -348,26 +348,43 @@ L_DF77: asl     a                               ; DF77
         sec                                     ; DF7C
         sbc     LoadedObj + Obj::Velocity_Y     ; DF7D
         sta     LoadedObj + Obj::Velocity_Y     ; DF7F
-L_DF81: lda     $9A                             ; DF81
+L_DF81: lda     TerrainCollisionFlags           ; DF81
         rts                                     ; DF83
 
 ; ----------------------------------------------------------------------------
-L_DF84: jsr     L_E0A5                          ; DF84
-        bpl     L_DF93                          ; DF87
+; Double-speed variant of Obj_MoveBounce ($DF68): advance via Obj_MoveAndCollide_Double ($E0A5,
+; Apply_Double_Velocity_X/Apply_Double_Velocity_Y) and reflect velocity off the wall flags - bit7
+; (side wall) negates XVel $4C, bit6 (floor/ceiling) negates YVel $4D. Returns the wall flags in
+; A/$9A. Dispatch slot $C03C (no callers in USA ROM); reached in-bank from Obj_GravityMoveBounce
+; ($DFA0).
+Obj_MoveBounce_Double:
+        jsr     Obj_MoveAndCollide_Double       ; DF84
+; Branch on positive, means branch when bit 7 is 0.  This means no x-collision.
+        bpl     _Obj_MoveBounce_Double__CheckVertical; DF87
+; On negative, however, handle X-bounce.
+; Set Accumulator to 0, then subtract X-Velocity to get the mirrored value
         lda     #$00                            ; DF89
         sec                                     ; DF8B
         sbc     LoadedObj + Obj::Velocity_X     ; DF8C
+; Save mirrored X-Velocity
         sta     LoadedObj + Obj::Velocity_X     ; DF8E
-        jmp     L_DF9D                          ; DF90
+        jmp     _Obj_MoveBounce_Double__Return  ; DF90
 
 ; ----------------------------------------------------------------------------
-L_DF93: asl     a                               ; DF93
-        bpl     L_DF9D                          ; DF94
+; Probe bit6 (floor/ceiling) set → negate YVel $4D.
+_Obj_MoveBounce_Double__CheckVertical:
+        asl     a                               ; DF93
+        bpl     _Obj_MoveBounce_Double__Return  ; DF94
+; Handle Y-bounce
+; Set Accumulator to 0, then subtract Y-Velocity to get the mirrored value
         lda     #$00                            ; DF96
         sec                                     ; DF98
         sbc     LoadedObj + Obj::Velocity_Y     ; DF99
+; Save mirrored X-Velocity
         sta     LoadedObj + Obj::Velocity_Y     ; DF9B
-L_DF9D: lda     $9A                             ; DF9D
+; Return the wall flags ($9A).
+_Obj_MoveBounce_Double__Return:
+        lda     TerrainCollisionFlags           ; DF9D
         rts                                     ; DF9F
 
 ; ----------------------------------------------------------------------------
@@ -385,7 +402,7 @@ L_DFAC: pla                                     ; DFAC
         adc     LoadedObj + Obj::Velocity_Y     ; DFAE
         bvs     L_DFB4                          ; DFB0
         sta     LoadedObj + Obj::Velocity_Y     ; DFB2
-L_DFB4: jsr     L_DF84                          ; DFB4
+L_DFB4: jsr     Obj_MoveBounce_Double           ; DFB4
         and     #$40                            ; DFB7
         beq     L_DFC0                          ; DFB9
         lda     #$40                            ; DFBB
@@ -396,7 +413,7 @@ L_DFC0: lda     #$28                            ; DFC0
         lda     #$28                            ; DFC7
         ldx     #$4C                            ; DFC9
         jsr     L_EB14                          ; DFCB
-        lda     $9A                             ; DFCE
+        lda     TerrainCollisionFlags           ; DFCE
         rts                                     ; DFD0
 
 ; ----------------------------------------------------------------------------
@@ -504,40 +521,51 @@ L_E07B: lda     LoadedObj + Obj::Facing         ; E07B
 
 ; ----------------------------------------------------------------------------
 L_E083: jsr     L_D2DE                          ; E083
-        jsr     L_D37D                          ; E086
+        jsr     H_Collision_Check               ; E086
         beq     L_E090                          ; E089
         lda     #$80                            ; E08B
         jmp     L_E092                          ; E08D
 
 ; ----------------------------------------------------------------------------
 L_E090: lda     #$00                            ; E090
-L_E092: sta     $9A                             ; E092
+L_E092: sta     TerrainCollisionFlags           ; E092
         jsr     L_D2FE                          ; E094
-        jsr     L_D3E1                          ; E097
+        jsr     V_Collision_Check               ; E097
         beq     L_E0A2                          ; E09A
-        lda     $9A                             ; E09C
+        lda     TerrainCollisionFlags           ; E09C
         ora     #$40                            ; E09E
-        sta     $9A                             ; E0A0
-L_E0A2: lda     $9A                             ; E0A2
+        sta     TerrainCollisionFlags           ; E0A0
+L_E0A2: lda     TerrainCollisionFlags           ; E0A2
         rts                                     ; E0A4
 
 ; ----------------------------------------------------------------------------
-L_E0A5: jsr     L_D327                          ; E0A5
-        jsr     L_D37D                          ; E0A8
-        beq     L_E0B2                          ; E0AB
+; Double-speed Obj_MoveAndCollide: Apply_Double_Velocity_X + H_Collision_Check → $9A bit7 (side
+; wall); Apply_Double_Velocity_Y + V_Collision_Check → bit6 (floor/ceiling); returns $9A. Dispatch
+; slot $C030; used by the overhead projectile handlers (Slider Laser $53, Spitter Shot $55, Th2C
+; Shot $57) and in-bank by Obj_MoveBounce_Double ($DF84).
+Obj_MoveAndCollide_Double:
+        jsr     Apply_Double_Velocity_X         ; E0A5
+        jsr     H_Collision_Check               ; E0A8
+        beq     _Obj_MoveAndCollide_Double__NoWallX; E0AB
         lda     #$80                            ; E0AD
-        jmp     L_E0B4                          ; E0AF
+        jmp     _Obj_MoveAndCollide_Double__StoreX; E0AF
 
 ; ----------------------------------------------------------------------------
-L_E0B2: lda     #$00                            ; E0B2
-L_E0B4: sta     $9A                             ; E0B4
-        jsr     L_D349                          ; E0B6
-        jsr     L_D3E1                          ; E0B9
-        beq     L_E0C4                          ; E0BC
-        lda     $9A                             ; E0BE
+; No side wall: X flag = 0.
+_Obj_MoveAndCollide_Double__NoWallX:
+        lda     #$00                            ; E0B2
+; $9A = side-wall flag (bit7).
+_Obj_MoveAndCollide_Double__StoreX:
+        sta     TerrainCollisionFlags           ; E0B4
+        jsr     Apply_Double_Velocity_Y         ; E0B6
+        jsr     V_Collision_Check               ; E0B9
+        beq     _Obj_MoveAndCollide_Double__Return; E0BC
+        lda     TerrainCollisionFlags           ; E0BE
         ora     #$40                            ; E0C0
-        sta     $9A                             ; E0C2
-L_E0C4: lda     $9A                             ; E0C4
+        sta     TerrainCollisionFlags           ; E0C2
+; Copy result (TerrainCollisionFlags) into A and return
+_Obj_MoveAndCollide_Double__Return:
+        lda     TerrainCollisionFlags           ; E0C4
         rts                                     ; E0C6
 
 ; ----------------------------------------------------------------------------
@@ -548,7 +576,7 @@ L_E0C7: tay                                     ; E0C7
         rts                                     ; E0CF
 
 ; ----------------------------------------------------------------------------
-L_E0D0: lda     $9A                             ; E0D0
+L_E0D0: lda     TerrainCollisionFlags           ; E0D0
         bmi     L_E0D8                          ; E0D2
         asl     a                               ; E0D4
         bmi     L_E0E5                          ; E0D5

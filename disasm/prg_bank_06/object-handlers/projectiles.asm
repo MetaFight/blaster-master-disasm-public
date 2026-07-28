@@ -29,7 +29,7 @@ L_9788: jmp     L_97C6                          ; 9788
         jmp     L_97A2                          ; 979C
 
 ; ----------------------------------------------------------------------------
-L_979F: jsr     LD324                           ; 979F
+L_979F: jsr     Apply_Double_Velocity_XY                           ; 979F
 L_97A2: jsr     LD2AB                           ; 97A2
         bpl     L_97C6                          ; 97A5
         asl     a                               ; 97A7
@@ -412,7 +412,7 @@ L9B2B:  .byte   $00,$08,$00,$F8                 ; 9B2B
 
 .macro MAC_L_9B32
 ; ----------------------------------------------------------------------------
-L_9B32: jsr     LD324                           ; 9B32
+L_9B32: jsr     Apply_Double_Velocity_XY                           ; 9B32
         ldx     LoadedObj + Obj::Facing         ; 9B35
         lda     L9B7D,x                         ; 9B37
         clc                                     ; 9B3A

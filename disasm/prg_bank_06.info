@@ -5465,3 +5465,8 @@ LABEL {
   ADDR    $0094;
 };
 
+LABEL {
+  NAME    "TerrainCollisionFlags";
+  ADDR    $009A;
+};
+

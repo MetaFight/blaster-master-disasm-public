@@ -1983,28 +1983,32 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_D324";
+  NAME    "Apply_Double_Velocity_XY";
   ADDR    $D324;
+  COMMENT "Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point\n; arithmetic.\n; Also keeps track of TileIndex correctly.";
 };
 
 LABEL {
-  NAME    "L_D327";
+  NAME    "Apply_Double_Velocity_X";
   ADDR    $D327;
+  COMMENT "Apply DOUBLE the LoadedObject's X velocity to its position, adjusting tilemap column $4E and\n; keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Double_Velocity_XY.";
 };
 
 LABEL {
-  NAME    "L_D32F";
+  NAME    "_Apply_Double_Velocity_X__OnSignExtensionByteChosen";
   ADDR    $D32F;
 };
 
 LABEL {
-  NAME    "L_D349";
+  NAME    "Apply_Double_Velocity_Y";
   ADDR    $D349;
+  COMMENT "Apply DOUBLE the LoadedObject's Y velocity to its position, adjusting tilemap index $4E by\n; 16×row (row stride $11) and keeping $4B in 0-$7F. Dispatch $C042; Y half of\n; Apply_Double_Velocity_XY.";
 };
 
 LABEL {
-  NAME    "L_D351";
+  NAME    "_Apply_Double_Velocity_Y__PushSign";
   ADDR    $D351;
+  COMMENT "PHA the sign-extension byte ($00 or $FF) then add 2×YVel";
 };
 
 LABEL {
@@ -2018,43 +2022,51 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_D37D";
+  NAME    "H_Collision_Check";
   ADDR    $D37D;
+  COMMENT "X-axis terrain collision check and response — the horizontal mirror of V_Collision_Check.\n; Tests the level tiles the active object's collision box overlaps and, on a solid hit, snaps\n; the object flush against the blocking tile's edge. Reached through MoveX_WithCollision\n; ($D37A) and Collision_Checks ($D374); dispatch slot $C015.\n; In: LoadedObj_CollisionBox_HalfWidth/_HalfHeight (the box, centred on the object),\n; LoadedObj_Position_X_Lo/_Y_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a\n; hit LoadedObj_Position_X_Lo is rewritten so the box edge sits exactly on the tile boundary.\n; The X axis resolves on the exact edge; the Y axis it tests as a cross-check tolerates ~2 px\n; of overlap before it counts, which is what stops an object catching on tile corners.\n; See docs/misc/terrain-collision.md";
 };
 
 LABEL {
-  NAME    "L_D387";
+  NAME    "_H_Collision_Check__CheckRight";
   ADDR    $D387;
+  COMMENT "left edge clear → test the right edge (JSR _H_Collision_Check__TileRight); on hit snap $48 =\n; -$42";
 };
 
 LABEL {
-  NAME    "L_D393";
+  NAME    "_H_Collision_Check__Exit";
   ADDR    $D393;
+  COMMENT "RTS";
 };
 
 LABEL {
-  NAME    "L_D394";
+  NAME    "_H_Collision_Check__TileRight";
   ADDR    $D394;
+  COMMENT "compute tile index for X pos + $42 (right edge); if overflow step to next column, then\n; read/classify the tile";
 };
 
 LABEL {
-  NAME    "L_D3A3";
+  NAME    "_H_Collision_Check__TileLeft";
   ADDR    $D3A3;
+  COMMENT "compute tile index for X pos vs $42 (left edge); if underflow step to prior column, then\n; read/classify the tile";
 };
 
 LABEL {
-  NAME    "L_D3AC";
+  NAME    "_H_Collision_Check__ReadTile";
   ADDR    $D3AC;
+  COMMENT "Load tile flags into A.  Also check the bottom Y edge ($4A + $43, +$11 row)";
 };
 
 LABEL {
-  NAME    "L_D3C6";
+  NAME    "_H_Collision_Check__CheckTop";
   ADDR    $D3C6;
+  COMMENT "check the top Y edge ($4A - $43, -$11 row); solid → collision";
 };
 
 LABEL {
-  NAME    "L_D3DB";
+  NAME    "_H_Collision_Check__NoCollide";
   ADDR    $D3DB;
+  COMMENT "all tiles clear → LDA #$00 (Z=1 no collision); RTS";
 };
 
 LABEL {
@@ -2063,43 +2075,57 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_D3E1";
+  NAME    "V_Collision_Check";
   ADDR    $D3E1;
+  COMMENT "Y-axis terrain collision check and response — the vertical mirror of H_Collision_Check.\n; Tests the level tiles the active object's collision box overlaps and, on a solid hit, snaps\n; the object flush against the blocking tile's edge — this is what makes an object land on a\n; floor or stop under a ceiling. Reached through MoveY_WithCollision ($D3DE) and\n; Collision_Checks ($D374); dispatch slot $C018.\n; In: LoadedObj_CollisionBox_HalfHeight/_HalfWidth (the box, centred on the object),\n; LoadedObj_Position_Y_Lo/_X_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a\n; hit LoadedObj_Position_Y_Lo is rewritten so the box edge sits exactly on the tile boundary.\n; See docs/misc/terrain-collision.md\n; check the tile above ($D40B); if solid, snap the position so the box top rests on it";
 };
 
 LABEL {
-  NAME    "L_D3EB";
+  NAME    "_V_Collision_Check__CheckBelow";
   ADDR    $D3EB;
+  COMMENT "check tile below ($D3F8); if solid: snap ObjYFrac = -$43 (push up to tile bottom)";
 };
 
 LABEL {
-  NAME    "L_D3F8";
+  NAME    "_V_Collision_Check__TileBelow";
   ADDR    $D3F8;
+  COMMENT "compute tile index for position + $43 (bottom edge); if overflow: step to next tile row";
 };
 
 LABEL {
-  NAME    "L_D40B";
+  NAME    "_V_Collision_Check__TileAbove";
   ADDR    $D40B;
+  COMMENT "compute tile index for position vs $43 (top edge); if BCS: step to prior tile row";
 };
 
 LABEL {
-  NAME    "L_D418";
+  NAME    "_V_Collision_Check__ReadTile";
   ADDR    $D418;
+  COMMENT "Use TileIndex (X) to load the target tile's flags.\n; bit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.\n; Otherwise, check left/right X edge tiles";
 };
 
 LABEL {
-  NAME    "L_D42F";
+  NAME    "_V_Collision_Check__CheckRight";
+  ADDR    $D41D;
+  COMMENT "RIGHT-edge X cross-check: Position_X_Lo + the half-width. If it carries, the right edge has\n; spilled into the next column, so test that tile too — but only once the spill reaches $20 (2\n; px); a shallower overlap is ignored, which is what keeps an object from catching on a tile\n; corner.";
+};
+
+LABEL {
+  NAME    "_V_Collision_Check__CheckLeft";
   ADDR    $D42F;
+  COMMENT "LEFT-edge X cross-check: Position_X_Lo − the half-width. If it borrows, the left edge has\n; crossed into the previous column, so test that tile too — subject to the same 2 px ($E0) corner\n; tolerance as the right edge above.";
 };
 
 LABEL {
-  NAME    "L_D440";
+  NAME    "_V_Collision_Check__NoCollide";
   ADDR    $D440;
+  COMMENT "all tiles clear; Z=1 → signals no collision to caller";
 };
 
 LABEL {
-  NAME    "L_D442";
+  NAME    "_V_Collision_Check__Exit";
   ADDR    $D442;
+  COMMENT "RTS (Z=0 from a solid-tile BMI = collision; Z=1 = clear)";
 };
 
 LABEL {
@@ -3045,18 +3071,21 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_DF84";
+  NAME    "Obj_MoveBounce_Double";
   ADDR    $DF84;
+  COMMENT "Double-speed variant of Obj_MoveBounce ($DF68): advance via Obj_MoveAndCollide_Double ($E0A5,\n; Apply_Double_Velocity_X/Apply_Double_Velocity_Y) and reflect velocity off the wall flags - bit7\n; (side wall) negates XVel $4C, bit6 (floor/ceiling) negates YVel $4D. Returns the wall flags in\n; A/$9A. Dispatch slot $C03C (no callers in USA ROM); reached in-bank from Obj_GravityMoveBounce\n; ($DFA0).";
 };
 
 LABEL {
-  NAME    "L_DF93";
+  NAME    "_Obj_MoveBounce_Double__CheckVertical";
   ADDR    $DF93;
+  COMMENT "Probe bit6 (floor/ceiling) set → negate YVel $4D.";
 };
 
 LABEL {
-  NAME    "L_DF9D";
+  NAME    "_Obj_MoveBounce_Double__Return";
   ADDR    $DF9D;
+  COMMENT "Return the wall flags ($9A).";
 };
 
 LABEL {
@@ -3205,23 +3234,27 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_E0A5";
+  NAME    "Obj_MoveAndCollide_Double";
   ADDR    $E0A5;
+  COMMENT "Double-speed Obj_MoveAndCollide: Apply_Double_Velocity_X + H_Collision_Check → $9A bit7 (side\n; wall); Apply_Double_Velocity_Y + V_Collision_Check → bit6 (floor/ceiling); returns $9A. Dispatch\n; slot $C030; used by the overhead projectile handlers (Slider Laser $53, Spitter Shot $55, Th2C\n; Shot $57) and in-bank by Obj_MoveBounce_Double ($DF84).";
 };
 
 LABEL {
-  NAME    "L_E0B2";
+  NAME    "_Obj_MoveAndCollide_Double__NoWallX";
   ADDR    $E0B2;
+  COMMENT "No side wall: X flag = 0.";
 };
 
 LABEL {
-  NAME    "L_E0B4";
+  NAME    "_Obj_MoveAndCollide_Double__StoreX";
   ADDR    $E0B4;
+  COMMENT "$9A = side-wall flag (bit7).";
 };
 
 LABEL {
-  NAME    "L_E0C4";
+  NAME    "_Obj_MoveAndCollide_Double__Return";
   ADDR    $E0C4;
+  COMMENT "Copy result (TerrainCollisionFlags) into A and return";
 };
 
 LABEL {
@@ -5331,6 +5364,84 @@ LABEL {
 
 LABEL {
   NAME    "";
+  ADDR    $D32B;
+  COMMENT "If Velocity_X is positive, use sign-extension byte $00, otherwise use $FF";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D331;
+  COMMENT "ASL doubles XVel before the add — this is the actual ×2 in 'double speed'.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D337;
+  COMMENT "Retrieve the sign-extension byte from the stack to carry into the x-metatile value.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D33F;
+  COMMENT "Update the TileIndex accordingly.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D3A9;
+  COMMENT "branch if LoadedObj's X_Lo (fixed4.4) >= the collision box's HalfWidth.\n; This means we can use LoadedObj's TileIndex as is.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D3AB;
+  COMMENT "Otherwise, decrement TileIndex (so we check one tile to the left)";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D3AF;
+  COMMENT "Bit 7 (negative) means a solid tile was found.  Skip to Exit tail.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D3B1;
+  COMMENT "Otherwise, do the cross-axis checks";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D3E4;
+  COMMENT "tile above solid: LDA $43 → STA $4A (snap position to tile edge); RTS";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D3EE;
+  COMMENT "tile below solid: 0-$43 → $4A; RTS";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D3FF;
+  COMMENT "Branch if A is 0";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D401;
+  COMMENT "Branch if Y_Lo and HalfHeight didn't overflow";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $D403;
+  COMMENT "otherwise, adjust TileIndex (to one row lower) before testing tile";
+};
+
+LABEL {
+  NAME    "";
   ADDR    $DECF;
   COMMENT "Save X to stack";
 };
@@ -5345,6 +5456,36 @@ LABEL {
   NAME    "";
   ADDR    $DEE9;
   COMMENT "Restore X from stack";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $DF87;
+  COMMENT "Branch on positive, means branch when bit 7 is 0.  This means no x-collision.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $DF89;
+  COMMENT "On negative, however, handle X-bounce.\n; Set Accumulator to 0, then subtract X-Velocity to get the mirrored value";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $DF8E;
+  COMMENT "Save mirrored X-Velocity";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $DF96;
+  COMMENT "Handle Y-bounce\n; Set Accumulator to 0, then subtract Y-Velocity to get the mirrored value";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $DF9B;
+  COMMENT "Save mirrored X-Velocity";
 };
 
 LABEL {
@@ -5371,5 +5512,10 @@ LABEL {
 LABEL {
   NAME    "Sophia_LookUpAnimation_Counter";
   ADDR    $0094;
+};
+
+LABEL {
+  NAME    "TerrainCollisionFlags";
+  ADDR    $009A;
 };
 

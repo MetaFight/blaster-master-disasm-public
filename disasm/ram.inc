@@ -140,3 +140,8 @@ ObjectSlot_Index               := $0057
 ; in Sophia_RenderOffsets ($9641): [rw] TBD
 ; in LevelInit ($C301): [w] TBD
 Sophia_LookUpAnimation_Counter := $0094
+; Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.
+; bit 7 set means a collision happened to the left or right.
+; bit 6 set means a collision happened above or below.
+; The value of LoadedObj's velocity is used to disambiguate the collision side.
+TerrainCollisionFlags          := $009A
