@@ -24,83 +24,83 @@ verified and have since been modified.
 A finer-grained view of M4 above, broken down by the same organizational grouping the disassembly's own bank-splitting uses (e.g. bank 06's `object-handlers/hopper_6hp`). `Progress` counts both top-level subroutines and their interior sublabels, which M4 does not — a sublabel has no verification status of its own, so it inherits its enclosing subroutine's. A note on a row flags a verified routine that directly calls a still-unverified subroutine — a caveat on `Progress`, not a deduction from it (a routine's own logic was reviewed; part of its behaviour still depends on code nobody has confirmed yet).
 
 | Bank | Group | Notes | Progress |
-|---|---|---|---|
-| 04 | `_ungrouped` |  | ⬛⬛⬛⬛ 0% |
-| 05 | `(ungrouped — no .groups file)` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `_ungrouped` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `dead` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/_ungrouped` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/auto-gates_and_locks` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/bee` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/bomb-canister` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/bomb-lobbing-hand` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/bomber-rock` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/bullet_common` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/bullet_gray` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/bullet_red` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/caterpillar_gray` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/caterpillar_red` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/crescent-roller` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/dropper_caterpillar_red` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/explosions` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/flier_gray` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/flier_red` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/flying-bomber` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/flying-bomber_caterpillar_red` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/flying-ship` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/hopper_10hp` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/hopper_6hp` | ObjHandler_Tank_5F_Gray_Hopper_6HP_Init, ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking depend on 10 unverified routines. | ⬜⬜⬜◽ 94% |
-| 06 | `object-handlers/hopper_common` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/hulk` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/jason-small` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/jellyfish` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/mine` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/orb` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/orb_kamikaze` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/pickups` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/projectiles` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/running-shell` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/scuba-steve` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/shooter` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/sophia` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/submersible` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/swooping-sphere` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/turret` |  | ⬛⬛⬛⬛ 0% |
-| 06 | `object-handlers/wall-guardian` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `00_title-screen` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `01a_story-sequence` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `01b_demo-screen` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `02_init` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `03_intro-screen` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `04a_lives-left-screen` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `04b_area-entry-screen` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `05_game-screen/camera` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `05_game-screen/game-loop` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `05_game-screen/hud` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `05_game-screen/object-system` |  | ◽⬛⬛⬛ 14% |
-| 07 | `06_pause-screen` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `_ungrouped` |  | ▫️⬛⬛⬛ 7% |
-| 07 | `bank-tail` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `camera` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `continue-screen` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `dead` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `drawing-background` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `drawing-metasprites` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `drawing-sprites` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `ending` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `hardware` |  | ▫️⬛⬛⬛ 6% |
-| 07 | `input` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `level-rendering` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `math` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `mmc1` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `rng` |  | ⬛⬛⬛⬛ 0% |
-| 07 | `screen-fade` |  | ⬜⬜▫️⬛ 57% |
-| 07 | `sound` |  | ⬜⬜⬛⬛ 50% |
-| 07 | `timing` |  | ◽⬛⬛⬛ 13% |
+|---|---|---|:-:|
+| 04 | `_ungrouped` |  | ⬛⬛⬛⬛<br/>0% |
+| 05 | `(ungrouped — no .groups file)` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `_ungrouped` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `dead` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/_ungrouped` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/auto-gates_and_locks` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/bee` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/bomb-canister` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/bomb-lobbing-hand` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/bomber-rock` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/bullet_common` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/bullet_gray` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/bullet_red` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/caterpillar_gray` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/caterpillar_red` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/crescent-roller` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/dropper_caterpillar_red` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/explosions` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/flier_gray` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/flier_red` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/flying-bomber` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/flying-bomber_caterpillar_red` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/flying-ship` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/hopper_10hp` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/hopper_6hp` | ObjHandler_Tank_5F_Gray_Hopper_6HP_Init, ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking depend on 10 unverified routines. | ⬜⬜⬜◽<br/>94% |
+| 06 | `object-handlers/hopper_common` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/hulk` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/jason-small` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/jellyfish` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/mine` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/orb` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/orb_kamikaze` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/pickups` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/projectiles` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/running-shell` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/scuba-steve` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/shooter` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/sophia` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/submersible` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/swooping-sphere` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/turret` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/wall-guardian` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `00_title-screen` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `01a_story-sequence` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `01b_demo-screen` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `02_init` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `03_intro-screen` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `04a_lives-left-screen` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `04b_area-entry-screen` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `05_game-screen/camera` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `05_game-screen/game-loop` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `05_game-screen/hud` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `05_game-screen/object-system` |  | ◽⬛⬛⬛<br/>14% |
+| 07 | `06_pause-screen` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `_ungrouped` |  | ▫️⬛⬛⬛<br/>7% |
+| 07 | `bank-tail` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `camera` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `continue-screen` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `dead` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `drawing-background` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `drawing-metasprites` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `drawing-sprites` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `ending` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `hardware` |  | ▫️⬛⬛⬛<br/>6% |
+| 07 | `input` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `level-rendering` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `math` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `mmc1` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `rng` |  | ⬛⬛⬛⬛<br/>0% |
+| 07 | `screen-fade` |  | ⬜⬜▫️⬛<br/>57% |
+| 07 | `sound` |  | ⬜⬜⬛⬛<br/>50% |
+| 07 | `timing` |  | ◽⬛⬛⬛<br/>13% |
 
 This export publishes **4** pages, of which **2** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-07-29 10:35 UTC_
+_Generated: 2026-07-29 10:42 UTC_
 
 ## Pages
 
