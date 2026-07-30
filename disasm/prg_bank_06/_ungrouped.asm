@@ -369,6 +369,11 @@ L_A2D4: lda     #$00                            ; A2D4
         jsr     LD2B9                           ; A2E5
 L_A2E8: rts                                     ; A2E8
 
+; ----------------------------------------------------------------------------
+; (alpha: not fully human-verified / pending re-verification) Shared initialisation routine for
+; every damageable tank enemy, called by each enemy's Init handler.
+; Overhead parallel: OvhdEnemy_Init ($B2B4). See docs/entities/tank/_shared-enemy-system.md.
+
 .endmacro
 
 .macro MAC_L_A634

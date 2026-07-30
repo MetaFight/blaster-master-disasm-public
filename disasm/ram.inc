@@ -8,6 +8,9 @@
 ;
 ; Prose lives in hints.yaml and docs/wip/ram-map.md; the one-liners below are a legend.
 
+; in LevelInit ($C301): [w] TBD
+; in NmiFrameWork ($EB98): [rw] TBD
+; in ObjHandler_Tank_08_Sophia_Dive ($8CB0): [r] TBD
 ; in OvhdJason_SpriteAttr ($8E15): [r] TBD
 ; in ObjHandler_Ovhd_0B_Jason_Curve_Shot_Gun_45_Main ($906F): [r] TBD
 ; in ObjHandler_Ovhd_0D_Jason_Wave_Shot_Gun_6_Init_2 ($911A): [r] TBD
@@ -16,65 +19,62 @@
 ; in ObjHandler_Ovhd_70_Area_4_Boss_Tongue_Attack_Main ($9A8B): [r] TBD
 ; in Boss2_Movement_9B67_Sub ($9B67): [r] TBD
 ; in Boss2_PincerArms_RenderArm ($9C23): [r] TBD
-; in ObjHandler_Ovhd_61_EntryPad ($A197): [r] TBD
-; in Boss1_MotherBrain_Main_Body ($A58C): [r] TBD
-; in Boss1_MotherBrain_RenderBody ($A65A): [r] TBD
-; in Boss5_BigCrab_FireBubble ($A7A2): [r] TBD
-; in ObjHandler_Ovhd_7D_Area_5_Boss_Bubble_Shot_Init ($A938): [r] TBD
-; in ObjHandler_Ovhd_67_EntryPad ($AA35): [r] TBD
-; in Boss8_Phase2_StateDispatch ($ACB9): [r] TBD
-; in Boss8_Phase2_ComputeAnimFrame ($ADE7): [r] TBD
-; in ObjHandler_Ovhd_4F_Spinner_Shot_Main ($AF67): [r] TBD
-; in ObjHandler_Ovhd_2F_Rotating_Camera_Main ($B393): [r] TBD
-; in ObjHandler_Ovhd_31_Gray_Gumdrop_Main ($B44F): [r] TBD
-; in ObjHandler_Ovhd_33_Flier_Spawner_Main ($B4EE): [r] TBD
-; in ObjHandler_Ovhd_34_Flier_Main ($B560): [r] TBD
-; in ObjHandler_Ovhd_36_Charging_Robot_Main ($B5F0): [r] TBD
-; in ObjHandler_Ovhd_37_Spinner_Init ($B64D): [r] TBD
-; in ObjHandler_Ovhd_38_Spinner_Main ($B65B): [r] TBD
-; in ObjHandler_Ovhd_3A_Cross_Shooter_Main ($B6AF): [r] TBD
-; in ObjHandler_Ovhd_3C_Vertical_Camera_Main ($B719): [r] TBD
-; in ObjHandler_Ovhd_3E_Horizontal_Camera_Main ($B78F): [r] TBD
-; in ObjHandler_Ovhd_40_Slider_Main ($B7F6): [r] TBD
-; in ObjHandler_Ovhd_25_Robot_Main ($B866): [r] TBD
-; in ObjHandler_Ovhd_42_Spitter_Main ($BD69): [r] TBD
-; in ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [r] TBD
-; in ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [r] TBD
-; in ObjHandler_Tank_08_Sophia_Dive ($8CB0): [r] TBD
 ; in ObjHandler_Common_35_PickUp_Active ($9C68): [r] TBD
+; in ObjHandler_Ovhd_61_Area_3_Boss_Main ($A196): [r] TBD
 ; in ObjHandler_Tank_55_Gray_Caterpillar_Main ($A40B): [r] TBD
 ; in ObjHandler_Tank_59_Gray_Bullet_Main ($A53A): [r] TBD
+; in Boss1_MotherBrain_Main_Body ($A58C): [r] TBD
+; in Boss1_MotherBrain_RenderBody ($A65A): [r] TBD
 ; in ObjHandler_Tank_5E_Hulk_Main ($A76A): [r] TBD
+; in Boss5_BigCrab_FireBubble ($A7A2): [r] TBD
 ; in ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking ($A7EE): [r] TBD
 ; in ObjHandler_Common_61_Patrolling_Horizontally ($A86E): [r] TBD
 ; in ObjHandler_Tank_63_Red_Caterpillar_Main ($A8FB): [r] TBD
+; in ObjHandler_Ovhd_7D_Area_5_Boss_Bubble_Shot_Init ($A938): [r] TBD
 ; in ObjHandler_Tank_65_Mine_Main ($A9DE): [r] TBD
+; in ObjHandler_Ovhd_67_Area_8_Boss_Phase1_Main ($AA34): [r] TBD
 ; in ObjHandler_Tank_69_Bomber_Rock_Main ($AB24): [r] TBD
 ; in ObjHandler_Tank_6B_Flying_Ship_Main ($ABEC): [r] TBD
+; in Boss8_Phase2_StateDispatch ($ACB9): [r] TBD
 ; in ObjHandler_Tank_6F_Swooping_Sphere_Main ($AD08): [r] TBD
+; in Boss8_Phase2_ComputeAnimFrame ($ADE7): [r] TBD
 ; in ObjHandler_Tank_71_Bee_Main ($ADFF): [r] TBD
 ; in ObjHandler_Tank_73_Orb_Main ($AE95): [r] TBD
+; in ObjHandler_Ovhd_4F_Spinner_Shot_Main ($AF67): [r] TBD
 ; in ObjHandler_Tank_79_Kamikaze_Orb_Main ($B095): [r] TBD
 ; in ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling ($B18F): [r] TBD
 ; in ObjHandler_Tank_4F_Red_Flier_Spawner_Main ($B20C): [r] TBD
 ; in ObjHandler_Tank_7C_Red_Flier ($B250): [r] TBD
 ; in ObjHandler_Tank_51_Gray_Flier_Spawner_Main ($B2A8): [r] TBD
 ; in ObjHandler_Tank_7D_Gray_Flier_Main ($B2EC): [r] TBD
+; in ObjHandler_Ovhd_2F_Rotating_Camera_Main ($B393): [r] TBD
 ; in ObjHandler_Tank_81_Jellyfish_Main ($B3FE): [r] TBD
+; in ObjHandler_Ovhd_31_Gray_Gumdrop_Main ($B44F): [r] TBD
 ; in ObjHandler_Tank_83_Scuba_Steve_Main ($B4A3): [r] TBD
+; in ObjHandler_Ovhd_33_Flier_Spawner_Main ($B4EE): [r] TBD
 ; in ObjHandler_Tank_84_Scuba_Steve_Dead ($B53A): [r] TBD
+; in ObjHandler_Ovhd_34_Flier_Main ($B560): [r] TBD
 ; in ObjHandler_Tank_86_Running_Shell_Main ($B58B): [r] TBD
+; in ObjHandler_Ovhd_36_Charging_Robot_Main ($B5F0): [r] TBD
 ; in ObjHandler_Tank_53_Submersible_Spawner_Main ($B63C): [r] TBD
+; in ObjHandler_Ovhd_37_Spinner_Init ($B64D): [r] TBD
+; in ObjHandler_Ovhd_38_Spinner_Main ($B65B): [r] TBD
 ; in ObjHandler_Tank_87_Submersible_Main ($B680): [r] TBD
+; in ObjHandler_Ovhd_3A_Cross_Shooter_Main ($B6AF): [r] TBD
 ; in ObjHandler_Tank_89_Crescent_Roller_Main ($B6F4): [r] TBD
+; in ObjHandler_Ovhd_3C_Vertical_Camera_Main ($B719): [r] TBD
+; in ObjHandler_Ovhd_3E_Horizontal_Camera_Main ($B78F): [r] TBD
+; in ObjHandler_Ovhd_40_Slider_Main ($B7F6): [r] TBD
 ; in ObjHandler_Tank_8B_Bomb_Canister_Main ($B843): [r] TBD
+; in ObjHandler_Ovhd_25_Robot_Main ($B866): [r] TBD
 ; in ObjHandler_Tank_8E_Red_Bullet_Main ($B97A): [r] TBD
 ; in ObjHandler_Tank_91_Wall_Guardian_Main ($BAA4): [r] TBD
 ; in WallGuardian_TileAnim_Mid ($BB7D): [r] TBD
-; in LevelInit ($C301): [w] TBD
+; in ObjHandler_Ovhd_42_Spitter_Main ($BD69): [r] TBD
+; in ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [r] TBD
+; in ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [r] TBD
 ; in Obj_SpawnChild_A0_Throttled ($DF36): [r] TBD
 ; in Obj_GravityMoveBounce ($DFA0): [r] TBD
-; in PaletteSanitizeTable ($EBF4): [rw] false positive
 ; in OAM_BlitFromStaging ($EC73): [r] TBD
 Global_FrameCounter            := $0011
 ; Obj: The 14-byte record every active object occupies. 18 are packed at $0400 (the object
@@ -161,12 +161,12 @@ ObjectSlot_Index               := $0057
 ; in Sophia_Dismount ($888C): [w] TBD
 ; in Sophia_DoorwayEntry ($89BE): [w] TBD
 ; in ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD
+; in LevelInit ($C301): [w] TBD
+; in Sophia_RenderOffsets ($9641): [rw] TBD
 ; in ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [r] TBD
 ; in Get_Next_Tile_Call ($907B): [r] TBD
 ; in ObjHandler_Tank_06_Sophia_RightWall ($916E): [r] TBD
 ; in RenderWeaponSprite ($950D): [r] TBD
-; in Sophia_RenderOffsets ($9641): [rw] TBD
-; in LevelInit ($C301): [w] TBD
 Sophia_LookUpAnimation_Counter := $0094
 ; Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.
 ; bit 7 set means a collision happened to the left or right.

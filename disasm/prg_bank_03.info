@@ -20,6 +20,24 @@ RANGE {
 
 RANGE {
   START  $8004;
+  END    $801B;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $801C;
+  END    $A173;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $A174;
+  END    $A193;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $A194;
   END    $A19A;
   TYPE   BYTETABLE;
 };
@@ -68,6 +86,42 @@ RANGE {
 
 RANGE {
   START  $A72F;
+  END    $A906;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $A907;
+  END    $A90C;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $A90D;
+  END    $ABA7;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $ABA8;
+  END    $ABAD;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $ABAE;
+  END    $AD3D;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $AD3E;
+  END    $AD43;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $AD44;
   END    $AF18;
   TYPE   BYTETABLE;
 };
@@ -140,6 +194,42 @@ RANGE {
 
 RANGE {
   START  $B698;
+  END    $B857;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $B858;
+  END    $B85D;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $B85E;
+  END    $B981;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $B982;
+  END    $B987;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $B988;
+  END    $BAFC;
+  TYPE   BYTETABLE;
+};
+
+RANGE {
+  START  $BAFD;
+  END    $BB02;
+  TYPE   ADDRTABLE;
+};
+
+RANGE {
+  START  $BB03;
   END    $BFFF;
   TYPE   BYTETABLE;
 };

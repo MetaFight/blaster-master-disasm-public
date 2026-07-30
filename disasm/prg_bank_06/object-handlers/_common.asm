@@ -1,15 +1,20 @@
 .macro MAC_L_A2E9
-; ----------------------------------------------------------------------------
-; Shared initialisation routine for every damageable tank enemy, called by each enemy's Init
-; handler.
+; (alpha: not fully human-verified / pending re-verification) Shared initialisation routine for
+; every damageable tank enemy, called by each enemy's Init handler.
+; Overhead parallel: OvhdEnemy_Init ($B2B4). See docs/entities/tank/_shared-enemy-system.md.
 ; 
 ; Input:
-; A = descriptor index (aka Thing ID). 
+; A = descriptor index (aka Thing ID).
 ; 
 ; Output:
-; LoadedObj's Health is set according to its EnemyDesc
+; EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the
+; damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them
+; LoadedObj's Health is set from EnemyDesc::Health
 ; LoadedObj's ActiveFlag is set to 0
-; LoadedObj's TileIndex is set according to its EnemyDesc
+; LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's
+; own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field
+; ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler
+; need not advance $46 itself
 TankEnemy_Init:
         jsr     TankEnemy_Load_EnemyDescPtr     ; A2E9
 ; Load desc[0] (EnemyDesc::Health, starting HP) via ($A1),Y → $53; clear anim state $4F.

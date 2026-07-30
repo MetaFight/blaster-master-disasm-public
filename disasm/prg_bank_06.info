@@ -3184,7 +3184,7 @@ LABEL {
 LABEL {
   NAME    "TankEnemy_Init";
   ADDR    $A2E9;
-  COMMENT "Shared initialisation routine for every damageable tank enemy, called by each enemy's Init\n; handler.\n; \n; Input:\n; A = descriptor index (aka Thing ID). \n; \n; Output:\n; LoadedObj's Health is set according to its EnemyDesc\n; LoadedObj's ActiveFlag is set to 0\n; LoadedObj's TileIndex is set according to its EnemyDesc";
+  COMMENT "(alpha: not fully human-verified / pending re-verification) Shared initialisation routine for\n; every damageable tank enemy, called by each enemy's Init handler.\n; Overhead parallel: OvhdEnemy_Init ($B2B4). See docs/entities/tank/_shared-enemy-system.md.\n; \n; Input:\n; A = descriptor index (aka Thing ID).\n; \n; Output:\n; EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the\n; damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them\n; LoadedObj's Health is set from EnemyDesc::Health\n; LoadedObj's ActiveFlag is set to 0\n; LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's\n; own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field\n; ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler\n; need not advance $46 itself";
 };
 
 LABEL {
