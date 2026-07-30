@@ -25,83 +25,83 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 | Progress | Bank / Group | Notes |
 |:-:|------|---|
-| ⬛⬛⬛⬛<br/>0.0% | 04 / `_ungrouped` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 05 / `(ungrouped — no .groups file)` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `_ungrouped` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `dead` |  |
-| ◽⬛⬛⬛<br/>12.5% | 06 / `object-handlers/_common` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/_ungrouped` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/auto-gates_and_locks` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/bee` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/bomb-canister` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/bomb-lobbing-hand` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/bomber-rock` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/bullet_common` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/bullet_gray` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/bullet_red` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/caterpillar_gray` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/caterpillar_red` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/crescent-roller` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/dropper_caterpillar_red` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/explosions` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/flier_gray` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/flier_red` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/flying-bomber` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/flying-bomber_caterpillar_red` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/flying-ship` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/hopper_10hp` |  |
-| ⬜⬜⬜◽<br/>94.1% | 06 / `object-handlers/hopper_6hp` | ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking depends on 9 unverified routines. |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/hopper_common` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/hulk` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/jason-small` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/jellyfish` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/mine` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/orb` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/orb_kamikaze` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/pickups` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/projectiles` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/running-shell` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/scuba-steve` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/shooter` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/sophia` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/submersible` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/swooping-sphere` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/turret` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 06 / `object-handlers/wall-guardian` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `00_title-screen` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `01a_story-sequence` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `01b_demo-screen` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `02_init` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `03_intro-screen` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `04a_lives-left-screen` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `04b_area-entry-screen` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `05_game-screen/camera` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `05_game-screen/game-loop` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `05_game-screen/hud` |  |
-| ◽⬛⬛⬛<br/>13.5% | 07 / `05_game-screen/object-system` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `06_pause-screen` |  |
-| ▫️⬛⬛⬛<br/>7.3% | 07 / `_ungrouped` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `bank-tail` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `camera` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `continue-screen` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `dead` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `drawing-background` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `drawing-metasprites` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `drawing-sprites` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `ending` |  |
-| ▫️⬛⬛⬛<br/>5.8% | 07 / `hardware` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `input` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `level-rendering` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `math` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `mmc1` |  |
-| ⬛⬛⬛⬛<br/>0.0% | 07 / `rng` |  |
-| ⬜⬜▫️⬛<br/>57.1% | 07 / `screen-fade` |  |
-| ⬜⬜⬛⬛<br/>50.0% | 07 / `sound` |  |
-| ◽⬛⬛⬛<br/>13.3% | 07 / `timing` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 04 / `_ungrouped` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 05 / `(ungrouped — no .groups file)` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `_ungrouped` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
+| ◽⬛⬛⬛<br/>`12.5%` | 06 / `object-handlers/_common` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/auto-gates_and_locks` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bee` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomb-canister` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomb-lobbing-hand` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomber-rock` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bullet_common` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bullet_gray` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bullet_red` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/caterpillar_gray` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/caterpillar_red` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/crescent-roller` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/dropper_caterpillar_red` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/explosions` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flier_gray` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flier_red` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-bomber` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-bomber_caterpillar_red` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-ship` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_10hp` |  |
+| ⬜⬜⬜◽<br/>`94.1%` | 06 / `object-handlers/hopper_6hp` | ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking depends on 9 unverified routines. |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_common` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hulk` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jason-small` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jellyfish` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/mine` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/orb` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/orb_kamikaze` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/pickups` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/projectiles` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/running-shell` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/scuba-steve` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/shooter` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/sophia` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/submersible` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/swooping-sphere` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/turret` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/wall-guardian` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `00_title-screen` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `01a_story-sequence` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `01b_demo-screen` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `02_init` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `03_intro-screen` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `04a_lives-left-screen` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `04b_area-entry-screen` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/camera` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/game-loop` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/hud` |  |
+| ◽⬛⬛⬛<br/>`13.5%` | 07 / `05_game-screen/object-system` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `06_pause-screen` |  |
+| ▫️⬛⬛⬛<br/>`7.3%` | 07 / `_ungrouped` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `bank-tail` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `camera` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `continue-screen` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `dead` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `drawing-background` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `drawing-metasprites` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `drawing-sprites` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `ending` |  |
+| ▫️⬛⬛⬛<br/>`5.8%` | 07 / `hardware` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `input` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `level-rendering` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `math` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `mmc1` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `rng` |  |
+| ⬜⬜▫️⬛<br/>`57.1%` | 07 / `screen-fade` |  |
+| ⬜⬜⬛⬛<br/>`50.0%` | 07 / `sound` |  |
+| ◽⬛⬛⬛<br/>`13.3%` | 07 / `timing` |  |
 
 This export publishes **4** pages, of which **2** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-07-30 11:28 UTC_
+_Generated: 2026-07-30 11:29 UTC_
 
 ## Pages
 
