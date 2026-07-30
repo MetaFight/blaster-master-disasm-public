@@ -4,7 +4,7 @@ L_A9CB: jmp     L_A9DD                          ; A9CB
 
 ; ----------------------------------------------------------------------------
         lda     #$07                            ; A9CE
-        jsr     L_A2E9                          ; A9D0
+        jsr     TankEnemy_Init                  ; A9D0
         lda     #$00                            ; A9D3
         sta     LoadedObj + Obj::Velocity_X     ; A9D5
         sta     LoadedObj + Obj::Velocity_Y     ; A9D7

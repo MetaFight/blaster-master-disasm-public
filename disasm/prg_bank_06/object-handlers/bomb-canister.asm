@@ -4,7 +4,7 @@ L_B832: jmp     L_B842                          ; B832
 
 ; ----------------------------------------------------------------------------
         lda     #$1B                            ; B835
-        jsr     L_A2E9                          ; B837
+        jsr     TankEnemy_Init                  ; B837
         lda     #$00                            ; B83A
         sta     LoadedObj + Obj::Velocity_Y     ; B83C
         sta     LoadedObj + Obj::Velocity_X     ; B83E

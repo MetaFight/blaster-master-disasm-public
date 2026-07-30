@@ -4,7 +4,7 @@ L_AB13: jmp     L_AB23                          ; AB13
 
 ; ----------------------------------------------------------------------------
         lda     #$09                            ; AB16
-        jsr     L_A2E9                          ; AB18
+        jsr     TankEnemy_Init                  ; AB18
         lda     #$00                            ; AB1B
         sta     LoadedObj + Obj::Velocity_X     ; AB1D
         sta     LoadedObj + Obj::Velocity_Y     ; AB1F

@@ -3182,13 +3182,15 @@ LABEL {
 };
 
 LABEL {
-  NAME    "L_A2E9";
+  NAME    "TankEnemy_Init";
   ADDR    $A2E9;
+  COMMENT "Shared initialisation routine for every damageable tank enemy, called by each enemy's Init\n; handler.\n; \n; Input:\n; A = descriptor index (aka Thing ID). \n; \n; Output:\n; LoadedObj's Health is set according to its EnemyDesc\n; LoadedObj's ActiveFlag is set to 0\n; LoadedObj's TileIndex is set according to its EnemyDesc";
 };
 
 LABEL {
-  NAME    "L_A2FA";
+  NAME    "TankEnemy_Load_EnemyDescPtr";
   ADDR    $A2FA;
+  COMMENT "Points EnemyParam_Ptr[Lo/Hi] to the given enemy's TankEnemy_DescTable entry.\n; \n; Input:\n; A = TankEnemy_DescTable index (aka Thing ID). \n; \n; Output:\n; EnemyParam_Ptr[Lo/Hi] ($A1/$A2) are set to point to the enemy's 4-byte EnemyDesc entry in\n; TankEnemy_DescTable.\n; \n; Start by multiplying A by 4.  EnemyDesc entries are 4-bytes in size so this converts the array\n; index into the target element's offset.";
 };
 
 LABEL {
@@ -3219,6 +3221,18 @@ LABEL {
 LABEL {
   NAME    "L_A365";
   ADDR    $A365;
+};
+
+LABEL {
+  NAME    "TankEnemy_DescTablePtr";
+  ADDR    $A368;
+  COMMENT "LE self-pointer (=$A36A) to TankEnemy_DescTable. Tank parallel of OvhdEnemy_DescTablePtr\n; ($B324).";
+};
+
+LABEL {
+  NAME    "TankEnemy_DescTable";
+  ADDR    $A36A;
+  COMMENT "30 x EnemyDesc, indexed by descriptor index via TankEnemy_Load_EnemyDescPtr (accessed only via\n; computed ($A1) pointer). See the EnemyDesc struct.\n; \n; The descriptor index equals the spawn-list Thing id for all 30 entries (see\n; docs/entities/entity-map.md), so this is one descriptor per Thing.\n; \n; Index->enemy:\n; 00=GrayCaterpillar($54)\n; 01=GrayBulletA($56)*\n; 02=GrayBulletB($58)*\n; 03=RedCatDropper($5B)\n; 04=Hulk($5D)\n; 05=GrayHopper6($5F)\n; 06=RedCaterpillar($62)\n; 07=Mine($64)\n; 08=Turret($66)\n; 09=BomberRock($68)\n; 0A=FlyingShip($6A)\n; 0B=FlyingBomber($6C)\n; 0C=SwoopingSphere($6E)\n; 0D=Bee($70) 0E=Orb($72)\n; 0F=FlyingRedCatBomber($74)\n; 10=Shooter($76)\n; 11=KamikazeOrb($78)\n; 12=GrayHopper10($7A)\n; 13=RedFlierSpawner($4E)\n; 14=GrayFlierSpawner($50)\n; 15=BombLobbingHand($7E)\n; 16=Jellyfish($80)\n; 17=ScubaSteve($82)\n; 18=RunningShell($85)\n; 19=SubmersibleSpawner($52)\n; 1A=CrescentRoller($88)\n; 1B=BombCanister($8A)\n; 1C=RedBulletA($8C)*\n; 1D=RedBulletB($8D)*\n; \n; * The two bullet families each own a Thing pair whose descriptors hold identical bytes, and\n; their handlers do not respect the split. Gray: $56 Init, $58 Init and $5A Attacking all pass 02,\n; while 01 is reached only by $59 Main's damage check. Red: $8C Init passes 1C and $8D Init passes\n; 1D, but $8E Main and $8F Locked both pass 1C. Behaviourally harmless — 01/02 and 1C/1D are\n; byte-identical — so which of a pair a handler names is not evidence of that handler's Thing.\n; \n; Tank parallel of OvhdEnemy_DescTable ($B326). See docs/entities/tank/_shared-enemy-system.md.";
 };
 
 LABEL {
@@ -5304,6 +5318,30 @@ LABEL {
 LABEL {
   NAME    "L_BC21";
   ADDR    $BC21;
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A2EC;
+  COMMENT "Load desc[0] (EnemyDesc::Health, starting HP) via ($A1),Y → $53; clear anim state $4F.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A2F4;
+  COMMENT "JSR $D2B9 init tile position; INC $46 → advance to the enemy's main handler.";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A2FD;
+  COMMENT "A is now the offset into TankEnemy_DescTable for the enemy's EnemyDesc entry.\n; Add to first byte of TankEnemy_DescTablePtr to get EnemyParam_PtrLo (with carry)";
+};
+
+LABEL {
+  NAME    "";
+  ADDR    $A304;
+  COMMENT "Add the carry to second byte of TankEnemy_DescTablePtr to get EnemyParam_PtrHi";
 };
 
 LABEL {

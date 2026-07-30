@@ -8,7 +8,7 @@ ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:
 _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__:
         lda     #$05                            ; A7CE
 ; Init the enemy from descriptor $05.
-        jsr     L_A2E9                          ; A7D0
+        jsr     TankEnemy_Init                  ; A7D0
         lda     #$30                            ; A7D3
 ; LoadedObj_Scratch is the base hop speed.  Set this to $30.
         sta     $52                             ; A7D5

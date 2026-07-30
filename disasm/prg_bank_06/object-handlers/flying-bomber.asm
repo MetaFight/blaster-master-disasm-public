@@ -4,7 +4,7 @@ L_AC3C: jmp     L_AC62                          ; AC3C
 
 ; ----------------------------------------------------------------------------
         lda     #$0B                            ; AC3F
-        jsr     L_A2E9                          ; AC41
+        jsr     TankEnemy_Init                  ; AC41
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; AC44
         and     #$80                            ; AC47
         sta     LoadedObj + Obj::Facing         ; AC49

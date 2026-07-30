@@ -4,7 +4,7 @@ L_AA5A: jmp     L_AA6B                          ; AA5A
 
 ; ----------------------------------------------------------------------------
         lda     #$08                            ; AA5D
-        jsr     L_A2E9                          ; AA5F
+        jsr     TankEnemy_Init                  ; AA5F
         lda     #$02                            ; AA62
         sta     $52                             ; AA64
         jsr     LEB71                           ; AA66

@@ -4,7 +4,7 @@ L_ADE4: jmp     L_ADFE                          ; ADE4
 
 ; ----------------------------------------------------------------------------
         lda     #$0D                            ; ADE7
-        jsr     L_A2E9                          ; ADE9
+        jsr     TankEnemy_Init                  ; ADE9
         lda     #$B8                            ; ADEC
         sta     LoadedObj + Obj::Facing         ; ADEE
         lda     #$08                            ; ADF0

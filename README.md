@@ -13,7 +13,7 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 16 / 848 (2%) |
+| **M4** — Verified subroutines (public, clean) | 18 / 848 (2%) |
 | **M6** — Verified docs (public, clean) | 2 / 119 (2%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -29,6 +29,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | 05 | `(ungrouped — no .groups file)` |  | ⬛⬛⬛⬛<br/>0% |
 | 06 | `_ungrouped` |  | ⬛⬛⬛⬛<br/>0% |
 | 06 | `dead` |  | ⬛⬛⬛⬛<br/>0% |
+| 06 | `object-handlers/_common` | TankEnemy_Init depends on 1 unverified routine. | ⬜⬛⬛⬛<br/>25% |
 | 06 | `object-handlers/_ungrouped` |  | ⬛⬛⬛⬛<br/>0% |
 | 06 | `object-handlers/auto-gates_and_locks` |  | ⬛⬛⬛⬛<br/>0% |
 | 06 | `object-handlers/bee` |  | ⬛⬛⬛⬛<br/>0% |
@@ -49,7 +50,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | 06 | `object-handlers/flying-bomber_caterpillar_red` |  | ⬛⬛⬛⬛<br/>0% |
 | 06 | `object-handlers/flying-ship` |  | ⬛⬛⬛⬛<br/>0% |
 | 06 | `object-handlers/hopper_10hp` |  | ⬛⬛⬛⬛<br/>0% |
-| 06 | `object-handlers/hopper_6hp` | ObjHandler_Tank_5F_Gray_Hopper_6HP_Init, ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking depend on 10 unverified routines. | ⬜⬜⬜◽<br/>94% |
+| 06 | `object-handlers/hopper_6hp` | ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking depends on 9 unverified routines. | ⬜⬜⬜◽<br/>94% |
 | 06 | `object-handlers/hopper_common` |  | ⬛⬛⬛⬛<br/>0% |
 | 06 | `object-handlers/hulk` |  | ⬛⬛⬛⬛<br/>0% |
 | 06 | `object-handlers/jason-small` |  | ⬛⬛⬛⬛<br/>0% |
@@ -100,7 +101,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **4** pages, of which **2** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-07-29 10:51 UTC_
+_Generated: 2026-07-30 00:58 UTC_
 
 ## Pages
 

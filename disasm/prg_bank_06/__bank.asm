@@ -95,6 +95,7 @@ LF029           := $F029
 .include "bank-tail.asm"
 .include "dead.asm"
 .include "dispatch.asm"
+.include "object-handlers/_common.asm"
 .include "object-handlers/_ungrouped.asm"
 .include "object-handlers/auto-gates_and_locks.asm"
 .include "object-handlers/bee.asm"
@@ -167,6 +168,7 @@ LF029           := $F029
         MAC_L_A237
         MAC_L_A280
         MAC_L_A29E
+        MAC_L_A2E9
         MAC_L_A3E2
         MAC_L_A4DE
         MAC_L_A634

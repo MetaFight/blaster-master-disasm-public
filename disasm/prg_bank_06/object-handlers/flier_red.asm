@@ -4,7 +4,7 @@ L_B1FF: jmp     L_B20B                          ; B1FF
 
 ; ----------------------------------------------------------------------------
         lda     #$13                            ; B202
-        jsr     L_A2E9                          ; B204
+        jsr     TankEnemy_Init                  ; B204
         lda     #$4F                            ; B207
         sta     LoadedObj + Obj::Type           ; B209
 L_B20B: rts                                     ; B20B

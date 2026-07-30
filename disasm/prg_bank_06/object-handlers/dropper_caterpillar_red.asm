@@ -4,7 +4,7 @@ L_A6D7: jmp     L_A6E3                          ; A6D7
 
 ; ----------------------------------------------------------------------------
         lda     #$03                            ; A6DA
-        jsr     L_A2E9                          ; A6DC
+        jsr     TankEnemy_Init                  ; A6DC
         lda     #$00                            ; A6DF
         sta     $50                             ; A6E1
 L_A6E3: rts                                     ; A6E3

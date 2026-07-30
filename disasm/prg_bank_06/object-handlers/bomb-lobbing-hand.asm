@@ -4,7 +4,7 @@ L_B337: jmp     L_B34E                          ; B337
 
 ; ----------------------------------------------------------------------------
         lda     #$15                            ; B33A
-        jsr     L_A2E9                          ; B33C
+        jsr     TankEnemy_Init                  ; B33C
         sec                                     ; B33F
         lda     LoadedObj + Obj::Position_Y_Lo  ; B340
         sbc     #$30                            ; B342

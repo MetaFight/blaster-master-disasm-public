@@ -77,7 +77,8 @@
 ; in PaletteSanitizeTable ($EBF4): [rw] false positive
 ; in OAM_BlitFromStaging ($EC73): [r] TBD
 Global_FrameCounter            := $0011
-; Obj: The 14-byte record every active object occupies. 18 are packed at $0400 (the object table); slot 0 is the player.
+; Obj: The 14-byte record every active object occupies. 18 are packed at $0400 (the object
+; table); slot 0 is the player.
 .struct Obj
         Type          .byte   ; +$00 (byte)  Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
         Facing        .byte   ; +$01 (byte)  Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -90,6 +91,14 @@ Global_FrameCounter            := $0011
         .res          5       ; +$08..+$0C
         Health        .byte   ; +$0D (byte)  HP for this entity.
 .endstruct
+; Contact: The 3-byte record in the contact table at $7C-$8D -- the hit-exchange channel
+; between the player's side and the enemies. Six records, one per object slot 0-5 (slot 0 =
+; the player, 1-5 = his shots/sub-weapons; the allocators keep enemies out of this range --
+; Obj_SpawnChild $D852 searches slots 6-17, Obj_SpawnFromZP $DF13 searches 8-15). Enemies
+; never occupy a record, they only scan it.
+.struct Contact
+        .res 3       ; +$00..+$02
+.endstruct
 ; The 14-byte zero-page working copy of the currently active object slot — the same Obj layout
 ; as the $0400 object table. Before each AI dispatch, ObjSlot_Load ($C8DF) copies the active
 ; slot ($0400,X with X = ObjectSlot_Offset $56) into $46-$53; ObjSlot_Save ($C928) writes it
@@ -98,6 +107,25 @@ Global_FrameCounter            := $0011
 ; ClearObjWorkFields $D7EE); direct (unindexed) access is the single instance (LoadedObj).
 LoadedObject := $0046   ; Obj[] base — indexed access (any element)
 LoadedObj    := $0046   ; element 0 — direct access
+; The contact table: 6 Contact records (3 bytes each) packed at $7C-$8D, one per object slot
+; 0-5 -- slot 0 is the player, 1-5 are his shots/sub-weapons. NOT three separate tables: the
+; three columns are interleaved, so indexed access (X = ObjectSlot_Index $57 x 3, via
+; SlotIndexX3 $D798) walks records while the field offset picks the column. That is why the
+; old flat labels SpriteX_Table/SpriteY_Table/SpriteAttr_Table at $7C/$7D/$7E each named a
+; single byte -- record 0's own three fields -- while reading as though they were arrays; and
+; why their "18 entries" description was wrong twice over (18 is the BYTE count; there are 6
+; records). The record count is pinned three independent ways: Collision_Detection_Sub scans
+; ldx #$0F then dex x3 ($D6E7) = records 5 down to 0; SpriteX_ClearAll ($D7B6) zeroes exactly
+; $7C-$8D at AreaInit; and $8E is an unrelated variable. Direct (unindexed) access is record
+; 0, the player -- see PlayerContact, and HitboxTest_LockOn ($D71F), which is the "did this
+; enemy attack hit the player?" test and reads $7C/$7D/$7E with no index at all.
+ContactTable  := $007C   ; Contact[] base — indexed access (any element)
+PlayerContact := $007C   ; element 0 — direct access
+Projectile1   := $007F   ; element 1
+Projectile2   := $0082   ; element 2
+Projectile3   := $0085   ; element 3
+Projectile4   := $0088   ; element 4
+Projectile5   := $008B   ; element 5
 ; The object table: 18 Obj records (14 bytes each) packed at $0400-$04FB. Slot 0 is reserved
 ; for the player (Sophia/Jason); slots 1-17 hold enemies, projectiles, pickups, gates and
 ; other objects. Indexed access ($0400,X with X = ObjectSlot_Offset $56) reaches any slot;

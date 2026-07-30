@@ -4,7 +4,7 @@ L_B62F: jmp     L_B63B                          ; B62F
 
 ; ----------------------------------------------------------------------------
         lda     #$19                            ; B632
-        jsr     L_A2E9                          ; B634
+        jsr     TankEnemy_Init                  ; B634
         lda     #$53                            ; B637
         sta     LoadedObj + Obj::Type           ; B639
 L_B63B: rts                                     ; B63B

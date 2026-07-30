@@ -23,7 +23,7 @@ L_B935: ldy     #$18                            ; B935
         sta     $51                             ; B93C
         sta     $52                             ; B93E
         lda     #$1C                            ; B940
-        jsr     L_A2E9                          ; B942
+        jsr     TankEnemy_Init                  ; B942
         lda     #$8E                            ; B945
         sta     LoadedObj + Obj::Type           ; B947
 L_B949: rts                                     ; B949
@@ -52,7 +52,7 @@ L_B965: ldy     #$18                            ; B965
         sta     $51                             ; B96C
         sta     $52                             ; B96E
         lda     #$1D                            ; B970
-        jsr     L_A2E9                          ; B972
+        jsr     TankEnemy_Init                  ; B972
         lda     #$8E                            ; B975
         sta     LoadedObj + Obj::Type           ; B977
 L_B979: rts                                     ; B979

@@ -23,7 +23,7 @@ L_A4F9: ldy     #$10                            ; A4F9
         sta     $51                             ; A500
         sta     $52                             ; A502
         lda     #$02                            ; A504
-        jsr     L_A2E9                          ; A506
+        jsr     TankEnemy_Init                  ; A506
         lda     #$59                            ; A509
         sta     LoadedObj + Obj::Type           ; A50B
 L_A50D: rts                                     ; A50D
@@ -52,7 +52,7 @@ L_A529: ldy     #$10                            ; A529
         sta     $51                             ; A530
         sta     $52                             ; A532
         lda     #$02                            ; A534
-        jsr     L_A2E9                          ; A536
+        jsr     TankEnemy_Init                  ; A536
 L_A539: rts                                     ; A539
 
 ; ----------------------------------------------------------------------------

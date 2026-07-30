@@ -4,7 +4,7 @@ L_B3E3: jmp     L_B3FD                          ; B3E3
 
 ; ----------------------------------------------------------------------------
         lda     #$16                            ; B3E6
-        jsr     L_A2E9                          ; B3E8
+        jsr     TankEnemy_Init                  ; B3E8
         lda     #$B8                            ; B3EB
         sta     LoadedObj + Obj::Facing         ; B3ED
         lda     #$08                            ; B3EF

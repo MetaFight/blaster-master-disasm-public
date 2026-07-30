@@ -16,7 +16,7 @@ ObjHandler_Tank_76_Shooter_Init:
 ; TankEnemy_Init also does INC $46, so the next frame runs ObjType $77
 _ObjHandler_Tank_76_Shooter_Init__Update__:
         lda     #$10                            ; AFFF
-        jsr     L_A2E9                          ; B001
+        jsr     TankEnemy_Init                  ; B001
 ; $47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG
         jsr     LEB71                           ; B004
         sta     LoadedObj + Obj::Facing         ; B007

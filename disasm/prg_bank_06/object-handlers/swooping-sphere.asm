@@ -4,7 +4,7 @@ L_ACFB: jmp     L_AD07                          ; ACFB
 
 ; ----------------------------------------------------------------------------
         lda     #$0C                            ; ACFE
-        jsr     L_A2E9                          ; AD00
+        jsr     TankEnemy_Init                  ; AD00
         lda     #$00                            ; AD03
         sta     $50                             ; AD05
 L_AD07: rts                                     ; AD07

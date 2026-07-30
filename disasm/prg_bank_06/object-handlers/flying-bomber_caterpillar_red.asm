@@ -4,7 +4,7 @@ L_AF3A: jmp     L_AF60                          ; AF3A
 
 ; ----------------------------------------------------------------------------
         lda     #$0F                            ; AF3D
-        jsr     L_A2E9                          ; AF3F
+        jsr     TankEnemy_Init                  ; AF3F
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; AF42
         and     #$80                            ; AF45
         sta     LoadedObj + Obj::Facing         ; AF47

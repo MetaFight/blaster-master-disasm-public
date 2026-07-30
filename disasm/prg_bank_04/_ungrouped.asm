@@ -6155,14 +6155,22 @@ L_B314: asl     a                               ; B314
 ; ----------------------------------------------------------------------------
 LB324:  .addr   LB326                           ; B324
 ; ----------------------------------------------------------------------------
-LB326:  .byte   $04,$10,$1A,$90,$01,$10,$1A,$80 ; B326
-        .byte   $02,$10,$1E,$70,$01,$10,$1C,$50 ; B32E
-        .byte   $02,$10,$20,$40,$01,$10,$1A,$60 ; B336
-        .byte   $08,$10,$1A,$80,$01,$20,$21,$FF ; B33E
-        .byte   $18,$20,$1C,$FF,$08,$20,$1C,$A0 ; B346
-        .byte   $08,$18,$1A,$80,$08,$18,$1A,$80 ; B34E
-        .byte   $06,$20,$1C,$50,$08,$30,$20,$FF ; B356
-        .byte   $20,$30,$22,$FF,$04,$20,$1A,$A0 ; B35E
+LB326:  .byte   $04,$10,$1A,$90 ; B326  Health=$04 ContactDamage=$10 DropType=$1A DropChance=$90
+        .byte   $01,$10,$1A,$80 ; B32A  Health=$01 ContactDamage=$10 DropType=$1A DropChance=$80
+        .byte   $02,$10,$1E,$70 ; B32E  Health=$02 ContactDamage=$10 DropType=$1E DropChance=$70
+        .byte   $01,$10,$1C,$50 ; B332  Health=$01 ContactDamage=$10 DropType=$1C DropChance=$50
+        .byte   $02,$10,$20,$40 ; B336  Health=$02 ContactDamage=$10 DropType=$20 DropChance=$40
+        .byte   $01,$10,$1A,$60 ; B33A  Health=$01 ContactDamage=$10 DropType=$1A DropChance=$60
+        .byte   $08,$10,$1A,$80 ; B33E  Health=$08 ContactDamage=$10 DropType=$1A DropChance=$80
+        .byte   $01,$20,$21,$FF ; B342  Health=$01 ContactDamage=$20 DropType=$21 DropChance=$FF
+        .byte   $18,$20,$1C,$FF ; B346  Health=$18 ContactDamage=$20 DropType=$1C DropChance=$FF
+        .byte   $08,$20,$1C,$A0 ; B34A  Health=$08 ContactDamage=$20 DropType=$1C DropChance=$A0
+        .byte   $08,$18,$1A,$80 ; B34E  Health=$08 ContactDamage=$18 DropType=$1A DropChance=$80
+        .byte   $08,$18,$1A,$80 ; B352  Health=$08 ContactDamage=$18 DropType=$1A DropChance=$80
+        .byte   $06,$20,$1C,$50 ; B356  Health=$06 ContactDamage=$20 DropType=$1C DropChance=$50
+        .byte   $08,$30,$20,$FF ; B35A  Health=$08 ContactDamage=$30 DropType=$20 DropChance=$FF
+        .byte   $20,$30,$22,$FF ; B35E  Health=$20 ContactDamage=$30 DropType=$22 DropChance=$FF
+        .byte   $04,$20,$1A,$A0 ; B362  Health=$04 ContactDamage=$20 DropType=$1A DropChance=$A0
 ; ----------------------------------------------------------------------------
         jmp     L_B392                          ; B366
 

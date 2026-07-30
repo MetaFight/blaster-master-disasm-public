@@ -4,7 +4,7 @@ L_ABCF: jmp     L_ABEB                          ; ABCF
 
 ; ----------------------------------------------------------------------------
         lda     #$0A                            ; ABD2
-        jsr     L_A2E9                          ; ABD4
+        jsr     TankEnemy_Init                  ; ABD4
         lda     #$10                            ; ABD7
         sta     LoadedObj + Obj::Velocity_X     ; ABD9
         lda     #$00                            ; ABDB

@@ -4,7 +4,7 @@ L_B6E4: jmp     L_B6F3                          ; B6E4
 
 ; ----------------------------------------------------------------------------
         lda     #$1A                            ; B6E7
-        jsr     L_A2E9                          ; B6E9
+        jsr     TankEnemy_Init                  ; B6E9
         jsr     L_B81C                          ; B6EC
         lda     #$00                            ; B6EF
         sta     $50                             ; B6F1

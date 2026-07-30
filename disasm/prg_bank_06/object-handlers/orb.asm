@@ -4,7 +4,7 @@ L_AE78: jmp     L_AE94                          ; AE78
 
 ; ----------------------------------------------------------------------------
         lda     #$0E                            ; AE7B
-        jsr     L_A2E9                          ; AE7D
+        jsr     TankEnemy_Init                  ; AE7D
         jsr     LEB71                           ; AE80
         and     #$80                            ; AE83
         sta     LoadedObj + Obj::Facing         ; AE85

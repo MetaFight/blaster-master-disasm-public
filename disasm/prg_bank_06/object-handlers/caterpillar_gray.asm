@@ -4,7 +4,7 @@ L_A3E2: jmp     L_A40A                          ; A3E2
 
 ; ----------------------------------------------------------------------------
         lda     #$00                            ; A3E5
-        jsr     L_A2E9                          ; A3E7
+        jsr     TankEnemy_Init                  ; A3E7
         lda     #$01                            ; A3EA
         sta     $50                             ; A3EC
         lda     #$00                            ; A3EE

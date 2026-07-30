@@ -4,7 +4,7 @@ L_B494: jmp     L_B4A2                          ; B494
 
 ; ----------------------------------------------------------------------------
         lda     #$17                            ; B497
-        jsr     L_A2E9                          ; B499
+        jsr     TankEnemy_Init                  ; B499
         lda     #$00                            ; B49C
         sta     LoadedObj + Obj::Velocity_X     ; B49E
         sta     LoadedObj + Obj::Velocity_Y     ; B4A0

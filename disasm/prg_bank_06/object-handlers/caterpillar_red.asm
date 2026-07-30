@@ -4,7 +4,7 @@ L_A8D2: jmp     L_A8FA                          ; A8D2
 
 ; ----------------------------------------------------------------------------
         lda     #$06                            ; A8D5
-        jsr     L_A2E9                          ; A8D7
+        jsr     TankEnemy_Init                  ; A8D7
         lda     #$01                            ; A8DA
         sta     $50                             ; A8DC
         lda     #$00                            ; A8DE

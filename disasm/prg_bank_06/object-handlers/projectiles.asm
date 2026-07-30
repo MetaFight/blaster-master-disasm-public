@@ -608,7 +608,7 @@ L_9FA8: jsr     L_9B90                          ; 9FA8
         lda     #$27                            ; 9FAB
         jsr     Enqueue_Sound_Command           ; 9FAD
         lda     #$06                            ; 9FB0
-        jsr     L_A2E9                          ; 9FB2
+        jsr     TankEnemy_Init                  ; 9FB2
         lda     #$63                            ; 9FB5
         sta     LoadedObj + Obj::Type           ; 9FB7
         lda     #$01                            ; 9FB9
@@ -856,7 +856,7 @@ L_A15F: jsr     L_9B90                          ; A15F
         lda     #$27                            ; A162
         jsr     Enqueue_Sound_Command           ; A164
         lda     #$06                            ; A167
-        jsr     L_A2E9                          ; A169
+        jsr     TankEnemy_Init                  ; A169
         lda     #$63                            ; A16C
         sta     LoadedObj + Obj::Type           ; A16E
         lda     #$01                            ; A170

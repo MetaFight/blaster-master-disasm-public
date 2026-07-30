@@ -20,6 +20,24 @@ structs:
       - { name: AnimFrame, type: byte, status: alpha, desc: "Animation / timer counter." }
       - { name: Scratch, type: byte, status: alpha, desc: "Type-specific scratch (slot byte 12)." }
       - { name: Health, type: byte, status: verified, desc: "HP for this entity." }
+  - name: EnemyDesc
+    desc: "Shared 4-byte enemy descriptor record: TankEnemy_DescTable[30] ($A36A) / OvhdEnemy_DescTable[16] ($B326)."
+    fields:
+      - { name: Health, type: byte, status: verified, desc: "starting HP -- copied into LoadedObj_Health ($53) by *Enemy_Init." }
+      - { name: ContactDamage, type: byte, status: verified, desc: "Damage this enemy deals to whatever it collides with. Passed as Enemy_Damage_Check_Sub's ($D697) A input.  Sole reader is TankEnemy_DamageCheck ($A30F) / its overhead twin." }
+      - { name: DropType, type: byte, status: verified, desc: "pickup ObjType spawned on death ($2C Health-x1 / $2E Hover-Fuel-x1, etc.)." }
+      - { name: DropChance, type: byte, status: verified, desc: "drop occurs when Step_RNG's result < this value." }
+  - name: Contact
+    desc: |-
+      The 3-byte record in the contact table at $7C-$8D -- the hit-exchange channel between the
+      player's side and the enemies. Six records, one per object slot 0-5 (slot 0 = the player,
+      1-5 = his shots/sub-weapons; the allocators keep enemies out of this range -- Obj_SpawnChild
+      $D852 searches slots 6-17, Obj_SpawnFromZP $DF13 searches 8-15). Enemies never occupy a
+      record, they only scan it.
+    fields:
+      - { name: XPos, type: byte, status: alpha, desc: "Screen X, posted by Sprite_Update ($D7A0) from WR_Context_Dependent_3E." }
+      - { name: YPos, type: byte, status: alpha, desc: "Screen Y, posted by Sprite_Update ($D7A0) from WR_Context_Dependent_3F." }
+      - { name: Damage, type: byte, status: alpha, desc: "Bit 7 = hit flag, bits 0-6 = damage magnitude. Sprite_Update posts (A & $7F) -- bit 7 is always cleared on post -- and returns the PREVIOUS byte, which is how the owner learns it was hit. An attacker stamps its own magnitude | $80 here (Enemy_Damage_Check_Sub $D6C8 / HitboxScan_LockOn $D71A / HitboxTest_LockOn $D75B). $7F posted means harmless: a scanner reads it as the damage TO ITSELF and $D69C skips on cmp #$7F, which is how touching Jason/Sophia costs an enemy nothing. See EnemyDesc::ContactDamage." }
 
 hints:
   - space: prg
@@ -6932,11 +6950,11 @@ hints:
   - space: prg
     offset: 0x132B4
     name: OvhdEnemy_Init
-    desc: "Shared overhead-enemy init, called by every overhead-enemy Init handler. In: A = descriptor index ($00–$0F). Looks up that 4-byte enemy descriptor, stashes its behavior flag, clears animation state, computes the tilemap index, and advances the slot's ObjType to the descriptor's active handler. (NOT a pickup routine — pickup inits live at $95CF+ and never call this.)"
+    desc: "Shared overhead-enemy init, called by every overhead-enemy Init handler. In: A = descriptor index ($00–$0F). Looks up that 4-byte enemy descriptor, seeds its starting HP, clears animation state, computes the tilemap index, and advances the slot's ObjType to the descriptor's active handler. (NOT a pickup routine — pickup inits live at $95CF+ and never call this.)"
 
   - space: prg
     offset: 0x132B7
-    desc: "Load desc[0] (behavior/HP seed) via ($A3),Y → $53; clear anim state $4F."
+    desc: "Load desc[0] (EnemyDesc::Health, starting HP) via ($A3),Y → $53; clear anim state $4F."
 
   - space: prg
     offset: 0x132BF
@@ -6945,7 +6963,7 @@ hints:
   - space: prg
     offset: 0x132C5
     name: OvhdEnemy_DamageCheck
-    desc: "Shared overhead-enemy damage check. A = descriptor index (its HP is descriptor field 1). Applies any pending player-shot damage (Enemy_Damage_Check_Sub $C144) and returns the hit status to the caller: no hit (0), hit but still alive (1), or killed ($FF). On a kill, when the descriptor's kind byte (field 0) is 0 it runs the normal defeat — spawn the drop and convert the slot to a Big Explosion ($14)."
+    desc: "Shared overhead-enemy damage check. A = descriptor index; desc[1] (EnemyDesc::HitAttr) is passed as Enemy_Damage_Check_Sub's ($C144) A input, which parks it in $44 and applies any pending player-shot damage to Health (seeded from desc[0] at OvhdEnemy_Init). Returns the hit status to the caller: no hit (0), hit but still alive (1), or killed ($FF). On a kill it runs the normal defeat — spawn the drop and convert the slot to a Big Explosion ($14)."
 
   - space: prg
     offset: 0x132DB
@@ -7008,8 +7026,10 @@ hints:
 
   - space: prg
     offset: 0x13326
+    end: 0x13365
     name: OvhdEnemy_DescTable
-    desc: "16 × 4-byte enemy descriptors, indexed by descriptor index $00–$0F. Per descriptor: [0]=behavior flag (→$53), [1]=HP, [2]=drop ObjType (pickup spawned on death), [3]=drop-chance threshold (drop when random < threshold; $FF≈always). e.g. desc 0 Robot=04,10,1A,90; desc 4 Rotating Camera=02,10,20,40."
+    type: array<EnemyDesc>
+    desc: "16 x EnemyDesc, indexed by descriptor index $00-$0F (see the EnemyDesc struct). e.g. desc 0 Robot=04,10,1A,90; desc 4 Rotating Camera=02,10,20,40. Tank parallel of TankEnemy_DescTable ($A36A)."
 
   - space: prg
     offset: 0x13366
@@ -14854,11 +14874,21 @@ hints:
   - space: prg
     offset: 0x1A2E9
     name: TankEnemy_Init
-    desc: "Shared entry ritual for every damageable tank enemy, called by each enemy's Init handler with A = its descriptor index. Points $A1/$A2 at that enemy's 4-byte descriptor (so the Main handler and the damage/drop code can read its HP and drop table), seeds the slot's behaviour and animation state, registers the slot's position with the tilemap, and finally advances $46 to the enemy's active ObjType — which is why an Init handler need not set $46 itself. Tank parallel of OvhdEnemy_Init ($B2B4). See docs/entities/tank/_shared-enemy-system.md."
+    status: verified
+    desc: |-
+      Shared initialisation routine for every damageable tank enemy, called by each enemy's Init handler.
+      
+      Input:
+         A = descriptor index (aka Thing ID). 
+      
+      Output:
+        LoadedObj's Health is set according to its EnemyDesc
+        LoadedObj's ActiveFlag is set to 0
+        LoadedObj's TileIndex is set according to its EnemyDesc
 
   - space: prg
     offset: 0x1A2EC
-    desc: "Load desc[0] (behavior/HP seed) via ($A1),Y → $53; clear anim state $4F."
+    desc: "Load desc[0] (EnemyDesc::Health, starting HP) via ($A1),Y → $53; clear anim state $4F."
 
   - space: prg
     offset: 0x1A2F4
@@ -14866,17 +14896,34 @@ hints:
 
   - space: prg
     offset: 0x1A2FA
-    name: TankEnemy_DescPtr
-    desc: "Set $A1/$A2 = TankEnemy_DescTable ($A36A) + A*4 (pointer to descriptor index A's 4-byte descriptor). Tank parallel of OvhdEnemy_DescPtr ($B314)."
+    name: TankEnemy_Load_EnemyDescPtr
+    status: verified
+    desc: |-
+      Points EnemyParam_Ptr[Lo/Hi] to the given enemy's TankEnemy_DescTable entry.
+
+      Input:
+         A = TankEnemy_DescTable index (aka Thing ID). 
+
+      Output:
+        EnemyParam_Ptr[Lo/Hi] ($A1/$A2) are set to point to the enemy's 4-byte EnemyDesc entry in TankEnemy_DescTable.
+
+      Start by multiplying A by 4.  EnemyDesc entries are 4-bytes in size so this converts the array index into the target element's offset.
 
   - space: prg
     offset: 0x1A2FD
-    desc: "$A1/$A2 = TankEnemy_DescTable, reached via TankEnemy_DescTablePtr ($A368) + index×4 — 16-bit split add (adc lo / adc hi) for the descriptor pointer."
+    desc: |-
+      A is now the offset into TankEnemy_DescTable for the enemy's EnemyDesc entry.
+      Add to first byte of TankEnemy_DescTablePtr to get EnemyParam_PtrLo (with carry)
+
+  - space: prg
+    offset: 0x1A304
+    desc: |-
+      Add the carry to second byte of TankEnemy_DescTablePtr to get EnemyParam_PtrHi
 
   - space: prg
     offset: 0x1A30A
     name: TankEnemy_DamageCheck
-    desc: "Shared tank-enemy damage check. A = descriptor index; desc[1] = HP via Enemy_Damage_Check_Sub ($D697). On defeat (desc[0]==0) enqueue sound $1D and return $FF, else $00. Tank parallel of OvhdEnemy_DamageCheck ($B2C5). Exact 0/1/$FF return mapping unverified."
+    desc: "Shared tank-enemy damage check. A = descriptor index; desc[1] (EnemyDesc::HitAttr) is passed as Enemy_Damage_Check_Sub's ($D697) A input, which parks it in $44 and applies any pending shot damage to Health (seeded from desc[0] at TankEnemy_Init). On defeat (Health reaches 0) enqueue sound $1D and return $FF, else $00. Tank parallel of OvhdEnemy_DamageCheck ($B2C5). Exact 0/1/$FF return mapping unverified."
 
   - space: prg
     offset: 0x1A324
@@ -14916,23 +14963,24 @@ hints:
     offset: 0x1A368
     name: TankEnemy_DescTablePtr
     addressTableEntries: 1
-    desc: "LE self-pointer (=$A36A) to TankEnemy_DescTable, read split by TankEnemy_DescPtr ($A2FA) as adc TankEnemy_DescTablePtr / adc TankEnemy_DescTablePtr+1 to compute $A1/$A2 = TankEnemy_DescTable + index×4. Tank parallel of OvhdEnemy_DescTablePtr ($B324)."
+    status: verified
+    desc: "LE self-pointer (=$A36A) to TankEnemy_DescTable. Tank parallel of OvhdEnemy_DescTablePtr ($B324)."
 
   - space: prg
     offset: 0x1A36A
+    end: 0x1A3E1
     name: TankEnemy_DescTable
+    type: array<EnemyDesc>
+    status: verified
     desc: |-
-      30 x 4-byte tank-enemy descriptors ($A36A-$A3E1), indexed by descriptor index via TankEnemy_DescPtr (accessed only via computed ($A1) pointer).
+      30 x EnemyDesc, indexed by descriptor index via TankEnemy_Load_EnemyDescPtr (accessed only via computed ($A1) pointer). See the EnemyDesc struct.
 
-      Per descriptor:
-        [0]=behavior flag (->$53), [1]=HP
-        [2]=drop pickup ObjType ($2C Health-x1 / $2E Hover-fuel-x1)
-        [3]=drop-chance threshold (drop when RNG_State <threshold). 
+      The descriptor index equals the spawn-list Thing id for all 30 entries (see docs/entities/entity-map.md), so this is one descriptor per Thing.
 
       Index->enemy:
         00=GrayCaterpillar($54)
-        01=unused
-        02=GrayBullet($56/$58)
+        01=GrayBulletA($56)*
+        02=GrayBulletB($58)*
         03=RedCatDropper($5B)
         04=Hulk($5D)
         05=GrayHopper6($5F)
@@ -14957,8 +15005,10 @@ hints:
         19=SubmersibleSpawner($52)
         1A=CrescentRoller($88)
         1B=BombCanister($8A)
-        1C=RedBulletA($8C)
-        1D=RedBulletB($8D).
+        1C=RedBulletA($8C)*
+        1D=RedBulletB($8D)*
+
+      * The two bullet families each own a Thing pair whose descriptors hold identical bytes, and their handlers do not respect the split. Gray: $56 Init, $58 Init and $5A Attacking all pass 02, while 01 is reached only by $59 Main's damage check. Red: $8C Init passes 1C and $8D Init passes 1D, but $8E Main and $8F Locked both pass 1C. Behaviourally harmless — 01/02 and 1C/1D are byte-identical — so which of a pair a handler names is not evidence of that handler's Thing.
 
       Tank parallel of OvhdEnemy_DescTable ($B326). See docs/entities/tank/_shared-enemy-system.md.
 
@@ -17901,7 +17951,7 @@ hints:
     offset: 0x1B53A
     name: ObjHandler_Tank_84_Scuba_Steve_Dead
     desc: |-
-      ObjType $84 — Scuba Steve (Thing $17), dying. The corpse: it no longer chases, fires, or takes damage. It keeps whatever horizontal velocity it died with and gains downward speed on even frames only, so it drifts off at half rate and settles on terrain. After $51 = 64 frames it hands over to TankEnemy_Defeat, which explodes it and rolls the descriptor's drop. That roll reads the descriptor through the shared pointer $A1/$A2, which this handler never sets — TankEnemy_DescPtr ($A300) is its only writer anywhere in the ROM — so the drop is taken from whichever enemy most recently ran an init or damage check. Area 5's water enemies all drop Health-x1 ($2C) and differ only in drop chance, which is why this stays near-invisible in play. See docs/entities/tank/82-83_scuba-steve.md
+      ObjType $84 — Scuba Steve (Thing $17), dying. The corpse: it no longer chases, fires, or takes damage. It keeps whatever horizontal velocity it died with and gains downward speed on even frames only, so it drifts off at half rate and settles on terrain. After $51 = 64 frames it hands over to TankEnemy_Defeat, which explodes it and rolls the descriptor's drop. That roll reads the descriptor through the shared pointer $A1/$A2, which this handler never sets — TankEnemy_Load_EnemyDescPtr ($A300) is its only writer anywhere in the ROM — so the drop is taken from whichever enemy most recently ran an init or damage check. Area 5's water enemies all drop Health-x1 ($2C) and differ only in drop chance, which is why this stays near-invisible in play. See docs/entities/tank/82-83_scuba-steve.md
       +0 (fade/freeze) entry: skip the sinking, straight to the shared hit/render tail
 
   - space: prg
@@ -29527,93 +29577,26 @@ hints:
 
   - space: ram
     offset: 0x007C
-    name: SpriteX_Table
-    desc: "Per-slot sprite screen X; 18 entries indexed by slot×3 (see SlotIndexX3 at $D798)"
+    end: 0x008D
+    name: ContactTable
+    type: array<Contact>
+    desc: |-
+      The contact table: 6 Contact records (3 bytes each) packed at $7C-$8D, one per object slot
+      0-5 -- slot 0 is the player, 1-5 are his shots/sub-weapons. NOT three separate tables: the
+      three columns are interleaved, so indexed access (X = ObjectSlot_Index $57 x 3, via
+      SlotIndexX3 $D798) walks records while the field offset picks the column. That is why the
+      old flat labels SpriteX_Table/SpriteY_Table/SpriteAttr_Table at $7C/$7D/$7E each named a
+      single byte -- record 0's own three fields -- while reading as though they were arrays; and
+      why their "18 entries" description was wrong twice over (18 is the BYTE count; there are 6
+      records).
 
-  - space: ram
-    offset: 0x007D
-    name: SpriteY_Table
-    desc: "Per-slot sprite screen Y; same indexing"
+      The record count is pinned three independent ways: Collision_Detection_Sub scans ldx #$0F
+      then dex x3 ($D6E7) = records 5 down to 0; SpriteX_ClearAll ($D7B6) zeroes exactly $7C-$8D
+      at AreaInit; and $8E is an unrelated variable.
 
-  - space: ram
-    offset: 0x007E
-    name: SpriteAttr_Table
-    desc: "Per-slot sprite attribute/display control; cleared by Sprite_Clear ($D790)"
-
-  - space: ram
-    offset: 0x007F
-    name: Projectile1_XPos_7F
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x0080
-    name: Projectile1_YPos_80
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x0081
-    name: Projectile1_Damage_81
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x0082
-    name: Projectile2_XPos_82
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x0083
-    name: Projectile2_YPos_83
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x0084
-    name: Projectile2_Damage_84
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x0085
-    name: Projectile3_XPos_85
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x0086
-    name: Projectile3_YPos_86
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x0087
-    name: Projectile3_Damage_87
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x0088
-    name: Projectile4_XPos_88
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x0089
-    name: Projectile4_YPos_89
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x008A
-    name: Projectile4_Damage_8A
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x008B
-    name: Projectile5_XPos_8B
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x008C
-    name: Projectile5_YPos_8C
-    desc: "By Displaced Gamers"
-
-  - space: ram
-    offset: 0x008D
-    name: Projectile5_Damage_8D
-    desc: "By Displaced Gamers"
+      Direct (unindexed) access is record 0, the player -- see PlayerContact, and HitboxTest_LockOn
+      ($D71F), which is the "did this enemy attack hit the player?" test and reads $7C/$7D/$7E with
+      no index at all.
 
   - space: ram
     offset: 0x008E
@@ -31275,3 +31258,9 @@ aliases:
   - { name: Object_Slot_15, offset: 0x04D2, type: Obj }
   - { name: Object_Slot_16, offset: 0x04E0, type: Obj }
   - { name: Object_Slot_17, offset: 0x04EE, type: Obj }
+  - { name: PlayerContact, offset: 0x007C, type: Contact, desc: "Record 0 of ContactTable -- the player's own contact record. Direct (unindexed) access to $7C/$7D/$7E; posted each frame by the Sophia/Jason hit checks with Damage = $7F (harmless), which is also how they read back whether an enemy hit them." }
+  - { name: Projectile1, offset: 0x007F, type: Contact, desc: "Record 1 of ContactTable -- object slot 1's contact record." }
+  - { name: Projectile2, offset: 0x0082, type: Contact, desc: "Record 2 of ContactTable -- object slot 2's contact record." }
+  - { name: Projectile3, offset: 0x0085, type: Contact, desc: "Record 3 of ContactTable -- object slot 3's contact record." }
+  - { name: Projectile4, offset: 0x0088, type: Contact, desc: "Record 4 of ContactTable -- object slot 4's contact record." }
+  - { name: Projectile5, offset: 0x008B, type: Contact, desc: "Record 5 of ContactTable -- object slot 5's contact record." }
