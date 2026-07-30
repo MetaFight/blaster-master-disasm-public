@@ -50,7 +50,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-bomber_caterpillar_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-ship` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_10hp` |  |
-| ⬜⬜⬜◽<br/>`94.1%` | 06 / `object-handlers/hopper_6hp` | `ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking` depends on 9 unverified routines. |
+| ⬜⬜⬜◽<br/>`94.1%` | 06 / `object-handlers/hopper_6hp` | `ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking` depends on unverified routines `Obj_GravityMoveBounce`, `Step_RNG` and 7 more. |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_common` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hulk` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jason-small` |  |
@@ -101,7 +101,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **4** pages, of which **2** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-07-30 11:36 UTC_
+_Generated: 2026-07-30 14:27 UTC_
 
 ## Pages
 
