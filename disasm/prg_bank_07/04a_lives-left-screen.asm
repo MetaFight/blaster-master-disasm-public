@@ -12,9 +12,9 @@ L_F7D1: jsr     L_EA03                          ; F7D1
         sta     $C7                             ; F7E5
         lda     #$0D                            ; F7E7
         sta     $C8                             ; F7E9
-        lda     LF82C                           ; F7EB
+        lda     L_F82C                          ; F7EB
         sta     L007A                           ; F7EE
-        lda     LF82C+1                         ; F7F0
+        lda     L_F82C+1                        ; F7F0
         sta     $7B                             ; F7F3
         ldy     #$00                            ; F7F5
         jsr     L_E823                          ; F7F7
@@ -43,8 +43,8 @@ L_F81B: pha                                     ; F81B
         rts                                     ; F82B
 
 ; ----------------------------------------------------------------------------
-LF82C:  .addr   LF82E                           ; F82C
+L_F82C: .addr   L_F82E                          ; F82C
 ; ----------------------------------------------------------------------------
-LF82E:  .byte   $4C,$45,$46,$54,$00             ; F82E
+L_F82E: .byte   $4C,$45,$46,$54,$00             ; F82E
 .endmacro
 

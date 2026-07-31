@@ -29,7 +29,7 @@ L_D1AD: lda     $20                             ; D1AD
         lda     $20                             ; D1B8
         sec                                     ; D1BA
         sbc     $02                             ; D1BB
-        sta     L0000                           ; D1BD
+L_D1BD: sta     L0000                           ; D1BD
         clc                                     ; D1BF
         adc     $FD                             ; D1C0
         sta     $FD                             ; D1C2

@@ -3,7 +3,7 @@
 L_B6E4: jmp     L_B6F3                          ; B6E4
 
 ; ----------------------------------------------------------------------------
-        lda     #$1A                            ; B6E7
+L_B6E7: lda     #$1A                            ; B6E7
         jsr     TankEnemy_Init                  ; B6E9
         jsr     L_B81C                          ; B6EC
         lda     #$00                            ; B6EF
@@ -11,10 +11,10 @@ L_B6E4: jmp     L_B6F3                          ; B6E4
 L_B6F3: rts                                     ; B6F3
 
 ; ----------------------------------------------------------------------------
-LB6F4:  jmp     L_B787                          ; B6F4
+L_B6F4: jmp     L_B787                          ; B6F4
 
 ; ----------------------------------------------------------------------------
-        lda     #$C0                            ; B6F7
+L_B6F7: lda     #$C0                            ; B6F7
         sta     $42                             ; B6F9
         lda     #$80                            ; B6FB
         sta     $43                             ; B6FD
@@ -44,7 +44,7 @@ L_B72A: jmp     L_B787                          ; B72A
 L_B72D: lda     Global_FrameCounter             ; B72D
         and     #$4C                            ; B72F
         bne     L_B76D                          ; B731
-        jsr     LEB71                           ; B733
+        jsr     Step_RNG                        ; B733
         and     #$03                            ; B736
         bne     L_B76D                          ; B738
         jsr     LDF0F                           ; B73A
@@ -59,7 +59,7 @@ L_B72D: lda     Global_FrameCounter             ; B72D
 L_B74B: lda     #$A8                            ; B74B
 L_B74D: ldx     $09                             ; B74D
         sta     $0401,x                         ; B74F
-        jsr     LEB71                           ; B752
+        jsr     Step_RNG                        ; B752
         ldx     #$04                            ; B755
         jsr     LE06A                           ; B757
         ldx     $09                             ; B75A

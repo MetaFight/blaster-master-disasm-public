@@ -304,7 +304,7 @@ L_DF29: lda     LoadedObject + Obj::Type,y      ; DF29
 L_DF36: lda     Global_FrameCounter             ; DF36
         and     #$4C                            ; DF38
         bne     L_DF43                          ; DF3A
-        jsr     L_EB71                          ; DF3C
+        jsr     Step_RNG                        ; DF3C
         and     #$03                            ; DF3F
         beq     L_DF46                          ; DF41
 L_DF43: lda     #$00                            ; DF43

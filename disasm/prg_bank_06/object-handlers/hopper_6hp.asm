@@ -69,26 +69,23 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired:
         jsr     LDFA0                           ; A804
         and     #$40                            ; A807
         beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__; A809
-; vertical contact — but floor or ceiling? Obj_GravityMoveBounce reflects YVel on the hit, so
-; after landing $4D is negative (pointing up) and after a ceiling bonk it is positive. Positive →
-; not a landing, keep falling.
+; Handle vertical contact.  Obj_GravityMoveBounce reflects LoadedObj's Velocity_Y on the hit so,
+; a negative value (pointing up) implies landing
+; a positive value implies a ceiling bonk.
         lda     LoadedObj + Obj::Velocity_Y     ; A80B
         bpl     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__; A80D
-; landed: arm the 10-frame wind-up ($51 = $0A), then choose between settling into the walk state
-; $61 (INC $46) and hopping again. Settling needs BOTH Step_RNG's carry set and
-; Global_FrameCounter bit 7 set.
-; The carry is not a coin flip. Step_RNG is $13 = 5×$13 − 1 and returns the borrow of that final
-; SEC/SBC #$01, which is clear only when $13 was $00 on entry; the LCG has full period 256, so
-; that happens exactly once per 256 calls. The BCC is therefore taken ~0.4% of the time and the
-; real decision is $11 bit 7 alone — the hopper walks off any landing that falls in the upper half
-; of the 256-frame counter cycle and re-hops in the lower half, alternating roughly every 2
-; seconds rather than randomly.
+; On Landed:
+; Set the 10-frame wind-up (AnimFrame)
         lda     #$0A                            ; A80F
         sta     $51                             ; A811
-        jsr     LEB71                           ; A813
+; then spin Step_RNG to choose whicn state to transition to.
+        jsr     Step_RNG                        ; A813
+; if either the Carry Flag is unset or if Global_FrameCounter is negative, then carry on with the
+; attack.
         bcc     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump; A816
         lda     Global_FrameCounter             ; A818
         bpl     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump; A81A
+; Otherwise, transition to the patrolling state.
         inc     LoadedObj + Obj::Type           ; A81C
         jmp     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__; A81E
 
@@ -118,7 +115,7 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft:
 ; almost straight up and only drifts onto the player.
 _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:
         sta     LoadedObj + Obj::Facing         ; A832
-        jsr     LEB71                           ; A834
+        jsr     Step_RNG                        ; A834
         and     #$0F                            ; A837
         clc                                     ; A839
         adc     $52                             ; A83A
@@ -169,7 +166,7 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile:
         jmp     LF011                           ; A86A
 
 ; ----------------------------------------------------------------------------
-        rts                                     ; A86D
+L_A86D: rts                                     ; A86D
 
 .endmacro
 

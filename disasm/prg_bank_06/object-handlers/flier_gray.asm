@@ -3,17 +3,17 @@
 L_B29B: jmp     L_B2A7                          ; B29B
 
 ; ----------------------------------------------------------------------------
-        lda     #$14                            ; B29E
+L_B29E: lda     #$14                            ; B29E
         jsr     TankEnemy_Init                  ; B2A0
         lda     #$51                            ; B2A3
         sta     LoadedObj + Obj::Type           ; B2A5
 L_B2A7: rts                                     ; B2A7
 
 ; ----------------------------------------------------------------------------
-LB2A8:  jmp     L_B2DB                          ; B2A8
+L_B2A8: jmp     L_B2DB                          ; B2A8
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; B2AB
+L_B2AB: lda     #$80                            ; B2AB
         sta     $42                             ; B2AD
         lda     #$80                            ; B2AF
         sta     $43                             ; B2B1
@@ -22,7 +22,7 @@ LB2A8:  jmp     L_B2DB                          ; B2A8
         lda     Global_FrameCounter             ; B2B8
         and     #$1F                            ; B2BA
         bne     L_B2DB                          ; B2BC
-        jsr     LEB71                           ; B2BE
+        jsr     Step_RNG                        ; B2BE
         and     #$60                            ; B2C1
         bne     L_B2DB                          ; B2C3
         lda     #$28                            ; B2C5
@@ -46,10 +46,10 @@ L_B2DB: lda     #$10                            ; B2DB
 L_B2EB: rts                                     ; B2EB
 
 ; ----------------------------------------------------------------------------
-LB2EC:  jmp     L_B308                          ; B2EC
+L_B2EC: jmp     L_B308                          ; B2EC
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; B2EF
+L_B2EF: lda     #$80                            ; B2EF
         sta     $42                             ; B2F1
         lda     #$80                            ; B2F3
         sta     $43                             ; B2F5
@@ -82,10 +82,10 @@ L_B322: lda     #$01                            ; B322
         lsr     a                               ; B329
         and     #$03                            ; B32A
         tax                                     ; B32C
-        lda     LB333,x                         ; B32D
+        lda     L_B333,x                        ; B32D
         jmp     LF011                           ; B330
 
 ; ----------------------------------------------------------------------------
-LB333:  .byte   $08,$09,$0A,$0B                 ; B333
+L_B333: .byte   $08,$09,$0A,$0B                 ; B333
 .endmacro
 

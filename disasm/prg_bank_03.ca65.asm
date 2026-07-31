@@ -12,22 +12,27 @@
 
 .segment        "BANK03": absolute
 
-        .addr   L8004                           ; 8000
-        .addr   LA174                           ; 8002
-L8004:  .addr   L801C                           ; 8004
-        .addr   L822E                           ; 8006
-        .addr   L84C9                           ; 8008
-        .addr   L8A5F                           ; 800A
-        .addr   L8C9F                           ; 800C
-        .addr   L8D9F                           ; 800E
-        .addr   L8EDF                           ; 8010
-        .addr   L90CC                           ; 8012
-        .addr   L8640                           ; 8014
-        .addr   L942C                           ; 8016
-        .addr   L96FC                           ; 8018
-        .addr   L99AC                           ; 801A
+Bk03_DispatchBootstrap:
+        .addr   Bk03_CategoryTable              ; 8000
+Bk03_ThingDataPtr:
+        .addr   Bk03_ThingData                  ; 8002
+Bk03_CategoryTable:
+        .addr   Bk03_Cat00                      ; 8004
+        .addr   Bk03_Cat01                      ; 8006
+        .addr   Bk03_Cat02                      ; 8008
+        .addr   Bk03_Cat03                      ; 800A
+        .addr   Bk03_Cat04                      ; 800C
+        .addr   Bk03_Cat05                      ; 800E
+        .addr   Bk03_Cat06                      ; 8010
+        .addr   Bk03_Cat07                      ; 8012
+        .addr   Bk03_Cat08                      ; 8014
+        .addr   Bk03_Cat09                      ; 8016
+        .addr   Bk03_Cat10                      ; 8018
+        .addr   Bk03_Cat11                      ; 801A
 ; ----------------------------------------------------------------------------
-L801C:  .byte   $42,$00,$1C,$AF,$04,$00,$82,$AF ; 801C
+; Category 00 — Pause Menu screen graphics
+Bk03_Cat00:
+        .byte   $42,$00,$1C,$AF,$04,$00,$82,$AF ; 801C
         .byte   $18,$06,$1D,$84,$1A,$AF,$AF,$18 ; 8024
         .byte   $04,$1D,$81,$1A,$0B,$AF,$04,$00 ; 802C
         .byte   $83,$AF,$1C,$00,$04,$CC,$8A,$00 ; 8034
@@ -94,7 +99,9 @@ L801C:  .byte   $42,$00,$1C,$AF,$04,$00,$82,$AF ; 801C
         .byte   $55,$0B,$FF,$04,$55,$04,$FF,$81 ; 821C
         .byte   $35,$03,$05,$82,$FF,$FF,$08,$0F ; 8224
         .byte   $00,$00                         ; 822C
-L822E:  .byte   $7F,$00,$41,$00,$80,$C4,$D4,$C4 ; 822E
+; Category 01 — Intro screen graphics
+Bk03_Cat01:
+        .byte   $7F,$00,$41,$00,$80,$C4,$D4,$C4 ; 822E
         .byte   $D4,$80,$90,$E4,$F4,$C0,$D0,$E0 ; 8236
         .byte   $F0,$C0,$D0,$C0,$D0,$E0,$F0,$E0 ; 823E
         .byte   $F0,$E0,$F0,$C0,$D0,$E0,$F0,$C6 ; 8246
@@ -178,7 +185,9 @@ L822E:  .byte   $7F,$00,$41,$00,$80,$C4,$D4,$C4 ; 822E
         .byte   $00,$50,$50,$00,$00,$88,$03,$00 ; 84B6
         .byte   $82,$55,$55,$03,$00,$82,$A0,$A0 ; 84BE
         .byte   $0E,$00,$00                     ; 84C6
-L84C9:  .byte   $7F,$00,$26,$00,$87,$84,$A0,$B0 ; 84C9
+; Category 02 — Title screen graphics
+Bk03_Cat02:
+        .byte   $7F,$00,$26,$00,$87,$84,$A0,$B0 ; 84C9
         .byte   $C0,$D0,$E0,$F0,$19,$00,$87,$85 ; 84D1
         .byte   $A1,$B1,$C1,$D1,$AA,$D1,$07,$00 ; 84D9
         .byte   $82,$F7,$80,$10,$00,$97,$AA,$A2 ; 84E1
@@ -213,19 +222,39 @@ L84C9:  .byte   $7F,$00,$26,$00,$87,$84,$A0,$B0 ; 84C9
         .byte   $82,$AA,$BA,$1E,$00,$82,$AB,$BB ; 85C9
         .byte   $27,$00,$8A,$60,$70,$62,$72,$64 ; 85D1
         .byte   $74,$66,$76,$68,$78,$10,$00,$90 ; 85D9
-        .byte   $10,$31,$39,$38,$38,$00,$61,$71 ; 85E1
-        .byte   $63,$73,$65,$75,$67,$77,$69,$79 ; 85E9
-        .byte   $09,$00,$9A,$53,$55,$4E,$00,$43 ; 85F1
-        .byte   $4F,$52,$50,$4F,$52,$41,$54,$49 ; 85F9
-        .byte   $4F,$4E,$00,$4F,$46,$00,$41,$4D ; 8601
-        .byte   $45,$52,$49,$43,$41,$06,$00,$97 ; 8609
-        .byte   $4C,$49,$43,$45,$4E,$53,$45,$44 ; 8611
-        .byte   $00,$42,$59,$00,$4E,$49,$4E,$54 ; 8619
-        .byte   $45,$4E,$44,$4F,$00,$4F,$46,$17 ; 8621
-        .byte   $00,$8C,$41,$4D,$45,$52,$49,$43 ; 8629
-        .byte   $41,$00,$49,$4E,$43,$3B,$7F,$00 ; 8631
-        .byte   $4A,$00,$81,$40,$1A,$00,$00     ; 8639
-L8640:  .byte   $7F,$00,$23,$00,$81,$4E,$06,$5E ; 8640
+        .byte   $10                             ; 85E1
+; ----------------------------------------------------------------------------
+L_85E2: .byte   "1988"                          ; 85E2
+; ----------------------------------------------------------------------------
+        .byte   $00,$61,$71,$63,$73,$65,$75,$67 ; 85E6
+        .byte   $77,$69,$79,$09,$00,$9A         ; 85EE
+; ----------------------------------------------------------------------------
+L_85F4: .byte   "SUN"                           ; 85F4
+        .byte   $00                             ; 85F7
+        .byte   "CORPORATION"                   ; 85F8
+                                                ; 8600
+        .byte   $00                             ; 8603
+        .byte   "OF"                            ; 8604
+        .byte   $00                             ; 8606
+        .byte   "AMERICA"                       ; 8607
+        .byte   $06,$00,$97                     ; 860E
+        .byte   "LICENSED"                      ; 8611
+        .byte   $00                             ; 8619
+        .byte   "BY"                            ; 861A
+        .byte   $00                             ; 861C
+        .byte   "NINTENDO"                      ; 861D
+        .byte   $00                             ; 8625
+        .byte   "OF"                            ; 8626
+        .byte   $17,$00,$8C                     ; 8628
+        .byte   "AMERICA"                       ; 862B
+        .byte   $00                             ; 8632
+        .byte   "INC;"                          ; 8633
+; ----------------------------------------------------------------------------
+        .byte   $7F,$00,$4A,$00,$81,$40,$1A,$00 ; 8637
+        .byte   $00                             ; 863F
+; Category 08 — Ending
+Bk03_Cat08:
+        .byte   $7F,$00,$23,$00,$81,$4E,$06,$5E ; 8640
         .byte   $81,$7E,$18,$00,$81,$4F,$06,$5F ; 8648
         .byte   $81,$7F,$4C,$00,$84,$4E,$5E,$5E ; 8650
         .byte   $7E,$1C,$00,$84,$4F,$5F,$5F,$7F ; 8658
@@ -357,7 +386,9 @@ L8640:  .byte   $7F,$00,$23,$00,$81,$4E,$06,$5E ; 8640
         .byte   $FF,$F3,$50,$03,$55,$81,$DD,$03 ; 8A48
         .byte   $FF,$03,$55,$81,$59,$05,$AA,$03 ; 8A50
         .byte   $05,$81,$09,$04,$0A,$00,$00     ; 8A58
-L8A5F:  .byte   $7F,$00,$7F,$00,$7F,$00,$7F,$00 ; 8A5F
+; Category 03 — Level 2/6 Boss background (Duraking head; arms are OAM sprites)
+Bk03_Cat03:
+        .byte   $7F,$00,$7F,$00,$7F,$00,$7F,$00 ; 8A5F
         .byte   $7F,$00,$45,$00,$80,$02,$12,$22 ; 8A67
         .byte   $32,$42,$52,$62,$72,$00,$18,$28 ; 8A6F
         .byte   $38,$48,$58,$68,$00,$02,$12,$22 ; 8A77
@@ -429,7 +460,9 @@ L8A5F:  .byte   $7F,$00,$7F,$00,$7F,$00,$7F,$00 ; 8A5F
         .byte   $A0,$A0,$F0,$F0,$00,$00,$55,$55 ; 8C87
         .byte   $AA,$AA,$FF,$FF,$00,$00,$05,$05 ; 8C8F
         .byte   $0A,$0A,$0F,$0F,$00,$00,$00,$00 ; 8C97
-L8C9F:  .byte   $7F,$00,$7F,$00,$7F,$00,$7F,$00 ; 8C9F
+; Category 04 — Area 4 & 7 Boss background.
+Bk03_Cat04:
+        .byte   $7F,$00,$7F,$00,$7F,$00,$7F,$00 ; 8C9F
         .byte   $7F,$00,$58,$00,$82,$B0,$C0,$06 ; 8CA7
         .byte   $00,$82,$B0,$C0,$14,$00,$80,$86 ; 8CAF
         .byte   $96,$B1,$C1,$A6,$B6,$00,$00,$86 ; 8CB7
@@ -461,7 +494,10 @@ L8C9F:  .byte   $7F,$00,$7F,$00,$7F,$00,$7F,$00 ; 8C9F
         .byte   $94,$A0,$A0,$F0,$F0,$00,$00,$55 ; 8D87
         .byte   $55,$AA,$AA,$FF,$FF,$00,$00,$05 ; 8D8F
         .byte   $05,$0A,$0A,$0F,$0F,$00,$00,$00 ; 8D97
-L8D9F:  .byte   $7F,$00,$7F,$00,$7F,$00,$7F,$00 ; 8D9F
+; Category 05 — Level 1 Boss background (Mother Brain - brain and tentacles; rotating brains are
+; OAM sprites)
+Bk03_Cat05:
+        .byte   $7F,$00,$7F,$00,$7F,$00,$7F,$00 ; 8D9F
         .byte   $45,$00,$8E,$18,$28,$38,$48,$58 ; 8DA7
         .byte   $68,$00,$00,$98,$A8,$B8,$C8,$D8 ; 8DAF
         .byte   $E8,$11,$00,$90,$09,$19,$29,$39 ; 8DB7
@@ -501,7 +537,10 @@ L8D9F:  .byte   $7F,$00,$7F,$00,$7F,$00,$7F,$00 ; 8D9F
         .byte   $AA,$04,$00,$86,$05,$05,$0A,$0A ; 8EC7
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; 8ECF
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; 8ED7
-L8EDF:  .byte   $80,$20,$04,$14,$50,$20,$04,$14 ; 8EDF
+; Category 06 — Level 3 Boss background (Octo-7 inactive box borders; active/moving boxes are OAM
+; sprites)
+Bk03_Cat06:
+        .byte   $80,$20,$04,$14,$50,$20,$04,$14 ; 8EDF
         .byte   $50,$20,$04,$14,$50,$20,$04,$14 ; 8EE7
         .byte   $50,$20,$04,$14,$50,$20,$04,$14 ; 8EEF
         .byte   $50,$20,$04,$14,$50,$20,$04,$14 ; 8EF7
@@ -563,7 +602,9 @@ L8EDF:  .byte   $80,$20,$04,$14,$50,$20,$04,$14 ; 8EDF
         .byte   $82,$AA,$AA,$06,$55,$82,$AA,$AA ; 90B7
         .byte   $06,$55,$82,$AA,$AA,$06,$55,$81 ; 90BF
         .byte   $AA,$08,$0A,$00,$00             ; 90C7
-L90CC:  .byte   $7F,$00,$7F,$00,$7F,$00,$66,$00 ; 90CC
+; Category 07 — Area 5 Boss background.
+Bk03_Cat07:
+        .byte   $7F,$00,$7F,$00,$7F,$00,$66,$00 ; 90CC
         .byte   $83,$82,$92,$A2,$04,$00,$83,$B2 ; 90D4
         .byte   $C2,$D2,$06,$00,$83,$82,$92,$A2 ; 90DC
         .byte   $04,$00,$83,$B2,$C2,$D2,$06,$00 ; 90E4
@@ -671,7 +712,9 @@ L90CC:  .byte   $7F,$00,$7F,$00,$7F,$00,$66,$00 ; 90CC
         .byte   $A0,$04,$00,$04,$AA,$04,$00,$04 ; 9414
         .byte   $AA,$88,$00,$05,$01,$00,$AA,$AE ; 941C
         .byte   $AF,$AA,$04,$00,$04,$0A,$00,$00 ; 9424
-L942C:  .byte   $9E,$00,$00,$C0,$D0,$6E,$38,$28 ; 942C
+; Category 09 — Area 8 Final Boss PHASE 1 background.
+Bk03_Cat09:
+        .byte   $9E,$00,$00,$C0,$D0,$6E,$38,$28 ; 942C
         .byte   $38,$28,$38,$28,$38,$28,$38,$28 ; 9434
         .byte   $38,$28,$38,$28,$38,$28,$38,$28 ; 943C
         .byte   $38,$28,$38,$28,$5E,$E0,$F0,$04 ; 9444
@@ -761,7 +804,9 @@ L942C:  .byte   $9E,$00,$00,$C0,$D0,$6E,$38,$28 ; 942C
         .byte   $50,$55,$00,$00,$06,$55,$82,$00 ; 96E4
         .byte   $00,$06,$55,$82,$00,$00,$06,$55 ; 96EC
         .byte   $09,$00,$00,$00,$00,$00,$00,$00 ; 96F4
-L96FC:  .byte   $80,$C1,$D1,$C0,$D0,$E7,$F6,$CB ; 96FC
+; Category 10 — Area 8 Final Boss PHASE 2 background (a.k.a. Cat0A).
+Bk03_Cat10:
+        .byte   $80,$C1,$D1,$C0,$D0,$E7,$F6,$CB ; 96FC
         .byte   $D9,$C9,$DB,$ED,$FD,$C8,$D8,$B7 ; 9704
         .byte   $BA,$CE,$DE,$C7,$D7,$ED,$FD,$CB ; 970C
         .byte   $D9,$C9,$DB,$E6,$F9,$E0,$F0,$E1 ; 9714
@@ -847,7 +892,9 @@ L96FC:  .byte   $80,$C1,$D1,$C0,$D0,$E7,$F6,$CB ; 96FC
         .byte   $06,$55,$82,$00,$00,$06,$55,$09 ; 9994
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; 999C
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; 99A4
-L99AC:  .byte   $BC,$99,$D7,$9A,$C8,$9B,$D9,$9C ; 99AC
+; Category 11 — the 8 attract-mode story-sequence scenes (variants 0–7).
+Bk03_Cat11:
+        .byte   $BC,$99,$D7,$9A,$C8,$9B,$D9,$9C ; 99AC
         .byte   $7B,$9D,$72,$9E,$9F,$9F,$C1,$A0 ; 99B4
         .byte   $7F,$01,$66,$01,$81,$20,$14,$10 ; 99BC
         .byte   $81,$30,$0A,$01,$87,$11,$00,$68 ; 99C4
@@ -1097,30 +1144,35 @@ L99AC:  .byte   $BC,$99,$D7,$9A,$C8,$9B,$D9,$9C ; 99AC
         .byte   $85,$CC,$FF,$FF,$FB,$F2,$03,$F0 ; A164
         .byte   $81,$FC,$11,$FF,$08,$0F,$00,$00 ; A16C
 ; ----------------------------------------------------------------------------
-LA174:  .addr   LA19B                           ; A174
-        .addr   LA331                           ; A176
-        .addr   LA4BB                           ; A178
-        .addr   LA729                           ; A17A
-        .addr   LA907                           ; A17C
-        .addr   LABA8                           ; A17E
-        .addr   LAD3E                           ; A180
-        .addr   LAF19                           ; A182
-        .addr   LB118                           ; A184
-        .addr   LB2A2                           ; A186
-        .addr   LB40E                           ; A188
-        .addr   LB56E                           ; A18A
-        .addr   LB692                           ; A18C
-        .addr   LB858                           ; A18E
-        .addr   LB982                           ; A190
-        .addr   LBAFD                           ; A192
+; Thing/enemy spawn-list pointer table.
+Bk03_ThingData:
+        .addr   OvhdLvl1_ThingPtrs              ; A174
+        .addr   OvhdLvl2_ThingPtrs              ; A176
+        .addr   OvhdLvl3_ThingPtrs              ; A178
+        .addr   OvhdLvl4_ThingPtrs              ; A17A
+        .addr   OvhdLvl5_ThingPtrs              ; A17C
+        .addr   OvhdLvl6_ThingPtrs              ; A17E
+        .addr   OvhdLvl7_ThingPtrs              ; A180
+        .addr   OvhdLvl8_ThingPtrs              ; A182
+        .addr   TankLvl1_ThingPtrs              ; A184
+        .addr   TankLvl2_ThingPtrs              ; A186
+        .addr   TankLvl3_ThingPtrs              ; A188
+        .addr   TankLvl4_ThingPtrs              ; A18A
+        .addr   TankLvl5_ThingPtrs              ; A18C
+        .addr   TankLvl6_ThingPtrs              ; A18E
+        .addr   TankLvl7_ThingPtrs              ; A190
+        .addr   TankLvl8_ThingPtrs              ; A192
 ; ----------------------------------------------------------------------------
-        .byte   $9A,$A1,$00,$00,$00,$00,$FF     ; A194
+L_A194: .byte   $9A,$A1,$00,$00,$00,$00,$FF     ; A194
 ; ----------------------------------------------------------------------------
-LA19B:  .addr   LA1A1                           ; A19B
-        .addr   LA227                           ; A19D
-        .addr   LA2AC                           ; A19F
+OvhdLvl1_ThingPtrs:
+        .addr   OvhdLvl1_ThingTypeList          ; A19B
+        .addr   OvhdLvl1_ThingXList             ; A19D
+        .addr   OvhdLvl1_ThingYList             ; A19F
 ; ----------------------------------------------------------------------------
-LA1A1:  .byte   $25,$21,$25,$23,$21,$23,$08,$23 ; A1A1
+; 133 Thing Type sprite indices; $FF-terminated
+OvhdLvl1_ThingTypeList:
+        .byte   $25,$21,$25,$23,$21,$23,$08,$23 ; A1A1
         .byte   $0A,$22,$21,$05,$0B,$0B,$0B,$23 ; A1A9
         .byte   $23,$05,$05,$05,$05,$05,$05,$05 ; A1B1
         .byte   $05,$05,$05,$05,$05,$20,$05,$05 ; A1B9
@@ -1137,7 +1189,9 @@ LA1A1:  .byte   $25,$21,$25,$23,$21,$23,$08,$23 ; A1A1
         .byte   $21,$0A,$0B,$0A,$0A,$25,$21,$22 ; A211
         .byte   $26,$21,$25,$25,$25,$28,$28,$23 ; A219
         .byte   $27,$29,$29,$29,$29,$FF         ; A221
-LA227:  .byte   $11,$11,$11,$0F,$05,$0D,$29,$16 ; A227
+; 133 X spawn coordinates
+OvhdLvl1_ThingXList:
+        .byte   $11,$11,$11,$0F,$05,$0D,$29,$16 ; A227
         .byte   $2F,$58,$1A,$27,$26,$28,$26,$2E ; A22F
         .byte   $58,$0C,$06,$0A,$0A,$12,$14,$14 ; A237
         .byte   $0A,$1D,$1C,$16,$1F,$59,$1A,$16 ; A23F
@@ -1154,7 +1208,9 @@ LA227:  .byte   $11,$11,$11,$0F,$05,$0D,$29,$16 ; A227
         .byte   $1A,$54,$51,$56,$52,$2D,$2B,$55 ; A297
         .byte   $28,$5E,$08,$18,$28,$2F,$1E,$0B ; A29F
         .byte   $06,$11,$11,$16,$0A             ; A2A7
-LA2AC:  .byte   $5A,$59,$4A,$5C,$3D,$4E,$28,$3D ; A2AC
+; 133 Y spawn coordinates
+OvhdLvl1_ThingYList:
+        .byte   $5A,$59,$4A,$5C,$3D,$4E,$28,$3D ; A2AC
         .byte   $37,$54,$49,$56,$50,$4E,$4C,$25 ; A2B4
         .byte   $55,$43,$3B,$37,$4C,$4C,$52,$59 ; A2BC
         .byte   $54,$43,$49,$48,$4A,$06,$3C,$40 ; A2C4
@@ -1172,11 +1228,14 @@ LA2AC:  .byte   $5A,$59,$4A,$5C,$3D,$4E,$28,$3D ; A2AC
         .byte   $11,$1E,$06,$10,$10,$24,$16,$16 ; A324
         .byte   $36,$51,$49,$44,$42             ; A32C
 ; ----------------------------------------------------------------------------
-LA331:  .addr   LA337                           ; A331
-        .addr   LA3B9                           ; A333
-        .addr   LA43A                           ; A335
+OvhdLvl2_ThingPtrs:
+        .addr   OvhdLvl2_ThingTypeList          ; A331
+        .addr   OvhdLvl2_ThingXList             ; A333
+        .addr   OvhdLvl2_ThingYList             ; A335
 ; ----------------------------------------------------------------------------
-LA337:  .byte   $21,$21,$02,$21,$01,$02,$02,$09 ; A337
+; 129 Thing Type sprite indices; $FF-terminated
+OvhdLvl2_ThingTypeList:
+        .byte   $21,$21,$02,$21,$01,$02,$02,$09 ; A337
         .byte   $09,$23,$02,$02,$21,$02,$01,$01 ; A33F
         .byte   $21,$01,$24,$01,$09,$02,$01,$02 ; A347
         .byte   $02,$02,$03,$03,$03,$03,$01,$01 ; A34F
@@ -1193,7 +1252,9 @@ LA337:  .byte   $21,$21,$02,$21,$01,$02,$02,$09 ; A337
         .byte   $23,$23,$26,$26,$26,$23,$09,$09 ; A3A7
         .byte   $24,$27,$02,$26,$21,$20,$22,$26 ; A3AF
         .byte   $29,$FF                         ; A3B7
-LA3B9:  .byte   $11,$3E,$17,$0B,$27,$4D,$36,$1A ; A3B9
+; 129 X spawn coordinates
+OvhdLvl2_ThingXList:
+        .byte   $11,$3E,$17,$0B,$27,$4D,$36,$1A ; A3B9
         .byte   $5C,$3D,$19,$29,$5A,$46,$19,$19 ; A3C1
         .byte   $25,$49,$28,$1D,$25,$1D,$45,$0A ; A3C9
         .byte   $3A,$35,$5D,$5D,$57,$57,$4C,$47 ; A3D1
@@ -1210,7 +1271,9 @@ LA3B9:  .byte   $11,$3E,$17,$0B,$27,$4D,$36,$1A ; A3B9
         .byte   $0D,$1D,$0C,$14,$07,$18,$57,$5C ; A429
         .byte   $0A,$58,$1B,$59,$3C,$39,$2C,$58 ; A431
         .byte   $39                             ; A439
-LA43A:  .byte   $1D,$79,$46,$27,$5B,$76,$78,$59 ; A43A
+; 129 Y spawn coordinates
+OvhdLvl2_ThingYList:
+        .byte   $1D,$79,$46,$27,$5B,$76,$78,$59 ; A43A
         .byte   $5A,$64,$6B,$78,$79,$76,$75,$7D ; A442
         .byte   $76,$5C,$26,$39,$68,$46,$3C,$69 ; A44A
         .byte   $65,$6B,$77,$7B,$7B,$77,$66,$6C ; A452
@@ -1228,11 +1291,14 @@ LA43A:  .byte   $1D,$79,$46,$27,$5B,$76,$78,$59 ; A43A
         .byte   $56,$35,$4B,$59,$64,$26,$27,$34 ; A4B2
         .byte   $19                             ; A4BA
 ; ----------------------------------------------------------------------------
-LA4BB:  .addr   LA4C1                           ; A4BB
-        .addr   LA58F                           ; A4BD
-        .addr   LA65C                           ; A4BF
+OvhdLvl3_ThingPtrs:
+        .addr   OvhdLvl3_ThingTypeList          ; A4BB
+        .addr   OvhdLvl3_ThingXList             ; A4BD
+        .addr   OvhdLvl3_ThingYList             ; A4BF
 ; ----------------------------------------------------------------------------
-LA4C1:  .byte   $0A,$21,$0F,$0A,$0A,$05,$0C,$0F ; A4C1
+; 205 Thing Type sprite indices; $FF-terminated
+OvhdLvl3_ThingTypeList:
+        .byte   $0A,$21,$0F,$0A,$0A,$05,$0C,$0F ; A4C1
         .byte   $0A,$05,$0F,$05,$0C,$0F,$05,$0F ; A4C9
         .byte   $05,$0C,$0F,$05,$0F,$05,$0F,$05 ; A4D1
         .byte   $0F,$05,$0F,$05,$0F,$05,$22,$0F ; A4D9
@@ -1258,7 +1324,9 @@ LA4C1:  .byte   $0A,$21,$0F,$0A,$0A,$05,$0C,$0F ; A4C1
         .byte   $0C,$23,$26,$23,$23,$21,$23,$23 ; A579
         .byte   $24,$25,$26,$25,$0B,$05,$27,$0F ; A581
         .byte   $0F,$0F,$22,$21,$05,$FF         ; A589
-LA58F:  .byte   $27,$14,$16,$30,$34,$1D,$14,$23 ; A58F
+; 205 X spawn coordinates
+OvhdLvl3_ThingXList:
+        .byte   $27,$14,$16,$30,$34,$1D,$14,$23 ; A58F
         .byte   $3B,$42,$45,$4A,$14,$20,$2C,$31 ; A597
         .byte   $38,$1F,$58,$16,$05,$0E,$06,$0E ; A59F
         .byte   $07,$0D,$07,$0E,$05,$05,$17,$0F ; A5A7
@@ -1284,7 +1352,9 @@ LA58F:  .byte   $27,$14,$16,$30,$34,$1D,$14,$23 ; A58F
         .byte   $58,$29,$26,$1D,$1C,$19,$16,$69 ; A647
         .byte   $3A,$41,$49,$30,$1F,$1E,$1D,$09 ; A64F
         .byte   $05,$0B,$24,$3D,$39             ; A657
-LA65C:  .byte   $0D,$5A,$1E,$04,$0D,$2A,$74,$0B ; A65C
+; 205 Y spawn coordinates
+OvhdLvl3_ThingYList:
+        .byte   $0D,$5A,$1E,$04,$0D,$2A,$74,$0B ; A65C
         .byte   $04,$06,$0B,$06,$35,$06,$07,$0A ; A664
         .byte   $0C,$75,$0C,$26,$14,$17,$1D,$25 ; A66C
         .byte   $2C,$35,$3C,$4B,$45,$65,$5E,$6C ; A674
@@ -1311,11 +1381,14 @@ LA65C:  .byte   $0D,$5A,$1E,$04,$0D,$2A,$74,$0B ; A65C
         .byte   $48,$16,$15,$1A,$5D,$6C,$66,$5C ; A71C
         .byte   $5A,$58,$34,$3D,$5C             ; A724
 ; ----------------------------------------------------------------------------
-LA729:  .addr   LA72F                           ; A729
-        .addr   LA7CD                           ; A72B
-        .addr   LA86A                           ; A72D
+OvhdLvl4_ThingPtrs:
+        .addr   OvhdLvl4_ThingTypeList          ; A729
+        .addr   OvhdLvl4_ThingXList             ; A72B
+        .addr   OvhdLvl4_ThingYList             ; A72D
 ; ----------------------------------------------------------------------------
-LA72F:  .byte   $00,$00,$00,$20,$00,$00,$00,$00 ; A72F
+; 157 Thing Type sprite indices; $FF-terminated
+OvhdLvl4_ThingTypeList:
+        .byte   $00,$00,$00,$20,$00,$00,$00,$00 ; A72F
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; A737
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; A73F
         .byte   $00,$00,$00,$00,$00,$21,$00,$00 ; A747
@@ -1335,7 +1408,9 @@ LA72F:  .byte   $00,$00,$00,$20,$00,$00,$00,$00 ; A72F
         .byte   $21,$21,$22,$24,$26,$26,$27,$27 ; A7B7
         .byte   $27,$22,$21,$23,$21,$21,$23,$26 ; A7BF
         .byte   $27,$28,$29,$22,$25,$FF         ; A7C7
-LA7CD:  .byte   $0F,$16,$1D,$2A,$2D,$2A,$37,$3E ; A7CD
+; 157 X spawn coordinates
+OvhdLvl4_ThingXList:
+        .byte   $0F,$16,$1D,$2A,$2D,$2A,$37,$3E ; A7CD
         .byte   $37,$56,$15,$15,$1D,$2D,$76,$2E ; A7D5
         .byte   $41,$3C,$4B,$49,$2A,$62,$20,$1D ; A7DD
         .byte   $09,$06,$0A,$46,$22,$48,$16,$12 ; A7E5
@@ -1355,7 +1430,9 @@ LA7CD:  .byte   $0F,$16,$1D,$2A,$2D,$2A,$37,$3E ; A7CD
         .byte   $0A,$1A,$79,$7B,$79,$78,$7A,$7A ; A855
         .byte   $79,$56,$44,$45,$4B,$6F,$6E,$39 ; A85D
         .byte   $39,$3B,$7B,$18,$48             ; A865
-LA86A:  .byte   $0E,$14,$0C,$75,$10,$1A,$08,$0A ; A86A
+; 157 Y spawn coordinates
+OvhdLvl4_ThingYList:
+        .byte   $0E,$14,$0C,$75,$10,$1A,$08,$0A ; A86A
         .byte   $0F,$2C,$2D,$24,$2D,$25,$3D,$35 ; A872
         .byte   $3F,$36,$3D,$34,$3D,$35,$3D,$35 ; A87A
         .byte   $35,$40,$46,$27,$4D,$65,$49,$3D ; A882
@@ -1376,11 +1453,14 @@ LA86A:  .byte   $0E,$14,$0C,$75,$10,$1A,$08,$0A ; A86A
         .byte   $39,$3D,$24,$24,$18,$14,$14,$17 ; A8FA
         .byte   $16,$15,$3A,$63,$64             ; A902
 ; ----------------------------------------------------------------------------
-LA907:  .addr   LA90D                           ; A907
-        .addr   LA9EC                           ; A909
-        .addr   LAACA                           ; A90B
+OvhdLvl5_ThingPtrs:
+        .addr   OvhdLvl5_ThingTypeList          ; A907
+        .addr   OvhdLvl5_ThingXList             ; A909
+        .addr   OvhdLvl5_ThingYList             ; A90B
 ; ----------------------------------------------------------------------------
-LA90D:  .byte   $0F,$0F,$0F,$0B,$0B,$0B,$0F,$0F ; A90D
+; 238 Thing Type sprite indices; $FF-terminated
+OvhdLvl5_ThingTypeList:
+        .byte   $0F,$0F,$0F,$0B,$0B,$0B,$0F,$0F ; A90D
         .byte   $0F,$0F,$0B,$0B,$0B,$0F,$0F,$0F ; A915
         .byte   $0F,$0A,$0A,$0F,$0F,$0F,$0F,$0F ; A91D
         .byte   $0F,$0F,$0C,$0C,$0C,$0C,$0C,$0C ; A925
@@ -1408,7 +1488,9 @@ LA90D:  .byte   $0F,$0F,$0F,$0B,$0B,$0B,$0F,$0F ; A90D
         .byte   $27,$27,$27,$27,$27,$29,$27,$29 ; A9D5
         .byte   $29,$29,$28,$28,$28,$28,$28,$28 ; A9DD
         .byte   $26,$26,$0C,$27,$26,$22,$FF     ; A9E5
-LA9EC:  .byte   $07,$0D,$06,$0F,$05,$0F,$0C,$07 ; A9EC
+; 238 X spawn coordinates
+OvhdLvl5_ThingXList:
+        .byte   $07,$0D,$06,$0F,$05,$0F,$0C,$07 ; A9EC
         .byte   $0B,$0E,$0F,$0F,$04,$07,$05,$07 ; A9F4
         .byte   $05,$0E,$0C,$08,$08,$07,$0D,$17 ; A9FC
         .byte   $20,$1A,$23,$30,$33,$3B,$43,$4B ; AA04
@@ -1436,7 +1518,9 @@ LA9EC:  .byte   $07,$0D,$06,$0F,$05,$0F,$0C,$07 ; A9EC
         .byte   $5B,$1A,$19,$51,$51,$2B,$19,$19 ; AAB4
         .byte   $1B,$1B,$1A,$59,$5B,$2A,$2A,$28 ; AABC
         .byte   $2A,$29,$6C,$51,$29,$27         ; AAC4
-LAACA:  .byte   $0C,$12,$16,$1B,$1F,$23,$28,$2B ; AACA
+; 238 Y spawn coordinates
+OvhdLvl5_ThingYList:
+        .byte   $0C,$12,$16,$1B,$1F,$23,$28,$2B ; AACA
         .byte   $31,$36,$42,$3D,$38,$3E,$46,$4D ; AAD2
         .byte   $54,$5E,$5E,$59,$63,$6B,$6B,$66 ; AADA
         .byte   $6C,$6C,$67,$68,$64,$64,$64,$64 ; AAE2
@@ -1465,11 +1549,14 @@ LAACA:  .byte   $0C,$12,$16,$1B,$1F,$23,$28,$2B ; AACA
         .byte   $06,$05,$07,$6B,$6B,$4B,$4D,$4B ; AB9A
         .byte   $4C,$4C,$21,$35,$4A,$41         ; ABA2
 ; ----------------------------------------------------------------------------
-LABA8:  .addr   LABAE                           ; ABA8
-        .addr   LAC34                           ; ABAA
-        .addr   LACB9                           ; ABAC
+OvhdLvl6_ThingPtrs:
+        .addr   OvhdLvl6_ThingTypeList          ; ABA8
+        .addr   OvhdLvl6_ThingXList             ; ABAA
+        .addr   OvhdLvl6_ThingYList             ; ABAC
 ; ----------------------------------------------------------------------------
-LABAE:  .byte   $03,$24,$01,$01,$01,$09,$02,$03 ; ABAE
+; 133 Thing Type sprite indices; $FF-terminated
+OvhdLvl6_ThingTypeList:
+        .byte   $03,$24,$01,$01,$01,$09,$02,$03 ; ABAE
         .byte   $09,$09,$01,$01,$01,$01,$09,$09 ; ABB6
         .byte   $01,$01,$09,$20,$02,$02,$02,$02 ; ABBE
         .byte   $02,$09,$02,$01,$01,$01,$01,$02 ; ABC6
@@ -1486,7 +1573,9 @@ LABAE:  .byte   $03,$24,$01,$01,$01,$09,$02,$03 ; ABAE
         .byte   $28,$24,$23,$21,$28,$26,$21,$28 ; AC1E
         .byte   $23,$28,$22,$23,$27,$24,$28,$26 ; AC26
         .byte   $29,$28,$28,$29,$23,$FF         ; AC2E
-LAC34:  .byte   $38,$5A,$49,$53,$45,$37,$2B,$2A ; AC34
+; 133 X spawn coordinates
+OvhdLvl6_ThingXList:
+        .byte   $38,$5A,$49,$53,$45,$37,$2B,$2A ; AC34
         .byte   $6D,$1B,$2A,$70,$4D,$70,$61,$6D ; AC3C
         .byte   $60,$4A,$79,$5A,$08,$0D,$15,$18 ; AC44
         .byte   $1E,$79,$28,$3A,$2E,$3A,$3A,$29 ; AC4C
@@ -1503,7 +1592,9 @@ LAC34:  .byte   $38,$5A,$49,$53,$45,$37,$2B,$2A ; AC34
         .byte   $3A,$7D,$7F,$7E,$7D,$7E,$7A,$66 ; ACA4
         .byte   $57,$4B,$60,$7E,$7F,$39,$56,$7D ; ACAC
         .byte   $7F,$27,$25,$26,$25             ; ACB4
-LACB9:  .byte   $50,$45,$77,$59,$59,$44,$0D,$50 ; ACB9
+; 133 Y spawn coordinates
+OvhdLvl6_ThingYList:
+        .byte   $50,$45,$77,$59,$59,$44,$0D,$50 ; ACB9
         .byte   $5A,$4B,$3B,$68,$68,$59,$66,$6A ; ACC1
         .byte   $68,$6F,$56,$75,$23,$28,$23,$2A ; ACC9
         .byte   $22,$66,$2B,$16,$3E,$23,$2A,$16 ; ACD1
@@ -1521,11 +1612,14 @@ LACB9:  .byte   $50,$45,$77,$59,$59,$44,$0D,$50 ; ACB9
         .byte   $49,$06,$46,$45,$45,$09,$47,$49 ; AD31
         .byte   $47,$39,$3A,$38,$38             ; AD39
 ; ----------------------------------------------------------------------------
-LAD3E:  .addr   LAD44                           ; AD3E
-        .addr   LADE1                           ; AD40
-        .addr   LAE7D                           ; AD42
+OvhdLvl7_ThingPtrs:
+        .addr   OvhdLvl7_ThingTypeList          ; AD3E
+        .addr   OvhdLvl7_ThingXList             ; AD40
+        .addr   OvhdLvl7_ThingYList             ; AD42
 ; ----------------------------------------------------------------------------
-LAD44:  .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; AD44
+; 156 Thing Type sprite indices; $FF-terminated
+OvhdLvl7_ThingTypeList:
+        .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; AD44
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; AD4C
         .byte   $00,$00,$00,$00,$00,$00,$21,$00 ; AD54
         .byte   $00,$00,$00,$00,$00,$00,$00,$21 ; AD5C
@@ -1545,7 +1639,9 @@ LAD44:  .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; AD44
         .byte   $21,$23,$23,$23,$23,$23,$26,$27 ; ADCC
         .byte   $21,$22,$28,$28,$29,$27,$27,$27 ; ADD4
         .byte   $26,$26,$24,$24,$FF             ; ADDC
-LADE1:  .byte   $2D,$1C,$28,$0D,$14,$20,$2C,$1C ; ADE1
+; 156 X spawn coordinates
+OvhdLvl7_ThingXList:
+        .byte   $2D,$1C,$28,$0D,$14,$20,$2C,$1C ; ADE1
         .byte   $19,$14,$0C,$08,$13,$1A,$07,$56 ; ADE9
         .byte   $5A,$7D,$66,$6E,$7A,$72,$79,$67 ; ADF1
         .byte   $6E,$66,$59,$62,$56,$4B,$45,$7A ; ADF9
@@ -1565,7 +1661,9 @@ LADE1:  .byte   $2D,$1C,$28,$0D,$14,$20,$2C,$1C ; ADE1
         .byte   $5B,$58,$59,$5A,$5B,$79,$59,$5A ; AE69
         .byte   $79,$68,$6A,$6A,$5A,$7B,$78,$79 ; AE71
         .byte   $69,$7A,$62,$3F                 ; AE79
-LAE7D:  .byte   $15,$19,$19,$19,$15,$15,$1D,$1E ; AE7D
+; 156 Y spawn coordinates
+OvhdLvl7_ThingYList:
+        .byte   $15,$19,$19,$19,$15,$15,$1D,$1E ; AE7D
         .byte   $25,$1E,$24,$2C,$29,$2B,$23,$3D ; AE85
         .byte   $35,$50,$39,$35,$37,$3D,$2A,$3D ; AE8D
         .byte   $42,$45,$45,$4D,$4D,$49,$4D,$29 ; AE95
@@ -1586,11 +1684,14 @@ LAE7D:  .byte   $15,$19,$19,$19,$15,$15,$1D,$1E ; AE7D
         .byte   $49,$1A,$1A,$19,$1A,$29,$2A,$4A ; AF0D
         .byte   $19,$4B,$41,$41                 ; AF15
 ; ----------------------------------------------------------------------------
-LAF19:  .addr   LAF1F                           ; AF19
-        .addr   LAFC8                           ; AF1B
-        .addr   LB070                           ; AF1D
+OvhdLvl8_ThingPtrs:
+        .addr   OvhdLvl8_ThingTypeList          ; AF19
+        .addr   OvhdLvl8_ThingXList             ; AF1B
+        .addr   OvhdLvl8_ThingYList             ; AF1D
 ; ----------------------------------------------------------------------------
-LAF1F:  .byte   $0F,$0F,$0F,$0E,$0E,$0E,$0E,$0F ; AF1F
+; 168 Thing Type sprite indices; $FF-terminated
+OvhdLvl8_ThingTypeList:
+        .byte   $0F,$0F,$0F,$0E,$0E,$0E,$0E,$0F ; AF1F
         .byte   $0A,$0A,$0B,$0B,$0F,$04,$04,$0D ; AF27
         .byte   $0D,$04,$0F,$0F,$08,$0D,$0F,$0F ; AF2F
         .byte   $0F,$0F,$0F,$08,$04,$08,$0F,$0F ; AF37
@@ -1612,7 +1713,9 @@ LAF1F:  .byte   $0F,$0F,$0F,$0E,$0E,$0E,$0E,$0F ; AF1F
         .byte   $27,$27,$28,$28,$24,$26,$27,$0F ; AFB7
         .byte   $0F,$0E,$0E,$0E,$0E,$08,$0F,$0F ; AFBF
         .byte   $FF                             ; AFC7
-LAFC8:  .byte   $1B,$18,$1D,$2B,$26,$2B,$26,$0B ; AFC8
+; 168 X spawn coordinates
+OvhdLvl8_ThingXList:
+        .byte   $1B,$18,$1D,$2B,$26,$2B,$26,$0B ; AFC8
         .byte   $07,$0C,$0F,$0F,$06,$19,$1A,$26 ; AFD0
         .byte   $2D,$2A,$26,$2C,$1A,$05,$0D,$0A ; AFD8
         .byte   $06,$06,$06,$0A,$2A,$1A,$2D,$26 ; AFE0
@@ -1633,7 +1736,9 @@ LAFC8:  .byte   $1B,$18,$1D,$2B,$26,$2B,$26,$0B ; AFC8
         .byte   $63,$63,$63,$1E,$0A,$0B,$0B,$4A ; B058
         .byte   $4B,$4B,$59,$59,$5A,$1E,$1D,$37 ; B060
         .byte   $3B,$25,$3E,$43,$42,$7A,$7C,$7C ; B068
-LB070:  .byte   $4C,$44,$46,$48,$43,$3D,$37,$28 ; B070
+; 168 Y spawn coordinates
+OvhdLvl8_ThingYList:
+        .byte   $4C,$44,$46,$48,$43,$3D,$37,$28 ; B070
         .byte   $33,$2F,$33,$2B,$27,$36,$26,$25 ; B078
         .byte   $1D,$29,$16,$17,$18,$13,$06,$10 ; B080
         .byte   $07,$1C,$0C,$06,$08,$08,$06,$0B ; B088
@@ -1655,11 +1760,14 @@ LB070:  .byte   $4C,$44,$46,$48,$43,$3D,$37,$28 ; B070
         .byte   $79,$7A,$78,$79,$79,$5A,$5A,$19 ; B108
         .byte   $17,$7B,$7B,$72,$67,$19,$16,$1C ; B110
 ; ----------------------------------------------------------------------------
-LB118:  .addr   LB11E                           ; B118
-        .addr   LB1A0                           ; B11A
-        .addr   LB221                           ; B11C
+TankLvl1_ThingPtrs:
+        .addr   TankLvl1_ThingTypeList          ; B118
+        .addr   TankLvl1_ThingXList             ; B11A
+        .addr   TankLvl1_ThingYList             ; B11C
 ; ----------------------------------------------------------------------------
-LB11E:  .byte   $10,$16,$16,$05,$02,$10,$10,$02 ; B11E
+; 129 Thing Type sprite indices; $FF-terminated
+TankLvl1_ThingTypeList:
+        .byte   $10,$16,$16,$05,$02,$10,$10,$02 ; B11E
         .byte   $02,$05,$08,$02,$10,$05,$05,$16 ; B126
         .byte   $05,$12,$0B,$0B,$14,$0B,$05,$05 ; B12E
         .byte   $02,$02,$02,$02,$05,$02,$02,$0B ; B136
@@ -1676,7 +1784,9 @@ LB11E:  .byte   $10,$16,$16,$05,$02,$10,$10,$02 ; B11E
         .byte   $10,$14,$14,$0B,$05,$10,$16,$16 ; B18E
         .byte   $16,$10,$05,$05,$05,$10,$10,$26 ; B196
         .byte   $26,$FF                         ; B19E
-LB1A0:  .byte   $4B,$6A,$63,$17,$75,$2C,$32,$0E ; B1A0
+; 129 X spawn coordinates
+TankLvl1_ThingXList:
+        .byte   $4B,$6A,$63,$17,$75,$2C,$32,$0E ; B1A0
         .byte   $05,$51,$09,$05,$08,$5D,$6E,$62 ; B1A8
         .byte   $7A,$40,$4B,$49,$5A,$48,$17,$17 ; B1B0
         .byte   $3D,$6D,$71,$0E,$27,$05,$0E,$40 ; B1B8
@@ -1693,7 +1803,9 @@ LB1A0:  .byte   $4B,$6A,$63,$17,$75,$2C,$32,$0E ; B1A0
         .byte   $4B,$4F,$41,$45,$65,$38,$6D,$6E ; B210
         .byte   $73,$06,$24,$2D,$3A,$35,$26,$15 ; B218
         .byte   $15                             ; B220
-LB221:  .byte   $62,$7D,$6E,$33,$3B,$67,$5C,$41 ; B221
+; 129 Y spawn coordinates
+TankLvl1_ThingYList:
+        .byte   $62,$7D,$6E,$33,$3B,$67,$5C,$41 ; B221
         .byte   $41,$3F,$3A,$36,$69,$3F,$3F,$74 ; B229
         .byte   $3F,$3C,$38,$38,$3A,$38,$23,$2B ; B231
         .byte   $50,$3B,$3B,$4A,$39,$4C,$36,$49 ; B239
@@ -1711,11 +1823,14 @@ LB221:  .byte   $62,$7D,$6E,$33,$3B,$67,$5C,$41 ; B221
         .byte   $71,$73,$3C,$3C,$3A,$61,$54,$33 ; B299
         .byte   $2B                             ; B2A1
 ; ----------------------------------------------------------------------------
-LB2A2:  .addr   LB2A8                           ; B2A2
-        .addr   LB320                           ; B2A4
-        .addr   LB397                           ; B2A6
+TankLvl2_ThingPtrs:
+        .addr   TankLvl2_ThingTypeList          ; B2A2
+        .addr   TankLvl2_ThingXList             ; B2A4
+        .addr   TankLvl2_ThingYList             ; B2A6
 ; ----------------------------------------------------------------------------
-LB2A8:  .byte   $00,$00,$00,$00,$22,$28,$05,$05 ; B2A8
+; 119 Thing Type sprite indices; $FF-terminated
+TankLvl2_ThingTypeList:
+        .byte   $00,$00,$00,$00,$22,$28,$05,$05 ; B2A8
         .byte   $00,$10,$10,$10,$11,$01,$01,$02 ; B2B0
         .byte   $10,$10,$10,$02,$02,$10,$02,$0E ; B2B8
         .byte   $07,$10,$10,$05,$07,$07,$07,$0D ; B2C0
@@ -1730,7 +1845,9 @@ LB2A8:  .byte   $00,$00,$00,$00,$22,$28,$05,$05 ; B2A8
         .byte   $06,$0E,$0E,$01,$02,$11,$01,$01 ; B308
         .byte   $07,$07,$0E,$0E,$0E,$0D,$0D,$0D ; B310
         .byte   $0D,$0D,$0D,$0D,$0D,$11,$29,$FF ; B318
-LB320:  .byte   $4B,$5F,$4F,$7C,$78,$79,$16,$05 ; B320
+; 119 X spawn coordinates
+TankLvl2_ThingXList:
+        .byte   $4B,$5F,$4F,$7C,$78,$79,$16,$05 ; B320
         .byte   $78,$0A,$0A,$08,$53,$1A,$54,$10 ; B328
         .byte   $76,$7C,$68,$1D,$1C,$25,$14,$79 ; B330
         .byte   $30,$2B,$2A,$39,$48,$57,$29,$3C ; B338
@@ -1745,7 +1862,9 @@ LB320:  .byte   $4B,$5F,$4F,$7C,$78,$79,$16,$05 ; B320
         .byte   $08,$0F,$0F,$1A,$15,$06,$36,$31 ; B380
         .byte   $3A,$31,$7E,$7E,$7E,$37,$33,$3A ; B388
         .byte   $32,$37,$1A,$18,$17,$55,$00     ; B390
-LB397:  .byte   $44,$44,$44,$45,$2F,$2F,$43,$3F ; B397
+; 119 Y spawn coordinates
+TankLvl2_ThingYList:
+        .byte   $44,$44,$44,$45,$2F,$2F,$43,$3F ; B397
         .byte   $44,$46,$4B,$48,$15,$66,$44,$07 ; B39F
         .byte   $47,$47,$46,$47,$4B,$51,$4B,$5F ; B3A7
         .byte   $3F,$4F,$53,$1F,$3F,$3F,$4F,$2A ; B3AF
@@ -1761,11 +1880,14 @@ LB397:  .byte   $44,$44,$44,$45,$2F,$2F,$43,$3F ; B397
         .byte   $47,$47,$17,$1B,$1F,$2A,$4C,$54 ; B3FF
         .byte   $5D,$65,$20,$27,$30,$16,$6F     ; B407
 ; ----------------------------------------------------------------------------
-LB40E:  .addr   LB414                           ; B40E
-        .addr   LB488                           ; B410
-        .addr   LB4FB                           ; B412
+TankLvl3_ThingPtrs:
+        .addr   TankLvl3_ThingTypeList          ; B40E
+        .addr   TankLvl3_ThingXList             ; B410
+        .addr   TankLvl3_ThingYList             ; B412
 ; ----------------------------------------------------------------------------
-LB414:  .byte   $1B,$1B,$1B,$1B,$1B,$1B,$1B,$00 ; B414
+; 115 Thing Type sprite indices; $FF-terminated
+TankLvl3_ThingTypeList:
+        .byte   $1B,$1B,$1B,$1B,$1B,$1B,$1B,$00 ; B414
         .byte   $00,$00,$08,$08,$08,$08,$14,$14 ; B41C
         .byte   $14,$03,$03,$03,$00,$00,$00,$03 ; B424
         .byte   $1A,$1A,$1A,$1A,$1A,$0C,$1B,$1B ; B42C
@@ -1780,7 +1902,9 @@ LB414:  .byte   $1B,$1B,$1B,$1B,$1B,$1B,$1B,$00 ; B414
         .byte   $11,$11,$11,$11,$11,$11,$1B,$08 ; B474
         .byte   $1B,$1B,$0C,$0C,$0C,$0C,$0C,$0C ; B47C
         .byte   $00,$00,$00,$FF                 ; B484
-LB488:  .byte   $5F,$69,$6F,$74,$0D,$60,$0A,$06 ; B488
+; 115 X spawn coordinates
+TankLvl3_ThingXList:
+        .byte   $5F,$69,$6F,$74,$0D,$60,$0A,$06 ; B488
         .byte   $0A,$0B,$6D,$6F,$7B,$19,$76,$73 ; B490
         .byte   $6A,$12,$17,$0C,$11,$1A,$07,$0C ; B498
         .byte   $34,$2C,$28,$2E,$2E,$2B,$19,$19 ; B4A0
@@ -1795,7 +1919,9 @@ LB488:  .byte   $5F,$69,$6F,$74,$0D,$60,$0A,$06 ; B488
         .byte   $58,$60,$6A,$37,$50,$5E,$5C,$19 ; B4E8
         .byte   $78,$78,$64,$6A,$72,$78,$5D,$73 ; B4F0
         .byte   $74,$5C,$0D                     ; B4F8
-LB4FB:  .byte   $0B,$0F,$0B,$2B,$0F,$0F,$1F,$0F ; B4FB
+; 115 Y spawn coordinates
+TankLvl3_ThingYList:
+        .byte   $0B,$0F,$0B,$2B,$0F,$0F,$1F,$0F ; B4FB
         .byte   $07,$17,$15,$1D,$1D,$72,$24,$1E ; B503
         .byte   $19,$28,$24,$24,$2F,$2F,$2F,$3E ; B50B
         .byte   $33,$37,$2F,$23,$1F,$15,$0B,$0F ; B513
@@ -1811,11 +1937,14 @@ LB4FB:  .byte   $0B,$0F,$0B,$2B,$0F,$0F,$1F,$0F ; B4FB
         .byte   $07,$0F,$30,$34,$38,$34,$30,$38 ; B563
         .byte   $7D,$7D,$2B                     ; B56B
 ; ----------------------------------------------------------------------------
-LB56E:  .addr   LB574                           ; B56E
-        .addr   LB5D4                           ; B570
-        .addr   LB633                           ; B572
+TankLvl4_ThingPtrs:
+        .addr   TankLvl4_ThingTypeList          ; B56E
+        .addr   TankLvl4_ThingXList             ; B570
+        .addr   TankLvl4_ThingYList             ; B572
 ; ----------------------------------------------------------------------------
-LB574:  .byte   $02,$02,$14,$0E,$01,$02,$2C,$02 ; B574
+; 95 Thing Type sprite indices; $FF-terminated
+TankLvl4_ThingTypeList:
+        .byte   $02,$02,$14,$0E,$01,$02,$2C,$02 ; B574
         .byte   $08,$02,$02,$02,$12,$14,$14,$14 ; B57C
         .byte   $0E,$0E,$0E,$0E,$0E,$02,$10,$0E ; B584
         .byte   $0E,$0E,$12,$12,$02,$02,$04,$02 ; B58C
@@ -1827,7 +1956,9 @@ LB574:  .byte   $02,$02,$14,$0E,$01,$02,$2C,$02 ; B574
         .byte   $07,$07,$07,$07,$07,$07,$07,$07 ; B5BC
         .byte   $07,$07,$07,$07,$07,$07,$0E,$0E ; B5C4
         .byte   $14,$0E,$2B,$0E,$04,$04,$01,$FF ; B5CC
-LB5D4:  .byte   $59,$55,$2A,$48,$54,$55,$6E,$59 ; B5D4
+; 95 X spawn coordinates
+TankLvl4_ThingXList:
+        .byte   $59,$55,$2A,$48,$54,$55,$6E,$59 ; B5D4
         .byte   $74,$52,$28,$1C,$39,$6D,$55,$5A ; B5DC
         .byte   $61,$3A,$44,$63,$6A,$4A,$1C,$76 ; B5E4
         .byte   $20,$1B,$1F,$2C,$1F,$2B,$3F,$38 ; B5EC
@@ -1839,7 +1970,9 @@ LB5D4:  .byte   $59,$55,$2A,$48,$54,$55,$6E,$59 ; B5D4
         .byte   $68,$5A,$5A,$5A,$3A,$3A,$3A,$39 ; B61C
         .byte   $1B,$1B,$1B,$1B,$1B,$1B,$19,$17 ; B624
         .byte   $2B,$66,$69,$69,$23,$35,$2D     ; B62C
-LB633:  .byte   $13,$17,$59,$4F,$11,$07,$1B,$0B ; B633
+; 95 Y spawn coordinates
+TankLvl4_ThingYList:
+        .byte   $13,$17,$59,$4F,$11,$07,$1B,$0B ; B633
         .byte   $07,$0B,$2C,$27,$1B,$7A,$72,$59 ; B63B
         .byte   $7B,$5A,$5A,$59,$63,$14,$7A,$7B ; B643
         .byte   $49,$53,$1B,$1B,$27,$28,$7B,$27 ; B64B
@@ -1852,11 +1985,14 @@ LB633:  .byte   $13,$17,$59,$4F,$11,$07,$1B,$0B ; B633
         .byte   $60,$38,$58,$48,$50,$40,$40,$48 ; B683
         .byte   $59,$1A,$1B,$6E,$7B,$7B,$24     ; B68B
 ; ----------------------------------------------------------------------------
-LB692:  .addr   LB698                           ; B692
-        .addr   LB72E                           ; B694
-        .addr   LB7C3                           ; B696
+TankLvl5_ThingPtrs:
+        .addr   TankLvl5_ThingTypeList          ; B692
+        .addr   TankLvl5_ThingXList             ; B694
+        .addr   TankLvl5_ThingYList             ; B696
 ; ----------------------------------------------------------------------------
-LB698:  .byte   $0C,$0C,$0C,$0C,$17,$17,$17,$17 ; B698
+; 145 Thing Type sprite indices; $FF-terminated
+TankLvl5_ThingTypeList:
+        .byte   $0C,$0C,$0C,$0C,$17,$17,$17,$17 ; B698
         .byte   $17,$18,$18,$18,$18,$18,$18,$18 ; B6A0
         .byte   $18,$18,$18,$18,$18,$18,$18,$18 ; B6A8
         .byte   $18,$18,$17,$17,$17,$17,$17,$17 ; B6B0
@@ -1875,7 +2011,9 @@ LB698:  .byte   $0C,$0C,$0C,$0C,$17,$17,$17,$17 ; B698
         .byte   $17,$17,$17,$17,$17,$09,$17,$17 ; B718
         .byte   $09,$17,$17,$17,$17,$17,$17,$17 ; B720
         .byte   $17,$09,$09,$09,$09,$FF         ; B728
-LB72E:  .byte   $02,$16,$79,$0E,$39,$47,$41,$3E ; B72E
+; 145 X spawn coordinates
+TankLvl5_ThingXList:
+        .byte   $02,$16,$79,$0E,$39,$47,$41,$3E ; B72E
         .byte   $65,$49,$36,$2C,$2A,$1A,$0A,$68 ; B736
         .byte   $71,$06,$04,$7A,$13,$1A,$13,$0F ; B73E
         .byte   $20,$2E,$28,$17,$06,$25,$17,$46 ; B746
@@ -1894,7 +2032,9 @@ LB72E:  .byte   $02,$16,$79,$0E,$39,$47,$41,$3E ; B72E
         .byte   $1C,$1C,$1D,$1F,$16,$2E,$49,$3C ; B7AE
         .byte   $39,$28,$2C,$27,$2A,$2C,$28,$52 ; B7B6
         .byte   $4A,$2D,$24,$17,$6A             ; B7BE
-LB7C3:  .byte   $45,$45,$45,$45,$10,$12,$10,$14 ; B7C3
+; 145 Y spawn coordinates
+TankLvl5_ThingYList:
+        .byte   $45,$45,$45,$45,$10,$12,$10,$14 ; B7C3
         .byte   $1C,$1C,$1C,$1C,$1C,$1C,$1C,$2C ; B7CB
         .byte   $4D,$4D,$4D,$4D,$4D,$5D,$5D,$58 ; B7D3
         .byte   $58,$57,$58,$58,$56,$5A,$59,$57 ; B7DB
@@ -1914,11 +2054,14 @@ LB7C3:  .byte   $45,$45,$45,$45,$10,$12,$10,$14 ; B7C3
         .byte   $7F,$30,$33,$37,$3B,$3F,$43,$7C ; B84B
         .byte   $6F,$74,$79,$08,$0B             ; B853
 ; ----------------------------------------------------------------------------
-LB858:  .addr   LB85E                           ; B858
-        .addr   LB8C0                           ; B85A
-        .addr   LB921                           ; B85C
+TankLvl6_ThingPtrs:
+        .addr   TankLvl6_ThingTypeList          ; B858
+        .addr   TankLvl6_ThingXList             ; B85A
+        .addr   TankLvl6_ThingYList             ; B85C
 ; ----------------------------------------------------------------------------
-LB85E:  .byte   $00,$00,$15,$0D,$0A,$0A,$15,$0A ; B85E
+; 97 Thing Type sprite indices; $FF-terminated
+TankLvl6_ThingTypeList:
+        .byte   $00,$00,$15,$0D,$0A,$0A,$15,$0A ; B85E
         .byte   $00,$00,$00,$00,$07,$07,$15,$15 ; B866
         .byte   $15,$10,$15,$15,$15,$15,$0A,$0A ; B86E
         .byte   $0A,$0A,$0A,$00,$00,$00,$00,$00 ; B876
@@ -1931,7 +2074,9 @@ LB85E:  .byte   $00,$00,$15,$0D,$0A,$0A,$15,$0A ; B85E
         .byte   $28,$27,$29,$29,$29,$27,$10,$10 ; B8AE
         .byte   $10,$00,$07,$07,$00,$00,$0D,$0D ; B8B6
         .byte   $0D,$FF                         ; B8BE
-LB8C0:  .byte   $1A,$24,$64,$56,$64,$71,$68,$56 ; B8C0
+; 97 X spawn coordinates
+TankLvl6_ThingXList:
+        .byte   $1A,$24,$64,$56,$64,$71,$68,$56 ; B8C0
         .byte   $26,$1E,$16,$0E,$16,$13,$72,$5C ; B8C8
         .byte   $6A,$7E,$7C,$72,$78,$5C,$78,$0E ; B8D0
         .byte   $1A,$21,$2D,$41,$3E,$3A,$36,$2F ; B8D8
@@ -1944,7 +2089,9 @@ LB8C0:  .byte   $1A,$24,$64,$56,$64,$71,$68,$56 ; B8C0
         .byte   $5F,$5E,$45,$45,$66,$5C,$7E,$7E ; B910
         .byte   $7E,$1C,$46,$4A,$29,$1D,$39,$27 ; B918
         .byte   $1E                             ; B920
-LB921:  .byte   $05,$05,$61,$77,$44,$44,$65,$44 ; B921
+; 97 Y spawn coordinates
+TankLvl6_ThingYList:
+        .byte   $05,$05,$61,$77,$44,$44,$65,$44 ; B921
         .byte   $2B,$2B,$2B,$2B,$7B,$7B,$5D,$5D ; B929
         .byte   $59,$1D,$61,$59,$5D,$65,$44,$44 ; B931
         .byte   $44,$44,$44,$06,$05,$05,$05,$07 ; B939
@@ -1958,11 +2105,14 @@ LB921:  .byte   $05,$05,$61,$77,$44,$44,$65,$44 ; B921
         .byte   $15,$79,$75,$71,$5F,$54,$17,$15 ; B979
         .byte   $1C                             ; B981
 ; ----------------------------------------------------------------------------
-LB982:  .addr   LB988                           ; B982
-        .addr   LBA05                           ; B984
-        .addr   LBA81                           ; B986
+TankLvl7_ThingPtrs:
+        .addr   TankLvl7_ThingTypeList          ; B982
+        .addr   TankLvl7_ThingXList             ; B984
+        .addr   TankLvl7_ThingYList             ; B986
 ; ----------------------------------------------------------------------------
-LB988:  .byte   $13,$13,$13,$13,$13,$13,$13,$13 ; B988
+; 124 Thing Type sprite indices; $FF-terminated
+TankLvl7_ThingTypeList:
+        .byte   $13,$13,$13,$13,$13,$13,$13,$13 ; B988
         .byte   $13,$13,$13,$13,$23,$13,$10,$10 ; B990
         .byte   $10,$10,$10,$10,$10,$10,$10,$10 ; B998
         .byte   $10,$24,$1C,$12,$12,$12,$12,$12 ; B9A0
@@ -1978,7 +2128,9 @@ LB988:  .byte   $13,$13,$13,$13,$13,$13,$13,$13 ; B988
         .byte   $22,$22,$22,$29,$28,$27,$21,$21 ; B9F0
         .byte   $21,$21,$23,$23,$22,$21,$21,$13 ; B9F8
         .byte   $0B,$0B,$0E,$12,$FF             ; BA00
-LBA05:  .byte   $21,$19,$28,$0E,$0F,$11,$07,$70 ; BA05
+; 124 X spawn coordinates
+TankLvl7_ThingXList:
+        .byte   $21,$19,$28,$0E,$0F,$11,$07,$70 ; BA05
         .byte   $3F,$43,$28,$1C,$43,$0F,$5E,$76 ; BA0D
         .byte   $6E,$6E,$68,$65,$63,$0F,$0F,$1A ; BA15
         .byte   $0C,$76,$7D,$20,$17,$26,$2E,$37 ; BA1D
@@ -1994,7 +2146,9 @@ LBA05:  .byte   $21,$19,$28,$0E,$0F,$11,$07,$70 ; BA05
         .byte   $43,$5D,$54,$5C,$60,$5D,$5D,$6D ; BA6D
         .byte   $67,$5D,$63,$5A,$6E,$37,$41,$17 ; BA75
         .byte   $22,$17,$57,$10                 ; BA7D
-LBA81:  .byte   $44,$40,$3D,$45,$48,$39,$41,$27 ; BA81
+; 124 Y spawn coordinates
+TankLvl7_ThingYList:
+        .byte   $44,$40,$3D,$45,$48,$39,$41,$27 ; BA81
         .byte   $4A,$45,$18,$17,$37,$17,$6A,$73 ; BA89
         .byte   $70,$7B,$7F,$76,$6E,$79,$77,$7C ; BA91
         .byte   $78,$75,$79,$04,$04,$04,$04,$04 ; BA99
@@ -2011,11 +2165,14 @@ LBA81:  .byte   $44,$40,$3D,$45,$48,$39,$41,$27 ; BA81
         .byte   $49,$4A,$3A,$34,$49,$36,$3A,$18 ; BAF1
         .byte   $14,$14,$66,$04                 ; BAF9
 ; ----------------------------------------------------------------------------
-LBAFD:  .addr   LBB03                           ; BAFD
-        .addr   LBB8F                           ; BAFF
-        .addr   LBC1A                           ; BB01
+TankLvl8_ThingPtrs:
+        .addr   TankLvl8_ThingTypeList          ; BAFD
+        .addr   TankLvl8_ThingXList             ; BAFF
+        .addr   TankLvl8_ThingYList             ; BB01
 ; ----------------------------------------------------------------------------
-LBB03:  .byte   $06,$00,$06,$00,$06,$00,$02,$10 ; BB03
+; 139 Thing Type sprite indices; $FF-terminated
+TankLvl8_ThingTypeList:
+        .byte   $06,$00,$06,$00,$06,$00,$02,$10 ; BB03
         .byte   $10,$0A,$01,$0A,$0F,$06,$0A,$0A ; BB0B
         .byte   $0A,$0D,$06,$0D,$0D,$0D,$0D,$0D ; BB13
         .byte   $0D,$0D,$0D,$0D,$02,$00,$15,$10 ; BB1B
@@ -2033,7 +2190,9 @@ LBB03:  .byte   $06,$00,$06,$00,$06,$00,$02,$10 ; BB03
         .byte   $02,$02,$02,$10,$10,$10,$01,$01 ; BB7B
         .byte   $01,$01,$06,$0F,$0F,$27,$22,$22 ; BB83
         .byte   $27,$27,$22,$FF                 ; BB8B
-LBB8F:  .byte   $3B,$3A,$3C,$39,$3A,$38,$27,$41 ; BB8F
+; 139 X spawn coordinates
+TankLvl8_ThingXList:
+        .byte   $3B,$3A,$3C,$39,$3A,$38,$27,$41 ; BB8F
         .byte   $3E,$11,$16,$1B,$4E,$5F,$1A,$11 ; BB97
         .byte   $0F,$2D,$6F,$28,$2E,$34,$39,$3F ; BB9F
         .byte   $46,$4D,$53,$5C,$09,$2F,$57,$76 ; BBA7
@@ -2051,7 +2210,9 @@ LBB8F:  .byte   $3B,$3A,$3C,$39,$3A,$38,$27,$41 ; BB8F
         .byte   $1B,$28,$09,$47,$4C,$3E,$62,$58 ; BC07
         .byte   $54,$5C,$67,$3F,$5F,$75,$0A,$7E ; BC0F
         .byte   $7C,$0A,$7A                     ; BC17
-LBC1A:  .byte   $0B,$0F,$13,$17,$1B,$1F,$2B,$3F ; BC1A
+; 139 Y spawn coordinates
+TankLvl8_ThingYList:
+        .byte   $0B,$0F,$13,$17,$1B,$1F,$2B,$3F ; BC1A
         .byte   $39,$54,$04,$54,$77,$36,$4A,$4A ; BC22
         .byte   $40,$6D,$34,$77,$7B,$7B,$79,$7A ; BC2A
         .byte   $77,$77,$7A,$7A,$3D,$5E,$23,$62 ; BC32
@@ -2068,114 +2229,117 @@ LBC1A:  .byte   $0B,$0F,$13,$17,$1B,$1F,$2B,$3F ; BC1A
         .byte   $22,$04,$1D,$1A,$1A,$0E,$0A,$2E ; BC8A
         .byte   $2F,$2F,$2F,$3B,$30,$29,$04,$04 ; BC92
         .byte   $14,$0A,$34,$78,$78,$78,$7F,$74 ; BC9A
-        .byte   $7A,$7A,$7B,$06,$01,$04,$41,$06 ; BCA2
-        .byte   $01,$04,$41,$06,$01,$5B,$80,$0B ; BCAA
-        .byte   $81,$15,$01,$0B,$00,$07,$80,$0A ; BCB2
-        .byte   $81,$01,$80,$03,$81,$04,$80,$0A ; BCBA
-        .byte   $00,$0D,$80,$14,$81,$17,$01,$15 ; BCC2
-        .byte   $00,$82,$01,$2F,$00,$24,$01,$24 ; BCCA
-        .byte   $00,$13,$80,$0F,$82,$1C,$02,$41 ; BCD2
-        .byte   $00,$11,$02,$13,$00,$04,$01,$35 ; BCDA
-        .byte   $00,$01,$04,$01,$00,$02,$02,$3C ; BCE2
-        .byte   $00,$85,$02,$12,$82,$29,$02,$31 ; BCEA
-        .byte   $00,$0F,$01,$4A,$00,$12,$01,$1B ; BCF2
-        .byte   $00,$13,$02,$42,$00,$0D,$01,$20 ; BCFA
-        .byte   $81,$0C,$01,$13,$00,$20,$01,$0C ; BD02
-        .byte   $00,$8F,$01,$03,$81,$25,$01,$40 ; BD0A
-        .byte   $81,$08,$01,$53,$81,$17,$01,$31 ; BD12
-        .byte   $00,$A9,$80,$17,$81,$10,$01,$0D ; BD1A
-        .byte   $00,$0A,$02,$06,$82,$28,$02,$04 ; BD22
-        .byte   $00,$1C,$80,$01,$81,$22,$00,$0D ; BD2A
-        .byte   $02,$0A,$00,$06,$01,$0F,$00,$14 ; BD32
-        .byte   $02,$06,$00,$09,$80,$09,$81,$20 ; BD3A
-        .byte   $01,$37,$00,$1A,$80,$0C,$82,$1A ; BD42
-        .byte   $02,$09,$82,$29,$02,$48,$00,$92 ; BD4A
-        .byte   $02,$19,$82,$28,$02,$16,$00,$08 ; BD52
-        .byte   $01,$05,$00,$07,$80,$0E,$81,$12 ; BD5A
-        .byte   $00,$26,$01,$1B,$00,$5C,$01,$2C ; BD62
-        .byte   $05,$03,$04,$10,$05,$03,$01,$05 ; BD6A
-        .byte   $00,$05,$08,$11,$00,$00,$00,$5C ; BD72
-        .byte   $80,$01,$C0,$01,$C4,$1A,$C5,$06 ; BD7A
-        .byte   $C1,$02,$C0,$13,$80,$0A,$88,$0E ; BD82
-        .byte   $80,$02,$82,$0A,$80,$01,$84,$03 ; BD8A
-        .byte   $80,$80,$C0,$01,$C1,$06,$81,$02 ; BD92
-        .byte   $80,$01,$C2,$04,$82,$03,$C2,$06 ; BD9A
-        .byte   $82,$0A,$80,$01,$81,$08,$80,$05 ; BDA2
-        .byte   $81,$06,$C1,$04,$81,$04,$C1,$01 ; BDAA
-        .byte   $C0,$03,$C2,$02,$82,$03,$C0,$02 ; BDB2
-        .byte   $C2,$03,$82,$0E,$80,$3A,$81,$06 ; BDBA
-        .byte   $C1,$02,$C0,$05,$80,$03,$84,$01 ; BDC2
-        .byte   $C4,$04,$84,$04,$C0,$02,$C2,$04 ; BDCA
-        .byte   $82,$04,$C2,$01,$C0,$01,$C8,$02 ; BDD2
-        .byte   $88,$06,$C8,$03,$C0,$01,$C2,$03 ; BDDA
-        .byte   $82,$04,$C2,$06,$82,$0C,$80,$01 ; BDE2
-        .byte   $88,$07,$81,$07,$80,$01,$88,$04 ; BDEA
-        .byte   $C0,$03,$C2,$01,$82,$02,$80,$01 ; BDF2
-        .byte   $84,$01,$C4,$02,$C5,$04,$84,$02 ; BDFA
-        .byte   $82,$02,$C2,$04,$82,$04,$80,$02 ; BE02
-        .byte   $88,$0F,$80,$04,$81,$06,$80,$01 ; BE0A
-        .byte   $88,$01,$80,$08,$81,$0A,$C1,$04 ; BE12
-        .byte   $81,$02,$85,$01,$C5,$03,$C4,$03 ; BE1A
-        .byte   $84,$04,$C4,$03,$C0,$01,$C8,$02 ; BE22
-        .byte   $88,$01,$80,$03,$C2,$05,$C0,$01 ; BE2A
-        .byte   $84,$03,$C4,$03,$84,$02,$82,$03 ; BE32
-        .byte   $C2,$07,$80,$01,$88,$01,$80,$01 ; BE3A
-        .byte   $C1,$06,$81,$04,$C1,$06,$81,$04 ; BE42
-        .byte   $C0,$03,$80,$02,$84,$09,$80,$0F ; BE4A
-        .byte   $81,$0F,$80,$07,$81,$0E,$80,$0B ; BE52
-        .byte   $88,$0B,$80,$03,$81,$01,$80,$0F ; BE5A
-        .byte   $23,$0C,$26,$0C,$B0,$07,$5E,$BE ; BE62
-        .byte   $B1,$00,$52,$BE,$80,$60,$B0,$07 ; BE6A
-        .byte   $6E,$BE,$C2,$00,$8B,$BE,$5F,$60 ; BE72
-        .byte   $56,$01,$5A,$5F,$B0,$00,$78,$BE ; BE7A
-        .byte   $B9,$B6,$B6,$B5,$B5,$B5,$00,$FF ; BE82
-        .byte   $05,$BC,$B8,$B3,$B1,$B1,$B9,$B4 ; BE8A
-        .byte   $B1,$B1,$B7,$B3,$B1,$B1,$B6,$B3 ; BE92
-        .byte   $B1,$B1,$B1,$B5,$B2,$B1,$B1,$B1 ; BE9A
-        .byte   $B4,$B2,$B1,$B1,$B1,$B1,$B3,$B1 ; BEA2
-        .byte   $B1,$B1,$B1,$B2,$B1,$B1,$B1,$B1 ; BEAA
-        .byte   $B1,$B0,$00,$FF,$28,$D1,$BE,$C1 ; BEB2
-        .byte   $BE,$C5,$BE,$CD,$BE,$C9,$BE,$0B ; BEBA
-        .byte   $6F,$FB,$11,$0A,$6F,$FB,$11,$02 ; BEC2
-        .byte   $10,$FB,$20,$03,$10,$FB,$20,$A0 ; BECA
-        .byte   $60,$A0,$60,$A0,$60,$A0,$60,$B0 ; BED2
-        .byte   $01,$D1,$BE,$00,$60,$00,$60,$00 ; BEDA
-        .byte   $60,$00,$60,$01,$60,$01,$60,$01 ; BEE2
-        .byte   $60,$01,$60,$B0,$00,$DD,$BE,$F8 ; BEEA
-        .byte   $BE,$A9,$0F,$20,$B5,$B2,$60,$4C ; BEF2
-        .byte   $53,$BF,$A9,$80,$85,$42,$A9,$80 ; BEFA
-        .byte   $85,$43,$20,$4B,$C0,$85,$4C,$A9 ; BF02
-        .byte   $3F,$A2,$4C,$20,$4D,$C1,$A2,$03 ; BF0A
-        .byte   $20,$0A,$C2,$85,$4C,$20,$27,$C0 ; BF12
-        .byte   $20,$44,$B2,$20,$15,$C0,$20,$54 ; BF1A
-        .byte   $C0,$85,$4D,$A9,$3F,$A2,$4D,$20 ; BF22
-        .byte   $4D,$C1,$A2,$03,$20,$0A,$C2,$85 ; BF2A
-        .byte   $4D,$20,$3F,$C0,$20,$65,$B2,$20 ; BF32
-        .byte   $18,$C0,$20,$B3,$C1,$29,$40,$D0 ; BF3A
-        .byte   $10,$A5,$11,$29,$CF,$D0,$0A,$20 ; BF42
-        .byte   $2F,$C1,$F0,$05,$A9,$58,$9D,$00 ; BF4A
-        .byte   $04,$A9,$10,$85,$40,$A9,$10,$85 ; BF52
-        .byte   $41,$20,$FF,$C0,$F0,$03,$4C,$7A ; BF5A
-        .byte   $C1,$A9,$0F,$20,$C6,$B2,$20,$38 ; BF62
-        .byte   $C1,$20,$A2,$C0,$D0,$06,$A5,$11 ; BF6A
-        .byte   $29,$03,$D0,$14,$A9,$00,$85,$44 ; BF72
-        .byte   $A5,$11,$29,$08,$D0,$05,$A9,$46 ; BF7A
-        .byte   $4C,$87,$BF,$A9,$47,$4C,$63,$C0 ; BF82
-        .byte   $60,$01,$02,$04,$08,$10,$20,$40 ; BF8A
-        .byte   $80,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BF92
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BF9A
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFA2
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFAA
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFB2
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFBA
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFC2
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFCA
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFD2
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFDA
-        .byte   $4C,$00,$00,$4C,$00,$80,$4C,$13 ; BFE2
+        .byte   $7A,$7A,$7B                     ; BCA2
+L_BCA5: .byte   $06,$01,$04,$41,$06,$01,$04,$41 ; BCA5
+        .byte   $06,$01,$5B,$80,$0B,$81,$15,$01 ; BCAD
+        .byte   $0B,$00,$07,$80,$0A,$81,$01,$80 ; BCB5
+        .byte   $03,$81,$04,$80,$0A,$00,$0D,$80 ; BCBD
+        .byte   $14,$81,$17,$01,$15,$00,$82,$01 ; BCC5
+        .byte   $2F,$00,$24,$01,$24,$00,$13,$80 ; BCCD
+        .byte   $0F,$82,$1C,$02,$41,$00,$11,$02 ; BCD5
+        .byte   $13,$00,$04,$01,$35,$00,$01,$04 ; BCDD
+        .byte   $01,$00,$02,$02,$3C,$00,$85,$02 ; BCE5
+        .byte   $12,$82,$29,$02,$31,$00,$0F,$01 ; BCED
+        .byte   $4A,$00,$12,$01,$1B,$00,$13,$02 ; BCF5
+        .byte   $42,$00,$0D,$01,$20,$81,$0C,$01 ; BCFD
+        .byte   $13,$00,$20,$01,$0C,$00,$8F,$01 ; BD05
+        .byte   $03,$81,$25,$01,$40,$81,$08,$01 ; BD0D
+        .byte   $53,$81,$17,$01,$31,$00,$A9,$80 ; BD15
+        .byte   $17,$81,$10,$01,$0D,$00,$0A,$02 ; BD1D
+        .byte   $06,$82,$28,$02,$04,$00,$1C,$80 ; BD25
+        .byte   $01,$81,$22,$00,$0D,$02,$0A,$00 ; BD2D
+        .byte   $06,$01,$0F,$00,$14,$02,$06,$00 ; BD35
+        .byte   $09,$80,$09,$81,$20,$01,$37,$00 ; BD3D
+        .byte   $1A,$80,$0C,$82,$1A,$02,$09,$82 ; BD45
+        .byte   $29,$02,$48,$00,$92,$02,$19,$82 ; BD4D
+        .byte   $28,$02,$16,$00,$08,$01,$05,$00 ; BD55
+        .byte   $07,$80,$0E,$81,$12,$00,$26,$01 ; BD5D
+        .byte   $1B,$00,$5C,$01,$2C,$05,$03,$04 ; BD65
+        .byte   $10,$05,$03,$01,$05,$00,$05,$08 ; BD6D
+        .byte   $11,$00,$00,$00,$5C,$80,$01,$C0 ; BD75
+        .byte   $01,$C4,$1A,$C5,$06,$C1,$02,$C0 ; BD7D
+        .byte   $13,$80,$0A,$88,$0E,$80,$02,$82 ; BD85
+        .byte   $0A,$80,$01,$84,$03,$80,$80,$C0 ; BD8D
+        .byte   $01,$C1,$06,$81,$02,$80,$01,$C2 ; BD95
+        .byte   $04,$82,$03,$C2,$06,$82,$0A,$80 ; BD9D
+        .byte   $01,$81,$08,$80,$05,$81,$06,$C1 ; BDA5
+        .byte   $04,$81,$04,$C1,$01,$C0,$03,$C2 ; BDAD
+        .byte   $02,$82,$03,$C0,$02,$C2,$03,$82 ; BDB5
+        .byte   $0E,$80,$3A,$81,$06,$C1,$02,$C0 ; BDBD
+        .byte   $05,$80,$03,$84,$01,$C4,$04,$84 ; BDC5
+        .byte   $04,$C0,$02,$C2,$04,$82,$04,$C2 ; BDCD
+        .byte   $01,$C0,$01,$C8,$02,$88,$06,$C8 ; BDD5
+        .byte   $03,$C0,$01,$C2,$03,$82,$04,$C2 ; BDDD
+        .byte   $06,$82,$0C,$80,$01,$88,$07,$81 ; BDE5
+        .byte   $07,$80,$01,$88,$04,$C0,$03,$C2 ; BDED
+        .byte   $01,$82,$02,$80,$01,$84,$01,$C4 ; BDF5
+        .byte   $02,$C5,$04,$84,$02,$82,$02,$C2 ; BDFD
+        .byte   $04,$82,$04,$80,$02,$88,$0F,$80 ; BE05
+        .byte   $04,$81,$06,$80,$01,$88,$01,$80 ; BE0D
+        .byte   $08,$81,$0A,$C1,$04,$81,$02,$85 ; BE15
+        .byte   $01,$C5,$03,$C4,$03,$84,$04,$C4 ; BE1D
+        .byte   $03,$C0,$01,$C8,$02,$88,$01,$80 ; BE25
+        .byte   $03,$C2,$05,$C0,$01,$84,$03,$C4 ; BE2D
+        .byte   $03,$84,$02,$82,$03,$C2,$07,$80 ; BE35
+        .byte   $01,$88,$01,$80,$01,$C1,$06,$81 ; BE3D
+        .byte   $04,$C1,$06,$81,$04,$C0,$03,$80 ; BE45
+        .byte   $02,$84,$09,$80,$0F,$81,$0F,$80 ; BE4D
+        .byte   $07,$81,$0E,$80,$0B,$88,$0B,$80 ; BE55
+        .byte   $03,$81,$01,$80,$0F,$23,$0C,$26 ; BE5D
+        .byte   $0C,$B0,$07,$5E,$BE,$B1,$00,$52 ; BE65
+        .byte   $BE,$80,$60,$B0,$07,$6E,$BE,$C2 ; BE6D
+        .byte   $00,$8B,$BE,$5F,$60,$56,$01,$5A ; BE75
+        .byte   $5F,$B0,$00,$78,$BE,$B9,$B6,$B6 ; BE7D
+        .byte   $B5,$B5,$B5,$00,$FF,$05,$BC,$B8 ; BE85
+        .byte   $B3,$B1,$B1,$B9,$B4,$B1,$B1,$B7 ; BE8D
+        .byte   $B3,$B1,$B1,$B6,$B3,$B1,$B1,$B1 ; BE95
+        .byte   $B5,$B2,$B1,$B1,$B1,$B4,$B2,$B1 ; BE9D
+        .byte   $B1,$B1,$B1,$B3,$B1,$B1,$B1,$B1 ; BEA5
+        .byte   $B2,$B1,$B1,$B1,$B1,$B1,$B0,$00 ; BEAD
+        .byte   $FF,$28,$D1,$BE,$C1,$BE,$C5,$BE ; BEB5
+        .byte   $CD,$BE,$C9,$BE,$0B,$6F,$FB,$11 ; BEBD
+        .byte   $0A,$6F,$FB,$11,$02,$10,$FB,$20 ; BEC5
+        .byte   $03,$10,$FB,$20,$A0,$60,$A0,$60 ; BECD
+        .byte   $A0,$60,$A0,$60,$B0,$01,$D1,$BE ; BED5
+        .byte   $00,$60,$00,$60,$00,$60,$00,$60 ; BEDD
+        .byte   $01,$60,$01,$60,$01,$60,$01,$60 ; BEE5
+        .byte   $B0,$00,$DD,$BE                 ; BEED
+L_BEF1: .byte   $F8,$BE,$A9,$0F,$20,$B5,$B2,$60 ; BEF1
+        .byte   $4C,$53,$BF,$A9,$80,$85,$42,$A9 ; BEF9
+        .byte   $80,$85,$43,$20,$4B,$C0,$85,$4C ; BF01
+        .byte   $A9,$3F,$A2,$4C,$20,$4D,$C1,$A2 ; BF09
+        .byte   $03,$20,$0A,$C2,$85,$4C,$20,$27 ; BF11
+        .byte   $C0,$20,$44,$B2,$20,$15,$C0,$20 ; BF19
+        .byte   $54,$C0,$85,$4D,$A9,$3F,$A2,$4D ; BF21
+        .byte   $20,$4D,$C1,$A2,$03,$20,$0A,$C2 ; BF29
+        .byte   $85,$4D,$20,$3F,$C0,$20,$65,$B2 ; BF31
+        .byte   $20,$18,$C0,$20,$B3,$C1,$29,$40 ; BF39
+        .byte   $D0,$10,$A5,$11,$29,$CF,$D0,$0A ; BF41
+        .byte   $20,$2F,$C1,$F0,$05,$A9,$58,$9D ; BF49
+        .byte   $00,$04,$A9,$10,$85,$40,$A9,$10 ; BF51
+        .byte   $85,$41,$20,$FF,$C0,$F0,$03,$4C ; BF59
+        .byte   $7A,$C1,$A9,$0F,$20,$C6,$B2,$20 ; BF61
+        .byte   $38,$C1,$20,$A2,$C0,$D0,$06,$A5 ; BF69
+        .byte   $11,$29,$03,$D0,$14,$A9,$00,$85 ; BF71
+        .byte   $44,$A5,$11,$29,$08,$D0,$05,$A9 ; BF79
+        .byte   $46,$4C,$87,$BF,$A9,$47,$4C,$63 ; BF81
+        .byte   $C0,$60,$01,$02,$04,$08,$10,$20 ; BF89
+        .byte   $40,$80,$FF,$FF,$FF,$FF,$FF,$FF ; BF91
+        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BF99
+        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFA1
+        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFA9
+        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFB1
+        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFB9
+        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFC1
+        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFC9
+        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFD1
+        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFD9
+        .byte   $FF                             ; BFE1
+L_BFE2: .byte   $4C,$00,$00,$4C,$00,$80,$4C,$13 ; BFE2
         .byte   $80,$4C,$00,$00,$4C,$00,$00,$4C ; BFEA
-        .byte   $77,$80,$EE,$F4,$FF,$4C,$32,$F2 ; BFF2
-        .byte   $00,$00,$F4,$FF,$FF             ; BFFA
+        .byte   $77,$80                         ; BFF2
+L_BFF4: .byte   $EE,$F4,$FF,$4C,$32,$F2,$00,$00 ; BFF4
+        .byte   $F4,$FF,$FF                     ; BFFC
         .byte   $FF                             ; BFFF
 
 ; End of "BANK03" segment

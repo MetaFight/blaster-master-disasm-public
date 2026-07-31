@@ -3,19 +3,19 @@
 L_AA5A: jmp     L_AA6B                          ; AA5A
 
 ; ----------------------------------------------------------------------------
-        lda     #$08                            ; AA5D
+L_AA5D: lda     #$08                            ; AA5D
         jsr     TankEnemy_Init                  ; AA5F
         lda     #$02                            ; AA62
         sta     $52                             ; AA64
-        jsr     LEB71                           ; AA66
+        jsr     Step_RNG                        ; AA66
         sta     $51                             ; AA69
 L_AA6B: rts                                     ; AA6B
 
 ; ----------------------------------------------------------------------------
-LAA6C:  jmp     L_AAD4                          ; AA6C
+L_AA6C: jmp     L_AAD4                          ; AA6C
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; AA6F
+L_AA6F: lda     #$80                            ; AA6F
         sta     $42                             ; AA71
         lda     #$80                            ; AA73
         sta     $43                             ; AA75
@@ -44,7 +44,7 @@ L_AA96: lda     $52                             ; AA96
         bne     L_AAD4                          ; AAA0
         jsr     LDF0F                           ; AAA2
         beq     L_AAD4                          ; AAA5
-        jsr     LEB71                           ; AAA7
+        jsr     Step_RNG                        ; AAA7
         and     #$40                            ; AAAA
         bne     L_AAB2                          ; AAAC
         lda     #$80                            ; AAAE
@@ -89,11 +89,11 @@ L_AAEE: jsr     LE07B                           ; AAEE
         tax                                     ; AAF7
         lda     LAB04,x                         ; AAF8
         sta     $44                             ; AAFB
-        lda     LAB03,x                         ; AAFD
+        lda     L_AB03,x                        ; AAFD
         jmp     LF011                           ; AB00
 
 ; ----------------------------------------------------------------------------
-LAB03:  .byte   $72                             ; AB03
+L_AB03: .byte   $72                             ; AB03
 LAB04:  .byte   $81,$72,$81,$72,$81,$72,$81,$73 ; AB04
         .byte   $81,$73,$81,$73,$81,$73,$81     ; AB0C
 .endmacro

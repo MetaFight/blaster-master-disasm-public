@@ -3,17 +3,17 @@
 L_ACFB: jmp     L_AD07                          ; ACFB
 
 ; ----------------------------------------------------------------------------
-        lda     #$0C                            ; ACFE
+L_ACFE: lda     #$0C                            ; ACFE
         jsr     TankEnemy_Init                  ; AD00
         lda     #$00                            ; AD03
         sta     $50                             ; AD05
 L_AD07: rts                                     ; AD07
 
 ; ----------------------------------------------------------------------------
-LAD08:  jmp     L_ADA9                          ; AD08
+L_AD08: jmp     L_ADA9                          ; AD08
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; AD0B
+L_AD0B: lda     #$80                            ; AD0B
         sta     $42                             ; AD0D
         lda     #$80                            ; AD0F
         sta     $43                             ; AD11
@@ -35,7 +35,7 @@ L_AD2A: cmp     #$03                            ; AD2A
         jmp     L_ADA9                          ; AD2E
 
 ; ----------------------------------------------------------------------------
-L_AD31: jsr     LEB71                           ; AD31
+L_AD31: jsr     Step_RNG                           ; AD31
         and     #$1F                            ; AD34
         bne     L_ADA9                          ; AD36
         txa                                     ; AD38
@@ -55,7 +55,7 @@ L_AD4A: jsr     LE07B                           ; AD4A
         lda     LoadedObj + Obj::Facing         ; AD51
         eor     $52                             ; AD53
         bpl     L_AD65                          ; AD55
-        jsr     LEB71                           ; AD57
+        jsr     Step_RNG                        ; AD57
         bmi     L_AD61                          ; AD5A
         lda     #$01                            ; AD5C
         jmp     L_AD63                          ; AD5E
@@ -126,13 +126,13 @@ L_ADCF: sta     $44                             ; ADCF
         lsr     a                               ; ADD5
         and     #$03                            ; ADD6
         tax                                     ; ADD8
-        lda     LADE0,x                         ; ADD9
+        lda     L_ADE0,x                        ; ADD9
         jmp     LF011                           ; ADDC
 
 ; ----------------------------------------------------------------------------
-        rts                                     ; ADDF
+L_ADDF: rts                                     ; ADDF
 
 ; ----------------------------------------------------------------------------
-LADE0:  .byte   $05,$06,$07,$06                 ; ADE0
+L_ADE0: .byte   $05,$06,$07,$06                 ; ADE0
 .endmacro
 

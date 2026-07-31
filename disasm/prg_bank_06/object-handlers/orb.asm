@@ -3,9 +3,9 @@
 L_AE78: jmp     L_AE94                          ; AE78
 
 ; ----------------------------------------------------------------------------
-        lda     #$0E                            ; AE7B
+L_AE7B: lda     #$0E                            ; AE7B
         jsr     TankEnemy_Init                  ; AE7D
-        jsr     LEB71                           ; AE80
+        jsr     Step_RNG                        ; AE80
         and     #$80                            ; AE83
         sta     LoadedObj + Obj::Facing         ; AE85
         ldy     #$10                            ; AE87
@@ -17,10 +17,10 @@ L_AE78: jmp     L_AE94                          ; AE78
 L_AE94: rts                                     ; AE94
 
 ; ----------------------------------------------------------------------------
-LAE95:  jmp     L_AF03                          ; AE95
+L_AE95: jmp     L_AF03                          ; AE95
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; AE98
+L_AE98: lda     #$80                            ; AE98
         sta     $42                             ; AE9A
         lda     #$80                            ; AE9C
         sta     $43                             ; AE9E
@@ -37,11 +37,11 @@ LAE95:  jmp     L_AF03                          ; AE95
 L_AEB3: lda     Global_FrameCounter             ; AEB3
         cmp     LoadedObj + Obj::Type           ; AEB5
         bne     L_AF03                          ; AEB7
-        jsr     LEB71                           ; AEB9
+        jsr     Step_RNG                        ; AEB9
         bcc     L_AF03                          ; AEBC
         lda     #$08                            ; AEBE
         sta     LoadedObj + Obj::Velocity_Y     ; AEC0
-        jsr     LEB71                           ; AEC2
+        jsr     Step_RNG                        ; AEC2
         bmi     L_AED5                          ; AEC5
         lda     #$00                            ; AEC7
         sec                                     ; AEC9
@@ -66,7 +66,7 @@ L_AEE6: jsr     LE07B                           ; AEE6
         lda     $50                             ; AEED
         cmp     #$02                            ; AEEF
         beq     L_AEFA                          ; AEF1
-        jsr     LEB71                           ; AEF3
+        jsr     Step_RNG                        ; AEF3
         and     #$03                            ; AEF6
         bne     L_AF03                          ; AEF8
 L_AEFA: lda     #$00                            ; AEFA
@@ -95,13 +95,13 @@ L_AF1D: lda     #$01                            ; AF1D
         jsr     LE060                           ; AF25
         and     #$07                            ; AF28
         tax                                     ; AF2A
-        lda     LAF32,x                         ; AF2B
+        lda     L_AF32,x                        ; AF2B
         jmp     LF011                           ; AF2E
 
 ; ----------------------------------------------------------------------------
-        rts                                     ; AF31
+L_AF31: rts                                     ; AF31
 
 ; ----------------------------------------------------------------------------
-LAF32:  .byte   $86,$87,$80,$81,$82,$83,$84,$85 ; AF32
+L_AF32: .byte   $86,$87,$80,$81,$82,$83,$84,$85 ; AF32
 .endmacro
 

@@ -1,6 +1,10 @@
 .macro MAC_L_EB71
 ; ----------------------------------------------------------------------------
-L_EB71: lda     $13                             ; EB71
+; Steps the pseudo-random number generator state RNG_State ($13) by one 8-bit LCG step and returns
+; the new byte in A.
+Step_RNG:
+        lda     $13                             ; EB71
+; Advance the PRNG: $13 = $13×5 − 1 (returns the new $13).
         asl     a                               ; EB73
         asl     a                               ; EB74
         clc                                     ; EB75

@@ -3,7 +3,7 @@
 L_ADE4: jmp     L_ADFE                          ; ADE4
 
 ; ----------------------------------------------------------------------------
-        lda     #$0D                            ; ADE7
+L_ADE7: lda     #$0D                            ; ADE7
         jsr     TankEnemy_Init                  ; ADE9
         lda     #$B8                            ; ADEC
         sta     LoadedObj + Obj::Facing         ; ADEE
@@ -17,10 +17,10 @@ L_ADE4: jmp     L_ADFE                          ; ADE4
 L_ADFE: rts                                     ; ADFE
 
 ; ----------------------------------------------------------------------------
-LADFF:  jmp     L_AE49                          ; ADFF
+L_ADFF: jmp     L_AE49                          ; ADFF
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; AE02
+L_AE02: lda     #$80                            ; AE02
         sta     $42                             ; AE04
         lda     #$80                            ; AE06
         sta     $43                             ; AE08
@@ -80,7 +80,7 @@ L_AE63: lda     #$01                            ; AE63
         jmp     LF011                           ; AE74
 
 ; ----------------------------------------------------------------------------
-        rts                                     ; AE77
+L_AE77: rts                                     ; AE77
 
 .endmacro
 

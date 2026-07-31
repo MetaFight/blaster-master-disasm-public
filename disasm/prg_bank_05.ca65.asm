@@ -26,9 +26,9 @@ L_8006: dex                                     ; 8006
 L_8013: sta     $E9                             ; 8013
         asl     a                               ; 8015
         tax                                     ; 8016
-        lda     L84B0,x                         ; 8017
+        lda     L_84B0,x                        ; 8017
         sta     $E1                             ; 801A
-        lda     L84B0+1,x                       ; 801C
+        lda     L_84B0+1,x                      ; 801C
         sta     $E2                             ; 801F
         lda     #$0F                            ; 8021
         sta     $4015                           ; 8023
@@ -319,7 +319,7 @@ L_821D: sta     $E3                             ; 821D
         bmi     L_827A                          ; 8239
         asl     a                               ; 823B
         tay                                     ; 823C
-        lda     L83EE,y                         ; 823D
+        lda     L_83EE,y                        ; 823D
         sta     $E1                             ; 8240
         sta     $0790,x                         ; 8242
         lda     L83EF,y                         ; 8245
@@ -532,7 +532,7 @@ L_83D8: lda     $076C,x                         ; 83D8
         jmp     L_8383                          ; 83EB
 
 ; ----------------------------------------------------------------------------
-L83EE:  .byte   $AE                             ; 83EE
+L_83EE: .byte   $AE                             ; 83EE
 L83EF:  .byte   $06,$4E,$06,$F4,$05,$9E,$05,$4D ; 83EF
         .byte   $05,$01,$05,$B9,$04,$75,$04,$35 ; 83F7
         .byte   $04,$F9,$03,$C0,$03,$8A,$03,$57 ; 83FF
@@ -559,7 +559,7 @@ L83EF:  .byte   $06,$4E,$06,$F4,$05,$9E,$05,$4D ; 83EF
         .byte   $00,$03,$00,$02,$00,$01,$00,$00 ; 84A7
         .byte   $00                             ; 84AF
 ; ----------------------------------------------------------------------------
-L84B0:  .addr   L983A                           ; 84B0
+L_84B0: .addr   L983A                           ; 84B0
         .addr   L8918                           ; 84B2
         .addr   L8931                           ; 84B4
         .addr   LB683                           ; 84B6
@@ -568,7 +568,7 @@ L84B0:  .addr   L983A                           ; 84B0
         .addr   L983A                           ; 84BC
         .addr   LA132                           ; 84BE
         .addr   L8951                           ; 84C0
-        .addr   L855A                           ; 84C2
+        .addr   L_855A                          ; 84C2
         .addr   L896A                           ; 84C4
         .addr   L89A0                           ; 84C6
         .addr   L89B3                           ; 84C8
@@ -645,7 +645,7 @@ L84B0:  .addr   L983A                           ; 84B0
         .addr   LB549                           ; 8556
         .addr   LBCF6                           ; 8558
 ; ----------------------------------------------------------------------------
-L855A:  .byte   $00,$00,$8A,$88,$73,$85,$01,$01 ; 855A
+L_855A: .byte   $00,$00,$8A,$88,$73,$85,$01,$01 ; 855A
         .byte   $8F,$88,$16,$86,$02,$02,$FF,$88 ; 8562
         .byte   $C0,$85,$03,$03,$81,$88,$5C,$86 ; 856A
         .byte   $FF,$D0,$11,$02,$C2,$00,$EA,$88 ; 8572
@@ -2473,7 +2473,7 @@ LBCF6:  .byte   $00,$00,$8A,$88,$0F,$BD,$01,$01 ; BCF6
         .byte   $B1,$B1,$B0,$00,$FF,$28         ; BDB6
 LBDBC:  .byte   $D6                             ; BDBC
 LBDBD:  .byte   $BD                             ; BDBD
-LBDBE:  .byte   $C6                             ; BDBE
+L_BDBE: .byte   $C6                             ; BDBE
 LBDBF:  .byte   $BD,$CA,$BD,$D2,$BD,$CE,$BD,$0B ; BDBF
         .byte   $6F,$FB,$11,$0A,$6F,$FB,$11,$02 ; BDC7
         .byte   $10,$FB,$20,$03,$10,$FB,$20,$A0 ; BDCF
@@ -2547,7 +2547,7 @@ L_BE58: sta     $BF                             ; BE58
         lda     $BF                             ; BE7A
         asl     a                               ; BE7C
         tax                                     ; BE7D
-        lda     LBDBE,x                         ; BE7E
+        lda     L_BDBE,x                        ; BE7E
         sta     $BD                             ; BE81
         lda     LBDBF,x                         ; BE83
         sta     $BE                             ; BE86
@@ -2610,7 +2610,7 @@ L_BEE0: iny                                     ; BEE0
         jmp     L_BE34                          ; BEEE
 
 ; ----------------------------------------------------------------------------
-        .byte   $BE,$A9,$0F,$20,$B4,$B2,$60,$4C ; BEF1
+L_BEF1: .byte   $BE,$A9,$0F,$20,$B4,$B2,$60,$4C ; BEF1
         .byte   $52,$BF,$A9,$80,$85,$42,$A9,$80 ; BEF9
         .byte   $85,$43,$20,$4B,$C0,$85,$4C,$A9 ; BF01
         .byte   $3F,$A2,$4C,$20,$4D,$C1,$A2,$03 ; BF09
@@ -2640,7 +2640,8 @@ L_BEE0: iny                                     ; BEE0
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFC9
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFD1
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFD9
-        .byte   $FF,$4C,$00,$00                 ; BFE1
+        .byte   $FF                             ; BFE1
+L_BFE2: .byte   $4C,$00,$00                     ; BFE2
 ; ----------------------------------------------------------------------------
 L_BFE5: jmp     L_8000                          ; BFE5
 
@@ -2648,12 +2649,13 @@ L_BFE5: jmp     L_8000                          ; BFE5
 L_BFE8: jmp     L_8013                          ; BFE8
 
 ; ----------------------------------------------------------------------------
-        .byte   $4C,$00,$00,$4C,$00,$00         ; BFEB
+L_BFEB: .byte   $4C,$00,$00                     ; BFEB
+L_BFEE: .byte   $4C,$00,$00                     ; BFEE
 ; ----------------------------------------------------------------------------
 L_BFF1: jmp     L_8077                          ; BFF1
 
 ; ----------------------------------------------------------------------------
-        .byte   $EE,$F4,$FF,$FF,$FF,$FF,$00,$00 ; BFF4
+L_BFF4: .byte   $EE,$F4,$FF,$FF,$FF,$FF,$00,$00 ; BFF4
         .byte   $F4,$FF,$FF                     ; BFFC
         .byte   $FF                             ; BFFF
 

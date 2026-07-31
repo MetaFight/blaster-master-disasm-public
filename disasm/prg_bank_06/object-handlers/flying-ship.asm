@@ -3,7 +3,7 @@
 L_ABCF: jmp     L_ABEB                          ; ABCF
 
 ; ----------------------------------------------------------------------------
-        lda     #$0A                            ; ABD2
+L_ABD2: lda     #$0A                            ; ABD2
         jsr     TankEnemy_Init                  ; ABD4
         lda     #$10                            ; ABD7
         sta     LoadedObj + Obj::Velocity_X     ; ABD9
@@ -18,10 +18,10 @@ L_ABCF: jmp     L_ABEB                          ; ABCF
 L_ABEB: rts                                     ; ABEB
 
 ; ----------------------------------------------------------------------------
-LABEC:  jmp     L_AC10                          ; ABEC
+L_ABEC: jmp     L_AC10                          ; ABEC
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; ABEF
+L_ABEF: lda     #$80                            ; ABEF
         sta     $42                             ; ABF1
         lda     #$80                            ; ABF3
         sta     $43                             ; ABF5

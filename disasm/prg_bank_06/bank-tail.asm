@@ -1,6 +1,6 @@
 .macro MAC_L_BC21
 ; ----------------------------------------------------------------------------
-LBC1F:  .byte   $B0,$40                         ; BC1F
+L_BC1F: .byte   $B0,$40                         ; BC1F
 L_BC21: .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BC21
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BC29
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BC31
@@ -123,8 +123,9 @@ L_BC21: .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BC21
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFD9
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFE1
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFE9
-        .byte   $FF,$FF,$FF,$EE,$F4,$FF,$4C,$3B ; BFF1
-        .byte   $F2,$7E,$EB,$F4,$FF,$FF         ; BFF9
+        .byte   $FF,$FF,$FF                     ; BFF1
+L_BFF4: .byte   $EE,$F4,$FF,$4C,$3B,$F2,$7E,$EB ; BFF4
+        .byte   $F4,$FF,$FF                     ; BFFC
         .byte   $FF                             ; BFFF
 
 ; End of "BANK06" segment

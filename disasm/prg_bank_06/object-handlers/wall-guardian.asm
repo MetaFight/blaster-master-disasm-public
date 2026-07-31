@@ -3,7 +3,7 @@
 L_BA88: jmp     L_BAA3                          ; BA88
 
 ; ----------------------------------------------------------------------------
-        lda     $03FE                           ; BA8B
+L_BA8B: lda     $03FE                           ; BA8B
         and     #$01                            ; BA8E
         beq     L_BA95                          ; BA90
         jmp     LD804                           ; BA92
@@ -18,15 +18,15 @@ L_BA95: jsr     LD7E3                           ; BA95
 L_BAA3: rts                                     ; BAA3
 
 ; ----------------------------------------------------------------------------
-LBAA4:  jmp     L_BACF                          ; BAA4
+L_BAA4: jmp     L_BACF                          ; BAA4
 
 ; ----------------------------------------------------------------------------
-        lda     Global_FrameCounter             ; BAA7
+L_BAA7: lda     Global_FrameCounter             ; BAA7
         cmp     #$A0                            ; BAA9
         bcc     L_BACF                          ; BAAB
         and     #$0F                            ; BAAD
         bne     L_BACF                          ; BAAF
-        jsr     LEB71                           ; BAB1
+        jsr     Step_RNG                        ; BAB1
         and     #$1F                            ; BAB4
         eor     #$FF                            ; BAB6
         clc                                     ; BAB8
@@ -155,12 +155,12 @@ L_BB92: dec     $51                             ; BB92
         lsr     a                               ; BB96
         lsr     a                               ; BB97
         tax                                     ; BB98
-        lda     LBB9F,x                         ; BB99
+        lda     L_BB9F,x                        ; BB99
         sta     $45                             ; BB9C
         rts                                     ; BB9E
 
 ; ----------------------------------------------------------------------------
-LBB9F:  .byte   $B6,$B4,$B2,$B0,$B0,$B2,$B4,$B6 ; BB9F
+L_BB9F: .byte   $B6,$B4,$B2,$B0,$B0,$B2,$B4,$B6 ; BB9F
 ; ----------------------------------------------------------------------------
 L_BBA7: jsr     L_BBB8                          ; BBA7
         ldy     #$00                            ; BBAA
@@ -174,10 +174,10 @@ L_BBA7: jsr     L_BBB8                          ; BBA7
 ; ----------------------------------------------------------------------------
 L_BBB8: asl     a                               ; BBB8
         clc                                     ; BBB9
-        adc     LBC1D                           ; BBBA
+        adc     L_BC1D                          ; BBBA
         sta     $A6                             ; BBBD
         lda     #$00                            ; BBBF
-        adc     LBC1D+1                         ; BBC1
+        adc     L_BC1D+1                        ; BBC1
         sta     $A7                             ; BBC4
         rts                                     ; BBC6
 
@@ -200,7 +200,7 @@ L_BBE2: lda     #$00                            ; BBE2
         rts                                     ; BBE4
 
 ; ----------------------------------------------------------------------------
-        jsr     L_BBB8                          ; BBE5
+L_BBE5: jsr     L_BBB8                          ; BBE5
         ldy     #$01                            ; BBE8
         lda     ($A6),y                         ; BBEA
         jsr     LD697                           ; BBEC
@@ -210,7 +210,7 @@ L_BBF4: rts                                     ; BBF4
 
 ; ----------------------------------------------------------------------------
 L_BBF5: jsr     LD804                           ; BBF5
-L_BBF8: jsr     LEB71                           ; BBF8
+L_BBF8: jsr     Step_RNG                           ; BBF8
         and     #$0F                            ; BBFB
         sta     $00                             ; BBFD
         ldy     #$03                            ; BBFF
@@ -231,6 +231,6 @@ L_BC18: lda     #$4C                            ; BC18
         rts                                     ; BC1C
 
 ; ----------------------------------------------------------------------------
-LBC1D:  .addr   LBC1F                           ; BC1D
+L_BC1D: .addr   L_BC1F                          ; BC1D
 .endmacro
 

@@ -18,7 +18,7 @@ _ObjHandler_Tank_76_Shooter_Init__Update__:
         lda     #$10                            ; AFFF
         jsr     TankEnemy_Init                  ; B001
 ; $47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG
-        jsr     LEB71                           ; B004
+        jsr     Step_RNG                        ; B004
         sta     LoadedObj + Obj::Facing         ; B007
 ; speed $14, converted with the heading into the velocity pair $4C/$4D. This is the only place the
 ; Shooter's velocity is set; nothing steers it afterwards
@@ -129,7 +129,7 @@ _ObjHandler_Tank_77_Shooter_Main__TileBase:
         jmp     LF011                           ; B072
 
 ; ----------------------------------------------------------------------------
-        rts                                     ; B075
+L_B075: rts                                     ; B075
 
 .endmacro
 

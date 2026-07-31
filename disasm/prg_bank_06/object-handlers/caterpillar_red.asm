@@ -3,7 +3,7 @@
 L_A8D2: jmp     L_A8FA                          ; A8D2
 
 ; ----------------------------------------------------------------------------
-        lda     #$06                            ; A8D5
+L_A8D5: lda     #$06                            ; A8D5
         jsr     TankEnemy_Init                  ; A8D7
         lda     #$01                            ; A8DA
         sta     $50                             ; A8DC
@@ -24,10 +24,10 @@ L_A8F2: lda     #$00                            ; A8F2
 L_A8FA: rts                                     ; A8FA
 
 ; ----------------------------------------------------------------------------
-LA8FB:  jmp     L_A994                          ; A8FB
+L_A8FB: jmp     L_A994                          ; A8FB
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; A8FE
+L_A8FE: lda     #$80                            ; A8FE
         sta     $42                             ; A900
         lda     #$40                            ; A902
         sta     $43                             ; A904
@@ -55,7 +55,7 @@ L_A91E: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; A91E
         clc                                     ; A92F
         adc     #$01                            ; A930
 L_A932: sta     LoadedObj + Obj::Velocity_X     ; A932
-        jsr     LEB71                           ; A934
+        jsr     Step_RNG                        ; A934
         and     #$0F                            ; A937
         clc                                     ; A939
         adc     #$18                            ; A93A
@@ -66,10 +66,10 @@ L_A93E: lda     #$11                            ; A93E
         jsr     LE083                           ; A945
         and     #$80                            ; A948
         beq     L_A994                          ; A94A
-        jsr     LEB71                           ; A94C
+        jsr     Step_RNG                        ; A94C
         and     #$0F                            ; A94F
         bne     L_A967                          ; A951
-        jsr     LEB71                           ; A953
+        jsr     Step_RNG                        ; A953
         and     #$0F                            ; A956
         clc                                     ; A958
         adc     #$30                            ; A959
@@ -129,7 +129,7 @@ L_A9AE: lda     #$00                            ; A9AE
         lda     #$02                            ; A9BF
         sta     LoadedObj + Obj::Facing         ; A9C1
 L_A9C3: ldx     LoadedObj + Obj::Facing         ; A9C3
-        lda     LA4DB,x                         ; A9C5
+        lda     L_A4DB,x                        ; A9C5
         jmp     LF011                           ; A9C8
 
 .endmacro

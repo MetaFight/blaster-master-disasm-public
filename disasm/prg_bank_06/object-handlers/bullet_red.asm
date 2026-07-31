@@ -3,7 +3,7 @@
 L_B91A: jmp     L_B949                          ; B91A
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObj + Obj::Position_X_Hi  ; B91D
+L_B91D: lda     LoadedObj + Obj::Position_X_Hi  ; B91D
         lsr     a                               ; B91F
         bcc     L_B92D                          ; B920
         lda     #$A0                            ; B922
@@ -29,10 +29,10 @@ L_B935: ldy     #$18                            ; B935
 L_B949: rts                                     ; B949
 
 ; ----------------------------------------------------------------------------
-LB94A:  jmp     L_B979                          ; B94A
+L_B94A: jmp     L_B979                          ; B94A
 
 ; ----------------------------------------------------------------------------
-        lda     LoadedObj + Obj::Position_X_Hi  ; B94D
+L_B94D: lda     LoadedObj + Obj::Position_X_Hi  ; B94D
         lsr     a                               ; B94F
         bcc     L_B95D                          ; B950
         lda     #$A0                            ; B952
@@ -58,10 +58,10 @@ L_B965: ldy     #$18                            ; B965
 L_B979: rts                                     ; B979
 
 ; ----------------------------------------------------------------------------
-LB97A:  jmp     L_B9C0                          ; B97A
+L_B97A: jmp     L_B9C0                          ; B97A
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; B97D
+L_B97D: lda     #$80                            ; B97D
         sta     $42                             ; B97F
         lda     #$80                            ; B981
         sta     $43                             ; B983
@@ -122,7 +122,7 @@ L_B9DA: lda     $50                             ; B9DA
         lsr     a                               ; B9EA
         lsr     a                               ; B9EB
         tax                                     ; B9EC
-        lda     LBA70,x                         ; B9ED
+        lda     L_BA70,x                        ; B9ED
         sta     $44                             ; B9F0
         lda     Global_FrameCounter             ; B9F2
         lsr     a                               ; B9F4
@@ -133,13 +133,13 @@ L_B9DA: lda     $50                             ; B9DA
         jmp     LF011                           ; B9FC
 
 ; ----------------------------------------------------------------------------
-        rts                                     ; B9FF
+L_B9FF: rts                                     ; B9FF
 
 ; ----------------------------------------------------------------------------
-LBA00:  jmp     L_BA43                          ; BA00
+L_BA00: jmp     L_BA43                          ; BA00
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; BA03
+L_BA03: lda     #$80                            ; BA03
         sta     $42                             ; BA05
         lda     #$80                            ; BA07
         sta     $43                             ; BA09
@@ -153,7 +153,7 @@ LBA00:  jmp     L_BA43                          ; BA00
 ; ----------------------------------------------------------------------------
 L_BA19: jsr     LE083                           ; BA19
         beq     L_BA43                          ; BA1C
-        jsr     LEB71                           ; BA1E
+        jsr     Step_RNG                        ; BA1E
         and     #$40                            ; BA21
         beq     L_BA2C                          ; BA23
         lda     #$60                            ; BA25
@@ -197,16 +197,16 @@ L_BA5D: lda     LoadedObj + Obj::Facing         ; BA5D
         lsr     a                               ; BA62
         lsr     a                               ; BA63
         tax                                     ; BA64
-        lda     LBA80,x                         ; BA65
+        lda     L_BA80,x                        ; BA65
         sta     $44                             ; BA68
         lda     LBA81,x                         ; BA6A
         jmp     LF011                           ; BA6D
 
 ; ----------------------------------------------------------------------------
-LBA70:  .byte   $C0                             ; BA70
+L_BA70: .byte   $C0                             ; BA70
 LBA71:  .byte   $6A,$00,$68,$00,$6A,$C0,$68,$40 ; BA71
         .byte   $68,$80,$6A,$80,$68,$40,$6A     ; BA79
-LBA80:  .byte   $00                             ; BA80
+L_BA80: .byte   $00                             ; BA80
 LBA81:  .byte   $6A,$80,$68,$40,$6A,$00,$68     ; BA81
 .endmacro
 

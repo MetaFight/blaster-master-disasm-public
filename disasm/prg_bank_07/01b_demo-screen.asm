@@ -6,14 +6,14 @@ L_C2DB: jsr     L_DEC2                          ; C2DB
         and     #$03                            ; C2E4
         sta     $06F4                           ; C2E6
         tax                                     ; C2E9
-        lda     LC2F7,x                         ; C2EA
+        lda     L_C2F7,x                        ; C2EA
         sta     $14                             ; C2ED
         lda     #$83                            ; C2EF
         sta     $06F3                           ; C2F1
         jmp     L_C301                          ; C2F4
 
 ; ----------------------------------------------------------------------------
-LC2F7:  .byte   $08,$01,$0A,$03                 ; C2F7
+L_C2F7: .byte   $08,$01,$0A,$03                 ; C2F7
 .endmacro
 
 .macro MAC_L_E243

@@ -3,7 +3,7 @@
 L_A86E: jmp     L_A89F                          ; A86E
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; A871
+L_A871: lda     #$80                            ; A871
         sta     $42                             ; A873
         lda     #$C0                            ; A875
         sta     $43                             ; A877
@@ -18,7 +18,7 @@ L_A86E: jmp     L_A89F                          ; A86E
 L_A886: lda     #$F8                            ; A886
 L_A888: sta     LoadedObj + Obj::Velocity_X     ; A888
         jsr     LE02F                           ; A88A
-        jsr     LEB71                           ; A88D
+        jsr     Step_RNG                        ; A88D
         and     #$3F                            ; A890
         bne     L_A89F                          ; A892
         lda     Global_FrameCounter             ; A894
@@ -50,13 +50,13 @@ L_A8B9: lda     #$01                            ; A8B9
         lsr     a                               ; A8C3
         and     #$03                            ; A8C4
         tax                                     ; A8C6
-        lda     LA8CE,x                         ; A8C7
+        lda     L_A8CE,x                        ; A8C7
         jmp     LF011                           ; A8CA
 
 ; ----------------------------------------------------------------------------
-        rts                                     ; A8CD
+L_A8CD: rts                                     ; A8CD
 
 ; ----------------------------------------------------------------------------
-LA8CE:  .byte   $02,$03,$02,$04                 ; A8CE
+L_A8CE: .byte   $02,$03,$02,$04                 ; A8CE
 .endmacro
 

@@ -4,11 +4,11 @@ L_CDBA: jsr     L_DEC2                          ; CDBA
         lda     $14                             ; CDBD
         and     #$07                            ; CDBF
         tax                                     ; CDC1
-        lda     LCDC8,x                         ; CDC2
+        lda     L_CDC8,x                        ; CDC2
         jmp     Enqueue_Sound_Command           ; CDC5
 
 ; ----------------------------------------------------------------------------
-LCDC8:  .byte   $06,$04,$02,$13,$07,$05,$37,$2B ; CDC8
+L_CDC8: .byte   $06,$04,$02,$13,$07,$05,$37,$2B ; CDC8
 .endmacro
 
 .macro MAC_L_DEC2

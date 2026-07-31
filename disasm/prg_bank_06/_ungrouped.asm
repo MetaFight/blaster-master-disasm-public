@@ -248,7 +248,7 @@ L_9711: clc                                     ; 9711
         adc     LoadedObj + Obj::Position_X_Lo  ; 9712
         sta     LoadedObj + Obj::Position_X_Lo  ; 9714
         txa                                     ; 9716
-        adc     LoadedObj + Obj::Position_X_Hi  ; 9717
+L_9717: adc     LoadedObj + Obj::Position_X_Hi  ; 9717
         sta     LoadedObj + Obj::Position_X_Hi  ; 9719
         ldx     #$00                            ; 971B
         lda     $BD                             ; 971D
@@ -275,7 +275,7 @@ L_9738: ldx     #$0E                            ; 9738
         beq     L_976C                          ; 9741
         lda     #$13                            ; 9743
         sta     $0400,x                         ; 9745
-        jsr     LD7C0                           ; 9748
+L_9748: jsr     LD7C0                           ; 9748
         lda     $03FC                           ; 974B
         bit     $E6E2                           ; 974E
         bne     L_9763                          ; 9751
@@ -298,7 +298,7 @@ L_976C: rts                                     ; 976C
 .macro MAC_L_9780
 ; ----------------------------------------------------------------------------
 L_9780: .byte   $00,$40,$00,$C0                 ; 9780
-L9784:  .byte   $C0,$00,$40,$00                 ; 9784
+L_9784: .byte   $C0,$00,$40,$00                 ; 9784
 .endmacro
 
 .macro MAC_L_9B81
@@ -330,7 +330,7 @@ L_A29E: sta     $06                             ; A29E
         jsr     LDF0F                           ; A2A0
         beq     L_A2D1                          ; A2A3
         stx     $05                             ; A2A5
-        jsr     LEB71                           ; A2A7
+        jsr     Step_RNG                        ; A2A7
         and     #$40                            ; A2AA
         bne     L_A2B3                          ; A2AC
         lda     #$01                            ; A2AE

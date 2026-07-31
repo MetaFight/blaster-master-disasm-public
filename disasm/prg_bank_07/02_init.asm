@@ -89,7 +89,7 @@ L_C3AA: jsr     L_C772                          ; C3AA
         jsr     L_D7B6                          ; C3BB
         jsr     L_CE0F                          ; C3BE
         lda     $C5                             ; C3C1
-        bit     LE6E1                           ; C3C3
+        bit     L_E6E1                          ; C3C3
         beq     L_C3D5                          ; C3C6
         lda     #$00                            ; C3C8
         sta     ObjectSlot_Offset               ; C3CA

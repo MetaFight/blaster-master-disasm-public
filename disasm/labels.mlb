@@ -32,28 +32,304 @@ NesMemory:9FFF:MMC1_Ctrl_9FFF:MMC1 control register (write-only, 5 serial bit0 w
 NesMemory:BFFF:MMC1_ChrBank0_BFFF:MMC1 CHR bank 0 select (write-only, 5 serial bit0 writes). 4KB bank at PPU $0000 (or the 8KB bank in 8KB CHR mode).
 NesMemory:DFFF:MMC1_ChrBank1_DFFF:MMC1 CHR bank 1 select (write-only, 5 serial bit0 writes). 4KB bank at PPU $1000; ignored in 8KB CHR mode.
 NesMemory:FFFF:MMC1_PrgBank_FFFF:MMC1 PRG bank select (write-only, 5 serial bit0 writes). 16KB bank at CPU $8000-$BFFF. Address also overlaps the IRQ vector high byte (read by the CPU on IRQ).
+NesPrgRom:0000:TankLvl1_BasePointers
+NesPrgRom:0004:TankLvl2_BasePointers
+NesPrgRom:0008:TankLvl3_BasePointers
+NesPrgRom:000C:TankLvl4_BasePointers
+NesPrgRom:0010:TankLvl5_BasePointers
+NesPrgRom:0014:TankLvl1_MapPointers
+NesPrgRom:0020:TankLvl1_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:0030:TankLvl1_TileDescTable:154 TileDesc records — the level's Tile definitions. Index space shared with TankLvl1_TileAttrTable, which has the matching 154 entries.
+NesPrgRom:0298:TankLvl1_StructureDescTable:244 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:0668:TankLvl1_ChunkDescTable:203 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl1_MapData's 32×32 grid holds.
+NesPrgRom:0994:TankLvl1_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:0D94:TankLvl1_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:0E2E:TankLvl1_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:0E3E:TankLvl2_MapPointers:Level 2 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:0E4A:TankLvl2_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:0E5A:TankLvl2_TileDescTable:152 TileDesc records — the level's Tile definitions. Index space shared with TankLvl2_TileAttrTable, which has the matching 152 entries.
+NesPrgRom:10BA:TankLvl2_StructureDescTable:142 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:12F2:TankLvl2_ChunkDescTable:160 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl2_MapData's grid holds.
+NesPrgRom:1572:TankLvl2_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:1972:TankLvl2_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:1982:TankLvl2_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:1A1A:TankLvl3_MapPointers:Level 3 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:1A26:TankLvl3_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:1A36:TankLvl3_TileDescTable:121 TileDesc records — the level's Tile definitions. Index space shared with TankLvl3_TileAttrTable, which has the matching 121 entries.
+NesPrgRom:1C1A:TankLvl3_StructureDescTable:128 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:1E1A:TankLvl3_ChunkDescTable:179 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl3_MapData's grid holds.
+NesPrgRom:20E6:TankLvl3_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:24E6:TankLvl3_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:255F:TankLvl3_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:256F:TankLvl4_MapPointers:Level 4 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:257B:TankLvl4_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:258B:TankLvl4_TileDescTable:131 TileDesc records — the level's Tile definitions. Index space shared with TankLvl4_TileAttrTable, which has the matching 131 entries.
+NesPrgRom:2797:TankLvl4_StructureDescTable:182 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:2A6F:TankLvl4_ChunkDescTable:158 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl4_MapData's grid holds.
+NesPrgRom:2CE7:TankLvl4_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:30E7:TankLvl4_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:316A:TankLvl4_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:317A:TankLvl5_MapPointers:Level 5 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:3186:TankLvl5_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:3196:TankLvl5_TileDescTable:130 TileDesc records — the level's Tile definitions. Index space shared with TankLvl5_TileAttrTable, which has the matching 130 entries.
+NesPrgRom:339E:TankLvl5_StructureDescTable:159 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:361A:TankLvl5_ChunkDescTable:184 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl5_MapData's grid holds.
+NesPrgRom:38FA:TankLvl5_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:3CFA:TankLvl5_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:3D7C:TankLvl5_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:3D8C:L_BD8C
+NesPrgRom:3F8E:L_BF8E
+NesPrgRom:3FE2:L_BFE2
+NesPrgRom:3FF4:L_BFF4
+NesPrgRom:4000:TankLvl6_BasePointers
+NesPrgRom:4004:TankLvl7_BasePointers
+NesPrgRom:4008:TankLvl8_BasePointers
+NesPrgRom:400C:OvhdLvl1_BasePointers
+NesPrgRom:4010:OvhdLvl3_BasePointers
+NesPrgRom:4016:TankLvl6_MapPointers:Level 6 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:4022:TankLvl6_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:4032:TankLvl6_TileDescTable:104 TileDesc records — the level's Tile definitions. Index space shared with TankLvl6_TileAttrTable, which has the matching 104 entries.
+NesPrgRom:41D2:TankLvl6_StructureDescTable:193 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:44D6:TankLvl6_ChunkDescTable:202 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl6_MapData's grid holds.
+NesPrgRom:47FE:TankLvl6_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:4BFE:TankLvl6_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:4C0E:TankLvl6_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:4C76:TankLvl7_MapPointers:Level 7 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:4C82:TankLvl7_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:4C92:TankLvl7_TileDescTable:122 TileDesc records — the level's Tile definitions. Index space shared with TankLvl7_TileAttrTable, which has the matching 122 entries.
+NesPrgRom:4E7A:TankLvl7_StructureDescTable:177 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:513E:TankLvl7_ChunkDescTable:206 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl7_MapData's grid holds.
+NesPrgRom:5476:TankLvl7_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:5876:TankLvl7_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:58F0:TankLvl7_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:5900:TankLvl8_MapPointers:Level 8 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:590C:TankLvl8_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:591C:TankLvl8_TileDescTable:133 TileDesc records — the level's Tile definitions. Index space shared with TankLvl8_TileAttrTable, which has the matching 133 entries.
+NesPrgRom:5B30:TankLvl8_StructureDescTable:149 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:5D84:TankLvl8_ChunkDescTable:254 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl8_MapData's grid holds.
+NesPrgRom:617C:TankLvl8_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:657C:TankLvl8_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:6601:TankLvl8_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:6611:OvhdLvl1_MapPointers:Overhead level 1 (internal index 9) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:661D:OvhdLvl1_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:662D:OvhdLvl1_TileDescTable:76 TileDesc records — the level's Tile definitions. Index space shared with OvhdLvl1_TileAttrTable, which has the matching 76 entries.
+NesPrgRom:675D:OvhdLvl1_StructureDescTable:124 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:694D:OvhdLvl1_ChunkDescTable:136 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices OvhdLvl1_MapData's grid holds.
+NesPrgRom:6B6D:OvhdLvl1_MapData:800 bytes (level 9 is 32×25 rather than 32×32)
+NesPrgRom:6E8D:OvhdLvl1_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
+NesPrgRom:6ED9:OvhdLvl1_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:6EE9:OvhdLvl3_MapPointers:Overhead level 3 (internal index 11) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:6EF5:OvhdLvl3_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:6F05:OvhdLvl3_TileDescTable:90 TileDesc records — the level's Tile definitions.
+NesPrgRom:706D:OvhdLvl3_StructureDescTable:99 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:71F9:OvhdLvl3_ChunkDescTable:114 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices OvhdLvl3_MapData's grid holds.
+NesPrgRom:73C1:OvhdLvl3_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:77C1:OvhdLvl3_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:77D1:OvhdLvl3_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
+NesPrgRom:7EA1:Metasprite_Table_Overhead:Overhead-section metasprite pointer table (8×16 sprites); 2-byte LE def pointers indexed by sprite-id×2, walked by MetaSprite_RenderNoBank ($F029) after MetaSprite_Render ($F011) maps bank 1 (via $EA3A index $1A). Defs sit below the table. See docs/entities/metasprite-system.md
+NesPrgRom:7F81:L_BF81
+NesPrgRom:7F8E:L_BF8E
+NesPrgRom:7FE2:L_BFE2
+NesPrgRom:7FF4:L_BFF4
+NesPrgRom:8000:OvhdLvl5_BasePointers
+NesPrgRom:8004:OvhdLvl2_BasePointers
+NesPrgRom:8008:OvhdLvl6_BasePointers
+NesPrgRom:800C:OvhdLvl8_BasePointers
+NesPrgRom:8010:OvhdLvl4_BasePointers
+NesPrgRom:8014:OvhdLvl7_BasePointers
+NesPrgRom:8018:L_8018
+NesPrgRom:801A:L_801A
+NesPrgRom:8022:OvhdLvl5_MapPointers
+NesPrgRom:802E:OvhdLvl5_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:803E:OvhdLvl5_TileDescTable:112 TileDesc records — the level's Tile definitions. Index space shared with OvhdLvl5_TileAttrTable, which has the matching 112 entries.
+NesPrgRom:81FE:OvhdLvl5_StructureDescTable:112 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:83BE:OvhdLvl5_ChunkDescTable:128 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices OvhdLvl5_MapData's grid holds.
+NesPrgRom:85BE:OvhdLvl5_MapData:928 bytes (level 13 is 32×29 rather than 32×32)
+NesPrgRom:895E:OvhdLvl5_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:896E:OvhdLvl5_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
+NesPrgRom:89DE:OvhdLvl2_MapPointers:Overhead level 2 (internal index 10) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:89EA:OvhdLvl2_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:89FA:OvhdLvl2_TileDescTable:76 TileDesc records — the level's Tile definitions. NOTE: OvhdLvl2_TileAttrTable is only 75 bytes, so the last 1 record(s) here have no attribute byte — either spare slots or a label boundary that needs narrowing (unresolved).
+NesPrgRom:8B2A:OvhdLvl2_StructureDescTable:124 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:8D1A:OvhdLvl2_ChunkDescTable:108 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices OvhdLvl2_MapData's grid holds.
+NesPrgRom:8ECA:OvhdLvl2_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:92CA:OvhdLvl2_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:92DA:OvhdLvl2_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
+NesPrgRom:9325:OvhdLvl6_MapPointers:Overhead level 6 (internal index 14) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:9331:OvhdLvl6_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:9341:OvhdLvl6_TileDescTable:76 TileDesc records — the level's Tile definitions. NOTE: OvhdLvl6_TileAttrTable is only 73 bytes, so the last 3 record(s) here have no attribute byte — either spare slots or a label boundary that needs narrowing (unresolved).
+NesPrgRom:9471:OvhdLvl6_StructureDescTable:112 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:9631:OvhdLvl6_ChunkDescTable:120 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices OvhdLvl6_MapData's grid holds.
+NesPrgRom:9811:OvhdLvl6_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:9C11:OvhdLvl6_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:9C21:OvhdLvl6_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
+NesPrgRom:9C6A:OvhdLvl8_MapPointers:Overhead level 8 (internal index 16) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:9C76:OvhdLvl8_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:9C86:OvhdLvl8_TileDescTable:76 TileDesc records — the level's Tile definitions. NOTE: OvhdLvl8_TileAttrTable is only 75 bytes, so the last 1 record(s) here have no attribute byte — either spare slots or a label boundary that needs narrowing (unresolved).
+NesPrgRom:9DB6:OvhdLvl8_StructureDescTable:136 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:9FD6:OvhdLvl8_ChunkDescTable:144 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices OvhdLvl8_MapData's grid holds.
+NesPrgRom:A216:OvhdLvl8_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:A616:OvhdLvl8_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:A626:OvhdLvl8_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
+NesPrgRom:A671:OvhdLvl4_MapPointers:Overhead level 4 (internal index 12) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:A67D:OvhdLvl4_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:A68D:OvhdLvl4_TileDescTable:96 TileDesc records — the level's Tile (USB) definitions. NOTE: OvhdLvl4_TileAttrTable is only 94 bytes, so the last 2 record(s) here have no attribute byte — either spare slots or a label boundary that needs narrowing (unresolved).
+NesPrgRom:A80D:OvhdLvl4_StructureDescTable:132 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:AA1D:OvhdLvl4_ChunkDescTable:108 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices OvhdLvl4_MapData's grid holds.
+NesPrgRom:ABCD:OvhdLvl4_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:AFCD:OvhdLvl4_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:AFDD:OvhdLvl4_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
+NesPrgRom:B03B:OvhdLvl7_MapPointers:Overhead level 7 (internal index 15) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc, ChunkDesc, MapData
+NesPrgRom:B047:OvhdLvl7_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
+NesPrgRom:B057:OvhdLvl7_TileDescTable:92 TileDesc records — the level's Tile definitions. Only 91 are usable: OvhdLvl7_TileAttrTable shares this index space and is 91 bytes ($BA07-$BA61, ending where DemoInputStream_0_TankArea1 begins), so the last record has no attribute byte. OvhdLvl2 and OvhdLvl8 have the same 1-record overhang.
+NesPrgRom:B1C7:OvhdLvl7_StructureDescTable:116 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
+NesPrgRom:B397:OvhdLvl7_ChunkDescTable:152 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices OvhdLvl7_MapData's grid holds.
+NesPrgRom:B5F7:OvhdLvl7_MapData:32×32 chunk-index grid = 1024 bytes
+NesPrgRom:B9F7:OvhdLvl7_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
+NesPrgRom:BA07:OvhdLvl7_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
+NesPrgRom:BA62:L_BA62
+NesPrgRom:BB62:L_BB62
+NesPrgRom:BC62:L_BC62
+NesPrgRom:BD62:L_BD62
+NesPrgRom:BE62:L_BE62
+NesPrgRom:BEF1:L_BEF1
+NesPrgRom:BFE2:L_BFE2
+NesPrgRom:BFF4:L_BFF4
+NesPrgRom:C000:Bk03_DispatchBootstrap
+NesPrgRom:C002:Bk03_ThingDataPtr
+NesPrgRom:C004:Bk03_CategoryTable
+NesPrgRom:C01C:Bk03_Cat00:Category 00 — Pause Menu screen graphics
+NesPrgRom:C22E:Bk03_Cat01:Category 01 — Intro screen graphics
+NesPrgRom:C4C9:Bk03_Cat02:Category 02 — Title screen graphics
+NesPrgRom:C5E2:L_85E2
+NesPrgRom:C5F4:L_85F4
+NesPrgRom:C640:Bk03_Cat08:Category 08 — Ending
+NesPrgRom:CA5F:Bk03_Cat03:Category 03 — Level 2/6 Boss background (Duraking head; arms are OAM sprites)
+NesPrgRom:CC9F:Bk03_Cat04:Category 04 — Area 4 & 7 Boss background.
+NesPrgRom:CD9F:Bk03_Cat05:Category 05 — Level 1 Boss background (Mother Brain - brain and tentacles; rotating brains are OAM sprites)
+NesPrgRom:CEDF:Bk03_Cat06:Category 06 — Level 3 Boss background (Octo-7 inactive box borders; active/moving boxes are OAM sprites)
+NesPrgRom:D0CC:Bk03_Cat07:Category 07 — Area 5 Boss background.
+NesPrgRom:D42C:Bk03_Cat09:Category 09 — Area 8 Final Boss PHASE 1 background.
+NesPrgRom:D6FC:Bk03_Cat10:Category 10 — Area 8 Final Boss PHASE 2 background (a.k.a. Cat0A).
+NesPrgRom:D9AC:Bk03_Cat11:Category 11 — the 8 attract-mode story-sequence scenes (variants 0–7).
+NesPrgRom:E174:Bk03_ThingData:Thing/enemy spawn-list pointer table.
+NesPrgRom:E194:L_A194
+NesPrgRom:E19B:OvhdLvl1_ThingPtrs
+NesPrgRom:E1A1:OvhdLvl1_ThingTypeList:133 Thing Type sprite indices; $FF-terminated
+NesPrgRom:E227:OvhdLvl1_ThingXList:133 X spawn coordinates
+NesPrgRom:E2AC:OvhdLvl1_ThingYList:133 Y spawn coordinates
+NesPrgRom:E331:OvhdLvl2_ThingPtrs
+NesPrgRom:E337:OvhdLvl2_ThingTypeList:129 Thing Type sprite indices; $FF-terminated
+NesPrgRom:E3B9:OvhdLvl2_ThingXList:129 X spawn coordinates
+NesPrgRom:E43A:OvhdLvl2_ThingYList:129 Y spawn coordinates
+NesPrgRom:E4BB:OvhdLvl3_ThingPtrs
+NesPrgRom:E4C1:OvhdLvl3_ThingTypeList:205 Thing Type sprite indices; $FF-terminated
+NesPrgRom:E58F:OvhdLvl3_ThingXList:205 X spawn coordinates
+NesPrgRom:E65C:OvhdLvl3_ThingYList:205 Y spawn coordinates
+NesPrgRom:E729:OvhdLvl4_ThingPtrs
+NesPrgRom:E72F:OvhdLvl4_ThingTypeList:157 Thing Type sprite indices; $FF-terminated
+NesPrgRom:E7CD:OvhdLvl4_ThingXList:157 X spawn coordinates
+NesPrgRom:E86A:OvhdLvl4_ThingYList:157 Y spawn coordinates
+NesPrgRom:E907:OvhdLvl5_ThingPtrs
+NesPrgRom:E90D:OvhdLvl5_ThingTypeList:238 Thing Type sprite indices; $FF-terminated
+NesPrgRom:E9EC:OvhdLvl5_ThingXList:238 X spawn coordinates
+NesPrgRom:EACA:OvhdLvl5_ThingYList:238 Y spawn coordinates
+NesPrgRom:EBA8:OvhdLvl6_ThingPtrs
+NesPrgRom:EBAE:OvhdLvl6_ThingTypeList:133 Thing Type sprite indices; $FF-terminated
+NesPrgRom:EC34:OvhdLvl6_ThingXList:133 X spawn coordinates
+NesPrgRom:ECB9:OvhdLvl6_ThingYList:133 Y spawn coordinates
+NesPrgRom:ED3E:OvhdLvl7_ThingPtrs
+NesPrgRom:ED44:OvhdLvl7_ThingTypeList:156 Thing Type sprite indices; $FF-terminated
+NesPrgRom:EDE1:OvhdLvl7_ThingXList:156 X spawn coordinates
+NesPrgRom:EE7D:OvhdLvl7_ThingYList:156 Y spawn coordinates
+NesPrgRom:EF19:OvhdLvl8_ThingPtrs
+NesPrgRom:EF1F:OvhdLvl8_ThingTypeList:168 Thing Type sprite indices; $FF-terminated
+NesPrgRom:EFC8:OvhdLvl8_ThingXList:168 X spawn coordinates
+NesPrgRom:F070:OvhdLvl8_ThingYList:168 Y spawn coordinates
+NesPrgRom:F118:TankLvl1_ThingPtrs
+NesPrgRom:F11E:TankLvl1_ThingTypeList:129 Thing Type sprite indices; $FF-terminated
+NesPrgRom:F1A0:TankLvl1_ThingXList:129 X spawn coordinates
+NesPrgRom:F221:TankLvl1_ThingYList:129 Y spawn coordinates
+NesPrgRom:F2A2:TankLvl2_ThingPtrs
+NesPrgRom:F2A8:TankLvl2_ThingTypeList:119 Thing Type sprite indices; $FF-terminated
+NesPrgRom:F320:TankLvl2_ThingXList:119 X spawn coordinates
+NesPrgRom:F397:TankLvl2_ThingYList:119 Y spawn coordinates
+NesPrgRom:F40E:TankLvl3_ThingPtrs
+NesPrgRom:F414:TankLvl3_ThingTypeList:115 Thing Type sprite indices; $FF-terminated
+NesPrgRom:F488:TankLvl3_ThingXList:115 X spawn coordinates
+NesPrgRom:F4FB:TankLvl3_ThingYList:115 Y spawn coordinates
+NesPrgRom:F56E:TankLvl4_ThingPtrs
+NesPrgRom:F574:TankLvl4_ThingTypeList:95 Thing Type sprite indices; $FF-terminated
+NesPrgRom:F5D4:TankLvl4_ThingXList:95 X spawn coordinates
+NesPrgRom:F633:TankLvl4_ThingYList:95 Y spawn coordinates
+NesPrgRom:F692:TankLvl5_ThingPtrs
+NesPrgRom:F698:TankLvl5_ThingTypeList:145 Thing Type sprite indices; $FF-terminated
+NesPrgRom:F72E:TankLvl5_ThingXList:145 X spawn coordinates
+NesPrgRom:F7C3:TankLvl5_ThingYList:145 Y spawn coordinates
+NesPrgRom:F858:TankLvl6_ThingPtrs
+NesPrgRom:F85E:TankLvl6_ThingTypeList:97 Thing Type sprite indices; $FF-terminated
+NesPrgRom:F8C0:TankLvl6_ThingXList:97 X spawn coordinates
+NesPrgRom:F921:TankLvl6_ThingYList:97 Y spawn coordinates
+NesPrgRom:F982:TankLvl7_ThingPtrs
+NesPrgRom:F988:TankLvl7_ThingTypeList:124 Thing Type sprite indices; $FF-terminated
+NesPrgRom:FA05:TankLvl7_ThingXList:124 X spawn coordinates
+NesPrgRom:FA81:TankLvl7_ThingYList:124 Y spawn coordinates
+NesPrgRom:FAFD:TankLvl8_ThingPtrs
+NesPrgRom:FB03:TankLvl8_ThingTypeList:139 Thing Type sprite indices; $FF-terminated
+NesPrgRom:FB8F:TankLvl8_ThingXList:139 X spawn coordinates
+NesPrgRom:FC1A:TankLvl8_ThingYList:139 Y spawn coordinates
+NesPrgRom:FCA5:L_BCA5
+NesPrgRom:FEF1:L_BEF1
+NesPrgRom:FFE2:L_BFE2
+NesPrgRom:FFF4:L_BFF4
 NesPrgRom:10000:L_8000
+NesPrgRom:10006:L_8006
+NesPrgRom:107F9:L_87F9
+NesPrgRom:1080B:L_880B
+NesPrgRom:10907:L_8907
+NesPrgRom:10A69:L_8A69
+NesPrgRom:10A6C:L_8A6C
 NesPrgRom:10A84:L_8A84
 NesPrgRom:10A8F:L_8A8F
 NesPrgRom:10A9A:L_8A9A
+NesPrgRom:10AA3:L_8AA3
+NesPrgRom:10ABB:L_8ABB
+NesPrgRom:10ABE:L_8ABE
 NesPrgRom:10AD3:L_8AD3
 NesPrgRom:10ADE:L_8ADE
 NesPrgRom:10AF0:L_8AF0
+NesPrgRom:10AF1:L_8AF1
+NesPrgRom:10AF4:L_8AF4
 NesPrgRom:10B09:L_8B09
 NesPrgRom:10B25:L_8B25
 NesPrgRom:10B28:L_8B28
 NesPrgRom:10B29:L_8B29
+NesPrgRom:10B33:L_8B33
+NesPrgRom:10B7A:L_8B7A
 NesPrgRom:10B7E:L_8B7E
+NesPrgRom:10B8A:L_8B8A
+NesPrgRom:10B96:L_8B96
+NesPrgRom:10B99:L_8B99
 NesPrgRom:10BCF:L_8BCF
+NesPrgRom:10BD2:L_8BD2
+NesPrgRom:10BE2:L_8BE2
+NesPrgRom:10BE3:L_8BE3
+NesPrgRom:10BE5:L_8BE5
 NesPrgRom:10BF6:L_8BF6
+NesPrgRom:10BF9:L_8BF9
+NesPrgRom:10BFD:L_8BFD
+NesPrgRom:10C00:L_8C00
 NesPrgRom:10C16:L_8C16
 NesPrgRom:10C27:L_8C27
 NesPrgRom:10C32:L_8C32
+NesPrgRom:10C38:L_8C38
+NesPrgRom:10C3B:L_8C3B
 NesPrgRom:10C64:L_8C64
 NesPrgRom:10C67:L_8C67
 NesPrgRom:10C8B:L_8C8B
 NesPrgRom:10C9D:L_8C9D
 NesPrgRom:10C9F:L_8C9F
+NesPrgRom:10CB3:L_8CB3
 NesPrgRom:10CD4:L_8CD4
 NesPrgRom:10CE0:L_8CE0
 NesPrgRom:10D01:L_8D01
@@ -68,6 +344,10 @@ NesPrgRom:10D72:L_8D72
 NesPrgRom:10D76:L_8D76
 NesPrgRom:10D81:L_8D81
 NesPrgRom:10D98:L_8D98
+NesPrgRom:10D9B:L_8D9B
+NesPrgRom:10DA4:L_8DA4
+NesPrgRom:10DAD:L_8DAD
+NesPrgRom:10DB6:L_8DB6
 NesPrgRom:10DBF:L_8DBF
 NesPrgRom:10DD0:L_8DD0
 NesPrgRom:10DF6:L_8DF6
@@ -76,24 +356,41 @@ NesPrgRom:10E15:L_8E15
 NesPrgRom:10E21:L_8E21
 NesPrgRom:10E2D:L_8E2D
 NesPrgRom:10E51:L_8E51
+NesPrgRom:10E56:L_8E56
+NesPrgRom:10E57:L_8E57
 NesPrgRom:10E5B:L_8E5B
 NesPrgRom:10E7E:L_8E7E
 NesPrgRom:10E8E:L_8E8E
 NesPrgRom:10E94:L_8E94
 NesPrgRom:10E95:L_8E95
+NesPrgRom:10EBE:L_8EBE
+NesPrgRom:10EC6:L_8EC6
 NesPrgRom:10ECE:L_8ECE
 NesPrgRom:10EE2:L_8EE2
 NesPrgRom:10EEC:L_8EEC
 NesPrgRom:10F04:L_8F04
+NesPrgRom:10F05:L_8F05
+NesPrgRom:10F07:L_8F07
+NesPrgRom:10F0F:L_8F0F
 NesPrgRom:10F21:L_8F21
 NesPrgRom:10F3C:L_8F3C
 NesPrgRom:10F4B:L_8F4B
+NesPrgRom:10F4C:L_8F4C
+NesPrgRom:10F50:L_8F50
+NesPrgRom:10F54:L_8F54
+NesPrgRom:10F57:L_8F57
 NesPrgRom:10F69:L_8F69
+NesPrgRom:10F7B:L_8F7B
 NesPrgRom:10F8B:L_8F8B
 NesPrgRom:10F96:L_8F96
 NesPrgRom:10F97:L_8F97
+NesPrgRom:10F9A:L_8F9A
+NesPrgRom:10F9F:L_8F9F
+NesPrgRom:10FA2:L_8FA2
 NesPrgRom:10FB6:L_8FB6
 NesPrgRom:10FB8:L_8FB8
+NesPrgRom:10FC0:L_8FC0
+NesPrgRom:10FC3:L_8FC3
 NesPrgRom:10FD8:L_8FD8
 NesPrgRom:10FF0:L_8FF0
 NesPrgRom:10FF3:L_8FF3
@@ -101,19 +398,34 @@ NesPrgRom:11000:L_9000
 NesPrgRom:11006:L_9006
 NesPrgRom:11007:L_9007
 NesPrgRom:11010:L_9010
+NesPrgRom:11011:L_9011
+NesPrgRom:11014:L_9014
 NesPrgRom:1101F:L_901F
 NesPrgRom:11026:L_9026
 NesPrgRom:1103A:L_903A
+NesPrgRom:1103B:L_903B
+NesPrgRom:1103E:L_903E
 NesPrgRom:11060:L_9060
+NesPrgRom:1106B:L_906B
+NesPrgRom:1106F:L_906F
+NesPrgRom:11072:L_9072
 NesPrgRom:1108C:L_908C
 NesPrgRom:110A2:L_90A2
 NesPrgRom:110AF:L_90AF
 NesPrgRom:110B4:L_90B4
 NesPrgRom:110C2:L_90C2
 NesPrgRom:110E8:L_90E8
+NesPrgRom:110EB:L_90EB
+NesPrgRom:110EE:L_90EE
 NesPrgRom:1110F:L_910F
 NesPrgRom:11114:L_9114
+NesPrgRom:11115:L_9115
+NesPrgRom:1111A:L_911A
+NesPrgRom:1111D:L_911D
 NesPrgRom:11137:L_9137
+NesPrgRom:11142:L_9142
+NesPrgRom:11143:L_9143
+NesPrgRom:11145:L_9145
 NesPrgRom:11151:L_9151
 NesPrgRom:11154:L_9154
 NesPrgRom:11160:L_9160
@@ -127,7 +439,12 @@ NesPrgRom:111EF:L_91EF
 NesPrgRom:111F2:L_91F2
 NesPrgRom:111F8:L_91F8
 NesPrgRom:111FA:L_91FA
+NesPrgRom:1120B:L_920B
+NesPrgRom:1120E:L_920E
 NesPrgRom:11236:L_9236
+NesPrgRom:11237:L_9237
+NesPrgRom:1123C:L_923C
+NesPrgRom:1123F:L_923F
 NesPrgRom:11255:L_9255
 NesPrgRom:11258:L_9258
 NesPrgRom:11260:L_9260
@@ -136,15 +453,29 @@ NesPrgRom:1127E:L_927E
 NesPrgRom:11291:L_9291
 NesPrgRom:1129A:L_929A
 NesPrgRom:112A3:L_92A3
+NesPrgRom:112AC:L_92AC
+NesPrgRom:112AF:L_92AF
 NesPrgRom:112B6:L_92B6
 NesPrgRom:112C6:L_92C6
 NesPrgRom:11317:L_9317
 NesPrgRom:1131E:L_931E
+NesPrgRom:1131F:L_931F
+NesPrgRom:11324:L_9324
 NesPrgRom:11329:L_9329
 NesPrgRom:11333:L_9333
+NesPrgRom:1133D:L_933D
+NesPrgRom:11340:L_9340
+NesPrgRom:11347:L_9347
+NesPrgRom:1134A:L_934A
 NesPrgRom:11356:L_9356
 NesPrgRom:1137D:L_937D
 NesPrgRom:1137E:L_937E
+NesPrgRom:11381:L_9381
+NesPrgRom:11386:L_9386
+NesPrgRom:1138B:L_938B
+NesPrgRom:1138E:L_938E
+NesPrgRom:11395:L_9395
+NesPrgRom:11398:L_9398
 NesPrgRom:1139C:L_939C
 NesPrgRom:113B7:L_93B7
 NesPrgRom:113BA:L_93BA
@@ -179,7 +510,30 @@ NesPrgRom:11574:L_9574
 NesPrgRom:1157B:L_957B
 NesPrgRom:1158C:L_958C
 NesPrgRom:11599:L_9599
+NesPrgRom:115B5:L_95B5
+NesPrgRom:115B7:L_95B7
+NesPrgRom:115B9:L_95B9
+NesPrgRom:115CF:L_95CF
+NesPrgRom:115D2:L_95D2
+NesPrgRom:115D6:L_95D6
+NesPrgRom:115D9:L_95D9
+NesPrgRom:115DD:L_95DD
+NesPrgRom:115E0:L_95E0
+NesPrgRom:115E4:L_95E4
+NesPrgRom:115E7:L_95E7
+NesPrgRom:115EB:L_95EB
+NesPrgRom:115EE:L_95EE
+NesPrgRom:115F2:L_95F2
+NesPrgRom:115F5:L_95F5
+NesPrgRom:115F9:L_95F9
+NesPrgRom:115FC:L_95FC
+NesPrgRom:11600:L_9600
+NesPrgRom:11603:L_9603
+NesPrgRom:11607:L_9607
+NesPrgRom:1160A:L_960A
 NesPrgRom:1160E:L_960E
+NesPrgRom:1161B:L_961B
+NesPrgRom:1161E:L_961E
 NesPrgRom:11630:L_9630
 NesPrgRom:11633:L_9633
 NesPrgRom:11638:L_9638
@@ -194,6 +548,15 @@ NesPrgRom:1169E:L_969E
 NesPrgRom:116B2:L_96B2
 NesPrgRom:116BA:L_96BA
 NesPrgRom:116BF:L_96BF
+NesPrgRom:116C2:L_96C2
+NesPrgRom:116CB:L_96CB
+NesPrgRom:116D4:L_96D4
+NesPrgRom:116D6:L_96D6
+NesPrgRom:116E8:L_96E8
+NesPrgRom:116F1:L_96F1
+NesPrgRom:116F4:L_96F4
+NesPrgRom:1170C:L_970C
+NesPrgRom:1170F:L_970F
 NesPrgRom:1171F:L_971F
 NesPrgRom:11728:L_9728
 NesPrgRom:1173F:L_973F
@@ -228,22 +591,46 @@ NesPrgRom:118E6:L_98E6
 NesPrgRom:118E8:L_98E8
 NesPrgRom:11930:L_9930
 NesPrgRom:11944:L_9944
+NesPrgRom:11945:L_9945
+NesPrgRom:11947:L_9947
+NesPrgRom:11957:L_9957
+NesPrgRom:11959:L_9959
+NesPrgRom:1198B:L_998B
+NesPrgRom:1198E:L_998E
+NesPrgRom:119AD:L_99AD
+NesPrgRom:119B0:L_99B0
 NesPrgRom:119CA:L_99CA
 NesPrgRom:119DA:L_99DA
+NesPrgRom:119F2:L_99F2
+NesPrgRom:119F5:L_99F5
+NesPrgRom:11A00:L_9A00
+NesPrgRom:11A03:L_9A03
 NesPrgRom:11A1F:L_9A1F
 NesPrgRom:11A2B:L_9A2B
 NesPrgRom:11A57:L_9A57
 NesPrgRom:11A6A:L_9A6A
 NesPrgRom:11A70:L_9A70
 NesPrgRom:11A7C:L_9A7C
+NesPrgRom:11A7D:L_9A7D
+NesPrgRom:11A80:L_9A80
+NesPrgRom:11A8B:L_9A8B
+NesPrgRom:11A8E:L_9A8E
 NesPrgRom:11AAA:L_9AAA
 NesPrgRom:11AB6:L_9AB6
 NesPrgRom:11ADA:L_9ADA
 NesPrgRom:11AEA:L_9AEA
 NesPrgRom:11AF3:L_9AF3
 NesPrgRom:11B0A:L_9B0A
+NesPrgRom:11B0B:L_9B0B
+NesPrgRom:11B0E:L_9B0E
+NesPrgRom:11B14:L_9B14
+NesPrgRom:11B17:L_9B17
 NesPrgRom:11B22:L_9B22
 NesPrgRom:11B32:L_9B32
+NesPrgRom:11B4B:L_9B4B
+NesPrgRom:11B4E:L_9B4E
+NesPrgRom:11B64:L_9B64
+NesPrgRom:11B67:L_9B67
 NesPrgRom:11B77:L_9B77
 NesPrgRom:11B94:L_9B94
 NesPrgRom:11BA1:L_9BA1
@@ -267,6 +654,7 @@ NesPrgRom:11CCB:L_9CCB
 NesPrgRom:11D27:L_9D27
 NesPrgRom:11D34:L_9D34
 NesPrgRom:11D38:L_9D38
+NesPrgRom:11D6F:L_9D6F
 NesPrgRom:11D77:L_9D77
 NesPrgRom:11DA4:L_9DA4
 NesPrgRom:11DA8:L_9DA8
@@ -275,8 +663,16 @@ NesPrgRom:11DD6:L_9DD6
 NesPrgRom:11DED:L_9DED
 NesPrgRom:11DF1:L_9DF1
 NesPrgRom:11DFF:L_9DFF
+NesPrgRom:11E03:L_9E03
+NesPrgRom:11E06:L_9E06
+NesPrgRom:11E1A:L_9E1A
+NesPrgRom:11E1D:L_9E1D
 NesPrgRom:11E28:L_9E28
 NesPrgRom:11E4E:L_9E4E
+NesPrgRom:11E51:L_9E51
+NesPrgRom:11E54:L_9E54
+NesPrgRom:11E69:L_9E69
+NesPrgRom:11E6C:L_9E6C
 NesPrgRom:11E7D:L_9E7D
 NesPrgRom:11EAF:L_9EAF
 NesPrgRom:11EB0:L_9EB0
@@ -286,21 +682,32 @@ NesPrgRom:11EED:L_9EED
 NesPrgRom:11EF6:L_9EF6
 NesPrgRom:11F04:L_9F04
 NesPrgRom:11F19:L_9F19
+NesPrgRom:11F21:L_9F21
 NesPrgRom:11F41:L_9F41
+NesPrgRom:11F62:L_9F62
+NesPrgRom:11F63:L_9F63
+NesPrgRom:11F65:L_9F65
 NesPrgRom:11F7C:L_9F7C
 NesPrgRom:11F93:L_9F93
 NesPrgRom:11FAF:L_9FAF
 NesPrgRom:11FB1:L_9FB1
 NesPrgRom:11FB3:L_9FB3
 NesPrgRom:11FB4:L_9FB4
+NesPrgRom:11FB7:L_9FB7
+NesPrgRom:11FBA:L_9FBA
 NesPrgRom:11FD3:L_9FD3
 NesPrgRom:11FDD:L_9FDD
+NesPrgRom:11FE6:L_9FE6
+NesPrgRom:11FEE:L_9FEE
+NesPrgRom:11FF1:L_9FF1
 NesPrgRom:12001:L_A001
 NesPrgRom:1200C:L_A00C
 NesPrgRom:12017:L_A017
 NesPrgRom:1202F:L_A02F
 NesPrgRom:1204D:L_A04D
+NesPrgRom:12050:L_A050
 NesPrgRom:12058:L_A058
+NesPrgRom:1206A:L_A06A
 NesPrgRom:12072:L_A072
 NesPrgRom:1207B:L_A07B
 NesPrgRom:1208F:L_A08F
@@ -310,9 +717,17 @@ NesPrgRom:120FC:L_A0FC
 NesPrgRom:120FF:L_A0FF
 NesPrgRom:12100:L_A100
 NesPrgRom:12118:L_A118
+NesPrgRom:12124:L_A124
 NesPrgRom:1212C:L_A12C
 NesPrgRom:12130:L_A130
+NesPrgRom:12137:L_A137
+NesPrgRom:1213A:L_A13A
 NesPrgRom:12140:L_A140
+NesPrgRom:12176:L_A176
+NesPrgRom:12186:L_A186
+NesPrgRom:12196:L_A196
+NesPrgRom:12197:L_A197
+NesPrgRom:12199:L_A199
 NesPrgRom:121B1:L_A1B1
 NesPrgRom:121C3:L_A1C3
 NesPrgRom:121CA:L_A1CA
@@ -342,13 +757,19 @@ NesPrgRom:122D3:L_A2D3
 NesPrgRom:122F6:L_A2F6
 NesPrgRom:122FA:L_A2FA
 NesPrgRom:122FF:L_A2FF
+NesPrgRom:12304:L_A304
 NesPrgRom:12309:L_A309
 NesPrgRom:1230B:L_A30B
 NesPrgRom:12320:L_A320
 NesPrgRom:1232B:L_A32B
 NesPrgRom:1232F:L_A32F
+NesPrgRom:1233A:L_A33A
 NesPrgRom:12357:L_A357
+NesPrgRom:12381:L_A381
+NesPrgRom:12383:L_A383
 NesPrgRom:12394:L_A394
+NesPrgRom:123BE:L_A3BE
+NesPrgRom:123C0:L_A3C0
 NesPrgRom:123D1:L_A3D1
 NesPrgRom:123E3:L_A3E3
 NesPrgRom:123FF:L_A3FF
@@ -365,13 +786,33 @@ NesPrgRom:124A1:L_A4A1
 NesPrgRom:124A4:L_A4A4
 NesPrgRom:124A5:L_A4A5
 NesPrgRom:124A7:L_A4A7
+NesPrgRom:124B3:L_A4B3
 NesPrgRom:124C3:L_A4C3
+NesPrgRom:124CC:L_A4CC
+NesPrgRom:124CF:L_A4CF
+NesPrgRom:124D3:L_A4D3
+NesPrgRom:124D6:L_A4D6
+NesPrgRom:124DA:L_A4DA
+NesPrgRom:124DD:L_A4DD
 NesPrgRom:124DF:L_A4DF
+NesPrgRom:124FF:L_A4FF
+NesPrgRom:12509:L_A509
+NesPrgRom:1250C:L_A50C
 NesPrgRom:12517:L_A517
 NesPrgRom:12527:L_A527
 NesPrgRom:12536:L_A536
 NesPrgRom:12544:L_A544
+NesPrgRom:12547:L_A547
+NesPrgRom:1254B:L_A54B
+NesPrgRom:1254E:L_A54E
+NesPrgRom:12562:L_A562
+NesPrgRom:12565:L_A565
 NesPrgRom:12568:L_A568
+NesPrgRom:12571:L_A571
+NesPrgRom:12574:L_A574
+NesPrgRom:12589:L_A589
+NesPrgRom:1258A:L_A58A
+NesPrgRom:1258C:L_A58C
 NesPrgRom:125AA:L_A5AA
 NesPrgRom:125AC:L_A5AC
 NesPrgRom:125BD:L_A5BD
@@ -393,6 +834,11 @@ NesPrgRom:1265C:L_A65C
 NesPrgRom:12667:L_A667
 NesPrgRom:126A1:L_A6A1
 NesPrgRom:126AC:L_A6AC
+NesPrgRom:126B3:L_A6B3
+NesPrgRom:126B6:L_A6B6
+NesPrgRom:126CD:L_A6CD
+NesPrgRom:126CE:L_A6CE
+NesPrgRom:126D0:L_A6D0
 NesPrgRom:126DB:L_A6DB
 NesPrgRom:126DE:L_A6DE
 NesPrgRom:126E7:L_A6E7
@@ -402,6 +848,7 @@ NesPrgRom:126FC:L_A6FC
 NesPrgRom:12720:L_A720
 NesPrgRom:12721:L_A721
 NesPrgRom:12730:L_A730
+NesPrgRom:1273F:L_A73F
 NesPrgRom:1274E:L_A74E
 NesPrgRom:12760:L_A760
 NesPrgRom:1276A:L_A76A
@@ -425,7 +872,15 @@ NesPrgRom:128C9:L_A8C9
 NesPrgRom:128D7:L_A8D7
 NesPrgRom:128D9:L_A8D9
 NesPrgRom:128ED:L_A8ED
+NesPrgRom:128EE:L_A8EE
+NesPrgRom:128FA:L_A8FA
+NesPrgRom:128FC:L_A8FC
+NesPrgRom:12904:L_A904
+NesPrgRom:12938:L_A938
+NesPrgRom:1293B:L_A93B
 NesPrgRom:12953:L_A953
+NesPrgRom:12965:L_A965
+NesPrgRom:12968:L_A968
 NesPrgRom:12974:L_A974
 NesPrgRom:12977:L_A977
 NesPrgRom:12991:L_A991
@@ -433,8 +888,16 @@ NesPrgRom:129B9:L_A9B9
 NesPrgRom:129C0:L_A9C0
 NesPrgRom:129C3:L_A9C3
 NesPrgRom:129CA:L_A9CA
+NesPrgRom:129CD:L_A9CD
+NesPrgRom:129D1:L_A9D1
+NesPrgRom:129D4:L_A9D4
 NesPrgRom:129DB:L_A9DB
 NesPrgRom:129F9:L_A9F9
+NesPrgRom:12A03:L_AA03
+NesPrgRom:12A06:L_AA06
+NesPrgRom:12A34:L_AA34
+NesPrgRom:12A35:L_AA35
+NesPrgRom:12A37:L_AA37
 NesPrgRom:12A4D:L_AA4D
 NesPrgRom:12A72:L_AA72
 NesPrgRom:12A7B:L_AA7B
@@ -447,6 +910,7 @@ NesPrgRom:12AE2:L_AAE2
 NesPrgRom:12AFD:L_AAFD
 NesPrgRom:12B16:L_AB16
 NesPrgRom:12B1E:L_AB1E
+NesPrgRom:12B32:L_AB32
 NesPrgRom:12B36:L_AB36
 NesPrgRom:12B41:L_AB41
 NesPrgRom:12B43:L_AB43
@@ -457,12 +921,24 @@ NesPrgRom:12B98:L_AB98
 NesPrgRom:12B99:L_AB99
 NesPrgRom:12B9B:L_AB9B
 NesPrgRom:12BA8:L_ABA8
+NesPrgRom:12BB6:L_ABB6
+NesPrgRom:12BC6:L_ABC6
+NesPrgRom:12BC9:L_ABC9
 NesPrgRom:12BD2:L_ABD2
+NesPrgRom:12BE7:L_ABE7
+NesPrgRom:12BEA:L_ABEA
 NesPrgRom:12C06:L_AC06
 NesPrgRom:12C16:L_AC16
 NesPrgRom:12C22:L_AC22
 NesPrgRom:12C2A:L_AC2A
 NesPrgRom:12C3D:L_AC3D
+NesPrgRom:12C4F:L_AC4F
+NesPrgRom:12C54:L_AC54
+NesPrgRom:12C58:L_AC58
+NesPrgRom:12C5B:L_AC5B
+NesPrgRom:12C84:L_AC84
+NesPrgRom:12C85:L_AC85
+NesPrgRom:12C87:L_AC87
 NesPrgRom:12C9F:L_AC9F
 NesPrgRom:12CA2:L_ACA2
 NesPrgRom:12CAC:L_ACAC
@@ -485,6 +961,7 @@ NesPrgRom:12D62:L_AD62
 NesPrgRom:12D63:L_AD63
 NesPrgRom:12D87:L_AD87
 NesPrgRom:12D90:L_AD90
+NesPrgRom:12D99:L_AD99
 NesPrgRom:12DA2:L_ADA2
 NesPrgRom:12DCF:L_ADCF
 NesPrgRom:12DD2:L_ADD2
@@ -494,6 +971,7 @@ NesPrgRom:12E1B:L_AE1B
 NesPrgRom:12E34:L_AE34
 NesPrgRom:12E38:L_AE38
 NesPrgRom:12E3A:L_AE3A
+NesPrgRom:12E42:L_AE42
 NesPrgRom:12E50:L_AE50
 NesPrgRom:12E54:L_AE54
 NesPrgRom:12E56:L_AE56
@@ -501,11 +979,17 @@ NesPrgRom:12E5A:L_AE5A
 NesPrgRom:12E62:L_AE62
 NesPrgRom:12E64:L_AE64
 NesPrgRom:12E71:L_AE71
+NesPrgRom:12E7F:L_AE7F
+NesPrgRom:12E8F:L_AE8F
+NesPrgRom:12E93:L_AE93
+NesPrgRom:12E96:L_AE96
 NesPrgRom:12EAD:L_AEAD
 NesPrgRom:12EB1:L_AEB1
 NesPrgRom:12EB5:L_AEB5
 NesPrgRom:12EB9:L_AEB9
 NesPrgRom:12EBB:L_AEBB
+NesPrgRom:12EC5:L_AEC5
+NesPrgRom:12EC8:L_AEC8
 NesPrgRom:12ED8:L_AED8
 NesPrgRom:12EDF:L_AEDF
 NesPrgRom:12EEC:L_AEEC
@@ -513,34 +997,66 @@ NesPrgRom:12F0A:L_AF0A
 NesPrgRom:12F1F:L_AF1F
 NesPrgRom:12F2A:L_AF2A
 NesPrgRom:12F43:L_AF43
+NesPrgRom:12F45:L_AF45
+NesPrgRom:12F48:L_AF48
 NesPrgRom:12F66:L_AF66
+NesPrgRom:12F67:L_AF67
+NesPrgRom:12F6A:L_AF6A
 NesPrgRom:12F88:L_AF88
 NesPrgRom:12F96:L_AF96
 NesPrgRom:12F99:L_AF99
 NesPrgRom:12FA9:L_AFA9
+NesPrgRom:12FB9:L_AFB9
+NesPrgRom:12FBC:L_AFBC
 NesPrgRom:12FCF:L_AFCF
 NesPrgRom:12FD7:L_AFD7
 NesPrgRom:12FF5:L_AFF5
+NesPrgRom:12FF6:L_AFF6
+NesPrgRom:12FF9:L_AFF9
 NesPrgRom:13009:L_B009
 NesPrgRom:13019:L_B019
 NesPrgRom:13029:L_B029
+NesPrgRom:1302F:L_B02F
+NesPrgRom:13032:L_B032
 NesPrgRom:13040:L_B040
+NesPrgRom:13041:L_B041
+NesPrgRom:13044:L_B044
 NesPrgRom:13054:L_B054
 NesPrgRom:13064:L_B064
+NesPrgRom:13074:L_B074
+NesPrgRom:13077:L_B077
 NesPrgRom:1308A:L_B08A
+NesPrgRom:1308B:L_B08B
+NesPrgRom:1308E:L_B08E
 NesPrgRom:1309E:L_B09E
 NesPrgRom:130AE:L_B0AE
+NesPrgRom:130BE:L_B0BE
+NesPrgRom:130C1:L_B0C1
 NesPrgRom:130CB:L_B0CB
+NesPrgRom:130CC:L_B0CC
+NesPrgRom:130CF:L_B0CF
 NesPrgRom:130DF:L_B0DF
 NesPrgRom:130EF:L_B0EF
+NesPrgRom:130FF:L_B0FF
+NesPrgRom:13102:L_B102
 NesPrgRom:13131:L_B131
+NesPrgRom:13132:L_B132
+NesPrgRom:13135:L_B135
 NesPrgRom:1314B:L_B14B
 NesPrgRom:1315B:L_B15B
+NesPrgRom:1316B:L_B16B
+NesPrgRom:1316E:L_B16E
 NesPrgRom:13172:L_B172
+NesPrgRom:13173:L_B173
+NesPrgRom:13176:L_B176
 NesPrgRom:1317E:L_B17E
 NesPrgRom:1318E:L_B18E
 NesPrgRom:13198:L_B198
+NesPrgRom:131A3:L_B1A3
+NesPrgRom:131A6:L_B1A6
 NesPrgRom:131AA:L_B1AA
+NesPrgRom:131AB:L_B1AB
+NesPrgRom:131AE:L_B1AE
 NesPrgRom:131B6:L_B1B6
 NesPrgRom:131C6:L_B1C6
 NesPrgRom:131D0:L_B1D0
@@ -558,6 +1074,7 @@ NesPrgRom:13243:L_B243
 NesPrgRom:1325D:L_B25D
 NesPrgRom:13264:L_B264
 NesPrgRom:1327E:L_B27E
+NesPrgRom:13285:L_B285
 NesPrgRom:1329B:L_B29B
 NesPrgRom:1329D:L_B29D
 NesPrgRom:1329E:L_B29E
@@ -574,42 +1091,76 @@ NesPrgRom:132F7:L_B2F7
 NesPrgRom:132FA:L_B2FA
 NesPrgRom:1330F:L_B30F
 NesPrgRom:13314:L_B314
+NesPrgRom:13324:L_B324
+NesPrgRom:13326:L_B326
+NesPrgRom:13366:L_B366
+NesPrgRom:13369:L_B369
 NesPrgRom:13392:L_B392
+NesPrgRom:13393:L_B393
+NesPrgRom:13396:L_B396
 NesPrgRom:133A8:L_B3A8
 NesPrgRom:133B3:L_B3B3
 NesPrgRom:133E2:L_B3E2
 NesPrgRom:1341E:L_B41E
 NesPrgRom:13445:L_B445
+NesPrgRom:13446:L_B446
+NesPrgRom:13449:L_B449
 NesPrgRom:1344E:L_B44E
+NesPrgRom:1344F:L_B44F
+NesPrgRom:13452:L_B452
 NesPrgRom:134A9:L_B4A9
 NesPrgRom:134B9:L_B4B9
 NesPrgRom:134CC:L_B4CC
 NesPrgRom:134DB:L_B4DB
 NesPrgRom:134DD:L_B4DD
 NesPrgRom:134E0:L_B4E0
+NesPrgRom:134E1:L_B4E1
+NesPrgRom:134E4:L_B4E4
 NesPrgRom:134ED:L_B4ED
+NesPrgRom:134EE:L_B4EE
+NesPrgRom:134F1:L_B4F1
 NesPrgRom:1352C:L_B52C
 NesPrgRom:1353A:L_B53A
 NesPrgRom:1354F:L_B54F
 NesPrgRom:1355F:L_B55F
+NesPrgRom:13560:L_B560
+NesPrgRom:13563:L_B563
 NesPrgRom:1357D:L_B57D
 NesPrgRom:1358D:L_B58D
+NesPrgRom:135A5:L_B5A5
+NesPrgRom:135A7:L_B5A7
+NesPrgRom:135AA:L_B5AA
 NesPrgRom:135EF:L_B5EF
+NesPrgRom:135F0:L_B5F0
+NesPrgRom:135F3:L_B5F3
 NesPrgRom:13604:L_B604
 NesPrgRom:1360E:L_B60E
 NesPrgRom:13620:L_B620
 NesPrgRom:13623:L_B623
 NesPrgRom:13633:L_B633
 NesPrgRom:13648:L_B648
+NesPrgRom:1364D:L_B64D
+NesPrgRom:13650:L_B650
 NesPrgRom:1365A:L_B65A
+NesPrgRom:1365B:L_B65B
+NesPrgRom:1365E:L_B65E
 NesPrgRom:13672:L_B672
 NesPrgRom:13680:L_B680
 NesPrgRom:13690:L_B690
 NesPrgRom:136A2:L_B6A2
+NesPrgRom:136A6:L_B6A6
+NesPrgRom:136A9:L_B6A9
 NesPrgRom:136AE:L_B6AE
+NesPrgRom:136AF:L_B6AF
+NesPrgRom:136B2:L_B6B2
 NesPrgRom:136E0:L_B6E0
 NesPrgRom:136F0:L_B6F0
+NesPrgRom:13708:L_B708
+NesPrgRom:1370C:L_B70C
+NesPrgRom:1370F:L_B70F
 NesPrgRom:13718:L_B718
+NesPrgRom:13719:L_B719
+NesPrgRom:1371C:L_B71C
 NesPrgRom:1373C:L_B73C
 NesPrgRom:1373E:L_B73E
 NesPrgRom:13740:L_B740
@@ -617,19 +1168,32 @@ NesPrgRom:13747:L_B747
 NesPrgRom:13757:L_B757
 NesPrgRom:1376A:L_B76A
 NesPrgRom:1377D:L_B77D
+NesPrgRom:1377E:L_B77E
+NesPrgRom:13782:L_B782
+NesPrgRom:13785:L_B785
 NesPrgRom:1378E:L_B78E
+NesPrgRom:1378F:L_B78F
+NesPrgRom:13792:L_B792
 NesPrgRom:137B2:L_B7B2
 NesPrgRom:137B4:L_B7B4
 NesPrgRom:137B6:L_B7B6
 NesPrgRom:137BD:L_B7BD
 NesPrgRom:137CD:L_B7CD
+NesPrgRom:137E5:L_B7E5
+NesPrgRom:137E8:L_B7E8
 NesPrgRom:137F5:L_B7F5
+NesPrgRom:137F6:L_B7F6
+NesPrgRom:137F9:L_B7F9
 NesPrgRom:1380A:L_B80A
 NesPrgRom:1382C:L_B82C
 NesPrgRom:1382F:L_B82F
 NesPrgRom:1383F:L_B83F
 NesPrgRom:13851:L_B851
+NesPrgRom:13855:L_B855
+NesPrgRom:13858:L_B858
 NesPrgRom:13865:L_B865
+NesPrgRom:13866:L_B866
+NesPrgRom:13869:L_B869
 NesPrgRom:1387C:L_B87C
 NesPrgRom:13885:L_B885
 NesPrgRom:13898:L_B898
@@ -638,20 +1202,34 @@ NesPrgRom:138CC:L_B8CC
 NesPrgRom:138DC:L_B8DC
 NesPrgRom:138F0:L_B8F0
 NesPrgRom:138FC:L_B8FC
+NesPrgRom:13918:L_B918
+NesPrgRom:13919:L_B919
+NesPrgRom:1391E:L_B91E
+NesPrgRom:13922:L_B922
+NesPrgRom:13925:L_B925
 NesPrgRom:13930:L_B930
+NesPrgRom:13931:L_B931
+NesPrgRom:13934:L_B934
 NesPrgRom:13958:L_B958
 NesPrgRom:1398C:L_B98C
 NesPrgRom:13998:L_B998
 NesPrgRom:139A8:L_B9A8
+NesPrgRom:139B0:L_B9B0
 NesPrgRom:139B5:L_B9B5
 NesPrgRom:139C9:L_B9C9
 NesPrgRom:139E2:L_B9E2
 NesPrgRom:139E9:L_B9E9
+NesPrgRom:139EE:L_B9EE
+NesPrgRom:139F1:L_B9F1
 NesPrgRom:13A00:L_BA00
+NesPrgRom:13A01:L_BA01
+NesPrgRom:13A04:L_BA04
 NesPrgRom:13A17:L_BA17
 NesPrgRom:13A27:L_BA27
 NesPrgRom:13A38:L_BA38
 NesPrgRom:13A3E:L_BA3E
+NesPrgRom:13A47:L_BA47
+NesPrgRom:13A4A:L_BA4A
 NesPrgRom:13A58:L_BA58
 NesPrgRom:13A62:L_BA62
 NesPrgRom:13A77:L_BA77
@@ -659,39 +1237,69 @@ NesPrgRom:13A7D:L_BA7D
 NesPrgRom:13AA5:L_BAA5
 NesPrgRom:13AB5:L_BAB5
 NesPrgRom:13AD3:L_BAD3
+NesPrgRom:13AD9:L_BAD9
 NesPrgRom:13AE7:L_BAE7
+NesPrgRom:13AF0:L_BAF0
+NesPrgRom:13AF3:L_BAF3
 NesPrgRom:13B03:L_BB03
 NesPrgRom:13B13:L_BB13
+NesPrgRom:13B14:L_BB14
+NesPrgRom:13B17:L_BB17
 NesPrgRom:13B21:L_BB21
 NesPrgRom:13B33:L_BB33
 NesPrgRom:13B70:L_BB70
+NesPrgRom:13B71:L_BB71
+NesPrgRom:13B75:L_BB75
+NesPrgRom:13B78:L_BB78
 NesPrgRom:13B87:L_BB87
 NesPrgRom:13B90:L_BB90
 NesPrgRom:13B93:L_BB93
 NesPrgRom:13BA8:L_BBA8
 NesPrgRom:13BA9:L_BBA9
 NesPrgRom:13BC1:L_BBC1
+NesPrgRom:13BC2:L_BBC2
+NesPrgRom:13BC5:L_BBC5
 NesPrgRom:13BE2:L_BBE2
+NesPrgRom:13BE3:L_BBE3
+NesPrgRom:13BE8:L_BBE8
+NesPrgRom:13BEB:L_BBEB
 NesPrgRom:13BFA:L_BBFA
 NesPrgRom:13C02:L_BC02
 NesPrgRom:13C12:L_BC12
 NesPrgRom:13C1C:L_BC1C
+NesPrgRom:13C27:L_BC27
+NesPrgRom:13C28:L_BC28
 NesPrgRom:13C32:L_BC32
 NesPrgRom:13C5F:L_BC5F
+NesPrgRom:13C61:L_BC61
+NesPrgRom:13C65:L_BC65
+NesPrgRom:13C68:L_BC68
 NesPrgRom:13C83:L_BC83
+NesPrgRom:13C84:L_BC84
+NesPrgRom:13C87:L_BC87
 NesPrgRom:13C97:L_BC97
 NesPrgRom:13C9F:L_BC9F
 NesPrgRom:13CAF:L_BCAF
 NesPrgRom:13CB9:L_BCB9
+NesPrgRom:13CC4:L_BCC4
 NesPrgRom:13CC5:L_BCC5
 NesPrgRom:13CD8:L_BCD8
+NesPrgRom:13CD9:L_BCD9
+NesPrgRom:13CDC:L_BCDC
 NesPrgRom:13D08:L_BD08
+NesPrgRom:13D09:L_BD09
+NesPrgRom:13D0C:L_BD0C
 NesPrgRom:13D1C:L_BD1C
 NesPrgRom:13D24:L_BD24
 NesPrgRom:13D34:L_BD34
 NesPrgRom:13D3E:L_BD3E
+NesPrgRom:13D49:L_BD49
 NesPrgRom:13D4A:L_BD4A
+NesPrgRom:13D5C:L_BD5C
+NesPrgRom:13D5F:L_BD5F
 NesPrgRom:13D68:L_BD68
+NesPrgRom:13D69:L_BD69
+NesPrgRom:13D6C:L_BD6C
 NesPrgRom:13D7A:L_BD7A
 NesPrgRom:13D84:L_BD84
 NesPrgRom:13D90:L_BD90
@@ -702,23 +1310,37 @@ NesPrgRom:13DBE:L_BDBE
 NesPrgRom:13DD3:L_BDD3
 NesPrgRom:13DDE:L_BDDE
 NesPrgRom:13DE0:L_BDE0
+NesPrgRom:13DE3:L_BDE3
+NesPrgRom:13DE7:L_BDE7
+NesPrgRom:13DEA:L_BDEA
 NesPrgRom:13E01:L_BE01
 NesPrgRom:13E0E:L_BE0E
 NesPrgRom:13E1E:L_BE1E
 NesPrgRom:13E35:L_BE35
 NesPrgRom:13E3E:L_BE3E
+NesPrgRom:13E54:L_BE54
+NesPrgRom:13E57:L_BE57
 NesPrgRom:13E60:L_BE60
+NesPrgRom:13E61:L_BE61
+NesPrgRom:13E64:L_BE64
 NesPrgRom:13E95:L_BE95
 NesPrgRom:13EA5:L_BEA5
 NesPrgRom:13EC7:L_BEC7
 NesPrgRom:13EEB:L_BEEB
+NesPrgRom:13EEF:L_BEEF
+NesPrgRom:13EF2:L_BEF2
 NesPrgRom:13EF7:L_BEF7
+NesPrgRom:13EF8:L_BEF8
+NesPrgRom:13EFB:L_BEFB
 NesPrgRom:13F52:L_BF52
 NesPrgRom:13F62:L_BF62
 NesPrgRom:13F75:L_BF75
 NesPrgRom:13F84:L_BF84
 NesPrgRom:13F86:L_BF86
 NesPrgRom:13F89:L_BF89
+NesPrgRom:13F8A:L_BF8A
+NesPrgRom:13F92:L_BF92
+NesPrgRom:13FF4:L_BFF4
 NesPrgRom:14000:L_8000
 NesPrgRom:14006:L_8006
 NesPrgRom:14013:L_8013
@@ -786,6 +1408,10 @@ NesPrgRom:143A3:L_83A3
 NesPrgRom:143AC:L_83AC
 NesPrgRom:143B5:L_83B5
 NesPrgRom:143D8:L_83D8
+NesPrgRom:143EE:L_83EE
+NesPrgRom:144B0:L_84B0
+NesPrgRom:1455A:L_855A
+NesPrgRom:17DBE:L_BDBE
 NesPrgRom:17DF6:L_BDF6
 NesPrgRom:17E06:L_BE06
 NesPrgRom:17E16:L_BE16
@@ -801,15 +1427,26 @@ NesPrgRom:17EBE:L_BEBE
 NesPrgRom:17EC9:L_BEC9
 NesPrgRom:17ED5:L_BED5
 NesPrgRom:17EE0:L_BEE0
+NesPrgRom:17EF1:L_BEF1
+NesPrgRom:17FE2:L_BFE2
 NesPrgRom:17FE5:L_BFE5
 NesPrgRom:17FE8:L_BFE8
+NesPrgRom:17FEB:L_BFEB
+NesPrgRom:17FEE:L_BFEE
 NesPrgRom:17FF1:L_BFF1
+NesPrgRom:17FF4:L_BFF4
 NesPrgRom:18000:L_8000
+NesPrgRom:1806E:L_806E
+NesPrgRom:18070:L_8070
+NesPrgRom:180AE:L_80AE
+NesPrgRom:180B0:L_80B0
 NesPrgRom:18124:L_8124
+NesPrgRom:18127:L_8127
 NesPrgRom:1813C:L_813C
 NesPrgRom:18158:L_8158
 NesPrgRom:1815B:L_815B
 NesPrgRom:1815C:L_815C
+NesPrgRom:1815F:L_815F
 NesPrgRom:18177:L_8177
 NesPrgRom:1817A:L_817A
 NesPrgRom:18192:L_8192
@@ -881,6 +1518,7 @@ NesPrgRom:18465:L_8465
 NesPrgRom:1847C:L_847C
 NesPrgRom:1848C:L_848C
 NesPrgRom:1848F:L_848F
+NesPrgRom:184A8:L_84A8
 NesPrgRom:184B6:L_84B6
 NesPrgRom:184CF:L_84CF
 NesPrgRom:184D7:L_84D7
@@ -893,10 +1531,19 @@ NesPrgRom:18515:L_8515
 NesPrgRom:1851B:L_851B
 NesPrgRom:18531:L_8531
 NesPrgRom:18539:L_8539
+NesPrgRom:18540:L_8540
+NesPrgRom:18542:L_8542
+NesPrgRom:18546:L_8546
+NesPrgRom:18552:L_8552
+NesPrgRom:1855F:L_855F
+NesPrgRom:18562:L_8562
 NesPrgRom:18580:L_8580
 NesPrgRom:18586:L_8586
 NesPrgRom:18591:L_8591
 NesPrgRom:185A7:L_85A7
+NesPrgRom:185BE:L_85BE
+NesPrgRom:185C4:L_85C4
+NesPrgRom:185CA:L_85CA
 NesPrgRom:185E2:L_85E2
 NesPrgRom:185FB:L_85FB
 NesPrgRom:18611:L_8611
@@ -905,25 +1552,42 @@ NesPrgRom:18621:L_8621
 NesPrgRom:18624:L_8624
 NesPrgRom:18644:L_8644
 NesPrgRom:18676:L_8676
+NesPrgRom:18677:L_8677
+NesPrgRom:1867A:L_867A
+NesPrgRom:1868C:L_868C
 NesPrgRom:186CC:L_86CC
 NesPrgRom:186EE:L_86EE
 NesPrgRom:18710:L_8710
+NesPrgRom:18713:L_8713
+NesPrgRom:18716:L_8716
 NesPrgRom:18737:L_8737
+NesPrgRom:1873D:L_873D
 NesPrgRom:18740:L_8740
 NesPrgRom:18747:L_8747
 NesPrgRom:1874A:L_874A
+NesPrgRom:1874D:L_874D
+NesPrgRom:18750:L_8750
 NesPrgRom:1875B:L_875B
+NesPrgRom:1875E:L_875E
+NesPrgRom:18761:L_8761
 NesPrgRom:18782:L_8782
+NesPrgRom:18788:L_8788
 NesPrgRom:1878B:L_878B
 NesPrgRom:18792:L_8792
 NesPrgRom:18795:L_8795
+NesPrgRom:18798:L_8798
+NesPrgRom:1879B:L_879B
 NesPrgRom:187A6:L_87A6
 NesPrgRom:187A9:L_87A9
 NesPrgRom:187DA:L_87DA
 NesPrgRom:1880B:L_880B
 NesPrgRom:18829:L_8829
+NesPrgRom:1882A:L_882A
+NesPrgRom:1882D:L_882D
 NesPrgRom:18835:L_8835
 NesPrgRom:18846:L_8846
+NesPrgRom:18850:L_8850
+NesPrgRom:18853:L_8853
 NesPrgRom:18867:L_8867
 NesPrgRom:18886:L_8886
 NesPrgRom:18889:L_8889
@@ -946,26 +1610,52 @@ NesPrgRom:189BA:L_89BA
 NesPrgRom:189BB:L_89BB
 NesPrgRom:189BE:L_89BE
 NesPrgRom:189E0:L_89E0
+NesPrgRom:189E5:L_89E5
+NesPrgRom:189E8:L_89E8
 NesPrgRom:18A09:L_8A09
+NesPrgRom:18A0F:L_8A0F
 NesPrgRom:18A12:L_8A12
 NesPrgRom:18A19:L_8A19
 NesPrgRom:18A1C:L_8A1C
+NesPrgRom:18A1D:L_8A1D
+NesPrgRom:18A20:L_8A20
 NesPrgRom:18A2B:L_8A2B
+NesPrgRom:18A2E:L_8A2E
+NesPrgRom:18A31:L_8A31
 NesPrgRom:18A52:L_8A52
+NesPrgRom:18A58:L_8A58
 NesPrgRom:18A5B:L_8A5B
 NesPrgRom:18A62:L_8A62
 NesPrgRom:18A65:L_8A65
+NesPrgRom:18A66:L_8A66
+NesPrgRom:18A69:L_8A69
 NesPrgRom:18A74:L_8A74
 NesPrgRom:18A77:L_8A77
 NesPrgRom:18AB2:L_8AB2
 NesPrgRom:18AED:L_8AED
+NesPrgRom:18AF8:L_8AF8
+NesPrgRom:18AFB:L_8AFB
 NesPrgRom:18B0E:L_8B0E
+NesPrgRom:18B13:L_8B13
+NesPrgRom:18B15:L_8B15
 NesPrgRom:18B2B:L_8B2B
+NesPrgRom:18B36:L_8B36
+NesPrgRom:18B39:L_8B39
 NesPrgRom:18B4C:L_8B4C
+NesPrgRom:18B51:L_8B51
+NesPrgRom:18B53:L_8B53
 NesPrgRom:18B69:L_8B69
+NesPrgRom:18B74:L_8B74
+NesPrgRom:18B77:L_8B77
 NesPrgRom:18B8A:L_8B8A
+NesPrgRom:18B8F:L_8B8F
+NesPrgRom:18B91:L_8B91
 NesPrgRom:18BA7:L_8BA7
+NesPrgRom:18BB2:L_8BB2
+NesPrgRom:18BB5:L_8BB5
 NesPrgRom:18BC8:L_8BC8
+NesPrgRom:18BCD:L_8BCD
+NesPrgRom:18BCF:L_8BCF
 NesPrgRom:18BE5:L_8BE5
 NesPrgRom:18C00:L_8C00
 NesPrgRom:18C08:L_8C08
@@ -975,9 +1665,13 @@ NesPrgRom:18C3F:L_8C3F
 NesPrgRom:18C4C:L_8C4C
 NesPrgRom:18C4D:L_8C4D
 NesPrgRom:18C64:L_8C64
+NesPrgRom:18C67:L_8C67
 NesPrgRom:18C7C:L_8C7C
 NesPrgRom:18C8B:L_8C8B
 NesPrgRom:18CAA:L_8CAA
+NesPrgRom:18CAB:L_8CAB
+NesPrgRom:18CB0:L_8CB0
+NesPrgRom:18CB3:L_8CB3
 NesPrgRom:18CCA:L_8CCA
 NesPrgRom:18CEB:L_8CEB
 NesPrgRom:18CED:L_8CED
@@ -1001,6 +1695,7 @@ NesPrgRom:18DAD:L_8DAD
 NesPrgRom:18DB3:L_8DB3
 NesPrgRom:18DC0:L_8DC0
 NesPrgRom:18DC3:L_8DC3
+NesPrgRom:18DCC:L_8DCC
 NesPrgRom:18DD5:L_8DD5
 NesPrgRom:18DFB:L_8DFB
 NesPrgRom:18E0C:L_8E0C
@@ -1016,6 +1711,7 @@ NesPrgRom:18E88:L_8E88
 NesPrgRom:18E8A:L_8E8A
 NesPrgRom:18E94:L_8E94
 NesPrgRom:18E97:L_8E97
+NesPrgRom:18E9A:L_8E9A
 NesPrgRom:18EB7:L_8EB7
 NesPrgRom:18EED:L_8EED
 NesPrgRom:18EF3:L_8EF3
@@ -1032,6 +1728,9 @@ NesPrgRom:18FE6:L_8FE6
 NesPrgRom:18FF4:L_8FF4
 NesPrgRom:18FF8:L_8FF8
 NesPrgRom:19005:L_9005
+NesPrgRom:19008:L_9008
+NesPrgRom:19009:L_9009
+NesPrgRom:1900C:L_900C
 NesPrgRom:19049:L_9049
 NesPrgRom:1904F:L_904F
 NesPrgRom:19054:L_9054
@@ -1048,6 +1747,9 @@ NesPrgRom:1914B:L_914B
 NesPrgRom:19159:L_9159
 NesPrgRom:1915D:L_915D
 NesPrgRom:1916A:L_916A
+NesPrgRom:1916D:L_916D
+NesPrgRom:1916E:L_916E
+NesPrgRom:19171:L_9171
 NesPrgRom:191B4:L_91B4
 NesPrgRom:191BA:L_91BA
 NesPrgRom:191BF:L_91BF
@@ -1064,6 +1766,9 @@ NesPrgRom:192B8:L_92B8
 NesPrgRom:192C6:L_92C6
 NesPrgRom:192CA:L_92CA
 NesPrgRom:192D7:L_92D7
+NesPrgRom:192DA:L_92DA
+NesPrgRom:192DB:L_92DB
+NesPrgRom:192DE:L_92DE
 NesPrgRom:19311:L_9311
 NesPrgRom:19317:L_9317
 NesPrgRom:19328:L_9328
@@ -1083,6 +1788,8 @@ NesPrgRom:193C2:L_93C2
 NesPrgRom:193C9:L_93C9
 NesPrgRom:193D6:L_93D6
 NesPrgRom:193DA:L_93DA
+NesPrgRom:193E2:L_93E2
+NesPrgRom:193F1:L_93F1
 NesPrgRom:193FD:L_93FD
 NesPrgRom:19407:L_9407
 NesPrgRom:19416:L_9416
@@ -1103,6 +1810,7 @@ NesPrgRom:194D9:L_94D9
 NesPrgRom:194DD:L_94DD
 NesPrgRom:194E3:L_94E3
 NesPrgRom:194EC:L_94EC
+NesPrgRom:194FA:L_94FA
 NesPrgRom:194FC:L_94FC
 NesPrgRom:1950D:L_950D
 NesPrgRom:1952E:L_952E
@@ -1123,6 +1831,8 @@ NesPrgRom:1961B:L_961B
 NesPrgRom:1961F:L_961F
 NesPrgRom:1962F:L_962F
 NesPrgRom:1963C:L_963C
+NesPrgRom:1963F:L_963F
+NesPrgRom:19640:L_9640
 NesPrgRom:19641:L_9641
 NesPrgRom:19650:L_9650
 NesPrgRom:1965A:L_965A
@@ -1144,16 +1854,22 @@ NesPrgRom:19703:L_9703
 NesPrgRom:19706:L_9706
 NesPrgRom:19707:L_9707
 NesPrgRom:19711:L_9711
+NesPrgRom:19717:L_9717
 NesPrgRom:19723:L_9723
 NesPrgRom:19738:L_9738
+NesPrgRom:19748:L_9748
 NesPrgRom:1975D:L_975D
 NesPrgRom:19763:L_9763
 NesPrgRom:19767:L_9767
 NesPrgRom:1976C:L_976C
 NesPrgRom:1976D:L_976D
+NesPrgRom:19770:L_9770
+NesPrgRom:1977D:L_977D
 NesPrgRom:1977F:L_977F
 NesPrgRom:19780:L_9780
+NesPrgRom:19784:L_9784
 NesPrgRom:19788:L_9788
+NesPrgRom:1978B:L_978B
 NesPrgRom:1979F:L_979F
 NesPrgRom:197A2:L_97A2
 NesPrgRom:197C0:L_97C0
@@ -1161,12 +1877,22 @@ NesPrgRom:197C6:L_97C6
 NesPrgRom:197FE:L_97FE
 NesPrgRom:19804:L_9804
 NesPrgRom:1980C:L_980C
+NesPrgRom:1980F:L_980F
+NesPrgRom:19813:L_9813
+NesPrgRom:19817:L_9817
+NesPrgRom:19819:L_9819
+NesPrgRom:1981D:L_981D
+NesPrgRom:19835:L_9835
 NesPrgRom:19838:L_9838
 NesPrgRom:1983E:L_983E
 NesPrgRom:1986C:L_986C
 NesPrgRom:19880:L_9880
 NesPrgRom:19881:L_9881
 NesPrgRom:19882:L_9882
+NesPrgRom:19885:L_9885
+NesPrgRom:198A3:L_98A3
+NesPrgRom:198A8:L_98A8
+NesPrgRom:198AB:L_98AB
 NesPrgRom:198BD:L_98BD
 NesPrgRom:198CC:L_98CC
 NesPrgRom:198DF:L_98DF
@@ -1182,10 +1908,17 @@ NesPrgRom:19929:L_9929
 NesPrgRom:19933:L_9933
 NesPrgRom:19965:L_9965
 NesPrgRom:19967:L_9967
+NesPrgRom:1996E:L_996E
+NesPrgRom:19970:L_9970
+NesPrgRom:19980:L_9980
 NesPrgRom:199B0:L_99B0
 NesPrgRom:199CB:L_99CB
 NesPrgRom:199CC:L_99CC
+NesPrgRom:199CF:L_99CF
 NesPrgRom:199DF:L_99DF
+NesPrgRom:199ED:L_99ED
+NesPrgRom:199F0:L_99F0
+NesPrgRom:199F3:L_99F3
 NesPrgRom:19A0C:L_9A0C
 NesPrgRom:19A0E:L_9A0E
 NesPrgRom:19A1E:L_9A1E
@@ -1193,30 +1926,63 @@ NesPrgRom:19A42:L_9A42
 NesPrgRom:19A45:L_9A45
 NesPrgRom:19A47:L_9A47
 NesPrgRom:19A6E:L_9A6E
+NesPrgRom:19A80:L_9A80
+NesPrgRom:19A98:L_9A98
+NesPrgRom:19AB0:L_9AB0
 NesPrgRom:19AC8:L_9AC8
 NesPrgRom:19ACA:L_9ACA
 NesPrgRom:19AE1:L_9AE1
 NesPrgRom:19AEA:L_9AEA
 NesPrgRom:19AEB:L_9AEB
+NesPrgRom:19AEE:L_9AEE
 NesPrgRom:19B29:L_9B29
+NesPrgRom:19B2A:L_9B2A
 NesPrgRom:19B2F:L_9B2F
 NesPrgRom:19B32:L_9B32
 NesPrgRom:19B47:L_9B47
 NesPrgRom:19B76:L_9B76
 NesPrgRom:19B79:L_9B79
+NesPrgRom:19B7C:L_9B7C
 NesPrgRom:19B81:L_9B81
 NesPrgRom:19B8B:L_9B8B
 NesPrgRom:19B90:L_9B90
 NesPrgRom:19B95:L_9B95
+NesPrgRom:19B98:L_9B98
+NesPrgRom:19BAA:L_9BAA
+NesPrgRom:19BAD:L_9BAD
 NesPrgRom:19BB1:L_9BB1
 NesPrgRom:19BCE:L_9BCE
 NesPrgRom:19BCF:L_9BCF
+NesPrgRom:19BD2:L_9BD2
 NesPrgRom:19BD8:L_9BD8
+NesPrgRom:19BDB:L_9BDB
+NesPrgRom:19BED:L_9BED
+NesPrgRom:19BF0:L_9BF0
 NesPrgRom:19BF4:L_9BF4
 NesPrgRom:19C11:L_9C11
 NesPrgRom:19C14:L_9C14
+NesPrgRom:19C15:L_9C15
 NesPrgRom:19C1C:L_9C1C
+NesPrgRom:19C1F:L_9C1F
+NesPrgRom:19C23:L_9C23
+NesPrgRom:19C26:L_9C26
+NesPrgRom:19C2A:L_9C2A
+NesPrgRom:19C2D:L_9C2D
+NesPrgRom:19C31:L_9C31
+NesPrgRom:19C34:L_9C34
+NesPrgRom:19C38:L_9C38
+NesPrgRom:19C3B:L_9C3B
+NesPrgRom:19C3F:L_9C3F
+NesPrgRom:19C42:L_9C42
+NesPrgRom:19C46:L_9C46
+NesPrgRom:19C49:L_9C49
+NesPrgRom:19C4D:L_9C4D
+NesPrgRom:19C50:L_9C50
+NesPrgRom:19C54:L_9C54
+NesPrgRom:19C57:L_9C57
 NesPrgRom:19C5B:L_9C5B
+NesPrgRom:19C68:L_9C68
+NesPrgRom:19C6B:L_9C6B
 NesPrgRom:19C7D:L_9C7D
 NesPrgRom:19C92:L_9C92
 NesPrgRom:19CA4:L_9CA4
@@ -1229,7 +1995,22 @@ NesPrgRom:19CE8:L_9CE8
 NesPrgRom:19CFC:L_9CFC
 NesPrgRom:19D04:L_9D04
 NesPrgRom:19D09:L_9D09
+NesPrgRom:19D0C:L_9D0C
+NesPrgRom:19D15:L_9D15
+NesPrgRom:19D1E:L_9D1E
+NesPrgRom:19D20:L_9D20
+NesPrgRom:19D32:L_9D32
 NesPrgRom:19D3B:L_9D3B
+NesPrgRom:19D3E:L_9D3E
+NesPrgRom:19D4C:L_9D4C
+NesPrgRom:19D4D:L_9D4D
+NesPrgRom:19D4F:L_9D4F
+NesPrgRom:19D5F:L_9D5F
+NesPrgRom:19D60:L_9D60
+NesPrgRom:19D62:L_9D62
+NesPrgRom:19D72:L_9D72
+NesPrgRom:19D73:L_9D73
+NesPrgRom:19D75:L_9D75
 NesPrgRom:19D83:L_9D83
 NesPrgRom:19D97:L_9D97
 NesPrgRom:19DA1:L_9DA1
@@ -1244,6 +2025,9 @@ NesPrgRom:19DFC:L_9DFC
 NesPrgRom:19DFF:L_9DFF
 NesPrgRom:19E16:L_9E16
 NesPrgRom:19E1A:L_9E1A
+NesPrgRom:19E21:L_9E21
+NesPrgRom:19E23:L_9E23
+NesPrgRom:19E24:L_9E24
 NesPrgRom:19E28:L_9E28
 NesPrgRom:19E42:L_9E42
 NesPrgRom:19E45:L_9E45
@@ -1253,59 +2037,104 @@ NesPrgRom:19E59:L_9E59
 NesPrgRom:19E60:L_9E60
 NesPrgRom:19E84:L_9E84
 NesPrgRom:19E85:L_9E85
+NesPrgRom:19E90:L_9E90
+NesPrgRom:19E92:L_9E92
+NesPrgRom:19E93:L_9E93
+NesPrgRom:19E97:L_9E97
+NesPrgRom:19E99:L_9E99
+NesPrgRom:19E9A:L_9E9A
 NesPrgRom:19E9E:L_9E9E
 NesPrgRom:19EA4:L_9EA4
+NesPrgRom:19EA7:L_9EA7
 NesPrgRom:19EBE:L_9EBE
+NesPrgRom:19EBF:L_9EBF
+NesPrgRom:19EC2:L_9EC2
 NesPrgRom:19EDF:L_9EDF
+NesPrgRom:19EE0:L_9EE0
+NesPrgRom:19EE3:L_9EE3
 NesPrgRom:19F05:L_9F05
 NesPrgRom:19F0D:L_9F0D
 NesPrgRom:19F15:L_9F15
 NesPrgRom:19F2E:L_9F2E
+NesPrgRom:19F39:L_9F39
+NesPrgRom:19F3C:L_9F3C
 NesPrgRom:19F59:L_9F59
+NesPrgRom:19F5A:L_9F5A
+NesPrgRom:19F5D:L_9F5D
 NesPrgRom:19F7F:L_9F7F
 NesPrgRom:19F87:L_9F87
 NesPrgRom:19F8F:L_9F8F
 NesPrgRom:19FA8:L_9FA8
 NesPrgRom:19FD1:L_9FD1
+NesPrgRom:19FDA:L_9FDA
+NesPrgRom:19FDD:L_9FDD
+NesPrgRom:19FF5:L_9FF5
 NesPrgRom:19FF8:L_9FF8
+NesPrgRom:19FF9:L_9FF9
+NesPrgRom:19FFC:L_9FFC
 NesPrgRom:1A009:L_A009
 NesPrgRom:1A019:L_A019
 NesPrgRom:1A029:L_A029
+NesPrgRom:1A02F:L_A02F
+NesPrgRom:1A032:L_A032
 NesPrgRom:1A03F:L_A03F
 NesPrgRom:1A046:L_A046
+NesPrgRom:1A047:L_A047
+NesPrgRom:1A04A:L_A04A
 NesPrgRom:1A063:L_A063
 NesPrgRom:1A073:L_A073
 NesPrgRom:1A083:L_A083
+NesPrgRom:1A089:L_A089
+NesPrgRom:1A08C:L_A08C
 NesPrgRom:1A097:L_A097
 NesPrgRom:1A0AB:L_A0AB
 NesPrgRom:1A0B5:L_A0B5
+NesPrgRom:1A0B6:L_A0B6
+NesPrgRom:1A0B9:L_A0B9
 NesPrgRom:1A0C8:L_A0C8
 NesPrgRom:1A0E5:L_A0E5
 NesPrgRom:1A0E8:L_A0E8
+NesPrgRom:1A0EB:L_A0EB
+NesPrgRom:1A0F6:L_A0F6
+NesPrgRom:1A0F9:L_A0F9
 NesPrgRom:1A10A:L_A10A
 NesPrgRom:1A115:L_A115
 NesPrgRom:1A121:L_A121
+NesPrgRom:1A122:L_A122
+NesPrgRom:1A125:L_A125
 NesPrgRom:1A136:L_A136
 NesPrgRom:1A13D:L_A13D
 NesPrgRom:1A14D:L_A14D
 NesPrgRom:1A15F:L_A15F
 NesPrgRom:1A188:L_A188
+NesPrgRom:1A191:L_A191
+NesPrgRom:1A194:L_A194
 NesPrgRom:1A1AC:L_A1AC
+NesPrgRom:1A1AD:L_A1AD
+NesPrgRom:1A1B0:L_A1B0
 NesPrgRom:1A1BF:L_A1BF
 NesPrgRom:1A1CC:L_A1CC
 NesPrgRom:1A1EB:L_A1EB
 NesPrgRom:1A1EE:L_A1EE
+NesPrgRom:1A1F1:L_A1F1
+NesPrgRom:1A1F4:L_A1F4
 NesPrgRom:1A201:L_A201
+NesPrgRom:1A202:L_A202
+NesPrgRom:1A205:L_A205
 NesPrgRom:1A214:L_A214
 NesPrgRom:1A231:L_A231
 NesPrgRom:1A234:L_A234
 NesPrgRom:1A237:L_A237
+NesPrgRom:1A23A:L_A23A
 NesPrgRom:1A24C:L_A24C
+NesPrgRom:1A24D:L_A24D
+NesPrgRom:1A250:L_A250
 NesPrgRom:1A25D:L_A25D
 NesPrgRom:1A27A:L_A27A
 NesPrgRom:1A27D:L_A27D
 NesPrgRom:1A280:L_A280
 NesPrgRom:1A28A:L_A28A
+NesPrgRom:1A290:L_A290
 NesPrgRom:1A299:L_A299
 NesPrgRom:1A29E:L_A29E
 NesPrgRom:1A2B3:L_A2B3
@@ -1321,6 +2150,7 @@ NesPrgRom:1A2FD::A is now the offset into TankEnemy_DescTable for the enemy's En
 NesPrgRom:1A304::Add the carry to second byte of TankEnemy_DescTablePtr to get EnemyParam_PtrHi
 NesPrgRom:1A30A:L_A30A
 NesPrgRom:1A324:L_A324
+NesPrgRom:1A327:L_A327
 NesPrgRom:1A347:L_A347
 NesPrgRom:1A34D:L_A34D
 NesPrgRom:1A350:L_A350
@@ -1328,8 +2158,11 @@ NesPrgRom:1A365:L_A365
 NesPrgRom:1A368:TankEnemy_DescTablePtr:LE self-pointer (=$A36A) to TankEnemy_DescTable. Tank parallel of OvhdEnemy_DescTablePtr ($B324).
 NesPrgRom:1A36A:TankEnemy_DescTable:30 x EnemyDesc, indexed by descriptor index via TankEnemy_Load_EnemyDescPtr (accessed only via computed ($A1) pointer). See the EnemyDesc struct.\n\nThe descriptor index equals the spawn-list Thing id for all 30 entries (see docs/entities/entity-map.md), so this is one descriptor per Thing.\n\nIndex->enemy:\n  00=GrayCaterpillar($54)\n  01=GrayBulletA($56)*\n  02=GrayBulletB($58)*\n  03=RedCatDropper($5B)\n  04=Hulk($5D)\n  05=GrayHopper6($5F)\n  06=RedCaterpillar($62)\n  07=Mine($64)\n  08=Turret($66)\n  09=BomberRock($68)\n  0A=FlyingShip($6A)\n  0B=FlyingBomber($6C)\n  0C=SwoopingSphere($6E)\n  0D=Bee($70) 0E=Orb($72)\n  0F=FlyingRedCatBomber($74)\n  10=Shooter($76)\n  11=KamikazeOrb($78)\n  12=GrayHopper10($7A)\n  13=RedFlierSpawner($4E)\n  14=GrayFlierSpawner($50)\n  15=BombLobbingHand($7E)\n  16=Jellyfish($80)\n  17=ScubaSteve($82)\n  18=RunningShell($85)\n  19=SubmersibleSpawner($52)\n  1A=CrescentRoller($88)\n  1B=BombCanister($8A)\n  1C=RedBulletA($8C)*\n  1D=RedBulletB($8D)*\n\n* The two bullet families each own a Thing pair whose descriptors hold identical bytes, and their handlers do not respect the split. Gray: $56 Init, $58 Init and $5A Attacking all pass 02, while 01 is reached only by $59 Main's damage check. Red: $8C Init passes 1C and $8D Init passes 1D, but $8E Main and $8F Locked both pass 1C. Behaviourally harmless — 01/02 and 1C/1D are byte-identical — so which of a pair a handler names is not evidence of that handler's Thing.\n\nTank parallel of OvhdEnemy_DescTable ($B326). See docs/entities/tank/_shared-enemy-system.md.
 NesPrgRom:1A3E2:L_A3E2
+NesPrgRom:1A3E5:L_A3E5
 NesPrgRom:1A402:L_A402
 NesPrgRom:1A40A:L_A40A
+NesPrgRom:1A40B:L_A40B
+NesPrgRom:1A40E:L_A40E
 NesPrgRom:1A423:L_A423
 NesPrgRom:1A42E:L_A42E
 NesPrgRom:1A442:L_A442
@@ -1341,18 +2174,27 @@ NesPrgRom:1A4A4:L_A4A4
 NesPrgRom:1A4B4:L_A4B4
 NesPrgRom:1A4BE:L_A4BE
 NesPrgRom:1A4D3:L_A4D3
+NesPrgRom:1A4DB:L_A4DB
 NesPrgRom:1A4DE:L_A4DE
+NesPrgRom:1A4E1:L_A4E1
 NesPrgRom:1A4F1:L_A4F1
 NesPrgRom:1A4F9:L_A4F9
 NesPrgRom:1A50D:L_A50D
+NesPrgRom:1A50E:L_A50E
+NesPrgRom:1A511:L_A511
 NesPrgRom:1A521:L_A521
 NesPrgRom:1A529:L_A529
 NesPrgRom:1A539:L_A539
+NesPrgRom:1A53A:L_A53A
+NesPrgRom:1A53D:L_A53D
 NesPrgRom:1A558:L_A558
 NesPrgRom:1A564:L_A564
 NesPrgRom:1A580:L_A580
 NesPrgRom:1A590:L_A590
 NesPrgRom:1A59A:L_A59A
+NesPrgRom:1A5C1:L_A5C1
+NesPrgRom:1A5C2:L_A5C2
+NesPrgRom:1A5C5:L_A5C5
 NesPrgRom:1A5DB:L_A5DB
 NesPrgRom:1A5EE:L_A5EE
 NesPrgRom:1A5F2:L_A5F2
@@ -1376,8 +2218,12 @@ NesPrgRom:1A6B3:L_A6B3
 NesPrgRom:1A6B9:L_A6B9
 NesPrgRom:1A6BC:L_A6BC
 NesPrgRom:1A6BF:L_A6BF
+NesPrgRom:1A6C0:L_A6C0
 NesPrgRom:1A6D7:L_A6D7
+NesPrgRom:1A6DA:L_A6DA
 NesPrgRom:1A6E3:L_A6E3
+NesPrgRom:1A6E4:L_A6E4
+NesPrgRom:1A6E7:L_A6E7
 NesPrgRom:1A6FF:L_A6FF
 NesPrgRom:1A70E:L_A70E
 NesPrgRom:1A715:L_A715
@@ -1386,16 +2232,21 @@ NesPrgRom:1A72F:L_A72F
 NesPrgRom:1A739:L_A739
 NesPrgRom:1A745:L_A745
 NesPrgRom:1A747:L_A747
+NesPrgRom:1A74A:L_A74A
 NesPrgRom:1A74B:L_A74B
+NesPrgRom:1A74E:L_A74E
 NesPrgRom:1A75D:L_A75D
 NesPrgRom:1A75F:L_A75F
 NesPrgRom:1A769:L_A769
+NesPrgRom:1A76A:L_A76A
+NesPrgRom:1A76D:L_A76D
 NesPrgRom:1A780:L_A780
 NesPrgRom:1A79B:L_A79B
 NesPrgRom:1A79E:L_A79E
 NesPrgRom:1A7AE:L_A7AE
 NesPrgRom:1A7B8:L_A7B8
 NesPrgRom:1A7C6:L_A7C6
+NesPrgRom:1A7CA:L_A7CA
 NesPrgRom:1A7CB:ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy.
 NesPrgRom:1A7CE:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__
 NesPrgRom:1A7D0::Init the enemy from descriptor $05.
@@ -1410,8 +2261,11 @@ NesPrgRom:1A7F1:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:$42 = $8
 NesPrgRom:1A7FB::If LoadedObj_AnimFrame (wind-up) is at 0, then proceed to ground check.
 NesPrgRom:1A7FD::otherwise, decrement LoadedObj_AnimFrame (wind-up).
 NesPrgRom:1A802:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired:wind-up over: take one ballistic step (Obj_GravityMoveBounce with gravity $04, which also reflects and damps the velocity on contact) and test bit 6 of the wall flags it returns — a vertical, i.e. floor-or-ceiling, contact. Clear means still airborne, so just draw.
-NesPrgRom:1A80B::vertical contact — but floor or ceiling? Obj_GravityMoveBounce reflects YVel on the hit, so after landing $4D is negative (pointing up) and after a ceiling bonk it is positive. Positive → not a landing, keep falling.
-NesPrgRom:1A80F::landed: arm the 10-frame wind-up ($51 = $0A), then choose between settling into the walk state $61 (INC $46) and hopping again. Settling needs BOTH Step_RNG's carry set and Global_FrameCounter bit 7 set.\nThe carry is not a coin flip. Step_RNG is $13 = 5×$13 − 1 and returns the borrow of that final SEC/SBC #$01, which is clear only when $13 was $00 on entry; the LCG has full period 256, so that happens exactly once per 256 calls. The BCC is therefore taken ~0.4% of the time and the real decision is $11 bit 7 alone — the hopper walks off any landing that falls in the upper half of the 256-frame counter cycle and re-hops in the lower half, alternating roughly every 2 seconds rather than randomly.
+NesPrgRom:1A80B::Handle vertical contact.  Obj_GravityMoveBounce reflects LoadedObj's Velocity_Y on the hit so,\na negative value (pointing up) implies landing\na positive value implies a ceiling bonk.
+NesPrgRom:1A80F::On Landed:\nSet the 10-frame wind-up (AnimFrame)
+NesPrgRom:1A813::then spin Step_RNG to choose whicn state to transition to.
+NesPrgRom:1A816::if either the Carry Flag is unset or if Global_FrameCounter is negative, then carry on with the attack.
+NesPrgRom:1A81C::Otherwise, transition to the patrolling state.
 NesPrgRom:1A821:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump:hop: play sound $29, then aim. The delta is the X distance (LoadedObj__Get_DeltaToPlayer_X = player.X − obj.X), not a Y distance — negative means the player is to the LEFT.
 NesPrgRom:1A830:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft:player to the LEFT → heading $B8 = $C0 − $08, tilted 11.25° left of straight up (the $C8 above is the mirror, for a player to the right). This is the correctly-aimed pair; the Init at $A7DC/$A7E1 assigns the same two constants the other way round.
 NesPrgRom:1A832:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:launch: commit the heading to $47 and pass the speed magnitude $52 + (Step_RNG & $0F) = $30..$3F to Obj_AngleToVelocity in Y. This is a velocity computation, not a child spawn — $E1BD resolves heading+speed into $4C/$4D through Trig_QuarterSineTable.\nBecause $B8/$C8 sit only $08 either side of straight up, the components come out about 4:1 in favour of the vertical: |cos| = 25 and |sin| = 125 out of the table's $7F peak, scaled by the speed and shifted down 8, giving $4D ≈ −23..−30 (upward) against $4C ≈ ±4..±6. So it leaps almost straight up and only drifts onto the player.
@@ -1421,15 +2275,22 @@ NesPrgRom:1A85A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:still alive:
 NesPrgRom:1A863::$51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
 NesPrgRom:1A868:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle:$51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose
 NesPrgRom:1A86A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile:tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
+NesPrgRom:1A86D:L_A86D
 NesPrgRom:1A86E:L_A86E
+NesPrgRom:1A871:L_A871
 NesPrgRom:1A886:L_A886
 NesPrgRom:1A888:L_A888
 NesPrgRom:1A89F:L_A89F
 NesPrgRom:1A8AF:L_A8AF
 NesPrgRom:1A8B9:L_A8B9
+NesPrgRom:1A8CD:L_A8CD
+NesPrgRom:1A8CE:L_A8CE
 NesPrgRom:1A8D2:L_A8D2
+NesPrgRom:1A8D5:L_A8D5
 NesPrgRom:1A8F2:L_A8F2
 NesPrgRom:1A8FA:L_A8FA
+NesPrgRom:1A8FB:L_A8FB
+NesPrgRom:1A8FE:L_A8FE
 NesPrgRom:1A913:L_A913
 NesPrgRom:1A91E:L_A91E
 NesPrgRom:1A932:L_A932
@@ -1442,7 +2303,10 @@ NesPrgRom:1A9A4:L_A9A4
 NesPrgRom:1A9AE:L_A9AE
 NesPrgRom:1A9C3:L_A9C3
 NesPrgRom:1A9CB:L_A9CB
+NesPrgRom:1A9CE:L_A9CE
 NesPrgRom:1A9DD:L_A9DD
+NesPrgRom:1A9DE:L_A9DE
+NesPrgRom:1A9E1:L_A9E1
 NesPrgRom:1A9F8:L_A9F8
 NesPrgRom:1A9FA:L_A9FA
 NesPrgRom:1AA03:L_AA03
@@ -1452,8 +2316,12 @@ NesPrgRom:1AA3B:L_AA3B
 NesPrgRom:1AA50:L_AA50
 NesPrgRom:1AA54:L_AA54
 NesPrgRom:1AA56:L_AA56
+NesPrgRom:1AA59:L_AA59
 NesPrgRom:1AA5A:L_AA5A
+NesPrgRom:1AA5D:L_AA5D
 NesPrgRom:1AA6B:L_AA6B
+NesPrgRom:1AA6C:L_AA6C
+NesPrgRom:1AA6F:L_AA6F
 NesPrgRom:1AA8E:L_AA8E
 NesPrgRom:1AA96:L_AA96
 NesPrgRom:1AAB2:L_AAB2
@@ -1461,8 +2329,12 @@ NesPrgRom:1AAB4:L_AAB4
 NesPrgRom:1AAD4:L_AAD4
 NesPrgRom:1AAE4:L_AAE4
 NesPrgRom:1AAEE:L_AAEE
+NesPrgRom:1AB03:L_AB03
 NesPrgRom:1AB13:L_AB13
+NesPrgRom:1AB16:L_AB16
 NesPrgRom:1AB23:L_AB23
+NesPrgRom:1AB24:L_AB24
+NesPrgRom:1AB27:L_AB27
 NesPrgRom:1AB3D:L_AB3D
 NesPrgRom:1AB4B:L_AB4B
 NesPrgRom:1AB56:L_AB56
@@ -1477,15 +2349,21 @@ NesPrgRom:1ABB4:L_ABB4
 NesPrgRom:1ABBE:L_ABBE
 NesPrgRom:1ABCB:L_ABCB
 NesPrgRom:1ABCF:L_ABCF
+NesPrgRom:1ABD2:L_ABD2
 NesPrgRom:1ABEB:L_ABEB
+NesPrgRom:1ABEC:L_ABEC
+NesPrgRom:1ABEF:L_ABEF
 NesPrgRom:1AC10:L_AC10
 NesPrgRom:1AC20:L_AC20
 NesPrgRom:1AC2A:L_AC2A
 NesPrgRom:1AC38:L_AC38
 NesPrgRom:1AC3C:L_AC3C
+NesPrgRom:1AC3F:L_AC3F
 NesPrgRom:1AC51:L_AC51
 NesPrgRom:1AC53:L_AC53
 NesPrgRom:1AC62:L_AC62
+NesPrgRom:1AC63:L_AC63
+NesPrgRom:1AC66:L_AC66
 NesPrgRom:1AC74:L_AC74
 NesPrgRom:1AC83:L_AC83
 NesPrgRom:1AC8E:L_AC8E
@@ -1497,8 +2375,12 @@ NesPrgRom:1ACD0:L_ACD0
 NesPrgRom:1ACE0:L_ACE0
 NesPrgRom:1ACEA:L_ACEA
 NesPrgRom:1ACF6:L_ACF6
+NesPrgRom:1ACFA:L_ACFA
 NesPrgRom:1ACFB:L_ACFB
+NesPrgRom:1ACFE:L_ACFE
 NesPrgRom:1AD07:L_AD07
+NesPrgRom:1AD08:L_AD08
+NesPrgRom:1AD0B:L_AD0B
 NesPrgRom:1AD1F:L_AD1F
 NesPrgRom:1AD2A:L_AD2A
 NesPrgRom:1AD31:L_AD31
@@ -1516,8 +2398,13 @@ NesPrgRom:1ADB9:L_ADB9
 NesPrgRom:1ADC3:L_ADC3
 NesPrgRom:1ADCD:L_ADCD
 NesPrgRom:1ADCF:L_ADCF
+NesPrgRom:1ADDF:L_ADDF
+NesPrgRom:1ADE0:L_ADE0
 NesPrgRom:1ADE4:L_ADE4
+NesPrgRom:1ADE7:L_ADE7
 NesPrgRom:1ADFE:L_ADFE
+NesPrgRom:1ADFF:L_ADFF
+NesPrgRom:1AE02:L_AE02
 NesPrgRom:1AE19:L_AE19
 NesPrgRom:1AE21:L_AE21
 NesPrgRom:1AE2F:L_AE2F
@@ -1525,8 +2412,12 @@ NesPrgRom:1AE39:L_AE39
 NesPrgRom:1AE49:L_AE49
 NesPrgRom:1AE59:L_AE59
 NesPrgRom:1AE63:L_AE63
+NesPrgRom:1AE77:L_AE77
 NesPrgRom:1AE78:L_AE78
+NesPrgRom:1AE7B:L_AE7B
 NesPrgRom:1AE94:L_AE94
+NesPrgRom:1AE95:L_AE95
+NesPrgRom:1AE98:L_AE98
 NesPrgRom:1AEB3:L_AEB3
 NesPrgRom:1AED5:L_AED5
 NesPrgRom:1AEDC:L_AEDC
@@ -1535,10 +2426,15 @@ NesPrgRom:1AEFA:L_AEFA
 NesPrgRom:1AF03:L_AF03
 NesPrgRom:1AF13:L_AF13
 NesPrgRom:1AF1D:L_AF1D
+NesPrgRom:1AF31:L_AF31
+NesPrgRom:1AF32:L_AF32
 NesPrgRom:1AF3A:L_AF3A
+NesPrgRom:1AF3D:L_AF3D
 NesPrgRom:1AF4F:L_AF4F
 NesPrgRom:1AF51:L_AF51
 NesPrgRom:1AF60:L_AF60
+NesPrgRom:1AF61:L_AF61
+NesPrgRom:1AF64:L_AF64
 NesPrgRom:1AF72:L_AF72
 NesPrgRom:1AF81:L_AF81
 NesPrgRom:1AF8C:L_AF8C
@@ -1550,6 +2446,7 @@ NesPrgRom:1AFD1:L_AFD1
 NesPrgRom:1AFE1:L_AFE1
 NesPrgRom:1AFEB:L_AFEB
 NesPrgRom:1AFF7:L_AFF7
+NesPrgRom:1AFFB:L_AFFB
 NesPrgRom:1AFFC:ObjHandler_Tank_76_Shooter_Init:(alpha: not fully human-verified / pending re-verification) ObjType $76 — Shooter (Thing $10, "Gray Shooter"), init. Launches the Shooter on a random straight line: a heading drawn from the RNG and a fixed speed, with its gun already loaded. Every Shooter therefore starts drifting in a different direction, and it is the Main handler's terrain bouncing that turns that into the circling patrol the player sees. TankEnemy_Init advances it to ObjType $77, so this runs for exactly one frame. Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this Init draws nothing. See docs/entities/tank/76-77_shooter.md
 NesPrgRom:1AFFF:_ObjHandler_Tank_76_Shooter_Init__Update__:Normal-play body — pick a random heading and launch  [+3 body entry]\nenemy descriptor $10: HP 16, and a $80/256 (50%) chance of a Health-x1 ($2C) drop. TankEnemy_Init also does INC $46, so the next frame runs ObjType $77
 NesPrgRom:1B004::$47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG
@@ -1576,8 +2473,12 @@ NesPrgRom:1B065:_ObjHandler_Tank_77_Shooter_Main__Render:Draw the sprite — pos
 NesPrgRom:1B06A::pose select: $50 non-zero (searching) keeps metasprite $6C…
 NesPrgRom:1B070::…$50 == 0 (recoiling) bumps it to $6D
 NesPrgRom:1B071:_ObjHandler_Tank_77_Shooter_Main__TileBase:Tail-call the metasprite renderer with the chosen id
+NesPrgRom:1B075:L_B075
 NesPrgRom:1B076:L_B076
+NesPrgRom:1B079:L_B079
 NesPrgRom:1B094:L_B094
+NesPrgRom:1B095:L_B095
+NesPrgRom:1B098:L_B098
 NesPrgRom:1B0B0:L_B0B0
 NesPrgRom:1B0C9:L_B0C9
 NesPrgRom:1B0D2:L_B0D2
@@ -1591,34 +2492,56 @@ NesPrgRom:1B139:L_B139
 NesPrgRom:1B13B:L_B13B
 NesPrgRom:1B14B:L_B14B
 NesPrgRom:1B155:L_B155
+NesPrgRom:1B165:L_B165
+NesPrgRom:1B166:L_B166
 NesPrgRom:1B16E:L_B16E
+NesPrgRom:1B171:L_B171
 NesPrgRom:1B180:L_B180
 NesPrgRom:1B182:L_B182
 NesPrgRom:1B18E:L_B18E
+NesPrgRom:1B18F:L_B18F
+NesPrgRom:1B192:L_B192
 NesPrgRom:1B1A5:L_B1A5
 NesPrgRom:1B1AB:L_B1AB
 NesPrgRom:1B1BB:L_B1BB
 NesPrgRom:1B1C5:L_B1C5
+NesPrgRom:1B1D9:L_B1D9
+NesPrgRom:1B1DA:L_B1DA
 NesPrgRom:1B1DE:L_B1DE
 NesPrgRom:1B1F6:L_B1F6
 NesPrgRom:1B1FE:L_B1FE
 NesPrgRom:1B1FF:L_B1FF
+NesPrgRom:1B202:L_B202
 NesPrgRom:1B20B:L_B20B
+NesPrgRom:1B20C:L_B20C
+NesPrgRom:1B20F:L_B20F
 NesPrgRom:1B23F:L_B23F
 NesPrgRom:1B24F:L_B24F
+NesPrgRom:1B250:L_B250
+NesPrgRom:1B253:L_B253
 NesPrgRom:1B26C:L_B26C
 NesPrgRom:1B27C:L_B27C
 NesPrgRom:1B286:L_B286
+NesPrgRom:1B297:L_B297
 NesPrgRom:1B29B:L_B29B
+NesPrgRom:1B29E:L_B29E
 NesPrgRom:1B2A7:L_B2A7
+NesPrgRom:1B2A8:L_B2A8
+NesPrgRom:1B2AB:L_B2AB
 NesPrgRom:1B2DB:L_B2DB
 NesPrgRom:1B2EB:L_B2EB
+NesPrgRom:1B2EC:L_B2EC
+NesPrgRom:1B2EF:L_B2EF
 NesPrgRom:1B308:L_B308
 NesPrgRom:1B318:L_B318
 NesPrgRom:1B322:L_B322
+NesPrgRom:1B333:L_B333
 NesPrgRom:1B337:L_B337
+NesPrgRom:1B33A:L_B33A
 NesPrgRom:1B34A:L_B34A
 NesPrgRom:1B34E:L_B34E
+NesPrgRom:1B34F:L_B34F
+NesPrgRom:1B352:L_B352
 NesPrgRom:1B366:L_B366
 NesPrgRom:1B372:L_B372
 NesPrgRom:1B37A:L_B37A
@@ -1631,7 +2554,10 @@ NesPrgRom:1B3C9:L_B3C9
 NesPrgRom:1B3DD:L_B3DD
 NesPrgRom:1B3DF:L_B3DF
 NesPrgRom:1B3E3:L_B3E3
+NesPrgRom:1B3E6:L_B3E6
 NesPrgRom:1B3FD:L_B3FD
+NesPrgRom:1B3FE:L_B3FE
+NesPrgRom:1B401:L_B401
 NesPrgRom:1B418:L_B418
 NesPrgRom:1B420:L_B420
 NesPrgRom:1B43A:L_B43A
@@ -1642,7 +2568,10 @@ NesPrgRom:1B47F:L_B47F
 NesPrgRom:1B488:L_B488
 NesPrgRom:1B491:L_B491
 NesPrgRom:1B494:L_B494
+NesPrgRom:1B497:L_B497
 NesPrgRom:1B4A2:L_B4A2
+NesPrgRom:1B4A3:L_B4A3
+NesPrgRom:1B4A6:L_B4A6
 NesPrgRom:1B4D2:L_B4D2
 NesPrgRom:1B4DB:L_B4DB
 NesPrgRom:1B4DD:L_B4DD
@@ -1650,11 +2579,16 @@ NesPrgRom:1B4EE:L_B4EE
 NesPrgRom:1B508:L_B508
 NesPrgRom:1B518:L_B518
 NesPrgRom:1B529:L_B529
+NesPrgRom:1B53A:L_B53A
+NesPrgRom:1B53D:L_B53D
 NesPrgRom:1B557:L_B557
 NesPrgRom:1B567:L_B567
 NesPrgRom:1B56E:L_B56E
 NesPrgRom:1B578:L_B578
+NesPrgRom:1B57B:L_B57B
 NesPrgRom:1B58A:L_B58A
+NesPrgRom:1B58B:L_B58B
+NesPrgRom:1B58E:L_B58E
 NesPrgRom:1B5AB:L_B5AB
 NesPrgRom:1B5AD:L_B5AD
 NesPrgRom:1B5B2:L_B5B2
@@ -1668,15 +2602,23 @@ NesPrgRom:1B615:L_B615
 NesPrgRom:1B623:L_B623
 NesPrgRom:1B62C:L_B62C
 NesPrgRom:1B62F:L_B62F
+NesPrgRom:1B632:L_B632
 NesPrgRom:1B63B:L_B63B
+NesPrgRom:1B63C:L_B63C
+NesPrgRom:1B63F:L_B63F
 NesPrgRom:1B66F:L_B66F
 NesPrgRom:1B67F:L_B67F
+NesPrgRom:1B680:L_B680
+NesPrgRom:1B683:L_B683
 NesPrgRom:1B69C:L_B69C
 NesPrgRom:1B6B8:L_B6B8
 NesPrgRom:1B6C8:L_B6C8
 NesPrgRom:1B6D2:L_B6D2
 NesPrgRom:1B6E4:L_B6E4
+NesPrgRom:1B6E7:L_B6E7
 NesPrgRom:1B6F3:L_B6F3
+NesPrgRom:1B6F4:L_B6F4
+NesPrgRom:1B6F7:L_B6F7
 NesPrgRom:1B710:L_B710
 NesPrgRom:1B724:L_B724
 NesPrgRom:1B72A:L_B72A
@@ -1698,7 +2640,10 @@ NesPrgRom:1B828:L_B828
 NesPrgRom:1B82B:L_B82B
 NesPrgRom:1B831:L_B831
 NesPrgRom:1B832:L_B832
+NesPrgRom:1B835:L_B835
 NesPrgRom:1B842:L_B842
+NesPrgRom:1B843:L_B843
+NesPrgRom:1B846:L_B846
 NesPrgRom:1B860:L_B860
 NesPrgRom:1B867:L_B867
 NesPrgRom:1B871:L_B871
@@ -1715,26 +2660,39 @@ NesPrgRom:1B8EF:L_B8EF
 NesPrgRom:1B906:L_B906
 NesPrgRom:1B910:L_B910
 NesPrgRom:1B91A:L_B91A
+NesPrgRom:1B91D:L_B91D
 NesPrgRom:1B92D:L_B92D
 NesPrgRom:1B935:L_B935
 NesPrgRom:1B949:L_B949
+NesPrgRom:1B94A:L_B94A
+NesPrgRom:1B94D:L_B94D
 NesPrgRom:1B95D:L_B95D
 NesPrgRom:1B965:L_B965
 NesPrgRom:1B979:L_B979
+NesPrgRom:1B97A:L_B97A
+NesPrgRom:1B97D:L_B97D
 NesPrgRom:1B998:L_B998
 NesPrgRom:1B9A4:L_B9A4
 NesPrgRom:1B9C0:L_B9C0
 NesPrgRom:1B9D0:L_B9D0
 NesPrgRom:1B9DA:L_B9DA
+NesPrgRom:1B9FF:L_B9FF
+NesPrgRom:1BA00:L_BA00
+NesPrgRom:1BA03:L_BA03
 NesPrgRom:1BA19:L_BA19
 NesPrgRom:1BA2C:L_BA2C
 NesPrgRom:1BA30:L_BA30
 NesPrgRom:1BA43:L_BA43
 NesPrgRom:1BA53:L_BA53
 NesPrgRom:1BA5D:L_BA5D
+NesPrgRom:1BA70:L_BA70
+NesPrgRom:1BA80:L_BA80
 NesPrgRom:1BA88:L_BA88
+NesPrgRom:1BA8B:L_BA8B
 NesPrgRom:1BA95:L_BA95
 NesPrgRom:1BAA3:L_BAA3
+NesPrgRom:1BAA4:L_BAA4
+NesPrgRom:1BAA7:L_BAA7
 NesPrgRom:1BACF:L_BACF
 NesPrgRom:1BAE3:L_BAE3
 NesPrgRom:1BAF4:L_BAF4
@@ -1753,17 +2711,218 @@ NesPrgRom:1BB88:L_BB88
 NesPrgRom:1BB8A:L_BB8A
 NesPrgRom:1BB8D:L_BB8D
 NesPrgRom:1BB92:L_BB92
+NesPrgRom:1BB9F:L_BB9F
 NesPrgRom:1BBA7:L_BBA7
 NesPrgRom:1BBB8:L_BBB8
 NesPrgRom:1BBC7:L_BBC7
 NesPrgRom:1BBE2:L_BBE2
+NesPrgRom:1BBE5:L_BBE5
 NesPrgRom:1BBF4:L_BBF4
 NesPrgRom:1BBF5:L_BBF5
 NesPrgRom:1BBF8:L_BBF8
 NesPrgRom:1BC0C:L_BC0C
 NesPrgRom:1BC18:L_BC18
+NesPrgRom:1BC1D:L_BC1D
+NesPrgRom:1BC1F:L_BC1F
 NesPrgRom:1BC21:L_BC21
+NesPrgRom:1BFF4:L_BFF4
 NesPrgRom:1C000:L_C000
+NesPrgRom:1C003:L_C003
+NesPrgRom:1C006:L_C006
+NesPrgRom:1C009:L_C009
+NesPrgRom:1C00C:L_C00C
+NesPrgRom:1C00F:L_C00F
+NesPrgRom:1C012:L_C012
+NesPrgRom:1C015:L_C015
+NesPrgRom:1C018:L_C018
+NesPrgRom:1C01B:L_C01B
+NesPrgRom:1C01E:L_C01E
+NesPrgRom:1C021:L_C021
+NesPrgRom:1C024:L_C024
+NesPrgRom:1C027:L_C027
+NesPrgRom:1C02A:L_C02A
+NesPrgRom:1C02D:L_C02D
+NesPrgRom:1C030:L_C030
+NesPrgRom:1C033:L_C033
+NesPrgRom:1C036:L_C036
+NesPrgRom:1C039:L_C039
+NesPrgRom:1C03C:L_C03C
+NesPrgRom:1C03F:L_C03F
+NesPrgRom:1C042:L_C042
+NesPrgRom:1C045:L_C045
+NesPrgRom:1C048:L_C048
+NesPrgRom:1C04B:L_C04B
+NesPrgRom:1C04E:L_C04E
+NesPrgRom:1C051:L_C051
+NesPrgRom:1C054:L_C054
+NesPrgRom:1C057:L_C057
+NesPrgRom:1C05A:L_C05A
+NesPrgRom:1C05D:L_C05D
+NesPrgRom:1C060:L_C060
+NesPrgRom:1C063:L_C063
+NesPrgRom:1C066:L_C066
+NesPrgRom:1C069:L_C069
+NesPrgRom:1C06C:L_C06C
+NesPrgRom:1C06F:L_C06F
+NesPrgRom:1C072:L_C072
+NesPrgRom:1C075:L_C075
+NesPrgRom:1C078:L_C078
+NesPrgRom:1C07B:L_C07B
+NesPrgRom:1C07E:L_C07E
+NesPrgRom:1C081:L_C081
+NesPrgRom:1C084:L_C084
+NesPrgRom:1C087:L_C087
+NesPrgRom:1C08A:L_C08A
+NesPrgRom:1C08D:L_C08D
+NesPrgRom:1C090:L_C090
+NesPrgRom:1C093:L_C093
+NesPrgRom:1C096:L_C096
+NesPrgRom:1C099:L_C099
+NesPrgRom:1C09C:L_C09C
+NesPrgRom:1C09F:L_C09F
+NesPrgRom:1C0A2:L_C0A2
+NesPrgRom:1C0A5:L_C0A5
+NesPrgRom:1C0A8:L_C0A8
+NesPrgRom:1C0AB:L_C0AB
+NesPrgRom:1C0AE:L_C0AE
+NesPrgRom:1C0B1:L_C0B1
+NesPrgRom:1C0B4:L_C0B4
+NesPrgRom:1C0B7:L_C0B7
+NesPrgRom:1C0BA:L_C0BA
+NesPrgRom:1C0BD:L_C0BD
+NesPrgRom:1C0C0:L_C0C0
+NesPrgRom:1C0C3:L_C0C3
+NesPrgRom:1C0C6:L_C0C6
+NesPrgRom:1C0C9:L_C0C9
+NesPrgRom:1C0CC:L_C0CC
+NesPrgRom:1C0CF:L_C0CF
+NesPrgRom:1C0D2:L_C0D2
+NesPrgRom:1C0D5:L_C0D5
+NesPrgRom:1C0D8:L_C0D8
+NesPrgRom:1C0DB:L_C0DB
+NesPrgRom:1C0DE:L_C0DE
+NesPrgRom:1C0E1:L_C0E1
+NesPrgRom:1C0E4:L_C0E4
+NesPrgRom:1C0E7:L_C0E7
+NesPrgRom:1C0EA:L_C0EA
+NesPrgRom:1C0ED:L_C0ED
+NesPrgRom:1C0F0:L_C0F0
+NesPrgRom:1C0F3:L_C0F3
+NesPrgRom:1C0F6:L_C0F6
+NesPrgRom:1C0F9:L_C0F9
+NesPrgRom:1C0FC:L_C0FC
+NesPrgRom:1C0FF:L_C0FF
+NesPrgRom:1C102:L_C102
+NesPrgRom:1C105:L_C105
+NesPrgRom:1C108:L_C108
+NesPrgRom:1C10B:L_C10B
+NesPrgRom:1C10E:L_C10E
+NesPrgRom:1C111:L_C111
+NesPrgRom:1C114:L_C114
+NesPrgRom:1C117:L_C117
+NesPrgRom:1C11A:L_C11A
+NesPrgRom:1C11D:L_C11D
+NesPrgRom:1C120:L_C120
+NesPrgRom:1C123:L_C123
+NesPrgRom:1C126:L_C126
+NesPrgRom:1C129:L_C129
+NesPrgRom:1C12C:L_C12C
+NesPrgRom:1C12F:L_C12F
+NesPrgRom:1C132:L_C132
+NesPrgRom:1C135:L_C135
+NesPrgRom:1C138:L_C138
+NesPrgRom:1C13B:L_C13B
+NesPrgRom:1C13E:L_C13E
+NesPrgRom:1C141:L_C141
+NesPrgRom:1C144:L_C144
+NesPrgRom:1C147:L_C147
+NesPrgRom:1C14A:L_C14A
+NesPrgRom:1C14D:L_C14D
+NesPrgRom:1C150:L_C150
+NesPrgRom:1C153:L_C153
+NesPrgRom:1C156:L_C156
+NesPrgRom:1C159:L_C159
+NesPrgRom:1C15C:L_C15C
+NesPrgRom:1C15F:L_C15F
+NesPrgRom:1C162:L_C162
+NesPrgRom:1C165:L_C165
+NesPrgRom:1C168:L_C168
+NesPrgRom:1C16B:L_C16B
+NesPrgRom:1C16E:L_C16E
+NesPrgRom:1C171:L_C171
+NesPrgRom:1C174:L_C174
+NesPrgRom:1C177:L_C177
+NesPrgRom:1C17A:L_C17A
+NesPrgRom:1C17D:L_C17D
+NesPrgRom:1C180:L_C180
+NesPrgRom:1C183:L_C183
+NesPrgRom:1C186:L_C186
+NesPrgRom:1C189:L_C189
+NesPrgRom:1C18C:L_C18C
+NesPrgRom:1C18F:L_C18F
+NesPrgRom:1C192:L_C192
+NesPrgRom:1C195:L_C195
+NesPrgRom:1C198:L_C198
+NesPrgRom:1C19B:L_C19B
+NesPrgRom:1C19E:L_C19E
+NesPrgRom:1C1A1:L_C1A1
+NesPrgRom:1C1A4:L_C1A4
+NesPrgRom:1C1A7:L_C1A7
+NesPrgRom:1C1AA:L_C1AA
+NesPrgRom:1C1AD:L_C1AD
+NesPrgRom:1C1B0:L_C1B0
+NesPrgRom:1C1B3:L_C1B3
+NesPrgRom:1C1B6:L_C1B6
+NesPrgRom:1C1B9:L_C1B9
+NesPrgRom:1C1BC:L_C1BC
+NesPrgRom:1C1BF:L_C1BF
+NesPrgRom:1C1C2:L_C1C2
+NesPrgRom:1C1C5:L_C1C5
+NesPrgRom:1C1C8:L_C1C8
+NesPrgRom:1C1CB:L_C1CB
+NesPrgRom:1C1CE:L_C1CE
+NesPrgRom:1C1D1:L_C1D1
+NesPrgRom:1C1D4:L_C1D4
+NesPrgRom:1C1D7:L_C1D7
+NesPrgRom:1C1DA:L_C1DA
+NesPrgRom:1C1DD:L_C1DD
+NesPrgRom:1C1E0:L_C1E0
+NesPrgRom:1C1E3:L_C1E3
+NesPrgRom:1C1E6:L_C1E6
+NesPrgRom:1C1E9:L_C1E9
+NesPrgRom:1C1EC:L_C1EC
+NesPrgRom:1C1EF:L_C1EF
+NesPrgRom:1C1F2:L_C1F2
+NesPrgRom:1C1F5:L_C1F5
+NesPrgRom:1C1F8:L_C1F8
+NesPrgRom:1C1FB:L_C1FB
+NesPrgRom:1C1FE:L_C1FE
+NesPrgRom:1C201:L_C201
+NesPrgRom:1C204:L_C204
+NesPrgRom:1C207:L_C207
+NesPrgRom:1C20A:L_C20A
+NesPrgRom:1C20D:L_C20D
+NesPrgRom:1C210:L_C210
+NesPrgRom:1C213:L_C213
+NesPrgRom:1C216:L_C216
+NesPrgRom:1C219:L_C219
+NesPrgRom:1C21C:L_C21C
+NesPrgRom:1C21F:L_C21F
+NesPrgRom:1C222:L_C222
+NesPrgRom:1C225:L_C225
+NesPrgRom:1C228:L_C228
+NesPrgRom:1C22B:L_C22B
+NesPrgRom:1C22E:L_C22E
+NesPrgRom:1C231:L_C231
+NesPrgRom:1C234:L_C234
+NesPrgRom:1C237:L_C237
+NesPrgRom:1C23A:L_C23A
+NesPrgRom:1C23D:L_C23D
+NesPrgRom:1C240:L_C240
+NesPrgRom:1C243:L_C243
+NesPrgRom:1C246:L_C246
+NesPrgRom:1C249:L_C249
+NesPrgRom:1C24C:L_C24C
 NesPrgRom:1C24F:L_C24F
 NesPrgRom:1C264:L_C264
 NesPrgRom:1C267:L_C267
@@ -1771,6 +2930,7 @@ NesPrgRom:1C29E:L_C29E
 NesPrgRom:1C2AC:L_C2AC
 NesPrgRom:1C2BC:L_C2BC
 NesPrgRom:1C2DB:L_C2DB
+NesPrgRom:1C2F7:L_C2F7
 NesPrgRom:1C2FB:L_C2FB
 NesPrgRom:1C301:L_C301
 NesPrgRom:1C326:L_C326
@@ -1809,9 +2969,11 @@ NesPrgRom:1C55A:L_C55A
 NesPrgRom:1C55D:L_C55D
 NesPrgRom:1C56D:L_C56D
 NesPrgRom:1C586:L_C586
+NesPrgRom:1C5A2:L_C5A2
 NesPrgRom:1C5B2:L_C5B2
 NesPrgRom:1C5FA:L_C5FA
 NesPrgRom:1C642:L_C642
+NesPrgRom:1C651:L_C651
 NesPrgRom:1C659:L_C659
 NesPrgRom:1C66E:L_C66E
 NesPrgRom:1C679:L_C679
@@ -1821,25 +2983,36 @@ NesPrgRom:1C68B:L_C68B
 NesPrgRom:1C695:L_C695
 NesPrgRom:1C6B4:L_C6B4
 NesPrgRom:1C6BE:L_C6BE
+NesPrgRom:1C6BF:L_C6BF
+NesPrgRom:1C6CB:L_C6CB
+NesPrgRom:1C6D7:L_C6D7
 NesPrgRom:1C6EF:L_C6EF
 NesPrgRom:1C6FF:L_C6FF
 NesPrgRom:1C709:L_C709
 NesPrgRom:1C719:L_C719
+NesPrgRom:1C71A:L_C71A
+NesPrgRom:1C72A:L_C72A
+NesPrgRom:1C73A:L_C73A
 NesPrgRom:1C742:L_C742
 NesPrgRom:1C764:L_C764
 NesPrgRom:1C767:L_C767
+NesPrgRom:1C76A:L_C76A
 NesPrgRom:1C772:L_C772
 NesPrgRom:1C77E:L_C77E
 NesPrgRom:1C785:L_C785
 NesPrgRom:1C789:L_C789
 NesPrgRom:1C78F:L_C78F
 NesPrgRom:1C79D:L_C79D
+NesPrgRom:1C79F:L_C79F
 NesPrgRom:1C7A8:L_C7A8
 NesPrgRom:1C7BA:L_C7BA
 NesPrgRom:1C7BE:L_C7BE
 NesPrgRom:1C7C7:L_C7C7
 NesPrgRom:1C7D8:L_C7D8
 NesPrgRom:1C7F5:L_C7F5
+NesPrgRom:1C7F8:L_C7F8
+NesPrgRom:1C7FA:L_C7FA
+NesPrgRom:1C7FE:L_C7FE
 NesPrgRom:1C816:L_C816
 NesPrgRom:1C841:L_C841
 NesPrgRom:1C845:L_C845
@@ -1863,9 +3036,15 @@ NesPrgRom:1C9D3:L_C9D3
 NesPrgRom:1C9D6:L_C9D6
 NesPrgRom:1C9DA:L_C9DA
 NesPrgRom:1C9EA:L_C9EA
+NesPrgRom:1C9F4:L_C9F4
+NesPrgRom:1CA04:L_CA04
 NesPrgRom:1CA14:L_CA14
+NesPrgRom:1CA24:L_CA24
+NesPrgRom:1CA2B:L_CA2B
+NesPrgRom:1CA3B:L_CA3B
 NesPrgRom:1CA4B:L_CA4B
 NesPrgRom:1CA52:L_CA52
+NesPrgRom:1CA70:L_CA70
 NesPrgRom:1CA73:L_CA73
 NesPrgRom:1CA81:L_CA81
 NesPrgRom:1CA89:L_CA89
@@ -1882,10 +3061,13 @@ NesPrgRom:1CAF0:L_CAF0
 NesPrgRom:1CAFF:L_CAFF
 NesPrgRom:1CB11:L_CB11
 NesPrgRom:1CB14:L_CB14
+NesPrgRom:1CB51:L_CB51
+NesPrgRom:1CB7C:L_CB7C
 NesPrgRom:1CBA9:L_CBA9
 NesPrgRom:1CBAD:L_CBAD
 NesPrgRom:1CBB4:L_CBB4
 NesPrgRom:1CBDF:L_CBDF
+NesPrgRom:1CBEF:L_CBEF
 NesPrgRom:1CC03:L_CC03
 NesPrgRom:1CC0A:L_CC0A
 NesPrgRom:1CC0E:L_CC0E
@@ -1920,6 +3102,7 @@ NesPrgRom:1CDB5:L_CDB5
 NesPrgRom:1CDB7:L_CDB7
 NesPrgRom:1CDB9:L_CDB9
 NesPrgRom:1CDBA:L_CDBA
+NesPrgRom:1CDC8:L_CDC8
 NesPrgRom:1CDD0:ScreenFade_Step:Per-frame palette-wipe animator;\n\nif bit 7 of ScreenFade_Flags ($15) set: DEC ScreenFade_Counter ($B6, 8→0, fade-in);\nif bit 6 set: INC $B6 (0→9, fade-out);\n\neach step subtracts $B6×8 from $0650–$066F palette shadow
 NesPrgRom:1CDD2::bits 6 and 7
 NesPrgRom:1CDD4::Neither bit set, so abort.
@@ -1945,26 +3128,33 @@ NesPrgRom:1CE77:L_CE77
 NesPrgRom:1CE79:L_CE79
 NesPrgRom:1CE82:L_CE82
 NesPrgRom:1CE87:L_CE87
+NesPrgRom:1CE97:L_CE97
+NesPrgRom:1CE9B:L_CE9B
 NesPrgRom:1CEA3:L_CEA3
 NesPrgRom:1CEB1:L_CEB1
 NesPrgRom:1CEB3:L_CEB3
 NesPrgRom:1CEB4:L_CEB4
 NesPrgRom:1CEC6:L_CEC6
 NesPrgRom:1CEDD:L_CEDD
+NesPrgRom:1CF00:L_CF00
+NesPrgRom:1CF02:L_CF02
 NesPrgRom:1CF07:L_CF07
 NesPrgRom:1CF0F:L_CF0F
 NesPrgRom:1CF10:L_CF10
 NesPrgRom:1CF13:L_CF13
 NesPrgRom:1CF1F:L_CF1F
 NesPrgRom:1CF27:L_CF27
+NesPrgRom:1CF2E:L_CF2E
 NesPrgRom:1CF6F:L_CF6F
 NesPrgRom:1CF72:L_CF72
 NesPrgRom:1CF7E:L_CF7E
 NesPrgRom:1CF86:L_CF86
+NesPrgRom:1CF8D:L_CF8D
 NesPrgRom:1CFCE:L_CFCE
 NesPrgRom:1CFD1:L_CFD1
 NesPrgRom:1CFDD:L_CFDD
 NesPrgRom:1CFE5:L_CFE5
+NesPrgRom:1CFEC:L_CFEC
 NesPrgRom:1D02D:L_D02D
 NesPrgRom:1D03F:L_D03F
 NesPrgRom:1D04F:L_D04F
@@ -1977,17 +3167,21 @@ NesPrgRom:1D085:L_D085
 NesPrgRom:1D09D:L_D09D
 NesPrgRom:1D0A8:L_D0A8
 NesPrgRom:1D0B3:L_D0B3
+NesPrgRom:1D0B4:L_D0B4
+NesPrgRom:1D0F5:L_D0F5
 NesPrgRom:1D136:L_D136
 NesPrgRom:1D13E:L_D13E
 NesPrgRom:1D150:L_D150
 NesPrgRom:1D151:L_D151
 NesPrgRom:1D161:L_D161
+NesPrgRom:1D17D:L_D17D
 NesPrgRom:1D181:L_D181
 NesPrgRom:1D184:L_D184
 NesPrgRom:1D18D:L_D18D
 NesPrgRom:1D1A4:L_D1A4
 NesPrgRom:1D1A6:L_D1A6
 NesPrgRom:1D1AD:L_D1AD
+NesPrgRom:1D1BD:L_D1BD
 NesPrgRom:1D1CF:L_D1CF
 NesPrgRom:1D1E9:L_D1E9
 NesPrgRom:1D1EC:L_D1EC
@@ -1996,6 +3190,7 @@ NesPrgRom:1D1EF:L_D1EF
 NesPrgRom:1D1F8:L_D1F8
 NesPrgRom:1D21C:L_D21C
 NesPrgRom:1D21D:L_D21D
+NesPrgRom:1D228:L_D228
 NesPrgRom:1D238:L_D238
 NesPrgRom:1D240:L_D240
 NesPrgRom:1D243:L_D243
@@ -2101,6 +3296,9 @@ NesPrgRom:1D634:L_D634
 NesPrgRom:1D635:L_D635
 NesPrgRom:1D642:L_D642
 NesPrgRom:1D643:L_D643
+NesPrgRom:1D65E:L_D65E
+NesPrgRom:1D667:L_D667
+NesPrgRom:1D670:L_D670
 NesPrgRom:1D679:L_D679
 NesPrgRom:1D67E:L_D67E
 NesPrgRom:1D683:L_D683
@@ -2164,6 +3362,9 @@ NesPrgRom:1D8FE:L_D8FE
 NesPrgRom:1D907:L_D907
 NesPrgRom:1D908:L_D908
 NesPrgRom:1D943:L_D943
+NesPrgRom:1D94E:L_D94E
+NesPrgRom:1D952:L_D952
+NesPrgRom:1D956:L_D956
 NesPrgRom:1D95E:L_D95E
 NesPrgRom:1D975:L_D975
 NesPrgRom:1D981:L_D981
@@ -2230,6 +3431,9 @@ NesPrgRom:1DD41:L_DD41
 NesPrgRom:1DD51:L_DD51
 NesPrgRom:1DD62:L_DD62
 NesPrgRom:1DD6F:L_DD6F
+NesPrgRom:1DD76:L_DD76
+NesPrgRom:1DD78:L_DD78
+NesPrgRom:1DD7E:L_DD7E
 NesPrgRom:1DEC2:L_DEC2
 NesPrgRom:1DECC:Enqueue_Sound_Command:Insert value (A) into first empty or matching slot of Sound_Command_Queue ($0370-$0377); 8-slot scan from slot 7 down
 NesPrgRom:1DECF::Save X to stack
@@ -2276,6 +3480,7 @@ NesPrgRom:1E002:L_E002
 NesPrgRom:1E005:L_E005
 NesPrgRom:1E018:L_E018
 NesPrgRom:1E01B:L_E01B
+NesPrgRom:1E027:L_E027
 NesPrgRom:1E02F:L_E02F
 NesPrgRom:1E03B:L_E03B
 NesPrgRom:1E04D:L_E04D
@@ -2323,6 +3528,7 @@ NesPrgRom:1E1E4:L_E1E4
 NesPrgRom:1E1E9:L_E1E9
 NesPrgRom:1E1F3:L_E1F3
 NesPrgRom:1E1F8:L_E1F8
+NesPrgRom:1E202:L_E202
 NesPrgRom:1E243:L_E243
 NesPrgRom:1E257:L_E257
 NesPrgRom:1E26C:L_E26C
@@ -2343,7 +3549,11 @@ NesPrgRom:1E308:L_E308
 NesPrgRom:1E309:L_E309
 NesPrgRom:1E351:L_E351
 NesPrgRom:1E355:L_E355
+NesPrgRom:1E368:L_E368
+NesPrgRom:1E36A:L_E36A
 NesPrgRom:1E38A:L_E38A
+NesPrgRom:1E39D:L_E39D
+NesPrgRom:1E39F:L_E39F
 NesPrgRom:1E3BF:L_E3BF
 NesPrgRom:1E3C5:L_E3C5
 NesPrgRom:1E3D1:L_E3D1
@@ -2353,6 +3563,10 @@ NesPrgRom:1E3F0:L_E3F0
 NesPrgRom:1E3F8:L_E3F8
 NesPrgRom:1E41B:L_E41B
 NesPrgRom:1E43E:L_E43E
+NesPrgRom:1E44C:L_E44C
+NesPrgRom:1E44E:L_E44E
+NesPrgRom:1E479:L_E479
+NesPrgRom:1E47B:L_E47B
 NesPrgRom:1E4A6:L_E4A6
 NesPrgRom:1E4AB:L_E4AB
 NesPrgRom:1E4BA:L_E4BA
@@ -2362,6 +3576,9 @@ NesPrgRom:1E4E3:L_E4E3
 NesPrgRom:1E4EE:L_E4EE
 NesPrgRom:1E4F1:L_E4F1
 NesPrgRom:1E4FD:L_E4FD
+NesPrgRom:1E53D:L_E53D
+NesPrgRom:1E54D:L_E54D
+NesPrgRom:1E56F:L_E56F
 NesPrgRom:1E61B:L_E61B
 NesPrgRom:1E633:L_E633
 NesPrgRom:1E63C:L_E63C
@@ -2376,6 +3593,7 @@ NesPrgRom:1E6B1:_DEAD_OAM_Copy_To_PPU__ManualLoop:Copy 64 bytes $0200+X → OAM 
 NesPrgRom:1E6BE:OAM_Flag__HARDCODED_00:Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA OAM_Flag__HARDCODED_00 / BNE, so with $00 the branch never fires: OAM always goes out via $4014 sprite DMA (not the manual copy path), and the staging blit always uses NmiFrameFlag ($11) bit 0 frame parity to alternate slot direction rather than a forced direction. Patching this byte non-zero enables the two dead alternate paths.
 NesPrgRom:1E6BF:L_E6BF
 NesPrgRom:1E6DE:L_E6DE
+NesPrgRom:1E6E1:L_E6E1
 NesPrgRom:1E6E9:L_E6E9
 NesPrgRom:1E6F0:L_E6F0
 NesPrgRom:1E6FA:L_E6FA
@@ -2448,6 +3666,7 @@ NesPrgRom:1EA8B:L_EA8B
 NesPrgRom:1EA97:L_EA97
 NesPrgRom:1EA9C:L_EA9C
 NesPrgRom:1EAA8:L_EAA8
+NesPrgRom:1EAB1:L_EAB1
 NesPrgRom:1EAB3:L_EAB3
 NesPrgRom:1EAB9:L_EAB9
 NesPrgRom:1EACB:L_EACB
@@ -2472,11 +3691,12 @@ NesPrgRom:1EB4E:L_EB4E
 NesPrgRom:1EB51:L_EB51
 NesPrgRom:1EB57:L_EB57
 NesPrgRom:1EB64:L_EB64
-NesPrgRom:1EB71:L_EB71
+NesPrgRom:1EB71:Step_RNG:Steps the pseudo-random number generator state RNG_State ($13) by one 8-bit LCG step and returns the new byte in A.
+NesPrgRom:1EB73::Advance the PRNG: $13 = $13×5 − 1 (returns the new $13).
 NesPrgRom:1EB7E:L_EB7E
 NesPrgRom:1EB8D:L_EB8D
 NesPrgRom:1EB91:L_EB91
-NesPrgRom:1EB97:IRQ
+NesPrgRom:1EB97:L_EB97
 NesPrgRom:1EB98:L_EB98
 NesPrgRom:1EB9F:L_EB9F
 NesPrgRom:1EBB0:L_EBB0
@@ -2551,6 +3771,7 @@ NesPrgRom:1F108:L_F108
 NesPrgRom:1F11B:L_F11B
 NesPrgRom:1F11E:L_F11E
 NesPrgRom:1F138:L_F138
+NesPrgRom:1F14D:L_F14D
 NesPrgRom:1F14E:L_F14E
 NesPrgRom:1F157:L_F157
 NesPrgRom:1F163:L_F163
@@ -2587,9 +3808,11 @@ NesPrgRom:1F2F9:L_F2F9
 NesPrgRom:1F305:L_F305
 NesPrgRom:1F30F:L_F30F
 NesPrgRom:1F311:L_F311
+NesPrgRom:1F31B:L_F31B
 NesPrgRom:1F33B:L_F33B
 NesPrgRom:1F34C:L_F34C
 NesPrgRom:1F358:L_F358
+NesPrgRom:1F359:L_F359
 NesPrgRom:1F379:L_F379
 NesPrgRom:1F3A1:L_F3A1
 NesPrgRom:1F3C1:L_F3C1
@@ -2601,6 +3824,7 @@ NesPrgRom:1F412:L_F412
 NesPrgRom:1F42B:L_F42B
 NesPrgRom:1F435:L_F435
 NesPrgRom:1F457:L_F457
+NesPrgRom:1F45A:L_F45A
 NesPrgRom:1F45D:L_F45D
 NesPrgRom:1F464:L_F464
 NesPrgRom:1F465:L_F465
@@ -2613,6 +3837,11 @@ NesPrgRom:1F503:L_F503
 NesPrgRom:1F509:L_F509
 NesPrgRom:1F50A:L_F50A
 NesPrgRom:1F512:L_F512
+NesPrgRom:1F51F:L_F51F
+NesPrgRom:1F523:L_F523
+NesPrgRom:1F525:L_F525
+NesPrgRom:1F537:L_F537
+NesPrgRom:1F53B:L_F53B
 NesPrgRom:1F547:L_F547
 NesPrgRom:1F55E:L_F55E
 NesPrgRom:1F56D:L_F56D
@@ -2621,7 +3850,10 @@ NesPrgRom:1F57B:L_F57B
 NesPrgRom:1F589:L_F589
 NesPrgRom:1F58F:L_F58F
 NesPrgRom:1F594:L_F594
+NesPrgRom:1F59E:L_F59E
 NesPrgRom:1F5AE:L_F5AE
+NesPrgRom:1F5CF:L_F5CF
+NesPrgRom:1F5D1:L_F5D1
 NesPrgRom:1F5D9:L_F5D9
 NesPrgRom:1F5EF:L_F5EF
 NesPrgRom:1F5FB:L_F5FB
@@ -2630,13 +3862,18 @@ NesPrgRom:1F624:L_F624
 NesPrgRom:1F630:L_F630
 NesPrgRom:1F647:L_F647
 NesPrgRom:1F651:L_F651
+NesPrgRom:1F65E:L_F65E
 NesPrgRom:1F668:L_F668
 NesPrgRom:1F67C:L_F67C
 NesPrgRom:1F681:L_F681
+NesPrgRom:1F68B:L_F68B
 NesPrgRom:1F6A7:L_F6A7
 NesPrgRom:1F6E5:L_F6E5
 NesPrgRom:1F6F3:L_F6F3
 NesPrgRom:1F6F8:L_F6F8
+NesPrgRom:1F702:L_F702
+NesPrgRom:1F706:L_F706
+NesPrgRom:1F708:L_F708
 NesPrgRom:1F71C:L_F71C
 NesPrgRom:1F75F:L_F75F
 NesPrgRom:1F771:L_F771
@@ -2646,8 +3883,12 @@ NesPrgRom:1F789:L_F789
 NesPrgRom:1F796:L_F796
 NesPrgRom:1F79E:L_F79E
 NesPrgRom:1F7C1:L_F7C1
+NesPrgRom:1F7C2:L_F7C2
+NesPrgRom:1F7C4:L_F7C4
 NesPrgRom:1F7D1:L_F7D1
 NesPrgRom:1F81B:L_F81B
+NesPrgRom:1F82C:L_F82C
+NesPrgRom:1F82E:L_F82E
 NesPrgRom:1F833:L_F833
 NesPrgRom:1F868:L_F868
 NesPrgRom:1F872:L_F872
@@ -2663,10 +3904,21 @@ NesPrgRom:1F8B6:L_F8B6
 NesPrgRom:1F8E3:L_F8E3
 NesPrgRom:1F90B:L_F90B
 NesPrgRom:1F90D:L_F90D
+NesPrgRom:1F917:L_F917
 NesPrgRom:1F927:L_F927
 NesPrgRom:1F92D:L_F92D
 NesPrgRom:1F960:L_F960
 NesPrgRom:1F966:L_F966
+NesPrgRom:1F96F:L_F96F
+NesPrgRom:1F971:L_F971
+NesPrgRom:1F981:L_F981
+NesPrgRom:1F985:L_F985
+NesPrgRom:1F989:L_F989
+NesPrgRom:1F98D:L_F98D
+NesPrgRom:1F991:L_F991
+NesPrgRom:1F99C:L_F99C
+NesPrgRom:1F9A0:L_F9A0
+NesPrgRom:1F9A4:L_F9A4
 NesPrgRom:1F9A5:L_F9A5
 NesPrgRom:1F9AF:L_F9AF
 NesPrgRom:1F9CA:L_F9CA
@@ -2693,6 +3945,8 @@ NesPrgRom:1FAC5:L_FAC5
 NesPrgRom:1FAD9:L_FAD9
 NesPrgRom:1FAE7:L_FAE7
 NesPrgRom:1FAF5:L_FAF5
+NesPrgRom:1FAF8:L_FAF8
+NesPrgRom:1FAFA:L_FAFA
 NesPrgRom:1FBD6:L_FBD6
 NesPrgRom:1FBDE:L_FBDE
 NesPrgRom:1FBEF:L_FBEF
@@ -2700,6 +3954,7 @@ NesPrgRom:1FBF8:L_FBF8
 NesPrgRom:1FC08:L_FC08
 NesPrgRom:1FC15:L_FC15
 NesPrgRom:1FC40:L_FC40
+NesPrgRom:1FC41:L_FC41
 NesPrgRom:1FC42:L_FC42
 NesPrgRom:1FC62:L_FC62
 NesPrgRom:1FC6C:L_FC6C
@@ -2707,11 +3962,16 @@ NesPrgRom:1FC9F:L_FC9F
 NesPrgRom:1FCA8:L_FCA8
 NesPrgRom:1FCBC:L_FCBC
 NesPrgRom:1FCC1:L_FCC1
+NesPrgRom:1FCCD:L_FCCD
 NesPrgRom:1FCE1:L_FCE1
 NesPrgRom:1FCF2:L_FCF2
+NesPrgRom:1FCF9:L_FCF9
+NesPrgRom:1FCFB:L_FCFB
 NesPrgRom:1FEC0:L_FEC0
+NesPrgRom:1FFD1:L_FFD1
 NesPrgRom:1FFD8:L_FFD8
-NesPrgRom:1FFF4:Reset
+NesPrgRom:1FFF4:L_FFF4
+NesPrgRom:1FFFA:L_FFFA
 NesInternalRam:0011:Global_FrameCounter:in LevelInit ($C301): [w] TBD\nin NmiFrameWork ($EB98): [rw] TBD\nin ObjHandler_Tank_08_Sophia_Dive ($8CB0): [r] TBD\nin OvhdJason_SpriteAttr ($8E15): [r] TBD\nin ObjHandler_Ovhd_0B_Jason_Curve_Shot_Gun_45_Main ($906F): [r] TBD\nin ObjHandler_Ovhd_0D_Jason_Wave_Shot_Gun_6_Init_2 ($911A): [r] TBD\nin ObjHandler_Ovhd_23_Pickup_Main ($961B): [r] TBD\nin ObjHandler_Ovhd_6E_Area_7_Boss_Fire_Tongue_Attack_Main ($9A00): [r] TBD\nin ObjHandler_Ovhd_70_Area_4_Boss_Tongue_Attack_Main ($9A8B): [r] TBD\nin Boss2_Movement_9B67_Sub ($9B67): [r] TBD\nin Boss2_PincerArms_RenderArm ($9C23): [r] TBD\nin ObjHandler_Common_35_PickUp_Active ($9C68): [r] TBD\nin ObjHandler_Ovhd_61_Area_3_Boss_Main ($A196): [r] TBD\nin ObjHandler_Tank_55_Gray_Caterpillar_Main ($A40B): [r] TBD\nin ObjHandler_Tank_59_Gray_Bullet_Main ($A53A): [r] TBD\nin Boss1_MotherBrain_Main_Body ($A58C): [r] TBD\nin Boss1_MotherBrain_RenderBody ($A65A): [r] TBD\nin ObjHandler_Tank_5E_Hulk_Main ($A76A): [r] TBD\nin Boss5_BigCrab_FireBubble ($A7A2): [r] TBD\nin ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking ($A7EE): [r] TBD\nin ObjHandler_Common_61_Patrolling_Horizontally ($A86E): [r] TBD\nin ObjHandler_Tank_63_Red_Caterpillar_Main ($A8FB): [r] TBD\nin ObjHandler_Ovhd_7D_Area_5_Boss_Bubble_Shot_Init ($A938): [r] TBD\nin ObjHandler_Tank_65_Mine_Main ($A9DE): [r] TBD\nin ObjHandler_Ovhd_67_Area_8_Boss_Phase1_Main ($AA34): [r] TBD\nin ObjHandler_Tank_69_Bomber_Rock_Main ($AB24): [r] TBD\nin ObjHandler_Tank_6B_Flying_Ship_Main ($ABEC): [r] TBD\nin Boss8_Phase2_StateDispatch ($ACB9): [r] TBD\nin ObjHandler_Tank_6F_Swooping_Sphere_Main ($AD08): [r] TBD\nin Boss8_Phase2_ComputeAnimFrame ($ADE7): [r] TBD\nin ObjHandler_Tank_71_Bee_Main ($ADFF): [r] TBD\nin ObjHandler_Tank_73_Orb_Main ($AE95): [r] TBD\nin ObjHandler_Ovhd_4F_Spinner_Shot_Main ($AF67): [r] TBD\nin ObjHandler_Tank_79_Kamikaze_Orb_Main ($B095): [r] TBD\nin ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling ($B18F): [r] TBD\nin ObjHandler_Tank_4F_Red_Flier_Spawner_Main ($B20C): [r] TBD\nin ObjHandler_Tank_7C_Red_Flier ($B250): [r] TBD\nin ObjHandler_Tank_51_Gray_Flier_Spawner_Main ($B2A8): [r] TBD\nin ObjHandler_Tank_7D_Gray_Flier_Main ($B2EC): [r] TBD\nin ObjHandler_Ovhd_2F_Rotating_Camera_Main ($B393): [r] TBD\nin ObjHandler_Tank_81_Jellyfish_Main ($B3FE): [r] TBD\nin ObjHandler_Ovhd_31_Gray_Gumdrop_Main ($B44F): [r] TBD\nin ObjHandler_Tank_83_Scuba_Steve_Main ($B4A3): [r] TBD\nin ObjHandler_Ovhd_33_Flier_Spawner_Main ($B4EE): [r] TBD\nin ObjHandler_Tank_84_Scuba_Steve_Dead ($B53A): [r] TBD\nin ObjHandler_Ovhd_34_Flier_Main ($B560): [r] TBD\nin ObjHandler_Tank_86_Running_Shell_Main ($B58B): [r] TBD\nin ObjHandler_Ovhd_36_Charging_Robot_Main ($B5F0): [r] TBD\nin ObjHandler_Tank_53_Submersible_Spawner_Main ($B63C): [r] TBD\nin ObjHandler_Ovhd_37_Spinner_Init ($B64D): [r] TBD\nin ObjHandler_Ovhd_38_Spinner_Main ($B65B): [r] TBD\nin ObjHandler_Tank_87_Submersible_Main ($B680): [r] TBD\nin ObjHandler_Ovhd_3A_Cross_Shooter_Main ($B6AF): [r] TBD\nin ObjHandler_Tank_89_Crescent_Roller_Main ($B6F4): [r] TBD\nin ObjHandler_Ovhd_3C_Vertical_Camera_Main ($B719): [r] TBD\nin ObjHandler_Ovhd_3E_Horizontal_Camera_Main ($B78F): [r] TBD\nin ObjHandler_Ovhd_40_Slider_Main ($B7F6): [r] TBD\nin ObjHandler_Tank_8B_Bomb_Canister_Main ($B843): [r] TBD\nin ObjHandler_Ovhd_25_Robot_Main ($B866): [r] TBD\nin ObjHandler_Tank_8E_Red_Bullet_Main ($B97A): [r] TBD\nin ObjHandler_Tank_91_Wall_Guardian_Main ($BAA4): [r] TBD\nin WallGuardian_TileAnim_Mid ($BB7D): [r] TBD\nin ObjHandler_Ovhd_42_Spitter_Main ($BD69): [r] TBD\nin ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [r] TBD\nin ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [r] TBD\nin Obj_SpawnChild_A0_Throttled ($DF36): [r] TBD\nin Obj_GravityMoveBounce ($DFA0): [r] TBD\nin OAM_BlitFromStaging ($EC73): [r] TBD
 NesInternalRam:0046:LoadedObj__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0047:LoadedObj__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).

@@ -32,7 +32,7 @@ L_CBDF: lda     $1D                             ; CBDF
         cmp     $1C                             ; CBE9
         lda     LoadedObj + Obj::Position_X_Hi  ; CBEB
         sbc     $1D                             ; CBED
-        and     #$7F                            ; CBEF
+L_CBEF: and     #$7F                            ; CBEF
         cmp     #$09                            ; CBF1
         bcs     L_CC03                          ; CBF3
         cmp     #$07                            ; CBF5
@@ -109,7 +109,7 @@ L_CC3E: lda     $1D                             ; CC3E
 
 ; ----------------------------------------------------------------------------
 L_CC6D: ldx     $14                             ; CC6D
-        lda     LCA04,x                         ; CC6F
+        lda     L_CA04,x                        ; CC6F
         ldx     #$7A                            ; CC72
         jsr     L_EA3C                          ; CC74
         lda     $1D                             ; CC77

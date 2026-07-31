@@ -3,7 +3,7 @@
 L_B3E3: jmp     L_B3FD                          ; B3E3
 
 ; ----------------------------------------------------------------------------
-        lda     #$16                            ; B3E6
+L_B3E6: lda     #$16                            ; B3E6
         jsr     TankEnemy_Init                  ; B3E8
         lda     #$B8                            ; B3EB
         sta     LoadedObj + Obj::Facing         ; B3ED
@@ -17,10 +17,10 @@ L_B3E3: jmp     L_B3FD                          ; B3E3
 L_B3FD: rts                                     ; B3FD
 
 ; ----------------------------------------------------------------------------
-LB3FE:  jmp     L_B457                          ; B3FE
+L_B3FE: jmp     L_B457                          ; B3FE
 
 ; ----------------------------------------------------------------------------
-        lda     #$80                            ; B401
+L_B401: lda     #$80                            ; B401
         sta     $42                             ; B403
         lda     #$80                            ; B405
         sta     $43                             ; B407
@@ -41,7 +41,7 @@ L_B420: dec     $51                             ; B420
         lda     #$46                            ; B424
         jsr     Enqueue_Sound_Command           ; B426
         inc     $50                             ; B429
-        jsr     LEB71                           ; B42B
+        jsr     Step_RNG                        ; B42B
         and     #$07                            ; B42E
         clc                                     ; B430
         adc     #$20                            ; B431

@@ -13,7 +13,7 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 17 / 849 (2%) |
+| **M4** — Verified subroutines (public, clean) | 18 / 849 (2%) |
 | **M6** — Verified docs (public, clean) | 2 / 119 (2%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -50,7 +50,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-bomber_caterpillar_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-ship` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_10hp` |  |
-| ⬜⬜⬜◽<br/>`94.1%` | 06 / `object-handlers/hopper_6hp` | `ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking` depends on unverified routines `Obj_GravityMoveBounce`, `Step_RNG` and 7 more. |
+| ⬜⬜⬜◽<br/>`94.1%` | 06 / `object-handlers/hopper_6hp` | `ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking` depends on unverified routines `Obj_GravityMoveBounce`, `Obj_AngleToVelocity` and 6 more. |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_common` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hulk` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jason-small` |  |
@@ -94,14 +94,14 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `level-rendering` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `math` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `mmc1` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `rng` |  |
+| ✅✅✅✅ | 07 / `rng` |  |
 | ⬜⬜▫️⬛<br/>`57.1%` | 07 / `screen-fade` |  |
 | ⬜⬜⬛⬛<br/>`50.0%` | 07 / `sound` |  |
 | ◽⬛⬛⬛<br/>`13.3%` | 07 / `timing` |  |
 
 This export publishes **4** pages, of which **2** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-07-30 14:27 UTC_
+_Generated: 2026-07-31 01:53 UTC_
 
 ## Pages
 
