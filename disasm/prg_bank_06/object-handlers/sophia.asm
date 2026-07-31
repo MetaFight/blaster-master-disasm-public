@@ -440,7 +440,7 @@ L_8CF6: ldx     #$4C                            ; 8CF6
         bit     $F7                             ; 8CFA
         bpl     L_8D00                          ; 8CFC
         lda     #$20                            ; 8CFE
-L_8D00: jsr     LEB14                           ; 8D00
+L_8D00: jsr     Speed_Limit_Sub                           ; 8D00
 L_8D03: lda     $F7                             ; 8D03
         and     #$08                            ; 8D05
         bne     L_8D1D                          ; 8D07
@@ -468,7 +468,7 @@ L_8D28: lda     LoadedObj + Obj::Health         ; 8D28
         bne     L_8D39                          ; 8D30
 L_8D32: ldx     #$4D                            ; 8D32
         lda     #$18                            ; 8D34
-        jsr     LEB14                           ; 8D36
+        jsr     Speed_Limit_Sub                 ; 8D36
 L_8D39: jsr     LD3DE                           ; 8D39
         beq     L_8D4E                          ; 8D3C
         lda     LoadedObj + Obj::Velocity_Y     ; 8D3E
@@ -1279,7 +1279,7 @@ L_9358: inc     LoadedObj + Obj::Velocity_Y     ; 9358
         bmi     L_936A                          ; 935E
         lda     #$40                            ; 9360
         ldx     #$4D                            ; 9362
-        jsr     LEB14                           ; 9364
+        jsr     Speed_Limit_Sub                 ; 9364
         jmp     L_9376                          ; 9367
 
 ; ----------------------------------------------------------------------------
@@ -1822,7 +1822,7 @@ L_983E: pha                                     ; 983E
         lda     $06F0                           ; 983F
         beq     L_986C                          ; 9842
         ldx     $02                             ; 9844
-        lda     $0400,x                         ; 9846
+        lda     ObjectTable + Obj::Type,x       ; 9846
         cmp     #$54                            ; 9849
         bcc     L_986C                          ; 984B
         ldx     #$1C                            ; 984D
@@ -1839,7 +1839,7 @@ L_983E: pha                                     ; 983E
         lda     $02                             ; 9862
         sta     $040A,x                         ; 9864
         lda     #$15                            ; 9867
-        sta     $0400,x                         ; 9869
+        sta     ObjectTable + Obj::Type,x       ; 9869
 L_986C: pla                                     ; 986C
         clc                                     ; 986D
         adc     #$01                            ; 986E
@@ -1870,7 +1870,7 @@ L_99B0: ldx     #$46                            ; 99B0
         beq     L_99CB                          ; 99BE
         dec     $06F1                           ; 99C0
         lda     #$17                            ; 99C3
-        sta     $0400,x                         ; 99C5
+        sta     ObjectTable + Obj::Type,x       ; 99C5
         jmp     LD7C0                           ; 99C8
 
 ; ----------------------------------------------------------------------------
@@ -1885,10 +1885,10 @@ L_9ACA: lda     $06F2                           ; 9ACA
         beq     L_9AEA                          ; 9ACD
         txa                                     ; 9ACF
         pha                                     ; 9AD0
-        lda     $0400,x                         ; 9AD1
+        lda     ObjectTable + Obj::Type,x       ; 9AD1
         bne     L_9AE1                          ; 9AD4
         lda     #$19                            ; 9AD6
-        sta     $0400,x                         ; 9AD8
+        sta     ObjectTable + Obj::Type,x       ; 9AD8
         jsr     LD7C0                           ; 9ADB
         dec     $06F2                           ; 9ADE
 L_9AE1: pla                                     ; 9AE1

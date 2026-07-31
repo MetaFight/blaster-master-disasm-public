@@ -88,7 +88,7 @@ L_B104: sta     LoadedObj + Obj::Velocity_X     ; B104
 L_B118: dec     LoadedObj + Obj::Velocity_Y     ; B118
 L_B11A: lda     #$40                            ; B11A
         ldx     #$4D                            ; B11C
-        jsr     LEB14                           ; B11E
+        jsr     Speed_Limit_Sub                 ; B11E
         jsr     LE083                           ; B121
         bpl     L_B13B                          ; B124
         lda     #$00                            ; B126

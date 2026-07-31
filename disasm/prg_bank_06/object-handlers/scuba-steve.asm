@@ -24,7 +24,7 @@ L_B4A6: lda     #$80                            ; B4A6
         sta     LoadedObj + Obj::Velocity_Y     ; B4B6
         lda     #$0A                            ; B4B8
         ldx     #$4D                            ; B4BA
-        jsr     LEB14                           ; B4BC
+        jsr     Speed_Limit_Sub                 ; B4BC
         jsr     LE107                           ; B4BF
         pha                                     ; B4C2
         ldx     #$02                            ; B4C3
@@ -43,7 +43,7 @@ L_B4D2: cmp     #$40                            ; B4D2
 ; ----------------------------------------------------------------------------
 L_B4DB: lda     #$0A                            ; B4DB
 L_B4DD: ldx     #$4C                            ; B4DD
-        jsr     LEB14                           ; B4DF
+        jsr     Speed_Limit_Sub                 ; B4DF
         jsr     LE0FA                           ; B4E2
         bne     L_B4EE                          ; B4E5
         lda     #$3C                            ; B4E7
@@ -57,7 +57,7 @@ L_B4EE: lda     Global_FrameCounter             ; B4EE
         asl     a                               ; B4F4
         ldy     #$0C                            ; B4F5
         jsr     LE1D5                           ; B4F7
-        jsr     LE196                           ; B4FA
+        jsr     ScaleBySignedFrac               ; B4FA
         clc                                     ; B4FD
         adc     LoadedObj + Obj::Velocity_Y     ; B4FE
         sta     LoadedObj + Obj::Velocity_Y     ; B500

@@ -21,7 +21,7 @@ L_B6F7: lda     #$C0                            ; B6F7
         lda     $50                             ; B6FF
         bne     L_B72D                          ; B701
         lda     #$01                            ; B703
-        jsr     LDFA0                           ; B705
+        jsr     Obj_GravityMoveBounce_Double    ; B705
         and     #$40                            ; B708
         beq     L_B710                          ; B70A
         lda     #$00                            ; B70C
@@ -58,18 +58,18 @@ L_B72D: lda     Global_FrameCounter             ; B72D
 ; ----------------------------------------------------------------------------
 L_B74B: lda     #$A8                            ; B74B
 L_B74D: ldx     $09                             ; B74D
-        sta     $0401,x                         ; B74F
+        sta     ObjectTable + Obj::Facing,x     ; B74F
         jsr     Step_RNG                        ; B752
         ldx     #$04                            ; B755
         jsr     LE06A                           ; B757
         ldx     $09                             ; B75A
         clc                                     ; B75C
-        adc     $0401,x                         ; B75D
-        sta     $0401,x                         ; B760
+        adc     ObjectTable + Obj::Facing,x     ; B75D
+        sta     ObjectTable + Obj::Facing,x     ; B760
         lda     #$28                            ; B763
         sta     $040B,x                         ; B765
         lda     #$46                            ; B768
-        sta     $0400,x                         ; B76A
+        sta     ObjectTable + Obj::Type,x       ; B76A
 L_B76D: lda     Global_FrameCounter             ; B76D
         cmp     #$55                            ; B76F
         bne     L_B787                          ; B771

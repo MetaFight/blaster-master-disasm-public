@@ -54,7 +54,7 @@ velocity* routine. It treats `$47` as an 8-bit heading (0–255 spanning a full 
 speed magnitude. It looks the heading up in the quarter-sine table at `$E202`
 (`Trig_QuarterSineTable`) — `$E1D2` (`Trig_CosByAngle`, angle + `$40`) for the X component and
 `$E1D5` (`Trig_SinByAngle`) for the Y component — scales each by the speed via `$E196`
-(`Trig_ScaleBySpeed`, which multiplies through `Mul8_HighByte`), and stores `$4C` (X velocity) and
+(`ScaleBySignedFrac`, which multiplies through `ScaleByUnsignedFrac`), and stores `$4C` (X velocity) and
 `$4D` (Y velocity). Because `$47` comes from `Step_RNG`
 (`$EB71`, a position/frame-derived pseudo-random byte — see [rng.md](../../misc/rng.md)), the **launch direction is random** while
 the **speed is fixed** at magnitude `$14` (slow drift). This is the "flies in a line" behaviour.
@@ -163,8 +163,8 @@ projectiles-ballistics.md).
 - Helper semantics used above (verified by decoding bank 07, now labelled in the MLB):
   `$E0ED` = `LoadedObj__Get_DeltaToPlayer_X` (signed X-distance to player), `$E0FA` = `Obj_DeltaToPlayerY`
   (signed Y-distance to player), `$E1BD` = `Obj_AngleToVelocity` (angle `$47` + speed Y → velocity;
-  internals `Trig_CosByAngle` `$E1D2` / `Trig_SinByAngle` `$E1D5` / `Trig_ScaleBySpeed` `$E196` /
-  `Mul8_HighByte` `$E182` over `Trig_QuarterSineTable` `$E202`), `$DF68` = `Obj_MoveBounce` (move +
+  internals `Trig_CosByAngle` `$E1D2` / `Trig_SinByAngle` `$E1D5` / `ScaleBySignedFrac` `$E196` /
+  `ScaleByUnsignedFrac` `$E182` over `Trig_QuarterSineTable` `$E202`), `$DF68` = `Obj_MoveBounce` (move +
   reflect velocity on wall collision, via `Obj_MoveAndCollide` `$E083`), `$DF36` =
   `Obj_SpawnChild_A0_Throttled` (rate-limited child spawn), `$E04E` = `Obj_SetAttrFlipX`
   (OAM attr / h-flip by X-velocity sign).

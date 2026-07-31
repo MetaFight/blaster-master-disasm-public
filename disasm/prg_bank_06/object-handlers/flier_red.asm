@@ -29,9 +29,9 @@ L_B20F: lda     #$80                            ; B20F
         jsr     L_A29E                          ; B22B
         beq     L_B23F                          ; B22E
         lda     #$7C                            ; B230
-        sta     $0400,x                         ; B232
+        sta     ObjectTable + Obj::Type,x       ; B232
         lda     #$00                            ; B235
-        sta     $0407,x                         ; B237
+        sta     ObjectTable + Obj::Velocity_Y,x ; B237
         lda     #$24                            ; B23A
         jsr     Enqueue_Sound_Command           ; B23C
 L_B23F: lda     #$10                            ; B23F
@@ -58,7 +58,7 @@ L_B253: lda     #$80                            ; B253
         asl     a                               ; B25E
         ldy     #$28                            ; B25F
         jsr     LE1D5                           ; B261
-        jsr     LE196                           ; B264
+        jsr     ScaleBySignedFrac               ; B264
         sta     LoadedObj + Obj::Velocity_Y     ; B267
         jsr     LD2DB                           ; B269
 L_B26C: lda     #$10                            ; B26C

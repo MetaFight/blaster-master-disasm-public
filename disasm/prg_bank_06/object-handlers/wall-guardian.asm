@@ -225,7 +225,7 @@ L_BC0C: ldy     #$02                            ; BC0C
         lda     ($A6),y                         ; BC0E
         jsr     LDF0F                           ; BC10
         lda     #$2C                            ; BC13
-        sta     $0400,x                         ; BC15
+        sta     ObjectTable + Obj::Type,x       ; BC15
 L_BC18: lda     #$4C                            ; BC18
         sta     LoadedObj + Obj::Type           ; BC1A
         rts                                     ; BC1C

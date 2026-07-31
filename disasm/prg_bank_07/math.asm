@@ -114,45 +114,90 @@ L_E178: rol     $9B                             ; E178
         rts                                     ; E181
 
 ; ----------------------------------------------------------------------------
-L_E182: ldx     #$08                            ; E182
+; Unsigned fractional scale — multiply MulDiv_Op1 by the unsigned fraction in MulDiv_Op2. The
+; unsigned half of ScaleBySignedFrac.
+; 
+; Input:
+;   MulDiv_Op1 = value to scale, in any fixed-point format
+;   MulDiv_Op2 = scale, as fixed08 (0.ffffffff)
+; 
+; Output:
+;   A          = MulDiv_Op1 x MulDiv_Op2, in Op1's own format
+;   MulDiv_Op1 = the same value (the result is written back over the input)
+ScaleByUnsignedFrac:
+        ldx     #$08                            ; E182
+; A is the running total; the X above counts the 8 shift/add steps, one per bit of MulDiv_Op1.
         lda     #$00                            ; E184
-L_E186: asl     $9B                             ; E186
-        bcc     L_E18D                          ; E188
+; Shift the next multiplier bit out of MulDiv_Op1; when set, add the (progressively halved)
+; multiplicand MulDiv_Op2.
+_ScaleByUnsignedFrac__Loop:
+        asl     $9B                             ; E186
+        bcc     _ScaleByUnsignedFrac__Next      ; E188
         clc                                     ; E18A
         adc     $9C                             ; E18B
-L_E18D: lsr     $9C                             ; E18D
+; Halve MulDiv_Op2 — halving the multiplicand each step is what makes the routine lossy, and what
+; leaves the final LSR to supply the last division by 2.
+_ScaleByUnsignedFrac__Next:
+        lsr     $9C                             ; E18D
         dex                                     ; E18F
-        bne     L_E186                          ; E190
+        bne     _ScaleByUnsignedFrac__Loop      ; E190
         lsr     a                               ; E192
         sta     $9B                             ; E193
         rts                                     ; E195
 
 ; ----------------------------------------------------------------------------
-L_E196: sty     $9B                             ; E196
+; Signed fractional scale — A = A x Y / 128, with A's sign preserved.
+; 
+; Input:
+;   A = signed byte, in any fixed-point format
+;   Y = unsigned byte, in any fixed-point format
+; 
+; Output:
+;   A = A x Y / 128, A's sign preserved. Approximate and never over-estimated — the magnitude
+;   comes from ScaleByUnsignedFrac ($E182), which is low by 0..3. |result| must be < $80, that
+;   routine's precondition.
+ScaleBySignedFrac:
+        sty     $9B                             ; E196
+; ASL A does double duty:
+; 
+; 1. it shifts the sign bit into Carry (Carry set for negative)
+; 2. it doubles A, rescaling it from sfixed17 (s.fffffff) to the fixed08 (0.ffffffff) that
+; ScaleByUnsignedFrac expects.
+; 
+; For A < 0 the doubled value is still two's complement here (and for |A| > $40 it no longer
+; even has bit 7 set); the fixed08 magnitude only appears after the negate below.
         asl     a                               ; E198
-        bcc     L_E1AB                          ; E199
+; For non-negative A values, jump to positive handler.
+        bcc     _ScaleBySignedFrac__Positive    ; E199
+; For negative A values,
+; 
+; negate the doubled value,
         eor     #$FF                            ; E19B
         clc                                     ; E19D
         adc     #$01                            ; E19E
         sta     $9C                             ; E1A0
-        jsr     L_E182                          ; E1A2
+; scale,
+        jsr     ScaleByUnsignedFrac             ; E1A2
+; and negate the product back.
         eor     #$FF                            ; E1A5
         clc                                     ; E1A7
         adc     #$01                            ; E1A8
         rts                                     ; E1AA
 
 ; ----------------------------------------------------------------------------
-L_E1AB: sta     $9C                             ; E1AB
-        jsr     L_E182                          ; E1AD
+; A >= 0: the doubled value needs no sign fixup — multiply and return.
+_ScaleBySignedFrac__Positive:
+        sta     $9C                             ; E1AB
+        jsr     ScaleByUnsignedFrac             ; E1AD
         rts                                     ; E1B0
 
 ; ----------------------------------------------------------------------------
 L_E1B1: jsr     L_E1D2                          ; E1B1
-        jmp     L_E196                          ; E1B4
+        jmp     ScaleBySignedFrac               ; E1B4
 
 ; ----------------------------------------------------------------------------
 L_E1B7: jsr     L_E1D5                          ; E1B7
-        jmp     L_E196                          ; E1BA
+        jmp     ScaleBySignedFrac               ; E1BA
 
 .endmacro
 

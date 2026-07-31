@@ -101,7 +101,7 @@ L_B8D3: lda     Global_FrameCounter             ; B8D3
 L_B8DE: lda     #$A9                            ; B8DE
 L_B8E0: sta     $51                             ; B8E0
         lda     #$01                            ; B8E2
-        jsr     LDFA0                           ; B8E4
+        jsr     Obj_GravityMoveBounce_Double    ; B8E4
         and     #$40                            ; B8E7
         beq     L_B8EF                          ; B8E9
         lda     #$00                            ; B8EB

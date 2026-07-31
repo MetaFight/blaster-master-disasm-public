@@ -2260,8 +2260,8 @@ NesPrgRom:1A7EE:ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:ObjType $60 — Gra
 NesPrgRom:1A7F1:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:$42 = $80 / $43 = $C0: terrain-collision half-extents (16×24 box) — then gate on the wind-up timer $51
 NesPrgRom:1A7FB::If LoadedObj_AnimFrame (wind-up) is at 0, then proceed to ground check.
 NesPrgRom:1A7FD::otherwise, decrement LoadedObj_AnimFrame (wind-up).
-NesPrgRom:1A802:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired:wind-up over: take one ballistic step (Obj_GravityMoveBounce with gravity $04, which also reflects and damps the velocity on contact) and test bit 6 of the wall flags it returns — a vertical, i.e. floor-or-ceiling, contact. Clear means still airborne, so just draw.
-NesPrgRom:1A80B::Handle vertical contact.  Obj_GravityMoveBounce reflects LoadedObj's Velocity_Y on the hit so,\na negative value (pointing up) implies landing\na positive value implies a ceiling bonk.
+NesPrgRom:1A802:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired:wind-up over: take one ballistic step (Obj_GravityMoveBounce_Double with gravity $04, which also reflects and damps the velocity on contact) and test bit 6 of the wall flags it returns — a vertical, i.e. floor-or-ceiling, contact. Clear means still airborne, so just draw.
+NesPrgRom:1A80B::Handle vertical contact.  Obj_GravityMoveBounce_Double reflects LoadedObj's Velocity_Y on the hit so,\na negative value (pointing up) implies landing\na positive value implies a ceiling bonk.
 NesPrgRom:1A80F::On Landed:\nSet the 10-frame wind-up (AnimFrame)
 NesPrgRom:1A813::then spin Step_RNG to choose whicn state to transition to.
 NesPrgRom:1A816::if either the Carry Flag is unset or if Global_FrameCounter is negative, then carry on with the attack.
@@ -3459,7 +3459,7 @@ NesPrgRom:1DF62:L_DF62
 NesPrgRom:1DF68:L_DF68
 NesPrgRom:1DF77:L_DF77
 NesPrgRom:1DF81:L_DF81
-NesPrgRom:1DF84:Obj_MoveBounce_Double:Double-speed variant of Obj_MoveBounce ($DF68): advance via Obj_MoveAndCollide_Double ($E0A5, Apply_Double_Velocity_X/Apply_Double_Velocity_Y) and reflect velocity off the wall flags - bit7 (side wall) negates XVel $4C, bit6 (floor/ceiling) negates YVel $4D. Returns the wall flags in A/$9A. Dispatch slot $C03C (no callers in USA ROM); reached in-bank from Obj_GravityMoveBounce ($DFA0).
+NesPrgRom:1DF84:Obj_MoveBounce_Double:Double-speed variant of Obj_MoveBounce: advance via Obj_MoveAndCollide_Double and reflect velocity on collisions.\nFlags:\n  bit7 (side wall) negates XVel $4C,\n  bit6 (floor/ceiling) negates YVel $4D. \n\nOutput:\n A = wall flags\n TerrainCollisionFlags = wall flags
 NesPrgRom:1DF87::Branch on positive, means branch when bit 7 is 0.  This means no x-collision.
 NesPrgRom:1DF89::On negative, however, handle X-bounce.\nSet Accumulator to 0, then subtract X-Velocity to get the mirrored value
 NesPrgRom:1DF8E::Save mirrored X-Velocity
@@ -3467,10 +3467,16 @@ NesPrgRom:1DF93:_Obj_MoveBounce_Double__CheckVertical:Probe bit6 (floor/ceiling)
 NesPrgRom:1DF96::Handle Y-bounce\nSet Accumulator to 0, then subtract Y-Velocity to get the mirrored value
 NesPrgRom:1DF9B::Save mirrored X-Velocity
 NesPrgRom:1DF9D:_Obj_MoveBounce_Double__Return:Return the wall flags ($9A).
-NesPrgRom:1DFA0:L_DFA0
-NesPrgRom:1DFAC:L_DFAC
-NesPrgRom:1DFB4:L_DFB4
-NesPrgRom:1DFC0:L_DFC0
+NesPrgRom:1DFA0:Obj_GravityMoveBounce_Double:Adds gravity (A) to LoadedObj's Velocity_Y then moves at double speed with wall reflection. Dampens the bounce to 1/4 on a floor/ceiling hit, and clamps both velocities to ±$28.\n\nInput:\n  A = Gravity\n\nOutput:\n  A = Wall flags\n    bit 7 for horizontal collisions\n    bit 6 for vertical collisions\n  \n  LoadedObj's Velocity_Y = previous velocity with gravity applied and reflected if that movement resulted in a collision with a floor or ceiling.
+NesPrgRom:1DFA6::This always branches.
+NesPrgRom:1DFA8::dead
+NesPrgRom:1DFA9::dead
+NesPrgRom:1DFAC:_Obj_GravityMoveBounce_Double__ApplyGravity:Gravity is popped from stack and added to the LoadedObj's Y velocity.\nThe BVS guard skips the store on signed overflow.
+NesPrgRom:1DFB4:_Obj_GravityMoveBounce_Double__Move:Double move+bounce; floor/ceiling hit (bit6) → damp YVel to 1/4 ($40/256).
+NesPrgRom:1DFC0:_Obj_GravityMoveBounce_Double__ClampSpeed:Clamp LoadedObj's velocities
+NesPrgRom:1DFC4::The previous two lines prepare a call into Speed_Limit_Sub.\n\nA = Clamp value ($28)\nX = Value to be clamped.  In this case, LoadedObj's Velocity_Y ($4D)\n\nonce prepped, call the sub.
+NesPrgRom:1DFCB::Repeat for LoadedObj's Velocity_X ($4C)
+NesPrgRom:1DFCE::Return TerrainCollisionFlags in A
 NesPrgRom:1DFD1:L_DFD1
 NesPrgRom:1DFDD:L_DFDD
 NesPrgRom:1DFE7:L_DFE7
@@ -3501,7 +3507,7 @@ NesPrgRom:1E0A5:Obj_MoveAndCollide_Double:Double-speed Obj_MoveAndCollide: Apply
 NesPrgRom:1E0B2:_Obj_MoveAndCollide_Double__NoWallX:No side wall: X flag = 0.
 NesPrgRom:1E0B4:_Obj_MoveAndCollide_Double__StoreX:$9A = side-wall flag (bit7).
 NesPrgRom:1E0C4:_Obj_MoveAndCollide_Double__Return:Copy result (TerrainCollisionFlags) into A and return
-NesPrgRom:1E0C7:L_E0C7
+NesPrgRom:1E0C7:Obj_ScaleVelY:Scale LoadedObj's Velocity_Y by the fraction in A.\n\nInput:\n  A = fraction, unsigned byte, in any fixed-point format.\n  LoadedObj's Velocity_Y = signed\n\nOutput:\n  A = LoadedObj's Velocity_Y scaled by A\n  LoadedObj's Velocity_Y = same as A
 NesPrgRom:1E0D0:L_E0D0
 NesPrgRom:1E0D8:L_E0D8
 NesPrgRom:1E0E5:L_E0E5
@@ -3514,11 +3520,17 @@ NesPrgRom:1E152:L_E152
 NesPrgRom:1E16B:L_E16B
 NesPrgRom:1E171:L_E171
 NesPrgRom:1E178:L_E178
-NesPrgRom:1E182:L_E182
-NesPrgRom:1E186:L_E186
-NesPrgRom:1E18D:L_E18D
-NesPrgRom:1E196:L_E196
-NesPrgRom:1E1AB:L_E1AB
+NesPrgRom:1E182:ScaleByUnsignedFrac:Unsigned fractional scale — multiply MulDiv_Op1 by the unsigned fraction in MulDiv_Op2. The unsigned half of ScaleBySignedFrac.\n\nInput:\n  MulDiv_Op1 = value to scale, in any fixed-point format\n  MulDiv_Op2 = scale, as fixed08 (0.ffffffff)\n\nOutput:\n  A          = MulDiv_Op1 x MulDiv_Op2, in Op1's own format\n  MulDiv_Op1 = the same value (the result is written back over the input)
+NesPrgRom:1E184::A is the running total; the X above counts the 8 shift/add steps, one per bit of MulDiv_Op1.
+NesPrgRom:1E186:_ScaleByUnsignedFrac__Loop:Shift the next multiplier bit out of MulDiv_Op1; when set, add the (progressively halved) multiplicand MulDiv_Op2.
+NesPrgRom:1E18D:_ScaleByUnsignedFrac__Next:Halve MulDiv_Op2 — halving the multiplicand each step is what makes the routine lossy, and what leaves the final LSR to supply the last division by 2.
+NesPrgRom:1E196:ScaleBySignedFrac:Signed fractional scale — A = A x Y / 128, with A's sign preserved.\n\nInput:\n  A = signed byte, in any fixed-point format\n  Y = unsigned byte, in any fixed-point format\n\nOutput:\n  A = A x Y / 128, A's sign preserved. Approximate and never over-estimated — the magnitude comes from ScaleByUnsignedFrac ($E182), which is low by 0..3. |result| must be < $80, that routine's precondition.
+NesPrgRom:1E198::ASL A does double duty:\n\n1. it shifts the sign bit into Carry (Carry set for negative)\n2. it doubles A, rescaling it from sfixed17 (s.fffffff) to the fixed08 (0.ffffffff) that ScaleByUnsignedFrac expects.\n\nFor A < 0 the doubled value is still two's complement here (and for |A| > $40 it no longer\neven has bit 7 set); the fixed08 magnitude only appears after the negate below.
+NesPrgRom:1E199::For non-negative A values, jump to positive handler.
+NesPrgRom:1E19B::For negative A values,\n\nnegate the doubled value,
+NesPrgRom:1E1A2::scale,
+NesPrgRom:1E1A5::and negate the product back.
+NesPrgRom:1E1AB:_ScaleBySignedFrac__Positive:A >= 0: the doubled value needs no sign fixup — multiply and return.
 NesPrgRom:1E1B1:L_E1B1
 NesPrgRom:1E1B7:L_E1B7
 NesPrgRom:1E1BD:L_E1BD
@@ -3676,9 +3688,15 @@ NesPrgRom:1EAFF:L_EAFF
 NesPrgRom:1EB09:L_EB09
 NesPrgRom:1EB0C:L_EB0C
 NesPrgRom:1EB13:L_EB13
-NesPrgRom:1EB14:L_EB14
-NesPrgRom:1EB1F:L_EB1F
-NesPrgRom:1EB2A:L_EB2A
+NesPrgRom:1EB14:Speed_Limit_Sub:Clamps the signed velocity ZP[$00+X] into [-A, +A]\n\nInput:\n  X = the ZP index\n  A = the positive speed limit
+NesPrgRom:1EB18::When Velocity is non-negative:\n\nCompare limit A against Velocity
+NesPrgRom:1EB1A::if A >= Velocity, return without change.
+NesPrgRom:1EB1C::otherwise (clamping is required since Velocity > A), clamp ZP[$00+X] to A
+NesPrgRom:1EB1F:_Speed_Limit_Sub__Negative:When Velocity is negative:\n\nnegate A via two's complement → -A for comparison
+NesPrgRom:1EB24::Compare limit -A against negative velocity
+NesPrgRom:1EB26::if -A < Velocity, return without change.
+NesPrgRom:1EB28::otherwise (clamping is probably required since Velocity <= -A), clamp ZP[$00+X] to A
+NesPrgRom:1EB2A:_Speed_Limit_Sub__Return:RTS (velocity within limit).
 NesPrgRom:1EB2B:L_EB2B
 NesPrgRom:1EB33:L_EB33
 NesPrgRom:1EB36:L_EB36
@@ -3972,7 +3990,7 @@ NesPrgRom:1FFD1:L_FFD1
 NesPrgRom:1FFD8:L_FFD8
 NesPrgRom:1FFF4:L_FFF4
 NesPrgRom:1FFFA:L_FFFA
-NesInternalRam:0011:Global_FrameCounter:in LevelInit ($C301): [w] TBD\nin NmiFrameWork ($EB98): [rw] TBD\nin ObjHandler_Tank_08_Sophia_Dive ($8CB0): [r] TBD\nin OvhdJason_SpriteAttr ($8E15): [r] TBD\nin ObjHandler_Ovhd_0B_Jason_Curve_Shot_Gun_45_Main ($906F): [r] TBD\nin ObjHandler_Ovhd_0D_Jason_Wave_Shot_Gun_6_Init_2 ($911A): [r] TBD\nin ObjHandler_Ovhd_23_Pickup_Main ($961B): [r] TBD\nin ObjHandler_Ovhd_6E_Area_7_Boss_Fire_Tongue_Attack_Main ($9A00): [r] TBD\nin ObjHandler_Ovhd_70_Area_4_Boss_Tongue_Attack_Main ($9A8B): [r] TBD\nin Boss2_Movement_9B67_Sub ($9B67): [r] TBD\nin Boss2_PincerArms_RenderArm ($9C23): [r] TBD\nin ObjHandler_Common_35_PickUp_Active ($9C68): [r] TBD\nin ObjHandler_Ovhd_61_Area_3_Boss_Main ($A196): [r] TBD\nin ObjHandler_Tank_55_Gray_Caterpillar_Main ($A40B): [r] TBD\nin ObjHandler_Tank_59_Gray_Bullet_Main ($A53A): [r] TBD\nin Boss1_MotherBrain_Main_Body ($A58C): [r] TBD\nin Boss1_MotherBrain_RenderBody ($A65A): [r] TBD\nin ObjHandler_Tank_5E_Hulk_Main ($A76A): [r] TBD\nin Boss5_BigCrab_FireBubble ($A7A2): [r] TBD\nin ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking ($A7EE): [r] TBD\nin ObjHandler_Common_61_Patrolling_Horizontally ($A86E): [r] TBD\nin ObjHandler_Tank_63_Red_Caterpillar_Main ($A8FB): [r] TBD\nin ObjHandler_Ovhd_7D_Area_5_Boss_Bubble_Shot_Init ($A938): [r] TBD\nin ObjHandler_Tank_65_Mine_Main ($A9DE): [r] TBD\nin ObjHandler_Ovhd_67_Area_8_Boss_Phase1_Main ($AA34): [r] TBD\nin ObjHandler_Tank_69_Bomber_Rock_Main ($AB24): [r] TBD\nin ObjHandler_Tank_6B_Flying_Ship_Main ($ABEC): [r] TBD\nin Boss8_Phase2_StateDispatch ($ACB9): [r] TBD\nin ObjHandler_Tank_6F_Swooping_Sphere_Main ($AD08): [r] TBD\nin Boss8_Phase2_ComputeAnimFrame ($ADE7): [r] TBD\nin ObjHandler_Tank_71_Bee_Main ($ADFF): [r] TBD\nin ObjHandler_Tank_73_Orb_Main ($AE95): [r] TBD\nin ObjHandler_Ovhd_4F_Spinner_Shot_Main ($AF67): [r] TBD\nin ObjHandler_Tank_79_Kamikaze_Orb_Main ($B095): [r] TBD\nin ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling ($B18F): [r] TBD\nin ObjHandler_Tank_4F_Red_Flier_Spawner_Main ($B20C): [r] TBD\nin ObjHandler_Tank_7C_Red_Flier ($B250): [r] TBD\nin ObjHandler_Tank_51_Gray_Flier_Spawner_Main ($B2A8): [r] TBD\nin ObjHandler_Tank_7D_Gray_Flier_Main ($B2EC): [r] TBD\nin ObjHandler_Ovhd_2F_Rotating_Camera_Main ($B393): [r] TBD\nin ObjHandler_Tank_81_Jellyfish_Main ($B3FE): [r] TBD\nin ObjHandler_Ovhd_31_Gray_Gumdrop_Main ($B44F): [r] TBD\nin ObjHandler_Tank_83_Scuba_Steve_Main ($B4A3): [r] TBD\nin ObjHandler_Ovhd_33_Flier_Spawner_Main ($B4EE): [r] TBD\nin ObjHandler_Tank_84_Scuba_Steve_Dead ($B53A): [r] TBD\nin ObjHandler_Ovhd_34_Flier_Main ($B560): [r] TBD\nin ObjHandler_Tank_86_Running_Shell_Main ($B58B): [r] TBD\nin ObjHandler_Ovhd_36_Charging_Robot_Main ($B5F0): [r] TBD\nin ObjHandler_Tank_53_Submersible_Spawner_Main ($B63C): [r] TBD\nin ObjHandler_Ovhd_37_Spinner_Init ($B64D): [r] TBD\nin ObjHandler_Ovhd_38_Spinner_Main ($B65B): [r] TBD\nin ObjHandler_Tank_87_Submersible_Main ($B680): [r] TBD\nin ObjHandler_Ovhd_3A_Cross_Shooter_Main ($B6AF): [r] TBD\nin ObjHandler_Tank_89_Crescent_Roller_Main ($B6F4): [r] TBD\nin ObjHandler_Ovhd_3C_Vertical_Camera_Main ($B719): [r] TBD\nin ObjHandler_Ovhd_3E_Horizontal_Camera_Main ($B78F): [r] TBD\nin ObjHandler_Ovhd_40_Slider_Main ($B7F6): [r] TBD\nin ObjHandler_Tank_8B_Bomb_Canister_Main ($B843): [r] TBD\nin ObjHandler_Ovhd_25_Robot_Main ($B866): [r] TBD\nin ObjHandler_Tank_8E_Red_Bullet_Main ($B97A): [r] TBD\nin ObjHandler_Tank_91_Wall_Guardian_Main ($BAA4): [r] TBD\nin WallGuardian_TileAnim_Mid ($BB7D): [r] TBD\nin ObjHandler_Ovhd_42_Spitter_Main ($BD69): [r] TBD\nin ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [r] TBD\nin ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [r] TBD\nin Obj_SpawnChild_A0_Throttled ($DF36): [r] TBD\nin Obj_GravityMoveBounce ($DFA0): [r] TBD\nin OAM_BlitFromStaging ($EC73): [r] TBD
+NesInternalRam:0011:Global_FrameCounter:in LevelInit ($C301): [w] TBD\nin NmiFrameWork ($EB98): [rw] TBD\nin ObjHandler_Tank_08_Sophia_Dive ($8CB0): [r] TBD\nin OvhdJason_SpriteAttr ($8E15): [r] TBD\nin ObjHandler_Ovhd_0B_Jason_Curve_Shot_Gun_45_Main ($906F): [r] TBD\nin ObjHandler_Ovhd_0D_Jason_Wave_Shot_Gun_6_Init_2 ($911A): [r] TBD\nin ObjHandler_Ovhd_23_Pickup_Main ($961B): [r] TBD\nin ObjHandler_Ovhd_6E_Area_7_Boss_Fire_Tongue_Attack_Main ($9A00): [r] TBD\nin ObjHandler_Ovhd_70_Area_4_Boss_Tongue_Attack_Main ($9A8B): [r] TBD\nin Boss2_Movement_9B67_Sub ($9B67): [r] TBD\nin Boss2_PincerArms_RenderArm ($9C23): [r] TBD\nin ObjHandler_Common_35_PickUp_Active ($9C68): [r] TBD\nin ObjHandler_Ovhd_61_Area_3_Boss_Main ($A196): [r] TBD\nin ObjHandler_Tank_55_Gray_Caterpillar_Main ($A40B): [r] TBD\nin ObjHandler_Tank_59_Gray_Bullet_Main ($A53A): [r] TBD\nin Boss1_MotherBrain_Main_Body ($A58C): [r] TBD\nin Boss1_MotherBrain_RenderBody ($A65A): [r] TBD\nin ObjHandler_Tank_5E_Hulk_Main ($A76A): [r] TBD\nin Boss5_BigCrab_FireBubble ($A7A2): [r] TBD\nin ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking ($A7EE): [r] TBD\nin ObjHandler_Common_61_Patrolling_Horizontally ($A86E): [r] TBD\nin ObjHandler_Tank_63_Red_Caterpillar_Main ($A8FB): [r] TBD\nin ObjHandler_Ovhd_7D_Area_5_Boss_Bubble_Shot_Init ($A938): [r] TBD\nin ObjHandler_Tank_65_Mine_Main ($A9DE): [r] TBD\nin ObjHandler_Ovhd_67_Area_8_Boss_Phase1_Main ($AA34): [r] TBD\nin ObjHandler_Tank_69_Bomber_Rock_Main ($AB24): [r] TBD\nin ObjHandler_Tank_6B_Flying_Ship_Main ($ABEC): [r] TBD\nin Boss8_Phase2_StateDispatch ($ACB9): [r] TBD\nin ObjHandler_Tank_6F_Swooping_Sphere_Main ($AD08): [r] TBD\nin Boss8_Phase2_ComputeAnimFrame ($ADE7): [r] TBD\nin ObjHandler_Tank_71_Bee_Main ($ADFF): [r] TBD\nin ObjHandler_Tank_73_Orb_Main ($AE95): [r] TBD\nin ObjHandler_Ovhd_4F_Spinner_Shot_Main ($AF67): [r] TBD\nin ObjHandler_Tank_79_Kamikaze_Orb_Main ($B095): [r] TBD\nin ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling ($B18F): [r] TBD\nin ObjHandler_Tank_4F_Red_Flier_Spawner_Main ($B20C): [r] TBD\nin ObjHandler_Tank_7C_Red_Flier ($B250): [r] TBD\nin ObjHandler_Tank_51_Gray_Flier_Spawner_Main ($B2A8): [r] TBD\nin ObjHandler_Tank_7D_Gray_Flier_Main ($B2EC): [r] TBD\nin ObjHandler_Ovhd_2F_Rotating_Camera_Main ($B393): [r] TBD\nin ObjHandler_Tank_81_Jellyfish_Main ($B3FE): [r] TBD\nin ObjHandler_Ovhd_31_Gray_Gumdrop_Main ($B44F): [r] TBD\nin ObjHandler_Tank_83_Scuba_Steve_Main ($B4A3): [r] TBD\nin ObjHandler_Ovhd_33_Flier_Spawner_Main ($B4EE): [r] TBD\nin ObjHandler_Tank_84_Scuba_Steve_Dead ($B53A): [r] TBD\nin ObjHandler_Ovhd_34_Flier_Main ($B560): [r] TBD\nin ObjHandler_Tank_86_Running_Shell_Main ($B58B): [r] TBD\nin ObjHandler_Ovhd_36_Charging_Robot_Main ($B5F0): [r] TBD\nin ObjHandler_Tank_53_Submersible_Spawner_Main ($B63C): [r] TBD\nin ObjHandler_Ovhd_37_Spinner_Init ($B64D): [r] TBD\nin ObjHandler_Ovhd_38_Spinner_Main ($B65B): [r] TBD\nin ObjHandler_Tank_87_Submersible_Main ($B680): [r] TBD\nin ObjHandler_Ovhd_3A_Cross_Shooter_Main ($B6AF): [r] TBD\nin ObjHandler_Tank_89_Crescent_Roller_Main ($B6F4): [r] TBD\nin ObjHandler_Ovhd_3C_Vertical_Camera_Main ($B719): [r] TBD\nin ObjHandler_Ovhd_3E_Horizontal_Camera_Main ($B78F): [r] TBD\nin ObjHandler_Ovhd_40_Slider_Main ($B7F6): [r] TBD\nin ObjHandler_Tank_8B_Bomb_Canister_Main ($B843): [r] TBD\nin ObjHandler_Ovhd_25_Robot_Main ($B866): [r] TBD\nin ObjHandler_Tank_8E_Red_Bullet_Main ($B97A): [r] TBD\nin ObjHandler_Tank_91_Wall_Guardian_Main ($BAA4): [r] TBD\nin WallGuardian_TileAnim_Mid ($BB7D): [r] TBD\nin ObjHandler_Ovhd_42_Spitter_Main ($BD69): [r] TBD\nin ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [r] TBD\nin ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [r] TBD\nin Obj_SpawnChild_A0_Throttled ($DF36): [r] TBD\nin Obj_GravityMoveBounce_Double ($DFA0): [r] TBD\nin OAM_BlitFromStaging ($EC73): [r] TBD
 NesInternalRam:0046:LoadedObj__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0047:LoadedObj__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
 NesInternalRam:0048:LoadedObj__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
@@ -4261,3 +4279,19 @@ NesInternalRam:04F8:Object_Slot_17__Phase:(alpha: not fully human-verified / pen
 NesInternalRam:04F9:Object_Slot_17__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
 NesInternalRam:04FA:Object_Slot_17__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
 NesInternalRam:04FB:Object_Slot_17__Health:HP for this entity.
+NesInternalRam:0600:SpriteStagingBuf_Sprite0__Y:Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
+NesInternalRam:0601:SpriteStagingBuf_Sprite0__Tile:Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
+NesInternalRam:0602:SpriteStagingBuf_Sprite0__Attr:Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
+NesInternalRam:0603:SpriteStagingBuf_Sprite0__X:Screen X, left edge.
+NesInternalRam:0604:SpriteStagingBuf_Sprite1__Y:Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
+NesInternalRam:0605:SpriteStagingBuf_Sprite1__Tile:Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
+NesInternalRam:0606:SpriteStagingBuf_Sprite1__Attr:Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
+NesInternalRam:0607:SpriteStagingBuf_Sprite1__X:Screen X, left edge.
+NesInternalRam:0608:SpriteStagingBuf_Sprite2__Y:Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
+NesInternalRam:0609:SpriteStagingBuf_Sprite2__Tile:Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
+NesInternalRam:060A:SpriteStagingBuf_Sprite2__Attr:Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
+NesInternalRam:060B:SpriteStagingBuf_Sprite2__X:Screen X, left edge.
+NesInternalRam:060C:SpriteStagingBuf_Sprite3__Y:Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
+NesInternalRam:060D:SpriteStagingBuf_Sprite3__Tile:Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
+NesInternalRam:060E:SpriteStagingBuf_Sprite3__Attr:Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
+NesInternalRam:060F:SpriteStagingBuf_Sprite3__X:Screen X, left edge.

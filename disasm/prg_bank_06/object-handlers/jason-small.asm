@@ -103,7 +103,7 @@ L_820A: jsr     LD2AB                           ; 820A
         bne     L_8217                          ; 8213
 L_8215: lda     #$10                            ; 8215
 L_8217: ldx     #$4C                            ; 8217
-        jsr     LEB14                           ; 8219
+        jsr     Speed_Limit_Sub                 ; 8219
         jsr     LD37A                           ; 821C
         beq     L_8243                          ; 821F
         lda     $50                             ; 8221
@@ -150,7 +150,7 @@ L_826F: inc     LoadedObj + Obj::Velocity_Y     ; 826F
         inc     LoadedObj + Obj::Velocity_Y     ; 8271
         lda     #$40                            ; 8273
         ldx     #$4D                            ; 8275
-        jsr     LEB14                           ; 8277
+        jsr     Speed_Limit_Sub                 ; 8277
         jsr     LD3DE                           ; 827A
         bne     L_82A1                          ; 827D
         jsr     LD2AB                           ; 827F
@@ -342,7 +342,7 @@ L_83D8: dec     LoadedObj + Obj::Velocity_X     ; 83D8
 L_83DD: inc     LoadedObj + Obj::Velocity_X     ; 83DD
 L_83DF: lda     #$10                            ; 83DF
         ldx     #$4C                            ; 83E1
-        jsr     LEB14                           ; 83E3
+        jsr     Speed_Limit_Sub                 ; 83E3
         jsr     LD37A                           ; 83E6
         beq     L_841B                          ; 83E9
         lda     LoadedObj + Obj::Position_Y_Lo  ; 83EB
@@ -908,7 +908,7 @@ L_880B: lda     $F3                             ; 880B
         jsr     LD7CF                           ; 8817
         beq     L_8829                          ; 881A
         lda     #$2A                            ; 881C
-        sta     $0400,x                         ; 881E
+        sta     ObjectTable + Obj::Type,x       ; 881E
         jsr     LD7C0                           ; 8821
         lda     #$34                            ; 8824
         jsr     Enqueue_Sound_Command           ; 8826

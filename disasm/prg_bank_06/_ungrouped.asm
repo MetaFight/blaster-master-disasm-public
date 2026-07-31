@@ -233,7 +233,7 @@ L_8E8A: ldx     #$4C                            ; 8E8A
         bit     $98                             ; 8E8E
         bpl     L_8E94                          ; 8E90
         lda     #$08                            ; 8E92
-L_8E94: jmp     LEB14                           ; 8E94
+L_8E94: jmp     Speed_Limit_Sub                           ; 8E94
 
 .endmacro
 
@@ -274,7 +274,7 @@ L_9738: ldx     #$0E                            ; 9738
         jsr     LD7CF                           ; 973E
         beq     L_976C                          ; 9741
         lda     #$13                            ; 9743
-        sta     $0400,x                         ; 9745
+        sta     ObjectTable + Obj::Type,x       ; 9745
 L_9748: jsr     LD7C0                           ; 9748
         lda     $03FC                           ; 974B
         bit     $E6E2                           ; 974E
@@ -345,11 +345,11 @@ L_A2B3: lda     #$00                            ; A2B3
 L_A2BC: clc                                     ; A2BC
         adc     $1D                             ; A2BD
         ldx     $05                             ; A2BF
-        sta     $0403,x                         ; A2C1
+        sta     ObjectTable + Obj::Position_X_Hi,x ; A2C1
         lda     $1C                             ; A2C4
-        sta     $0402,x                         ; A2C6
+        sta     ObjectTable + Obj::Position_X_Lo,x ; A2C6
         lda     $06                             ; A2C9
-        sta     $0406,x                         ; A2CB
+        sta     ObjectTable + Obj::Velocity_X,x ; A2CB
         lda     #$01                            ; A2CE
         rts                                     ; A2D0
 

@@ -58,7 +58,7 @@ L_AF96: cmp     #$01                            ; AF96
         jsr     LDF0F                           ; AF9E
         beq     L_AFBC                          ; AFA1
         lda     #$3A                            ; AFA3
-        sta     $0400,x                         ; AFA5
+        sta     ObjectTable + Obj::Type,x       ; AFA5
         lda     $52                             ; AFA8
         bpl     L_AFB1                          ; AFAA
         eor     #$FF                            ; AFAC

@@ -94,7 +94,7 @@ L_A975: lda     #$02                            ; A975
         jsr     LDFD1                           ; A979
         lda     #$30                            ; A97C
         ldx     #$4D                            ; A97E
-        jsr     LEB14                           ; A980
+        jsr     Speed_Limit_Sub                 ; A980
         jsr     LE083                           ; A983
         and     #$40                            ; A986
         beq     L_A994                          ; A988

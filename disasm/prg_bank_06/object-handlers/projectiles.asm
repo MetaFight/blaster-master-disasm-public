@@ -137,11 +137,11 @@ L_98AB: lda     #$80                            ; 98AB
 L_98BD: lda     $52                             ; 98BD
         beq     L_9916                          ; 98BF
         ldx     $50                             ; 98C1
-        lda     $0400,x                         ; 98C3
+        lda     ObjectTable + Obj::Type,x       ; 98C3
         bne     L_98CC                          ; 98C6
         sta     $52                             ; 98C8
         beq     L_9916                          ; 98CA
-L_98CC: lda     $0403,x                         ; 98CC
+L_98CC: lda     ObjectTable + Obj::Position_X_Hi,x ; 98CC
         sec                                     ; 98CF
         sbc     LoadedObj + Obj::Position_X_Hi  ; 98D0
         asl     a                               ; 98D2
@@ -162,9 +162,9 @@ L_98E4: sta     LoadedObj + Obj::Velocity_X     ; 98E4
 ; ----------------------------------------------------------------------------
 L_98E9: lda     #$10                            ; 98E9
         ldx     #$4C                            ; 98EB
-        jsr     LEB14                           ; 98ED
+        jsr     Speed_Limit_Sub                 ; 98ED
 L_98F0: ldx     $50                             ; 98F0
-        lda     $0405,x                         ; 98F2
+        lda     ObjectTable + Obj::Position_Y_Hi,x ; 98F2
         sec                                     ; 98F5
         sbc     LoadedObj + Obj::Position_Y_Hi  ; 98F6
         asl     a                               ; 98F8
@@ -185,7 +185,7 @@ L_990A: sta     LoadedObj + Obj::Velocity_Y     ; 990A
 ; ----------------------------------------------------------------------------
 L_990F: lda     #$10                            ; 990F
         ldx     #$4D                            ; 9911
-        jsr     LEB14                           ; 9913
+        jsr     Speed_Limit_Sub                 ; 9913
 L_9916: jsr     LD2DB                           ; 9916
 L_9919: lda     #$18                            ; 9919
         sta     $40                             ; 991B
@@ -212,11 +212,11 @@ L_9933: lda     #$00                            ; 9933
         lda     $52                             ; 9943
         beq     L_9965                          ; 9945
         ldx     $50                             ; 9947
-        lda     $0403,x                         ; 9949
+        lda     ObjectTable + Obj::Position_X_Hi,x ; 9949
         sec                                     ; 994C
         sbc     LoadedObj + Obj::Position_X_Hi  ; 994D
         sta     $00                             ; 994F
-        lda     $0405,x                         ; 9951
+        lda     ObjectTable + Obj::Position_Y_Hi,x ; 9951
         sec                                     ; 9954
         sbc     LoadedObj + Obj::Position_Y_Hi  ; 9955
         sta     $01                             ; 9957
@@ -500,7 +500,7 @@ L_9EE3: lda     #$80                            ; 9EE3
         lda     #$80                            ; 9EE7
         sta     $43                             ; 9EE9
         lda     #$02                            ; 9EEB
-        jsr     LDFA0                           ; 9EED
+        jsr     Obj_GravityMoveBounce_Double    ; 9EED
         dec     $51                             ; 9EF0
         beq     L_9F2E                          ; 9EF2
         lda     $51                             ; 9EF4
@@ -569,7 +569,7 @@ L_9F5D: lda     #$80                            ; 9F5D
         lda     #$80                            ; 9F61
         sta     $43                             ; 9F63
         lda     #$02                            ; 9F65
-        jsr     LDFA0                           ; 9F67
+        jsr     Obj_GravityMoveBounce_Double    ; 9F67
         dec     $51                             ; 9F6A
         beq     L_9FA8                          ; 9F6C
         lda     $51                             ; 9F6E
@@ -706,7 +706,7 @@ L_A04A: lda     #$40                            ; A04A
         lda     #$40                            ; A04E
         sta     $43                             ; A050
         lda     #$02                            ; A052
-        jsr     LDFA0                           ; A054
+        jsr     Obj_GravityMoveBounce_Double    ; A054
         bne     L_A083                          ; A057
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; A059
         bne     L_A063                          ; A05C
@@ -768,7 +768,7 @@ L_A0B9: lda     #$40                            ; A0B9
         lda     #$40                            ; A0BD
         sta     $43                             ; A0BF
         lda     #$02                            ; A0C1
-        jsr     LDFA0                           ; A0C3
+        jsr     Obj_GravityMoveBounce_Double    ; A0C3
         bne     L_A0E5                          ; A0C6
 L_A0C8: lda     #$0C                            ; A0C8
         sta     $40                             ; A0CA
@@ -832,7 +832,7 @@ L_A125: lda     #$80                            ; A125
 
 ; ----------------------------------------------------------------------------
 L_A136: lda     #$03                            ; A136
-        jsr     LDFA0                           ; A138
+        jsr     Obj_GravityMoveBounce_Double    ; A138
         bne     L_A15F                          ; A13B
 L_A13D: lda     #$10                            ; A13D
         sta     $40                             ; A13F
@@ -952,7 +952,7 @@ L_A205: lda     #$40                            ; A205
         lda     #$40                            ; A209
         sta     $43                             ; A20B
         lda     #$02                            ; A20D
-        jsr     LDFA0                           ; A20F
+        jsr     Obj_GravityMoveBounce_Double    ; A20F
         bne     L_A231                          ; A212
 L_A214: lda     #$08                            ; A214
         sta     $40                             ; A216

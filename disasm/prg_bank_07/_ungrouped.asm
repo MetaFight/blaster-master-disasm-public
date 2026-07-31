@@ -407,7 +407,7 @@ LC806:  .byte   $10,$80,$01,$5C,$00,$08,$01,$5D ; C806
 L_C9D6: lda     #$00                            ; C9D6
         sta     ObjectSlot_Offset               ; C9D8
 L_C9DA: ldx     ObjectSlot_Offset               ; C9DA
-        lda     $0400,x                         ; C9DC
+        lda     ObjectTable + Obj::Type,x       ; C9DC
         beq     L_C9EA                          ; C9DF
         jsr     ObjSlot_Load                    ; C9E1
         jsr     L_D2B9                          ; C9E4
@@ -532,7 +532,7 @@ L_CAD2: dey                                     ; CAD2
         ldx     #$70                            ; CAD5
         lda     #$08                            ; CAD7
         sta     ObjectSlot_Index                ; CAD9
-L_CADB: lda     $0400,x                         ; CADB
+L_CADB: lda     ObjectTable + Obj::Type,x       ; CADB
         beq     L_CAFF                          ; CADE
         inc     ObjectSlot_Index                ; CAE0
         lda     ObjectSlot_Index                ; CAE2
@@ -569,23 +569,23 @@ L_CB11: lda     L_CB7C,x                        ; CB11
 L_CB14: sta     $0150,y                         ; CB14
         ldx     ObjectSlot_Offset               ; CB17
         lda     #$01                            ; CB19
-        sta     $0400,x                         ; CB1B
+        sta     ObjectTable + Obj::Type,x       ; CB1B
         lda     #$00                            ; CB1E
-        sta     $0401,x                         ; CB20
-        sta     $0406,x                         ; CB23
-        sta     $0407,x                         ; CB26
+        sta     ObjectTable + Obj::Facing,x     ; CB20
+        sta     ObjectTable + Obj::Velocity_X,x ; CB23
+        sta     ObjectTable + Obj::Velocity_Y,x ; CB26
         sta     $040B,x                         ; CB29
         sta     $040A,x                         ; CB2C
         sta     $0409,x                         ; CB2F
         lda     #$20                            ; CB32
-        sta     $040D,x                         ; CB34
+        sta     ObjectTable + Obj::Health,x     ; CB34
         lda     #$80                            ; CB37
-        sta     $0402,x                         ; CB39
-        sta     $0404,x                         ; CB3C
+        sta     ObjectTable + Obj::Position_X_Lo,x ; CB39
+        sta     ObjectTable + Obj::Position_Y_Lo,x ; CB3C
         lda     LoadedObj + Obj::Position_X_Hi  ; CB3F
-        sta     $0403,x                         ; CB41
+        sta     ObjectTable + Obj::Position_X_Hi,x ; CB41
         lda     LoadedObj + Obj::Position_Y_Hi  ; CB44
-        sta     $0405,x                         ; CB46
+        sta     ObjectTable + Obj::Position_Y_Hi,x ; CB46
         lda     $8E                             ; CB49
         sta     $F8,y                           ; CB4B
         inc     $8E                             ; CB4E
@@ -836,11 +836,11 @@ L_D13E: clc                                     ; D13E
 L_D150: rts                                     ; D150
 
 ; ----------------------------------------------------------------------------
-L_D151: lda     $0403                           ; D151
+L_D151: lda     PlayerSlot + Obj::Position_X_Hi ; D151
         sec                                     ; D154
         sbc     LoadedObj + Obj::Position_X_Hi  ; D155
         sta     L0000                           ; D157
-        lda     $0405                           ; D159
+        lda     PlayerSlot + Obj::Position_Y_Hi ; D159
         sec                                     ; D15C
         sbc     LoadedObj + Obj::Position_Y_Hi  ; D15D
         sta     $01                             ; D15F
@@ -885,16 +885,16 @@ L_D1EF: sta     $B7                             ; D1EF
         rts                                     ; D1F7
 
 ; ----------------------------------------------------------------------------
-L_D1F8: lda     $0402                           ; D1F8
+L_D1F8: lda     PlayerSlot + Obj::Position_X_Lo ; D1F8
         cmp     LoadedObj + Obj::Position_X_Lo  ; D1FB
-        lda     $0403                           ; D1FD
+        lda     PlayerSlot + Obj::Position_X_Hi ; D1FD
         sec                                     ; D200
         sbc     LoadedObj + Obj::Position_X_Hi  ; D201
         jsr     L_EB0C                          ; D203
         sta     $45                             ; D206
-        lda     $0404                           ; D208
+        lda     PlayerSlot + Obj::Position_Y_Lo ; D208
         cmp     LoadedObj + Obj::Position_Y_Lo  ; D20B
-        lda     $0405                           ; D20D
+        lda     PlayerSlot + Obj::Position_Y_Hi ; D20D
         sec                                     ; D210
         sbc     LoadedObj + Obj::Position_Y_Hi  ; D211
         jsr     L_EB0C                          ; D213
@@ -1087,43 +1087,9 @@ L_D31E: clc                                     ; D31E
         sta     $4E                             ; D321
 L_D323: rts                                     ; D323
 
-; ----------------------------------------------------------------------------
-; Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point
-; arithmetic.
-; Also keeps track of TileIndex correctly.
-Apply_Double_Velocity_XY:
-        jsr     Apply_Double_Velocity_Y         ; D324
-; Apply DOUBLE the LoadedObject's X velocity to its position, adjusting tilemap column $4E and
-; keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Double_Velocity_XY.
-Apply_Double_Velocity_X:
-        lda     #$00                            ; D327
-        ldx     LoadedObj + Obj::Velocity_X     ; D329
-; If Velocity_X is positive, use sign-extension byte $00, otherwise use $FF
-        bpl     _Apply_Double_Velocity_X__OnSignExtensionByteChosen; D32B
-        lda     #$FF                            ; D32D
-_Apply_Double_Velocity_X__OnSignExtensionByteChosen:
-        pha                                     ; D32F
-        txa                                     ; D330
-; ASL doubles XVel before the add — this is the actual ×2 in 'double speed'.
-        asl     a                               ; D331
-        clc                                     ; D332
-        adc     LoadedObj + Obj::Position_X_Lo  ; D333
-        sta     LoadedObj + Obj::Position_X_Lo  ; D335
-; Retrieve the sign-extension byte from the stack to carry into the x-metatile value.
-        pla                                     ; D337
-        adc     LoadedObj + Obj::Position_X_Hi  ; D338
-        pha                                     ; D33A
-        sec                                     ; D33B
-        sbc     LoadedObj + Obj::Position_X_Hi  ; D33C
-        clc                                     ; D33E
-; Update the TileIndex accordingly.
-        adc     $4E                             ; D33F
-        sta     $4E                             ; D341
-        pla                                     ; D343
-        and     #$7F                            ; D344
-        sta     LoadedObj + Obj::Position_X_Hi  ; D346
-        rts                                     ; D348
+.endmacro
 
+.macro MAC_L_D349
 ; ----------------------------------------------------------------------------
 ; Apply DOUBLE the LoadedObject's Y velocity to its position, adjusting tilemap index $4E by
 ; 16×row (row stride $11) and keeping $4B in 0-$7F. Dispatch $C042; Y half of
@@ -1941,14 +1907,14 @@ L_D7BA: sta     $7C,x                           ; D7BA
 L_D7C0: ldy     #$01                            ; D7C0
 L_D7C2: inx                                     ; D7C2
         lda     LoadedObject + Obj::Type,y      ; D7C3
-        sta     $0400,x                         ; D7C6
+        sta     ObjectTable + Obj::Type,x       ; D7C6
         iny                                     ; D7C9
         cpy     #$0E                            ; D7CA
         bne     L_D7C2                          ; D7CC
         rts                                     ; D7CE
 
 ; ----------------------------------------------------------------------------
-L_D7CF: lda     $0400,x                         ; D7CF
+L_D7CF: lda     ObjectTable + Obj::Type,x       ; D7CF
         beq     L_D7E0                          ; D7D2
         cpx     L0000                           ; D7D4
         beq     L_D7E2                          ; D7D6
@@ -1965,7 +1931,7 @@ L_D7E2: rts                                     ; D7E2
 ; ----------------------------------------------------------------------------
 L_D7E3: lda     #$00                            ; D7E3
         ldx     #$0E                            ; D7E5
-L_D7E7: sta     $0400,x                         ; D7E7
+L_D7E7: sta     ObjectTable + Obj::Type,x       ; D7E7
         inx                                     ; D7EA
         bne     L_D7E7                          ; D7EB
         rts                                     ; D7ED
@@ -2370,26 +2336,6 @@ L_EA63: lda     (L007A),y                       ; EA63
         pla                                     ; EA6B
         sta     L007A                           ; EA6C
         rts                                     ; EA6E
-
-.endmacro
-
-.macro MAC_L_EB14
-; ----------------------------------------------------------------------------
-L_EB14: ldy     L0000,x                         ; EB14
-        bmi     L_EB1F                          ; EB16
-        cmp     L0000,x                         ; EB18
-        bcs     L_EB2A                          ; EB1A
-        sta     L0000,x                         ; EB1C
-        rts                                     ; EB1E
-
-; ----------------------------------------------------------------------------
-L_EB1F: eor     #$FF                            ; EB1F
-        clc                                     ; EB21
-        adc     #$01                            ; EB22
-        cmp     L0000,x                         ; EB24
-        bcc     L_EB2A                          ; EB26
-        sta     L0000,x                         ; EB28
-L_EB2A: rts                                     ; EB2A
 
 .endmacro
 

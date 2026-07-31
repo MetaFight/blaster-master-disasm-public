@@ -133,7 +133,7 @@ L_C971: lda     #$00                            ; C971
         sta     ObjectSlot_Offset               ; C973
         sta     ObjectSlot_Index                ; C975
 L_C977: ldx     ObjectSlot_Offset               ; C977
-        lda     $0400,x                         ; C979
+        lda     ObjectTable + Obj::Type,x       ; C979
         beq     L_C990                          ; C97C
         jsr     ObjSlot_Load                    ; C97E
         lda     $4F                             ; C981
@@ -186,6 +186,46 @@ L_C9D3: jmp     (L007A)                         ; C9D3
 
 .endmacro
 
+.macro MAC_L_D324
+; ----------------------------------------------------------------------------
+; Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point
+; arithmetic.
+; Also keeps track of TileIndex correctly.
+Apply_Double_Velocity_XY:
+        jsr     Apply_Double_Velocity_Y         ; D324
+; Apply DOUBLE the LoadedObject's X velocity to its position, adjusting tilemap column $4E and
+; keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Double_Velocity_XY.
+Apply_Double_Velocity_X:
+        lda     #$00                            ; D327
+        ldx     LoadedObj + Obj::Velocity_X     ; D329
+; If Velocity_X is positive, use sign-extension byte $00, otherwise use $FF
+        bpl     _Apply_Double_Velocity_X__OnSignExtensionByteChosen; D32B
+        lda     #$FF                            ; D32D
+_Apply_Double_Velocity_X__OnSignExtensionByteChosen:
+        pha                                     ; D32F
+        txa                                     ; D330
+; ASL doubles XVel before the add — this is the actual ×2 in 'double speed'.
+        asl     a                               ; D331
+        clc                                     ; D332
+        adc     LoadedObj + Obj::Position_X_Lo  ; D333
+        sta     LoadedObj + Obj::Position_X_Lo  ; D335
+; Retrieve the sign-extension byte from the stack to carry into the x-metatile value.
+        pla                                     ; D337
+        adc     LoadedObj + Obj::Position_X_Hi  ; D338
+        pha                                     ; D33A
+        sec                                     ; D33B
+        sbc     LoadedObj + Obj::Position_X_Hi  ; D33C
+        clc                                     ; D33E
+; Update the TileIndex accordingly.
+        adc     $4E                             ; D33F
+        sta     $4E                             ; D341
+        pla                                     ; D343
+        and     #$7F                            ; D344
+        sta     LoadedObj + Obj::Position_X_Hi  ; D346
+        rts                                     ; D348
+
+.endmacro
+
 .macro MAC_L_D7F8
 ; ----------------------------------------------------------------------------
 L_D7F8: ldx     ObjectSlot_Index                ; D7F8
@@ -230,9 +270,9 @@ L_D83B: lda     LoadedObj + Obj::Position_X_Hi  ; D83B
         sta     L0000                           ; D83D
         lda     LoadedObj + Obj::Position_Y_Hi  ; D83F
         sta     $01                             ; D841
-        lda     $0403                           ; D843
+        lda     PlayerSlot + Obj::Position_X_Hi ; D843
         sta     $02                             ; D846
-        lda     $0405                           ; D848
+        lda     PlayerSlot + Obj::Position_Y_Hi ; D848
         sta     $03                             ; D84B
         jsr     L_D02D                          ; D84D
         rts                                     ; D850
@@ -250,7 +290,7 @@ L_D851: pha                                     ; D851
         pla                                     ; D862
         tax                                     ; D863
         pla                                     ; D864
-        sta     $0400,x                         ; D865
+        sta     ObjectTable + Obj::Type,x       ; D865
         rts                                     ; D868
 
 ; ----------------------------------------------------------------------------
@@ -261,14 +301,14 @@ L_D869: pla                                     ; D869
 ; ----------------------------------------------------------------------------
 L_D86D: ldx     #$4C                            ; D86D
         lda     #$40                            ; D86F
-        jsr     L_EB14                          ; D871
+        jsr     Speed_Limit_Sub                 ; D871
         lda     LoadedObj + Obj::Velocity_Y     ; D874
         sec                                     ; D876
         sbc     #$40                            ; D877
         sta     LoadedObj + Obj::Velocity_Y     ; D879
         ldx     #$4D                            ; D87B
         lda     #$40                            ; D87D
-        jsr     L_EB14                          ; D87F
+        jsr     Speed_Limit_Sub                 ; D87F
         rts                                     ; D882
 
 .endmacro
@@ -293,7 +333,7 @@ L_DF24: lda     #$00                            ; DF24
 ; ----------------------------------------------------------------------------
 L_DF27: ldy     #$00                            ; DF27
 L_DF29: lda     LoadedObject + Obj::Type,y      ; DF29
-        sta     $0400,x                         ; DF2C
+        sta     ObjectTable + Obj::Type,x       ; DF2C
         inx                                     ; DF2F
         iny                                     ; DF30
         cpy     #$0E                            ; DF31
@@ -319,7 +359,7 @@ L_DF46: lda     L0000                           ; DF46
         jsr     L_D7CF                          ; DF4F
         beq     L_DF62                          ; DF52
         lda     $A0                             ; DF54
-        sta     $0400,x                         ; DF56
+        sta     ObjectTable + Obj::Type,x       ; DF56
         jsr     L_D7C0                          ; DF59
         pla                                     ; DF5C
         sta     L0000                           ; DF5D
@@ -352,11 +392,15 @@ L_DF81: lda     TerrainCollisionFlags           ; DF81
         rts                                     ; DF83
 
 ; ----------------------------------------------------------------------------
-; Double-speed variant of Obj_MoveBounce ($DF68): advance via Obj_MoveAndCollide_Double ($E0A5,
-; Apply_Double_Velocity_X/Apply_Double_Velocity_Y) and reflect velocity off the wall flags - bit7
-; (side wall) negates XVel $4C, bit6 (floor/ceiling) negates YVel $4D. Returns the wall flags in
-; A/$9A. Dispatch slot $C03C (no callers in USA ROM); reached in-bank from Obj_GravityMoveBounce
-; ($DFA0).
+; Double-speed variant of Obj_MoveBounce: advance via Obj_MoveAndCollide_Double and reflect
+; velocity on collisions.
+; Flags:
+;   bit7 (side wall) negates XVel $4C,
+;   bit6 (floor/ceiling) negates YVel $4D. 
+; 
+; Output:
+;  A = wall flags
+;  TerrainCollisionFlags = wall flags
 Obj_MoveBounce_Double:
         jsr     Obj_MoveAndCollide_Double       ; DF84
 ; Branch on positive, means branch when bit 7 is 0.  This means no x-collision.
@@ -388,31 +432,63 @@ _Obj_MoveBounce_Double__Return:
         rts                                     ; DF9F
 
 ; ----------------------------------------------------------------------------
-L_DFA0: ldy     #$00                            ; DFA0
+; Adds gravity (A) to LoadedObj's Velocity_Y then moves at double speed with wall reflection.
+; Dampens the bounce to 1/4 on a floor/ceiling hit, and clamps both velocities to ±$28.
+; 
+; Input:
+;   A = Gravity
+; 
+; Output:
+;   A = Wall flags
+;     bit 7 for horizontal collisions
+;     bit 6 for vertical collisions
+; 
+;   LoadedObj's Velocity_Y = previous velocity with gravity applied and reflected if that movement
+;   resulted in a collision with a floor or ceiling.
+Obj_GravityMoveBounce_Double:
+        ldy     #$00                            ; DFA0
         pha                                     ; DFA2
         tya                                     ; DFA3
         and     Global_FrameCounter             ; DFA4
-        beq     L_DFAC                          ; DFA6
+; This always branches.
+        beq     _Obj_GravityMoveBounce_Double__ApplyGravity; DFA6
+; dead
         pla                                     ; DFA8
-        jmp     L_DFB4                          ; DFA9
+; dead
+        jmp     _Obj_GravityMoveBounce_Double__Move; DFA9
 
 ; ----------------------------------------------------------------------------
-L_DFAC: pla                                     ; DFAC
+; Gravity is popped from stack and added to the LoadedObj's Y velocity.
+; The BVS guard skips the store on signed overflow.
+_Obj_GravityMoveBounce_Double__ApplyGravity:
+        pla                                     ; DFAC
         clc                                     ; DFAD
         adc     LoadedObj + Obj::Velocity_Y     ; DFAE
-        bvs     L_DFB4                          ; DFB0
+        bvs     _Obj_GravityMoveBounce_Double__Move; DFB0
         sta     LoadedObj + Obj::Velocity_Y     ; DFB2
-L_DFB4: jsr     Obj_MoveBounce_Double           ; DFB4
+; Double move+bounce; floor/ceiling hit (bit6) → damp YVel to 1/4 ($40/256).
+_Obj_GravityMoveBounce_Double__Move:
+        jsr     Obj_MoveBounce_Double           ; DFB4
         and     #$40                            ; DFB7
-        beq     L_DFC0                          ; DFB9
+        beq     _Obj_GravityMoveBounce_Double__ClampSpeed; DFB9
         lda     #$40                            ; DFBB
-        jsr     L_E0C7                          ; DFBD
-L_DFC0: lda     #$28                            ; DFC0
+        jsr     Obj_ScaleVelY                   ; DFBD
+; Clamp LoadedObj's velocities
+_Obj_GravityMoveBounce_Double__ClampSpeed:
+        lda     #$28                            ; DFC0
         ldx     #$4D                            ; DFC2
-        jsr     L_EB14                          ; DFC4
+; The previous two lines prepare a call into Speed_Limit_Sub.
+; 
+; A = Clamp value ($28)
+; X = Value to be clamped.  In this case, LoadedObj's Velocity_Y ($4D)
+; 
+; once prepped, call the sub.
+        jsr     Speed_Limit_Sub                 ; DFC4
         lda     #$28                            ; DFC7
         ldx     #$4C                            ; DFC9
-        jsr     L_EB14                          ; DFCB
+; Repeat for LoadedObj's Velocity_X ($4C)
+        jsr     Speed_Limit_Sub                 ; DFCB
+; Return TerrainCollisionFlags in A
         lda     TerrainCollisionFlags           ; DFCE
         rts                                     ; DFD0
 
@@ -451,7 +527,7 @@ L_E002: sta     $52                             ; E002
 
 ; ----------------------------------------------------------------------------
 L_E005: lda     #$02                            ; E005
-        jsr     L_DFA0                          ; E007
+        jsr     Obj_GravityMoveBounce_Double    ; E007
         asl     a                               ; E00A
         bpl     L_E018                          ; E00B
         lda     LoadedObj + Obj::Velocity_Y     ; E00D
@@ -569,9 +645,19 @@ _Obj_MoveAndCollide_Double__Return:
         rts                                     ; E0C6
 
 ; ----------------------------------------------------------------------------
-L_E0C7: tay                                     ; E0C7
+; Scale LoadedObj's Velocity_Y by the fraction in A.
+; 
+; Input:
+;   A = fraction, unsigned byte, in any fixed-point format.
+;   LoadedObj's Velocity_Y = signed
+; 
+; Output:
+;   A = LoadedObj's Velocity_Y scaled by A
+;   LoadedObj's Velocity_Y = same as A
+Obj_ScaleVelY:
+        tay                                     ; E0C7
         lda     LoadedObj + Obj::Velocity_Y     ; E0C8
-        jsr     L_E196                          ; E0CA
+        jsr     ScaleBySignedFrac               ; E0CA
         sta     LoadedObj + Obj::Velocity_Y     ; E0CD
         rts                                     ; E0CF
 
@@ -603,20 +689,20 @@ L_E0E5: lda     #$00                            ; E0E5
 ; Signed X-distance from this object to the player:  Returns X = pixel/frac byte, A = metatile
 ; byte (carries the sign).
 LoadedObj__Get_DeltaToPlayer_X:
-        lda     $0402                           ; E0ED
+        lda     PlayerSlot + Obj::Position_X_Lo ; E0ED
         sec                                     ; E0F0
         sbc     LoadedObj + Obj::Position_X_Lo  ; E0F1
         tax                                     ; E0F3
-        lda     $0403                           ; E0F4
+        lda     PlayerSlot + Obj::Position_X_Hi ; E0F4
         sbc     LoadedObj + Obj::Position_X_Hi  ; E0F7
         rts                                     ; E0F9
 
 ; ----------------------------------------------------------------------------
-L_E0FA: lda     $0404                           ; E0FA
+L_E0FA: lda     PlayerSlot + Obj::Position_Y_Lo ; E0FA
         sec                                     ; E0FD
         sbc     LoadedObj + Obj::Position_Y_Lo  ; E0FE
         tax                                     ; E100
-        lda     $0405                           ; E101
+        lda     PlayerSlot + Obj::Position_Y_Hi ; E101
         sbc     LoadedObj + Obj::Position_Y_Hi  ; E104
         rts                                     ; E106
 
@@ -710,13 +796,53 @@ L_E152: lda     L0000                           ; E152
 ; ----------------------------------------------------------------------------
 L_E1BD: lda     LoadedObj + Obj::Facing         ; E1BD
         jsr     L_E1D2                          ; E1BF
-        jsr     L_E196                          ; E1C2
+        jsr     ScaleBySignedFrac               ; E1C2
         sta     LoadedObj + Obj::Velocity_X     ; E1C5
         lda     LoadedObj + Obj::Facing         ; E1C7
         jsr     L_E1D5                          ; E1C9
-        jsr     L_E196                          ; E1CC
+        jsr     ScaleBySignedFrac               ; E1CC
         sta     LoadedObj + Obj::Velocity_Y     ; E1CF
         rts                                     ; E1D1
+
+.endmacro
+
+.macro MAC_L_EB14
+; ----------------------------------------------------------------------------
+; Clamps the signed velocity ZP[$00+X] into [-A, +A]
+; 
+; Input:
+;   X = the ZP index
+;   A = the positive speed limit
+Speed_Limit_Sub:
+        ldy     L0000,x                         ; EB14
+        bmi     _Speed_Limit_Sub__Negative      ; EB16
+; When Velocity is non-negative:
+; 
+; Compare limit A against Velocity
+        cmp     L0000,x                         ; EB18
+; if A >= Velocity, return without change.
+        bcs     _Speed_Limit_Sub__Return        ; EB1A
+; otherwise (clamping is required since Velocity > A), clamp ZP[$00+X] to A
+        sta     L0000,x                         ; EB1C
+        rts                                     ; EB1E
+
+; ----------------------------------------------------------------------------
+; When Velocity is negative:
+; 
+; negate A via two's complement → -A for comparison
+_Speed_Limit_Sub__Negative:
+        eor     #$FF                            ; EB1F
+        clc                                     ; EB21
+        adc     #$01                            ; EB22
+; Compare limit -A against negative velocity
+        cmp     L0000,x                         ; EB24
+; if -A < Velocity, return without change.
+        bcc     _Speed_Limit_Sub__Return        ; EB26
+; otherwise (clamping is probably required since Velocity <= -A), clamp ZP[$00+X] to A
+        sta     L0000,x                         ; EB28
+; RTS (velocity within limit).
+_Speed_Limit_Sub__Return:
+        rts                                     ; EB2A
 
 .endmacro
 

@@ -50,7 +50,7 @@ L_AA96: lda     $52                             ; AA96
         lda     #$80                            ; AAAE
         bne     L_AAB4                          ; AAB0
 L_AAB2: lda     #$00                            ; AAB2
-L_AAB4: sta     $0401,x                         ; AAB4
+L_AAB4: sta     ObjectTable + Obj::Facing,x     ; AAB4
         lda     $52                             ; AAB7
         asl     a                               ; AAB9
         clc                                     ; AABA
@@ -59,12 +59,12 @@ L_AAB4: sta     $0401,x                         ; AAB4
         lda     LoadedObj + Obj::Position_Y_Lo  ; AAC0
         clc                                     ; AAC2
         adc     #$40                            ; AAC3
-        sta     $0404,x                         ; AAC5
+        sta     ObjectTable + Obj::Position_Y_Lo,x ; AAC5
         lda     LoadedObj + Obj::Position_Y_Hi  ; AAC8
         adc     #$00                            ; AACA
-        sta     $0405,x                         ; AACC
+        sta     ObjectTable + Obj::Position_Y_Hi,x ; AACC
         lda     #$46                            ; AACF
-        sta     $0400,x                         ; AAD1
+        sta     ObjectTable + Obj::Type,x       ; AAD1
 L_AAD4: lda     #$10                            ; AAD4
         sta     $40                             ; AAD6
         lda     #$10                            ; AAD8

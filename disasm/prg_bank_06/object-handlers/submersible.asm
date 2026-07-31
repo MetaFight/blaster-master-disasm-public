@@ -29,9 +29,9 @@ L_B63F: lda     #$80                            ; B63F
         jsr     L_A29E                          ; B65B
         beq     L_B66F                          ; B65E
         lda     #$87                            ; B660
-        sta     $0400,x                         ; B662
+        sta     ObjectTable + Obj::Type,x       ; B662
         lda     #$00                            ; B665
-        sta     $0407,x                         ; B667
+        sta     ObjectTable + Obj::Velocity_Y,x ; B667
         lda     #$24                            ; B66A
         jsr     Enqueue_Sound_Command           ; B66C
 L_B66F: lda     #$10                            ; B66F
@@ -67,7 +67,7 @@ L_B69C: lda     Global_FrameCounter             ; B69C
         asl     a                               ; B69F
         ldy     #$08                            ; B6A0
         jsr     LE1D5                           ; B6A2
-        jsr     LE196                           ; B6A5
+        jsr     ScaleBySignedFrac               ; B6A5
         sta     LoadedObj + Obj::Velocity_Y     ; B6A8
         jsr     LE083                           ; B6AA
         and     #$80                            ; B6AD

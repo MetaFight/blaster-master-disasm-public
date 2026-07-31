@@ -74,7 +74,7 @@
 ; in ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [r] TBD
 ; in ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [r] TBD
 ; in Obj_SpawnChild_A0_Throttled ($DF36): [r] TBD
-; in Obj_GravityMoveBounce ($DFA0): [r] TBD
+; in Obj_GravityMoveBounce_Double ($DFA0): [r] TBD
 ; in OAM_BlitFromStaging ($EC73): [r] TBD
 Global_FrameCounter            := $0011
 ; Obj: The 14-byte record every active object occupies. 18 are packed at $0400 (the object
@@ -98,6 +98,16 @@ Global_FrameCounter            := $0011
 ; never occupy a record, they only scan it.
 .struct Contact
         .res 3       ; +$00..+$02
+.endstruct
+; OamEntry: One hardware sprite as the NES OAM lays it out: 4 bytes, Y / tile / attribute / X.
+; This is the PPU's own record format, not a game-defined one -- SpriteStagingBuf ($0600) is
+; an array of these, and OAM_BlitFromStaging ($EC73) copies whole records straight into the
+; $0200 OAM shadow, which the NMI DMAs to $2004 via $4014.
+.struct OamEntry
+        Y    .byte   ; +$00 (byte)  Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
+        Tile .byte   ; +$01 (byte)  Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
+        Attr .byte   ; +$02 (byte)  Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
+        X    .byte   ; +$03 (byte)  Screen X, left edge.
 .endstruct
 ; The 14-byte zero-page working copy of the currently active object slot — the same Obj layout
 ; as the $0400 object table. Before each AI dispatch, ObjSlot_Load ($C8DF) copies the active
@@ -150,6 +160,23 @@ Object_Slot_14 := $04C4   ; element 14
 Object_Slot_15 := $04D2   ; element 15
 Object_Slot_16 := $04E0   ; element 16
 Object_Slot_17 := $04EE   ; element 17
+; The sprite staging buffer: 20 OamEntry records the renderers append to, then blitted
+; wholesale into the $0200 OAM shadow by OAM_BlitFromStaging ($EC73) and DMAd to the PPU from
+; there. The write head is a BYTE offset in OAM_Staging_Entry_Length ($3C), so every access is
+; $0600,X with X a multiple of 4 -- the stagers index the array, they do not address a slot by
+; name. Extent: MetaSprite_RenderNoBank ($F04F) flushes the buffer whenever $3C reaches $40,
+; BEFORE staging each entry, and the largest single stager adds $10 bytes (4 sprites,
+; $EE77/$EEE9) at offsets +$00..+$0F. $40 + $10 = $50 = 80 bytes = exactly 20 records, which
+; lands the buffer at $0600-$064F and stops one byte short of Palette_Shadow ($0650) -- the
+; threshold looks chosen so the largest entry cannot overrun the palette. Appended by
+; Sprite_Stage ($ECB4, 1 sprite) and the shape stagers $ECD1/$ED12/$ED54/$EDA4/$EDF5/
+; $EE77/$EEE9 (2-4 sprites each), all of which write $0600+N,X for N = 0..$0F and then advance
+; $3C by their own byte count.
+SpriteStagingBuf         := $0600   ; OamEntry[] base — indexed access (any element)
+SpriteStagingBuf_Sprite0 := $0600   ; element 0 — direct access
+SpriteStagingBuf_Sprite1 := $0604   ; element 1
+SpriteStagingBuf_Sprite2 := $0608   ; element 2
+SpriteStagingBuf_Sprite3 := $060C   ; element 3
 
 ; Byte offset of the active slot
 ObjectSlot_Offset              := $0056

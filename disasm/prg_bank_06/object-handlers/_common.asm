@@ -4,17 +4,17 @@
 ; Overhead parallel: OvhdEnemy_Init ($B2B4). See docs/entities/tank/_shared-enemy-system.md.
 ; 
 ; Input:
-; A = descriptor index (aka Thing ID).
+;    A = descriptor index (aka Thing ID).
 ; 
 ; Output:
-; EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the
-; damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them
-; LoadedObj's Health is set from EnemyDesc::Health
-; LoadedObj's ActiveFlag is set to 0
-; LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's
-; own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field
-; ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler
-; need not advance $46 itself
+;   EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the
+;     damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them
+;   LoadedObj's Health is set from EnemyDesc::Health
+;   LoadedObj's ActiveFlag is set to 0
+;   LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's
+;     own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field
+;   ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler
+;     need not advance $46 itself
 TankEnemy_Init:
         jsr     TankEnemy_Load_EnemyDescPtr     ; A2E9
 ; Load desc[0] (EnemyDesc::Health, starting HP) via ($A1),Y → $53; clear anim state $4F.
@@ -31,11 +31,11 @@ TankEnemy_Init:
 ; Points EnemyParam_Ptr[Lo/Hi] to the given enemy's TankEnemy_DescTable entry.
 ; 
 ; Input:
-; A = TankEnemy_DescTable index (aka Thing ID). 
+;    A = TankEnemy_DescTable index (aka Thing ID). 
 ; 
 ; Output:
-; EnemyParam_Ptr[Lo/Hi] ($A1/$A2) are set to point to the enemy's 4-byte EnemyDesc entry in
-; TankEnemy_DescTable.
+;   EnemyParam_Ptr[Lo/Hi] ($A1/$A2) are set to point to the enemy's 4-byte EnemyDesc entry in
+;   TankEnemy_DescTable.
 ; 
 ; Start by multiplying A by 4.  EnemyDesc entries are 4-bytes in size so this converts the array
 ; index into the target element's offset.
@@ -90,7 +90,7 @@ L_A350: jsr     Step_RNG                           ; A350
         beq     L_A365                          ; A35C
         ldy     #$02                            ; A35E
         lda     ($A1),y                         ; A360
-        sta     $0400,x                         ; A362
+        sta     ObjectTable + Obj::Type,x       ; A362
 L_A365: jmp     L_9B8B                          ; A365
 
 ; ----------------------------------------------------------------------------
@@ -106,35 +106,35 @@ TankEnemy_DescTablePtr:
 ; docs/entities/entity-map.md), so this is one descriptor per Thing.
 ; 
 ; Index->enemy:
-; 00=GrayCaterpillar($54)
-; 01=GrayBulletA($56)*
-; 02=GrayBulletB($58)*
-; 03=RedCatDropper($5B)
-; 04=Hulk($5D)
-; 05=GrayHopper6($5F)
-; 06=RedCaterpillar($62)
-; 07=Mine($64)
-; 08=Turret($66)
-; 09=BomberRock($68)
-; 0A=FlyingShip($6A)
-; 0B=FlyingBomber($6C)
-; 0C=SwoopingSphere($6E)
-; 0D=Bee($70) 0E=Orb($72)
-; 0F=FlyingRedCatBomber($74)
-; 10=Shooter($76)
-; 11=KamikazeOrb($78)
-; 12=GrayHopper10($7A)
-; 13=RedFlierSpawner($4E)
-; 14=GrayFlierSpawner($50)
-; 15=BombLobbingHand($7E)
-; 16=Jellyfish($80)
-; 17=ScubaSteve($82)
-; 18=RunningShell($85)
-; 19=SubmersibleSpawner($52)
-; 1A=CrescentRoller($88)
-; 1B=BombCanister($8A)
-; 1C=RedBulletA($8C)*
-; 1D=RedBulletB($8D)*
+;   00=GrayCaterpillar($54)
+;   01=GrayBulletA($56)*
+;   02=GrayBulletB($58)*
+;   03=RedCatDropper($5B)
+;   04=Hulk($5D)
+;   05=GrayHopper6($5F)
+;   06=RedCaterpillar($62)
+;   07=Mine($64)
+;   08=Turret($66)
+;   09=BomberRock($68)
+;   0A=FlyingShip($6A)
+;   0B=FlyingBomber($6C)
+;   0C=SwoopingSphere($6E)
+;   0D=Bee($70) 0E=Orb($72)
+;   0F=FlyingRedCatBomber($74)
+;   10=Shooter($76)
+;   11=KamikazeOrb($78)
+;   12=GrayHopper10($7A)
+;   13=RedFlierSpawner($4E)
+;   14=GrayFlierSpawner($50)
+;   15=BombLobbingHand($7E)
+;   16=Jellyfish($80)
+;   17=ScubaSteve($82)
+;   18=RunningShell($85)
+;   19=SubmersibleSpawner($52)
+;   1A=CrescentRoller($88)
+;   1B=BombCanister($8A)
+;   1C=RedBulletA($8C)*
+;   1D=RedBulletB($8D)*
 ; 
 ; * The two bullet families each own a Thing pair whose descriptors hold identical bytes, and
 ; their handlers do not respect the split. Gray: $56 Init, $58 Init and $5A Attacking all pass 02,

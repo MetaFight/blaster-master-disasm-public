@@ -44,7 +44,7 @@ L_AB56: and     #$01                            ; AB56
         cmp     #$01                            ; AB58
         beq     L_AB6E                          ; AB5A
         lda     #$02                            ; AB5C
-        jsr     LDFA0                           ; AB5E
+        jsr     Obj_GravityMoveBounce_Double    ; AB5E
         and     #$40                            ; AB61
         beq     L_ABA4                          ; AB63
         lda     #$00                            ; AB65

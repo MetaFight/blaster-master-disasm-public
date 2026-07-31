@@ -43,7 +43,7 @@ L_AE21: dec     $51                             ; AE21
 
 ; ----------------------------------------------------------------------------
 L_AE2F: lda     #$02                            ; AE2F
-        jsr     LDFA0                           ; AE31
+        jsr     Obj_GravityMoveBounce_Double    ; AE31
         bpl     L_AE39                          ; AE34
         jsr     LE0D8                           ; AE36
 L_AE39: lda     LoadedObj + Obj::Velocity_Y     ; AE39

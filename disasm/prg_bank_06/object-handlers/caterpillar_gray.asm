@@ -94,7 +94,7 @@ L_A485: lda     #$02                            ; A485
         jsr     LDFD1                           ; A489
         lda     #$30                            ; A48C
         ldx     #$4D                            ; A48E
-        jsr     LEB14                           ; A490
+        jsr     Speed_Limit_Sub                 ; A490
         jsr     LE083                           ; A493
         and     #$40                            ; A496
         beq     L_A4A4                          ; A498

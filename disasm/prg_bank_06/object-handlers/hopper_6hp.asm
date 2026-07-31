@@ -61,15 +61,16 @@ _ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:
         jmp     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__; A7FF
 
 ; ----------------------------------------------------------------------------
-; wind-up over: take one ballistic step (Obj_GravityMoveBounce with gravity $04, which also
+; wind-up over: take one ballistic step (Obj_GravityMoveBounce_Double with gravity $04, which also
 ; reflects and damps the velocity on contact) and test bit 6 of the wall flags it returns — a
 ; vertical, i.e. floor-or-ceiling, contact. Clear means still airborne, so just draw.
 _ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired:
         lda     #$04                            ; A802
-        jsr     LDFA0                           ; A804
+        jsr     Obj_GravityMoveBounce_Double    ; A804
         and     #$40                            ; A807
         beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__; A809
-; Handle vertical contact.  Obj_GravityMoveBounce reflects LoadedObj's Velocity_Y on the hit so,
+; Handle vertical contact.  Obj_GravityMoveBounce_Double reflects LoadedObj's Velocity_Y on the
+; hit so,
 ; a negative value (pointing up) implies landing
 ; a positive value implies a ceiling bonk.
         lda     LoadedObj + Obj::Velocity_Y     ; A80B

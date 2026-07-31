@@ -63,7 +63,7 @@ L_B5D7: lda     #$01                            ; B5D7
         jsr     LDFD1                           ; B5DB
         lda     #$20                            ; B5DE
         ldx     #$4D                            ; B5E0
-        jsr     LEB14                           ; B5E2
+        jsr     Speed_Limit_Sub                 ; B5E2
         jsr     LE083                           ; B5E5
         bpl     L_B5F1                          ; B5E8
         lda     #$00                            ; B5EA

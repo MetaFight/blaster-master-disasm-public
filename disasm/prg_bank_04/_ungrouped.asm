@@ -894,7 +894,7 @@ L_8E7E: ldy     $BB                             ; 8E7E
         cpy     #$06                            ; 8E88
         bcc     L_8E8E                          ; 8E8A
         lda     #$0C                            ; 8E8C
-L_8E8E: sta     $0400,x                         ; 8E8E
+L_8E8E: sta     ObjectTable + Obj::Type,x       ; 8E8E
         jsr     LC0D8                           ; 8E91
 L_8E94: rts                                     ; 8E94
 
@@ -1418,11 +1418,11 @@ L_920E: lda     LoadedObj + Obj::Facing         ; 920E
         tax                                     ; 9214
         lda     L9238,x                         ; 9215
         clc                                     ; 9218
-        adc     $0406                           ; 9219
+        adc     PlayerSlot + Obj::Velocity_X    ; 9219
         sta     LoadedObj + Obj::Velocity_X     ; 921C
         lda     L_9237,x                        ; 921E
         clc                                     ; 9221
-        adc     $0407                           ; 9222
+        adc     PlayerSlot + Obj::Velocity_Y    ; 9222
         sta     LoadedObj + Obj::Velocity_Y     ; 9225
         lda     #$03                            ; 9227
         sta     $51                             ; 9229
@@ -3317,7 +3317,7 @@ L_9F62: rts                                     ; 9F62
 ; ----------------------------------------------------------------------------
 L_9F63: .byte   $EA,$EA                         ; 9F63
 ; ----------------------------------------------------------------------------
-L_9F65: lda     $0400                           ; 9F65
+L_9F65: lda     PlayerSlot + Obj::Type          ; 9F65
         cmp     #$03                            ; 9F68
         bne     L_9FB3                          ; 9F6A
         lda     #$10                            ; 9F6C
@@ -3378,7 +3378,7 @@ L_9FBA: dec     $51                             ; 9FBA
         rts                                     ; 9FD2
 
 ; ----------------------------------------------------------------------------
-L_9FD3: lda     $0400                           ; 9FD3
+L_9FD3: lda     PlayerSlot + Obj::Type          ; 9FD3
         cmp     #$03                            ; 9FD6
         bne     L_9FDD                          ; 9FD8
         jmp     LC07E                           ; 9FDA
@@ -4158,7 +4158,7 @@ L_A58C: jsr     L_A07B                          ; A58C
         lda     Global_FrameCounter             ; A595
         and     #$3F                            ; A597
         bne     L_A5C1                          ; A599
-        lda     $0403                           ; A59B
+        lda     PlayerSlot + Obj::Position_X_Hi ; A59B
         sec                                     ; A59E
         sbc     LoadedObj + Obj::Position_X_Hi  ; A59F
         asl     a                               ; A5A1
@@ -4168,7 +4168,7 @@ L_A58C: jsr     L_A07B                          ; A58C
         bne     L_A5AC                          ; A5A8
 L_A5AA: lda     #$FA                            ; A5AA
 L_A5AC: sta     LoadedObj + Obj::Velocity_X     ; A5AC
-        lda     $0405                           ; A5AE
+        lda     PlayerSlot + Obj::Position_Y_Hi ; A5AE
         sec                                     ; A5B1
         sbc     LoadedObj + Obj::Position_Y_Hi  ; A5B2
         asl     a                               ; A5B4
@@ -5632,12 +5632,12 @@ L_AFD7: jsr     LC12F                           ; AFD7
         eor     #$FF                            ; AFDE
         clc                                     ; AFE0
         adc     #$01                            ; AFE1
-        sta     $0406,x                         ; AFE3
+        sta     ObjectTable + Obj::Velocity_X,x ; AFE3
         lda     LoadedObj + Obj::Velocity_Y     ; AFE6
         eor     #$FF                            ; AFE8
         clc                                     ; AFEA
         adc     #$01                            ; AFEB
-        sta     $0407,x                         ; AFED
+        sta     ObjectTable + Obj::Velocity_Y,x ; AFED
         lda     #$1B                            ; AFF0
         jsr     LC216                           ; AFF2
 L_AFF5: rts                                     ; AFF5
@@ -5935,11 +5935,11 @@ L_B1D0: lda     #$03                            ; B1D0
 
 ; ----------------------------------------------------------------------------
 L_B1DB: clc                                     ; B1DB
-        lda     $040D                           ; B1DC
+        lda     PlayerSlot + Obj::Health        ; B1DC
         adc     #$10                            ; B1DF
         bcc     L_B1E5                          ; B1E1
         lda     #$FF                            ; B1E3
-L_B1E5: sta     $040D                           ; B1E5
+L_B1E5: sta     PlayerSlot + Obj::Health        ; B1E5
         jmp     LC114                           ; B1E8
 
 ; ----------------------------------------------------------------------------
@@ -6139,7 +6139,7 @@ L_B2FA: jsr     LC1B3                           ; B2FA
         beq     L_B30F                          ; B306
         ldy     #$02                            ; B308
         lda     ($A3),y                         ; B30A
-        sta     $0400,x                         ; B30C
+        sta     ObjectTable + Obj::Type,x       ; B30C
 L_B30F: lda     #$14                            ; B30F
         sta     LoadedObj + Obj::Type           ; B311
         rts                                     ; B313
@@ -6180,13 +6180,13 @@ L_B366: jmp     L_B392                          ; B366
 ; ----------------------------------------------------------------------------
 L_B369: lda     #$04                            ; B369
         jsr     L_B2B4                          ; B36B
-        lda     $0402                           ; B36E
+        lda     PlayerSlot + Obj::Position_X_Lo ; B36E
         sta     LoadedObj + Obj::Position_X_Lo  ; B371
-        lda     $0403                           ; B373
+        lda     PlayerSlot + Obj::Position_X_Hi ; B373
         sta     LoadedObj + Obj::Position_X_Hi  ; B376
-        lda     $0404                           ; B378
+        lda     PlayerSlot + Obj::Position_Y_Lo ; B378
         sta     LoadedObj + Obj::Position_Y_Lo  ; B37B
-        lda     $0405                           ; B37D
+        lda     PlayerSlot + Obj::Position_Y_Hi ; B37D
         sta     LoadedObj + Obj::Position_Y_Hi  ; B380
         lda     #$00                            ; B382
         sta     LoadedObj + Obj::Facing         ; B384
@@ -6194,7 +6194,7 @@ L_B369: lda     #$04                            ; B369
         jsr     LC12F                           ; B388
         beq     L_B392                          ; B38B
         lda     #$80                            ; B38D
-        sta     $0401,x                         ; B38F
+        sta     ObjectTable + Obj::Facing,x     ; B38F
 L_B392: rts                                     ; B392
 
 ; ----------------------------------------------------------------------------
@@ -6205,7 +6205,7 @@ L_B396: lda     #$80                            ; B396
         sta     $42                             ; B398
         lda     #$80                            ; B39A
         sta     $43                             ; B39C
-        lda     $0400                           ; B39E
+        lda     PlayerSlot + Obj::Type          ; B39E
         cmp     #$03                            ; B3A1
         beq     L_B3A8                          ; B3A3
         jmp     LC14A                           ; B3A5
@@ -6282,7 +6282,7 @@ L_B41E: lda     #$04                            ; B41E
         sta     LoadedObj + Obj::Position_X_Lo  ; B436
         pla                                     ; B438
         sta     LoadedObj + Obj::Position_X_Hi  ; B439
-        lda     $0400                           ; B43B
+        lda     PlayerSlot + Obj::Type          ; B43B
         cmp     #$03                            ; B43E
         beq     L_B445                          ; B440
         jmp     LC114                           ; B442
@@ -6337,7 +6337,7 @@ L_B452: lda     #$80                            ; B452
         jsr     LC12F                           ; B49F
         beq     L_B4A9                          ; B4A2
         lda     #$58                            ; B4A4
-        sta     $0400,x                         ; B4A6
+        sta     ObjectTable + Obj::Type,x       ; B4A6
 L_B4A9: lda     #$10                            ; B4A9
         sta     $40                             ; B4AB
         lda     #$10                            ; B4AD
@@ -6398,32 +6398,32 @@ L_B4F1: lda     #$80                            ; B4F1
         beq     L_B54F                          ; B509
         stx     $05                             ; B50B
         lda     #$34                            ; B50D
-        sta     $0400,x                         ; B50F
+        sta     ObjectTable + Obj::Type,x       ; B50F
         lda     $1C                             ; B512
-        sta     $0402,x                         ; B514
+        sta     ObjectTable + Obj::Position_X_Lo,x ; B514
         lda     $1D                             ; B517
-        sta     $0403,x                         ; B519
+        sta     ObjectTable + Obj::Position_X_Hi,x ; B519
         jsr     LC1B3                           ; B51C
         bmi     L_B52C                          ; B51F
         lda     #$30                            ; B521
-        sta     $0406,x                         ; B523
-        inc     $0403,x                         ; B526
+        sta     ObjectTable + Obj::Velocity_X,x ; B523
+        inc     ObjectTable + Obj::Position_X_Hi,x ; B526
         jmp     L_B53A                          ; B529
 
 ; ----------------------------------------------------------------------------
 L_B52C: lda     #$D0                            ; B52C
-        sta     $0406,x                         ; B52E
-        lda     $0403,x                         ; B531
+        sta     ObjectTable + Obj::Velocity_X,x ; B52E
+        lda     ObjectTable + Obj::Position_X_Hi,x ; B531
         clc                                     ; B534
         adc     #$0F                            ; B535
-        sta     $0403,x                         ; B537
+        sta     ObjectTable + Obj::Position_X_Hi,x ; B537
 L_B53A: jsr     LC1B3                           ; B53A
         ldx     #$06                            ; B53D
         jsr     LC20A                           ; B53F
         clc                                     ; B542
         adc     LoadedObj + Obj::Position_Y_Hi  ; B543
         ldx     $05                             ; B545
-        sta     $0405,x                         ; B547
+        sta     ObjectTable + Obj::Position_Y_Hi,x ; B547
         lda     #$24                            ; B54A
         jsr     LC216                           ; B54C
 L_B54F: lda     #$10                            ; B54F
@@ -6497,9 +6497,9 @@ L_B5AA: jsr     LC1B3                           ; B5AA
         sta     LoadedObj + Obj::Position_Y_Lo  ; B5C3
         lda     #$00                            ; B5C5
         sta     LoadedObj + Obj::Velocity_X     ; B5C7
-        lda     $0402                           ; B5C9
+        lda     PlayerSlot + Obj::Position_X_Lo ; B5C9
         sta     LoadedObj + Obj::Position_X_Lo  ; B5CC
-        lda     $0403                           ; B5CE
+        lda     PlayerSlot + Obj::Position_X_Hi ; B5CE
         sta     LoadedObj + Obj::Position_X_Hi  ; B5D1
         jsr     LC1B3                           ; B5D3
         ldx     #$05                            ; B5D6
@@ -6541,7 +6541,7 @@ L_B60E: cmp     #$02                            ; B60E
         jsr     LC12F                           ; B612
         beq     L_B620                          ; B615
         lda     #$58                            ; B617
-        sta     $0400,x                         ; B619
+        sta     ObjectTable + Obj::Type,x       ; B619
         lda     #$08                            ; B61C
         sta     $52                             ; B61E
 L_B620: jsr     LC01E                           ; B620
@@ -6595,7 +6595,7 @@ L_B65E: lda     #$80                            ; B65E
 L_B672: jsr     LC12F                           ; B672
         beq     L_B680                          ; B675
         lda     #$4E                            ; B677
-        sta     $0400,x                         ; B679
+        sta     ObjectTable + Obj::Type,x       ; B679
         dec     $50                             ; B67C
         bpl     L_B672                          ; B67E
 L_B680: lda     #$10                            ; B680
@@ -6641,17 +6641,17 @@ L_B6B2: lda     #$80                            ; B6B2
         jsr     LC12F                           ; B6C0
         beq     L_B6E0                          ; B6C3
         lda     #$50                            ; B6C5
-        sta     $0400,x                         ; B6C7
+        sta     ObjectTable + Obj::Type,x       ; B6C7
         lda     Global_FrameCounter             ; B6CA
         and     #$20                            ; B6CC
         sta     $040A,x                         ; B6CE
         lda     LoadedObj + Obj::Position_Y_Lo  ; B6D1
         sec                                     ; B6D3
         sbc     #$40                            ; B6D4
-        sta     $0404,x                         ; B6D6
+        sta     ObjectTable + Obj::Position_Y_Lo,x ; B6D6
         lda     LoadedObj + Obj::Position_Y_Hi  ; B6D9
         sbc     #$00                            ; B6DB
-        sta     $0405,x                         ; B6DD
+        sta     ObjectTable + Obj::Position_Y_Hi,x ; B6DD
 L_B6E0: lda     #$10                            ; B6E0
         sta     $40                             ; B6E2
         lda     #$10                            ; B6E4
@@ -6836,12 +6836,12 @@ L_B80A: jsr     LC048                           ; B80A
         jsr     LC12F                           ; B815
         beq     L_B82C                          ; B818
         lda     #$52                            ; B81A
-        sta     $0400,x                         ; B81C
-        lda     $0406                           ; B81F
+        sta     ObjectTable + Obj::Type,x       ; B81C
+        lda     PlayerSlot + Obj::Velocity_X    ; B81F
         ldx     #$01                            ; B822
         jsr     LC20A                           ; B824
         ldx     $A5                             ; B827
-        sta     $0406,x                         ; B829
+        sta     ObjectTable + Obj::Velocity_X,x ; B829
 L_B82C: jsr     LC039                           ; B82C
 L_B82F: lda     #$10                            ; B82F
         sta     $40                             ; B831
@@ -7238,7 +7238,7 @@ L_BAF3: ldx     #$62                            ; BAF3
         jsr     LC1D7                           ; BAF9
         beq     L_BB03                          ; BAFC
         lda     #$2C                            ; BAFE
-        sta     $0400,x                         ; BB00
+        sta     ObjectTable + Obj::Type,x       ; BB00
 L_BB03: lda     #$10                            ; BB03
         sta     $40                             ; BB05
         lda     #$10                            ; BB07
@@ -7340,7 +7340,7 @@ L_BBA9: ldx     #$A8                            ; BBA9
         jsr     LC1D7                           ; BBAF
         beq     L_BBC1                          ; BBB2
         lda     #$48                            ; BBB4
-        sta     $0400,x                         ; BBB6
+        sta     ObjectTable + Obj::Type,x       ; BBB6
         jsr     LC0D8                           ; BBB9
         lda     #$1A                            ; BBBC
         jsr     LC216                           ; BBBE
@@ -7424,7 +7424,7 @@ L_BC32: pha                                     ; BC32
         txa                                     ; BC3E
         pha                                     ; BC3F
         lda     #$4A                            ; BC40
-        sta     $0400,x                         ; BC42
+        sta     ObjectTable + Obj::Type,x       ; BC42
         jsr     LC0D8                           ; BC45
         pla                                     ; BC48
         tax                                     ; BC49
@@ -7437,7 +7437,7 @@ L_BC32: pha                                     ; BC32
         sbc     #$10                            ; BC50
         clc                                     ; BC52
         adc     $04                             ; BC53
-        sta     $0401,x                         ; BC55
+        sta     ObjectTable + Obj::Facing,x     ; BC55
         pla                                     ; BC58
         sec                                     ; BC59
         sbc     #$01                            ; BC5A
@@ -7517,7 +7517,7 @@ L_BCC5: ldx     #$8C                            ; BCC5
         jsr     LC1D7                           ; BCCB
         beq     L_BCD8                          ; BCCE
         lda     #$4C                            ; BCD0
-        sta     $0400,x                         ; BCD2
+        sta     ObjectTable + Obj::Type,x       ; BCD2
         jmp     LC0D8                           ; BCD5
 
 ; ----------------------------------------------------------------------------
@@ -7690,7 +7690,7 @@ L_BDEA: lda     #$80                            ; BDEA
         jsr     LC12F                           ; BDF2
         beq     L_BE01                          ; BDF5
         lda     #$54                            ; BDF7
-        sta     $0400,x                         ; BDF9
+        sta     ObjectTable + Obj::Type,x       ; BDF9
         lda     $50                             ; BDFC
         sta     $040B,x                         ; BDFE
 L_BE01: clc                                     ; BE01
@@ -7866,7 +7866,7 @@ L_BEFB: lda     #$80                            ; BEFB
         jsr     LC12F                           ; BF48
         beq     L_BF52                          ; BF4B
         lda     #$58                            ; BF4D
-        sta     $0400,x                         ; BF4F
+        sta     ObjectTable + Obj::Type,x       ; BF4F
 L_BF52: lda     #$10                            ; BF52
         sta     $40                             ; BF54
         lda     #$10                            ; BF56
