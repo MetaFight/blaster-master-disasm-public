@@ -794,13 +794,29 @@ L_E152: lda     L0000                           ; E152
 
 .macro MAC_L_E1BD
 ; ----------------------------------------------------------------------------
-L_E1BD: lda     LoadedObj + Obj::Facing         ; E1BD
-        jsr     L_E1D2                          ; E1BF
+; Convert LoadedObj's Facing (heading) to a scaled Velocity vector
+; 
+; Input:
+;   LoadedObj.Facing = angle as 0-255 spanning a full circle
+;   Y = scale factor
+; 
+; Output:
+;   LoadedObj.Velocity_X = cos(LoadedObj.Facing) x scale
+;   LoadedObj.Velocity_Y = sin(LoadedObj.Facing) x scale
+Obj_AngleToVelocity:
+        lda     LoadedObj + Obj::Facing         ; E1BD
+; Look up cos(A)
+        jsr     Trig_CosByAngle                 ; E1BF
+; Scale by Y
         jsr     ScaleBySignedFrac               ; E1C2
+; Save into LoadedObj.Velocity_X
         sta     LoadedObj + Obj::Velocity_X     ; E1C5
         lda     LoadedObj + Obj::Facing         ; E1C7
-        jsr     L_E1D5                          ; E1C9
+; Look up sin(A)
+        jsr     Trig_SinByAngle                 ; E1C9
+; Scale by Y
         jsr     ScaleBySignedFrac               ; E1CC
+; Save into LoadedObj.Velocity_Y
         sta     LoadedObj + Obj::Velocity_Y     ; E1CF
         rts                                     ; E1D1
 

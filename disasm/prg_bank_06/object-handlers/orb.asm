@@ -9,7 +9,7 @@ L_AE7B: lda     #$0E                            ; AE7B
         and     #$80                            ; AE83
         sta     LoadedObj + Obj::Facing         ; AE85
         ldy     #$10                            ; AE87
-        jsr     LE1BD                           ; AE89
+        jsr     Obj_AngleToVelocity             ; AE89
         lda     #$00                            ; AE8C
         sta     $50                             ; AE8E
         lda     #$10                            ; AE90
@@ -21,9 +21,9 @@ L_AE95: jmp     L_AF03                          ; AE95
 
 ; ----------------------------------------------------------------------------
 L_AE98: lda     #$80                            ; AE98
-        sta     $42                             ; AE9A
+        sta     LoadedObj_CollisionBox_HalfWidth; AE9A
         lda     #$80                            ; AE9C
-        sta     $43                             ; AE9E
+        sta     LoadedObj_CollisionBox_HalfHeight; AE9E
         lda     $50                             ; AEA0
         bne     L_AEDC                          ; AEA2
         jsr     LD2DE                           ; AEA4
@@ -72,7 +72,7 @@ L_AEE6: jsr     LE07B                           ; AEE6
 L_AEFA: lda     #$00                            ; AEFA
         sta     $50                             ; AEFC
         ldy     #$10                            ; AEFE
-        jsr     LE1BD                           ; AF00
+        jsr     Obj_AngleToVelocity             ; AF00
 L_AF03: lda     #$10                            ; AF03
         sta     $40                             ; AF05
         lda     #$10                            ; AF07

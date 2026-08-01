@@ -20,9 +20,9 @@ L_B34F: jmp     L_B3AF                          ; B34F
 
 ; ----------------------------------------------------------------------------
 L_B352: lda     #$80                            ; B352
-        sta     $42                             ; B354
+        sta     LoadedObj_CollisionBox_HalfWidth; B354
         lda     #$C0                            ; B356
-        sta     $43                             ; B358
+        sta     LoadedObj_CollisionBox_HalfHeight; B358
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; B35A
         sta     LoadedObj + Obj::Velocity_X     ; B35D
         bpl     L_B366                          ; B35F

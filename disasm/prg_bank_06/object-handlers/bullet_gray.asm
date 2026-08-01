@@ -18,7 +18,7 @@ L_A4F1: lda     #$60                            ; A4F1
         lda     #$E0                            ; A4F5
         sta     LoadedObj + Obj::Facing         ; A4F7
 L_A4F9: ldy     #$10                            ; A4F9
-        jsr     LE1BD                           ; A4FB
+        jsr     Obj_AngleToVelocity             ; A4FB
         lda     #$00                            ; A4FE
         sta     $51                             ; A500
         sta     $52                             ; A502
@@ -47,7 +47,7 @@ L_A521: lda     #$60                            ; A521
         lda     #$60                            ; A525
         sta     LoadedObj + Obj::Facing         ; A527
 L_A529: ldy     #$10                            ; A529
-        jsr     LE1BD                           ; A52B
+        jsr     Obj_AngleToVelocity             ; A52B
         lda     #$00                            ; A52E
         sta     $51                             ; A530
         sta     $52                             ; A532
@@ -60,9 +60,9 @@ L_A53A: jmp     L_A580                          ; A53A
 
 ; ----------------------------------------------------------------------------
 L_A53D: lda     #$80                            ; A53D
-        sta     $42                             ; A53F
+        sta     LoadedObj_CollisionBox_HalfWidth; A53F
         lda     #$80                            ; A541
-        sta     $43                             ; A543
+        sta     LoadedObj_CollisionBox_HalfHeight; A543
         ldy     #$10                            ; A545
         jsr     L_A670                          ; A547
         jsr     LE107                           ; A54A
@@ -85,7 +85,7 @@ L_A564: lda     $50                             ; A564
         bne     L_A580                          ; A570
         stx     LoadedObj + Obj::Facing         ; A572
         ldy     #$40                            ; A574
-        jsr     LE1BD                           ; A576
+        jsr     Obj_AngleToVelocity             ; A576
         lda     #$10                            ; A579
         sta     $51                             ; A57B
         inc     LoadedObj + Obj::Type           ; A57D
@@ -139,9 +139,9 @@ L_A5C2: jmp     L_A605                          ; A5C2
 
 ; ----------------------------------------------------------------------------
 L_A5C5: lda     #$80                            ; A5C5
-        sta     $42                             ; A5C7
+        sta     LoadedObj_CollisionBox_HalfWidth; A5C7
         lda     #$80                            ; A5C9
-        sta     $43                             ; A5CB
+        sta     LoadedObj_CollisionBox_HalfHeight; A5CB
         lda     $51                             ; A5CD
         beq     L_A5DB                          ; A5CF
         lda     #$43                            ; A5D1
@@ -167,7 +167,7 @@ L_A5F2: clc                                     ; A5F2
         sta     LoadedObj + Obj::Facing         ; A5F5
         stx     $50                             ; A5F7
         ldy     #$10                            ; A5F9
-        jsr     LE1BD                           ; A5FB
+        jsr     Obj_AngleToVelocity             ; A5FB
         lda     #$00                            ; A5FE
         sta     $51                             ; A600
         dec     LoadedObj + Obj::Type           ; A602

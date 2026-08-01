@@ -76,7 +76,252 @@
 ; in Obj_SpawnChild_A0_Throttled ($DF36): [r] TBD
 ; in Obj_GravityMoveBounce_Double ($DFA0): [r] TBD
 ; in OAM_BlitFromStaging ($EC73): [r] TBD
-Global_FrameCounter            := $0011
+Global_FrameCounter               := $0011
+; Half-WIDTH of the active object's terrain-collision box, measured from the object's centre,
+; in the same 4.4 fixed-pixel units as LoadedObj_Position_X_Lo (so $80 = 8.0 px = a 16 px wide
+; box, $40 = 8 px wide, $C0 = 24 px wide). Set by the object's handler on entry, every frame.
+; Together with LoadedObj_CollisionBox_HalfHeight it defines one axis-aligned box centred on
+; the object. Both bytes are read ONLY by H_Collision_Check ($D37D) and V_Collision_Check
+; ($D3E1) — verified with `memrefs 0x42/0x43 --code-only`: of 115 references each, every
+; non-store one lies inside $D37D-$D443. So this is strictly terrain/tile collision; the
+; damage-collision system ($D6CD Collision_Detection_Sub, $D71F HitboxTest_LockOn) uses
+; $41/$44 instead.
+; Both routines read both bytes: H_Collision_Check uses this one for its own axis and the
+; half-height for its top/bottom cross-checks, and V_Collision_Check does the mirror — which
+; is why the byte belongs to an axis (X), not to a check.
+; Evidence it is a half-extent and not an offset: the edges are pos+this and pos-this
+; (symmetric, so it is a radius); and on a hit the routine snaps LoadedObj_Position_X_Lo to
+; +this or -this, which only lands the box EDGE on the tile boundary if this is the
+; centre-to-edge distance. The values are sprite dimensions — Jason on foot ($815C) $40/$80 =
+; 8x16, Sophia upright ($92DB) $C0/$80 = 24x16, the Hulk ($A76A) $80/$C0 = 16x24, and most
+; enemies $80/$80 = 16x16.
+; Full write-up: docs/misc/terrain-collision.md
+; Formerly named H_CollisionCheck_TileOffset_X; renamed 2026-07-27. The old name read as a
+; displacement from the tile being checked, which spawned three contradictory glosses across
+; banks 04/06 ("128x128 damage zone", "no terrain clipping", "animation amplitude" - $80 is
+; 8.0 px, not 128). Those were swept in the same pass.
+; in ObjHandler_Tank_1B_Jason ($815C): [w] TBD
+; in ObjHandler_Tank_1C_Jason_Death_Animation ($855F): [w] TBD
+; in ObjHandler_Tank_1D_Jason_Embarking ($8677): [w] TBD
+; in ObjHandler_Tank_2B_Jason_Shot_Main ($8850): [w] TBD
+; in ObjHandler_Ovhd_84_Jason_Room_Door_Enter ($8B96): [w] TBD
+; in ObjHandler_Ovhd_86_Jason_Room_Door_Exit ($8BFD): [w] TBD
+; in Player_Movement_Overhead_8C3B_Sub ($8C3B): [w] TBD
+; in ObjHandler_Tank_04_Sophia_DeathExplosion ($8C64): [w] TBD
+; in ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD
+; in ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [w] TBD
+; in ObjHandler_Ovhd_07_Jason_Shot_Gun_0123_Init_2 ($8F9F): [w] TBD
+; in ObjHandler_Ovhd_08_Jason_Shot_Gun_0123_Main ($8FC0): [w] TBD
+; in ObjHandler_Tank_05_Sophia_LeftWall ($9009): [w] TBD
+; in ObjHandler_Ovhd_0A_Jason_Curve_Shot_Gun_45_Init_2 ($903B): [w] TBD
+; in ObjHandler_Ovhd_0B_Jason_Curve_Shot_Gun_45_Main ($906F): [w] TBD
+; in ObjHandler_Ovhd_0D_Jason_Wave_Shot_Gun_6_Init_2 ($911A): [w] TBD
+; in ObjHandler_Tank_06_Sophia_RightWall ($916E): [w] TBD
+; in ObjHandler_Ovhd_10_Jason_Grenade_Main ($923C): [w] TBD
+; in ObjHandler_Tank_03_Sophia_Upright ($92DB): [w] TBD
+; in ObjHandler_Ovhd_13_Small_Explosion_Main ($9347): [w] TBD
+; in ObjHandler_Ovhd_5D_Area_4_Boss_Main ($970C): [w] TBD
+; in ObjHandler_Tank_14_Tank_Shot_Main ($9788): [w] TBD
+; in ObjHandler_Tank_16_Homing_Missile_Main ($98A8): [w] TBD
+; in ObjHandler_Ovhd_6C_Area_4_Boss_Triple_Shot_Main ($99AD): [w] TBD
+; in ObjHandler_Tank_18_Lightning_Main ($99F0): [w] TBD
+; in ObjHandler_Ovhd_6E_Area_7_Boss_Fire_Tongue_Attack_Main ($9A00): [w] TBD
+; in ObjHandler_Ovhd_70_Area_4_Boss_Tongue_Attack_Main ($9A8B): [w] TBD
+; in ObjHandler_Ovhd_72_Area_4_Boss_Aimed_Shot_Main ($9B14): [w] TBD
+; in Boss2_Movement_9B67_Sub ($9B67): [w] TBD
+; in Boss2_Projectiles_9E1D_Sub ($9E1D): [w] TBD
+; in ObjHandler_Tank_39_Big_Gray_Main ($9EE0): [w] TBD
+; in ObjHandler_Tank_3B_Red_Caterpillar_Bomb_Main ($9F5A): [w] TBD
+; in ObjHandler_Tank_3D_Small_Red_Main ($9FF9): [w] TBD
+; in DEAD_ObjHandler_Tank_3F_ScatterShot_Main ($A047): [w] TBD
+; in DEAD_ObjHandler_Tank_41_AimedShot_Main ($A0B6): [w] TBD
+; in ObjHandler_Tank_43_Red_Caterpillar_Shell_Main ($A122): [w] TBD
+; in ObjHandler_Tank_45_Mine_Shrapnel_Main ($A1AD): [w] TBD
+; in ObjHandler_Tank_47_Turret_Shot_Main ($A202): [w] TBD
+; in ObjHandler_Tank_49_Various_Main ($A24D): [w] TBD
+; in ObjHandler_Tank_55_Gray_Caterpillar_Main ($A40B): [w] TBD
+; in ObjHandler_Ovhd_7A_Area_3_Boss_Triple_Shot_Main ($A509): [w] TBD
+; in ObjHandler_Tank_59_Gray_Bullet_Main ($A53A): [w] TBD
+; in ObjHandler_Tank_5A_Gray_Bullet_Attacking ($A5C2): [w] TBD
+; in ObjHandler_Tank_5C_Red_Caterpillar_Dropper_Main ($A6E4): [w] TBD
+; in ObjHandler_Tank_5E_Hulk_Main ($A76A): [w] TBD
+; in ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking ($A7EE): [w] TBD
+; in ObjHandler_Common_61_Patrolling_Horizontally ($A86E): [w] TBD
+; in ObjHandler_Tank_63_Red_Caterpillar_Main ($A8FB): [w] TBD
+; in ObjHandler_Tank_65_Mine_Main ($A9DE): [w] TBD
+; in ObjHandler_Tank_67_Turret_Main ($AA6C): [w] TBD
+; in ObjHandler_Tank_69_Bomber_Rock_Main ($AB24): [w] TBD
+; in ObjHandler_Ovhd_81_Area_8_Boss_Phase1_Egg_Shot_Main ($ABE7): [w] TBD
+; in ObjHandler_Tank_6B_Flying_Ship_Main ($ABEC): [w] TBD
+; in ObjHandler_Tank_6D_Flying_Bomber_Main ($AC63): [w] TBD
+; in ObjHandler_Tank_6F_Swooping_Sphere_Main ($AD08): [w] TBD
+; in ObjHandler_Tank_71_Bee_Main ($ADFF): [w] TBD
+; in ObjHandler_Tank_73_Orb_Main ($AE95): [w] TBD
+; in ObjHandler_Tank_75_Flying_Red_Caterpillar_Bomber ($AF61): [w] TBD
+; in ObjHandler_Ovhd_4F_Spinner_Shot_Main ($AF67): [w] TBD
+; in ObjHandler_Ovhd_51_Cross_Shooter_Shot_Main ($AFF6): [w] TBD
+; in ObjHandler_Tank_77_Shooter_Main ($B013): [w] TBD
+; in ObjHandler_Ovhd_53_Slider_Laser_Main ($B041): [w] TBD
+; in ObjHandler_Ovhd_55_Spitter_Shot_Main ($B08B): [w] TBD
+; in ObjHandler_Tank_79_Kamikaze_Orb_Main ($B095): [w] TBD
+; in ObjHandler_Ovhd_57_Th2C_Shot_Main ($B0CC): [w] TBD
+; in ObjHandler_Ovhd_59_Gray_Gumdrop_Shot_Main ($B132): [w] TBD
+; in ObjHandler_Ovhd_17_ECanister1_Main ($B173): [w] TBD
+; in ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling ($B18F): [w] TBD
+; in ObjHandler_Ovhd_19_ECanister2_Main ($B1AB): [w] TBD
+; in ObjHandler_Tank_4F_Red_Flier_Spawner_Main ($B20C): [w] TBD
+; in ObjHandler_Tank_7C_Red_Flier ($B250): [w] TBD
+; in ObjHandler_Tank_51_Gray_Flier_Spawner_Main ($B2A8): [w] TBD
+; in ObjHandler_Tank_7D_Gray_Flier_Main ($B2EC): [w] TBD
+; in ObjHandler_Tank_7F_Bomb_Lobbing_Hand_Main ($B34F): [w] TBD
+; in ObjHandler_Ovhd_2F_Rotating_Camera_Main ($B393): [w] TBD
+; in ObjHandler_Tank_81_Jellyfish_Main ($B3FE): [w] TBD
+; in ObjHandler_Ovhd_31_Gray_Gumdrop_Main ($B44F): [w] TBD
+; in ObjHandler_Tank_83_Scuba_Steve_Main ($B4A3): [w] TBD
+; in ObjHandler_Ovhd_33_Flier_Spawner_Main ($B4EE): [w] TBD
+; in ObjHandler_Tank_84_Scuba_Steve_Dead ($B53A): [w] TBD
+; in ObjHandler_Ovhd_34_Flier_Main ($B560): [w] TBD
+; in ObjHandler_Tank_86_Running_Shell_Main ($B58B): [w] TBD
+; in ObjHandler_Ovhd_36_Charging_Robot_Main ($B5F0): [w] TBD
+; in ObjHandler_Tank_53_Submersible_Spawner_Main ($B63C): [w] TBD
+; in ObjHandler_Ovhd_38_Spinner_Main ($B65B): [w] TBD
+; in ObjHandler_Tank_87_Submersible_Main ($B680): [w] TBD
+; in ObjHandler_Ovhd_3A_Cross_Shooter_Main ($B6AF): [w] TBD
+; in ObjHandler_Tank_89_Crescent_Roller_Main ($B6F4): [w] TBD
+; in ObjHandler_Ovhd_3C_Vertical_Camera_Main ($B719): [w] TBD
+; in ObjHandler_Ovhd_3E_Horizontal_Camera_Main ($B78F): [w] TBD
+; in ObjHandler_Ovhd_40_Slider_Main ($B7F6): [w] TBD
+; in ObjHandler_Tank_8B_Bomb_Canister_Main ($B843): [w] TBD
+; in ObjHandler_Ovhd_25_Robot_Main ($B866): [w] TBD
+; in ObjHandler_Ovhd_27_Eye_Main ($B931): [w] TBD
+; in ObjHandler_Tank_8E_Red_Bullet_Main ($B97A): [w] TBD
+; in ObjHandler_Tank_8F_Red_Bullet_Locked ($BA00): [w] TBD
+; in ObjHandler_Ovhd_2A_Robed_Skeleton_Teleport ($BA47): [w] TBD
+; in ObjHandler_Ovhd_2D_Eye_Spawner_Main ($BB75): [w] TBD
+; in ObjHandler_Ovhd_49_Robot_Shot_Main ($BBE8): [w] TBD
+; in ObjHandler_Ovhd_4B_Unknown_Shot_Main ($BC84): [w] TBD
+; in ObjHandler_Ovhd_4D_Aimed_Shot_Main ($BD09): [w] TBD
+; in ObjHandler_Ovhd_42_Spitter_Main ($BD69): [w] TBD
+; in ObjHandler_Ovhd_43_Spitter_Attacking ($BDE7): [w] TBD
+; in ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [w] TBD
+; in ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [w] TBD
+; in H_Collision_Check ($D37D): [r] TBD
+; in V_Collision_Check ($D3E1): [r] TBD
+LoadedObj_CollisionBox_HalfWidth  := $0042
+; Half-HEIGHT of the active object's terrain-collision box, measured from the object's centre,
+; in the same 4.4 fixed-pixel units as LoadedObj_Position_Y_Lo (so $80 = 8.0 px = a 16 px tall
+; box, $40 = 8 px tall, $C0 = 24 px tall). Set by the object's handler on entry, every frame.
+; The Y half of the box whose X half is LoadedObj_CollisionBox_HalfWidth — see that label for
+; the full derivation, the evidence, and the read-site proof.
+; Full write-up: docs/misc/terrain-collision.md
+; in ObjHandler_Tank_1B_Jason ($815C): [w] TBD
+; in ObjHandler_Tank_1C_Jason_Death_Animation ($855F): [w] TBD
+; in ObjHandler_Tank_1D_Jason_Embarking ($8677): [w] TBD
+; in ObjHandler_Tank_2B_Jason_Shot_Main ($8850): [w] TBD
+; in ObjHandler_Ovhd_84_Jason_Room_Door_Enter ($8B96): [w] TBD
+; in ObjHandler_Ovhd_86_Jason_Room_Door_Exit ($8BFD): [w] TBD
+; in Player_Movement_Overhead_8C3B_Sub ($8C3B): [w] TBD
+; in ObjHandler_Tank_04_Sophia_DeathExplosion ($8C64): [w] TBD
+; in ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD
+; in ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [w] TBD
+; in ObjHandler_Ovhd_07_Jason_Shot_Gun_0123_Init_2 ($8F9F): [w] TBD
+; in ObjHandler_Ovhd_08_Jason_Shot_Gun_0123_Main ($8FC0): [w] TBD
+; in ObjHandler_Tank_05_Sophia_LeftWall ($9009): [w] TBD
+; in ObjHandler_Ovhd_0A_Jason_Curve_Shot_Gun_45_Init_2 ($903B): [w] TBD
+; in ObjHandler_Ovhd_0B_Jason_Curve_Shot_Gun_45_Main ($906F): [w] TBD
+; in ObjHandler_Ovhd_0D_Jason_Wave_Shot_Gun_6_Init_2 ($911A): [w] TBD
+; in ObjHandler_Tank_06_Sophia_RightWall ($916E): [w] TBD
+; in ObjHandler_Ovhd_10_Jason_Grenade_Main ($923C): [w] TBD
+; in ObjHandler_Tank_03_Sophia_Upright ($92DB): [w] TBD
+; in ObjHandler_Ovhd_13_Small_Explosion_Main ($9347): [w] TBD
+; in ObjHandler_Ovhd_5D_Area_4_Boss_Main ($970C): [w] TBD
+; in ObjHandler_Tank_14_Tank_Shot_Main ($9788): [w] TBD
+; in ObjHandler_Tank_16_Homing_Missile_Main ($98A8): [w] TBD
+; in ObjHandler_Ovhd_6C_Area_4_Boss_Triple_Shot_Main ($99AD): [w] TBD
+; in ObjHandler_Tank_18_Lightning_Main ($99F0): [w] TBD
+; in ObjHandler_Ovhd_6E_Area_7_Boss_Fire_Tongue_Attack_Main ($9A00): [w] TBD
+; in ObjHandler_Ovhd_70_Area_4_Boss_Tongue_Attack_Main ($9A8B): [w] TBD
+; in ObjHandler_Ovhd_72_Area_4_Boss_Aimed_Shot_Main ($9B14): [w] TBD
+; in Boss2_Movement_9B67_Sub ($9B67): [w] TBD
+; in Boss2_Projectiles_9E1D_Sub ($9E1D): [w] TBD
+; in ObjHandler_Tank_39_Big_Gray_Main ($9EE0): [w] TBD
+; in ObjHandler_Tank_3B_Red_Caterpillar_Bomb_Main ($9F5A): [w] TBD
+; in ObjHandler_Tank_3D_Small_Red_Main ($9FF9): [w] TBD
+; in DEAD_ObjHandler_Tank_3F_ScatterShot_Main ($A047): [w] TBD
+; in DEAD_ObjHandler_Tank_41_AimedShot_Main ($A0B6): [w] TBD
+; in ObjHandler_Tank_43_Red_Caterpillar_Shell_Main ($A122): [w] TBD
+; in ObjHandler_Tank_45_Mine_Shrapnel_Main ($A1AD): [w] TBD
+; in ObjHandler_Tank_47_Turret_Shot_Main ($A202): [w] TBD
+; in ObjHandler_Tank_49_Various_Main ($A24D): [w] TBD
+; in ObjHandler_Tank_55_Gray_Caterpillar_Main ($A40B): [w] TBD
+; in ObjHandler_Ovhd_7A_Area_3_Boss_Triple_Shot_Main ($A509): [w] TBD
+; in ObjHandler_Tank_59_Gray_Bullet_Main ($A53A): [w] TBD
+; in ObjHandler_Tank_5A_Gray_Bullet_Attacking ($A5C2): [w] TBD
+; in ObjHandler_Tank_5C_Red_Caterpillar_Dropper_Main ($A6E4): [w] TBD
+; in ObjHandler_Tank_5E_Hulk_Main ($A76A): [w] TBD
+; in ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking ($A7EE): [w] TBD
+; in ObjHandler_Common_61_Patrolling_Horizontally ($A86E): [w] TBD
+; in ObjHandler_Tank_63_Red_Caterpillar_Main ($A8FB): [w] TBD
+; in ObjHandler_Tank_65_Mine_Main ($A9DE): [w] TBD
+; in ObjHandler_Tank_67_Turret_Main ($AA6C): [w] TBD
+; in ObjHandler_Tank_69_Bomber_Rock_Main ($AB24): [w] TBD
+; in ObjHandler_Ovhd_81_Area_8_Boss_Phase1_Egg_Shot_Main ($ABE7): [w] TBD
+; in ObjHandler_Tank_6B_Flying_Ship_Main ($ABEC): [w] TBD
+; in ObjHandler_Tank_6D_Flying_Bomber_Main ($AC63): [w] TBD
+; in ObjHandler_Tank_6F_Swooping_Sphere_Main ($AD08): [w] TBD
+; in ObjHandler_Tank_71_Bee_Main ($ADFF): [w] TBD
+; in ObjHandler_Tank_73_Orb_Main ($AE95): [w] TBD
+; in ObjHandler_Tank_75_Flying_Red_Caterpillar_Bomber ($AF61): [w] TBD
+; in ObjHandler_Ovhd_4F_Spinner_Shot_Main ($AF67): [w] TBD
+; in ObjHandler_Ovhd_51_Cross_Shooter_Shot_Main ($AFF6): [w] TBD
+; in ObjHandler_Tank_77_Shooter_Main ($B013): [w] TBD
+; in ObjHandler_Ovhd_53_Slider_Laser_Main ($B041): [w] TBD
+; in ObjHandler_Ovhd_55_Spitter_Shot_Main ($B08B): [w] TBD
+; in ObjHandler_Tank_79_Kamikaze_Orb_Main ($B095): [w] TBD
+; in ObjHandler_Ovhd_57_Th2C_Shot_Main ($B0CC): [w] TBD
+; in ObjHandler_Ovhd_59_Gray_Gumdrop_Shot_Main ($B132): [w] TBD
+; in ObjHandler_Ovhd_17_ECanister1_Main ($B173): [w] TBD
+; in ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling ($B18F): [w] TBD
+; in ObjHandler_Ovhd_19_ECanister2_Main ($B1AB): [w] TBD
+; in ObjHandler_Tank_4F_Red_Flier_Spawner_Main ($B20C): [w] TBD
+; in ObjHandler_Tank_7C_Red_Flier ($B250): [w] TBD
+; in ObjHandler_Tank_51_Gray_Flier_Spawner_Main ($B2A8): [w] TBD
+; in ObjHandler_Tank_7D_Gray_Flier_Main ($B2EC): [w] TBD
+; in ObjHandler_Tank_7F_Bomb_Lobbing_Hand_Main ($B34F): [w] TBD
+; in ObjHandler_Ovhd_2F_Rotating_Camera_Main ($B393): [w] TBD
+; in ObjHandler_Tank_81_Jellyfish_Main ($B3FE): [w] TBD
+; in ObjHandler_Ovhd_31_Gray_Gumdrop_Main ($B44F): [w] TBD
+; in ObjHandler_Tank_83_Scuba_Steve_Main ($B4A3): [w] TBD
+; in ObjHandler_Ovhd_33_Flier_Spawner_Main ($B4EE): [w] TBD
+; in ObjHandler_Tank_84_Scuba_Steve_Dead ($B53A): [w] TBD
+; in ObjHandler_Ovhd_34_Flier_Main ($B560): [w] TBD
+; in ObjHandler_Tank_86_Running_Shell_Main ($B58B): [w] TBD
+; in ObjHandler_Ovhd_36_Charging_Robot_Main ($B5F0): [w] TBD
+; in ObjHandler_Tank_53_Submersible_Spawner_Main ($B63C): [w] TBD
+; in ObjHandler_Ovhd_38_Spinner_Main ($B65B): [w] TBD
+; in ObjHandler_Tank_87_Submersible_Main ($B680): [w] TBD
+; in ObjHandler_Ovhd_3A_Cross_Shooter_Main ($B6AF): [w] TBD
+; in ObjHandler_Tank_89_Crescent_Roller_Main ($B6F4): [w] TBD
+; in ObjHandler_Ovhd_3C_Vertical_Camera_Main ($B719): [w] TBD
+; in ObjHandler_Ovhd_3E_Horizontal_Camera_Main ($B78F): [w] TBD
+; in ObjHandler_Ovhd_40_Slider_Main ($B7F6): [w] TBD
+; in ObjHandler_Tank_8B_Bomb_Canister_Main ($B843): [w] TBD
+; in ObjHandler_Ovhd_25_Robot_Main ($B866): [w] TBD
+; in ObjHandler_Ovhd_27_Eye_Main ($B931): [w] TBD
+; in ObjHandler_Tank_8E_Red_Bullet_Main ($B97A): [w] TBD
+; in ObjHandler_Tank_8F_Red_Bullet_Locked ($BA00): [w] TBD
+; in ObjHandler_Ovhd_2A_Robed_Skeleton_Teleport ($BA47): [w] TBD
+; in ObjHandler_Ovhd_2D_Eye_Spawner_Main ($BB75): [w] TBD
+; in ObjHandler_Ovhd_49_Robot_Shot_Main ($BBE8): [w] TBD
+; in ObjHandler_Ovhd_4B_Unknown_Shot_Main ($BC84): [w] TBD
+; in ObjHandler_Ovhd_4D_Aimed_Shot_Main ($BD09): [w] TBD
+; in ObjHandler_Ovhd_42_Spitter_Main ($BD69): [w] TBD
+; in ObjHandler_Ovhd_43_Spitter_Attacking ($BDE7): [w] TBD
+; in ObjHandler_Ovhd_45_Zombie_Head_Main ($BE61): [w] TBD
+; in ObjHandler_Ovhd_47_Red_Gumdrop_Main ($BEF8): [w] TBD
+; in H_Collision_Check ($D37D): [r] TBD
+; in V_Collision_Check ($D3E1): [r] TBD
+LoadedObj_CollisionBox_HalfHeight := $0043
 ; Obj: The 14-byte record every active object occupies. 18 are packed at $0400 (the object
 ; table); slot 0 is the player.
 .struct Obj
@@ -104,10 +349,10 @@ Global_FrameCounter            := $0011
 ; an array of these, and OAM_BlitFromStaging ($EC73) copies whole records straight into the
 ; $0200 OAM shadow, which the NMI DMAs to $2004 via $4014.
 .struct OamEntry
-        Y    .byte   ; +$00 (byte)  Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
-        Tile .byte   ; +$01 (byte)  Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
-        Attr .byte   ; +$02 (byte)  Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
-        X    .byte   ; +$03 (byte)  Screen X, left edge.
+        ScreenY .byte   ; +$00 (byte)  Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
+        Tile    .byte   ; +$01 (byte)  Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
+        Attr    .byte   ; +$02 (byte)  Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
+        ScreenX .byte   ; +$03 (byte)  Screen X, left edge.
 .endstruct
 ; The 14-byte zero-page working copy of the currently active object slot — the same Obj layout
 ; as the $0400 object table. Before each AI dispatch, ObjSlot_Load ($C8DF) copies the active
@@ -179,9 +424,9 @@ SpriteStagingBuf_Sprite2 := $0608   ; element 2
 SpriteStagingBuf_Sprite3 := $060C   ; element 3
 
 ; Byte offset of the active slot
-ObjectSlot_Offset              := $0056
+ObjectSlot_Offset                 := $0056
 ; Index of the active slot
-ObjectSlot_Index               := $0057
+ObjectSlot_Index                  := $0057
 ; Counter for Sophia's "look up" animation.
 ; 0x00 is not started
 ; 0x0C is completed (looking straight up)
@@ -194,9 +439,9 @@ ObjectSlot_Index               := $0057
 ; in Get_Next_Tile_Call ($907B): [r] TBD
 ; in ObjHandler_Tank_06_Sophia_RightWall ($916E): [r] TBD
 ; in RenderWeaponSprite ($950D): [r] TBD
-Sophia_LookUpAnimation_Counter := $0094
+Sophia_LookUpAnimation_Counter    := $0094
 ; Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.
 ; bit 7 set means a collision happened to the left or right.
 ; bit 6 set means a collision happened above or below.
 ; The value of LoadedObj's velocity is used to disambiguate the collision side.
-TerrainCollisionFlags          := $009A
+TerrainCollisionFlags             := $009A

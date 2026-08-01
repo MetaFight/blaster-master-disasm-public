@@ -22,9 +22,9 @@ L_ABEC: jmp     L_AC10                          ; ABEC
 
 ; ----------------------------------------------------------------------------
 L_ABEF: lda     #$80                            ; ABEF
-        sta     $42                             ; ABF1
+        sta     LoadedObj_CollisionBox_HalfWidth; ABF1
         lda     #$80                            ; ABF3
-        sta     $43                             ; ABF5
+        sta     LoadedObj_CollisionBox_HalfHeight; ABF5
         jsr     LDF68                           ; ABF7
         lda     Global_FrameCounter             ; ABFA
         and     #$4F                            ; ABFC

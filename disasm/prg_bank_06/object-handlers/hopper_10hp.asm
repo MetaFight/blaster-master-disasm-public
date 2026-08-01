@@ -26,9 +26,9 @@ L_B18F: jmp     L_B1AB                          ; B18F
 
 ; ----------------------------------------------------------------------------
 L_B192: lda     #$80                            ; B192
-        sta     $42                             ; B194
+        sta     LoadedObj_CollisionBox_HalfWidth; B194
         lda     #$C0                            ; B196
-        sta     $43                             ; B198
+        sta     LoadedObj_CollisionBox_HalfHeight; B198
         lda     $50                             ; B19A
         bne     L_B1A5                          ; B19C
         jsr     LE005                           ; B19E

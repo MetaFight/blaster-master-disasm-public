@@ -17,7 +17,7 @@ L_C267: sta     L0000,x                         ; C267
         sta     $0300,x                         ; C26F
         sta     ObjectTable + Obj::Type,x       ; C272
         sta     $0500,x                         ; C275
-        sta     SpriteStagingBuf + OamEntry::Y,x ; C278
+        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; C278
         sta     $0700,x                         ; C27B
         inx                                     ; C27E
         bne     L_C267                          ; C27F

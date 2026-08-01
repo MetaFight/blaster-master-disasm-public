@@ -25,9 +25,9 @@ L_A76A: jmp     L_A79E                          ; A76A
 
 ; ----------------------------------------------------------------------------
 L_A76D: lda     #$80                            ; A76D
-        sta     $42                             ; A76F
+        sta     LoadedObj_CollisionBox_HalfWidth; A76F
         lda     #$C0                            ; A771
-        sta     $43                             ; A773
+        sta     LoadedObj_CollisionBox_HalfHeight; A773
         lda     $50                             ; A775
         bne     L_A780                          ; A777
         jsr     LE005                           ; A779

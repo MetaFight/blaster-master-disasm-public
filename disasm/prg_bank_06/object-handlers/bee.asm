@@ -21,9 +21,9 @@ L_ADFF: jmp     L_AE49                          ; ADFF
 
 ; ----------------------------------------------------------------------------
 L_AE02: lda     #$80                            ; AE02
-        sta     $42                             ; AE04
+        sta     LoadedObj_CollisionBox_HalfWidth; AE04
         lda     #$80                            ; AE06
-        sta     $43                             ; AE08
+        sta     LoadedObj_CollisionBox_HalfHeight; AE08
         lda     $50                             ; AE0A
         bne     L_AE2F                          ; AE0C
         lda     Global_FrameCounter             ; AE0E
@@ -38,7 +38,7 @@ L_AE21: dec     $51                             ; AE21
         bne     L_AE49                          ; AE23
         inc     $50                             ; AE25
         ldy     #$1D                            ; AE27
-        jsr     LE1BD                           ; AE29
+        jsr     Obj_AngleToVelocity             ; AE29
         jmp     L_AE49                          ; AE2C
 
 ; ----------------------------------------------------------------------------

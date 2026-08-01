@@ -17,9 +17,9 @@ L_A9DE: jmp     L_AA03                          ; A9DE
 
 ; ----------------------------------------------------------------------------
 L_A9E1: lda     #$80                            ; A9E1
-        sta     $42                             ; A9E3
+        sta     LoadedObj_CollisionBox_HalfWidth; A9E3
         lda     #$80                            ; A9E5
-        sta     $43                             ; A9E7
+        sta     LoadedObj_CollisionBox_HalfHeight; A9E7
         lda     $50                             ; A9E9
         beq     L_A9FA                          ; A9EB
         jsr     LE005                           ; A9ED

@@ -19,9 +19,9 @@ L_9788: jmp     L_97C6                          ; 9788
 
 ; ----------------------------------------------------------------------------
 L_978B: lda     #$80                            ; 978B
-        sta     $42                             ; 978D
+        sta     LoadedObj_CollisionBox_HalfWidth; 978D
         lda     #$80                            ; 978F
-        sta     $43                             ; 9791
+        sta     LoadedObj_CollisionBox_HalfHeight; 9791
         lda     $B9                             ; 9793
         cmp     #$03                            ; 9795
         bcs     L_979F                          ; 9797
@@ -125,9 +125,9 @@ L_98A8: jmp     L_9919                          ; 98A8
 
 ; ----------------------------------------------------------------------------
 L_98AB: lda     #$80                            ; 98AB
-        sta     $42                             ; 98AD
+        sta     LoadedObj_CollisionBox_HalfWidth; 98AD
         lda     #$80                            ; 98AF
-        sta     $43                             ; 98B1
+        sta     LoadedObj_CollisionBox_HalfHeight; 98B1
         dec     $51                             ; 98B3
         bne     L_98BD                          ; 98B5
         jsr     LD790                           ; 98B7
@@ -281,9 +281,9 @@ L_99F0: jmp     L_9A0E                          ; 99F0
 
 ; ----------------------------------------------------------------------------
 L_99F3: lda     #$80                            ; 99F3
-        sta     $42                             ; 99F5
+        sta     LoadedObj_CollisionBox_HalfWidth; 99F5
         lda     #$80                            ; 99F7
-        sta     $43                             ; 99F9
+        sta     LoadedObj_CollisionBox_HalfHeight; 99F9
         lda     $10                             ; 99FB
         and     #$01                            ; 99FD
         bne     L_9A0E                          ; 99FF
@@ -465,7 +465,7 @@ L_9EA7: lda     $9D                             ; 9EA7
         lda     #$70                            ; 9EAB
         sta     $51                             ; 9EAD
         ldy     $9E                             ; 9EAF
-        jsr     LE1BD                           ; 9EB1
+        jsr     Obj_AngleToVelocity             ; 9EB1
         jsr     LD2B9                           ; 9EB4
         lda     #$39                            ; 9EB7
         sta     LoadedObj + Obj::Type           ; 9EB9
@@ -484,7 +484,7 @@ L_9EC2: jsr     Step_RNG                           ; 9EC2
         lda     #$70                            ; 9ECC
         sta     $51                             ; 9ECE
         ldy     #$28                            ; 9ED0
-        jsr     LE1BD                           ; 9ED2
+        jsr     Obj_AngleToVelocity             ; 9ED2
         jsr     LD2B9                           ; 9ED5
         inc     LoadedObj + Obj::Type           ; 9ED8
         lda     #$25                            ; 9EDA
@@ -496,9 +496,9 @@ L_9EE0: jmp     L_9F05                          ; 9EE0
 
 ; ----------------------------------------------------------------------------
 L_9EE3: lda     #$80                            ; 9EE3
-        sta     $42                             ; 9EE5
+        sta     LoadedObj_CollisionBox_HalfWidth; 9EE5
         lda     #$80                            ; 9EE7
-        sta     $43                             ; 9EE9
+        sta     LoadedObj_CollisionBox_HalfHeight; 9EE9
         lda     #$02                            ; 9EEB
         jsr     Obj_GravityMoveBounce_Double    ; 9EED
         dec     $51                             ; 9EF0
@@ -507,9 +507,9 @@ L_9EE3: lda     #$80                            ; 9EE3
         cmp     #$01                            ; 9EF6
         bne     L_9F05                          ; 9EF8
         lda     #$80                            ; 9EFA
-        sta     $42                             ; 9EFC
+        sta     LoadedObj_CollisionBox_HalfWidth; 9EFC
         lda     #$80                            ; 9EFE
-        sta     $43                             ; 9F00
+        sta     LoadedObj_CollisionBox_HalfHeight; 9F00
         jmp     L_9F0D                          ; 9F02
 
 ; ----------------------------------------------------------------------------
@@ -553,7 +553,7 @@ L_9F3C: jsr     Step_RNG                           ; 9F3C
         lda     #$50                            ; 9F46
         sta     $51                             ; 9F48
         ldy     #$18                            ; 9F4A
-        jsr     LE1BD                           ; 9F4C
+        jsr     Obj_AngleToVelocity             ; 9F4C
         jsr     LD2B9                           ; 9F4F
         inc     LoadedObj + Obj::Type           ; 9F52
         lda     #$25                            ; 9F54
@@ -565,9 +565,9 @@ L_9F5A: jmp     L_9F7F                          ; 9F5A
 
 ; ----------------------------------------------------------------------------
 L_9F5D: lda     #$80                            ; 9F5D
-        sta     $42                             ; 9F5F
+        sta     LoadedObj_CollisionBox_HalfWidth; 9F5F
         lda     #$80                            ; 9F61
-        sta     $43                             ; 9F63
+        sta     LoadedObj_CollisionBox_HalfHeight; 9F63
         lda     #$02                            ; 9F65
         jsr     Obj_GravityMoveBounce_Double    ; 9F67
         dec     $51                             ; 9F6A
@@ -576,9 +576,9 @@ L_9F5D: lda     #$80                            ; 9F5D
         cmp     #$01                            ; 9F70
         bne     L_9F7F                          ; 9F72
         lda     #$80                            ; 9F74
-        sta     $42                             ; 9F76
+        sta     LoadedObj_CollisionBox_HalfWidth; 9F76
         lda     #$80                            ; 9F78
-        sta     $43                             ; 9F7A
+        sta     LoadedObj_CollisionBox_HalfHeight; 9F7A
         jmp     L_9F87                          ; 9F7C
 
 ; ----------------------------------------------------------------------------
@@ -655,9 +655,9 @@ L_9FF9: jmp     L_A009                          ; 9FF9
 
 ; ----------------------------------------------------------------------------
 L_9FFC: lda     #$40                            ; 9FFC
-        sta     $42                             ; 9FFE
+        sta     LoadedObj_CollisionBox_HalfWidth; 9FFE
         lda     #$40                            ; A000
-        sta     $43                             ; A002
+        sta     LoadedObj_CollisionBox_HalfHeight; A002
         jsr     LE083                           ; A004
         bne     L_A029                          ; A007
 L_A009: lda     #$08                            ; A009
@@ -702,9 +702,9 @@ L_A047: jmp     L_A063                          ; A047
 
 ; ----------------------------------------------------------------------------
 L_A04A: lda     #$40                            ; A04A
-        sta     $42                             ; A04C
+        sta     LoadedObj_CollisionBox_HalfWidth; A04C
         lda     #$40                            ; A04E
-        sta     $43                             ; A050
+        sta     LoadedObj_CollisionBox_HalfHeight; A050
         lda     #$02                            ; A052
         jsr     Obj_GravityMoveBounce_Double    ; A054
         bne     L_A083                          ; A057
@@ -754,7 +754,7 @@ L_A097: cmp     #$10                            ; A097
         bpl     L_A0AB                          ; A0A6
         jsr     LE0D8                           ; A0A8
 L_A0AB: ldy     #$30                            ; A0AB
-        jsr     LE1BD                           ; A0AD
+        jsr     Obj_AngleToVelocity             ; A0AD
         inc     LoadedObj + Obj::Type           ; A0B0
         jsr     L_9E9E                          ; A0B2
 L_A0B5: rts                                     ; A0B5
@@ -764,9 +764,9 @@ L_A0B6: jmp     L_A0C8                          ; A0B6
 
 ; ----------------------------------------------------------------------------
 L_A0B9: lda     #$40                            ; A0B9
-        sta     $42                             ; A0BB
+        sta     LoadedObj_CollisionBox_HalfWidth; A0BB
         lda     #$40                            ; A0BD
-        sta     $43                             ; A0BF
+        sta     LoadedObj_CollisionBox_HalfHeight; A0BF
         lda     #$02                            ; A0C1
         jsr     Obj_GravityMoveBounce_Double    ; A0C3
         bne     L_A0E5                          ; A0C6
@@ -822,9 +822,9 @@ L_A122: jmp     L_A13D                          ; A122
 
 ; ----------------------------------------------------------------------------
 L_A125: lda     #$80                            ; A125
-        sta     $42                             ; A127
+        sta     LoadedObj_CollisionBox_HalfWidth; A127
         lda     #$80                            ; A129
-        sta     $43                             ; A12B
+        sta     LoadedObj_CollisionBox_HalfHeight; A12B
         lda     $51                             ; A12D
         beq     L_A136                          ; A12F
         dec     $51                             ; A131
@@ -890,7 +890,7 @@ L_A194: jsr     Step_RNG                           ; A194
         lda     #$40                            ; A19E
         sta     $51                             ; A1A0
         ldy     #$20                            ; A1A2
-        jsr     LE1BD                           ; A1A4
+        jsr     Obj_AngleToVelocity             ; A1A4
         jsr     LD2B9                           ; A1A7
         inc     LoadedObj + Obj::Type           ; A1AA
 L_A1AC: rts                                     ; A1AC
@@ -900,9 +900,9 @@ L_A1AD: jmp     L_A1CC                          ; A1AD
 
 ; ----------------------------------------------------------------------------
 L_A1B0: lda     #$80                            ; A1B0
-        sta     $42                             ; A1B2
+        sta     LoadedObj_CollisionBox_HalfWidth; A1B2
         lda     #$80                            ; A1B4
-        sta     $43                             ; A1B6
+        sta     LoadedObj_CollisionBox_HalfHeight; A1B6
         dec     $51                             ; A1B8
         bne     L_A1BF                          ; A1BA
         jmp     LD81C                           ; A1BC
@@ -937,7 +937,7 @@ L_A1F1: jmp     L_A201                          ; A1F1
 
 ; ----------------------------------------------------------------------------
 L_A1F4: ldy     $51                             ; A1F4
-        jsr     LE1BD                           ; A1F6
+        jsr     Obj_AngleToVelocity             ; A1F6
         jsr     LD2B9                           ; A1F9
         inc     LoadedObj + Obj::Type           ; A1FC
         jsr     L_9E9E                          ; A1FE
@@ -948,9 +948,9 @@ L_A202: jmp     L_A214                          ; A202
 
 ; ----------------------------------------------------------------------------
 L_A205: lda     #$40                            ; A205
-        sta     $42                             ; A207
+        sta     LoadedObj_CollisionBox_HalfWidth; A207
         lda     #$40                            ; A209
-        sta     $43                             ; A20B
+        sta     LoadedObj_CollisionBox_HalfHeight; A20B
         lda     #$02                            ; A20D
         jsr     Obj_GravityMoveBounce_Double    ; A20F
         bne     L_A231                          ; A212

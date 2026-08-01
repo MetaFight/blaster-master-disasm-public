@@ -18,7 +18,7 @@ L_AF51: sta     $52                             ; AF51
         lda     #$00                            ; AF57
         sta     $51                             ; AF59
         ldy     #$28                            ; AF5B
-        jsr     LE1BD                           ; AF5D
+        jsr     Obj_AngleToVelocity             ; AF5D
 L_AF60: rts                                     ; AF60
 
 ; ----------------------------------------------------------------------------
@@ -26,9 +26,9 @@ L_AF61: jmp     L_AFD1                          ; AF61
 
 ; ----------------------------------------------------------------------------
 L_AF64: lda     #$80                            ; AF64
-        sta     $42                             ; AF66
+        sta     LoadedObj_CollisionBox_HalfWidth; AF66
         lda     #$80                            ; AF68
-        sta     $43                             ; AF6A
+        sta     LoadedObj_CollisionBox_HalfHeight; AF6A
         lda     $51                             ; AF6C
         beq     L_AF72                          ; AF6E
         dec     $51                             ; AF70
@@ -41,7 +41,7 @@ L_AF72: lda     $50                             ; AF72
         lda     #$00                            ; AF7D
         sta     $50                             ; AF7F
 L_AF81: ldy     #$28                            ; AF81
-        jsr     LE1BD                           ; AF83
+        jsr     Obj_AngleToVelocity             ; AF83
         jsr     LE083                           ; AF86
         jmp     L_AFD1                          ; AF89
 
@@ -78,7 +78,7 @@ L_AFC4: jsr     LE083                           ; AFC4
         bpl     L_AFD1                          ; AFC7
         jsr     LE0D8                           ; AFC9
         ldy     #$28                            ; AFCC
-        jsr     LE1BD                           ; AFCE
+        jsr     Obj_AngleToVelocity             ; AFCE
 L_AFD1: lda     #$10                            ; AFD1
         sta     $40                             ; AFD3
         lda     #$10                            ; AFD5

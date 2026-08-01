@@ -192,43 +192,97 @@ _ScaleBySignedFrac__Positive:
         rts                                     ; E1B0
 
 ; ----------------------------------------------------------------------------
-L_E1B1: jsr     L_E1D2                          ; E1B1
+L_E1B1: jsr     Trig_CosByAngle                 ; E1B1
         jmp     ScaleBySignedFrac               ; E1B4
 
 ; ----------------------------------------------------------------------------
-L_E1B7: jsr     L_E1D5                          ; E1B7
+L_E1B7: jsr     Trig_SinByAngle                 ; E1B7
         jmp     ScaleBySignedFrac               ; E1BA
 
 .endmacro
 
 .macro MAC_L_E1D2
 ; ----------------------------------------------------------------------------
-L_E1D2: clc                                     ; E1D2
+; Cosine of the angle in A.
+; Implemented as the sine of (A + $40)
+; 
+; Input:
+;   A = angle (0-255 = full circle)
+; 
+; Output:
+;   A = signed magnitude (0..$7F)
+Trig_CosByAngle:
+        clc                                     ; E1D2
+; cos(A) = sin(A + $40), so bias by a quarter-circle ($40) and
+; fall into Trig_SinByAngle...
         adc     #$40                            ; E1D3
-L_E1D5: cmp     #$40                            ; E1D5
-        bcc     L_E1E4                          ; E1D7
+; ___
+; 
+; Sine of the angle in A
+; 
+; Input:
+;   A = angle (0-255 = full circle)
+; 
+; Output:
+;   A = signed magnitude (0..$7F)
+; 
+; Handled as 1 of 4 possible cases:
+;   +---------+---------------+--------+---------------+---------+
+;   | A       | Quadrant      | Half   | A'            | Look-up |
+;   |---------+---------------+--------+---------------+---------|
+;   | $00–$3F | Q1 (0–90°)    | first  | A' = A        | as-is   |
+;   | $40–$7F | Q2 (90–180°)  | first  | A' = $80 - A  | as-is   |
+;   | $80–$BF | Q3 (180–270°) | second | A' = A - $80  | negated |
+;   | $C0–$FF | Q4 (270–360°) | second | A' = -A       | negated |
+;   +---------+---------------+--------+---------------+---------+
+Trig_SinByAngle:
+        cmp     #$40                            ; E1D5
+; if A < $40, then handle as Quandrant 1
+        bcc     _Trig_SinByAngle__Quandrant_1   ; E1D7
         cmp     #$80                            ; E1D9
-        bcs     L_E1E9                          ; E1DB
+; if A >= $80, then handle as Half 2 (negative)
+        bcs     _Trig_SinByAngle__Half_2        ; E1DB
+; if $40 <= A < $80, then handle as Quandrant 2 by
+; 1. converting A to Q1 equivalent (A = $80 - A), and
+; 2. falling into Q1 handler.
+_Trig_SinByAngle__Quandrant_2:
         eor     #$FF                            ; E1DD
         clc                                     ; E1DF
         adc     #$01                            ; E1E0
         and     #$7F                            ; E1E2
-L_E1E4: tax                                     ; E1E4
+; A < $40: Quadrant 1.
+; 
+; A used as-is.
+; Look-up used as-is.
+_Trig_SinByAngle__Quandrant_1:
+        tax                                     ; E1E4
         lda     L_E202,x                        ; E1E5
         rts                                     ; E1E8
 
 ; ----------------------------------------------------------------------------
-L_E1E9: cmp     #$C0                            ; E1E9
-        bcs     L_E1F3                          ; E1EB
+_Trig_SinByAngle__Half_2:
+        cmp     #$C0                            ; E1E9
+; if A >= $C0, then handle as Quandrant 4
+        bcs     _Trig_SinByAngle__Quandrant_4   ; E1EB
+; if $80 <= A < $C0, then handle as Quandrant 3 by
+; 1. setting A = A - $80, and
+; 2. Doing the table look-up and negating the result
+_Trig_SinByAngle__Quandrant_3:
         sec                                     ; E1ED
         sbc     #$80                            ; E1EE
-        jmp     L_E1F8                          ; E1F0
+        jmp     _Trig_SinByAngle__LookupNeg     ; E1F0
 
 ; ----------------------------------------------------------------------------
-L_E1F3: eor     #$FF                            ; E1F3
+; if A >= $C0, then handle as Quandrant 4 by
+; 1. negating A, and
+; 2. Doing the table look-up and negating the result
+_Trig_SinByAngle__Quandrant_4:
+        eor     #$FF                            ; E1F3
         clc                                     ; E1F5
         adc     #$01                            ; E1F6
-L_E1F8: tax                                     ; E1F8
+; Get Look-up value and return it negated.
+_Trig_SinByAngle__LookupNeg:
+        tax                                     ; E1F8
         lda     L_E202,x                        ; E1F9
         eor     #$FF                            ; E1FC
         clc                                     ; E1FE

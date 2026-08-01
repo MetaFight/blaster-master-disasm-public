@@ -18,7 +18,7 @@ L_AC53: sta     $52                             ; AC53
         lda     #$00                            ; AC59
         sta     $51                             ; AC5B
         ldy     #$28                            ; AC5D
-        jsr     LE1BD                           ; AC5F
+        jsr     Obj_AngleToVelocity             ; AC5F
 L_AC62: rts                                     ; AC62
 
 ; ----------------------------------------------------------------------------
@@ -26,9 +26,9 @@ L_AC63: jmp     L_ACD0                          ; AC63
 
 ; ----------------------------------------------------------------------------
 L_AC66: lda     #$80                            ; AC66
-        sta     $42                             ; AC68
+        sta     LoadedObj_CollisionBox_HalfWidth; AC68
         lda     #$80                            ; AC6A
-        sta     $43                             ; AC6C
+        sta     LoadedObj_CollisionBox_HalfHeight; AC6C
         lda     $51                             ; AC6E
         beq     L_AC74                          ; AC70
         dec     $51                             ; AC72
@@ -41,7 +41,7 @@ L_AC74: lda     $50                             ; AC74
         lda     #$00                            ; AC7F
         sta     $50                             ; AC81
 L_AC83: ldy     #$28                            ; AC83
-        jsr     LE1BD                           ; AC85
+        jsr     Obj_AngleToVelocity             ; AC85
         jsr     LE083                           ; AC88
         jmp     L_ACD0                          ; AC8B
 
@@ -77,7 +77,7 @@ L_ACC3: jsr     LE083                           ; ACC3
         bpl     L_ACD0                          ; ACC6
         jsr     LE0D8                           ; ACC8
         ldy     #$28                            ; ACCB
-        jsr     LE1BD                           ; ACCD
+        jsr     Obj_AngleToVelocity             ; ACCD
 L_ACD0: lda     #$10                            ; ACD0
         sta     $40                             ; ACD2
         lda     #$10                            ; ACD4

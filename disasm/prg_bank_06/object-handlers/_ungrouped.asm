@@ -47,7 +47,7 @@ L_A23A: lda     $9D                             ; A23A
         sta     LoadedObj + Obj::Facing         ; A23C
         lda     $9E                             ; A23E
         tay                                     ; A240
-        jsr     LE1BD                           ; A241
+        jsr     Obj_AngleToVelocity             ; A241
         jsr     LD2B9                           ; A244
         inc     LoadedObj + Obj::Type           ; A247
         jsr     L_9E9E                          ; A249
@@ -58,9 +58,9 @@ L_A24D: jmp     L_A25D                          ; A24D
 
 ; ----------------------------------------------------------------------------
 L_A250: lda     #$40                            ; A250
-        sta     $42                             ; A252
+        sta     LoadedObj_CollisionBox_HalfWidth; A252
         lda     #$40                            ; A254
-        sta     $43                             ; A256
+        sta     LoadedObj_CollisionBox_HalfHeight; A256
         jsr     LE083                           ; A258
         bne     L_A27A                          ; A25B
 L_A25D: lda     #$08                            ; A25D

@@ -14,9 +14,9 @@ L_B63C: jmp     L_B66F                          ; B63C
 
 ; ----------------------------------------------------------------------------
 L_B63F: lda     #$80                            ; B63F
-        sta     $42                             ; B641
+        sta     LoadedObj_CollisionBox_HalfWidth; B641
         lda     #$80                            ; B643
-        sta     $43                             ; B645
+        sta     LoadedObj_CollisionBox_HalfHeight; B645
         jsr     LEF2B                           ; B647
         bne     L_B66F                          ; B64A
         lda     Global_FrameCounter             ; B64C
@@ -50,9 +50,9 @@ L_B680: jmp     L_B6B8                          ; B680
 
 ; ----------------------------------------------------------------------------
 L_B683: lda     #$80                            ; B683
-        sta     $42                             ; B685
+        sta     LoadedObj_CollisionBox_HalfWidth; B685
         lda     #$80                            ; B687
-        sta     $43                             ; B689
+        sta     LoadedObj_CollisionBox_HalfHeight; B689
         jsr     LD2B9                           ; B68B
         lda     #$00                            ; B68E
         jsr     LD2B1                           ; B690
@@ -66,7 +66,7 @@ L_B69C: lda     Global_FrameCounter             ; B69C
         asl     a                               ; B69E
         asl     a                               ; B69F
         ldy     #$08                            ; B6A0
-        jsr     LE1D5                           ; B6A2
+        jsr     Trig_SinByAngle                 ; B6A2
         jsr     ScaleBySignedFrac               ; B6A5
         sta     LoadedObj + Obj::Velocity_Y     ; B6A8
         jsr     LE083                           ; B6AA

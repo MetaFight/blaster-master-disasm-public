@@ -50,9 +50,9 @@ ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:
 ; timer $51
 _ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:
         lda     #$80                            ; A7F1
-        sta     $42                             ; A7F3
+        sta     LoadedObj_CollisionBox_HalfWidth; A7F3
         lda     #$C0                            ; A7F5
-        sta     $43                             ; A7F7
+        sta     LoadedObj_CollisionBox_HalfHeight; A7F7
         lda     $51                             ; A7F9
 ; If LoadedObj_AnimFrame (wind-up) is at 0, then proceed to ground check.
         beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired; A7FB
@@ -121,7 +121,7 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:
         clc                                     ; A839
         adc     $52                             ; A83A
         tay                                     ; A83C
-        jsr     LE1BD                           ; A83D
+        jsr     Obj_AngleToVelocity             ; A83D
 ; +0 (fade/freeze) entry, and the tail every other path falls into: $40/$41 give ScreenPos_Compute
 ; the box's FULL extent — $10 wide by $18 tall, a 16x24 box, which that routine halves itself. It
 ; returns $00 on-screen; anything else means the hopper has scrolled away, so park the slot via

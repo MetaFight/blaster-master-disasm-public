@@ -21,9 +21,9 @@ L_B3FE: jmp     L_B457                          ; B3FE
 
 ; ----------------------------------------------------------------------------
 L_B401: lda     #$80                            ; B401
-        sta     $42                             ; B403
+        sta     LoadedObj_CollisionBox_HalfWidth; B403
         lda     #$80                            ; B405
-        sta     $43                             ; B407
+        sta     LoadedObj_CollisionBox_HalfHeight; B407
         lda     $50                             ; B409
         bne     L_B43A                          ; B40B
         jsr     LE083                           ; B40D
@@ -46,7 +46,7 @@ L_B420: dec     $51                             ; B420
         clc                                     ; B430
         adc     #$20                            ; B431
         tay                                     ; B433
-        jsr     LE1BD                           ; B434
+        jsr     Obj_AngleToVelocity             ; B434
         jmp     L_B457                          ; B437
 
 ; ----------------------------------------------------------------------------

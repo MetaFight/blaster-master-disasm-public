@@ -14,9 +14,9 @@ L_B20C: jmp     L_B23F                          ; B20C
 
 ; ----------------------------------------------------------------------------
 L_B20F: lda     #$80                            ; B20F
-        sta     $42                             ; B211
+        sta     LoadedObj_CollisionBox_HalfWidth; B211
         lda     #$80                            ; B213
-        sta     $43                             ; B215
+        sta     LoadedObj_CollisionBox_HalfHeight; B215
         jsr     LEF2B                           ; B217
         bne     L_B23F                          ; B21A
         lda     Global_FrameCounter             ; B21C
@@ -50,14 +50,14 @@ L_B250: jmp     L_B26C                          ; B250
 
 ; ----------------------------------------------------------------------------
 L_B253: lda     #$80                            ; B253
-        sta     $42                             ; B255
+        sta     LoadedObj_CollisionBox_HalfWidth; B255
         lda     #$80                            ; B257
-        sta     $43                             ; B259
+        sta     LoadedObj_CollisionBox_HalfHeight; B259
         lda     Global_FrameCounter             ; B25B
         asl     a                               ; B25D
         asl     a                               ; B25E
         ldy     #$28                            ; B25F
-        jsr     LE1D5                           ; B261
+        jsr     Trig_SinByAngle                 ; B261
         jsr     ScaleBySignedFrac               ; B264
         sta     LoadedObj + Obj::Velocity_Y     ; B267
         jsr     LD2DB                           ; B269

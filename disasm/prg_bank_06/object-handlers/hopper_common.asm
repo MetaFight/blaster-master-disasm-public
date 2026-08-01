@@ -4,9 +4,9 @@ L_A86E: jmp     L_A89F                          ; A86E
 
 ; ----------------------------------------------------------------------------
 L_A871: lda     #$80                            ; A871
-        sta     $42                             ; A873
+        sta     LoadedObj_CollisionBox_HalfWidth; A873
         lda     #$C0                            ; A875
-        sta     $43                             ; A877
+        sta     LoadedObj_CollisionBox_HalfHeight; A877
         lda     #$00                            ; A879
         sta     LoadedObj + Obj::Velocity_Y     ; A87B
         lda     LoadedObj + Obj::Velocity_X     ; A87D

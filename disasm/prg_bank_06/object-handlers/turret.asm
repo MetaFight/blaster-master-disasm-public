@@ -16,9 +16,9 @@ L_AA6C: jmp     L_AAD4                          ; AA6C
 
 ; ----------------------------------------------------------------------------
 L_AA6F: lda     #$80                            ; AA6F
-        sta     $42                             ; AA71
+        sta     LoadedObj_CollisionBox_HalfWidth; AA71
         lda     #$80                            ; AA73
-        sta     $43                             ; AA75
+        sta     LoadedObj_CollisionBox_HalfHeight; AA75
         inc     $51                             ; AA77
         lda     $51                             ; AA79
         and     #$01                            ; AA7B

@@ -23,7 +23,7 @@ _ObjHandler_Tank_76_Shooter_Init__Update__:
 ; speed $14, converted with the heading into the velocity pair $4C/$4D. This is the only place the
 ; Shooter's velocity is set; nothing steers it afterwards
         ldy     #$14                            ; B009
-        jsr     LE1BD                           ; B00B
+        jsr     Obj_AngleToVelocity             ; B00B
 ; gun ready — no recoil to work off
         lda     #$00                            ; B00E
         sta     $52                             ; B010
@@ -50,9 +50,9 @@ ObjHandler_Tank_77_Shooter_Main:
 ; $42/$43 = $80: terrain-collision half-extents for the move below
 _ObjHandler_Tank_77_Shooter_Main__Update__:
         lda     #$80                            ; B016
-        sta     $42                             ; B018
+        sta     LoadedObj_CollisionBox_HalfWidth; B018
         lda     #$80                            ; B01A
-        sta     $43                             ; B01C
+        sta     LoadedObj_CollisionBox_HalfHeight; B01C
 ; advance by velocity and bounce off walls (reflects $4C on a horizontal wall, $4D on a vertical
 ; one)
         jsr     LDF68                           ; B01E

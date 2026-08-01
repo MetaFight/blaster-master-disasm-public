@@ -140,9 +140,9 @@ L_F0E7: rts                                     ; F0E7
 ; ----------------------------------------------------------------------------
 L_F0E8: ldx     $3C                             ; F0E8
         lda     $3E                             ; F0EA
-        sta     SpriteStagingBuf + OamEntry::X,x ; F0EC
+        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; F0EC
         lda     $3F                             ; F0EF
-        sta     SpriteStagingBuf + OamEntry::Y,x ; F0F1
+        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; F0F1
         lda     $45                             ; F0F4
         sta     SpriteStagingBuf + OamEntry::Tile,x ; F0F6
         lda     $44                             ; F0F9

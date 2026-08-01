@@ -310,11 +310,11 @@ L_EC8A: lda     $3D                             ; EC8A
 L_EC96: tay                                     ; EC96
 L_EC97: sta     $3D                             ; EC97
         ldx     #$00                            ; EC99
-L_EC9B: lda     SpriteStagingBuf + OamEntry::Y,x ; EC9B
+L_EC9B: lda     SpriteStagingBuf + OamEntry::ScreenY,x ; EC9B
         sta     $0200,y                         ; EC9E
         inx                                     ; ECA1
         iny                                     ; ECA2
-        lda     SpriteStagingBuf + OamEntry::Y,x ; ECA3
+        lda     SpriteStagingBuf + OamEntry::ScreenY,x ; ECA3
         sta     $0200,y                         ; ECA6
         inx                                     ; ECA9
         iny                                     ; ECAA

@@ -1146,7 +1146,7 @@ L_D37A: jsr     L_D2DE                          ; D37A
 H_Collision_Check:
         jsr     _H_Collision_Check__TileLeft    ; D37D
         beq     _H_Collision_Check__CheckRight  ; D380
-        lda     $42                             ; D382
+        lda     LoadedObj_CollisionBox_HalfWidth; D382
         sta     LoadedObj + Obj::Position_X_Lo  ; D384
         rts                                     ; D386
 
@@ -1158,7 +1158,7 @@ _H_Collision_Check__CheckRight:
         beq     _H_Collision_Check__Exit        ; D38A
         lda     #$00                            ; D38C
         sec                                     ; D38E
-        sbc     $42                             ; D38F
+        sbc     LoadedObj_CollisionBox_HalfWidth; D38F
         sta     LoadedObj + Obj::Position_X_Lo  ; D391
 ; RTS
 _H_Collision_Check__Exit:
@@ -1171,7 +1171,7 @@ _H_Collision_Check__TileRight:
         ldx     $4E                             ; D394
         lda     LoadedObj + Obj::Position_X_Lo  ; D396
         clc                                     ; D398
-        adc     $42                             ; D399
+        adc     LoadedObj_CollisionBox_HalfWidth; D399
         beq     _H_Collision_Check__ReadTile    ; D39B
         bcc     _H_Collision_Check__ReadTile    ; D39D
         inx                                     ; D39F
@@ -1183,7 +1183,7 @@ _H_Collision_Check__TileRight:
 _H_Collision_Check__TileLeft:
         ldx     $4E                             ; D3A3
         lda     LoadedObj + Obj::Position_X_Lo  ; D3A5
-        cmp     $42                             ; D3A7
+        cmp     LoadedObj_CollisionBox_HalfWidth; D3A7
 ; branch if LoadedObj's X_Lo (fixed4.4) >= the collision box's HalfWidth.
 ; This means we can use LoadedObj's TileIndex as is.
         bcs     _H_Collision_Check__ReadTile    ; D3A9
@@ -1197,7 +1197,7 @@ _H_Collision_Check__ReadTile:
 ; Otherwise, do the cross-axis checks
         lda     LoadedObj + Obj::Position_Y_Lo  ; D3B1
         clc                                     ; D3B3
-        adc     $43                             ; D3B4
+        adc     LoadedObj_CollisionBox_HalfHeight; D3B4
         bcc     _H_Collision_Check__CheckTop    ; D3B6
         cmp     #$20                            ; D3B8
         bcc     _H_Collision_Check__CheckTop    ; D3BA
@@ -1211,7 +1211,7 @@ _H_Collision_Check__ReadTile:
 _H_Collision_Check__CheckTop:
         lda     LoadedObj + Obj::Position_Y_Lo  ; D3C6
         sec                                     ; D3C8
-        sbc     $43                             ; D3C9
+        sbc     LoadedObj_CollisionBox_HalfHeight; D3C9
         bcs     _H_Collision_Check__NoCollide   ; D3CB
         cmp     #$E0                            ; D3CD
         bcs     _H_Collision_Check__NoCollide   ; D3CF
@@ -1242,7 +1242,7 @@ V_Collision_Check:
         jsr     _V_Collision_Check__TileAbove   ; D3E1
 ; tile above solid: LDA $43 → STA $4A (snap position to tile edge); RTS
         beq     _V_Collision_Check__CheckBelow  ; D3E4
-        lda     $43                             ; D3E6
+        lda     LoadedObj_CollisionBox_HalfHeight; D3E6
         sta     LoadedObj + Obj::Position_Y_Lo  ; D3E8
         rts                                     ; D3EA
 
@@ -1254,7 +1254,7 @@ _V_Collision_Check__CheckBelow:
         beq     _V_Collision_Check__Exit        ; D3EE
         lda     #$00                            ; D3F0
         sec                                     ; D3F2
-        sbc     $43                             ; D3F3
+        sbc     LoadedObj_CollisionBox_HalfHeight; D3F3
         sta     LoadedObj + Obj::Position_Y_Lo  ; D3F5
         rts                                     ; D3F7
 
@@ -1264,7 +1264,7 @@ _V_Collision_Check__TileBelow:
         ldx     $4E                             ; D3F8
         lda     LoadedObj + Obj::Position_Y_Lo  ; D3FA
         clc                                     ; D3FC
-        adc     $43                             ; D3FD
+        adc     LoadedObj_CollisionBox_HalfHeight; D3FD
 ; Branch if A is 0
         beq     _V_Collision_Check__ReadTile    ; D3FF
 ; Branch if Y_Lo and HalfHeight didn't overflow
@@ -1281,7 +1281,7 @@ _V_Collision_Check__TileBelow:
 _V_Collision_Check__TileAbove:
         ldx     $4E                             ; D40B
         lda     LoadedObj + Obj::Position_Y_Lo  ; D40D
-        cmp     $43                             ; D40F
+        cmp     LoadedObj_CollisionBox_HalfHeight; D40F
         bcs     _V_Collision_Check__ReadTile    ; D411
         txa                                     ; D413
         sec                                     ; D414
@@ -1300,7 +1300,7 @@ _V_Collision_Check__ReadTile:
 _V_Collision_Check__CheckRight:
         lda     LoadedObj + Obj::Position_X_Lo  ; D41D
         clc                                     ; D41F
-        adc     $42                             ; D420
+        adc     LoadedObj_CollisionBox_HalfWidth; D420
         bcc     _V_Collision_Check__CheckLeft   ; D422
         cmp     #$20                            ; D424
         bcc     _V_Collision_Check__CheckLeft   ; D426
@@ -1314,7 +1314,7 @@ _V_Collision_Check__CheckRight:
 _V_Collision_Check__CheckLeft:
         lda     LoadedObj + Obj::Position_X_Lo  ; D42F
         sec                                     ; D431
-        sbc     $42                             ; D432
+        sbc     LoadedObj_CollisionBox_HalfWidth; D432
         bcs     _V_Collision_Check__NoCollide   ; D434
         cmp     #$E0                            ; D436
         bcs     _V_Collision_Check__NoCollide   ; D438

@@ -14,9 +14,9 @@ L_B2A8: jmp     L_B2DB                          ; B2A8
 
 ; ----------------------------------------------------------------------------
 L_B2AB: lda     #$80                            ; B2AB
-        sta     $42                             ; B2AD
+        sta     LoadedObj_CollisionBox_HalfWidth; B2AD
         lda     #$80                            ; B2AF
-        sta     $43                             ; B2B1
+        sta     LoadedObj_CollisionBox_HalfHeight; B2B1
         jsr     LEF2B                           ; B2B3
         bne     L_B2DB                          ; B2B6
         lda     Global_FrameCounter             ; B2B8
@@ -50,14 +50,14 @@ L_B2EC: jmp     L_B308                          ; B2EC
 
 ; ----------------------------------------------------------------------------
 L_B2EF: lda     #$80                            ; B2EF
-        sta     $42                             ; B2F1
+        sta     LoadedObj_CollisionBox_HalfWidth; B2F1
         lda     #$80                            ; B2F3
-        sta     $43                             ; B2F5
+        sta     LoadedObj_CollisionBox_HalfHeight; B2F5
         lda     Global_FrameCounter             ; B2F7
         asl     a                               ; B2F9
         asl     a                               ; B2FA
         ldy     #$20                            ; B2FB
-        jsr     LE1D5                           ; B2FD
+        jsr     Trig_SinByAngle                 ; B2FD
         jsr     ScaleBySignedFrac               ; B300
         sta     LoadedObj + Obj::Velocity_Y     ; B303
         jsr     LD2DB                           ; B305

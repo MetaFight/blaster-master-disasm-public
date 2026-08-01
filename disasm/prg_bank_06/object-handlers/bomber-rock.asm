@@ -16,9 +16,9 @@ L_AB24: jmp     L_ABA4                          ; AB24
 
 ; ----------------------------------------------------------------------------
 L_AB27: lda     #$80                            ; AB27
-        sta     $42                             ; AB29
+        sta     LoadedObj_CollisionBox_HalfWidth; AB29
         lda     #$80                            ; AB2B
-        sta     $43                             ; AB2D
+        sta     LoadedObj_CollisionBox_HalfHeight; AB2D
         lda     $50                             ; AB2F
         bmi     L_AB56                          ; AB31
         jsr     LE0FA                           ; AB33

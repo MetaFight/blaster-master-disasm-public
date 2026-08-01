@@ -18,7 +18,7 @@ L_B92D: lda     #$60                            ; B92D
         lda     #$E0                            ; B931
         sta     LoadedObj + Obj::Facing         ; B933
 L_B935: ldy     #$18                            ; B935
-        jsr     LE1BD                           ; B937
+        jsr     Obj_AngleToVelocity             ; B937
         lda     #$00                            ; B93A
         sta     $51                             ; B93C
         sta     $52                             ; B93E
@@ -47,7 +47,7 @@ L_B95D: lda     #$60                            ; B95D
         lda     #$60                            ; B961
         sta     LoadedObj + Obj::Facing         ; B963
 L_B965: ldy     #$18                            ; B965
-        jsr     LE1BD                           ; B967
+        jsr     Obj_AngleToVelocity             ; B967
         lda     #$00                            ; B96A
         sta     $51                             ; B96C
         sta     $52                             ; B96E
@@ -62,9 +62,9 @@ L_B97A: jmp     L_B9C0                          ; B97A
 
 ; ----------------------------------------------------------------------------
 L_B97D: lda     #$80                            ; B97D
-        sta     $42                             ; B97F
+        sta     LoadedObj_CollisionBox_HalfWidth; B97F
         lda     #$80                            ; B981
-        sta     $43                             ; B983
+        sta     LoadedObj_CollisionBox_HalfHeight; B983
         ldy     #$18                            ; B985
         jsr     L_A670                          ; B987
         jsr     LE107                           ; B98A
@@ -87,7 +87,7 @@ L_B9A4: lda     $50                             ; B9A4
         bne     L_B9C0                          ; B9B0
         stx     LoadedObj + Obj::Facing         ; B9B2
         ldy     #$60                            ; B9B4
-        jsr     LE1BD                           ; B9B6
+        jsr     Obj_AngleToVelocity             ; B9B6
         lda     #$10                            ; B9B9
         sta     $51                             ; B9BB
         inc     LoadedObj + Obj::Type           ; B9BD
@@ -140,9 +140,9 @@ L_BA00: jmp     L_BA43                          ; BA00
 
 ; ----------------------------------------------------------------------------
 L_BA03: lda     #$80                            ; BA03
-        sta     $42                             ; BA05
+        sta     LoadedObj_CollisionBox_HalfWidth; BA05
         lda     #$80                            ; BA07
-        sta     $43                             ; BA09
+        sta     LoadedObj_CollisionBox_HalfHeight; BA09
         lda     $51                             ; BA0B
         beq     L_BA19                          ; BA0D
         lda     #$43                            ; BA0F
@@ -168,7 +168,7 @@ L_BA30: clc                                     ; BA30
         sta     LoadedObj + Obj::Facing         ; BA33
         stx     $50                             ; BA35
         ldy     #$18                            ; BA37
-        jsr     LE1BD                           ; BA39
+        jsr     Obj_AngleToVelocity             ; BA39
         lda     #$00                            ; BA3C
         sta     $51                             ; BA3E
         dec     LoadedObj + Obj::Type           ; BA40

@@ -30,7 +30,7 @@ L_A69C: cpx     #$C0                            ; A69C
         adc     #$40                            ; A6A1
 L_A6A3: sta     LoadedObj + Obj::Facing         ; A6A3
         ldy     $05                             ; A6A5
-        jsr     LE1BD                           ; A6A7
+        jsr     Obj_AngleToVelocity             ; A6A7
         jmp     L_A6B9                          ; A6AA
 
 ; ----------------------------------------------------------------------------

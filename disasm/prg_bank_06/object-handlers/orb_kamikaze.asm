@@ -23,9 +23,9 @@ L_B095: jmp     L_B13B                          ; B095
 
 ; ----------------------------------------------------------------------------
 L_B098: lda     #$80                            ; B098
-        sta     $42                             ; B09A
+        sta     LoadedObj_CollisionBox_HalfWidth; B09A
         lda     #$80                            ; B09C
-        sta     $43                             ; B09E
+        sta     LoadedObj_CollisionBox_HalfHeight; B09E
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; B0A0
         bne     L_B0B0                          ; B0A3
         jsr     LE0FA                           ; B0A5

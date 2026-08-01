@@ -17,9 +17,9 @@ L_B58B: jmp     L_B5FB                          ; B58B
 
 ; ----------------------------------------------------------------------------
 L_B58E: lda     #$80                            ; B58E
-        sta     $42                             ; B590
+        sta     LoadedObj_CollisionBox_HalfWidth; B590
         lda     #$80                            ; B592
-        sta     $43                             ; B594
+        sta     LoadedObj_CollisionBox_HalfHeight; B594
         lda     $50                             ; B596
         bne     L_B5B2                          ; B598
         jsr     LE0FA                           ; B59A

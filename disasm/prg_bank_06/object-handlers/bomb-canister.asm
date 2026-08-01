@@ -16,9 +16,9 @@ L_B843: jmp     L_B8EF                          ; B843
 
 ; ----------------------------------------------------------------------------
 L_B846: lda     #$80                            ; B846
-        sta     $42                             ; B848
+        sta     LoadedObj_CollisionBox_HalfWidth; B848
         lda     #$80                            ; B84A
-        sta     $43                             ; B84C
+        sta     LoadedObj_CollisionBox_HalfHeight; B84C
         lda     $50                             ; B84E
         bne     L_B87E                          ; B850
         lda     #$A7                            ; B852
