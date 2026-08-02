@@ -1,4 +1,5 @@
 .macro MAC_L_A2E9
+; ----------------------------------------------------------------------------
 ; (alpha: not fully human-verified / pending re-verification) Shared initialisation routine for
 ; every damageable tank enemy, called by each enemy's Init handler.
 ; Overhead parallel: OvhdEnemy_Init ($B2B4). See docs/entities/tank/_shared-enemy-system.md.

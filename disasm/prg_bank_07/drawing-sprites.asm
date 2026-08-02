@@ -2,13 +2,13 @@
 ; ----------------------------------------------------------------------------
 L_ECB4: ldx     $3C                             ; ECB4
         lda     $3E                             ; ECB6
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; ECB8
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; ECB8
         lda     $44                             ; ECBB
         sta     SpriteStagingBuf + OamEntry::Attr,x ; ECBD
         lda     $45                             ; ECC0
         sta     SpriteStagingBuf + OamEntry::Tile,x ; ECC2
         lda     $3F                             ; ECC5
-        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; ECC7
+        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; ECC7
         txa                                     ; ECCA
         clc                                     ; ECCB
         adc     #$04                            ; ECCC
@@ -22,7 +22,7 @@ L_ECD1: ldx     $3C                             ; ECD1
         sbc     #$04                            ; ECD6
         bit     $44                             ; ECD8
         bvs     L_ECE8                          ; ECDA
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; ECDC
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; ECDC
         clc                                     ; ECDF
         adc     #$08                            ; ECE0
         sta     $0607,x                         ; ECE2
@@ -32,7 +32,7 @@ L_ECD1: ldx     $3C                             ; ECD1
 L_ECE8: sta     $0607,x                         ; ECE8
         clc                                     ; ECEB
         adc     #$08                            ; ECEC
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; ECEE
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; ECEE
 L_ECF1: lda     $44                             ; ECF1
         sta     SpriteStagingBuf + OamEntry::Attr,x ; ECF3
         eor     #$40                            ; ECF6
@@ -41,7 +41,7 @@ L_ECF1: lda     $44                             ; ECF1
         sta     SpriteStagingBuf + OamEntry::Tile,x ; ECFD
         sta     $0605,x                         ; ED00
         lda     $3F                             ; ED03
-        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; ED05
+        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; ED05
         sta     $0604,x                         ; ED08
         txa                                     ; ED0B
         clc                                     ; ED0C
@@ -56,7 +56,7 @@ L_ED12: ldx     $3C                             ; ED12
         sbc     #$04                            ; ED17
         bit     $44                             ; ED19
         bvs     L_ED29                          ; ED1B
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; ED1D
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; ED1D
         clc                                     ; ED20
         adc     #$08                            ; ED21
         sta     $0607,x                         ; ED23
@@ -66,7 +66,7 @@ L_ED12: ldx     $3C                             ; ED12
 L_ED29: sta     $0607,x                         ; ED29
         clc                                     ; ED2C
         adc     #$08                            ; ED2D
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; ED2F
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; ED2F
 L_ED32: lda     $44                             ; ED32
         sta     SpriteStagingBuf + OamEntry::Attr,x ; ED34
         sta     $0606,x                         ; ED37
@@ -76,7 +76,7 @@ L_ED32: lda     $44                             ; ED32
         adc     #$10                            ; ED40
         sta     $0605,x                         ; ED42
         lda     $3F                             ; ED45
-        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; ED47
+        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; ED47
         sta     $0604,x                         ; ED4A
         txa                                     ; ED4D
         clc                                     ; ED4E
@@ -92,7 +92,7 @@ L_ED54: ldx     $3C                             ; ED54
         sbc     #$08                            ; ED5C
         bit     $44                             ; ED5E
         bvs     L_ED6E                          ; ED60
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; ED62
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; ED62
         clc                                     ; ED65
         adc     #$10                            ; ED66
         sta     $060B,x                         ; ED68
@@ -102,7 +102,7 @@ L_ED54: ldx     $3C                             ; ED54
 L_ED6E: sta     $060B,x                         ; ED6E
         clc                                     ; ED71
         adc     #$10                            ; ED72
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; ED74
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; ED74
 L_ED77: lda     $44                             ; ED77
         sta     SpriteStagingBuf + OamEntry::Attr,x ; ED79
         sta     $0606,x                         ; ED7C
@@ -115,7 +115,7 @@ L_ED77: lda     $44                             ; ED77
         adc     #$10                            ; ED8D
         sta     $0605,x                         ; ED8F
         lda     $3F                             ; ED92
-        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; ED94
+        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; ED94
         sta     $0604,x                         ; ED97
         sta     $0608,x                         ; ED9A
         txa                                     ; ED9D
@@ -132,7 +132,7 @@ L_EDA4: ldx     $3C                             ; EDA4
         sbc     #$08                            ; EDAC
         bit     $44                             ; EDAE
         bvs     L_EDBE                          ; EDB0
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; EDB2
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; EDB2
         clc                                     ; EDB5
         adc     #$10                            ; EDB6
         sta     $060B,x                         ; EDB8
@@ -142,7 +142,7 @@ L_EDA4: ldx     $3C                             ; EDA4
 L_EDBE: sta     $060B,x                         ; EDBE
         clc                                     ; EDC1
         adc     #$10                            ; EDC2
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; EDC4
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; EDC4
 L_EDC7: lda     $44                             ; EDC7
         sta     SpriteStagingBuf + OamEntry::Attr,x ; EDC9
         sta     $0606,x                         ; EDCC
@@ -156,7 +156,7 @@ L_EDC7: lda     $44                             ; EDC7
         adc     #$10                            ; EDDE
         sta     $0609,x                         ; EDE0
         lda     $3F                             ; EDE3
-        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; EDE5
+        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; EDE5
         sta     $0604,x                         ; EDE8
         sta     $0608,x                         ; EDEB
         txa                                     ; EDEE
@@ -172,7 +172,7 @@ L_EDF5: ldx     $3C                             ; EDF5
         sbc     #$04                            ; EDFA
         bit     $44                             ; EDFC
         bvs     L_EE12                          ; EDFE
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; EE00
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; EE00
         sta     $060B,x                         ; EE03
         clc                                     ; EE06
         adc     #$08                            ; EE07
@@ -185,7 +185,7 @@ L_EE12: sta     $0607,x                         ; EE12
         sta     $060F,x                         ; EE15
         clc                                     ; EE18
         adc     #$08                            ; EE19
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; EE1B
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; EE1B
         sta     $060B,x                         ; EE1E
 L_EE21: lda     $44                             ; EE21
         sta     SpriteStagingBuf + OamEntry::Attr,x ; EE23
@@ -208,7 +208,7 @@ L_EE21: lda     $44                             ; EE21
         sbc     #$04                            ; EE49
         bit     $44                             ; EE4B
         bmi     L_EE61                          ; EE4D
-        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; EE4F
+        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; EE4F
         sta     $0604,x                         ; EE52
         clc                                     ; EE55
         adc     #$08                            ; EE56
@@ -221,7 +221,7 @@ L_EE61: sta     $0608,x                         ; EE61
         sta     $060C,x                         ; EE64
         clc                                     ; EE67
         adc     #$08                            ; EE68
-        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; EE6A
+        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; EE6A
         sta     $0604,x                         ; EE6D
 L_EE70: txa                                     ; EE70
         clc                                     ; EE71
@@ -236,7 +236,7 @@ L_EE77: ldx     $3C                             ; EE77
         sbc     #$0C                            ; EE7C
         bit     $44                             ; EE7E
         bvs     L_EE9A                          ; EE80
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; EE82
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; EE82
         clc                                     ; EE85
         adc     #$08                            ; EE86
         sta     $0607,x                         ; EE88
@@ -258,7 +258,7 @@ L_EE9A: sta     $060F,x                         ; EE9A
         sta     $0607,x                         ; EEA6
         clc                                     ; EEA9
         adc     #$08                            ; EEAA
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; EEAC
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; EEAC
 L_EEAF: lda     $44                             ; EEAF
         sta     SpriteStagingBuf + OamEntry::Attr,x ; EEB1
         sta     $0606,x                         ; EEB4
@@ -276,7 +276,7 @@ L_EEAF: lda     $44                             ; EEAF
         adc     #$10                            ; EECF
         sta     $060D,x                         ; EED1
         lda     $3F                             ; EED4
-        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; EED6
+        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; EED6
         sta     $0604,x                         ; EED9
         sta     $0608,x                         ; EEDC
         sta     $060C,x                         ; EEDF
@@ -289,7 +289,7 @@ L_EEAF: lda     $44                             ; EEAF
 ; ----------------------------------------------------------------------------
 L_EEE9: ldx     $3C                             ; EEE9
         lda     $3E                             ; EEEB
-        sta     SpriteStagingBuf + OamEntry::ScreenX,x ; EEED
+        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; EEED
         sta     $0607,x                         ; EEF0
         lda     $44                             ; EEF3
         sta     SpriteStagingBuf + OamEntry::Attr,x ; EEF5
@@ -304,7 +304,7 @@ L_EEE9: ldx     $3C                             ; EEE9
         sbc     #$04                            ; EF09
         bit     $44                             ; EF0B
         bmi     L_EF1B                          ; EF0D
-        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; EF0F
+        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; EF0F
         clc                                     ; EF12
         adc     #$08                            ; EF13
         sta     $0604,x                         ; EF15
@@ -314,7 +314,7 @@ L_EEE9: ldx     $3C                             ; EEE9
 L_EF1B: sta     $0604,x                         ; EF1B
         clc                                     ; EF1E
         adc     #$08                            ; EF1F
-        sta     SpriteStagingBuf + OamEntry::ScreenY,x ; EF21
+        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; EF21
 L_EF24: txa                                     ; EF24
         clc                                     ; EF25
         adc     #$08                            ; EF26

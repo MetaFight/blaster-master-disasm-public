@@ -349,10 +349,10 @@ LoadedObj_CollisionBox_HalfHeight := $0043
 ; an array of these, and OAM_BlitFromStaging ($EC73) copies whole records straight into the
 ; $0200 OAM shadow, which the NMI DMAs to $2004 via $4014.
 .struct OamEntry
-        ScreenY .byte   ; +$00 (byte)  Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
-        Tile    .byte   ; +$01 (byte)  Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
-        Attr    .byte   ; +$02 (byte)  Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
-        ScreenX .byte   ; +$03 (byte)  Screen X, left edge.
+        Screen_Y .byte   ; +$00 (byte)  Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
+        Tile     .byte   ; +$01 (byte)  Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
+        Attr     .byte   ; +$02 (byte)  Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
+        Screen_X .byte   ; +$03 (byte)  Screen X, left edge.
 .endstruct
 ; The 14-byte zero-page working copy of the currently active object slot — the same Obj layout
 ; as the $0400 object table. Before each AI dispatch, ObjSlot_Load ($C8DF) copies the active
