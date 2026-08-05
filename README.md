@@ -13,8 +13,8 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 35 / 848 (4%) |
-| **M6** — Verified docs (public, clean) | 2 / 120 (2%) |
+| **M4** — Verified subroutines (public, clean) | 35 / 849 (4%) |
+| **M6** — Verified docs (public, clean) | 1 / 120 (1%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
 - **M6** counts knowledge-base pages (`docs/entities/`, `docs/execution-flow/`, `docs/misc/`) marked `verified`, against every page in those trees — published or not.
@@ -99,9 +99,9 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬜⬜⬛⬛<br/>`50.0%` | 07 / `sound` |  |
 | ◽⬛⬛⬛<br/>`13.3%` | 07 / `timing` |  |
 
-This export publishes **4** pages, of which **2** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
+This export publishes **4** pages, of which **3** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-08-05 00:24 UTC_
+_Generated: 2026-08-05 11:35 UTC_
 
 ## Pages
 
@@ -111,7 +111,7 @@ _Generated: 2026-08-05 00:24 UTC_
 
 ### Misc
 
-- [Cut content](wiki/docs/misc/cut-content.md)
+- [Cut content](wiki/docs/misc/cut-content.md) — ⚠️ alpha
 - [Pause Screen — Dead Ability Overlay Tiles](wiki/docs/misc/pause-screen-dead-overlays.md)
 - [Pseudo-Random Number Generator (RNG)](wiki/docs/misc/rng.md) — ⚠️ alpha
 

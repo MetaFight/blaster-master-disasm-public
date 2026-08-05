@@ -126,6 +126,7 @@ NesPrgRom:71F9:OvhdLvl3_ChunkDescTable:114 ChunkDesc records — the level's Chu
 NesPrgRom:73C1:OvhdLvl3_MapData:32×32 chunk-index grid = 1024 bytes
 NesPrgRom:77C1:OvhdLvl3_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
 NesPrgRom:77D1:OvhdLvl3_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
+NesPrgRom:782B:L_B82B
 NesPrgRom:7EA1:Metasprite_Table_Overhead:Overhead-section metasprite pointer table (8×16 sprites); 2-byte LE def pointers indexed by sprite-id×2, walked by MetaSprite_RenderNoBank ($F029) after MetaSprite_Render ($F011) maps bank 1 (via $EA3A index $1A). Defs sit below the table. See docs/entities/metasprite-system.md
 NesPrgRom:7F81:L_BF81
 NesPrgRom:7F8E:L_BF8E
@@ -3756,7 +3757,7 @@ NesPrgRom:1EB4E:L_EB4E
 NesPrgRom:1EB51:L_EB51
 NesPrgRom:1EB57:L_EB57
 NesPrgRom:1EB64:L_EB64
-NesPrgRom:1EB71:Step_RNG:Steps the pseudo-random number generator state RNG_State ($13) by one 8-bit LCG step and returns the new byte in A.
+NesPrgRom:1EB71:Step_RNG:Steps the pseudo-random number generator state RNG_State ($13) by one 8-bit LCG step and returns the new byte in A ($13 := $13×5 − 1). Full period 256, so the returned byte's individual bits (AND #imm, or its sign via BMI/BPL) are genuinely close to uniform/50-50. Its CARRY FLAG is not: the closing SEC/SBC #$01 only clears carry when $13 was $00 on entry, which happens exactly once per 256 calls — so a caller that branches on BCC/BCS right after JSR Step_RNG is not flipping a coin, it is gating on a ~1-in-256 event. A caller must use the returned byte, not the carry, to get an even chance.
 NesPrgRom:1EB73::Advance the PRNG: $13 = $13×5 − 1 (returns the new $13).
 NesPrgRom:1EB7E:L_EB7E
 NesPrgRom:1EB8D:L_EB8D
@@ -4099,7 +4100,7 @@ NesInternalRam:008A:Projectile4__Damage:(alpha: not fully human-verified / pendi
 NesInternalRam:008B:Projectile5__Screen_X:(alpha: not fully human-verified / pending re-verification) Screen X, posted by Sprite_Update ($D7A0) from Local_Sprite_Screen_X.
 NesInternalRam:008C:Projectile5__Screen_Y:(alpha: not fully human-verified / pending re-verification) Screen Y, posted by Sprite_Update ($D7A0) from Local_Sprite_Screen_Y.
 NesInternalRam:008D:Projectile5__Damage:(alpha: not fully human-verified / pending re-verification) Bit 7 = hit flag, bits 0-6 = damage magnitude. Sprite_Update posts (A & $7F) -- bit 7 is always cleared on post -- and returns the PREVIOUS byte, which is how the owner learns it was hit. An attacker stamps its own magnitude | $80 here (Enemy_Damage_Check_Sub $D6C8 / HitboxScan_LockOn $D71A / HitboxTest_LockOn $D75B). $7F posted means harmless: a scanner reads it as the damage TO ITSELF and $D69C skips on cmp #$7F, which is how touching Jason/Sophia costs an enemy nothing. See EnemyDesc::ContactDamage.
-NesInternalRam:0094:Sophia_LookUpAnimation_Counter:Counter for Sophia's "look up" animation.\n0x00 is not started\n0x0C is completed (looking straight up)\n\nin Sophia_Dismount ($888C): [w] TBD\nin Sophia_DoorwayEntry ($89BE): [w] TBD\nin ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD\nin LevelInit ($C301): [w] TBD\nin Sophia_RenderOffsets ($9641): [rw] TBD\nin ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [r] TBD\nin Get_Next_Tile_Call ($907B): [r] TBD\nin ObjHandler_Tank_06_Sophia_RightWall ($916E): [r] TBD\nin RenderWeaponSprite ($950D): [r] TBD
+NesInternalRam:0094:Sophia_LookUpAnimation_Counter:Counter for Sophia's "look up" animation.\n0x00 is not started\n0x0C is completed (looking straight up)
 NesInternalRam:009A:TerrainCollisionFlags:Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.\n\nbit 7 set means a collision happened to the left or right.\nbit 6 set means a collision happened above or below.\n\nThe value of LoadedObj's velocity is used to disambiguate the collision side.
 NesInternalRam:0150-0161:DormantSlot_SavedType:18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's\nreal ObjType when it is made Dormant (ObjType $02).\nThe Dormant ObjType handler then reads from this table to restore the tombstoned Object.
 NesInternalRam:0400:PlayerSlot__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.

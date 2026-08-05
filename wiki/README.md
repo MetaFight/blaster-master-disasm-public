@@ -12,7 +12,7 @@ either they have not completed it yet, or they were verified and have since been
 
 ### Misc
 
-- [Cut content](docs/misc/cut-content.md)
+- [Cut content](docs/misc/cut-content.md) — ⚠️ alpha
 - [Pause Screen — Dead Ability Overlay Tiles](docs/misc/pause-screen-dead-overlays.md)
 - [Pseudo-Random Number Generator (RNG)](docs/misc/rng.md) — ⚠️ alpha
 

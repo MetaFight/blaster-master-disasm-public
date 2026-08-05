@@ -130,15 +130,6 @@ ObjectSlot_Index                  := $0057
 ; Counter for Sophia's "look up" animation.
 ; 0x00 is not started
 ; 0x0C is completed (looking straight up)
-; in Sophia_Dismount ($888C): [w] TBD
-; in Sophia_DoorwayEntry ($89BE): [w] TBD
-; in ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD
-; in LevelInit ($C301): [w] TBD
-; in Sophia_RenderOffsets ($9641): [rw] TBD
-; in ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [r] TBD
-; in Get_Next_Tile_Call ($907B): [r] TBD
-; in ObjHandler_Tank_06_Sophia_RightWall ($916E): [r] TBD
-; in RenderWeaponSprite ($950D): [r] TBD
 Sophia_LookUpAnimation_Counter    := $0094
 ; Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.
 ; bit 7 set means a collision happened to the left or right.
