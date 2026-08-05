@@ -96,7 +96,7 @@ L_AF1D: lda     #$01                            ; AF1D
         and     #$07                            ; AF28
         tax                                     ; AF2A
         lda     L_AF32,x                        ; AF2B
-        jmp     LF011                           ; AF2E
+        jmp     MetaSprite_Render               ; AF2E
 
 ; ----------------------------------------------------------------------------
 L_AF31: rts                                     ; AF31

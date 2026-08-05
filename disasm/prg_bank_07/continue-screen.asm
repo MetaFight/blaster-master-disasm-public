@@ -10,9 +10,9 @@ L_F71C: jsr     L_EA03                          ; F71C
         sta     $FF                             ; F72B
         sta     $2000                           ; F72D
         lda     L_F7C2                          ; F730
-        sta     L007A                           ; F733
+        sta     DispatchPtr                     ; F733
         lda     L_F7C2+1                        ; F735
-        sta     $7B                             ; F738
+        sta     DispatchPtrHi                   ; F738
         ldy     #$00                            ; F73A
         lda     #$0B                            ; F73C
         sta     $C7                             ; F73E
@@ -71,7 +71,7 @@ L_F79E: sta     $3F                             ; F79E
         and     #$03                            ; F7AC
         clc                                     ; F7AE
         adc     #$1C                            ; F7AF
-        jsr     L_F011                          ; F7B1
+        jsr     MetaSprite_Render               ; F7B1
         jsr     L_EC73                          ; F7B4
         lda     $F5                             ; F7B7
         bit     LE6E5                           ; F7B9

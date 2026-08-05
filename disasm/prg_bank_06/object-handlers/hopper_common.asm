@@ -42,7 +42,7 @@ L_A8AF: lda     #$05                            ; A8AF
 
 ; ----------------------------------------------------------------------------
 L_A8B9: lda     #$01                            ; A8B9
-        jsr     LE04E                           ; A8BB
+        jsr     Obj_SetAttrFlipX                ; A8BB
         lda     Global_FrameCounter             ; A8BE
         lsr     a                               ; A8C0
         lsr     a                               ; A8C1
@@ -51,7 +51,7 @@ L_A8B9: lda     #$01                            ; A8B9
         and     #$03                            ; A8C4
         tax                                     ; A8C6
         lda     L_A8CE,x                        ; A8C7
-        jmp     LF011                           ; A8CA
+        jmp     MetaSprite_Render               ; A8CA
 
 ; ----------------------------------------------------------------------------
 L_A8CD: rts                                     ; A8CD

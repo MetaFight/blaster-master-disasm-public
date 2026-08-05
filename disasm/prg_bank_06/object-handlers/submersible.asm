@@ -92,7 +92,7 @@ L_B6C8: lda     #$19                            ; B6C8
 
 ; ----------------------------------------------------------------------------
 L_B6D2: lda     #$01                            ; B6D2
-        jsr     LE04E                           ; B6D4
+        jsr     Obj_SetAttrFlipX                ; B6D4
         lda     Global_FrameCounter             ; B6D7
         lsr     a                               ; B6D9
         lsr     a                               ; B6DA
@@ -100,7 +100,7 @@ L_B6D2: lda     #$01                            ; B6D2
         and     #$01                            ; B6DC
         clc                                     ; B6DE
         adc     #$A5                            ; B6DF
-        jmp     LF011                           ; B6E1
+        jmp     MetaSprite_Render               ; B6E1
 
 .endmacro
 

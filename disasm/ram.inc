@@ -127,6 +127,10 @@ SpriteStagingBuf_Sprite3 := $060C   ; element 3
 ObjectSlot_Offset                 := $0056
 ; Index of the active slot
 ObjectSlot_Index                  := $0057
+; Indirect dispatch pointer, lo byte.
+DispatchPtr                       := $007A
+; Indirect dispatch pointer, hi byte.
+DispatchPtrHi                     := $007B
 ; Counter for Sophia's "look up" animation.
 ; 0x00 is not started
 ; 0x0C is completed (looking straight up)

@@ -84,12 +84,12 @@ L_E797: lda     $01                             ; E797
         lda     $C8                             ; E7A3
         sta     $02                             ; E7A5
         ldy     #$00                            ; E7A7
-        lda     (L007A),y                       ; E7A9
+        lda     (DispatchPtr),y                 ; E7A9
         iny                                     ; E7AB
         sta     L0000                           ; E7AC
         asl     a                               ; E7AE
         bcc     L_E7B6                          ; E7AF
-        lda     (L007A),y                       ; E7B1
+        lda     (DispatchPtr),y                 ; E7B1
         iny                                     ; E7B3
         sta     $45                             ; E7B4
 L_E7B6: jsr     L_E74D                          ; E7B6
@@ -101,7 +101,7 @@ L_E7B6: jsr     L_E74D                          ; E7B6
         sta     $03                             ; E7C4
 L_E7C6: bit     L0000                           ; E7C6
         bmi     L_E7D0                          ; E7C8
-        lda     (L007A),y                       ; E7CA
+        lda     (DispatchPtr),y                 ; E7CA
         iny                                     ; E7CC
         jmp     L_E7D4                          ; E7CD
 
@@ -157,7 +157,7 @@ L_E816: pla                                     ; E816
 L_E823: jsr     L_E74D                          ; E823
 L_E826: jsr     L_F19B                          ; E826
         ldy     #$00                            ; E829
-L_E82B: lda     (L007A),y                       ; E82B
+L_E82B: lda     (DispatchPtr),y                 ; E82B
         iny                                     ; E82D
         cmp     #$00                            ; E82E
         beq     L_E83A                          ; E830

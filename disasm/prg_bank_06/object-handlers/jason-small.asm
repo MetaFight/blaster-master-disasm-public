@@ -502,14 +502,14 @@ L_8508: lda     LoadedObj + Obj::Position_X_Lo  ; 8508
         jmp     L_8515                          ; 8512
 
 ; ----------------------------------------------------------------------------
-L_8515: jsr     LF011                           ; 8515
+L_8515: jsr     MetaSprite_Render                           ; 8515
         jmp     L_88E9                          ; 8518
 
 ; ----------------------------------------------------------------------------
 L_851B: lda     L_8540                          ; 851B
-        sta     $7A                             ; 851E
+        sta     DispatchPtr                     ; 851E
         lda     L_8540+1                        ; 8520
-        sta     $7B                             ; 8523
+        sta     DispatchPtrHi                   ; 8523
         ldy     #$00                            ; 8525
         ldx     #$20                            ; 8527
         lda     $F7                             ; 8529
@@ -723,7 +723,7 @@ L_86CC: lda     #$08                            ; 86CC
         lsr     a                               ; 86E3
         sta     $44                             ; 86E4
         lda     #$61                            ; 86E6
-        jsr     LF011                           ; 86E8
+        jsr     MetaSprite_Render               ; 86E8
         jmp     L_88E9                          ; 86EB
 
 ; ----------------------------------------------------------------------------
@@ -859,7 +859,7 @@ L_87A9: lda     #$08                            ; 87A9
         lda     #$00                            ; 87C1
         sta     $44                             ; 87C3
         lda     #$31                            ; 87C5
-        jsr     LF011                           ; 87C7
+        jsr     MetaSprite_Render               ; 87C7
         pla                                     ; 87CA
         sta     $3E                             ; 87CB
         pla                                     ; 87CD
@@ -887,7 +887,7 @@ L_87DA: lda     #$08                            ; 87DA
         lda     #$00                            ; 87F2
         sta     $44                             ; 87F4
         lda     #$31                            ; 87F6
-        jsr     LF011                           ; 87F8
+        jsr     MetaSprite_Render               ; 87F8
         pla                                     ; 87FB
         sta     $3E                             ; 87FC
         pla                                     ; 87FE

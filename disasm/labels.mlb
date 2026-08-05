@@ -1437,6 +1437,7 @@ NesPrgRom:17FEE:L_BFEE
 NesPrgRom:17FF1:L_BFF1
 NesPrgRom:17FF4:L_BFF4
 NesPrgRom:18000:L_8000
+NesPrgRom:18002:L_8002
 NesPrgRom:1806E:L_806E
 NesPrgRom:18070:L_8070
 NesPrgRom:180AE:L_80AE
@@ -2294,7 +2295,7 @@ NesPrgRom:1A85A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:still alive:
 NesPrgRom:1A863::$51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
 NesPrgRom:1A868:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle:$51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose
 NesPrgRom:1A86A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile:tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
-NesPrgRom:1A86D:L_A86D
+NesPrgRom:1A86D:DEAD_TankGrayHopper6HP_OrphanRTS:Single unreachable $60 (RTS) after the Gray Hopper 6HP ($60) tile tail (tail-calls JMP $F011 at $A86A). Distinct from DEAD_TankGrayHopper_OrphanRTS ($B1D9), the 10HP variant. The preceding routine's tail call was peephole-optimised into a direct jump without removing the trailing return, so this byte is never executed. Seeded as code so it decodes correctly. 20 instances found 2026-07-12, joining the 4 already documented in docs/misc/dead-code.md.
 NesPrgRom:1A86E:L_A86E
 NesPrgRom:1A871:L_A871
 NesPrgRom:1A886:L_A886
@@ -3526,8 +3527,9 @@ NesPrgRom:1E027:L_E027
 NesPrgRom:1E02F:L_E02F
 NesPrgRom:1E03B:L_E03B
 NesPrgRom:1E04D:L_E04D
-NesPrgRom:1E04E:L_E04E
-NesPrgRom:1E054:L_E054
+NesPrgRom:1E04E:Obj_SetAttrFlipX:Sets the sprite OAM attribute ($44) to A, adding the horizontal-flip bit when the object faces right (X velocity $4C non-negative). One call sets both palette and facing — e.g. the Fliers pass their palette index (Red $7C = pal 0, Gray $7D = pal 1).
+NesPrgRom:1E052::If XVel $4C ≥ 0, XOR the horizontal-flip bit ($40) into attr A; store to $44.
+NesPrgRom:1E054:_Obj_SetAttrFlipX__Store:Store OAM attribute $44.
 NesPrgRom:1E057:L_E057
 NesPrgRom:1E05D:L_E05D
 NesPrgRom:1E060:L_E060
@@ -3639,9 +3641,24 @@ NesPrgRom:1E4FD:L_E4FD
 NesPrgRom:1E53D:L_E53D
 NesPrgRom:1E54D:L_E54D
 NesPrgRom:1E56F:L_E56F
-NesPrgRom:1E61B:L_E61B
-NesPrgRom:1E633:L_E633
-NesPrgRom:1E63C:L_E63C
+NesPrgRom:1E61B:BankSave_Switch:Switches the PRG bank.\n\nRaises the NMI busy flag across the switch so an NMI firing mid-switch is deferred, then replays the deferred frame work afterward.\n\nInput:\n  A = target bank\n\nOutput:\n  ActiveBank = new active bank\n\nPost-condition:\n  X and Y are preserved
+NesPrgRom:1E61D::backup X onto stack
+NesPrgRom:1E61F::backup Y onto stack
+NesPrgRom:1E621::Set Nmi_SignalFlags to just bit 6 on.\nThis signals the NMI handler to defer its work during the bank switch.
+NesPrgRom:1E627::reload bank number from ActiveBank and call MMC1_WritePRG to do the trigger the bank switch.
+NesPrgRom:1E62A::Check Nmi_SignalFlags to see if NMI ran during bank switch.
+NesPrgRom:1E62E::if bit 5 is not set then NMI did not occur.  Carry on with cleanup.
+NesPrgRom:1E630::Otherwise, do the deferred NMI work here.
+NesPrgRom:1E633:_BankSave_Switch__Cleanup
+NesPrgRom:1E635::Clear Nmi_SignalFlags
+NesPrgRom:1E637::restore Y
+NesPrgRom:1E639::restore X
+NesPrgRom:1E63C:MMC1_WritePRG:MMC1 5-bit serial write to $FFFF\nwrite bit 0 of bank number to MMC1 serial shift register at $FFFF
+NesPrgRom:1E640::write bit 1
+NesPrgRom:1E644::write bit 2
+NesPrgRom:1E648::write bit 3
+NesPrgRom:1E64C::write bit 4
+NesPrgRom:1E64F::after 5 writes MMC1 latches the 5-bit PRG bank number.  Our work is done.
 NesPrgRom:1E650:L_E650
 NesPrgRom:1E664:L_E664
 NesPrgRom:1E678:L_E678
@@ -3650,7 +3667,7 @@ NesPrgRom:1E692:L_E692
 NesPrgRom:1E697:OAM_Copy_To_PPU:Uploads the $0200 sprite page to PPU OAM. \nIf the mode flag OAM_Flag__HARDCODED_00 is 0, triggers a full 256-byte sprite DMA via $4014 (OAMADDR reset to 0); \notherwise copies 64 bytes/frame manually through OAMDATA ($2004), advancing the quarter index $F0 ($00/$40/$80/$C0) so the page uploads over four frames.
 NesPrgRom:1E6A7:_DEAD_OAM_Copy_To_PPU__Manually:Dead in the shipped US ROM — the alternate manual OAM upload path (stream $0200 → OAM data port $2004), reached only when OAM_Flag__HARDCODED_00 ($E6BE) ≠ 0, which it never is; the $4014 sprite-DMA fall-through above is what actually runs.
 NesPrgRom:1E6B1:_DEAD_OAM_Copy_To_PPU__ManualLoop:Copy 64 bytes $0200+X → OAM data port ($2004).
-NesPrgRom:1E6BE:OAM_Flag__HARDCODED_00:Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA OAM_Flag__HARDCODED_00 / BNE, so with $00 the branch never fires: OAM always goes out via $4014 sprite DMA (not the manual copy path), and the staging blit always uses NmiFrameFlag ($11) bit 0 frame parity to alternate slot direction rather than a forced direction. Patching this byte non-zero enables the two dead alternate paths.
+NesPrgRom:1E6BE:OAM_Flag__HARDCODED_00:Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA OAM_Flag__HARDCODED_00 / BNE, so with $00 the branch never fires: OAM always goes out via $4014 sprite DMA (not the manual copy path), and the staging blit always uses Nmi_SignalFlags ($11) bit 0 frame parity to alternate slot direction rather than a forced direction. Patching this byte non-zero enables the two dead alternate paths.
 NesPrgRom:1E6BF:L_E6BF
 NesPrgRom:1E6DE:L_E6DE
 NesPrgRom:1E6E1:L_E6E1
@@ -3693,7 +3710,7 @@ NesPrgRom:1E90B:L_E90B
 NesPrgRom:1E913:L_E913
 NesPrgRom:1E914:L_E914
 NesPrgRom:1E920:L_E920
-NesPrgRom:1E936:WaitNMI:Set NmiFrameFlag bit 7 then spin until NMI handler clears it; guarantees 60 Hz pacing
+NesPrgRom:1E936:WaitNMI:Set Nmi_SignalFlags bit 7 then spin until NMI handler clears it; guarantees 60 Hz pacing
 NesPrgRom:1E938::Set $12 bit7, then spin until the NMI handler clears it (waits exactly one frame).
 NesPrgRom:1E93A:_WaitNMI__Loop
 NesPrgRom:1E93F:L_E93F
@@ -3714,8 +3731,13 @@ NesPrgRom:1E9CF:L_E9CF
 NesPrgRom:1E9F3:L_E9F3
 NesPrgRom:1EA03:L_EA03
 NesPrgRom:1EA30:L_EA30
-NesPrgRom:1EA3A:L_EA3A
-NesPrgRom:1EA3C:L_EA3C
+NesPrgRom:1EA3A:BankDispatch_Switch:Helper routine to switch PRG banks.  This variant hardcodes X (DispatchPtr) to #$7A.\n\nInput:\n  A (upper nibble) = Target bank\n  A (lower nibble) = entry index into the target bank's top dispatch table\n                     bank 6: BankDispatch_TopTable_Bk06 $8000\n                     bank 4: BankDispatch_TopTable_Bk04 $8000
+NesPrgRom:1EA3C:BankDispatch_Switch_NoX:Helper routine to switch PRG banks.\n\nInput:\n  A (upper nibble) = Target bank\n  A (lower nibble) = Entry Index of target bank's BankDispatch_TopTable\n  X = Dispatch Pointer Address
+NesPrgRom:1EA3D::Save a copy of the input to Y,\nthen >> 4 so that A = Target bank."
+NesPrgRom:1EA41::Switch PRG Bank.
+NesPrgRom:1EA45::restore original input but only keep lower nibble.\nA = BankDispatch_TopTable entry index
+NesPrgRom:1EA49::read lo/hi of entry A from BankDispatch_TopTable at $8000 in the newly-switched bank,\nand store that pointer in the Dispatch Pointer Address (X)
+NesPrgRom:1EA53::then clears Y and exits
 NesPrgRom:1EA56:L_EA56
 NesPrgRom:1EA60:L_EA60
 NesPrgRom:1EA63:L_EA63
@@ -3759,9 +3781,9 @@ NesPrgRom:1EB57:L_EB57
 NesPrgRom:1EB64:L_EB64
 NesPrgRom:1EB71:Step_RNG:Steps the pseudo-random number generator state RNG_State ($13) by one 8-bit LCG step and returns the new byte in A ($13 := $13×5 − 1). Full period 256, so the returned byte's individual bits (AND #imm, or its sign via BMI/BPL) are genuinely close to uniform/50-50. Its CARRY FLAG is not: the closing SEC/SBC #$01 only clears carry when $13 was $00 on entry, which happens exactly once per 256 calls — so a caller that branches on BCC/BCS right after JSR Step_RNG is not flipping a coin, it is gating on a ~1-in-256 event. A caller must use the returned byte, not the carry, to get an even chance.
 NesPrgRom:1EB73::Advance the PRNG: $13 = $13×5 − 1 (returns the new $13).
-NesPrgRom:1EB7E:L_EB7E
-NesPrgRom:1EB8D:L_EB8D
-NesPrgRom:1EB91:L_EB91
+NesPrgRom:1EB7E:NMI:Hardware NMI (VBlank) handler.\n\nSaves the registers.\nIf a bank switch is in progress (Nmi_SignalFlags bit 6) records a deferred NMI and returns.\nOtherwise, runs the frame-update work (Nmi_DoWork).\nRestores the registers before returning.
+NesPrgRom:1EB8D:_NMI__Deferred:Nmi_SignalFlags bit 6 was set (busy during bank switch); record deferred NMI by writing $20 (bit 5) to Nmi_SignalFlags and RTI — BankSave_Switch will replay Nmi_DoWork on return
+NesPrgRom:1EB91:_NMI__Restore:Pop Y/X/A; RTI
 NesPrgRom:1EB97:L_EB97
 NesPrgRom:1EB98:L_EB98
 NesPrgRom:1EB9F:L_EB9F
@@ -3833,11 +3855,12 @@ NesPrgRom:1EF8B:_ScreenPos_Compute__OnScreen:Adjust to sprite top-left and retur
 NesPrgRom:1EF91:L_EF91
 NesPrgRom:1EFD7:ScreenPos_Adjust:Subtract sprite-centre offset from Local_Sprite_Screen_X/Local_Sprite_Screen_Y.\n  tank     sections (8×8  OAM objects): -4/-5\n  overhead sections (8×16 OAM objects): -4/-9
 NesPrgRom:1EFE4::otherwise, tank section case:
-NesPrgRom:1EFEC:_ScreenPos_Adjust__Overhead:8x16 sprite mode ($FF bit5): Y -= 9.
+NesPrgRom:1EFEC:_ScreenPos_Adjust__Overhead:8x16 sprite mode (PPU_CTRL_Shadow bit5): Y -= 9.
 NesPrgRom:1EFF4:L_EFF4
 NesPrgRom:1F009:L_F009
-NesPrgRom:1F011:L_F011
-NesPrgRom:1F01C:L_F01C
+NesPrgRom:1F011:MetaSprite_Render:Renders a metasprite selecting the correct metasprite pointer table by sprite size.\n\nInput:\n  A = metasprite id\n  PPU_CTRL_Shadow = bit 5 of which contains the section-type flag.\n    this allows us to select from the appropriate metasprite table.  Either,\n      1 = table $1A, the 8×16 overhead table\n      0 = table $41, the 8×8  tank table\n\nPost-condition:\n  Restores the previous bank
+NesPrgRom:1F018::Select the metasprite CHR bank ($1A or $41) by testing bit-5 of PPU_CTRL_Shadow.
+NesPrgRom:1F01C:_MetaSprite_Render__SelectTable:X = packed bank|entry for BankDispatch_Switch: $1A (bank 1 entry $0A = the 8x16 overhead metasprite table $BEA1) when PPU_CTRL_Shadow bit5 set, else $41 (bank 4 entry $01 = the 8x8 tank table $8907).
 NesPrgRom:1F029:L_F029
 NesPrgRom:1F02F:L_F02F
 NesPrgRom:1F04B:L_F04B
@@ -4082,6 +4105,8 @@ NesInternalRam:0052:LoadedObj__Scratch2:General-purpose per-handler byte (offset
 NesInternalRam:0053:LoadedObj__Health:HP for this entity.
 NesInternalRam:0056:ObjectSlot_Offset:Byte offset of the active slot
 NesInternalRam:0057:ObjectSlot_Index:Index of the active slot
+NesInternalRam:007A:DispatchPtr:Indirect dispatch pointer, lo byte.
+NesInternalRam:007B:DispatchPtrHi:Indirect dispatch pointer, hi byte.
 NesInternalRam:007C:PlayerContact__Screen_X:(alpha: not fully human-verified / pending re-verification) Screen X, posted by Sprite_Update ($D7A0) from Local_Sprite_Screen_X.
 NesInternalRam:007D:PlayerContact__Screen_Y:(alpha: not fully human-verified / pending re-verification) Screen Y, posted by Sprite_Update ($D7A0) from Local_Sprite_Screen_Y.
 NesInternalRam:007E:PlayerContact__Damage:(alpha: not fully human-verified / pending re-verification) Bit 7 = hit flag, bits 0-6 = damage magnitude. Sprite_Update posts (A & $7F) -- bit 7 is always cleared on post -- and returns the PREVIOUS byte, which is how the owner learns it was hit. An attacker stamps its own magnitude | $80 here (Enemy_Damage_Check_Sub $D6C8 / HitboxScan_LockOn $D71A / HitboxTest_LockOn $D75B). $7F posted means harmless: a scanner reads it as the damage TO ITSELF and $D69C skips on cmp #$7F, which is how touching Jason/Sophia costs an enemy nothing. See EnemyDesc::ContactDamage.

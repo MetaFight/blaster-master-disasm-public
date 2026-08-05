@@ -74,7 +74,7 @@ L_AA3B: lda     #$41                            ; AA3B
 L_AA50: lda     #$88                            ; AA50
         bne     L_AA56                          ; AA52
 L_AA54: lda     #$89                            ; AA54
-L_AA56: jmp     LF011                           ; AA56
+L_AA56: jmp     MetaSprite_Render                           ; AA56
 
 ; ----------------------------------------------------------------------------
 L_AA59: rts                                     ; AA59

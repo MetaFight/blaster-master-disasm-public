@@ -1,36 +1,70 @@
 .macro MAC_L_E61B
 ; ----------------------------------------------------------------------------
-L_E61B: sta     $DB                             ; E61B
+; Switches the PRG bank.
+; 
+; Raises the NMI busy flag across the switch so an NMI firing mid-switch is deferred, then replays
+; the deferred frame work afterward.
+; 
+; Input:
+;   A = target bank
+; 
+; Output:
+;   ActiveBank = new active bank
+; 
+; Post-condition:
+;   X and Y are preserved
+BankSave_Switch:
+        sta     $DB                             ; E61B
+; backup X onto stack
         txa                                     ; E61D
         pha                                     ; E61E
+; backup Y onto stack
         tya                                     ; E61F
         pha                                     ; E620
+; Set Nmi_SignalFlags to just bit 6 on.
+; This signals the NMI handler to defer its work during the bank switch.
         lda     #$40                            ; E621
         sta     $12                             ; E623
         lda     $DB                             ; E625
-        jsr     L_E63C                          ; E627
+; reload bank number from ActiveBank and call MMC1_WritePRG to do the trigger the bank switch.
+        jsr     MMC1_WritePRG                   ; E627
+; Check Nmi_SignalFlags to see if NMI ran during bank switch.
         lda     $12                             ; E62A
         and     #$20                            ; E62C
-        beq     L_E633                          ; E62E
+; if bit 5 is not set then NMI did not occur.  Carry on with cleanup.
+        beq     _BankSave_Switch__Cleanup       ; E62E
+; Otherwise, do the deferred NMI work here.
         jsr     L_EB98                          ; E630
-L_E633: lda     #$00                            ; E633
+_BankSave_Switch__Cleanup:
+        lda     #$00                            ; E633
+; Clear Nmi_SignalFlags
         sta     $12                             ; E635
+; restore Y
         pla                                     ; E637
         tay                                     ; E638
+; restore X
         pla                                     ; E639
         tax                                     ; E63A
         rts                                     ; E63B
 
 ; ----------------------------------------------------------------------------
-L_E63C: sta     MMC1_PrgBank_FFFF               ; E63C
+; MMC1 5-bit serial write to $FFFF
+; write bit 0 of bank number to MMC1 serial shift register at $FFFF
+MMC1_WritePRG:
+        sta     MMC1_PrgBank_FFFF               ; E63C
         lsr     a                               ; E63F
-        sta     MMC1_PrgBank_FFFF               ; E640
+; write bit 1
+        sta     L_FFFA+5                        ; E640
         lsr     a                               ; E643
-        sta     MMC1_PrgBank_FFFF               ; E644
+; write bit 2
+        sta     L_FFFA+5                        ; E644
         lsr     a                               ; E647
-        sta     MMC1_PrgBank_FFFF               ; E648
+; write bit 3
+        sta     L_FFFA+5                        ; E648
         lsr     a                               ; E64B
-        sta     MMC1_PrgBank_FFFF               ; E64C
+; write bit 4
+        sta     L_FFFA+5                        ; E64C
+; after 5 writes MMC1 latches the 5-bit PRG bank number.  Our work is done.
         rts                                     ; E64F
 
 ; ----------------------------------------------------------------------------
@@ -76,7 +110,7 @@ L_E68C: lda     #$80                            ; E68C
 
 ; ----------------------------------------------------------------------------
 L_E692: sta     $D3                             ; E692
-        jmp     L_E61B                          ; E694
+        jmp     BankSave_Switch                 ; E694
 
 .endmacro
 

@@ -129,7 +129,7 @@ L_A59A: lda     LoadedObj + Obj::Scratch0       ; A59A
         lsr     a                               ; A5B8
         and     #$01                            ; A5B9
         ora     L_A6C0,x                        ; A5BB
-        jmp     LF011                           ; A5BE
+        jmp     MetaSprite_Render               ; A5BE
 
 ; ----------------------------------------------------------------------------
 L_A5C1: rts                                     ; A5C1
@@ -200,7 +200,7 @@ L_A61F: lda     LoadedObj + Obj::Facing         ; A61F
         ora     #$01                            ; A62A
         sta     $44                             ; A62C
         lda     LA6D0,x                         ; A62E
-        jmp     LF011                           ; A631
+        jmp     MetaSprite_Render               ; A631
 
 .endmacro
 

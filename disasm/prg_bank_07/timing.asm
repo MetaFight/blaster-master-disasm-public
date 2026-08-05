@@ -12,7 +12,7 @@ L_CE4A: pha                                     ; CE4A
 
 .macro MAC_L_E936
 ; ----------------------------------------------------------------------------
-; Set NmiFrameFlag bit 7 then spin until NMI handler clears it; guarantees 60 Hz pacing
+; Set Nmi_SignalFlags bit 7 then spin until NMI handler clears it; guarantees 60 Hz pacing
 WaitNMI:lda     #$80                            ; E936
 ; Set $12 bit7, then spin until the NMI handler clears it (waits exactly one frame).
         sta     $12                             ; E938
@@ -39,20 +39,31 @@ L_E949: lda     $FF                             ; E949
 
 .macro MAC_L_EB7E
 ; ----------------------------------------------------------------------------
-L_EB7E: pha                                     ; EB7E
+; Hardware NMI (VBlank) handler.
+; 
+; Saves the registers.
+; If a bank switch is in progress (Nmi_SignalFlags bit 6) records a deferred NMI and returns.
+; Otherwise, runs the frame-update work (Nmi_DoWork).
+; Restores the registers before returning.
+NMI:    pha                                     ; EB7E
         txa                                     ; EB7F
         pha                                     ; EB80
         tya                                     ; EB81
         pha                                     ; EB82
         bit     $12                             ; EB83
-        bvs     L_EB8D                          ; EB85
+        bvs     _NMI__Deferred                  ; EB85
         jsr     L_EB98                          ; EB87
-        jmp     L_EB91                          ; EB8A
+        jmp     _NMI__Restore                   ; EB8A
 
 ; ----------------------------------------------------------------------------
-L_EB8D: lda     #$20                            ; EB8D
+; Nmi_SignalFlags bit 6 was set (busy during bank switch); record deferred NMI by writing $20 (bit
+; 5) to Nmi_SignalFlags and RTI — BankSave_Switch will replay Nmi_DoWork on return
+_NMI__Deferred:
+        lda     #$20                            ; EB8D
         sta     $12                             ; EB8F
-L_EB91: pla                                     ; EB91
+; Pop Y/X/A; RTI
+_NMI__Restore:
+        pla                                     ; EB91
         tay                                     ; EB92
         pla                                     ; EB93
         tax                                     ; EB94
@@ -123,10 +134,10 @@ L_EC34: jsr     L_F1CA                          ; EC34
         inc     Global_FrameCounter             ; EC4C
         jsr     L_E8A9                          ; EC4E
 L_EC51: lda     #$05                            ; EC51
-        jsr     L_E63C                          ; EC53
+        jsr     MMC1_WritePRG                   ; EC53
         jsr     L_DEEB                          ; EC56
         lda     $DB                             ; EC59
-        jsr     L_E63C                          ; EC5B
+        jsr     MMC1_WritePRG                   ; EC5B
         inc     $10                             ; EC5E
         rts                                     ; EC60
 

@@ -18,9 +18,9 @@ L_9D4C: rts                                     ; 9D4C
 L_9D4D: .byte   $EA,$EA                         ; 9D4D
 ; ----------------------------------------------------------------------------
 L_9D4F: lda     L_9E90                          ; 9D4F
-        sta     $7A                             ; 9D52
+        sta     DispatchPtr                     ; 9D52
         lda     L_9E90+1                        ; 9D54
-        sta     $7B                             ; 9D57
+        sta     DispatchPtrHi                   ; 9D57
         lda     #$01                            ; 9D59
         ldx     #$00                            ; 9D5B
         beq     L_9D83                          ; 9D5D
@@ -30,9 +30,9 @@ L_9D5F: rts                                     ; 9D5F
 L_9D60: .byte   $EA,$EA                         ; 9D60
 ; ----------------------------------------------------------------------------
 L_9D62: lda     L_9E97                          ; 9D62
-        sta     $7A                             ; 9D65
+        sta     DispatchPtr                     ; 9D65
         lda     L_9E97+1                        ; 9D67
-        sta     $7B                             ; 9D6A
+        sta     DispatchPtrHi                   ; 9D6A
         lda     #$02                            ; 9D6C
         ldx     #$F0                            ; 9D6E
         bne     L_9D83                          ; 9D70
@@ -42,9 +42,9 @@ L_9D72: rts                                     ; 9D72
 L_9D73: .byte   $EA,$EA                         ; 9D73
 ; ----------------------------------------------------------------------------
 L_9D75: lda     L_9E97                          ; 9D75
-        sta     $7A                             ; 9D78
+        sta     DispatchPtr                     ; 9D78
         lda     L_9E97+1                        ; 9D7A
-        sta     $7B                             ; 9D7D
+        sta     DispatchPtrHi                   ; 9D7D
         lda     #$04                            ; 9D7F
         ldx     #$10                            ; 9D81
 L_9D83: sta     $08                             ; 9D83
@@ -120,9 +120,9 @@ L_9DDD: lda     LoadedObj + Obj::Position_Y_Hi  ; 9DDD
 L_9DF9: jsr     LD68D                           ; 9DF9
 L_9DFC: jsr     LD68D                           ; 9DFC
 L_9DFF: lda     L_9E21                          ; 9DFF
-        sta     $7A                             ; 9E02
+        sta     DispatchPtr                     ; 9E02
         lda     L_9E21+1                        ; 9E04
-        sta     $7B                             ; 9E07
+        sta     DispatchPtrHi                   ; 9E07
         lda     #$00                            ; 9E09
         jsr     LCEC6                           ; 9E0B
         lda     #$41                            ; 9E0E

@@ -30,13 +30,13 @@ L_E243: lda     $06F3                           ; E243
 
 ; ----------------------------------------------------------------------------
 L_E257: lda     #$2C                            ; E257
-        jsr     L_EA3A                          ; E259
+        jsr     BankDispatch_Switch             ; E259
         lda     $06F4                           ; E25C
         and     #$03                            ; E25F
         jsr     L_EB51                          ; E261
-        lda     L007A                           ; E264
+        lda     DispatchPtr                     ; E264
         sta     $CE                             ; E266
-        lda     $7B                             ; E268
+        lda     DispatchPtrHi                   ; E268
         sta     $CF                             ; E26A
 L_E26C: lda     #$00                            ; E26C
         sta     $CD                             ; E26E
@@ -57,7 +57,7 @@ L_E286: rts                                     ; E286
 .macro MAC_L_E2C1
 ; ----------------------------------------------------------------------------
 L_E2C1: lda     #$02                            ; E2C1
-        jsr     L_E61B                          ; E2C3
+        jsr     BankSave_Switch                 ; E2C3
         lda     $06F3                           ; E2C6
         cmp     #$01                            ; E2C9
         beq     L_E2D1                          ; E2CB
@@ -88,7 +88,7 @@ L_E2FB: lda     $D1                             ; E2FB
         sta     $F7                             ; E2FD
         jsr     L_E308                          ; E2FF
 L_E302: lda     $D3                             ; E302
-        jsr     L_E61B                          ; E304
+        jsr     BankSave_Switch                 ; E304
         rts                                     ; E307
 
 ; ----------------------------------------------------------------------------

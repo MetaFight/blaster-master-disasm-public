@@ -32,7 +32,7 @@ L_9BB1: lda     #$10                            ; 9BB1
         tax                                     ; 9BC5
         lda     L_9BD2,x                        ; 9BC6
         beq     L_9BCE                          ; 9BC9
-        jmp     LF011                           ; 9BCB
+        jmp     MetaSprite_Render               ; 9BCB
 
 ; ----------------------------------------------------------------------------
 L_9BCE: rts                                     ; 9BCE
@@ -75,7 +75,7 @@ L_9BF4: lda     #$10                            ; 9BF4
         tax                                     ; 9C08
         lda     L_9C15,x                        ; 9C09
         beq     L_9C14                          ; 9C0C
-        jmp     LF011                           ; 9C0E
+        jmp     MetaSprite_Render               ; 9C0E
 
 ; ----------------------------------------------------------------------------
 L_9C11: jmp     Obj_Despawn                           ; 9C11

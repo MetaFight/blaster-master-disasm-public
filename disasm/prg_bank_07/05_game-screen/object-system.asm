@@ -162,7 +162,7 @@ L_C9A4: ldx     #$40                            ; C9A4
         ldx     #$60                            ; C9AC
 L_C9AE: txa                                     ; C9AE
         pha                                     ; C9AF
-        jsr     L_EA3A                          ; C9B0
+        jsr     BankDispatch_Switch             ; C9B0
         pla                                     ; C9B3
         lsr     a                               ; C9B4
         lsr     a                               ; C9B5
@@ -177,12 +177,12 @@ L_C9AE: txa                                     ; C9AE
         lda     $15                             ; C9C4
         bne     L_C9D3                          ; C9C6
         clc                                     ; C9C8
-        lda     L007A                           ; C9C9
+        lda     DispatchPtr                     ; C9C9
         adc     #$03                            ; C9CB
-        sta     L007A                           ; C9CD
+        sta     DispatchPtr                     ; C9CD
         bcc     L_C9D3                          ; C9CF
-        inc     $7B                             ; C9D1
-L_C9D3: jmp     (L007A)                         ; C9D3
+        inc     DispatchPtrHi                   ; C9D1
+L_C9D3: jmp     (DispatchPtr)                   ; C9D3
 
 .endmacro
 
@@ -606,10 +606,17 @@ L_E03B: lda     #$11                            ; E03B
 L_E04D: rts                                     ; E04D
 
 ; ----------------------------------------------------------------------------
-L_E04E: ldx     LoadedObj + Obj::Velocity_X     ; E04E
-        bmi     L_E054                          ; E050
+; Sets the sprite OAM attribute ($44) to A, adding the horizontal-flip bit when the object faces
+; right (X velocity $4C non-negative). One call sets both palette and facing — e.g. the Fliers
+; pass their palette index (Red $7C = pal 0, Gray $7D = pal 1).
+Obj_SetAttrFlipX:
+        ldx     LoadedObj + Obj::Velocity_X     ; E04E
+        bmi     _Obj_SetAttrFlipX__Store        ; E050
+; If XVel $4C ≥ 0, XOR the horizontal-flip bit ($40) into attr A; store to $44.
         eor     #$40                            ; E052
-L_E054: sta     $44                             ; E054
+; Store OAM attribute $44.
+_Obj_SetAttrFlipX__Store:
+        sta     $44                             ; E054
         rts                                     ; E056
 
 ; ----------------------------------------------------------------------------

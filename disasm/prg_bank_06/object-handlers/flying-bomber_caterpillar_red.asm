@@ -95,13 +95,13 @@ L_AFE1: lda     #$0F                            ; AFE1
 
 ; ----------------------------------------------------------------------------
 L_AFEB: lda     #$00                            ; AFEB
-        jsr     LE04E                           ; AFED
+        jsr     Obj_SetAttrFlipX                ; AFED
         ldx     #$2F                            ; AFF0
         lda     LoadedObj + Obj::Scratch0       ; AFF2
         beq     L_AFF7                          ; AFF4
         inx                                     ; AFF6
 L_AFF7: txa                                     ; AFF7
-        jmp     LF011                           ; AFF8
+        jmp     MetaSprite_Render               ; AFF8
 
 ; ----------------------------------------------------------------------------
 L_AFFB: rts                                     ; AFFB

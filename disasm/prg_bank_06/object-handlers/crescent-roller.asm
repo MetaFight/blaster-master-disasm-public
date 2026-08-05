@@ -107,7 +107,7 @@ L_B7A8: jmp     L_B7E3                          ; B7A8
 L_B7AB: lda     $3F                             ; B7AB
         pha                                     ; B7AD
         lda     #$01                            ; B7AE
-        jsr     LE04E                           ; B7B0
+        jsr     Obj_SetAttrFlipX                ; B7B0
         jsr     LD77D                           ; B7B3
         clc                                     ; B7B6
         lda     $3F                             ; B7B7
@@ -132,7 +132,7 @@ L_B7AB: lda     $3F                             ; B7AB
         pla                                     ; B7DA
         sta     $3F                             ; B7DB
         lda     #$B0                            ; B7DD
-        jsr     LF011                           ; B7DF
+        jsr     MetaSprite_Render               ; B7DF
         rts                                     ; B7E2
 
 ; ----------------------------------------------------------------------------
@@ -164,7 +164,7 @@ L_B7F2: sta     $44                             ; B7F2
         pla                                     ; B813
         sta     $3F                             ; B814
         lda     #$B0                            ; B816
-        jsr     LF011                           ; B818
+        jsr     MetaSprite_Render               ; B818
         rts                                     ; B81B
 
 ; ----------------------------------------------------------------------------

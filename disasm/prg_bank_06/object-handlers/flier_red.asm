@@ -77,13 +77,13 @@ L_B27C: lda     #$13                            ; B27C
 
 ; ----------------------------------------------------------------------------
 L_B286: lda     #$00                            ; B286
-        jsr     LE04E                           ; B288
+        jsr     Obj_SetAttrFlipX                ; B288
         lda     Global_FrameCounter             ; B28B
         lsr     a                               ; B28D
         and     #$03                            ; B28E
         tax                                     ; B290
         lda     L_B297,x                        ; B291
-        jmp     LF011                           ; B294
+        jmp     MetaSprite_Render               ; B294
 
 ; ----------------------------------------------------------------------------
 L_B297: .byte   $08,$09,$0A,$0B                 ; B297

@@ -349,7 +349,7 @@ L_F163: sta     $45                             ; F163
 
 ; ----------------------------------------------------------------------------
 L_F170: ldy     #$00                            ; F170
-L_F172: lda     (L007A),y                       ; F172
+L_F172: lda     (DispatchPtr),y                 ; F172
         beq     L_F186                          ; F174
         sta     $45                             ; F176
         jsr     L_ECB4                          ; F178
@@ -364,10 +364,10 @@ L_F172: lda     (L007A),y                       ; F172
 L_F186: iny                                     ; F186
         tya                                     ; F187
         clc                                     ; F188
-        adc     L007A                           ; F189
-        sta     L007A                           ; F18B
+        adc     DispatchPtr                     ; F189
+        sta     DispatchPtr                     ; F18B
         bcc     L_F191                          ; F18D
-        inc     $7B                             ; F18F
+        inc     DispatchPtrHi                   ; F18F
 L_F191: rts                                     ; F191
 
 .endmacro

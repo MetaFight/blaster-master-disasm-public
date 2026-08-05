@@ -60,9 +60,9 @@ L_97C6: lda     #$10                            ; 97C6
         jsr     LD7A0                           ; 97D8
         bmi     L_980C                          ; 97DB
         lda     L_9817                          ; 97DD
-        sta     $7A                             ; 97E0
+        sta     DispatchPtr                     ; 97E0
         lda     L9818                           ; 97E2
-        sta     $7B                             ; 97E5
+        sta     DispatchPtrHi                   ; 97E5
         ldy     #$00                            ; 97E7
         ldx     LoadedObj + Obj::Facing         ; 97E9
         lda     L_980F,x                        ; 97EB
@@ -205,9 +205,9 @@ L_9929: lda     #$08                            ; 9929
 L_9933: lda     #$00                            ; 9933
         sta     $44                             ; 9935
         lda     L_996E                          ; 9937
-        sta     $7A                             ; 993A
+        sta     DispatchPtr                     ; 993A
         lda     L_996E+1                        ; 993C
-        sta     $7B                             ; 993F
+        sta     DispatchPtrHi                   ; 993F
         ldy     #$00                            ; 9941
         lda     LoadedObj + Obj::Scratch2       ; 9943
         beq     L_9965                          ; 9945
@@ -344,7 +344,7 @@ L_9A47: pha                                     ; 9A47
         lda     L_9AB0,x                        ; 9A60
         sta     $44                             ; 9A63
         lda     L_9A80,x                        ; 9A65
-        jsr     LF011                           ; 9A68
+        jsr     MetaSprite_Render               ; 9A68
         pla                                     ; 9A6B
         sta     $3E                             ; 9A6C
 L_9A6E: lda     $3F                             ; 9A6E
@@ -435,9 +435,9 @@ L_9B47: lda     #$10                            ; 9B47
         lda     #$00                            ; 9B5B
         sta     $44                             ; 9B5D
         lda     L_996E                          ; 9B5F
-        sta     $7A                             ; 9B62
+        sta     DispatchPtr                     ; 9B62
         lda     L_996E+1                        ; 9B64
-        sta     $7B                             ; 9B67
+        sta     DispatchPtrHi                   ; 9B67
         ldy     #$00                            ; 9B69
         lda     $10                             ; 9B6B
         asl     a                               ; 9B6D

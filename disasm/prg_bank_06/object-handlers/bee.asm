@@ -70,14 +70,14 @@ L_AE59: lda     #$0D                            ; AE59
 
 ; ----------------------------------------------------------------------------
 L_AE63: lda     #$01                            ; AE63
-        jsr     LE04E                           ; AE65
+        jsr     Obj_SetAttrFlipX                ; AE65
         lda     Global_FrameCounter             ; AE68
         ldx     #$02                            ; AE6A
         jsr     LE060                           ; AE6C
         and     #$01                            ; AE6F
         clc                                     ; AE71
         adc     #$76                            ; AE72
-        jmp     LF011                           ; AE74
+        jmp     MetaSprite_Render               ; AE74
 
 ; ----------------------------------------------------------------------------
 L_AE77: rts                                     ; AE77

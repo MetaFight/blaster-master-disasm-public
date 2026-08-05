@@ -126,9 +126,9 @@ L_B906: lda     #$1B                            ; B906
 
 ; ----------------------------------------------------------------------------
 L_B910: lda     #$01                            ; B910
-        jsr     LE04E                           ; B912
+        jsr     Obj_SetAttrFlipX                ; B912
         lda     LoadedObj + Obj::Scratch1       ; B915
-        jmp     LF011                           ; B917
+        jmp     MetaSprite_Render               ; B917
 
 .endmacro
 

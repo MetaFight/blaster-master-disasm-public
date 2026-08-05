@@ -90,7 +90,7 @@ L_AAEE: jsr     LE07B                           ; AAEE
         lda     LAB04,x                         ; AAF8
         sta     $44                             ; AAFB
         lda     L_AB03,x                        ; AAFD
-        jmp     LF011                           ; AB00
+        jmp     MetaSprite_Render               ; AB00
 
 ; ----------------------------------------------------------------------------
 L_AB03: .byte   $72                             ; AB03

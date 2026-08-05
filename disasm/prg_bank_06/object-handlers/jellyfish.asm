@@ -79,7 +79,7 @@ L_B467: lda     #$16                            ; B467
 
 ; ----------------------------------------------------------------------------
 L_B471: lda     #$01                            ; B471
-        jsr     LE04E                           ; B473
+        jsr     Obj_SetAttrFlipX                ; B473
         lda     LoadedObj + Obj::Scratch1       ; B476
         bne     L_B47F                          ; B478
         lda     #$9E                            ; B47A
@@ -98,7 +98,7 @@ L_B488: lda     Global_FrameCounter             ; B488
         and     #$01                            ; B48C
         clc                                     ; B48E
         adc     #$9D                            ; B48F
-L_B491: jmp     LF011                           ; B491
+L_B491: jmp     MetaSprite_Render                           ; B491
 
 .endmacro
 

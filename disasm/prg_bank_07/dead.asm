@@ -65,11 +65,11 @@ L_E2C0: rts                                     ; E2C0
 ; ----------------------------------------------------------------------------
 L_EA56: tya                                     ; EA56
         clc                                     ; EA57
-        adc     L007A                           ; EA58
-        sta     L007A                           ; EA5A
+        adc     DispatchPtr                     ; EA58
+        sta     DispatchPtr                     ; EA5A
         bcc     L_EA60                          ; EA5C
-        inc     $7B                             ; EA5E
-L_EA60: jmp     (L007A)                         ; EA60
+        inc     DispatchPtrHi                   ; EA5E
+L_EA60: jmp     (DispatchPtr)                   ; EA60
 
 .endmacro
 
@@ -155,10 +155,10 @@ L_EACB: lda     $01                             ; EACB
 ; ----------------------------------------------------------------------------
 L_EB64: pha                                     ; EB64
         lda     #$31                            ; EB65
-        jsr     L_EA3A                          ; EB67
+        jsr     BankDispatch_Switch             ; EB67
         pla                                     ; EB6A
         jsr     L_EB51                          ; EB6B
-        jmp     (L007A)                         ; EB6E
+        jmp     (DispatchPtr)                   ; EB6E
 
 .endmacro
 
@@ -173,9 +173,9 @@ L_F465: lda     #$00                            ; F465
         sta     $D5                             ; F473
         sta     $D4                             ; F475
         lda     L_F523                          ; F477
-        sta     L007A                           ; F47A
+        sta     DispatchPtr                     ; F47A
         lda     LF524                           ; F47C
-        sta     $7B                             ; F47F
+        sta     DispatchPtrHi                   ; F47F
         ldy     #$00                            ; F481
         lda     #$08                            ; F483
         sta     $C7                             ; F485
@@ -273,9 +273,9 @@ L_F53B: .byte   $50,$52,$45,$53,$53,$20,$53,$54 ; F53B
 .macro MAC_L_F5AE
 ; ----------------------------------------------------------------------------
 L_F5AE: lda     L_F5CF                          ; F5AE
-        sta     L007A                           ; F5B1
+        sta     DispatchPtr                     ; F5B1
         lda     LF5D0                           ; F5B3
-        sta     $7B                             ; F5B6
+        sta     DispatchPtrHi                   ; F5B6
         ldy     #$00                            ; F5B8
         lda     #$02                            ; F5BA
         sta     $C7                             ; F5BC

@@ -81,14 +81,14 @@ L_B518: lda     #$17                            ; B518
         lda     #$00                            ; B525
         sta     LoadedObj + Obj::Velocity_Y     ; B527
 L_B529: lda     #$01                            ; B529
-        jsr     LE04E                           ; B52B
+        jsr     Obj_SetAttrFlipX                ; B52B
         lda     Global_FrameCounter             ; B52E
         lsr     a                               ; B530
         lsr     a                               ; B531
         and     #$01                            ; B532
         clc                                     ; B534
         adc     #$9F                            ; B535
-        jmp     LF011                           ; B537
+        jmp     MetaSprite_Render               ; B537
 
 ; ----------------------------------------------------------------------------
 L_B53A: jmp     L_B557                          ; B53A
@@ -121,9 +121,9 @@ L_B567: lda     LoadedObj + Obj::Scratch1       ; B567
 
 ; ----------------------------------------------------------------------------
 L_B56E: lda     #$01                            ; B56E
-        jsr     LE04E                           ; B570
+        jsr     Obj_SetAttrFlipX                ; B570
         lda     #$A1                            ; B573
-        jmp     LF011                           ; B575
+        jmp     MetaSprite_Render               ; B575
 
 .endmacro
 

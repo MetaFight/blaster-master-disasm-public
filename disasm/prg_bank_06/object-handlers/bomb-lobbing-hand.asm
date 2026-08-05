@@ -84,7 +84,7 @@ L_B3BF: lda     #$15                            ; B3BF
 
 ; ----------------------------------------------------------------------------
 L_B3C9: lda     #$01                            ; B3C9
-        jsr     LE04E                           ; B3CB
+        jsr     Obj_SetAttrFlipX                ; B3CB
         lda     LoadedObj + Obj::Scratch0       ; B3CE
         beq     L_B3DD                          ; B3D0
         lda     LoadedObj + Obj::Scratch1       ; B3D2
@@ -95,7 +95,7 @@ L_B3C9: lda     #$01                            ; B3C9
 
 ; ----------------------------------------------------------------------------
 L_B3DD: lda     #$70                            ; B3DD
-L_B3DF: jsr     LF011                           ; B3DF
+L_B3DF: jsr     MetaSprite_Render                           ; B3DF
         rts                                     ; B3E2
 
 .endmacro

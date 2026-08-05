@@ -159,7 +159,7 @@ L_C56D: jsr     L_DEC2                          ; C56D
         sta     $03FB                           ; C572
         jsr     L_D7E3                          ; C575
         lda     #$00                            ; C578
-        jsr     L_E61B                          ; C57A
+        jsr     BankSave_Switch                 ; C57A
         jsr     L_F273                          ; C57D
         jsr     L_F9D5                          ; C580
         jmp     L_C264                          ; C583
@@ -204,11 +204,11 @@ L_C659: lda     $C5                             ; C659
         bne     L_C679                          ; C65D
         ldx     $14                             ; C65F
         lda     L_C9F4,x                        ; C661
-        jsr     L_EA3A                          ; C664
+        jsr     BankDispatch_Switch             ; C664
         lda     #$00                            ; C667
         jsr     L_EB51                          ; C669
         ldy     #$0F                            ; C66C
-L_C66E: lda     (L007A),y                       ; C66E
+L_C66E: lda     (DispatchPtr),y                 ; C66E
         sta     $0650,y                         ; C670
         dey                                     ; C673
         bpl     L_C66E                          ; C674
@@ -335,12 +335,12 @@ L_C789: sta     $FF                             ; C789
 
 ; ----------------------------------------------------------------------------
 L_C78F: lda     L_DD76                          ; C78F
-        sta     L007A                           ; C792
+        sta     DispatchPtr                     ; C792
         lda     L_DD76+1                        ; C794
-        sta     $7B                             ; C797
+        sta     DispatchPtrHi                   ; C797
         ldy     #$00                            ; C799
         ldy     #$05                            ; C79B
-L_C79D: lda     (L007A),y                       ; C79D
+L_C79D: lda     (DispatchPtr),y                 ; C79D
 L_C79F: sta     L0000,y                         ; C79F
         dey                                     ; C7A2
         bpl     L_C79D                          ; C7A3
@@ -376,9 +376,9 @@ L_C7C7: tya                                     ; C7C7
 
 ; ----------------------------------------------------------------------------
 L_C7D8: lda     L_C7F8                          ; C7D8
-        sta     L007A                           ; C7DB
+        sta     DispatchPtr                     ; C7DB
         lda     L_C7F8+1                        ; C7DD
-        sta     $7B                             ; C7E0
+        sta     DispatchPtrHi                   ; C7E0
         ldy     #$00                            ; C7E2
         lda     #$00                            ; C7E4
         sta     $3E                             ; C7E6
@@ -470,12 +470,12 @@ L_CA70: jmp     L_CA89                          ; CA70
 
 ; ----------------------------------------------------------------------------
 L_CA73: lda     #$31                            ; CA73
-        jsr     L_EA3A                          ; CA75
+        jsr     BankDispatch_Switch             ; CA75
         lda     $14                             ; CA78
         and     #$0F                            ; CA7A
         jsr     L_EB51                          ; CA7C
         ldy     #$05                            ; CA7F
-L_CA81: lda     (L007A),y                       ; CA81
+L_CA81: lda     (DispatchPtr),y                 ; CA81
         sta     L0000,y                         ; CA83
         dey                                     ; CA86
         bpl     L_CA81                          ; CA87
@@ -707,9 +707,9 @@ L_CEDD: lda     #$00                            ; CEDD
         and     #$FE                            ; CEEF
         sta     $C8                             ; CEF1
         lda     L_CF00                          ; CEF3
-        sta     L007A                           ; CEF6
+        sta     DispatchPtr                     ; CEF6
         lda     L_CF00+1                        ; CEF8
-        sta     $7B                             ; CEFB
+        sta     DispatchPtrHi                   ; CEFB
         jmp     L_E797                          ; CEFD
 
 ; ----------------------------------------------------------------------------
@@ -2215,11 +2215,11 @@ LDE56:  .byte   $7D,$4B,$2D,$0B,$5D,$07,$6D,$39 ; DE56
 .macro MAC_L_DF05
 ; ----------------------------------------------------------------------------
 L_DF05: lda     #$05                            ; DF05
-        jmp     L_E61B                          ; DF07
+        jmp     BankSave_Switch                 ; DF07
 
 ; ----------------------------------------------------------------------------
 L_DF0A: lda     $D3                             ; DF0A
-        jmp     L_E61B                          ; DF0C
+        jmp     BankSave_Switch                 ; DF0C
 
 .endmacro
 
@@ -2250,7 +2250,7 @@ L_E06A: cmp     #$80                            ; E06A
 ; Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by
 ; OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA OAM_Flag__HARDCODED_00 /
 ; BNE, so with $00 the branch never fires: OAM always goes out via $4014 sprite DMA (not the
-; manual copy path), and the staging blit always uses NmiFrameFlag ($11) bit 0 frame parity to
+; manual copy path), and the staging blit always uses Nmi_SignalFlags ($11) bit 0 frame parity to
 ; alternate slot direction rather than a forced direction. Patching this byte non-zero enables the
 ; two dead alternate paths.
 OAM_Flag__HARDCODED_00:
@@ -2377,21 +2377,44 @@ L_E796: rts                                     ; E796
 
 .macro MAC_L_EA3A
 ; ----------------------------------------------------------------------------
-L_EA3A: ldx     #$7A                            ; EA3A
-L_EA3C: tay                                     ; EA3C
+; Helper routine to switch PRG banks.  This variant hardcodes X (DispatchPtr) to #$7A.
+; 
+; Input:
+;   A (upper nibble) = Target bank
+;   A (lower nibble) = entry index into the target bank's top dispatch table
+;                      bank 6: BankDispatch_TopTable_Bk06 $8000
+;                      bank 4: BankDispatch_TopTable_Bk04 $8000
+BankDispatch_Switch:
+        ldx     #$7A                            ; EA3A
+; Helper routine to switch PRG banks.
+; 
+; Input:
+;   A (upper nibble) = Target bank
+;   A (lower nibble) = Entry Index of target bank's BankDispatch_TopTable
+;   X = Dispatch Pointer Address
+BankDispatch_Switch_NoX:
+        tay                                     ; EA3C
+; Save a copy of the input to Y,
+; then >> 4 so that A = Target bank.'
         lsr     a                               ; EA3D
         lsr     a                               ; EA3E
         lsr     a                               ; EA3F
         lsr     a                               ; EA40
-        jsr     L_E61B                          ; EA41
+; Switch PRG Bank.
+        jsr     BankSave_Switch                 ; EA41
         tya                                     ; EA44
+; restore original input but only keep lower nibble.
+; A = BankDispatch_TopTable entry index
         and     #$0F                            ; EA45
         asl     a                               ; EA47
         tay                                     ; EA48
+; read lo/hi of entry A from BankDispatch_TopTable at $8000 in the newly-switched bank,
+; and store that pointer in the Dispatch Pointer Address (X)
         lda     $8000,y                         ; EA49
         sta     L0000,x                         ; EA4C
         lda     $8001,y                         ; EA4E
         sta     $01,x                           ; EA51
+; then clears Y and exits
         ldy     #$00                            ; EA53
         rts                                     ; EA55
 
@@ -2399,13 +2422,13 @@ L_EA3C: tay                                     ; EA3C
 
 .macro MAC_L_EA63
 ; ----------------------------------------------------------------------------
-L_EA63: lda     (L007A),y                       ; EA63
+L_EA63: lda     (DispatchPtr),y                 ; EA63
         pha                                     ; EA65
         iny                                     ; EA66
-        lda     (L007A),y                       ; EA67
-        sta     $7B                             ; EA69
+        lda     (DispatchPtr),y                 ; EA67
+        sta     DispatchPtrHi                   ; EA69
         pla                                     ; EA6B
-        sta     L007A                           ; EA6C
+        sta     DispatchPtr                     ; EA6C
         rts                                     ; EA6E
 
 .endmacro
@@ -2414,10 +2437,10 @@ L_EA63: lda     (L007A),y                       ; EA63
 ; ----------------------------------------------------------------------------
 L_EB44: tya                                     ; EB44
         clc                                     ; EB45
-        adc     L007A                           ; EB46
-        sta     L007A                           ; EB48
+        adc     DispatchPtr                     ; EB46
+        sta     DispatchPtr                     ; EB48
         bcc     L_EB4E                          ; EB4A
-        inc     $7B                             ; EB4C
+        inc     DispatchPtrHi                   ; EB4C
 L_EB4E: ldy     #$00                            ; EB4E
         rts                                     ; EB50
 
@@ -2425,13 +2448,13 @@ L_EB4E: ldy     #$00                            ; EB4E
 L_EB51: asl     a                               ; EB51
         tay                                     ; EB52
         bcc     L_EB57                          ; EB53
-        inc     $7B                             ; EB55
-L_EB57: lda     (L007A),y                       ; EB57
+        inc     DispatchPtrHi                   ; EB55
+L_EB57: lda     (DispatchPtr),y                 ; EB57
         iny                                     ; EB59
         tax                                     ; EB5A
-        lda     (L007A),y                       ; EB5B
-        sta     $7B                             ; EB5D
-        stx     L007A                           ; EB5F
+        lda     (DispatchPtr),y                 ; EB5B
+        sta     DispatchPtrHi                   ; EB5D
+        stx     DispatchPtr                     ; EB5F
         ldy     #$00                            ; EB61
         rts                                     ; EB63
 
@@ -2712,7 +2735,7 @@ ScreenPos_Adjust:
         rts                                     ; EFEB
 
 ; ----------------------------------------------------------------------------
-; 8x16 sprite mode ($FF bit5): Y -= 9.
+; 8x16 sprite mode (PPU_CTRL_Shadow bit5): Y -= 9.
 _ScreenPos_Adjust__Overhead:
         lda     $3F                             ; EFEC
         sec                                     ; EFEE

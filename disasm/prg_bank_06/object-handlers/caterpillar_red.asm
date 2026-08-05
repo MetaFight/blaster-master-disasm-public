@@ -119,7 +119,7 @@ L_A9A4: lda     #$06                            ; A9A4
 
 ; ----------------------------------------------------------------------------
 L_A9AE: lda     #$00                            ; A9AE
-        jsr     LE04E                           ; A9B0
+        jsr     Obj_SetAttrFlipX                ; A9B0
         dec     LoadedObj + Obj::Scratch1       ; A9B3
         bpl     L_A9C3                          ; A9B5
         lda     #$0C                            ; A9B7
@@ -130,7 +130,7 @@ L_A9AE: lda     #$00                            ; A9AE
         sta     LoadedObj + Obj::Facing         ; A9C1
 L_A9C3: ldx     LoadedObj + Obj::Facing         ; A9C3
         lda     L_A4DB,x                        ; A9C5
-        jmp     LF011                           ; A9C8
+        jmp     MetaSprite_Render               ; A9C8
 
 .endmacro
 

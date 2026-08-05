@@ -92,7 +92,7 @@ L_B60B: lda     #$18                            ; B60B
 
 ; ----------------------------------------------------------------------------
 L_B615: lda     #$01                            ; B615
-        jsr     LE04E                           ; B617
+        jsr     Obj_SetAttrFlipX                ; B617
         lda     LoadedObj + Obj::Scratch0       ; B61A
         bne     L_B623                          ; B61C
         lda     #$A2                            ; B61E
@@ -105,7 +105,7 @@ L_B623: lda     Global_FrameCounter             ; B623
         and     #$01                            ; B627
         clc                                     ; B629
         adc     #$A3                            ; B62A
-L_B62C: jmp     LF011                           ; B62C
+L_B62C: jmp     MetaSprite_Render                           ; B62C
 
 .endmacro
 

@@ -94,13 +94,13 @@ L_ACE0: lda     #$0B                            ; ACE0
 
 ; ----------------------------------------------------------------------------
 L_ACEA: lda     #$01                            ; ACEA
-        jsr     LE04E                           ; ACEC
+        jsr     Obj_SetAttrFlipX                ; ACEC
         ldx     #$2F                            ; ACEF
         lda     LoadedObj + Obj::Scratch0       ; ACF1
         beq     L_ACF6                          ; ACF3
         inx                                     ; ACF5
 L_ACF6: txa                                     ; ACF6
-        jmp     LF011                           ; ACF7
+        jmp     MetaSprite_Render               ; ACF7
 
 ; ----------------------------------------------------------------------------
 L_ACFA: rts                                     ; ACFA

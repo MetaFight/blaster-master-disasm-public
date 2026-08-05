@@ -52,14 +52,14 @@ L_AC20: lda     #$0A                            ; AC20
 
 ; ----------------------------------------------------------------------------
 L_AC2A: lda     #$01                            ; AC2A
-        jsr     LE04E                           ; AC2C
+        jsr     Obj_SetAttrFlipX                ; AC2C
         ldx     #$78                            ; AC2F
         lda     Global_FrameCounter             ; AC31
         and     #$10                            ; AC33
         beq     L_AC38                          ; AC35
         inx                                     ; AC37
 L_AC38: txa                                     ; AC38
-        jmp     LF011                           ; AC39
+        jmp     MetaSprite_Render               ; AC39
 
 .endmacro
 

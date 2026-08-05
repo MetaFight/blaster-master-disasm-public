@@ -130,7 +130,7 @@ L_B9DA: lda     LoadedObj + Obj::Scratch0       ; B9DA
         lsr     a                               ; B9F6
         and     #$01                            ; B9F7
         ora     LBA71,x                         ; B9F9
-        jmp     LF011                           ; B9FC
+        jmp     MetaSprite_Render               ; B9FC
 
 ; ----------------------------------------------------------------------------
 L_B9FF: rts                                     ; B9FF
@@ -200,7 +200,7 @@ L_BA5D: lda     LoadedObj + Obj::Facing         ; BA5D
         lda     L_BA80,x                        ; BA65
         sta     $44                             ; BA68
         lda     LBA81,x                         ; BA6A
-        jmp     LF011                           ; BA6D
+        jmp     MetaSprite_Render               ; BA6D
 
 ; ----------------------------------------------------------------------------
 L_BA70: .byte   $C0                             ; BA70

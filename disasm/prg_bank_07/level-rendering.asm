@@ -55,7 +55,7 @@ L_D95E: lda     $08                             ; D95E
 L_D975: ldx     $14                             ; D975
         lda     L_C9F4,x                        ; D977
         ldx     #$00                            ; D97A
-        jsr     L_EA3C                          ; D97C
+        jsr     BankDispatch_Switch_NoX         ; D97C
         ldy     #$02                            ; D97F
 L_D981: lda     (L0000),y                       ; D981
         sta     $25,y                           ; D983

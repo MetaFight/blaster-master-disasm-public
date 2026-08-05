@@ -36,9 +36,9 @@ L_E351: ldx     $01                             ; E351
 L_E355: lda     #$04                            ; E355
         sta     $D5                             ; E357
         lda     L_E368                          ; E359
-        sta     L007A                           ; E35C
+        sta     DispatchPtr                     ; E35C
         lda     LE369                           ; E35E
-        sta     $7B                             ; E361
+        sta     DispatchPtrHi                   ; E361
         ldy     #$00                            ; E363
         jmp     L_E3BF                          ; E365
 
@@ -53,9 +53,9 @@ L_E36A: .byte   $07,$21,$17,$30,$07,$29,$17,$30 ; E36A
 L_E38A: lda     #$05                            ; E38A
         sta     $D5                             ; E38C
         lda     L_E39D                          ; E38E
-        sta     L007A                           ; E391
+        sta     DispatchPtr                     ; E391
         lda     LE39E                           ; E393
-        sta     $7B                             ; E396
+        sta     DispatchPtrHi                   ; E396
         ldy     #$00                            ; E398
         jmp     L_E3BF                          ; E39A
 
@@ -70,7 +70,7 @@ L_E39F: .byte   $07,$11,$15,$30,$07,$29,$17,$3F ; E39F
 L_E3BF: lda     #$16                            ; E3BF
         sta     $D4                             ; E3C1
         ldx     #$00                            ; E3C3
-L_E3C5: lda     (L007A),y                       ; E3C5
+L_E3C5: lda     (DispatchPtr),y                 ; E3C5
         iny                                     ; E3C7
         sta     $0650,x                         ; E3C8
         inx                                     ; E3CB
@@ -112,9 +112,9 @@ L_E3F8: pha                                     ; E3F8
         lda     #$0B                            ; E406
         sta     $C8                             ; E408
         lda     L_E44C                          ; E40A
-        sta     L007A                           ; E40D
+        sta     DispatchPtr                     ; E40D
         lda     LE44D                           ; E40F
-        sta     $7B                             ; E412
+        sta     DispatchPtrHi                   ; E412
         ldy     #$00                            ; E414
         jsr     L_E797                          ; E416
         lda     #$3C                            ; E419
@@ -129,9 +129,9 @@ L_E41B: pha                                     ; E41B
         lda     #$0B                            ; E429
         sta     $C8                             ; E42B
         lda     L_E479                          ; E42D
-        sta     L007A                           ; E430
+        sta     DispatchPtr                     ; E430
         lda     LE47A                           ; E432
-        sta     $7B                             ; E435
+        sta     DispatchPtrHi                   ; E435
         ldy     #$00                            ; E437
         jsr     L_E797                          ; E439
         lda     #$78                            ; E43C
@@ -178,7 +178,7 @@ L_E4BA: rts                                     ; E4BA
 L_E4BB: sta     $02                             ; E4BB
         jsr     L_EA03                          ; E4BD
         lda     #$30                            ; E4C0
-        jsr     L_EA3A                          ; E4C2
+        jsr     BankDispatch_Switch             ; E4C2
         lda     #$0B                            ; E4C5
         jsr     L_EB51                          ; E4C7
         lda     $02                             ; E4CA
@@ -219,18 +219,18 @@ L_E4FD: lda     #$00                            ; E4FD
         lda     LE53E,x                         ; E50A
         sta     $3F                             ; E50D
         lda     L_E54D                          ; E50F
-        sta     L007A                           ; E512
+        sta     DispatchPtr                     ; E512
         lda     LE54E                           ; E514
-        sta     $7B                             ; E517
+        sta     DispatchPtrHi                   ; E517
         ldy     #$00                            ; E519
         lda     $02                             ; E51B
         asl     a                               ; E51D
         jsr     L_F029                          ; E51E
         jsr     L_EC73                          ; E521
         lda     L_E54D                          ; E524
-        sta     L007A                           ; E527
+        sta     DispatchPtr                     ; E527
         lda     LE54E                           ; E529
-        sta     $7B                             ; E52C
+        sta     DispatchPtrHi                   ; E52C
         ldy     #$00                            ; E52E
         lda     $02                             ; E530
         asl     a                               ; E532

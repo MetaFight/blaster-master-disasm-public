@@ -119,7 +119,7 @@ L_A4B4: lda     #$00                            ; A4B4
 
 ; ----------------------------------------------------------------------------
 L_A4BE: lda     #$01                            ; A4BE
-        jsr     LE04E                           ; A4C0
+        jsr     Obj_SetAttrFlipX                ; A4C0
         dec     LoadedObj + Obj::Scratch1       ; A4C3
         bpl     L_A4D3                          ; A4C5
         lda     #$0C                            ; A4C7
@@ -130,7 +130,7 @@ L_A4BE: lda     #$01                            ; A4BE
         sta     LoadedObj + Obj::Facing         ; A4D1
 L_A4D3: ldx     LoadedObj + Obj::Facing         ; A4D3
         lda     L_A4DB,x                        ; A4D5
-        jmp     LF011                           ; A4D8
+        jmp     MetaSprite_Render               ; A4D8
 
 ; ----------------------------------------------------------------------------
 L_A4DB: .byte   $11,$12,$13                     ; A4DB

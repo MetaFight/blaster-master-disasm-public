@@ -10,7 +10,7 @@ L_FFF4: inc     L_FFF4                          ; FFF4
         jmp     L_F23B                          ; FFF7
 
 ; ----------------------------------------------------------------------------
-L_FFFA: .addr   L_EB7E                          ; FFFA
+L_FFFA: .addr   NMI                             ; FFFA
         .addr   L_FFF4                          ; FFFC
         .addr   L_EB97                          ; FFFE
 

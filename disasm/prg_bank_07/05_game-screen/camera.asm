@@ -105,13 +105,13 @@ L_CC3E: lda     $1D                             ; CC3E
         sta     $3A                             ; CC63
         jsr     L_D1AD                          ; CC65
         lda     $D3                             ; CC68
-        jmp     L_E61B                          ; CC6A
+        jmp     BankSave_Switch                 ; CC6A
 
 ; ----------------------------------------------------------------------------
 L_CC6D: ldx     $14                             ; CC6D
         lda     L_CA04,x                        ; CC6F
         ldx     #$7A                            ; CC72
-        jsr     L_EA3C                          ; CC74
+        jsr     BankDispatch_Switch_NoX         ; CC74
         lda     $1D                             ; CC77
         clc                                     ; CC79
         adc     #$06                            ; CC7A
@@ -215,7 +215,7 @@ L_CD0A: lda     $1D                             ; CD0A
 L_CD1D: txa                                     ; CD1D
         and     #$07                            ; CD1E
         tax                                     ; CD20
-        lda     (L007A),y                       ; CD21
+        lda     (DispatchPtr),y                 ; CD21
 L_CD23: asl     a                               ; CD23
         dex                                     ; CD24
         bpl     L_CD23                          ; CD25

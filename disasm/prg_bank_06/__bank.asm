@@ -63,7 +63,7 @@ LDFD1           := $DFD1
 LDFDD           := $DFDD
 LE005           := $E005
 LE02F           := $E02F
-LE04E           := $E04E
+Obj_SetAttrFlipX                      := $E04E
 LE060           := $E060
 LE06A           := $E06A
 LE07B           := $E07B
@@ -85,7 +85,7 @@ LEC73           := $EC73
 LECB4           := $ECB4
 LEDF5           := $EDF5
 ScreenPos_Compute                     := $EF2B
-LF011           := $F011
+MetaSprite_Render                     := $F011
 LF029           := $F029
 ; ----------------------------------------------------------------------------
 

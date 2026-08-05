@@ -103,18 +103,18 @@ L_9CBC: rts                                     ; 9CBC
 
 ; ----------------------------------------------------------------------------
 L_9CBD: lda     L_9D1E                          ; 9CBD
-        sta     $7A                             ; 9CC0
+        sta     DispatchPtr                     ; 9CC0
         lda     L_9D1E+1                        ; 9CC2
-        sta     $7B                             ; 9CC5
+        sta     DispatchPtrHi                   ; 9CC5
         lda     LoadedObj + Obj::Scratch0       ; 9CC7
         jsr     LEB51                           ; 9CC9
-        lda     ($7A),y                         ; 9CCC
+        lda     (DispatchPtr),y                 ; 9CCC
         ldx     LoadedObj + Obj::Scratch0       ; 9CCE
         clc                                     ; 9CD0
         adc     L_9D32,x                        ; 9CD1
         bcc     L_9CD8                          ; 9CD4
         lda     #$FF                            ; 9CD6
-L_9CD8: sta     ($7A),y                         ; 9CD8
+L_9CD8: sta     (DispatchPtr),y                 ; 9CD8
         ldx     #$02                            ; 9CDA
 L_9CDC: lda     $06F0,x                         ; 9CDC
         cmp     #$64                            ; 9CDF

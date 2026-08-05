@@ -52,7 +52,7 @@ L_B1BB: lda     #$12                            ; B1BB
 
 ; ----------------------------------------------------------------------------
 L_B1C5: lda     #$01                            ; B1C5
-        jsr     LE04E                           ; B1C7
+        jsr     Obj_SetAttrFlipX                ; B1C7
         lda     Global_FrameCounter             ; B1CA
         lsr     a                               ; B1CC
         lsr     a                               ; B1CD
@@ -61,7 +61,7 @@ L_B1C5: lda     #$01                            ; B1C5
         and     #$03                            ; B1D0
         tax                                     ; B1D2
         lda     L_B1DA,x                        ; B1D3
-        jmp     LF011                           ; B1D6
+        jmp     MetaSprite_Render               ; B1D6
 
 ; ----------------------------------------------------------------------------
 L_B1D9: rts                                     ; B1D9

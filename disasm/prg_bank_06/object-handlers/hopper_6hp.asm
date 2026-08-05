@@ -169,7 +169,7 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage:
 ; the pose from the wind-up timer.
 _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:
         lda     #$01                            ; A85A
-        jsr     LE04E                           ; A85C
+        jsr     Obj_SetAttrFlipX                ; A85C
         lda     LoadedObj + Obj::Scratch1       ; A85F
         beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle; A861
 ; $51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
@@ -182,10 +182,16 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle:
         lda     #$03                            ; A868
 ; tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
 _ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile:
-        jmp     LF011                           ; A86A
+        jmp     MetaSprite_Render               ; A86A
 
 ; ----------------------------------------------------------------------------
-L_A86D: rts                                     ; A86D
+; Single unreachable $60 (RTS) after the Gray Hopper 6HP ($60) tile tail (tail-calls JMP $F011 at
+; $A86A). Distinct from DEAD_TankGrayHopper_OrphanRTS ($B1D9), the 10HP variant. The preceding
+; routine's tail call was peephole-optimised into a direct jump without removing the trailing
+; return, so this byte is never executed. Seeded as code so it decodes correctly. 20 instances
+; found 2026-07-12, joining the 4 already documented in docs/misc/dead-code.md.
+DEAD_TankGrayHopper6HP_OrphanRTS:
+        rts                                     ; A86D
 
 .endmacro
 

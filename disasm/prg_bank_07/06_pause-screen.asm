@@ -1,7 +1,7 @@
 .macro MAC_L_C55D
 ; ----------------------------------------------------------------------------
 L_C55D: lda     #$00                            ; C55D
-        jsr     L_E61B                          ; C55F
+        jsr     BankSave_Switch                 ; C55F
         jsr     L_F833                          ; C562
         lda     #$18                            ; C565
         jsr     Enqueue_Sound_Command           ; C567
@@ -134,9 +134,9 @@ L_F92D: pha                                     ; F92D
         lsr     $05                             ; F92E
         bcc     L_F966                          ; F930
         lda     L_F96F                          ; F932
-        sta     L007A                           ; F935
+        sta     DispatchPtr                     ; F935
         lda     L_F96F+1                        ; F937
-        sta     $7B                             ; F93A
+        sta     DispatchPtrHi                   ; F93A
         ldy     #$00                            ; F93C
         pla                                     ; F93E
         pha                                     ; F93F
@@ -144,20 +144,20 @@ L_F92D: pha                                     ; F92D
         tay                                     ; F941
         jsr     L_EA63                          ; F942
         ldy     #$00                            ; F945
-        lda     (L007A),y                       ; F947
+        lda     (DispatchPtr),y                 ; F947
         iny                                     ; F949
         sta     $C7                             ; F94A
-        lda     (L007A),y                       ; F94C
+        lda     (DispatchPtr),y                 ; F94C
         iny                                     ; F94E
         sta     $C8                             ; F94F
         bit     $C7                             ; F951
         bmi     L_F966                          ; F953
         clc                                     ; F955
-        lda     L007A                           ; F956
+        lda     DispatchPtr                     ; F956
         adc     #$02                            ; F958
-        sta     L007A                           ; F95A
+        sta     DispatchPtr                     ; F95A
         bcc     L_F960                          ; F95C
-        inc     $7B                             ; F95E
+        inc     DispatchPtrHi                   ; F95E
 L_F960: jsr     L_E797                          ; F960
         jsr     L_F1CA                          ; F963
 L_F966: pla                                     ; F966
