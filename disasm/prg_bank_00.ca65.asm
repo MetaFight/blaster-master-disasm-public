@@ -808,8 +808,6 @@ TankLvl1_ScrollData:
         .byte   $FF,$00,$00,$80,$7F,$80,$00,$00 ; 8E2E
         .byte   $C0,$C0,$C0,$C0,$C0,$C0,$C0,$C0 ; 8E36
 ; ----------------------------------------------------------------------------
-; Level 2 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc,
-; ChunkDesc, MapData
 TankLvl2_MapPointers:
         .addr   TankLvl2_BgPalette              ; 8E3E
         .addr   TankLvl2_TileAttrTable          ; 8E40
@@ -1443,8 +1441,6 @@ TankLvl2_TileAttrTable:
         .byte   $82,$82,$82,$82,$82,$82,$82,$82 ; 9A0A
         .byte   $82,$82,$82,$82,$82,$10,$10,$53 ; 9A12
 ; ----------------------------------------------------------------------------
-; Level 3 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc,
-; ChunkDesc, MapData
 TankLvl3_MapPointers:
         .addr   TankLvl3_BgPalette              ; 9A1A
         .addr   TankLvl3_TileAttrTable          ; 9A1C
@@ -2049,8 +2045,6 @@ TankLvl3_ScrollData:
         .byte   $CF,$3F,$C0,$C0,$40,$80,$C0,$3F ; A55F
         .byte   $EC,$E0,$A0,$E0,$E0,$E0,$E0,$E8 ; A567
 ; ----------------------------------------------------------------------------
-; Level 4 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc,
-; ChunkDesc, MapData
 TankLvl4_MapPointers:
         .addr   TankLvl4_BgPalette              ; A56F
         .addr   TankLvl4_TileAttrTable          ; A571
@@ -2699,8 +2693,6 @@ TankLvl4_ScrollData:
         .byte   $FF,$F0,$7F,$80,$00,$00,$00,$00 ; B16A
         .byte   $8A,$CA,$C0,$C0,$C0,$C0,$C0,$C0 ; B172
 ; ----------------------------------------------------------------------------
-; Level 5 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc,
-; ChunkDesc, MapData
 TankLvl5_MapPointers:
         .addr   TankLvl5_BgPalette              ; B17A
         .addr   TankLvl5_TileAttrTable          ; B17C

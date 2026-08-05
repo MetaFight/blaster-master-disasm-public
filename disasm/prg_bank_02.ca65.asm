@@ -12,21 +12,27 @@
 
 .segment        "BANK02": absolute
 
+; (alpha: not fully human-verified / pending re-verification)
 OvhdLvl5_BasePointers:
         .addr   OvhdLvl5_MapPointers            ; 8000
         .addr   OvhdLvl5_ScrollData             ; 8002
+; (alpha: not fully human-verified / pending re-verification)
 OvhdLvl2_BasePointers:
         .addr   OvhdLvl2_MapPointers            ; 8004
         .addr   OvhdLvl2_ScrollData             ; 8006
+; (alpha: not fully human-verified / pending re-verification)
 OvhdLvl6_BasePointers:
         .addr   OvhdLvl6_MapPointers            ; 8008
         .addr   OvhdLvl6_ScrollData             ; 800A
+; (alpha: not fully human-verified / pending re-verification)
 OvhdLvl8_BasePointers:
         .addr   OvhdLvl8_MapPointers            ; 800C
         .addr   OvhdLvl8_ScrollData             ; 800E
+; (alpha: not fully human-verified / pending re-verification)
 OvhdLvl4_BasePointers:
         .addr   OvhdLvl4_MapPointers            ; 8010
         .addr   OvhdLvl4_ScrollData             ; 8012
+; (alpha: not fully human-verified / pending re-verification)
 OvhdLvl7_BasePointers:
         .addr   OvhdLvl7_MapPointers            ; 8014
         .addr   OvhdLvl7_ScrollData             ; 8016
@@ -549,8 +555,6 @@ OvhdLvl5_TileAttrTable:
         .byte   $8E,$8E,$06,$06,$8C,$8C,$8C,$8C ; 89CE
         .byte   $05,$05,$05,$05,$04,$04,$80,$80 ; 89D6
 ; ----------------------------------------------------------------------------
-; Overhead level 2 (internal index 10) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr,
-; TileDesc, StructureDesc, ChunkDesc, MapData
 OvhdLvl2_MapPointers:
         .addr   OvhdLvl2_BgPalette              ; 89DE
         .addr   OvhdLvl2_TileAttrTable          ; 89E0
@@ -1030,8 +1034,6 @@ OvhdLvl2_TileAttrTable:
         .byte   $10,$10,$09,$89,$89,$8E,$8E,$8F ; 931A
         .byte   $8F,$8F,$8F                     ; 9322
 ; ----------------------------------------------------------------------------
-; Overhead level 6 (internal index 14) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr,
-; TileDesc, StructureDesc, ChunkDesc, MapData
 OvhdLvl6_MapPointers:
         .addr   OvhdLvl6_BgPalette              ; 9325
         .addr   OvhdLvl6_TileAttrTable          ; 9327
@@ -1511,8 +1513,6 @@ OvhdLvl6_TileAttrTable:
         .byte   $15,$8F,$8F,$8F,$8E,$8E,$8A,$8A ; 9C61
         .byte   $09                             ; 9C69
 ; ----------------------------------------------------------------------------
-; Overhead level 8 (internal index 16) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr,
-; TileDesc, StructureDesc, ChunkDesc, MapData
 OvhdLvl8_MapPointers:
         .addr   OvhdLvl8_BgPalette              ; 9C6A
         .addr   OvhdLvl8_TileAttrTable          ; 9C6C
@@ -2040,8 +2040,6 @@ OvhdLvl8_TileAttrTable:
         .byte   $17,$17,$17,$09,$8F,$8F,$8B,$8B ; A666
         .byte   $8D,$8D,$81                     ; A66E
 ; ----------------------------------------------------------------------------
-; Overhead level 4 (internal index 12) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr,
-; TileDesc, StructureDesc, ChunkDesc, MapData
 OvhdLvl4_MapPointers:
         .addr   OvhdLvl4_BgPalette              ; A671
         .addr   OvhdLvl4_TileAttrTable          ; A673
@@ -2551,8 +2549,6 @@ OvhdLvl4_TileAttrTable:
         .byte   $17,$17,$17,$17,$11,$8D,$8E,$8E ; B02D
         .byte   $8E,$8E,$89,$89,$0B,$17         ; B035
 ; ----------------------------------------------------------------------------
-; Overhead level 7 (internal index 15) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr,
-; TileDesc, StructureDesc, ChunkDesc, MapData
 OvhdLvl7_MapPointers:
         .addr   OvhdLvl7_BgPalette              ; B03B
         .addr   OvhdLvl7_TileAttrTable          ; B03D

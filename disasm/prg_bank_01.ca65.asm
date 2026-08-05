@@ -27,9 +27,8 @@ OvhdLvl1_BasePointers:
 OvhdLvl3_BasePointers:
         .addr   OvhdLvl3_MapPointers            ; 8010
         .addr   OvhdLvl3_ScrollData             ; 8012
+Bk01_MetaspriteTableOverheadPtr:
         .addr   Metasprite_Table_Overhead       ; 8014
-; Level 6 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc,
-; ChunkDesc, MapData
 TankLvl6_MapPointers:
         .addr   TankLvl6_BgPalette              ; 8016
         .addr   TankLvl6_TileAttrTable          ; 8018
@@ -702,8 +701,6 @@ TankLvl6_TileAttrTable:
         .byte   $01,$01,$09,$01,$81,$81,$81,$89 ; 8C66
         .byte   $81,$81,$89,$81,$C0,$10,$10,$A3 ; 8C6E
 ; ----------------------------------------------------------------------------
-; Level 7 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc,
-; ChunkDesc, MapData
 TankLvl7_MapPointers:
         .addr   TankLvl7_BgPalette              ; 8C76
         .addr   TankLvl7_TileAttrTable          ; 8C78
@@ -1385,8 +1382,6 @@ TankLvl7_ScrollData:
         .byte   $FF,$FF,$FF,$FF,$19,$FE,$3F,$F0 ; 98F0
         .byte   $88,$90,$80,$95,$95,$A9,$A8,$A8 ; 98F8
 ; ----------------------------------------------------------------------------
-; Level 8 map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr, TileDesc, StructureDesc,
-; ChunkDesc, MapData
 TankLvl8_MapPointers:
         .addr   TankLvl8_BgPalette              ; 9900
         .addr   TankLvl8_TileAttrTable          ; 9902
@@ -2100,8 +2095,6 @@ TankLvl8_ScrollData:
         .byte   $FF,$00,$18,$E7,$3F,$01,$FE,$81 ; A601
         .byte   $9C,$9C,$94,$B4,$A1,$A1,$C1,$41 ; A609
 ; ----------------------------------------------------------------------------
-; Overhead level 1 (internal index 9) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr,
-; TileDesc, StructureDesc, ChunkDesc, MapData
 OvhdLvl1_MapPointers:
         .addr   OvhdLvl1_BgPalette              ; A611
         .addr   OvhdLvl1_TileAttrTable          ; A613
@@ -2580,8 +2573,6 @@ OvhdLvl1_ScrollData:
         .byte   $FC,$1C,$E0,$FC,$30,$00,$FC,$00 ; AED9
         .byte   $96,$96,$B6,$AA,$BA,$BA,$00,$00 ; AEE1
 ; ----------------------------------------------------------------------------
-; Overhead level 3 (internal index 11) map pointer table (6×16-bit LE ptrs): BgPalette, TileAttr,
-; TileDesc, StructureDesc, ChunkDesc, MapData
 OvhdLvl3_MapPointers:
         .addr   OvhdLvl3_BgPalette              ; AEE9
         .addr   OvhdLvl3_TileAttrTable          ; AEEB

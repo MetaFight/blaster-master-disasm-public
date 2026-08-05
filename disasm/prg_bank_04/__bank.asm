@@ -110,4 +110,4 @@ LC222           := $C222
 
 ; Emit every group's code in address order (see GroupSplitter).
         MAC_L_8000
-        MAC_L_87F9
+        MAC_L_8112
