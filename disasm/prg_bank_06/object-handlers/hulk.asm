@@ -16,8 +16,8 @@ L_A75D: lda     #$0C                            ; A75D
 L_A75F: sta     LoadedObj + Obj::Velocity_X     ; A75F
         lda     #$00                            ; A761
         sta     LoadedObj + Obj::Velocity_Y     ; A763
-        sta     $50                             ; A765
-        sta     $51                             ; A767
+        sta     LoadedObj + Obj::Scratch0       ; A765
+        sta     LoadedObj + Obj::Scratch1       ; A767
 L_A769: rts                                     ; A769
 
 ; ----------------------------------------------------------------------------
@@ -28,11 +28,11 @@ L_A76D: lda     #$80                            ; A76D
         sta     LoadedObj_CollisionBox_HalfWidth; A76F
         lda     #$C0                            ; A771
         sta     LoadedObj_CollisionBox_HalfHeight; A773
-        lda     $50                             ; A775
+        lda     LoadedObj + Obj::Scratch0       ; A775
         bne     L_A780                          ; A777
         jsr     LE005                           ; A779
         beq     L_A79E                          ; A77C
-        inc     $50                             ; A77E
+        inc     LoadedObj + Obj::Scratch0       ; A77E
 L_A780: jsr     LDF68                           ; A780
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; A783
         eor     LoadedObj + Obj::Velocity_X     ; A786
@@ -50,15 +50,15 @@ L_A79E: lda     #$10                            ; A79E
         sta     $40                             ; A7A0
         lda     #$18                            ; A7A2
         sta     $41                             ; A7A4
-        jsr     LEF2B                           ; A7A6
+        jsr     ScreenPos_Compute               ; A7A6
         beq     L_A7AE                          ; A7A9
-        jmp     LD7F8                           ; A7AB
+        jmp     Obj_TombstoneSlot               ; A7AB
 
 ; ----------------------------------------------------------------------------
 L_A7AE: lda     #$04                            ; A7AE
-        jsr     L_A30A                          ; A7B0
+        jsr     TankEnemy_DamageCheck           ; A7B0
         beq     L_A7B8                          ; A7B3
-        jmp     L_A34D                          ; A7B5
+        jmp     TankEnemy_Defeat                ; A7B5
 
 ; ----------------------------------------------------------------------------
 L_A7B8: lda     #$01                            ; A7B8

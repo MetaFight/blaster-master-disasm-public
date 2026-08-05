@@ -53,7 +53,7 @@ L_97C6: lda     #$10                            ; 97C6
         sta     $40                             ; 97C8
         lda     #$10                            ; 97CA
         sta     $41                             ; 97CC
-        jsr     LEF2B                           ; 97CE
+        jsr     ScreenPos_Compute               ; 97CE
         bne     L_980C                          ; 97D1
         ldx     $B9                             ; 97D3
         lda     L_9835,x                        ; 97D5
@@ -111,8 +111,8 @@ L_9885: jsr     LD790                           ; 9885
         sta     LoadedObj + Obj::Velocity_Y     ; 9893
         inc     LoadedObj + Obj::Type           ; 9895
         lda     #$C0                            ; 9897
-        sta     $51                             ; 9899
-        sta     $52                             ; 989B
+        sta     LoadedObj + Obj::Scratch1       ; 9899
+        sta     LoadedObj + Obj::Scratch2       ; 989B
         lda     #$2F                            ; 989D
         jsr     Enqueue_Sound_Command           ; 989F
         rts                                     ; 98A2
@@ -128,18 +128,18 @@ L_98AB: lda     #$80                            ; 98AB
         sta     LoadedObj_CollisionBox_HalfWidth; 98AD
         lda     #$80                            ; 98AF
         sta     LoadedObj_CollisionBox_HalfHeight; 98B1
-        dec     $51                             ; 98B3
+        dec     LoadedObj + Obj::Scratch1       ; 98B3
         bne     L_98BD                          ; 98B5
         jsr     LD790                           ; 98B7
         jmp     L_9B95                          ; 98BA
 
 ; ----------------------------------------------------------------------------
-L_98BD: lda     $52                             ; 98BD
+L_98BD: lda     LoadedObj + Obj::Scratch2       ; 98BD
         beq     L_9916                          ; 98BF
-        ldx     $50                             ; 98C1
+        ldx     LoadedObj + Obj::Scratch0       ; 98C1
         lda     ObjectTable + Obj::Type,x       ; 98C3
         bne     L_98CC                          ; 98C6
-        sta     $52                             ; 98C8
+        sta     LoadedObj + Obj::Scratch2       ; 98C8
         beq     L_9916                          ; 98CA
 L_98CC: lda     ObjectTable + Obj::Position_X_Hi,x ; 98CC
         sec                                     ; 98CF
@@ -163,7 +163,7 @@ L_98E4: sta     LoadedObj + Obj::Velocity_X     ; 98E4
 L_98E9: lda     #$10                            ; 98E9
         ldx     #$4C                            ; 98EB
         jsr     Speed_Limit_Sub                 ; 98ED
-L_98F0: ldx     $50                             ; 98F0
+L_98F0: ldx     LoadedObj + Obj::Scratch0       ; 98F0
         lda     ObjectTable + Obj::Position_Y_Hi,x ; 98F2
         sec                                     ; 98F5
         sbc     LoadedObj + Obj::Position_Y_Hi  ; 98F6
@@ -191,7 +191,7 @@ L_9919: lda     #$18                            ; 9919
         sta     $40                             ; 991B
         lda     #$18                            ; 991D
         sta     $41                             ; 991F
-        jsr     LEF2B                           ; 9921
+        jsr     ScreenPos_Compute               ; 9921
         beq     L_9929                          ; 9924
         jmp     LD790                           ; 9926
 
@@ -209,9 +209,9 @@ L_9933: lda     #$00                            ; 9933
         lda     L_996E+1                        ; 993C
         sta     $7B                             ; 993F
         ldy     #$00                            ; 9941
-        lda     $52                             ; 9943
+        lda     LoadedObj + Obj::Scratch2       ; 9943
         beq     L_9965                          ; 9945
-        ldx     $50                             ; 9947
+        ldx     LoadedObj + Obj::Scratch0       ; 9947
         lda     ObjectTable + Obj::Position_X_Hi,x ; 9949
         sec                                     ; 994C
         sbc     LoadedObj + Obj::Position_X_Hi  ; 994D
@@ -259,7 +259,7 @@ L_99CC: nop                                     ; 99CC
         nop                                     ; 99CD
         nop                                     ; 99CE
 L_99CF: lda     #$00                            ; 99CF
-        sta     $50                             ; 99D1
+        sta     LoadedObj + Obj::Scratch0       ; 99D1
         sta     $4F                             ; 99D3
         lda     $10                             ; 99D5
         and     #$03                            ; 99D7
@@ -287,8 +287,8 @@ L_99F3: lda     #$80                            ; 99F3
         lda     $10                             ; 99FB
         and     #$01                            ; 99FD
         bne     L_9A0E                          ; 99FF
-        inc     $50                             ; 9A01
-        lda     $50                             ; 9A03
+        inc     LoadedObj + Obj::Scratch0       ; 9A01
+        lda     LoadedObj + Obj::Scratch0       ; 9A03
         cmp     #$10                            ; 9A05
         bcc     L_9A0C                          ; 9A07
         jmp     LD82C                           ; 9A09
@@ -299,18 +299,18 @@ L_9A0E: lda     #$10                            ; 9A0E
         sta     $40                             ; 9A10
         lda     #$10                            ; 9A12
         sta     $41                             ; 9A14
-        jsr     LEF2B                           ; 9A16
+        jsr     ScreenPos_Compute               ; 9A16
         beq     L_9A1E                          ; 9A19
         jmp     LD82C                           ; 9A1B
 
 ; ----------------------------------------------------------------------------
-L_9A1E: lda     $50                             ; 9A1E
-        sta     $51                             ; 9A20
+L_9A1E: lda     LoadedObj + Obj::Scratch0       ; 9A1E
+        sta     LoadedObj + Obj::Scratch1       ; 9A20
         and     #$08                            ; 9A22
         bne     L_9A42                          ; 9A24
         lda     $3E                             ; 9A26
         pha                                     ; 9A28
-        lda     $50                             ; 9A29
+        lda     LoadedObj + Obj::Scratch0       ; 9A29
         clc                                     ; 9A2B
         adc     LoadedObj + Obj::Facing         ; 9A2C
         tax                                     ; 9A2E
@@ -328,12 +328,12 @@ L_9A1E: lda     $50                             ; 9A1E
 L_9A42: jsr     LD790                           ; 9A42
 L_9A45: lda     #$04                            ; 9A45
 L_9A47: pha                                     ; 9A47
-        lda     $51                             ; 9A48
+        lda     LoadedObj + Obj::Scratch1       ; 9A48
         bit     $E6E4                           ; 9A4A
         bne     L_9A6E                          ; 9A4D
         lda     $3E                             ; 9A4F
         pha                                     ; 9A51
-        lda     $51                             ; 9A52
+        lda     LoadedObj + Obj::Scratch1       ; 9A52
         clc                                     ; 9A54
         adc     LoadedObj + Obj::Facing         ; 9A55
         tax                                     ; 9A57
@@ -351,7 +351,7 @@ L_9A6E: lda     $3F                             ; 9A6E
         sec                                     ; 9A70
         sbc     #$10                            ; 9A71
         sta     $3F                             ; 9A73
-        dec     $51                             ; 9A75
+        dec     LoadedObj + Obj::Scratch1       ; 9A75
         pla                                     ; 9A77
         sec                                     ; 9A78
         sbc     #$01                            ; 9A79
@@ -427,7 +427,7 @@ L_9B47: lda     #$10                            ; 9B47
         sta     $40                             ; 9B49
         lda     #$10                            ; 9B4B
         sta     $41                             ; 9B4D
-        jsr     LEF2B                           ; 9B4F
+        jsr     ScreenPos_Compute               ; 9B4F
         bne     L_9B79                          ; 9B52
         lda     #$20                            ; 9B54
         jsr     LD7A0                           ; 9B56
@@ -463,7 +463,7 @@ L_9EA4: jmp     L_9EBE                          ; 9EA4
 L_9EA7: lda     $9D                             ; 9EA7
         sta     LoadedObj + Obj::Facing         ; 9EA9
         lda     #$70                            ; 9EAB
-        sta     $51                             ; 9EAD
+        sta     LoadedObj + Obj::Scratch1       ; 9EAD
         ldy     $9E                             ; 9EAF
         jsr     Obj_AngleToVelocity             ; 9EB1
         jsr     LD2B9                           ; 9EB4
@@ -482,7 +482,7 @@ L_9EC2: jsr     Step_RNG                           ; 9EC2
         adc     #$B0                            ; 9EC8
         sta     LoadedObj + Obj::Facing         ; 9ECA
         lda     #$70                            ; 9ECC
-        sta     $51                             ; 9ECE
+        sta     LoadedObj + Obj::Scratch1       ; 9ECE
         ldy     #$28                            ; 9ED0
         jsr     Obj_AngleToVelocity             ; 9ED2
         jsr     LD2B9                           ; 9ED5
@@ -501,9 +501,9 @@ L_9EE3: lda     #$80                            ; 9EE3
         sta     LoadedObj_CollisionBox_HalfHeight; 9EE9
         lda     #$02                            ; 9EEB
         jsr     Obj_GravityMoveBounce_Double    ; 9EED
-        dec     $51                             ; 9EF0
+        dec     LoadedObj + Obj::Scratch1       ; 9EF0
         beq     L_9F2E                          ; 9EF2
-        lda     $51                             ; 9EF4
+        lda     LoadedObj + Obj::Scratch1       ; 9EF4
         cmp     #$01                            ; 9EF6
         bne     L_9F05                          ; 9EF8
         lda     #$80                            ; 9EFA
@@ -517,9 +517,9 @@ L_9F05: lda     #$10                            ; 9F05
         sta     $40                             ; 9F07
         lda     #$10                            ; 9F09
         sta     $41                             ; 9F0B
-L_9F0D: jsr     LEF2B                           ; 9F0D
+L_9F0D: jsr     ScreenPos_Compute                           ; 9F0D
         beq     L_9F15                          ; 9F10
-        jmp     LD81C                           ; 9F12
+        jmp     Obj_Despawn                     ; 9F12
 
 ; ----------------------------------------------------------------------------
 L_9F15: clc                                     ; 9F15
@@ -539,7 +539,7 @@ L_9F15: clc                                     ; 9F15
 L_9F2E: jsr     L_9B90                          ; 9F2E
         lda     #$27                            ; 9F31
         jsr     Enqueue_Sound_Command           ; 9F33
-        jmp     LD81C                           ; 9F36
+        jmp     Obj_Despawn                     ; 9F36
 
 ; ----------------------------------------------------------------------------
 L_9F39: jmp     L_9F59                          ; 9F39
@@ -551,7 +551,7 @@ L_9F3C: jsr     Step_RNG                           ; 9F3C
         adc     #$B8                            ; 9F42
         sta     LoadedObj + Obj::Facing         ; 9F44
         lda     #$50                            ; 9F46
-        sta     $51                             ; 9F48
+        sta     LoadedObj + Obj::Scratch1       ; 9F48
         ldy     #$18                            ; 9F4A
         jsr     Obj_AngleToVelocity             ; 9F4C
         jsr     LD2B9                           ; 9F4F
@@ -570,9 +570,9 @@ L_9F5D: lda     #$80                            ; 9F5D
         sta     LoadedObj_CollisionBox_HalfHeight; 9F63
         lda     #$02                            ; 9F65
         jsr     Obj_GravityMoveBounce_Double    ; 9F67
-        dec     $51                             ; 9F6A
+        dec     LoadedObj + Obj::Scratch1       ; 9F6A
         beq     L_9FA8                          ; 9F6C
-        lda     $51                             ; 9F6E
+        lda     LoadedObj + Obj::Scratch1       ; 9F6E
         cmp     #$01                            ; 9F70
         bne     L_9F7F                          ; 9F72
         lda     #$80                            ; 9F74
@@ -586,9 +586,9 @@ L_9F7F: lda     #$10                            ; 9F7F
         sta     $40                             ; 9F81
         lda     #$10                            ; 9F83
         sta     $41                             ; 9F85
-L_9F87: jsr     LEF2B                           ; 9F87
+L_9F87: jsr     ScreenPos_Compute                           ; 9F87
         beq     L_9F8F                          ; 9F8A
-        jmp     LD7F8                           ; 9F8C
+        jmp     Obj_TombstoneSlot               ; 9F8C
 
 ; ----------------------------------------------------------------------------
 L_9F8F: clc                                     ; 9F8F
@@ -613,7 +613,7 @@ L_9FA8: jsr     L_9B90                          ; 9FA8
         lda     #$63                            ; 9FB5
         sta     LoadedObj + Obj::Type           ; 9FB7
         lda     #$01                            ; 9FB9
-        sta     $50                             ; 9FBB
+        sta     LoadedObj + Obj::Scratch0       ; 9FBB
         lda     #$E8                            ; 9FBD
         sta     LoadedObj + Obj::Velocity_Y     ; 9FBF
         lda     #$11                            ; 9FC1
@@ -625,9 +625,9 @@ L_9FA8: jsr     L_9B90                          ; 9FA8
         sbc     LoadedObj + Obj::Velocity_X     ; 9FCD
         sta     LoadedObj + Obj::Velocity_X     ; 9FCF
 L_9FD1: lda     #$00                            ; 9FD1
-        sta     $51                             ; 9FD3
+        sta     LoadedObj + Obj::Scratch1       ; 9FD3
         sta     LoadedObj + Obj::Facing         ; 9FD5
-        sta     $52                             ; 9FD7
+        sta     LoadedObj + Obj::Scratch2       ; 9FD7
         rts                                     ; 9FD9
 
 ; ----------------------------------------------------------------------------
@@ -635,7 +635,7 @@ L_9FDA: jmp     L_9FF8                          ; 9FDA
 
 ; ----------------------------------------------------------------------------
 L_9FDD: inc     LoadedObj + Obj::Type           ; 9FDD
-        jsr     LEF2B                           ; 9FDF
+        jsr     ScreenPos_Compute               ; 9FDF
         lda     $3E                             ; 9FE2
         sta     $00                             ; 9FE4
         lda     $3F                             ; 9FE6
@@ -664,9 +664,9 @@ L_A009: lda     #$08                            ; A009
         sta     $40                             ; A00B
         lda     #$08                            ; A00D
         sta     $41                             ; A00F
-        jsr     LEF2B                           ; A011
+        jsr     ScreenPos_Compute               ; A011
         beq     L_A019                          ; A014
-        jmp     LD81C                           ; A016
+        jmp     Obj_Despawn                     ; A016
 
 ; ----------------------------------------------------------------------------
 L_A019: lda     #$0C                            ; A019
@@ -679,7 +679,7 @@ L_A019: lda     #$0C                            ; A019
 
 ; ----------------------------------------------------------------------------
 L_A029: jsr     L_9B81                          ; A029
-        jmp     LD81C                           ; A02C
+        jmp     Obj_Despawn                     ; A02C
 
 ; ----------------------------------------------------------------------------
 L_A02F: jmp     L_A046                          ; A02F
@@ -716,9 +716,9 @@ L_A063: lda     #$08                            ; A063
         sta     $40                             ; A065
         lda     #$08                            ; A067
         sta     $41                             ; A069
-        jsr     LEF2B                           ; A06B
+        jsr     ScreenPos_Compute               ; A06B
         beq     L_A073                          ; A06E
-        jmp     LD81C                           ; A070
+        jmp     Obj_Despawn                     ; A070
 
 ; ----------------------------------------------------------------------------
 L_A073: lda     #$08                            ; A073
@@ -731,7 +731,7 @@ L_A073: lda     #$08                            ; A073
 
 ; ----------------------------------------------------------------------------
 L_A083: jsr     L_9B81                          ; A083
-        jmp     LD81C                           ; A086
+        jmp     Obj_Despawn                     ; A086
 
 ; ----------------------------------------------------------------------------
 L_A089: jmp     L_A0B5                          ; A089
@@ -774,7 +774,7 @@ L_A0C8: lda     #$0C                            ; A0C8
         sta     $40                             ; A0CA
         lda     #$0C                            ; A0CC
         sta     $41                             ; A0CE
-        jsr     LEF2B                           ; A0D0
+        jsr     ScreenPos_Compute               ; A0D0
         bne     L_A0E8                          ; A0D3
         lda     #$20                            ; A0D5
         jsr     LD71F                           ; A0D7
@@ -786,7 +786,7 @@ L_A0C8: lda     #$0C                            ; A0C8
 
 ; ----------------------------------------------------------------------------
 L_A0E5: jsr     L_9B81                          ; A0E5
-L_A0E8: jmp     LD81C                           ; A0E8
+L_A0E8: jmp     Obj_Despawn                           ; A0E8
 
 ; ----------------------------------------------------------------------------
 L_A0EB: .byte   $C0,$C3,$C6,$C8,$CA,$CD,$D0,$D0 ; A0EB
@@ -811,7 +811,7 @@ L_A10A: clc                                     ; A10A
         bcc     L_A115                          ; A111
         inc     LoadedObj + Obj::Position_Y_Hi  ; A113
 L_A115: lda     #$0A                            ; A115
-        sta     $51                             ; A117
+        sta     LoadedObj + Obj::Scratch1       ; A117
         jsr     LD2B9                           ; A119
         inc     LoadedObj + Obj::Type           ; A11C
         jsr     L_9E9E                          ; A11E
@@ -825,9 +825,9 @@ L_A125: lda     #$80                            ; A125
         sta     LoadedObj_CollisionBox_HalfWidth; A127
         lda     #$80                            ; A129
         sta     LoadedObj_CollisionBox_HalfHeight; A12B
-        lda     $51                             ; A12D
+        lda     LoadedObj + Obj::Scratch1       ; A12D
         beq     L_A136                          ; A12F
-        dec     $51                             ; A131
+        dec     LoadedObj + Obj::Scratch1       ; A131
         jmp     L_A13D                          ; A133
 
 ; ----------------------------------------------------------------------------
@@ -838,9 +838,9 @@ L_A13D: lda     #$10                            ; A13D
         sta     $40                             ; A13F
         lda     #$10                            ; A141
         sta     $41                             ; A143
-        jsr     LEF2B                           ; A145
+        jsr     ScreenPos_Compute               ; A145
         beq     L_A14D                          ; A148
-        jmp     LD81C                           ; A14A
+        jmp     Obj_Despawn                     ; A14A
 
 ; ----------------------------------------------------------------------------
 L_A14D: lda     #$20                            ; A14D
@@ -861,7 +861,7 @@ L_A15F: jsr     L_9B90                          ; A15F
         lda     #$63                            ; A16C
         sta     LoadedObj + Obj::Type           ; A16E
         lda     #$01                            ; A170
-        sta     $50                             ; A172
+        sta     LoadedObj + Obj::Scratch0       ; A172
         lda     #$E8                            ; A174
         sta     LoadedObj + Obj::Velocity_Y     ; A176
         lda     #$11                            ; A178
@@ -873,9 +873,9 @@ L_A15F: jsr     L_9B90                          ; A15F
         sbc     LoadedObj + Obj::Velocity_X     ; A184
         sta     LoadedObj + Obj::Velocity_X     ; A186
 L_A188: lda     #$00                            ; A188
-        sta     $51                             ; A18A
+        sta     LoadedObj + Obj::Scratch1       ; A18A
         sta     LoadedObj + Obj::Facing         ; A18C
-        sta     $52                             ; A18E
+        sta     LoadedObj + Obj::Scratch2       ; A18E
         rts                                     ; A190
 
 ; ----------------------------------------------------------------------------
@@ -888,7 +888,7 @@ L_A194: jsr     Step_RNG                           ; A194
         adc     #$B0                            ; A19A
         sta     LoadedObj + Obj::Facing         ; A19C
         lda     #$40                            ; A19E
-        sta     $51                             ; A1A0
+        sta     LoadedObj + Obj::Scratch1       ; A1A0
         ldy     #$20                            ; A1A2
         jsr     Obj_AngleToVelocity             ; A1A4
         jsr     LD2B9                           ; A1A7
@@ -903,9 +903,9 @@ L_A1B0: lda     #$80                            ; A1B0
         sta     LoadedObj_CollisionBox_HalfWidth; A1B2
         lda     #$80                            ; A1B4
         sta     LoadedObj_CollisionBox_HalfHeight; A1B6
-        dec     $51                             ; A1B8
+        dec     LoadedObj + Obj::Scratch1       ; A1B8
         bne     L_A1BF                          ; A1BA
-        jmp     LD81C                           ; A1BC
+        jmp     Obj_Despawn                     ; A1BC
 
 ; ----------------------------------------------------------------------------
 L_A1BF: lda     #$02                            ; A1BF
@@ -917,7 +917,7 @@ L_A1CC: lda     #$10                            ; A1CC
         sta     $40                             ; A1CE
         lda     #$10                            ; A1D0
         sta     $41                             ; A1D2
-        jsr     LEF2B                           ; A1D4
+        jsr     ScreenPos_Compute               ; A1D4
         bne     L_A1EE                          ; A1D7
         lda     #$10                            ; A1D9
         jsr     LD71F                           ; A1DB
@@ -930,13 +930,13 @@ L_A1CC: lda     #$10                            ; A1CC
 
 ; ----------------------------------------------------------------------------
 L_A1EB: jsr     L_9B81                          ; A1EB
-L_A1EE: jmp     LD81C                           ; A1EE
+L_A1EE: jmp     Obj_Despawn                           ; A1EE
 
 ; ----------------------------------------------------------------------------
 L_A1F1: jmp     L_A201                          ; A1F1
 
 ; ----------------------------------------------------------------------------
-L_A1F4: ldy     $51                             ; A1F4
+L_A1F4: ldy     LoadedObj + Obj::Scratch1       ; A1F4
         jsr     Obj_AngleToVelocity             ; A1F6
         jsr     LD2B9                           ; A1F9
         inc     LoadedObj + Obj::Type           ; A1FC
@@ -958,7 +958,7 @@ L_A214: lda     #$08                            ; A214
         sta     $40                             ; A216
         lda     #$08                            ; A218
         sta     $41                             ; A21A
-        jsr     LEF2B                           ; A21C
+        jsr     ScreenPos_Compute               ; A21C
         bne     L_A234                          ; A21F
         lda     #$08                            ; A221
         jsr     LD711                           ; A223
@@ -970,7 +970,7 @@ L_A214: lda     #$08                            ; A214
 
 ; ----------------------------------------------------------------------------
 L_A231: jsr     L_9B81                          ; A231
-L_A234: jmp     LD81C                           ; A234
+L_A234: jmp     Obj_Despawn                           ; A234
 
 .endmacro
 

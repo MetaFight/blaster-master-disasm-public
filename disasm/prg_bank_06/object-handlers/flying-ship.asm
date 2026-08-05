@@ -40,15 +40,15 @@ L_AC10: lda     #$10                            ; AC10
         sta     $40                             ; AC12
         lda     #$10                            ; AC14
         sta     $41                             ; AC16
-        jsr     LEF2B                           ; AC18
+        jsr     ScreenPos_Compute               ; AC18
         beq     L_AC20                          ; AC1B
-        jmp     LD7F8                           ; AC1D
+        jmp     Obj_TombstoneSlot               ; AC1D
 
 ; ----------------------------------------------------------------------------
 L_AC20: lda     #$0A                            ; AC20
-        jsr     L_A30A                          ; AC22
+        jsr     TankEnemy_DamageCheck           ; AC22
         beq     L_AC2A                          ; AC25
-        jmp     L_A34D                          ; AC27
+        jmp     TankEnemy_Defeat                ; AC27
 
 ; ----------------------------------------------------------------------------
 L_AC2A: lda     #$01                            ; AC2A

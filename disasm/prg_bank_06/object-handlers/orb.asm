@@ -11,9 +11,9 @@ L_AE7B: lda     #$0E                            ; AE7B
         ldy     #$10                            ; AE87
         jsr     Obj_AngleToVelocity             ; AE89
         lda     #$00                            ; AE8C
-        sta     $50                             ; AE8E
+        sta     LoadedObj + Obj::Scratch0       ; AE8E
         lda     #$10                            ; AE90
-        sta     $52                             ; AE92
+        sta     LoadedObj + Obj::Scratch2       ; AE92
 L_AE94: rts                                     ; AE94
 
 ; ----------------------------------------------------------------------------
@@ -24,13 +24,13 @@ L_AE98: lda     #$80                            ; AE98
         sta     LoadedObj_CollisionBox_HalfWidth; AE9A
         lda     #$80                            ; AE9C
         sta     LoadedObj_CollisionBox_HalfHeight; AE9E
-        lda     $50                             ; AEA0
+        lda     LoadedObj + Obj::Scratch0       ; AEA0
         bne     L_AEDC                          ; AEA2
         jsr     LD2DE                           ; AEA4
         jsr     H_Collision_Check               ; AEA7
         beq     L_AEB3                          ; AEAA
         lda     #$02                            ; AEAC
-        sta     $50                             ; AEAE
+        sta     LoadedObj + Obj::Scratch0       ; AEAE
         jmp     L_AF03                          ; AEB0
 
 ; ----------------------------------------------------------------------------
@@ -45,14 +45,14 @@ L_AEB3: lda     Global_FrameCounter             ; AEB3
         bmi     L_AED5                          ; AEC5
         lda     #$00                            ; AEC7
         sec                                     ; AEC9
-        sbc     $52                             ; AECA
-        sta     $52                             ; AECC
+        sbc     LoadedObj + Obj::Scratch2       ; AECA
+        sta     LoadedObj + Obj::Scratch2       ; AECC
         lda     #$00                            ; AECE
         sec                                     ; AED0
         sbc     LoadedObj + Obj::Velocity_Y     ; AED1
         sta     LoadedObj + Obj::Velocity_Y     ; AED3
 L_AED5: lda     #$01                            ; AED5
-        sta     $50                             ; AED7
+        sta     LoadedObj + Obj::Scratch0       ; AED7
         jmp     L_AF03                          ; AED9
 
 ; ----------------------------------------------------------------------------
@@ -63,29 +63,29 @@ L_AEDC: cmp     #$01                            ; AEDC
 L_AEE6: jsr     LE07B                           ; AEE6
         and     #$7F                            ; AEE9
         bne     L_AF03                          ; AEEB
-        lda     $50                             ; AEED
+        lda     LoadedObj + Obj::Scratch0       ; AEED
         cmp     #$02                            ; AEEF
         beq     L_AEFA                          ; AEF1
         jsr     Step_RNG                        ; AEF3
         and     #$03                            ; AEF6
         bne     L_AF03                          ; AEF8
 L_AEFA: lda     #$00                            ; AEFA
-        sta     $50                             ; AEFC
+        sta     LoadedObj + Obj::Scratch0       ; AEFC
         ldy     #$10                            ; AEFE
         jsr     Obj_AngleToVelocity             ; AF00
 L_AF03: lda     #$10                            ; AF03
         sta     $40                             ; AF05
         lda     #$10                            ; AF07
         sta     $41                             ; AF09
-        jsr     LEF2B                           ; AF0B
+        jsr     ScreenPos_Compute               ; AF0B
         beq     L_AF13                          ; AF0E
-        jmp     LD7F8                           ; AF10
+        jmp     Obj_TombstoneSlot               ; AF10
 
 ; ----------------------------------------------------------------------------
 L_AF13: lda     #$0E                            ; AF13
-        jsr     L_A30A                          ; AF15
+        jsr     TankEnemy_DamageCheck           ; AF15
         beq     L_AF1D                          ; AF18
-        jmp     L_A34D                          ; AF1A
+        jmp     TankEnemy_Defeat                ; AF1A
 
 ; ----------------------------------------------------------------------------
 L_AF1D: lda     #$01                            ; AF1D

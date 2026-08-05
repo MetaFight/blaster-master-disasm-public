@@ -8,7 +8,7 @@ L_AB16: lda     #$09                            ; AB16
         lda     #$00                            ; AB1B
         sta     LoadedObj + Obj::Velocity_X     ; AB1D
         sta     LoadedObj + Obj::Velocity_Y     ; AB1F
-        sta     $50                             ; AB21
+        sta     LoadedObj + Obj::Scratch0       ; AB21
 L_AB23: rts                                     ; AB23
 
 ; ----------------------------------------------------------------------------
@@ -19,7 +19,7 @@ L_AB27: lda     #$80                            ; AB27
         sta     LoadedObj_CollisionBox_HalfWidth; AB29
         lda     #$80                            ; AB2B
         sta     LoadedObj_CollisionBox_HalfHeight; AB2D
-        lda     $50                             ; AB2F
+        lda     LoadedObj + Obj::Scratch0       ; AB2F
         bmi     L_AB56                          ; AB31
         jsr     LE0FA                           ; AB33
         bpl     L_AB3D                          ; AB36
@@ -36,7 +36,7 @@ L_AB3D: cmp     #$04                            ; AB3D
 L_AB4B: cmp     #$03                            ; AB4B
         bcs     L_AB9E                          ; AB4D
         lda     #$80                            ; AB4F
-        sta     $50                             ; AB51
+        sta     LoadedObj + Obj::Scratch0       ; AB51
         jmp     L_AB9E                          ; AB53
 
 ; ----------------------------------------------------------------------------
@@ -49,7 +49,7 @@ L_AB56: and     #$01                            ; AB56
         beq     L_ABA4                          ; AB63
         lda     #$00                            ; AB65
         sta     LoadedObj + Obj::Velocity_Y     ; AB67
-        inc     $50                             ; AB69
+        inc     LoadedObj + Obj::Scratch0       ; AB69
         jmp     L_AB9E                          ; AB6B
 
 ; ----------------------------------------------------------------------------
@@ -73,33 +73,33 @@ L_AB86: cmp     #$08                            ; AB86
         lda     #$38                            ; AB90
         sta     $A0                             ; AB92
         jsr     LDF46                           ; AB94
-L_AB97: lda     $50                             ; AB97
+L_AB97: lda     LoadedObj + Obj::Scratch0       ; AB97
         and     #$BF                            ; AB99
         jmp     L_ABA2                          ; AB9B
 
 ; ----------------------------------------------------------------------------
-L_AB9E: lda     $50                             ; AB9E
+L_AB9E: lda     LoadedObj + Obj::Scratch0       ; AB9E
         ora     #$40                            ; ABA0
-L_ABA2: sta     $50                             ; ABA2
+L_ABA2: sta     LoadedObj + Obj::Scratch0       ; ABA2
 L_ABA4: lda     #$10                            ; ABA4
         sta     $40                             ; ABA6
         lda     #$10                            ; ABA8
         sta     $41                             ; ABAA
-        jsr     LEF2B                           ; ABAC
+        jsr     ScreenPos_Compute               ; ABAC
         beq     L_ABB4                          ; ABAF
-        jmp     LD7F8                           ; ABB1
+        jmp     Obj_TombstoneSlot               ; ABB1
 
 ; ----------------------------------------------------------------------------
 L_ABB4: lda     #$09                            ; ABB4
-        jsr     L_A30A                          ; ABB6
+        jsr     TankEnemy_DamageCheck           ; ABB6
         beq     L_ABBE                          ; ABB9
-        jmp     L_A34D                          ; ABBB
+        jmp     TankEnemy_Defeat                ; ABBB
 
 ; ----------------------------------------------------------------------------
 L_ABBE: lda     #$41                            ; ABBE
         sta     $44                             ; ABC0
         ldx     #$74                            ; ABC2
-        lda     $50                             ; ABC4
+        lda     LoadedObj + Obj::Scratch0       ; ABC4
         and     #$40                            ; ABC6
         beq     L_ABCB                          ; ABC8
         inx                                     ; ABCA

@@ -14,7 +14,7 @@ L_A280: clc                                     ; A280
         bcc     L_A28A                          ; A286
         lda     #$FF                            ; A288
 L_A28A: sta     PlayerSlot + Obj::Health        ; A28A
-        jmp     LD81C                           ; A28D
+        jmp     Obj_Despawn                     ; A28D
 
 ; ----------------------------------------------------------------------------
 L_A290: clc                                     ; A290
@@ -23,7 +23,7 @@ L_A290: clc                                     ; A290
         bcc     L_A299                          ; A295
         lda     #$FF                            ; A297
 L_A299: sta     $92                             ; A299
-        jmp     LD81C                           ; A29B
+        jmp     Obj_Despawn                     ; A29B
 
 .endmacro
 

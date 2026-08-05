@@ -7,21 +7,21 @@ L_B91D: lda     LoadedObj + Obj::Position_X_Hi  ; B91D
         lsr     a                               ; B91F
         bcc     L_B92D                          ; B920
         lda     #$A0                            ; B922
-        sta     $50                             ; B924
+        sta     LoadedObj + Obj::Scratch0       ; B924
         lda     #$A0                            ; B926
         sta     LoadedObj + Obj::Facing         ; B928
         jmp     L_B935                          ; B92A
 
 ; ----------------------------------------------------------------------------
 L_B92D: lda     #$60                            ; B92D
-        sta     $50                             ; B92F
+        sta     LoadedObj + Obj::Scratch0       ; B92F
         lda     #$E0                            ; B931
         sta     LoadedObj + Obj::Facing         ; B933
 L_B935: ldy     #$18                            ; B935
         jsr     Obj_AngleToVelocity             ; B937
         lda     #$00                            ; B93A
-        sta     $51                             ; B93C
-        sta     $52                             ; B93E
+        sta     LoadedObj + Obj::Scratch1       ; B93C
+        sta     LoadedObj + Obj::Scratch2       ; B93E
         lda     #$1C                            ; B940
         jsr     TankEnemy_Init                  ; B942
         lda     #$8E                            ; B945
@@ -36,21 +36,21 @@ L_B94D: lda     LoadedObj + Obj::Position_X_Hi  ; B94D
         lsr     a                               ; B94F
         bcc     L_B95D                          ; B950
         lda     #$A0                            ; B952
-        sta     $50                             ; B954
+        sta     LoadedObj + Obj::Scratch0       ; B954
         lda     #$20                            ; B956
         sta     LoadedObj + Obj::Facing         ; B958
         jmp     L_B965                          ; B95A
 
 ; ----------------------------------------------------------------------------
 L_B95D: lda     #$60                            ; B95D
-        sta     $50                             ; B95F
+        sta     LoadedObj + Obj::Scratch0       ; B95F
         lda     #$60                            ; B961
         sta     LoadedObj + Obj::Facing         ; B963
 L_B965: ldy     #$18                            ; B965
         jsr     Obj_AngleToVelocity             ; B967
         lda     #$00                            ; B96A
-        sta     $51                             ; B96C
-        sta     $52                             ; B96E
+        sta     LoadedObj + Obj::Scratch1       ; B96C
+        sta     LoadedObj + Obj::Scratch2       ; B96E
         lda     #$1D                            ; B970
         jsr     TankEnemy_Init                  ; B972
         lda     #$8E                            ; B975
@@ -78,7 +78,7 @@ L_B998: jsr     LE120                           ; B998
         bne     L_B9C0                          ; B99D
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; B99F
         beq     L_B9C0                          ; B9A2
-L_B9A4: lda     $50                             ; B9A4
+L_B9A4: lda     LoadedObj + Obj::Scratch0       ; B9A4
         clc                                     ; B9A6
         adc     LoadedObj + Obj::Facing         ; B9A7
         sta     $01                             ; B9A9
@@ -89,7 +89,7 @@ L_B9A4: lda     $50                             ; B9A4
         ldy     #$60                            ; B9B4
         jsr     Obj_AngleToVelocity             ; B9B6
         lda     #$10                            ; B9B9
-        sta     $51                             ; B9BB
+        sta     LoadedObj + Obj::Scratch1       ; B9BB
         inc     LoadedObj + Obj::Type           ; B9BD
         rts                                     ; B9BF
 
@@ -98,18 +98,18 @@ L_B9C0: lda     #$10                            ; B9C0
         sta     $40                             ; B9C2
         lda     #$10                            ; B9C4
         sta     $41                             ; B9C6
-        jsr     LEF2B                           ; B9C8
+        jsr     ScreenPos_Compute               ; B9C8
         beq     L_B9D0                          ; B9CB
-        jmp     LD7F8                           ; B9CD
+        jmp     Obj_TombstoneSlot               ; B9CD
 
 ; ----------------------------------------------------------------------------
 L_B9D0: lda     #$1C                            ; B9D0
-        jsr     L_A30A                          ; B9D2
+        jsr     TankEnemy_DamageCheck           ; B9D2
         beq     L_B9DA                          ; B9D5
-        jmp     L_A34D                          ; B9D7
+        jmp     TankEnemy_Defeat                ; B9D7
 
 ; ----------------------------------------------------------------------------
-L_B9DA: lda     $50                             ; B9DA
+L_B9DA: lda     LoadedObj + Obj::Scratch0       ; B9DA
         and     #$80                            ; B9DC
         sta     $00                             ; B9DE
         lda     LoadedObj + Obj::Facing         ; B9E0
@@ -143,11 +143,11 @@ L_BA03: lda     #$80                            ; BA03
         sta     LoadedObj_CollisionBox_HalfWidth; BA05
         lda     #$80                            ; BA07
         sta     LoadedObj_CollisionBox_HalfHeight; BA09
-        lda     $51                             ; BA0B
+        lda     LoadedObj + Obj::Scratch1       ; BA0B
         beq     L_BA19                          ; BA0D
         lda     #$43                            ; BA0F
         jsr     Enqueue_Sound_Command           ; BA11
-        dec     $51                             ; BA14
+        dec     LoadedObj + Obj::Scratch1       ; BA14
         jmp     L_BA43                          ; BA16
 
 ; ----------------------------------------------------------------------------
@@ -166,11 +166,11 @@ L_BA2C: lda     #$A0                            ; BA2C
 L_BA30: clc                                     ; BA30
         adc     LoadedObj + Obj::Facing         ; BA31
         sta     LoadedObj + Obj::Facing         ; BA33
-        stx     $50                             ; BA35
+        stx     LoadedObj + Obj::Scratch0       ; BA35
         ldy     #$18                            ; BA37
         jsr     Obj_AngleToVelocity             ; BA39
         lda     #$00                            ; BA3C
-        sta     $51                             ; BA3E
+        sta     LoadedObj + Obj::Scratch1       ; BA3E
         dec     LoadedObj + Obj::Type           ; BA40
         rts                                     ; BA42
 
@@ -179,15 +179,15 @@ L_BA43: lda     #$10                            ; BA43
         sta     $40                             ; BA45
         lda     #$10                            ; BA47
         sta     $41                             ; BA49
-        jsr     LEF2B                           ; BA4B
+        jsr     ScreenPos_Compute               ; BA4B
         beq     L_BA53                          ; BA4E
-        jmp     LD7F8                           ; BA50
+        jmp     Obj_TombstoneSlot               ; BA50
 
 ; ----------------------------------------------------------------------------
 L_BA53: lda     #$1C                            ; BA53
-        jsr     L_A30A                          ; BA55
+        jsr     TankEnemy_DamageCheck           ; BA55
         beq     L_BA5D                          ; BA58
-        jmp     L_A34D                          ; BA5A
+        jmp     TankEnemy_Defeat                ; BA5A
 
 ; ----------------------------------------------------------------------------
 L_BA5D: lda     LoadedObj + Obj::Facing         ; BA5D

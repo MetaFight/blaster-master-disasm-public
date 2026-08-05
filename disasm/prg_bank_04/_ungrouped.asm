@@ -350,15 +350,15 @@ L_8A6C: lda     #$18                            ; 8A6C
         lda     #$00                            ; 8A77
         sta     $44                             ; 8A79
         jsr     L_93BD                          ; 8A7B
-        inc     $51                             ; 8A7E
+        inc     LoadedObj + Obj::Scratch1       ; 8A7E
         bne     L_8A84                          ; 8A80
-        dec     $51                             ; 8A82
-L_8A84: lda     $51                             ; 8A84
+        dec     LoadedObj + Obj::Scratch1       ; 8A82
+L_8A84: lda     LoadedObj + Obj::Scratch1       ; 8A84
         cmp     #$A0                            ; 8A86
         bne     L_8A8F                          ; 8A88
         lda     #$02                            ; 8A8A
         jsr     LC11A                           ; 8A8C
-L_8A8F: lda     $51                             ; 8A8F
+L_8A8F: lda     LoadedObj + Obj::Scratch1       ; 8A8F
         lsr     a                               ; 8A91
         lsr     a                               ; 8A92
         tax                                     ; 8A93
@@ -385,15 +385,15 @@ L_8ABE: lda     #$18                            ; 8ABE
         jsr     LC0FF                           ; 8AC6
         lda     #$01                            ; 8AC9
         sta     $44                             ; 8ACB
-        inc     $51                             ; 8ACD
+        inc     LoadedObj + Obj::Scratch1       ; 8ACD
         bne     L_8AD3                          ; 8ACF
-        dec     $51                             ; 8AD1
-L_8AD3: lda     $51                             ; 8AD3
+        dec     LoadedObj + Obj::Scratch1       ; 8AD1
+L_8AD3: lda     LoadedObj + Obj::Scratch1       ; 8AD3
         cmp     #$A0                            ; 8AD5
         bne     L_8ADE                          ; 8AD7
         lda     #$02                            ; 8AD9
         jsr     LC11A                           ; 8ADB
-L_8ADE: lda     $51                             ; 8ADE
+L_8ADE: lda     LoadedObj + Obj::Scratch1       ; 8ADE
         cmp     #$20                            ; 8AE0
         bcs     L_8AF0                          ; 8AE2
         lsr     a                               ; 8AE4
@@ -416,7 +416,7 @@ L_8AF4: lda     #$20                            ; 8AF4
         jsr     LC0FF                           ; 8AFC
         bne     L_8B09                          ; 8AFF
         ldx     ObjectSlot_Index                ; 8B01
-        lda     $0150,x                         ; 8B03
+        lda     DormantSlot_SavedType,x         ; 8B03
         sta     LoadedObj + Obj::Type           ; 8B06
         rts                                     ; 8B08
 
@@ -478,7 +478,7 @@ L_8B33: lda     L8B92,x                         ; 8B33
         and     #$C0                            ; 8B6A
         sta     $1E                             ; 8B6C
         lda     L_8B7A,x                        ; 8B6E
-        sta     $51                             ; 8B71
+        sta     LoadedObj + Obj::Scratch1       ; 8B71
         lda     #$86                            ; 8B73
         sta     LoadedObj + Obj::Type           ; 8B75
         jmp     L_8C16                          ; 8B77
@@ -487,7 +487,7 @@ L_8B33: lda     L8B92,x                         ; 8B33
 L_8B7A: .byte   $50,$58,$50,$58                 ; 8B7A
 ; ----------------------------------------------------------------------------
 L_8B7E: lda     L_8B8A,x                        ; 8B7E
-        sta     $51                             ; 8B81
+        sta     LoadedObj + Obj::Scratch1       ; 8B81
         lda     #$84                            ; 8B83
         sta     LoadedObj + Obj::Type           ; 8B85
         jmp     L_8C16                          ; 8B87
@@ -505,7 +505,7 @@ L_8B99: lda     #$C0                            ; 8B99
         lda     #$80                            ; 8B9D
         sta     LoadedObj_CollisionBox_HalfHeight; 8B9F
         jsr     LC01E                           ; 8BA1
-        dec     $51                             ; 8BA4
+        dec     LoadedObj + Obj::Scratch1       ; 8BA4
         bne     L_8BCF                          ; 8BA6
         inc     LoadedObj + Obj::Type           ; 8BA8
         lda     LoadedObj + Obj::Facing         ; 8BAA
@@ -547,7 +547,7 @@ L_8BE5: jsr     LC1DD                           ; 8BE5
         jsr     LC1EC                           ; 8BEC
         ldx     LoadedObj + Obj::Facing         ; 8BEF
         lda     L_8BF9,x                        ; 8BF1
-        sta     $51                             ; 8BF4
+        sta     LoadedObj + Obj::Scratch1       ; 8BF4
 L_8BF6: jmp     LC1DA                           ; 8BF6
 
 ; ----------------------------------------------------------------------------
@@ -561,7 +561,7 @@ L_8C00: lda     #$C0                            ; 8C00
         lda     #$80                            ; 8C04
         sta     LoadedObj_CollisionBox_HalfHeight; 8C06
         jsr     LC01E                           ; 8C08
-        dec     $51                             ; 8C0B
+        dec     LoadedObj + Obj::Scratch1       ; 8C0B
         bne     L_8C16                          ; 8C0D
         lda     #$03                            ; 8C0F
         sta     LoadedObj + Obj::Type           ; 8C11
@@ -602,7 +602,7 @@ L_8C3B: lda     #$C0                            ; 8C3B
         lda     #$04                            ; 8C4E
         sta     LoadedObj + Obj::Type           ; 8C50
         lda     #$00                            ; 8C52
-        sta     $51                             ; 8C54
+        sta     LoadedObj + Obj::Scratch1       ; 8C54
         lda     $C5                             ; 8C56
         ora     #$08                            ; 8C58
         sta     $C5                             ; 8C5A
@@ -622,7 +622,7 @@ L_8C67: lda     $4F                             ; 8C67
         lda     #$05                            ; 8C76
         sta     LoadedObj + Obj::Type           ; 8C78
         lda     #$00                            ; 8C7A
-        sta     $51                             ; 8C7C
+        sta     LoadedObj + Obj::Scratch1       ; 8C7C
         sta     $E0                             ; 8C7E
         lda     #$49                            ; 8C80
         jsr     LC216                           ; 8C82
@@ -682,7 +682,7 @@ L_8CE0: jsr     LC165                           ; 8CE0
         ror     a                               ; 8CF2
         eor     LoadedObj + Obj::Position_Y_Lo  ; 8CF3
         bmi     L_8D27                          ; 8CF5
-        ldx     $4E                             ; 8CF7
+        ldx     LoadedObj + Obj::TileIndex      ; 8CF7
         lda     LoadedObj + Obj::Velocity_X     ; 8CF9
         beq     L_8D2B                          ; 8CFB
         bmi     L_8D01                          ; 8CFD
@@ -700,10 +700,10 @@ L_8D11: sta     LoadedObj + Obj::Facing         ; 8D11
         lda     LoadedObj + Obj::Position_Y_Lo  ; 8D13
         bpl     L_8D20                          ; 8D15
         inc     LoadedObj + Obj::Position_Y_Hi  ; 8D17
-        lda     $4E                             ; 8D19
+        lda     LoadedObj + Obj::TileIndex      ; 8D19
         clc                                     ; 8D1B
         adc     #$11                            ; 8D1C
-        sta     $4E                             ; 8D1E
+        sta     LoadedObj + Obj::TileIndex      ; 8D1E
 L_8D20: lda     #$00                            ; 8D20
         sta     LoadedObj + Obj::Position_Y_Lo  ; 8D22
         jmp     L_8B29                          ; 8D24
@@ -724,7 +724,7 @@ L_8D2B: jsr     LC03F                           ; 8D2B
         bmi     L_8D72                          ; 8D3F
         lda     LoadedObj + Obj::Velocity_Y     ; 8D41
         beq     L_8D76                          ; 8D43
-        lda     $4E                             ; 8D45
+        lda     LoadedObj + Obj::TileIndex      ; 8D45
         sec                                     ; 8D47
         sbc     #$11                            ; 8D48
         bit     LoadedObj + Obj::Velocity_Y     ; 8D4A
@@ -743,7 +743,7 @@ L_8D61: sta     LoadedObj + Obj::Facing         ; 8D61
         lda     LoadedObj + Obj::Position_X_Lo  ; 8D63
         bpl     L_8D6B                          ; 8D65
         inc     LoadedObj + Obj::Position_X_Hi  ; 8D67
-        inc     $4E                             ; 8D69
+        inc     LoadedObj + Obj::TileIndex      ; 8D69
 L_8D6B: lda     #$00                            ; 8D6B
         sta     LoadedObj + Obj::Position_X_Lo  ; 8D6D
         jmp     L_8B29                          ; 8D6F
@@ -1027,7 +1027,7 @@ L_8F7B: lda     $BB                             ; 8F7B
         asl     a                               ; 8F88
         sta     LoadedObj + Obj::Velocity_Y     ; 8F89
 L_8F8B: lda     #$03                            ; 8F8B
-        sta     $51                             ; 8F8D
+        sta     LoadedObj + Obj::Scratch1       ; 8F8D
         inc     LoadedObj + Obj::Type           ; 8F8F
         lda     #$1A                            ; 8F91
         jsr     LC216                           ; 8F93
@@ -1047,12 +1047,12 @@ L_8FA2: lda     #$80                            ; 8FA2
         sta     LoadedObj_CollisionBox_HalfWidth; 8FA4
         lda     #$80                            ; 8FA6
         sta     LoadedObj_CollisionBox_HalfHeight; 8FA8
-        dec     $51                             ; 8FAA
+        dec     LoadedObj + Obj::Scratch1       ; 8FAA
         bne     L_8FB8                          ; 8FAC
         lda     $BB                             ; 8FAE
         bne     L_8FB6                          ; 8FB0
         lda     #$0A                            ; 8FB2
-        sta     $51                             ; 8FB4
+        sta     LoadedObj + Obj::Scratch1       ; 8FB4
 L_8FB6: inc     LoadedObj + Obj::Type           ; 8FB6
 L_8FB8: lda     #$10                            ; 8FB8
         sta     $40                             ; 8FBA
@@ -1068,7 +1068,7 @@ L_8FC3: lda     #$40                            ; 8FC3
         jsr     LC024                           ; 8FCB
         jsr     L_8FF3                          ; 8FCE
         jsr     L_9007                          ; 8FD1
-        dec     $51                             ; 8FD4
+        dec     LoadedObj + Obj::Scratch1       ; 8FD4
         beq     L_8FF0                          ; 8FD6
 L_8FD8: lda     #$10                            ; 8FD8
         sta     $40                             ; 8FDA
@@ -1125,7 +1125,7 @@ L_9026: jsr     L_8E95                          ; 9026
         sta     LoadedObj + Obj::Velocity_X     ; 902B
         sta     LoadedObj + Obj::Velocity_Y     ; 902D
         lda     #$03                            ; 902F
-        sta     $51                             ; 9031
+        sta     LoadedObj + Obj::Scratch1       ; 9031
         inc     LoadedObj + Obj::Type           ; 9033
         lda     #$1B                            ; 9035
         jsr     LC216                           ; 9037
@@ -1139,13 +1139,13 @@ L_903E: lda     #$40                            ; 903E
         sta     LoadedObj_CollisionBox_HalfWidth; 9040
         lda     #$40                            ; 9042
         sta     LoadedObj_CollisionBox_HalfHeight; 9044
-        dec     $51                             ; 9046
+        dec     LoadedObj + Obj::Scratch1       ; 9046
         bne     L_9060                          ; 9048
         inc     LoadedObj + Obj::Type           ; 904A
         lda     #$04                            ; 904C
-        sta     $51                             ; 904E
+        sta     LoadedObj + Obj::Scratch1       ; 904E
         lda     #$20                            ; 9050
-        sta     $50                             ; 9052
+        sta     LoadedObj + Obj::Scratch0       ; 9052
         lda     #$00                            ; 9054
         sta     LoadedObj + Obj::Health         ; 9056
         ldx     LoadedObj + Obj::Facing         ; 9058
@@ -1182,25 +1182,25 @@ L_908C: jsr     LC024                           ; 908C
         lda     Global_FrameCounter             ; 908F
         lsr     a                               ; 9091
         bcs     L_90A2                          ; 9092
-        dec     $50                             ; 9094
+        dec     LoadedObj + Obj::Scratch0       ; 9094
         bne     L_90A2                          ; 9096
         lda     #$18                            ; 9098
-        sta     $50                             ; 909A
-        dec     $51                             ; 909C
+        sta     LoadedObj + Obj::Scratch0       ; 909A
+        dec     LoadedObj + Obj::Scratch1       ; 909C
         bne     L_90A2                          ; 909E
-        inc     $51                             ; 90A0
+        inc     LoadedObj + Obj::Scratch1       ; 90A0
 L_90A2: lda     ObjectSlot_Index                ; 90A2
         lsr     a                               ; 90A4
         bcs     L_90AF                          ; 90A5
         lda     LoadedObj + Obj::Facing         ; 90A7
         clc                                     ; 90A9
-        adc     $51                             ; 90AA
+        adc     LoadedObj + Obj::Scratch1       ; 90AA
         jmp     L_90B4                          ; 90AC
 
 ; ----------------------------------------------------------------------------
 L_90AF: lda     LoadedObj + Obj::Facing         ; 90AF
         sec                                     ; 90B1
-        sbc     $51                             ; 90B2
+        sbc     LoadedObj + Obj::Scratch1       ; 90B2
 L_90B4: sta     LoadedObj + Obj::Facing         ; 90B4
         pha                                     ; 90B6
         jsr     LC0CC                           ; 90B7
@@ -1244,7 +1244,7 @@ L_90EE: jsr     L_8E95                          ; 90EE
         lda     L_9115,x                        ; 90F8
         sta     LoadedObj + Obj::Velocity_Y     ; 90FB
         lda     #$03                            ; 90FD
-        sta     $51                             ; 90FF
+        sta     LoadedObj + Obj::Scratch1       ; 90FF
         inc     LoadedObj + Obj::Type           ; 9101
         lda     $C3                             ; 9103
         cmp     #$07                            ; 9105
@@ -1269,16 +1269,16 @@ L_911D: lda     #$80                            ; 911D
         sta     LoadedObj_CollisionBox_HalfWidth; 911F
         lda     #$80                            ; 9121
         sta     LoadedObj_CollisionBox_HalfHeight; 9123
-        dec     $51                             ; 9125
+        dec     LoadedObj + Obj::Scratch1       ; 9125
         bne     L_9137                          ; 9127
         lda     Global_FrameCounter             ; 9129
         asl     a                               ; 912B
         asl     a                               ; 912C
         asl     a                               ; 912D
         asl     a                               ; 912E
-        sta     $51                             ; 912F
+        sta     LoadedObj + Obj::Scratch1       ; 912F
         lda     #$30                            ; 9131
-        sta     $50                             ; 9133
+        sta     LoadedObj + Obj::Scratch0       ; 9133
         inc     LoadedObj + Obj::Type           ; 9135
 L_9137: lda     #$10                            ; 9137
         sta     $40                             ; 9139
@@ -1300,16 +1300,16 @@ L_9145: lda     $BB                             ; 9145
 
 ; ----------------------------------------------------------------------------
 L_9151: jsr     LC024                           ; 9151
-L_9154: dec     $50                             ; 9154
-        dec     $50                             ; 9156
+L_9154: dec     LoadedObj + Obj::Scratch0       ; 9154
+        dec     LoadedObj + Obj::Scratch0       ; 9156
         lda     #$03                            ; 9158
-        cmp     $50                             ; 915A
+        cmp     LoadedObj + Obj::Scratch0       ; 915A
         bcc     L_9160                          ; 915C
-        sta     $50                             ; 915E
-L_9160: lda     $51                             ; 9160
+        sta     LoadedObj + Obj::Scratch0       ; 915E
+L_9160: lda     LoadedObj + Obj::Scratch1       ; 9160
         clc                                     ; 9162
-        adc     $50                             ; 9163
-        sta     $51                             ; 9165
+        adc     LoadedObj + Obj::Scratch0       ; 9163
+        sta     LoadedObj + Obj::Scratch1       ; 9165
         lda     LoadedObj + Obj::Position_X_Hi  ; 9167
         pha                                     ; 9169
         lda     LoadedObj + Obj::Position_X_Lo  ; 916A
@@ -1321,7 +1321,7 @@ L_9160: lda     $51                             ; 9160
         lda     LoadedObj + Obj::Facing         ; 9173
         lsr     a                               ; 9175
         bcs     L_918E                          ; 9176
-        lda     $51                             ; 9178
+        lda     LoadedObj + Obj::Scratch1       ; 9178
         jsr     LC0CC                           ; 917A
         jsr     L_91F2                          ; 917D
         clc                                     ; 9180
@@ -1333,7 +1333,7 @@ L_9160: lda     $51                             ; 9160
         jmp     L_91A1                          ; 918B
 
 ; ----------------------------------------------------------------------------
-L_918E: lda     $51                             ; 918E
+L_918E: lda     LoadedObj + Obj::Scratch1       ; 918E
         jsr     LC201                           ; 9190
         jsr     L_91F2                          ; 9193
         clc                                     ; 9196
@@ -1425,9 +1425,9 @@ L_920E: lda     LoadedObj + Obj::Facing         ; 920E
         adc     PlayerSlot + Obj::Velocity_Y    ; 9222
         sta     LoadedObj + Obj::Velocity_Y     ; 9225
         lda     #$03                            ; 9227
-        sta     $51                             ; 9229
+        sta     LoadedObj + Obj::Scratch1       ; 9229
         lda     #$08                            ; 922B
-        sta     $50                             ; 922D
+        sta     LoadedObj + Obj::Scratch0       ; 922D
         inc     LoadedObj + Obj::Type           ; 922F
         lda     #$35                            ; 9231
         jsr     LC216                           ; 9233
@@ -1457,12 +1457,12 @@ L_9258: beq     L_9260                          ; 9258
         lda     #$00                            ; 925A
         sta     LoadedObj + Obj::Velocity_X     ; 925C
         sta     LoadedObj + Obj::Velocity_Y     ; 925E
-L_9260: dec     $51                             ; 9260
-        lda     $51                             ; 9262
+L_9260: dec     LoadedObj + Obj::Scratch1       ; 9260
+        lda     LoadedObj + Obj::Scratch1       ; 9262
         jsr     LC0F0                           ; 9264
         clc                                     ; 9267
-        adc     $50                             ; 9268
-        sta     $50                             ; 926A
+        adc     LoadedObj + Obj::Scratch0       ; 9268
+        sta     LoadedObj + Obj::Scratch0       ; 926A
         bmi     L_92A3                          ; 926C
 L_926E: lda     #$10                            ; 926E
         sta     $40                             ; 9270
@@ -1483,7 +1483,7 @@ L_927E: jsr     LC138                           ; 927E
         jsr     LC1AD                           ; 928E
 L_9291: lda     $3F                             ; 9291
         sec                                     ; 9293
-        sbc     $50                             ; 9294
+        sbc     LoadedObj + Obj::Scratch0       ; 9294
         bcs     L_929A                          ; 9296
         lda     #$F0                            ; 9298
 L_929A: sta     $3F                             ; 929A
@@ -1495,14 +1495,14 @@ L_929A: sta     $3F                             ; 929A
 L_92A3: lda     #$11                            ; 92A3
         sta     LoadedObj + Obj::Type           ; 92A5
         lda     #$09                            ; 92A7
-        sta     $51                             ; 92A9
+        sta     LoadedObj + Obj::Scratch1       ; 92A9
         rts                                     ; 92AB
 
 ; ----------------------------------------------------------------------------
 L_92AC: jmp     L_92B6                          ; 92AC
 
 ; ----------------------------------------------------------------------------
-L_92AF: dec     $51                             ; 92AF
+L_92AF: dec     LoadedObj + Obj::Scratch1       ; 92AF
         bpl     L_92B6                          ; 92B1
         jmp     LC117                           ; 92B3
 
@@ -1521,7 +1521,7 @@ L_92C6: lda     #$02                            ; 92C6
         jsr     LC138                           ; 92CB
         jsr     LC0A2                           ; 92CE
         beq     L_931E                          ; 92D1
-        lda     $51                             ; 92D3
+        lda     LoadedObj + Obj::Scratch1       ; 92D3
         lsr     a                               ; 92D5
         tax                                     ; 92D6
         lda     L_9324,x                        ; 92D7
@@ -1585,7 +1585,7 @@ L_933D: nop                                     ; 933D
         nop                                     ; 933E
         nop                                     ; 933F
 L_9340: lda     #$09                            ; 9340
-        sta     $51                             ; 9342
+        sta     LoadedObj + Obj::Scratch1       ; 9342
         inc     LoadedObj + Obj::Type           ; 9344
         rts                                     ; 9346
 
@@ -1597,7 +1597,7 @@ L_934A: lda     #$80                            ; 934A
         sta     LoadedObj_CollisionBox_HalfWidth; 934C
         lda     #$80                            ; 934E
         sta     LoadedObj_CollisionBox_HalfHeight; 9350
-        dec     $51                             ; 9352
+        dec     LoadedObj + Obj::Scratch1       ; 9352
         bmi     L_937E                          ; 9354
 L_9356: lda     #$18                            ; 9356
         sta     $40                             ; 9358
@@ -1605,7 +1605,7 @@ L_9356: lda     #$18                            ; 9356
         sta     $41                             ; 935C
         jsr     LC0FF                           ; 935E
         bne     L_937E                          ; 9361
-        lda     $51                             ; 9363
+        lda     LoadedObj + Obj::Scratch1       ; 9363
         lsr     a                               ; 9365
         tax                                     ; 9366
         lda     L_9386,x                        ; 9367
@@ -1631,7 +1631,7 @@ L_938B: nop                                     ; 938B
         nop                                     ; 938C
         nop                                     ; 938D
 L_938E: lda     #$03                            ; 938E
-        sta     $51                             ; 9390
+        sta     LoadedObj + Obj::Scratch1       ; 9390
         inc     LoadedObj + Obj::Type           ; 9392
         rts                                     ; 9394
 
@@ -1639,7 +1639,7 @@ L_938E: lda     #$03                            ; 938E
 L_9395: jmp     L_939C                          ; 9395
 
 ; ----------------------------------------------------------------------------
-L_9398: dec     $51                             ; 9398
+L_9398: dec     LoadedObj + Obj::Scratch1       ; 9398
         bmi     L_93BA                          ; 939A
 L_939C: lda     #$18                            ; 939C
         sta     $40                             ; 939E
@@ -1650,7 +1650,7 @@ L_939C: lda     #$18                            ; 939C
         lda     #$00                            ; 93A9
         sta     $44                             ; 93AB
         lda     #$51                            ; 93AD
-        ldx     $51                             ; 93AF
+        ldx     LoadedObj + Obj::Scratch1       ; 93AF
         cpx     #$02                            ; 93B1
         bcs     L_93B7                          ; 93B3
         lda     #$52                            ; 93B5
@@ -1678,7 +1678,7 @@ L_93C4: lda     $3F                             ; 93C4
         pha                                     ; 93D2
         lda     LoadedObj + Obj::Position_Y_Lo  ; 93D3
         pha                                     ; 93D5
-        lda     $4E                             ; 93D6
+        lda     LoadedObj + Obj::TileIndex      ; 93D6
         pha                                     ; 93D8
         lda     LoadedObj + Obj::Position_X_Lo  ; 93D9
         sec                                     ; 93DB
@@ -1686,25 +1686,25 @@ L_93C4: lda     $3F                             ; 93C4
         sta     LoadedObj + Obj::Position_X_Lo  ; 93DE
         bcs     L_93E6                          ; 93E0
         dec     LoadedObj + Obj::Position_X_Hi  ; 93E2
-        dec     $4E                             ; 93E4
+        dec     LoadedObj + Obj::TileIndex      ; 93E4
 L_93E6: lda     LoadedObj + Obj::Position_Y_Lo  ; 93E6
         sec                                     ; 93E8
         sbc     #$C0                            ; 93E9
         sta     LoadedObj + Obj::Position_Y_Lo  ; 93EB
         bcs     L_93F9                          ; 93ED
         dec     LoadedObj + Obj::Position_Y_Hi  ; 93EF
-        lda     $4E                             ; 93F1
+        lda     LoadedObj + Obj::TileIndex      ; 93F1
         sec                                     ; 93F3
         sbc     #$22                            ; 93F4
         jmp     L_93FE                          ; 93F6
 
 ; ----------------------------------------------------------------------------
-L_93F9: lda     $4E                             ; 93F9
+L_93F9: lda     LoadedObj + Obj::TileIndex      ; 93F9
         sec                                     ; 93FB
         sbc     #$11                            ; 93FC
-L_93FE: sta     $4E                             ; 93FE
+L_93FE: sta     LoadedObj + Obj::TileIndex      ; 93FE
         dec     LoadedObj + Obj::Position_Y_Hi  ; 9400
-        lda     $4E                             ; 9402
+        lda     LoadedObj + Obj::TileIndex      ; 9402
         clc                                     ; 9404
         adc     #$11                            ; 9405
         tax                                     ; 9407
@@ -1713,14 +1713,14 @@ L_93FE: sta     $4E                             ; 93FE
         lda     LoadedObj + Obj::Position_Y_Lo  ; 940D
         cmp     #$10                            ; 940F
         bcc     L_941E                          ; 9411
-        lda     $4E                             ; 9413
+        lda     LoadedObj + Obj::TileIndex      ; 9413
         clc                                     ; 9415
         adc     #$22                            ; 9416
         tax                                     ; 9418
         inc     LoadedObj + Obj::Position_Y_Hi  ; 9419
         jsr     L_944C                          ; 941B
 L_941E: pla                                     ; 941E
-        sta     $4E                             ; 941F
+        sta     LoadedObj + Obj::TileIndex      ; 941F
         pla                                     ; 9421
         sta     LoadedObj + Obj::Position_Y_Lo  ; 9422
         pla                                     ; 9424
@@ -1737,7 +1737,7 @@ L_941E: pla                                     ; 941E
 
 ; ----------------------------------------------------------------------------
 L_9434: pla                                     ; 9434
-        sta     $4E                             ; 9435
+        sta     LoadedObj + Obj::TileIndex      ; 9435
         pla                                     ; 9437
         sta     LoadedObj + Obj::Position_Y_Lo  ; 9438
         pla                                     ; 943A
@@ -1820,7 +1820,7 @@ L_94A9: lda     $3F                             ; 94A9
         pha                                     ; 94B7
         lda     LoadedObj + Obj::Position_Y_Lo  ; 94B8
         pha                                     ; 94BA
-        lda     $4E                             ; 94BB
+        lda     LoadedObj + Obj::TileIndex      ; 94BB
         pha                                     ; 94BD
         lda     LoadedObj + Obj::Position_X_Lo  ; 94BE
         sec                                     ; 94C0
@@ -1828,8 +1828,8 @@ L_94A9: lda     $3F                             ; 94A9
         sta     LoadedObj + Obj::Position_X_Lo  ; 94C3
         bcs     L_94CB                          ; 94C5
         dec     LoadedObj + Obj::Position_X_Hi  ; 94C7
-        dec     $4E                             ; 94C9
-L_94CB: ldx     $4E                             ; 94CB
+        dec     LoadedObj + Obj::TileIndex      ; 94C9
+L_94CB: ldx     LoadedObj + Obj::TileIndex      ; 94CB
         ldy     $0500,x                         ; 94CD
         lda     LoadedObj + Obj::Position_X_Hi  ; 94D0
         and     #$03                            ; 94D2
@@ -1891,7 +1891,7 @@ L_9522: lda     $3F                             ; 9522
         pha                                     ; 9530
         lda     LoadedObj + Obj::Position_Y_Lo  ; 9531
         pha                                     ; 9533
-        lda     $4E                             ; 9534
+        lda     LoadedObj + Obj::TileIndex      ; 9534
         pha                                     ; 9536
         lda     LoadedObj + Obj::Position_Y_Lo  ; 9537
         sec                                     ; 9539
@@ -1899,16 +1899,16 @@ L_9522: lda     $3F                             ; 9522
         sta     LoadedObj + Obj::Position_Y_Lo  ; 953C
         bcs     L_9549                          ; 953E
         dec     LoadedObj + Obj::Position_Y_Hi  ; 9540
-        lda     $4E                             ; 9542
+        lda     LoadedObj + Obj::TileIndex      ; 9542
         sec                                     ; 9544
         sbc     #$11                            ; 9545
-        sta     $4E                             ; 9547
+        sta     LoadedObj + Obj::TileIndex      ; 9547
 L_9549: dec     LoadedObj + Obj::Position_Y_Hi  ; 9549
-        lda     $4E                             ; 954B
+        lda     LoadedObj + Obj::TileIndex      ; 954B
         sec                                     ; 954D
         sbc     #$11                            ; 954E
-        sta     $4E                             ; 9550
-        ldx     $4E                             ; 9552
+        sta     LoadedObj + Obj::TileIndex      ; 9550
+        ldx     LoadedObj + Obj::TileIndex      ; 9552
         ldy     $0500,x                         ; 9554
         lda     LoadedObj + Obj::Position_Y_Hi  ; 9557
         and     #$02                            ; 9559
@@ -2018,11 +2018,11 @@ L_9607: nop                                     ; 9607
         nop                                     ; 9609
 L_960A: lda     #$08                            ; 960A
         bne     L_960E                          ; 960C
-L_960E: sta     $50                             ; 960E
+L_960E: sta     LoadedObj + Obj::Scratch0       ; 960E
         lda     #$23                            ; 9610
         sta     LoadedObj + Obj::Type           ; 9612
         lda     #$FF                            ; 9614
-        sta     $51                             ; 9616
+        sta     LoadedObj + Obj::Scratch1       ; 9616
         jmp     LC1EC                           ; 9618
 
 ; ----------------------------------------------------------------------------
@@ -2034,7 +2034,7 @@ L_961E: jsr     LC138                           ; 961E
         lda     Global_FrameCounter             ; 9623
         and     #$03                            ; 9625
         bne     L_9630                          ; 9627
-        dec     $51                             ; 9629
+        dec     LoadedObj + Obj::Scratch1       ; 9629
         bne     L_9630                          ; 962B
         jmp     L_96BF                          ; 962D
 
@@ -2056,13 +2056,13 @@ L_9638: lda     #$10                            ; 9638
 L_9648: lda     #$00                            ; 9648
         jsr     LC147                           ; 964A
         beq     L_9673                          ; 964D
-        lda     $51                             ; 964F
+        lda     LoadedObj + Obj::Scratch1       ; 964F
         cmp     #$20                            ; 9651
         bcs     L_965A                          ; 9653
         lda     $10                             ; 9655
         lsr     a                               ; 9657
         bcs     L_9672                          ; 9658
-L_965A: ldx     $50                             ; 965A
+L_965A: ldx     LoadedObj + Obj::Scratch0       ; 965A
         lda     L_96C2,x                        ; 965C
         sta     $45                             ; 965F
         lda     L_96CB,x                        ; 9661
@@ -2082,10 +2082,10 @@ L_9673: lda     L_96D4                          ; 9673
         sta     $7A                             ; 9676
         lda     L_96D4+1                        ; 9678
         sta     $7B                             ; 967B
-        lda     $50                             ; 967D
+        lda     LoadedObj + Obj::Scratch0       ; 967D
         jsr     LC153                           ; 967F
         lda     ($7A),y                         ; 9682
-        ldx     $50                             ; 9684
+        ldx     LoadedObj + Obj::Scratch0       ; 9684
         clc                                     ; 9686
         adc     L_96E8,x                        ; 9687
         bcc     L_968E                          ; 968A
@@ -2099,7 +2099,7 @@ L_9692: lda     $06F0,x                         ; 9692
         sta     $06F0,x                         ; 969B
 L_969E: dex                                     ; 969E
         bpl     L_9692                          ; 969F
-        lda     $50                             ; 96A1
+        lda     LoadedObj + Obj::Scratch0       ; 96A1
         cmp     #$06                            ; 96A3
         bcs     L_96BA                          ; 96A5
         lsr     a                               ; 96A7
@@ -2141,7 +2141,7 @@ L_96F4: lda     #$00                            ; 96F4
         lda     #$FF                            ; 96FC
         sta     $0672                           ; 96FE
         lda     #$01                            ; 9701
-        sta     $51                             ; 9703
+        sta     LoadedObj + Obj::Scratch1       ; 9703
         lda     #$60                            ; 9705
         sta     LoadedObj + Obj::Health         ; 9707
         inc     LoadedObj + Obj::Type           ; 9709
@@ -2166,7 +2166,7 @@ L_971F: lda     $4F                             ; 971F
         jmp     L_9899                          ; 9725
 
 ; ----------------------------------------------------------------------------
-L_9728: dec     $51                             ; 9728
+L_9728: dec     LoadedObj + Obj::Scratch1       ; 9728
         bne     L_975C                          ; 972A
         lda     $14                             ; 972C
         cmp     #$03                            ; 972E
@@ -2189,8 +2189,8 @@ L_974F: lda     ($7A),y                         ; 974F
         ldy     #$00                            ; 9753
         sty     $0672                           ; 9755
         beq     L_974F                          ; 9758
-L_975A: sta     $50                             ; 975A
-L_975C: lda     $50                             ; 975C
+L_975A: sta     LoadedObj + Obj::Scratch0       ; 975A
+L_975C: lda     LoadedObj + Obj::Scratch0       ; 975C
         cmp     #$01                            ; 975E
         beq     L_9789                          ; 9760
         cmp     #$02                            ; 9762
@@ -2213,21 +2213,21 @@ L_9777: cmp     #$05                            ; 9777
         jmp     L_987A                          ; 977B
 
 ; ----------------------------------------------------------------------------
-L_977E: lda     $51                             ; 977E
+L_977E: lda     LoadedObj + Obj::Scratch1       ; 977E
         bne     L_9786                          ; 9780
         lda     #$20                            ; 9782
-        sta     $51                             ; 9784
+        sta     LoadedObj + Obj::Scratch1       ; 9784
 L_9786: jmp     L_9899                          ; 9786
 
 ; ----------------------------------------------------------------------------
-L_9789: lda     $51                             ; 9789
+L_9789: lda     LoadedObj + Obj::Scratch1       ; 9789
         bne     L_97D5                          ; 978B
         lda     #$12                            ; 978D
         jsr     LC216                           ; 978F
         lda     #$18                            ; 9792
         sta     $0671                           ; 9794
         lda     #$02                            ; 9797
-        sta     $51                             ; 9799
+        sta     LoadedObj + Obj::Scratch1       ; 9799
         lda     LoadedObj + Obj::Position_X_Hi  ; 979B
         pha                                     ; 979D
         lda     LoadedObj + Obj::Position_Y_Hi  ; 979E
@@ -2265,13 +2265,13 @@ L_97D5: lda     $0671                           ; 97D5
         sta     $0670                           ; 97DF
         bne     L_97EF                          ; 97E2
         lda     #$08                            ; 97E4
-        sta     $51                             ; 97E6
+        sta     LoadedObj + Obj::Scratch1       ; 97E6
         lda     #$00                            ; 97E8
-        sta     $50                             ; 97EA
+        sta     LoadedObj + Obj::Scratch0       ; 97EA
         jmp     L_9899                          ; 97EC
 
 ; ----------------------------------------------------------------------------
-L_97EF: inc     $51                             ; 97EF
+L_97EF: inc     LoadedObj + Obj::Scratch1       ; 97EF
         dec     $0671                           ; 97F1
         jsr     LC03F                           ; 97F4
         ldx     #$02                            ; 97F7
@@ -2284,11 +2284,11 @@ L_97EF: inc     $51                             ; 97EF
         jmp     L_9899                          ; 9808
 
 ; ----------------------------------------------------------------------------
-L_980B: lda     $51                             ; 980B
+L_980B: lda     LoadedObj + Obj::Scratch1       ; 980B
         bne     L_9813                          ; 980D
         lda     #$1E                            ; 980F
-        sta     $51                             ; 9811
-L_9813: lda     $51                             ; 9813
+        sta     LoadedObj + Obj::Scratch1       ; 9811
+L_9813: lda     LoadedObj + Obj::Scratch1       ; 9813
         cmp     #$0A                            ; 9815
         bne     L_982F                          ; 9817
         lda     #$15                            ; 9819
@@ -2298,17 +2298,17 @@ L_9813: lda     $51                             ; 9813
         jsr     LC1F5                           ; 9822
         dec     LoadedObj + Obj::Position_Y_Hi  ; 9825
         lda     #$08                            ; 9827
-        sta     $51                             ; 9829
+        sta     LoadedObj + Obj::Scratch1       ; 9829
         lda     #$00                            ; 982B
-        sta     $50                             ; 982D
+        sta     LoadedObj + Obj::Scratch0       ; 982D
 L_982F: jmp     L_9899                          ; 982F
 
 ; ----------------------------------------------------------------------------
-L_9832: lda     $51                             ; 9832
+L_9832: lda     LoadedObj + Obj::Scratch1       ; 9832
         bne     L_983A                          ; 9834
         lda     #$1E                            ; 9836
-        sta     $51                             ; 9838
-L_983A: lda     $51                             ; 983A
+        sta     LoadedObj + Obj::Scratch1       ; 9838
+L_983A: lda     LoadedObj + Obj::Scratch1       ; 983A
         cmp     #$05                            ; 983C
         bne     L_9858                          ; 983E
         lda     #$15                            ; 9840
@@ -2324,10 +2324,10 @@ L_983A: lda     $51                             ; 983A
 L_9858: jmp     L_9899                          ; 9858
 
 ; ----------------------------------------------------------------------------
-L_985B: lda     $51                             ; 985B
+L_985B: lda     LoadedObj + Obj::Scratch1       ; 985B
         bne     L_9865                          ; 985D
         lda     #$3C                            ; 985F
-        sta     $51                             ; 9861
+        sta     LoadedObj + Obj::Scratch1       ; 9861
         bne     L_9877                          ; 9863
 L_9865: cmp     #$32                            ; 9865
         bne     L_9877                          ; 9867
@@ -2340,10 +2340,10 @@ L_9865: cmp     #$32                            ; 9865
 L_9877: jmp     L_9899                          ; 9877
 
 ; ----------------------------------------------------------------------------
-L_987A: lda     $51                             ; 987A
+L_987A: lda     LoadedObj + Obj::Scratch1       ; 987A
         bne     L_9884                          ; 987C
         lda     #$40                            ; 987E
-        sta     $51                             ; 9880
+        sta     LoadedObj + Obj::Scratch1       ; 9880
         bne     L_9896                          ; 9882
 L_9884: cmp     #$30                            ; 9884
         bne     L_9896                          ; 9886
@@ -2381,7 +2381,7 @@ L_98A8: jsr     LC0FF                           ; 98A8
         sec                                     ; 98C1
         sbc     #$10                            ; 98C2
         sta     $3F                             ; 98C4
-        ldx     $50                             ; 98C6
+        ldx     LoadedObj + Obj::Scratch0       ; 98C6
         lda     #$00                            ; 98C8
         cpx     #$00                            ; 98CA
         beq     L_98E8                          ; 98CC
@@ -2477,9 +2477,9 @@ L_998E: jsr     LC1B3                           ; 998E
         adc     #$18                            ; 999E
         sta     LoadedObj + Obj::Velocity_Y     ; 99A0
         lda     #$00                            ; 99A2
-        sta     $51                             ; 99A4
+        sta     LoadedObj + Obj::Scratch1       ; 99A4
         lda     #$0A                            ; 99A6
-        sta     $50                             ; 99A8
+        sta     LoadedObj + Obj::Scratch0       ; 99A8
         inc     LoadedObj + Obj::Type           ; 99AA
         rts                                     ; 99AC
 
@@ -2492,14 +2492,14 @@ L_99B0: lda     #$80                            ; 99B0
         lda     #$80                            ; 99B4
         sta     LoadedObj_CollisionBox_HalfHeight; 99B6
         jsr     LC01E                           ; 99B8
-        dec     $50                             ; 99BB
-        lda     $51                             ; 99BD
+        dec     LoadedObj + Obj::Scratch0       ; 99BB
+        lda     LoadedObj + Obj::Scratch1       ; 99BD
         clc                                     ; 99BF
-        adc     $50                             ; 99C0
-        sta     $51                             ; 99C2
+        adc     LoadedObj + Obj::Scratch0       ; 99C0
+        sta     LoadedObj + Obj::Scratch1       ; 99C2
         bne     L_99CA                          ; 99C4
         lda     #$08                            ; 99C6
-        sta     $50                             ; 99C8
+        sta     LoadedObj + Obj::Scratch0       ; 99C8
 L_99CA: lda     #$10                            ; 99CA
         sta     $40                             ; 99CC
         lda     #$10                            ; 99CE
@@ -2513,7 +2513,7 @@ L_99DA: lda     #$20                            ; 99DA
         jsr     LC141                           ; 99DC
         lda     $3F                             ; 99DF
         sec                                     ; 99E1
-        sbc     $51                             ; 99E2
+        sbc     LoadedObj + Obj::Scratch1       ; 99E2
         sta     $3F                             ; 99E4
         lda     #$02                            ; 99E6
         sta     $44                             ; 99E8
@@ -2528,9 +2528,9 @@ L_99F2: nop                                     ; 99F2
         nop                                     ; 99F4
 L_99F5: inc     LoadedObj + Obj::Type           ; 99F5
         lda     #$00                            ; 99F7
-        sta     $51                             ; 99F9
+        sta     LoadedObj + Obj::Scratch1       ; 99F9
         lda     #$01                            ; 99FB
-        sta     $50                             ; 99FD
+        sta     LoadedObj + Obj::Scratch0       ; 99FD
         rts                                     ; 99FF
 
 ; ----------------------------------------------------------------------------
@@ -2544,17 +2544,17 @@ L_9A03: lda     #$80                            ; 9A03
         lda     Global_FrameCounter             ; 9A0B
         and     #$01                            ; 9A0D
         bne     L_9A2B                          ; 9A0F
-        lda     $50                             ; 9A11
+        lda     LoadedObj + Obj::Scratch0       ; 9A11
         bmi     L_9A1F                          ; 9A13
-        lda     $51                             ; 9A15
+        lda     LoadedObj + Obj::Scratch1       ; 9A15
         cmp     #$0C                            ; 9A17
         bne     L_9A1F                          ; 9A19
         lda     #$FF                            ; 9A1B
-        sta     $50                             ; 9A1D
-L_9A1F: lda     $51                             ; 9A1F
+        sta     LoadedObj + Obj::Scratch0       ; 9A1D
+L_9A1F: lda     LoadedObj + Obj::Scratch1       ; 9A1F
         clc                                     ; 9A21
-        adc     $50                             ; 9A22
-        sta     $51                             ; 9A24
+        adc     LoadedObj + Obj::Scratch0       ; 9A22
+        sta     LoadedObj + Obj::Scratch1       ; 9A24
         bpl     L_9A2B                          ; 9A26
         jmp     LC114                           ; 9A28
 
@@ -2578,7 +2578,7 @@ L_9A2B: lda     #$10                            ; 9A2B
         sta     $44                             ; 9A47
         lda     #$E9                            ; 9A49
         sta     $45                             ; 9A4B
-        lda     $51                             ; 9A4D
+        lda     LoadedObj + Obj::Scratch1       ; 9A4D
         beq     L_9A70                          ; 9A4F
         cmp     #$05                            ; 9A51
         bcc     L_9A57                          ; 9A53
@@ -2612,9 +2612,9 @@ L_9A7D: nop                                     ; 9A7D
         nop                                     ; 9A7F
 L_9A80: inc     LoadedObj + Obj::Type           ; 9A80
         lda     #$00                            ; 9A82
-        sta     $51                             ; 9A84
+        sta     LoadedObj + Obj::Scratch1       ; 9A84
         lda     #$01                            ; 9A86
-        sta     $50                             ; 9A88
+        sta     LoadedObj + Obj::Scratch0       ; 9A88
         rts                                     ; 9A8A
 
 ; ----------------------------------------------------------------------------
@@ -2628,17 +2628,17 @@ L_9A8E: lda     #$80                            ; 9A8E
         lda     Global_FrameCounter             ; 9A96
         and     #$03                            ; 9A98
         bne     L_9AB6                          ; 9A9A
-        lda     $50                             ; 9A9C
+        lda     LoadedObj + Obj::Scratch0       ; 9A9C
         bmi     L_9AAA                          ; 9A9E
-        lda     $51                             ; 9AA0
+        lda     LoadedObj + Obj::Scratch1       ; 9AA0
         cmp     #$05                            ; 9AA2
         bne     L_9AAA                          ; 9AA4
         lda     #$FF                            ; 9AA6
-        sta     $50                             ; 9AA8
-L_9AAA: lda     $51                             ; 9AAA
+        sta     LoadedObj + Obj::Scratch0       ; 9AA8
+L_9AAA: lda     LoadedObj + Obj::Scratch1       ; 9AAA
         clc                                     ; 9AAC
-        adc     $50                             ; 9AAD
-        sta     $51                             ; 9AAF
+        adc     LoadedObj + Obj::Scratch0       ; 9AAD
+        sta     LoadedObj + Obj::Scratch1       ; 9AAF
         bpl     L_9AB6                          ; 9AB1
         jmp     LC114                           ; 9AB3
 
@@ -2655,7 +2655,7 @@ L_9AB6: lda     #$10                            ; 9AB6
         jsr     LC18C                           ; 9AC9
         lda     #$CF                            ; 9ACC
         sta     $45                             ; 9ACE
-        lda     $51                             ; 9AD0
+        lda     LoadedObj + Obj::Scratch1       ; 9AD0
         beq     L_9AF3                          ; 9AD2
         cmp     #$05                            ; 9AD4
         bcc     L_9ADA                          ; 9AD6
@@ -2736,7 +2736,7 @@ L_9B4B: nop                                     ; 9B4B
         nop                                     ; 9B4D
 L_9B4E: jsr     L_A12C                          ; 9B4E
         lda     #$00                            ; 9B51
-        sta     $51                             ; 9B53
+        sta     LoadedObj + Obj::Scratch1       ; 9B53
         lda     #$40                            ; 9B55
         sta     LoadedObj + Obj::Health         ; 9B57
         lda     #$08                            ; 9B59
@@ -2762,7 +2762,7 @@ L_9B67: lda     #$80                            ; 9B67
 L_9B77: lda     $4F                             ; 9B77
         cmp     #$06                            ; 9B79
         bcs     L_9B94                          ; 9B7B
-        inc     $51                             ; 9B7D
+        inc     LoadedObj + Obj::Scratch1       ; 9B7D
         jsr     LC01E                           ; 9B7F
         lda     Global_FrameCounter             ; 9B82
         and     #$4F                            ; 9B84
@@ -2843,7 +2843,7 @@ L_9BE9: lda     $03FD                           ; 9BE9
         jsr     LC093                           ; 9C13
         pla                                     ; 9C16
         sta     $3F                             ; 9C17
-L_9C19: lda     $51                             ; 9C19
+L_9C19: lda     LoadedObj + Obj::Scratch1       ; 9C19
         lsr     a                               ; 9C1B
         lsr     a                               ; 9C1C
         sta     $45                             ; 9C1D
@@ -3176,14 +3176,14 @@ L_9E54: lda     LoadedObj + Obj::Position_X_Lo  ; 9E54
         jsr     LC05A                           ; 9E5F
         inc     LoadedObj + Obj::Type           ; 9E62
         lda     #$40                            ; 9E64
-        sta     $51                             ; 9E66
+        sta     LoadedObj + Obj::Scratch1       ; 9E66
         rts                                     ; 9E68
 
 ; ----------------------------------------------------------------------------
 L_9E69: jmp     L_9E7D                          ; 9E69
 
 ; ----------------------------------------------------------------------------
-L_9E6C: dec     $51                             ; 9E6C
+L_9E6C: dec     LoadedObj + Obj::Scratch1       ; 9E6C
         beq     L_9EB0                          ; 9E6E
         jsr     LC01E                           ; 9E70
         lda     LoadedObj + Obj::Velocity_Y     ; 9E73
@@ -3333,7 +3333,7 @@ L_9F7C: jsr     L_A072                          ; 9F7C
         and     $03FB                           ; 9F7F
         bne     L_9F93                          ; 9F82
         lda     #$C0                            ; 9F84
-        sta     $51                             ; 9F86
+        sta     LoadedObj + Obj::Scratch1       ; 9F86
         lda     #$08                            ; 9F88
         jsr     LC216                           ; 9F8A
         jsr     L_A12C                          ; 9F8D
@@ -3364,7 +3364,7 @@ L_9FB4: jmp     LC14A                           ; 9FB4
 L_9FB7: jmp     L_9FD3                          ; 9FB7
 
 ; ----------------------------------------------------------------------------
-L_9FBA: dec     $51                             ; 9FBA
+L_9FBA: dec     LoadedObj + Obj::Scratch1       ; 9FBA
         bne     L_9FD3                          ; 9FBC
         lda     $14                             ; 9FBE
         and     #$07                            ; 9FC0
@@ -3593,9 +3593,9 @@ L_A140: lda     #$08                            ; A140
         lda     #$00                            ; A165
         sta     $06A1                           ; A167
         sta     $06A2                           ; A16A
-        sta     $50                             ; A16D
+        sta     LoadedObj + Obj::Scratch0       ; A16D
         lda     #$0F                            ; A16F
-        sta     $51                             ; A171
+        sta     LoadedObj + Obj::Scratch1       ; A171
         inc     LoadedObj + Obj::Type           ; A173
         rts                                     ; A175
 
@@ -3622,7 +3622,7 @@ L_A199: lda     LoadedObj + Obj::Health         ; A199
         jmp     L_A415                          ; A1AE
 
 ; ----------------------------------------------------------------------------
-L_A1B1: lda     $50                             ; A1B1
+L_A1B1: lda     LoadedObj + Obj::Scratch0       ; A1B1
         cmp     #$00                            ; A1B3
         beq     L_A1DC                          ; A1B5
         cmp     #$01                            ; A1B7
@@ -3631,7 +3631,7 @@ L_A1B1: lda     $50                             ; A1B1
         beq     L_A22F                          ; A1BD
         cmp     #$03                            ; A1BF
         beq     L_A1C3                          ; A1C1
-L_A1C3: dec     $51                             ; A1C3
+L_A1C3: dec     LoadedObj + Obj::Scratch1       ; A1C3
         beq     L_A1CA                          ; A1C5
         jmp     L_A415                          ; A1C7
 
@@ -3640,13 +3640,13 @@ L_A1CA: jsr     L_A357                          ; A1CA
 L_A1CD: jsr     L_A3FF                          ; A1CD
         inc     $06A1                           ; A1D0
         lda     #$1F                            ; A1D3
-        sta     $51                             ; A1D5
+        sta     LoadedObj + Obj::Scratch1       ; A1D5
         lda     #$00                            ; A1D7
-        sta     $50                             ; A1D9
+        sta     LoadedObj + Obj::Scratch0       ; A1D9
         rts                                     ; A1DB
 
 ; ----------------------------------------------------------------------------
-L_A1DC: lda     $51                             ; A1DC
+L_A1DC: lda     LoadedObj + Obj::Scratch1       ; A1DC
         cmp     #$1F                            ; A1DE
         bne     L_A1FD                          ; A1E0
         lda     #$00                            ; A1E2
@@ -3661,7 +3661,7 @@ L_A1E8: jsr     L_A3E3                          ; A1E8
         beq     L_A207                          ; A1F5
 L_A1F7: jsr     LC1EC                           ; A1F7
         jsr     L_A394                          ; A1FA
-L_A1FD: dec     $51                             ; A1FD
+L_A1FD: dec     LoadedObj + Obj::Scratch1       ; A1FD
         bne     L_A204                          ; A1FF
         jsr     L_A290                          ; A201
 L_A204: jmp     L_A415                          ; A204
@@ -3672,9 +3672,9 @@ L_A207: lda     #$00                            ; A207
         rts                                     ; A20C
 
 ; ----------------------------------------------------------------------------
-L_A20D: dec     $51                             ; A20D
+L_A20D: dec     LoadedObj + Obj::Scratch1       ; A20D
         beq     L_A285                          ; A20F
-        lda     $51                             ; A211
+        lda     LoadedObj + Obj::Scratch1       ; A211
         cmp     #$30                            ; A213
         bcs     L_A22C                          ; A215
         and     #$0F                            ; A217
@@ -3696,9 +3696,9 @@ L_A22F: lda     LoadedObj + Obj::Position_X_Lo  ; A22F
         and     LoadedObj + Obj::Position_Y_Hi  ; A237
         lsr     a                               ; A239
         bcc     L_A244                          ; A23A
-        lda     $51                             ; A23C
+        lda     LoadedObj + Obj::Scratch1       ; A23C
         beq     L_A242                          ; A23E
-        dec     $51                             ; A240
+        dec     LoadedObj + Obj::Scratch1       ; A240
 L_A242: beq     L_A285                          ; A242
 L_A244: jsr     LC01E                           ; A244
         ldx     #$04                            ; A247
@@ -3734,9 +3734,9 @@ L_A282: jmp     L_A415                          ; A282
 
 ; ----------------------------------------------------------------------------
 L_A285: lda     #$0F                            ; A285
-        sta     $51                             ; A287
+        sta     LoadedObj + Obj::Scratch1       ; A287
         lda     #$03                            ; A289
-        sta     $50                             ; A28B
+        sta     LoadedObj + Obj::Scratch0       ; A28B
         jmp     L_A415                          ; A28D
 
 ; ----------------------------------------------------------------------------
@@ -3749,7 +3749,7 @@ L_A296: ldx     $06A2                           ; A296
         adc     #$02                            ; A29D
         sta     $06A2                           ; A29F
         lda     LA343,x                         ; A2A2
-        sta     $51                             ; A2A5
+        sta     LoadedObj + Obj::Scratch1       ; A2A5
         lda     LA342,x                         ; A2A7
         cmp     #$05                            ; A2AA
         beq     L_A2FF                          ; A2AC
@@ -3790,12 +3790,12 @@ L_A2D3: sta     LoadedObj + Obj::Facing         ; A2D3
 L_A2F6: asl     LoadedObj + Obj::Velocity_X     ; A2F6
         asl     LoadedObj + Obj::Velocity_Y     ; A2F8
 L_A2FA: lda     #$02                            ; A2FA
-        sta     $50                             ; A2FC
+        sta     LoadedObj + Obj::Scratch0       ; A2FC
         rts                                     ; A2FE
 
 ; ----------------------------------------------------------------------------
 L_A2FF: lda     #$01                            ; A2FF
-        sta     $50                             ; A301
+        sta     LoadedObj + Obj::Scratch0       ; A301
         rts                                     ; A303
 
 ; ----------------------------------------------------------------------------
@@ -3831,7 +3831,7 @@ L_A32B: pla                                     ; A32B
 ; ----------------------------------------------------------------------------
 L_A32F: lda     L_A33A,x                        ; A32F
         clc                                     ; A332
-        adc     $4E                             ; A333
+        adc     LoadedObj + Obj::TileIndex      ; A333
         tay                                     ; A335
         lda     $0500,y                         ; A336
         rts                                     ; A339
@@ -3850,7 +3850,7 @@ L_A357: lda     L_A381                          ; A357
         jsr     L_A3D1                          ; A361
         jsr     LC1B0                           ; A364
         lda     #$80                            ; A367
-        ldx     $4E                             ; A369
+        ldx     LoadedObj + Obj::TileIndex      ; A369
         sta     $0500,x                         ; A36B
         dex                                     ; A36E
         sta     $0500,x                         ; A36F
@@ -3879,7 +3879,7 @@ L_A394: lda     L_A3BE                          ; A394
         jsr     L_A3D1                          ; A39E
         jsr     LC1B0                           ; A3A1
         lda     #$00                            ; A3A4
-        ldx     $4E                             ; A3A6
+        ldx     LoadedObj + Obj::TileIndex      ; A3A6
         sta     $0500,x                         ; A3A8
         dex                                     ; A3AB
         sta     $0500,x                         ; A3AC
@@ -3966,15 +3966,15 @@ L_A42B: jsr     LC0FF                           ; A42B
 L_A449: lda     $45                             ; A449
         cmp     #$7F                            ; A44B
         bne     L_A459                          ; A44D
-        lda     $50                             ; A44F
+        lda     LoadedObj + Obj::Scratch0       ; A44F
         cmp     #$03                            ; A451
         bne     L_A459                          ; A453
         lda     #$0F                            ; A455
-        sta     $51                             ; A457
+        sta     LoadedObj + Obj::Scratch1       ; A457
 L_A459: lda     #$02                            ; A459
         sta     $44                             ; A45B
         lda     #$50                            ; A45D
-        ldx     $50                             ; A45F
+        ldx     LoadedObj + Obj::Scratch0       ; A45F
         cpx     #$00                            ; A461
         beq     L_A46F                          ; A463
         cpx     #$03                            ; A465
@@ -3982,7 +3982,7 @@ L_A459: lda     #$02                            ; A459
         cpx     #$01                            ; A469
         beq     L_A495                          ; A46B
         bne     L_A49F                          ; A46D
-L_A46F: lda     $51                             ; A46F
+L_A46F: lda     LoadedObj + Obj::Scratch1       ; A46F
         cmp     #$10                            ; A471
         bcc     L_A481                          ; A473
         and     #$02                            ; A475
@@ -3998,13 +3998,13 @@ L_A481: lsr     a                               ; A481
         sec                                     ; A487
         sbc     $45                             ; A488
         bne     L_A4A1                          ; A48A
-L_A48C: lda     $51                             ; A48C
+L_A48C: lda     LoadedObj + Obj::Scratch1       ; A48C
         lsr     a                               ; A48E
         lsr     a                               ; A48F
         clc                                     ; A490
         adc     #$4D                            ; A491
         bne     L_A4A1                          ; A493
-L_A495: lda     $51                             ; A495
+L_A495: lda     LoadedObj + Obj::Scratch1       ; A495
         cmp     #$30                            ; A497
         bcc     L_A49F                          ; A499
         lda     #$03                            ; A49B
@@ -4136,8 +4136,8 @@ L_A571: nop                                     ; A571
 L_A574: lda     #$80                            ; A574
         sta     LoadedObj + Obj::Health         ; A576
         lda     #$00                            ; A578
-        sta     $50                             ; A57A
-        sta     $51                             ; A57C
+        sta     LoadedObj + Obj::Scratch0       ; A57A
+        sta     LoadedObj + Obj::Scratch1       ; A57C
         lda     #$00                            ; A57E
         sta     LoadedObj + Obj::Velocity_X     ; A580
         lda     #$08                            ; A582
@@ -4184,7 +4184,7 @@ L_A5C1: jsr     LC03F                           ; A5C1
         jsr     LC012                           ; A5C8
         beq     L_A5DD                          ; A5CB
         lda     #$00                            ; A5CD
-        sta     $50                             ; A5CF
+        sta     LoadedObj + Obj::Scratch0       ; A5CF
         lda     LoadedObj + Obj::Velocity_Y     ; A5D1
         bmi     L_A5D9                          ; A5D3
         lda     #$FC                            ; A5D5
@@ -4198,7 +4198,7 @@ L_A5DD: jsr     LC027                           ; A5DD
         lda     Global_FrameCounter             ; A5E7
         and     #$0F                            ; A5E9
         bne     L_A5EF                          ; A5EB
-        inc     $51                             ; A5ED
+        inc     LoadedObj + Obj::Scratch1       ; A5ED
 L_A5EF: lda     #$10                            ; A5EF
         sta     $40                             ; A5F1
         lda     #$10                            ; A5F3
@@ -4235,7 +4235,7 @@ L_A632: cmp     #$B0                            ; A632
         lda     #$FC                            ; A636
 L_A638: sta     LoadedObj + Obj::Velocity_Y     ; A638
         lda     #$00                            ; A63A
-        sta     $50                             ; A63C
+        sta     LoadedObj + Obj::Scratch0       ; A63C
 L_A63E: lda     $10                             ; A63E
         lsr     a                               ; A640
         lsr     a                               ; A641
@@ -4282,7 +4282,7 @@ L_A667: clc                                     ; A667
         bmi     L_A6AC                          ; A681
         lda     $00                             ; A683
         clc                                     ; A685
-        adc     $51                             ; A686
+        adc     LoadedObj + Obj::Scratch1       ; A686
         jsr     LC207                           ; A688
         sta     $01                             ; A68B
         clc                                     ; A68D
@@ -4313,9 +4313,9 @@ L_A6B3: nop                                     ; A6B3
 L_A6B6: lda     #$50                            ; A6B6
         sta     LoadedObj + Obj::Health         ; A6B8
         lda     #$40                            ; A6BA
-        sta     $51                             ; A6BC
+        sta     LoadedObj + Obj::Scratch1       ; A6BC
         lda     #$05                            ; A6BE
-        sta     $50                             ; A6C0
+        sta     LoadedObj + Obj::Scratch0       ; A6C0
         lda     #$00                            ; A6C2
         sta     LoadedObj + Obj::Velocity_X     ; A6C4
         lda     #$00                            ; A6C6
@@ -4336,7 +4336,7 @@ L_A6D0: jsr     L_A07B                          ; A6D0
 L_A6DB: jmp     L_A7CF                          ; A6DB
 
 ; ----------------------------------------------------------------------------
-L_A6DE: lda     $50                             ; A6DE
+L_A6DE: lda     LoadedObj + Obj::Scratch0       ; A6DE
         cmp     #$04                            ; A6E0
         bne     L_A6E7                          ; A6E2
         jmp     L_A7A2                          ; A6E4
@@ -4357,7 +4357,7 @@ L_A6F5: cmp     #$03                            ; A6F5
         jmp     L_A74E                          ; A6F9
 
 ; ----------------------------------------------------------------------------
-L_A6FC: dec     $51                             ; A6FC
+L_A6FC: dec     LoadedObj + Obj::Scratch1       ; A6FC
         bne     L_A720                          ; A6FE
         jsr     LC1B3                           ; A700
         and     #$0F                            ; A703
@@ -4369,9 +4369,9 @@ L_A6FC: dec     $51                             ; A6FC
         and     #$70                            ; A710
         clc                                     ; A712
         adc     #$20                            ; A713
-        sta     $51                             ; A715
+        sta     LoadedObj + Obj::Scratch1       ; A715
         lda     #$03                            ; A717
-        sta     $50                             ; A719
+        sta     LoadedObj + Obj::Scratch0       ; A719
         jsr     LC1B3                           ; A71B
         sta     LoadedObj + Obj::Facing         ; A71E
 L_A720: rts                                     ; A720
@@ -4381,9 +4381,9 @@ L_A721: jsr     LC1B3                           ; A721
         and     #$30                            ; A724
         clc                                     ; A726
         adc     #$10                            ; A727
-        sta     $51                             ; A729
+        sta     LoadedObj + Obj::Scratch1       ; A729
         lda     #$01                            ; A72B
-        sta     $50                             ; A72D
+        sta     LoadedObj + Obj::Scratch0       ; A72D
         rts                                     ; A72F
 
 ; ----------------------------------------------------------------------------
@@ -4391,9 +4391,9 @@ L_A730: jsr     LC1B3                           ; A730
         and     #$30                            ; A733
         clc                                     ; A735
         adc     #$10                            ; A736
-        sta     $51                             ; A738
+        sta     LoadedObj + Obj::Scratch1       ; A738
         lda     #$02                            ; A73A
-        sta     $50                             ; A73C
+        sta     LoadedObj + Obj::Scratch0       ; A73C
         rts                                     ; A73E
 
 ; ----------------------------------------------------------------------------
@@ -4401,13 +4401,13 @@ L_A73F: jsr     LC1B3                           ; A73F
         and     #$38                            ; A742
         clc                                     ; A744
         adc     #$10                            ; A745
-        sta     $51                             ; A747
+        sta     LoadedObj + Obj::Scratch1       ; A747
         lda     #$04                            ; A749
-        sta     $50                             ; A74B
+        sta     LoadedObj + Obj::Scratch0       ; A74B
         rts                                     ; A74D
 
 ; ----------------------------------------------------------------------------
-L_A74E: lda     $51                             ; A74E
+L_A74E: lda     LoadedObj + Obj::Scratch1       ; A74E
         bne     L_A760                          ; A750
         lda     LoadedObj + Obj::Velocity_X     ; A752
         beq     L_A793                          ; A754
@@ -4416,7 +4416,7 @@ L_A74E: lda     $51                             ; A74E
         bpl     L_A76A                          ; A75A
         lda     #$02                            ; A75C
         bne     L_A76A                          ; A75E
-L_A760: dec     $51                             ; A760
+L_A760: dec     LoadedObj + Obj::Scratch1       ; A760
         lda     #$02                            ; A762
         ldx     LoadedObj + Obj::Facing         ; A764
         bpl     L_A76A                          ; A766
@@ -4450,7 +4450,7 @@ L_A793: lda     #$00                            ; A793
         jmp     L_A7C6                          ; A797
 
 ; ----------------------------------------------------------------------------
-L_A79A: dec     $51                             ; A79A
+L_A79A: dec     LoadedObj + Obj::Scratch1       ; A79A
         beq     L_A79F                          ; A79C
         rts                                     ; A79E
 
@@ -4479,9 +4479,9 @@ L_A7C5: rts                                     ; A7C5
 
 ; ----------------------------------------------------------------------------
 L_A7C6: lda     #$20                            ; A7C6
-        sta     $51                             ; A7C8
+        sta     LoadedObj + Obj::Scratch1       ; A7C8
         lda     #$05                            ; A7CA
-        sta     $50                             ; A7CC
+        sta     LoadedObj + Obj::Scratch0       ; A7CC
         rts                                     ; A7CE
 
 ; ----------------------------------------------------------------------------
@@ -4490,7 +4490,7 @@ L_A7CF: lda     #$10                            ; A7CF
         lda     #$10                            ; A7D3
         sta     $41                             ; A7D5
         jsr     LC0FF                           ; A7D7
-        lda     $50                             ; A7DA
+        lda     LoadedObj + Obj::Scratch0       ; A7DA
         cmp     #$03                            ; A7DC
         beq     L_A7E4                          ; A7DE
         lda     #$00                            ; A7E0
@@ -4661,9 +4661,9 @@ L_A938: nop                                     ; A938
         nop                                     ; A939
         nop                                     ; A93A
 L_A93B: lda     #$08                            ; A93B
-        sta     $51                             ; A93D
+        sta     LoadedObj + Obj::Scratch1       ; A93D
         lda     #$50                            ; A93F
-        sta     $50                             ; A941
+        sta     LoadedObj + Obj::Scratch0       ; A941
         lda     Global_FrameCounter             ; A943
         and     #$3F                            ; A945
         cmp     #$20                            ; A947
@@ -4696,11 +4696,11 @@ L_A968: lda     $4F                             ; A968
 
 ; ----------------------------------------------------------------------------
 L_A974: jsr     LC01E                           ; A974
-L_A977: dec     $50                             ; A977
+L_A977: dec     LoadedObj + Obj::Scratch0       ; A977
         beq     L_A9C3                          ; A979
-        lda     $51                             ; A97B
+        lda     LoadedObj + Obj::Scratch1       ; A97B
         beq     L_A991                          ; A97D
-        dec     $51                             ; A97F
+        dec     LoadedObj + Obj::Scratch1       ; A97F
         bne     L_A991                          ; A981
         lda     LoadedObj + Obj::Velocity_X     ; A983
         jsr     LC0F0                           ; A985
@@ -4719,7 +4719,7 @@ L_A991: lda     #$10                            ; A991
         beq     L_A9C3                          ; A9A3
         lda     #$02                            ; A9A5
         sta     $44                             ; A9A7
-        lda     $51                             ; A9A9
+        lda     LoadedObj + Obj::Scratch1       ; A9A9
         lsr     a                               ; A9AB
         tax                                     ; A9AC
         lda     L_A9CD,x                        ; A9AD
@@ -4738,7 +4738,7 @@ L_A9C0: jmp     LC18C                           ; A9C0
 
 ; ----------------------------------------------------------------------------
 L_A9C3: lda     #$10                            ; A9C3
-        sta     $51                             ; A9C5
+        sta     LoadedObj + Obj::Scratch1       ; A9C5
         inc     LoadedObj + Obj::Type           ; A9C7
         rts                                     ; A9C9
 
@@ -4751,7 +4751,7 @@ L_A9CD: .byte   $C1,$B1,$A1,$91                 ; A9CD
 L_A9D1: nop                                     ; A9D1
         nop                                     ; A9D2
         nop                                     ; A9D3
-L_A9D4: dec     $51                             ; A9D4
+L_A9D4: dec     LoadedObj + Obj::Scratch1       ; A9D4
         bne     L_A9DB                          ; A9D6
         jmp     LC114                           ; A9D8
 
@@ -4766,7 +4766,7 @@ L_A9DB: lda     #$10                            ; A9DB
         lda     #$02                            ; A9EB
         sta     $44                             ; A9ED
         lda     #$E1                            ; A9EF
-        ldx     $51                             ; A9F1
+        ldx     LoadedObj + Obj::Scratch1       ; A9F1
         cpx     #$08                            ; A9F3
         bcs     L_A9F9                          ; A9F5
         lda     #$F1                            ; A9F7
@@ -4784,8 +4784,8 @@ L_AA06: jsr     L_A12C                          ; AA06
         lda     #$3C                            ; AA09
         sta     LoadedObj + Obj::Health         ; AA0B
         lda     #$00                            ; AA0D
-        sta     $50                             ; AA0F
-        sta     $51                             ; AA11
+        sta     LoadedObj + Obj::Scratch0       ; AA0F
+        sta     LoadedObj + Obj::Scratch1       ; AA11
         sta     $0670                           ; AA13
         sta     $0671                           ; AA16
         lda     #$00                            ; AA19
@@ -4819,7 +4819,7 @@ L_AA37: jsr     L_A07B                          ; AA37
         lda     Global_FrameCounter             ; AA45
         and     #$03                            ; AA47
         bne     L_AA4D                          ; AA49
-        inc     $51                             ; AA4B
+        inc     LoadedObj + Obj::Scratch1       ; AA4B
 L_AA4D: jsr     L_AA72                          ; AA4D
         jsr     L_AB72                          ; AA50
         lda     LoadedObj + Obj::Position_X_Hi  ; AA53
@@ -4947,7 +4947,7 @@ L_AB1E: lda     #$02                            ; AB1E
 ; ----------------------------------------------------------------------------
 L_AB32: .byte   $55,$54,$55,$56                 ; AB32
 ; ----------------------------------------------------------------------------
-L_AB36: lda     $51                             ; AB36
+L_AB36: lda     LoadedObj + Obj::Scratch1       ; AB36
         jsr     LC0CF                           ; AB38
         bmi     L_AB41                          ; AB3B
         ldy     #$00                            ; AB3D
@@ -4959,7 +4959,7 @@ L_AB43: clc                                     ; AB43
         tya                                     ; AB48
         adc     LoadedObj + Obj::Position_X_Hi  ; AB49
         sta     LoadedObj + Obj::Position_X_Hi  ; AB4B
-        lda     $51                             ; AB4D
+        lda     LoadedObj + Obj::Scratch1       ; AB4D
         asl     a                               ; AB4F
         asl     a                               ; AB50
         jsr     LC204                           ; AB51
@@ -5032,7 +5032,7 @@ L_ABC9: lda     ObjectSlot_Index                ; ABC9
 
 ; ----------------------------------------------------------------------------
 L_ABD2: lda     #$0A                            ; ABD2
-        sta     $51                             ; ABD4
+        sta     LoadedObj + Obj::Scratch1       ; ABD4
         lda     #$20                            ; ABD6
         sta     LoadedObj + Obj::Velocity_Y     ; ABD8
         jsr     LC1B3                           ; ABDA
@@ -5071,7 +5071,7 @@ L_AC06: lda     #$18                            ; AC06
 ; ----------------------------------------------------------------------------
 L_AC16: jsr     LC0FF                           ; AC16
         beq     L_AC2A                          ; AC19
-        dec     $51                             ; AC1B
+        dec     LoadedObj + Obj::Scratch1       ; AC1B
         bne     L_AC22                          ; AC1D
         jmp     LC114                           ; AC1F
 
@@ -5117,9 +5117,9 @@ L_AC5B: jsr     L_A12C                          ; AC5B
         lda     #$C0                            ; AC5E
         sta     LoadedObj + Obj::Health         ; AC60
         lda     #$02                            ; AC62
-        sta     $50                             ; AC64
+        sta     LoadedObj + Obj::Scratch0       ; AC64
         lda     #$20                            ; AC66
-        sta     $51                             ; AC68
+        sta     LoadedObj + Obj::Scratch1       ; AC68
         lda     #$00                            ; AC6A
         sta     $03FD                           ; AC6C
         lda     #$00                            ; AC6F
@@ -5167,7 +5167,7 @@ L_ACAC: lda     #$08                            ; ACAC
         rts                                     ; ACB8
 
 ; ----------------------------------------------------------------------------
-L_ACB9: lda     $50                             ; ACB9
+L_ACB9: lda     LoadedObj + Obj::Scratch0       ; ACB9
         cmp     #$02                            ; ACBB
         bne     L_ACC2                          ; ACBD
         jmp     L_AD3A                          ; ACBF
@@ -5183,7 +5183,7 @@ L_ACC9: cmp     #$04                            ; ACC9
         jmp     L_AD55                          ; ACCD
 
 ; ----------------------------------------------------------------------------
-L_ACD0: dec     $51                             ; ACD0
+L_ACD0: dec     LoadedObj + Obj::Scratch1       ; ACD0
         bne     L_ACD7                          ; ACD2
         jmp     L_AD63                          ; ACD4
 
@@ -5239,7 +5239,7 @@ L_AD1F: lda     Global_FrameCounter             ; AD1F
 L_AD39: rts                                     ; AD39
 
 ; ----------------------------------------------------------------------------
-L_AD3A: dec     $51                             ; AD3A
+L_AD3A: dec     LoadedObj + Obj::Scratch1       ; AD3A
         bne     L_AD41                          ; AD3C
         jmp     L_AD63                          ; AD3E
 
@@ -5247,12 +5247,12 @@ L_AD3A: dec     $51                             ; AD3A
 L_AD41: rts                                     ; AD41
 
 ; ----------------------------------------------------------------------------
-L_AD42: dec     $51                             ; AD42
+L_AD42: dec     LoadedObj + Obj::Scratch1       ; AD42
         bne     L_AD49                          ; AD44
         jmp     L_AD63                          ; AD46
 
 ; ----------------------------------------------------------------------------
-L_AD49: lda     $51                             ; AD49
+L_AD49: lda     LoadedObj + Obj::Scratch1       ; AD49
         cmp     #$24                            ; AD4B
         bne     L_AD54                          ; AD4D
         lda     #$82                            ; AD4F
@@ -5260,12 +5260,12 @@ L_AD49: lda     $51                             ; AD49
 L_AD54: rts                                     ; AD54
 
 ; ----------------------------------------------------------------------------
-L_AD55: dec     $51                             ; AD55
+L_AD55: dec     LoadedObj + Obj::Scratch1       ; AD55
         bne     L_AD5C                          ; AD57
         jmp     L_AD63                          ; AD59
 
 ; ----------------------------------------------------------------------------
-L_AD5C: lda     $51                             ; AD5C
+L_AD5C: lda     LoadedObj + Obj::Scratch1       ; AD5C
         cmp     #$02                            ; AD5E
         bne     L_AD62                          ; AD60
 L_AD62: rts                                     ; AD62
@@ -5284,30 +5284,30 @@ L_AD63: jsr     LC105                           ; AD63
         cmp     #$0F                            ; AD7A
         bcc     L_AD90                          ; AD7C
         lda     #$02                            ; AD7E
-        sta     $50                             ; AD80
+        sta     LoadedObj + Obj::Scratch0       ; AD80
         lda     #$20                            ; AD82
-        sta     $51                             ; AD84
+        sta     LoadedObj + Obj::Scratch1       ; AD84
         rts                                     ; AD86
 
 ; ----------------------------------------------------------------------------
 L_AD87: lda     #$01                            ; AD87
-        sta     $50                             ; AD89
+        sta     LoadedObj + Obj::Scratch0       ; AD89
         lda     #$40                            ; AD8B
-        sta     $51                             ; AD8D
+        sta     LoadedObj + Obj::Scratch1       ; AD8D
         rts                                     ; AD8F
 
 ; ----------------------------------------------------------------------------
 L_AD90: lda     #$03                            ; AD90
-        sta     $50                             ; AD92
+        sta     LoadedObj + Obj::Scratch0       ; AD92
         lda     #$3B                            ; AD94
-        sta     $51                             ; AD96
+        sta     LoadedObj + Obj::Scratch1       ; AD96
         rts                                     ; AD98
 
 ; ----------------------------------------------------------------------------
 L_AD99: lda     #$04                            ; AD99
-        sta     $50                             ; AD9B
+        sta     LoadedObj + Obj::Scratch0       ; AD9B
         lda     #$37                            ; AD9D
-        sta     $51                             ; AD9F
+        sta     LoadedObj + Obj::Scratch1       ; AD9F
         rts                                     ; ADA1
 
 ; ----------------------------------------------------------------------------
@@ -5356,7 +5356,7 @@ L_ADE7: ldx     LoadedObj + Obj::Health         ; ADE7
         bcs     L_ADF7                          ; ADF3
         lda     #$00                            ; ADF5
 L_ADF7: sta     $0671                           ; ADF7
-        lda     $50                             ; ADFA
+        lda     LoadedObj + Obj::Scratch0       ; ADFA
         cmp     #$02                            ; ADFC
         beq     L_AE5A                          ; ADFE
         cmp     #$03                            ; AE00
@@ -5381,7 +5381,7 @@ L_AE1B: lda     $0671                           ; AE1B
         clc                                     ; AE1F
         adc     $0671                           ; AE20
         sta     $0670                           ; AE23
-        lda     $51                             ; AE26
+        lda     LoadedObj + Obj::Scratch1       ; AE26
         cmp     #$24                            ; AE28
         bcc     L_AE38                          ; AE2A
         cmp     #$2A                            ; AE2C
@@ -5397,7 +5397,7 @@ L_AE3A: clc                                     ; AE3A
         rts                                     ; AE41
 
 ; ----------------------------------------------------------------------------
-L_AE42: lda     $51                             ; AE42
+L_AE42: lda     LoadedObj + Obj::Scratch1       ; AE42
         cmp     #$30                            ; AE44
         bcs     L_AE54                          ; AE46
         cmp     #$18                            ; AE48
@@ -5440,8 +5440,8 @@ L_AE93: nop                                     ; AE93
         nop                                     ; AE94
         nop                                     ; AE95
 L_AE96: lda     #$00                            ; AE96
-        sta     $51                             ; AE98
-        sta     $50                             ; AE9A
+        sta     LoadedObj + Obj::Scratch1       ; AE98
+        sta     LoadedObj + Obj::Scratch0       ; AE9A
         dec     LoadedObj + Obj::Position_X_Hi  ; AE9C
         dec     LoadedObj + Obj::Position_Y_Hi  ; AE9E
         jsr     LC05A                           ; AEA0
@@ -5467,15 +5467,15 @@ L_AEBB: sta     LoadedObj + Obj::Velocity_X     ; AEBB
 L_AEC5: jmp     L_AEDF                          ; AEC5
 
 ; ----------------------------------------------------------------------------
-L_AEC8: lda     $50                             ; AEC8
+L_AEC8: lda     LoadedObj + Obj::Scratch0       ; AEC8
         bmi     L_AED8                          ; AECA
-        inc     $51                             ; AECC
-        lda     $51                             ; AECE
+        inc     LoadedObj + Obj::Scratch1       ; AECC
+        lda     LoadedObj + Obj::Scratch1       ; AECE
         cmp     #$07                            ; AED0
         bcc     L_AEDF                          ; AED2
-        dec     $50                             ; AED4
+        dec     LoadedObj + Obj::Scratch0       ; AED4
         bne     L_AEDF                          ; AED6
-L_AED8: dec     $51                             ; AED8
+L_AED8: dec     LoadedObj + Obj::Scratch1       ; AED8
         bpl     L_AEDF                          ; AEDA
         jmp     LC114                           ; AEDC
 
@@ -5529,7 +5529,7 @@ L_AF2A: lda     $3F                             ; AF2A
         pla                                     ; AF35
         clc                                     ; AF36
         adc     #$01                            ; AF37
-        cmp     $51                             ; AF39
+        cmp     LoadedObj + Obj::Scratch1       ; AF39
         bcc     L_AEEC                          ; AF3B
         lda     #$40                            ; AF3D
         jsr     LC141                           ; AF3F
@@ -5543,16 +5543,16 @@ L_AF43: pla                                     ; AF43
 L_AF45: jmp     L_AF66                          ; AF45
 
 ; ----------------------------------------------------------------------------
-L_AF48: lda     $50                             ; AF48
+L_AF48: lda     LoadedObj + Obj::Scratch0       ; AF48
         asl     a                               ; AF4A
         asl     a                               ; AF4B
         asl     a                               ; AF4C
         asl     a                               ; AF4D
         asl     a                               ; AF4E
         asl     a                               ; AF4F
-        sta     $52                             ; AF50
+        sta     LoadedObj + Obj::Scratch2       ; AF50
         lda     #$10                            ; AF52
-        sta     $51                             ; AF54
+        sta     LoadedObj + Obj::Scratch1       ; AF54
         lda     #$00                            ; AF56
         sta     LoadedObj + Obj::Velocity_X     ; AF58
         sta     LoadedObj + Obj::Velocity_Y     ; AF5A
@@ -5572,12 +5572,12 @@ L_AF6A: lda     #$80                            ; AF6A
         sta     LoadedObj_CollisionBox_HalfHeight; AF70
         lda     Global_FrameCounter             ; AF72
         and     #$03                            ; AF74
-        cmp     $50                             ; AF76
+        cmp     LoadedObj + Obj::Scratch0       ; AF76
         bne     L_AF96                          ; AF78
         clc                                     ; AF7A
-        lda     $51                             ; AF7B
+        lda     LoadedObj + Obj::Scratch1       ; AF7B
         adc     #$03                            ; AF7D
-        sta     $51                             ; AF7F
+        sta     LoadedObj + Obj::Scratch1       ; AF7F
         cmp     #$70                            ; AF81
         bcc     L_AF88                          ; AF83
         jmp     LC114                           ; AF85
@@ -5587,9 +5587,9 @@ L_AF88: lda     Global_FrameCounter             ; AF88
         asl     a                               ; AF8A
         asl     a                               ; AF8B
         clc                                     ; AF8C
-        adc     $52                             ; AF8D
+        adc     LoadedObj + Obj::Scratch2       ; AF8D
         sta     LoadedObj + Obj::Facing         ; AF8F
-        ldy     $51                             ; AF91
+        ldy     LoadedObj + Obj::Scratch1       ; AF91
         jsr     LC1EF                           ; AF93
 L_AF96: jsr     LC01E                           ; AF96
 L_AF99: lda     #$10                            ; AF99
@@ -5615,7 +5615,7 @@ L_AFB9: jmp     L_AFF5                          ; AFB9
 ; ----------------------------------------------------------------------------
 L_AFBC: inc     LoadedObj + Obj::Type           ; AFBC
         jsr     LC1EC                           ; AFBE
-        lda     $50                             ; AFC1
+        lda     LoadedObj + Obj::Scratch0       ; AFC1
         beq     L_AFCF                          ; AFC3
         lda     #$20                            ; AFC5
         sta     LoadedObj + Obj::Velocity_X     ; AFC7
@@ -5720,7 +5720,7 @@ L_B064: lda     #$20                            ; B064
 L_B074: jmp     L_B08A                          ; B074
 
 ; ----------------------------------------------------------------------------
-L_B077: lda     $51                             ; B077
+L_B077: lda     LoadedObj + Obj::Scratch1       ; B077
         sta     LoadedObj + Obj::Facing         ; B079
         ldy     #$11                            ; B07B
         jsr     LC1EF                           ; B07D
@@ -6158,22 +6158,22 @@ L_B314: asl     a                               ; B314
 ; ----------------------------------------------------------------------------
 L_B324: .addr   L_B326                          ; B324
 ; ----------------------------------------------------------------------------
-L_B326: .byte   $04,$10,$1A,$90 ; B326  Health=$04 ContactDamage=$10 DropType=$1A DropChance=$90
-        .byte   $01,$10,$1A,$80 ; B32A  Health=$01 ContactDamage=$10 DropType=$1A DropChance=$80
-        .byte   $02,$10,$1E,$70 ; B32E  Health=$02 ContactDamage=$10 DropType=$1E DropChance=$70
-        .byte   $01,$10,$1C,$50 ; B332  Health=$01 ContactDamage=$10 DropType=$1C DropChance=$50
-        .byte   $02,$10,$20,$40 ; B336  Health=$02 ContactDamage=$10 DropType=$20 DropChance=$40
-        .byte   $01,$10,$1A,$60 ; B33A  Health=$01 ContactDamage=$10 DropType=$1A DropChance=$60
-        .byte   $08,$10,$1A,$80 ; B33E  Health=$08 ContactDamage=$10 DropType=$1A DropChance=$80
-        .byte   $01,$20,$21,$FF ; B342  Health=$01 ContactDamage=$20 DropType=$21 DropChance=$FF
-        .byte   $18,$20,$1C,$FF ; B346  Health=$18 ContactDamage=$20 DropType=$1C DropChance=$FF
-        .byte   $08,$20,$1C,$A0 ; B34A  Health=$08 ContactDamage=$20 DropType=$1C DropChance=$A0
-        .byte   $08,$18,$1A,$80 ; B34E  Health=$08 ContactDamage=$18 DropType=$1A DropChance=$80
-        .byte   $08,$18,$1A,$80 ; B352  Health=$08 ContactDamage=$18 DropType=$1A DropChance=$80
-        .byte   $06,$20,$1C,$50 ; B356  Health=$06 ContactDamage=$20 DropType=$1C DropChance=$50
-        .byte   $08,$30,$20,$FF ; B35A  Health=$08 ContactDamage=$30 DropType=$20 DropChance=$FF
-        .byte   $20,$30,$22,$FF ; B35E  Health=$20 ContactDamage=$30 DropType=$22 DropChance=$FF
-        .byte   $04,$20,$1A,$A0 ; B362  Health=$04 ContactDamage=$20 DropType=$1A DropChance=$A0
+L_B326: .byte   $04,$10,$1A,$90 ; B326  Health=$04 DropType=$1A DropChance=$90
+        .byte   $01,$10,$1A,$80 ; B32A  Health=$01 DropType=$1A DropChance=$80
+        .byte   $02,$10,$1E,$70 ; B32E  Health=$02 DropType=$1E DropChance=$70
+        .byte   $01,$10,$1C,$50 ; B332  Health=$01 DropType=$1C DropChance=$50
+        .byte   $02,$10,$20,$40 ; B336  Health=$02 DropType=$20 DropChance=$40
+        .byte   $01,$10,$1A,$60 ; B33A  Health=$01 DropType=$1A DropChance=$60
+        .byte   $08,$10,$1A,$80 ; B33E  Health=$08 DropType=$1A DropChance=$80
+        .byte   $01,$20,$21,$FF ; B342  Health=$01 DropType=$21 DropChance=$FF
+        .byte   $18,$20,$1C,$FF ; B346  Health=$18 DropType=$1C DropChance=$FF
+        .byte   $08,$20,$1C,$A0 ; B34A  Health=$08 DropType=$1C DropChance=$A0
+        .byte   $08,$18,$1A,$80 ; B34E  Health=$08 DropType=$1A DropChance=$80
+        .byte   $08,$18,$1A,$80 ; B352  Health=$08 DropType=$1A DropChance=$80
+        .byte   $06,$20,$1C,$50 ; B356  Health=$06 DropType=$1C DropChance=$50
+        .byte   $08,$30,$20,$FF ; B35A  Health=$08 DropType=$20 DropChance=$FF
+        .byte   $20,$30,$22,$FF ; B35E  Health=$20 DropType=$22 DropChance=$FF
+        .byte   $04,$20,$1A,$A0 ; B362  Health=$04 DropType=$1A DropChance=$A0
 ; ----------------------------------------------------------------------------
 L_B366: jmp     L_B392                          ; B366
 
@@ -6190,7 +6190,7 @@ L_B369: lda     #$04                            ; B369
         sta     LoadedObj + Obj::Position_Y_Hi  ; B380
         lda     #$00                            ; B382
         sta     LoadedObj + Obj::Facing         ; B384
-        sta     $52                             ; B386
+        sta     LoadedObj + Obj::Scratch2       ; B386
         jsr     LC12F                           ; B388
         beq     L_B392                          ; B38B
         lda     #$80                            ; B38D
@@ -6211,8 +6211,8 @@ L_B396: lda     #$80                            ; B396
         jmp     LC14A                           ; B3A5
 
 ; ----------------------------------------------------------------------------
-L_B3A8: inc     $52                             ; B3A8
-        lda     $52                             ; B3AA
+L_B3A8: inc     LoadedObj + Obj::Scratch2       ; B3A8
+        lda     LoadedObj + Obj::Scratch2       ; B3AA
         bmi     L_B3B3                          ; B3AC
         eor     #$FF                            ; B3AE
         clc                                     ; B3B0
@@ -6221,7 +6221,7 @@ L_B3B3: ldx     #$01                            ; B3B3
         jsr     LC20A                           ; B3B5
         clc                                     ; B3B8
         adc     #$54                            ; B3B9
-        sta     $51                             ; B3BB
+        sta     LoadedObj + Obj::Scratch1       ; B3BB
         jsr     LC048                           ; B3BD
         ldx     #$01                            ; B3C0
         jsr     LC20A                           ; B3C2
@@ -6255,11 +6255,11 @@ L_B3E2: lda     #$10                            ; B3E2
         clc                                     ; B3FA
         adc     LoadedObj + Obj::Facing         ; B3FB
         sta     $05                             ; B3FD
-        ldy     $51                             ; B3FF
+        ldy     LoadedObj + Obj::Scratch1       ; B3FF
         lda     $05                             ; B401
         jsr     LC1C8                           ; B403
         jsr     L_B1F9                          ; B406
-        ldy     $51                             ; B409
+        ldy     LoadedObj + Obj::Scratch1       ; B409
         lda     $05                             ; B40B
         jsr     LC1B6                           ; B40D
         jsr     L_B21E                          ; B410
@@ -6525,9 +6525,9 @@ L_B5F3: lda     #$80                            ; B5F3
         sta     LoadedObj_CollisionBox_HalfWidth; B5F5
         lda     #$80                            ; B5F7
         sta     LoadedObj_CollisionBox_HalfHeight; B5F9
-        lda     $52                             ; B5FB
+        lda     LoadedObj + Obj::Scratch2       ; B5FB
         beq     L_B604                          ; B5FD
-        dec     $52                             ; B5FF
+        dec     LoadedObj + Obj::Scratch2       ; B5FF
         jmp     L_B620                          ; B601
 
 ; ----------------------------------------------------------------------------
@@ -6543,7 +6543,7 @@ L_B60E: cmp     #$02                            ; B60E
         lda     #$58                            ; B617
         sta     ObjectTable + Obj::Type,x       ; B619
         lda     #$08                            ; B61C
-        sta     $52                             ; B61E
+        sta     LoadedObj + Obj::Scratch2       ; B61E
 L_B620: jsr     LC01E                           ; B620
 L_B623: lda     #$10                            ; B623
         sta     $40                             ; B625
@@ -6575,7 +6575,7 @@ L_B650: lda     #$08                            ; B650
         jsr     L_B2B4                          ; B652
         ldx     Global_FrameCounter             ; B655
         inx                                     ; B657
-        stx     $51                             ; B658
+        stx     LoadedObj + Obj::Scratch1       ; B658
 L_B65A: rts                                     ; B65A
 
 ; ----------------------------------------------------------------------------
@@ -6587,16 +6587,16 @@ L_B65E: lda     #$80                            ; B65E
         lda     #$80                            ; B662
         sta     LoadedObj_CollisionBox_HalfHeight; B664
         lda     Global_FrameCounter             ; B666
-        eor     $51                             ; B668
+        eor     LoadedObj + Obj::Scratch1       ; B668
         and     #$7F                            ; B66A
         bne     L_B680                          ; B66C
         lda     #$03                            ; B66E
-        sta     $50                             ; B670
+        sta     LoadedObj + Obj::Scratch0       ; B670
 L_B672: jsr     LC12F                           ; B672
         beq     L_B680                          ; B675
         lda     #$4E                            ; B677
         sta     ObjectTable + Obj::Type,x       ; B679
-        dec     $50                             ; B67C
+        dec     LoadedObj + Obj::Scratch0       ; B67C
         bpl     L_B672                          ; B67E
 L_B680: lda     #$10                            ; B680
         sta     $40                             ; B682
@@ -6644,7 +6644,7 @@ L_B6B2: lda     #$80                            ; B6B2
         sta     ObjectTable + Obj::Type,x       ; B6C7
         lda     Global_FrameCounter             ; B6CA
         and     #$20                            ; B6CC
-        sta     $040A,x                         ; B6CE
+        sta     ObjectTable + Obj::Scratch0,x   ; B6CE
         lda     LoadedObj + Obj::Position_Y_Lo  ; B6D1
         sec                                     ; B6D3
         sbc     #$40                            ; B6D4
@@ -6684,7 +6684,7 @@ L_B70C: jmp     L_B718                          ; B70C
 L_B70F: lda     #$0A                            ; B70F
         jsr     L_B2B4                          ; B711
         lda     #$00                            ; B714
-        sta     $50                             ; B716
+        sta     LoadedObj + Obj::Scratch0       ; B716
 L_B718: rts                                     ; B718
 
 ; ----------------------------------------------------------------------------
@@ -6695,11 +6695,11 @@ L_B71C: lda     #$80                            ; B71C
         sta     LoadedObj_CollisionBox_HalfWidth; B71E
         lda     #$80                            ; B720
         sta     LoadedObj_CollisionBox_HalfHeight; B722
-        lda     $50                             ; B724
+        lda     LoadedObj + Obj::Scratch0       ; B724
         bne     L_B740                          ; B726
         jsr     LC045                           ; B728
         bne     L_B747                          ; B72B
-        inc     $50                             ; B72D
+        inc     LoadedObj + Obj::Scratch0       ; B72D
         lda     #$00                            ; B72F
         sta     LoadedObj + Obj::Velocity_X     ; B731
         jsr     LC04E                           ; B733
@@ -6710,7 +6710,7 @@ L_B73C: lda     #$C8                            ; B73C
 L_B73E: sta     LoadedObj + Obj::Velocity_Y     ; B73E
 L_B740: jsr     LC02D                           ; B740
         beq     L_B747                          ; B743
-        dec     $50                             ; B745
+        dec     LoadedObj + Obj::Scratch0       ; B745
 L_B747: lda     #$10                            ; B747
         sta     $40                             ; B749
         lda     #$10                            ; B74B
@@ -6752,7 +6752,7 @@ L_B782: jmp     L_B78E                          ; B782
 L_B785: lda     #$0B                            ; B785
         jsr     L_B2B4                          ; B787
         lda     #$00                            ; B78A
-        sta     $50                             ; B78C
+        sta     LoadedObj + Obj::Scratch0       ; B78C
 L_B78E: rts                                     ; B78E
 
 ; ----------------------------------------------------------------------------
@@ -6763,11 +6763,11 @@ L_B792: lda     #$80                            ; B792
         sta     LoadedObj_CollisionBox_HalfWidth; B794
         lda     #$80                            ; B796
         sta     LoadedObj_CollisionBox_HalfHeight; B798
-        lda     $50                             ; B79A
+        lda     LoadedObj + Obj::Scratch0       ; B79A
         bne     L_B7B6                          ; B79C
         jsr     LC04E                           ; B79E
         bne     L_B7BD                          ; B7A1
-        inc     $50                             ; B7A3
+        inc     LoadedObj + Obj::Scratch0       ; B7A3
         lda     #$00                            ; B7A5
         sta     LoadedObj + Obj::Velocity_Y     ; B7A7
         jsr     LC045                           ; B7A9
@@ -6778,7 +6778,7 @@ L_B7B2: lda     #$C8                            ; B7B2
 L_B7B4: sta     LoadedObj + Obj::Velocity_X     ; B7B4
 L_B7B6: jsr     LC02D                           ; B7B6
         beq     L_B7BD                          ; B7B9
-        dec     $50                             ; B7BB
+        dec     LoadedObj + Obj::Scratch0       ; B7BB
 L_B7BD: lda     #$10                            ; B7BD
         sta     $40                             ; B7BF
         lda     #$10                            ; B7C1
@@ -6822,9 +6822,9 @@ L_B7F9: lda     #$80                            ; B7F9
         sta     LoadedObj_CollisionBox_HalfWidth; B7FB
         lda     #$80                            ; B7FD
         sta     LoadedObj_CollisionBox_HalfHeight; B7FF
-        lda     $51                             ; B801
+        lda     LoadedObj + Obj::Scratch1       ; B801
         beq     L_B80A                          ; B803
-        dec     $51                             ; B805
+        dec     LoadedObj + Obj::Scratch1       ; B805
         jmp     L_B82C                          ; B807
 
 ; ----------------------------------------------------------------------------
@@ -6832,7 +6832,7 @@ L_B80A: jsr     LC048                           ; B80A
         and     #$FC                            ; B80D
         bne     L_B82C                          ; B80F
         lda     #$40                            ; B811
-        sta     $51                             ; B813
+        sta     LoadedObj + Obj::Scratch1       ; B813
         jsr     LC12F                           ; B815
         beq     L_B82C                          ; B818
         lda     #$52                            ; B81A
@@ -6869,9 +6869,9 @@ L_B855: jmp     L_B865                          ; B855
 
 ; ----------------------------------------------------------------------------
 L_B858: lda     #$00                            ; B858
-        sta     $51                             ; B85A
+        sta     LoadedObj + Obj::Scratch1       ; B85A
         sta     LoadedObj + Obj::Facing         ; B85C
-        sta     $50                             ; B85E
+        sta     LoadedObj + Obj::Scratch0       ; B85E
         lda     #$00                            ; B860
         jsr     L_B2B4                          ; B862
 L_B865: rts                                     ; B865
@@ -6889,17 +6889,17 @@ L_B869: lda     #$C0                            ; B869
         bne     L_B87C                          ; B875
         lda     #$47                            ; B877
         jsr     LC216                           ; B879
-L_B87C: lda     $50                             ; B87C
+L_B87C: lda     LoadedObj + Obj::Scratch0       ; B87C
         beq     L_B885                          ; B87E
-        dec     $50                             ; B880
+        dec     LoadedObj + Obj::Scratch0       ; B880
         jmp     L_B898                          ; B882
 
 ; ----------------------------------------------------------------------------
-L_B885: inc     $51                             ; B885
-        lda     $51                             ; B887
+L_B885: inc     LoadedObj + Obj::Scratch1       ; B885
+        lda     LoadedObj + Obj::Scratch1       ; B887
         and     #$60                            ; B889
         beq     L_B8CC                          ; B88B
-        lda     $51                             ; B88D
+        lda     LoadedObj + Obj::Scratch1       ; B88D
         and     #$1F                            ; B88F
         bne     L_B898                          ; B891
         jsr     LC105                           ; B893
@@ -6917,11 +6917,11 @@ L_B898: ldx     LoadedObj + Obj::Facing         ; B898
         jsr     LC018                           ; B8B3
         beq     L_B8C3                          ; B8B6
         lda     #$10                            ; B8B8
-        sta     $50                             ; B8BA
+        sta     LoadedObj + Obj::Scratch0       ; B8BA
         jsr     LC1B3                           ; B8BC
         and     #$03                            ; B8BF
         sta     LoadedObj + Obj::Facing         ; B8C1
-L_B8C3: lda     $51                             ; B8C3
+L_B8C3: lda     LoadedObj + Obj::Scratch1       ; B8C3
         and     #$1F                            ; B8C5
         bne     L_B8CC                          ; B8C7
         jsr     L_BBA9                          ; B8C9
@@ -6980,7 +6980,7 @@ L_B922: jmp     L_B930                          ; B922
 ; ----------------------------------------------------------------------------
 L_B925: lda     #$00                            ; B925
         sta     LoadedObj + Obj::Facing         ; B927
-        sta     $51                             ; B929
+        sta     LoadedObj + Obj::Scratch1       ; B929
         lda     #$01                            ; B92B
         jsr     L_B2B4                          ; B92D
 L_B930: rts                                     ; B930
@@ -6993,10 +6993,10 @@ L_B934: lda     #$80                            ; B934
         sta     LoadedObj_CollisionBox_HalfWidth; B936
         lda     #$80                            ; B938
         sta     LoadedObj_CollisionBox_HalfHeight; B93A
-        lda     $51                             ; B93C
+        lda     LoadedObj + Obj::Scratch1       ; B93C
         and     #$40                            ; B93E
         bne     L_B998                          ; B940
-        lda     $51                             ; B942
+        lda     LoadedObj + Obj::Scratch1       ; B942
         and     #$3F                            ; B944
         bne     L_B958                          ; B946
         jsr     L_BCC5                          ; B948
@@ -7067,8 +7067,8 @@ L_B9C9: lda     $3F                             ; B9C9
         sec                                     ; B9CB
         sbc     #$0E                            ; B9CC
         sta     $3F                             ; B9CE
-        inc     $51                             ; B9D0
-        lda     $51                             ; B9D2
+        inc     LoadedObj + Obj::Scratch1       ; B9D0
+        lda     LoadedObj + Obj::Scratch1       ; B9D2
         and     #$3F                            ; B9D4
         cmp     #$08                            ; B9D6
         bcc     L_B9E9                          ; B9D8
@@ -7089,10 +7089,10 @@ L_B9EE: jmp     L_BA00                          ; B9EE
 
 ; ----------------------------------------------------------------------------
 L_B9F1: lda     #$00                            ; B9F1
-        sta     $50                             ; B9F3
+        sta     LoadedObj + Obj::Scratch0       ; B9F3
         sta     LoadedObj + Obj::Facing         ; B9F5
         lda     #$30                            ; B9F7
-        sta     $51                             ; B9F9
+        sta     LoadedObj + Obj::Scratch1       ; B9F9
         lda     #$02                            ; B9FB
         jsr     L_B2B4                          ; B9FD
 L_BA00: rts                                     ; BA00
@@ -7101,13 +7101,13 @@ L_BA00: rts                                     ; BA00
 L_BA01: jmp     L_BA17                          ; BA01
 
 ; ----------------------------------------------------------------------------
-L_BA04: dec     $51                             ; BA04
+L_BA04: dec     LoadedObj + Obj::Scratch1       ; BA04
         bpl     L_BA17                          ; BA06
         lda     #$80                            ; BA08
-        sta     $51                             ; BA0A
+        sta     LoadedObj + Obj::Scratch1       ; BA0A
         inc     LoadedObj + Obj::Type           ; BA0C
         lda     #$00                            ; BA0E
-        sta     $50                             ; BA10
+        sta     LoadedObj + Obj::Scratch0       ; BA10
         lda     #$48                            ; BA12
         jsr     LC216                           ; BA14
 L_BA17: lda     #$18                            ; BA17
@@ -7119,7 +7119,7 @@ L_BA17: lda     #$18                            ; BA17
         jmp     LC17A                           ; BA24
 
 ; ----------------------------------------------------------------------------
-L_BA27: lda     $51                             ; BA27
+L_BA27: lda     LoadedObj + Obj::Scratch1       ; BA27
         cmp     #$08                            ; BA29
         bcc     L_BA38                          ; BA2B
         cmp     #$30                            ; BA2D
@@ -7147,18 +7147,18 @@ L_BA4A: lda     #$C0                            ; BA4A
         sta     LoadedObj_CollisionBox_HalfWidth; BA4C
         lda     #$80                            ; BA4E
         sta     LoadedObj_CollisionBox_HalfHeight; BA50
-        dec     $50                             ; BA52
+        dec     LoadedObj + Obj::Scratch0       ; BA52
         bpl     L_BA58                          ; BA54
-        inc     $50                             ; BA56
-L_BA58: inc     $51                             ; BA58
+        inc     LoadedObj + Obj::Scratch0       ; BA56
+L_BA58: inc     LoadedObj + Obj::Scratch1       ; BA58
         bne     L_BA62                          ; BA5A
         lda     #$40                            ; BA5C
-        sta     $51                             ; BA5E
+        sta     LoadedObj + Obj::Scratch1       ; BA5E
         dec     LoadedObj + Obj::Type           ; BA60
-L_BA62: lda     $51                             ; BA62
+L_BA62: lda     LoadedObj + Obj::Scratch1       ; BA62
         and     #$0F                            ; BA64
         bne     L_BAA5                          ; BA66
-        lda     $51                             ; BA68
+        lda     LoadedObj + Obj::Scratch1       ; BA68
         and     #$30                            ; BA6A
         bne     L_BA77                          ; BA6C
         jsr     L_BCC5                          ; BA6E
@@ -7170,14 +7170,14 @@ L_BA77: jsr     LC1B3                           ; BA77
         and     #$03                            ; BA7A
         tax                                     ; BA7C
 L_BA7D: stx     LoadedObj + Obj::Facing         ; BA7D
-        lda     $4E                             ; BA7F
+        lda     LoadedObj + Obj::TileIndex      ; BA7F
         clc                                     ; BA81
         adc     LBADE,x                         ; BA82
         tax                                     ; BA85
         lda     $0500,x                         ; BA86
         and     #$C0                            ; BA89
         bne     L_BAA5                          ; BA8B
-        stx     $4E                             ; BA8D
+        stx     LoadedObj + Obj::TileIndex      ; BA8D
         ldx     LoadedObj + Obj::Facing         ; BA8F
         lda     LBADA,x                         ; BA91
         clc                                     ; BA94
@@ -7188,7 +7188,7 @@ L_BA7D: stx     LoadedObj + Obj::Facing         ; BA7D
         adc     LoadedObj + Obj::Position_Y_Hi  ; BA9D
         sta     LoadedObj + Obj::Position_Y_Hi  ; BA9F
         lda     #$08                            ; BAA1
-        sta     $50                             ; BAA3
+        sta     LoadedObj + Obj::Scratch0       ; BAA3
 L_BAA5: lda     #$18                            ; BAA5
         sta     $40                             ; BAA7
         lda     #$10                            ; BAA9
@@ -7200,7 +7200,7 @@ L_BAA5: lda     #$18                            ; BAA5
 ; ----------------------------------------------------------------------------
 L_BAB5: lda     #$02                            ; BAB5
         jsr     L_B2C5                          ; BAB7
-        lda     $50                             ; BABA
+        lda     LoadedObj + Obj::Scratch0       ; BABA
         beq     L_BAD3                          ; BABC
         lsr     a                               ; BABE
         bcs     L_BAD3                          ; BABF
@@ -7297,7 +7297,7 @@ L_BB33: lda     $1D                             ; BB33
         sta     LoadedObj + Obj::Velocity_Y     ; BB68
         inc     LoadedObj + Obj::Type           ; BB6A
         lda     #$70                            ; BB6C
-        sta     $50                             ; BB6E
+        sta     LoadedObj + Obj::Scratch0       ; BB6E
 L_BB70: rts                                     ; BB70
 
 ; ----------------------------------------------------------------------------
@@ -7310,12 +7310,12 @@ L_BB78: lda     #$80                            ; BB78
         sta     LoadedObj_CollisionBox_HalfWidth; BB7A
         lda     #$80                            ; BB7C
         sta     LoadedObj_CollisionBox_HalfHeight; BB7E
-        dec     $50                             ; BB80
+        dec     LoadedObj + Obj::Scratch0       ; BB80
         bne     L_BB87                          ; BB82
         jmp     LC114                           ; BB84
 
 ; ----------------------------------------------------------------------------
-L_BB87: lda     $50                             ; BB87
+L_BB87: lda     LoadedObj + Obj::Scratch0       ; BB87
         and     #$0F                            ; BB89
         bne     L_BB90                          ; BB8B
         jsr     L_BCC5                          ; BB8D
@@ -7355,7 +7355,7 @@ L_BBC5: lda     #$10                            ; BBC5
         lda     #$00                            ; BBC9
         sta     $4F                             ; BBCB
         lda     #$40                            ; BBCD
-        sta     $51                             ; BBCF
+        sta     LoadedObj + Obj::Scratch1       ; BBCF
         inc     LoadedObj + Obj::Type           ; BBD1
         jsr     LC0FF                           ; BBD3
         ldx     LoadedObj + Obj::Facing         ; BBD6
@@ -7376,7 +7376,7 @@ L_BBEB: lda     #$80                            ; BBEB
         sta     LoadedObj_CollisionBox_HalfWidth; BBED
         lda     #$80                            ; BBEF
         sta     LoadedObj_CollisionBox_HalfHeight; BBF1
-        dec     $51                             ; BBF3
+        dec     LoadedObj + Obj::Scratch1       ; BBF3
         bne     L_BBFA                          ; BBF5
         jmp     LC114                           ; BBF7
 
@@ -7598,7 +7598,7 @@ L_BD4A: lda     #$10                            ; BD4A
         lda     #$00                            ; BD4E
         sta     $4F                             ; BD50
         sta     LoadedObj + Obj::Facing         ; BD52
-        sta     $51                             ; BD54
+        sta     LoadedObj + Obj::Scratch1       ; BD54
         jsr     LC1EC                           ; BD56
         inc     LoadedObj + Obj::Type           ; BD59
         rts                                     ; BD5B
@@ -7608,7 +7608,7 @@ L_BD5C: jmp     L_BD68                          ; BD5C
 
 ; ----------------------------------------------------------------------------
 L_BD5F: lda     #$00                            ; BD5F
-        sta     $52                             ; BD61
+        sta     LoadedObj + Obj::Scratch2       ; BD61
         lda     #$0D                            ; BD63
         jsr     L_B2B4                          ; BD65
 L_BD68: rts                                     ; BD68
@@ -7621,9 +7621,9 @@ L_BD6C: lda     #$80                            ; BD6C
         sta     LoadedObj_CollisionBox_HalfWidth; BD6E
         lda     #$80                            ; BD70
         sta     LoadedObj_CollisionBox_HalfHeight; BD72
-        lda     $52                             ; BD74
+        lda     LoadedObj + Obj::Scratch2       ; BD74
         beq     L_BD7A                          ; BD76
-        dec     $52                             ; BD78
+        dec     LoadedObj + Obj::Scratch2       ; BD78
 L_BD7A: jsr     LC045                           ; BD7A
         bpl     L_BD84                          ; BD7D
         eor     #$FF                            ; BD7F
@@ -7666,8 +7666,8 @@ L_BDBE: lda     #$01                            ; BDBE
         and     #$03                            ; BDCB
         bne     L_BDD3                          ; BDCD
         lda     #$10                            ; BDCF
-        sta     $52                             ; BDD1
-L_BDD3: lda     $52                             ; BDD3
+        sta     LoadedObj + Obj::Scratch2       ; BDD1
+L_BDD3: lda     LoadedObj + Obj::Scratch2       ; BDD3
         and     #$05                            ; BDD5
         bne     L_BDDE                          ; BDD7
         lda     #$3A                            ; BDD9
@@ -7691,13 +7691,13 @@ L_BDEA: lda     #$80                            ; BDEA
         beq     L_BE01                          ; BDF5
         lda     #$54                            ; BDF7
         sta     ObjectTable + Obj::Type,x       ; BDF9
-        lda     $50                             ; BDFC
-        sta     $040B,x                         ; BDFE
+        lda     LoadedObj + Obj::Scratch0       ; BDFC
+        sta     ObjectTable + Obj::Scratch1,x   ; BDFE
 L_BE01: clc                                     ; BE01
-        lda     $50                             ; BE02
+        lda     LoadedObj + Obj::Scratch0       ; BE02
         adc     #$08                            ; BE04
-        sta     $50                             ; BE06
-        dec     $51                             ; BE08
+        sta     LoadedObj + Obj::Scratch0       ; BE06
+        dec     LoadedObj + Obj::Scratch1       ; BE08
         bne     L_BE0E                          ; BE0A
         dec     LoadedObj + Obj::Type           ; BE0C
 L_BE0E: lda     #$10                            ; BE0E
@@ -7714,7 +7714,7 @@ L_BE1E: lda     #$0D                            ; BE1E
         ldy     #$01                            ; BE23
         lda     ($A3),y                         ; BE25
         jsr     LC144                           ; BE27
-        lda     $51                             ; BE2A
+        lda     LoadedObj + Obj::Scratch1       ; BE2A
         bne     L_BE35                          ; BE2C
         lda     LoadedObj + Obj::Health         ; BE2E
         bne     L_BE35                          ; BE30
@@ -7728,11 +7728,11 @@ L_BE35: lda     #$01                            ; BE35
 L_BE3E: jsr     LC105                           ; BE3E
         tax                                     ; BE41
         lda     L_BDE3,x                        ; BE42
-        sta     $50                             ; BE45
+        sta     LoadedObj + Obj::Scratch0       ; BE45
         lda     #$08                            ; BE47
-        sta     $51                             ; BE49
+        sta     LoadedObj + Obj::Scratch1       ; BE49
         lda     #$20                            ; BE4B
-        sta     $52                             ; BE4D
+        sta     LoadedObj + Obj::Scratch2       ; BE4D
         lda     #$43                            ; BE4F
         sta     LoadedObj + Obj::Type           ; BE51
         rts                                     ; BE53

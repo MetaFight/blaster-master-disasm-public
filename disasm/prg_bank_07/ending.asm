@@ -8,17 +8,17 @@ L_F273: lda     #$08                            ; F273
         sta     $D5                             ; F280
         sta     $D4                             ; F282
         lda     #$C0                            ; F284
-        sta     $51                             ; F286
+        sta     LoadedObj + Obj::Scratch1       ; F286
 L_F288: jsr     WaitNMI                         ; F288
         jsr     L_F3C1                          ; F28B
         lda     $10                             ; F28E
         and     #$03                            ; F290
         bne     L_F297                          ; F292
         jsr     ScreenFade_Step                 ; F294
-L_F297: dec     $51                             ; F297
+L_F297: dec     LoadedObj + Obj::Scratch1       ; F297
         bne     L_F288                          ; F299
         lda     #$00                            ; F29B
-        sta     $51                             ; F29D
+        sta     LoadedObj + Obj::Scratch1       ; F29D
 L_F29F: jsr     WaitNMI                         ; F29F
         jsr     L_F3CF                          ; F2A2
         lda     $10                             ; F2A5
@@ -26,31 +26,31 @@ L_F29F: jsr     WaitNMI                         ; F29F
         bne     L_F2B0                          ; F2A9
         lda     #$03                            ; F2AB
         jsr     Enqueue_Sound_Command           ; F2AD
-L_F2B0: inc     $51                             ; F2B0
+L_F2B0: inc     LoadedObj + Obj::Scratch1       ; F2B0
         bne     L_F29F                          ; F2B2
         lda     #$00                            ; F2B4
         sta     $FD                             ; F2B6
         sta     $FC                             ; F2B8
         lda     #$00                            ; F2BA
-        sta     $51                             ; F2BC
+        sta     LoadedObj + Obj::Scratch1       ; F2BC
 L_F2BE: jsr     WaitNMI                         ; F2BE
         jsr     L_F33B                          ; F2C1
-        inc     $51                             ; F2C4
+        inc     LoadedObj + Obj::Scratch1       ; F2C4
         bne     L_F2BE                          ; F2C6
         lda     #$17                            ; F2C8
         jsr     Enqueue_Sound_Command           ; F2CA
         lda     #$00                            ; F2CD
         sta     $E0                             ; F2CF
         lda     #$00                            ; F2D1
-        sta     $51                             ; F2D3
+        sta     LoadedObj + Obj::Scratch1       ; F2D3
 L_F2D5: jsr     WaitNMI                         ; F2D5
-        lda     $51                             ; F2D8
+        lda     LoadedObj + Obj::Scratch1       ; F2D8
         sta     $FD                             ; F2DA
         jsr     L_F412                          ; F2DC
         lda     $10                             ; F2DF
         lsr     a                               ; F2E1
         bcs     L_F2D5                          ; F2E2
-        inc     $51                             ; F2E4
+        inc     LoadedObj + Obj::Scratch1       ; F2E4
         bne     L_F2D5                          ; F2E6
 L_F2E8: jsr     WaitNMI                         ; F2E8
         jsr     L_F412                          ; F2EB
@@ -84,11 +84,11 @@ L_F31B: .byte   $0F,$30,$10,$00,$0F,$26,$16,$06 ; F31B
         .byte   $0F,$3C,$2C,$1C,$0F,$2C,$1C,$0C ; F32B
         .byte   $0F,$0F,$0F,$0F,$0F,$2A,$1A,$0A ; F333
 ; ----------------------------------------------------------------------------
-L_F33B: lda     $51                             ; F33B
+L_F33B: lda     LoadedObj + Obj::Scratch1       ; F33B
         and     #$E7                            ; F33D
         cmp     #$80                            ; F33F
         bne     L_F358                          ; F341
-        lda     $51                             ; F343
+        lda     LoadedObj + Obj::Scratch1       ; F343
         and     #$18                            ; F345
         ora     #$07                            ; F347
         tay                                     ; F349
@@ -157,7 +157,7 @@ L_F3C1: lda     #$80                            ; F3C1
 ; ----------------------------------------------------------------------------
 L_F3CF: lda     #$80                            ; F3CF
         sta     $3E                             ; F3D1
-        lda     $51                             ; F3D3
+        lda     LoadedObj + Obj::Scratch1       ; F3D3
         cmp     #$20                            ; F3D5
         bcc     L_F3E4                          ; F3D7
         cmp     #$E0                            ; F3D9
@@ -181,7 +181,7 @@ L_F3E8: sta     $FC                             ; F3E8
         jsr     L_F3A1                          ; F3F7
         pla                                     ; F3FA
         sta     $3F                             ; F3FB
-        lda     $51                             ; F3FD
+        lda     LoadedObj + Obj::Scratch1       ; F3FD
         cmp     #$C0                            ; F3FF
         bcs     L_F411                          ; F401
         lsr     a                               ; F403
@@ -240,7 +240,7 @@ L_F45A: .byte   $E0,$E2,$E4                     ; F45A
 .macro MAC_L_F9D5
 ; ----------------------------------------------------------------------------
 L_F9D5: lda     #$01                            ; F9D5
-        sta     $52                             ; F9D7
+        sta     LoadedObj + Obj::Scratch2       ; F9D7
         lda     #$17                            ; F9D9
         sta     $D5                             ; F9DB
         sta     $D4                             ; F9DD
@@ -466,10 +466,10 @@ L_FC08: sta     $0300,x                         ; FC08
 ; ----------------------------------------------------------------------------
 L_FC15: jsr     L_FC42                          ; FC15
         jsr     WaitNMI                         ; FC18
-        dec     $52                             ; FC1B
+        dec     LoadedObj + Obj::Scratch2       ; FC1B
         bne     L_FC15                          ; FC1D
         lda     L_FC41                          ; FC1F
-        sta     $52                             ; FC22
+        sta     LoadedObj + Obj::Scratch2       ; FC22
         inc     $FC                             ; FC24
         lda     $FC                             ; FC26
         and     #$03                            ; FC28

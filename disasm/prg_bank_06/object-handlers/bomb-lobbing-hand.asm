@@ -12,7 +12,7 @@ L_B33A: lda     #$15                            ; B33A
         bcs     L_B34A                          ; B346
         dec     LoadedObj + Obj::Position_Y_Hi  ; B348
 L_B34A: lda     #$00                            ; B34A
-        sta     $50                             ; B34C
+        sta     LoadedObj + Obj::Scratch0       ; B34C
 L_B34E: rts                                     ; B34E
 
 ; ----------------------------------------------------------------------------
@@ -42,7 +42,7 @@ L_B372: sta     $01                             ; B372
 L_B37A: cmp     #$05                            ; B37A
         bcs     L_B3A9                          ; B37C
         lda     #$01                            ; B37E
-        sta     $50                             ; B380
+        sta     LoadedObj + Obj::Scratch0       ; B380
         jsr     Step_RNG                        ; B382
         and     #$07                            ; B385
         clc                                     ; B387
@@ -61,35 +61,35 @@ L_B397: sta     $9D                             ; B397
         jsr     LDF36                           ; B39D
         beq     L_B3AF                          ; B3A0
         lda     #$09                            ; B3A2
-        sta     $51                             ; B3A4
+        sta     LoadedObj + Obj::Scratch1       ; B3A4
         jmp     L_B3AF                          ; B3A6
 
 ; ----------------------------------------------------------------------------
 L_B3A9: lda     #$00                            ; B3A9
-        sta     $50                             ; B3AB
-        sta     $51                             ; B3AD
+        sta     LoadedObj + Obj::Scratch0       ; B3AB
+        sta     LoadedObj + Obj::Scratch1       ; B3AD
 L_B3AF: lda     #$10                            ; B3AF
         sta     $40                             ; B3B1
         lda     #$18                            ; B3B3
         sta     $41                             ; B3B5
-        jsr     LEF2B                           ; B3B7
+        jsr     ScreenPos_Compute               ; B3B7
         beq     L_B3BF                          ; B3BA
-        jmp     LD7F8                           ; B3BC
+        jmp     Obj_TombstoneSlot               ; B3BC
 
 ; ----------------------------------------------------------------------------
 L_B3BF: lda     #$15                            ; B3BF
-        jsr     L_A30A                          ; B3C1
+        jsr     TankEnemy_DamageCheck           ; B3C1
         beq     L_B3C9                          ; B3C4
-        jmp     L_A34D                          ; B3C6
+        jmp     TankEnemy_Defeat                ; B3C6
 
 ; ----------------------------------------------------------------------------
 L_B3C9: lda     #$01                            ; B3C9
         jsr     LE04E                           ; B3CB
-        lda     $50                             ; B3CE
+        lda     LoadedObj + Obj::Scratch0       ; B3CE
         beq     L_B3DD                          ; B3D0
-        lda     $51                             ; B3D2
+        lda     LoadedObj + Obj::Scratch1       ; B3D2
         beq     L_B3DD                          ; B3D4
-        dec     $51                             ; B3D6
+        dec     LoadedObj + Obj::Scratch1       ; B3D6
         lda     #$71                            ; B3D8
         jmp     L_B3DF                          ; B3DA
 

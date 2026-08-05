@@ -17,7 +17,7 @@ L_B2AB: lda     #$80                            ; B2AB
         sta     LoadedObj_CollisionBox_HalfWidth; B2AD
         lda     #$80                            ; B2AF
         sta     LoadedObj_CollisionBox_HalfHeight; B2B1
-        jsr     LEF2B                           ; B2B3
+        jsr     ScreenPos_Compute               ; B2B3
         bne     L_B2DB                          ; B2B6
         lda     Global_FrameCounter             ; B2B8
         and     #$1F                            ; B2BA
@@ -38,9 +38,9 @@ L_B2DB: lda     #$10                            ; B2DB
         sta     $40                             ; B2DD
         lda     #$10                            ; B2DF
         sta     $41                             ; B2E1
-        jsr     LEF2B                           ; B2E3
+        jsr     ScreenPos_Compute               ; B2E3
         beq     L_B2EB                          ; B2E6
-        jmp     LD7F8                           ; B2E8
+        jmp     Obj_TombstoneSlot               ; B2E8
 
 ; ----------------------------------------------------------------------------
 L_B2EB: rts                                     ; B2EB
@@ -65,13 +65,13 @@ L_B308: lda     #$10                            ; B308
         sta     $40                             ; B30A
         lda     #$10                            ; B30C
         sta     $41                             ; B30E
-        jsr     LEF2B                           ; B310
+        jsr     ScreenPos_Compute               ; B310
         beq     L_B318                          ; B313
-        jmp     LD81C                           ; B315
+        jmp     Obj_Despawn                     ; B315
 
 ; ----------------------------------------------------------------------------
 L_B318: lda     #$14                            ; B318
-        jsr     L_A30A                          ; B31A
+        jsr     TankEnemy_DamageCheck           ; B31A
         beq     L_B322                          ; B31D
         jmp     L_A347                          ; B31F
 

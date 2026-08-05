@@ -6,7 +6,7 @@ L_ACFB: jmp     L_AD07                          ; ACFB
 L_ACFE: lda     #$0C                            ; ACFE
         jsr     TankEnemy_Init                  ; AD00
         lda     #$00                            ; AD03
-        sta     $50                             ; AD05
+        sta     LoadedObj + Obj::Scratch0       ; AD05
 L_AD07: rts                                     ; AD07
 
 ; ----------------------------------------------------------------------------
@@ -17,7 +17,7 @@ L_AD0B: lda     #$80                            ; AD0B
         sta     LoadedObj_CollisionBox_HalfWidth; AD0D
         lda     #$80                            ; AD0F
         sta     LoadedObj_CollisionBox_HalfHeight; AD11
-        lda     $50                             ; AD13
+        lda     LoadedObj + Obj::Scratch0       ; AD13
         bne     L_AD4A                          ; AD15
         jsr     LE0FA                           ; AD17
         bpl     L_AD1F                          ; AD1A
@@ -45,15 +45,15 @@ L_AD31: jsr     Step_RNG                           ; AD31
 
 ; ----------------------------------------------------------------------------
 L_AD40: lda     #$FE                            ; AD40
-L_AD42: sta     $52                             ; AD42
+L_AD42: sta     LoadedObj + Obj::Scratch2       ; AD42
         lda     #$40                            ; AD44
         sta     LoadedObj + Obj::Facing         ; AD46
-        inc     $50                             ; AD48
+        inc     LoadedObj + Obj::Scratch0       ; AD48
 L_AD4A: jsr     LE07B                           ; AD4A
         and     #$7F                            ; AD4D
         bne     L_AD65                          ; AD4F
         lda     LoadedObj + Obj::Facing         ; AD51
-        eor     $52                             ; AD53
+        eor     LoadedObj + Obj::Scratch2       ; AD53
         bpl     L_AD65                          ; AD55
         jsr     Step_RNG                        ; AD57
         bmi     L_AD61                          ; AD5A
@@ -62,13 +62,13 @@ L_AD4A: jsr     LE07B                           ; AD4A
 
 ; ----------------------------------------------------------------------------
 L_AD61: lda     #$02                            ; AD61
-L_AD63: sta     $50                             ; AD63
+L_AD63: sta     LoadedObj + Obj::Scratch0       ; AD63
 L_AD65: lda     LoadedObj + Obj::Facing         ; AD65
         ldy     #$24                            ; AD67
         jsr     LE1B1                           ; AD69
         sta     LoadedObj + Obj::Velocity_X     ; AD6C
         lda     #$24                            ; AD6E
-        ldx     $50                             ; AD70
+        ldx     LoadedObj + Obj::Scratch0       ; AD70
         cpx     #$02                            ; AD72
         beq     L_AD7A                          ; AD74
         asl     a                               ; AD76
@@ -96,20 +96,20 @@ L_AD8E: clc                                     ; AD8E
         lda     LoadedObj + Obj::Velocity_Y     ; ADA1
         bpl     L_ADA9                          ; ADA3
         lda     #$00                            ; ADA5
-        sta     $50                             ; ADA7
+        sta     LoadedObj + Obj::Scratch0       ; ADA7
 L_ADA9: lda     #$10                            ; ADA9
         sta     $40                             ; ADAB
         lda     #$10                            ; ADAD
         sta     $41                             ; ADAF
-        jsr     LEF2B                           ; ADB1
+        jsr     ScreenPos_Compute               ; ADB1
         beq     L_ADB9                          ; ADB4
-        jmp     LD7F8                           ; ADB6
+        jmp     Obj_TombstoneSlot               ; ADB6
 
 ; ----------------------------------------------------------------------------
 L_ADB9: lda     #$0C                            ; ADB9
-        jsr     L_A30A                          ; ADBB
+        jsr     TankEnemy_DamageCheck           ; ADBB
         beq     L_ADC3                          ; ADBE
-        jmp     L_A34D                          ; ADC0
+        jmp     TankEnemy_Defeat                ; ADC0
 
 ; ----------------------------------------------------------------------------
 L_ADC3: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; ADC3

@@ -80,16 +80,16 @@ ObjSlot_Load:
         sta     LoadedObj + Obj::Velocity_X     ; C902
         lda     ObjectTable + Obj::Velocity_Y,y ; C904
         sta     LoadedObj + Obj::Velocity_Y     ; C907
-        lda     $0408,y                         ; C909
-        sta     $4E                             ; C90C
+        lda     ObjectTable + Obj::TileIndex,y  ; C909
+        sta     LoadedObj + Obj::TileIndex      ; C90C
         lda     $0409,y                         ; C90E
         sta     $4F                             ; C911
-        lda     $040A,y                         ; C913
-        sta     $50                             ; C916
-        lda     $040B,y                         ; C918
-        sta     $51                             ; C91B
-        lda     $040C,y                         ; C91D
-        sta     $52                             ; C920
+        lda     ObjectTable + Obj::Scratch0,y   ; C913
+        sta     LoadedObj + Obj::Scratch0       ; C916
+        lda     ObjectTable + Obj::Scratch1,y   ; C918
+        sta     LoadedObj + Obj::Scratch1       ; C91B
+        lda     ObjectTable + Obj::Scratch2,y   ; C91D
+        sta     LoadedObj + Obj::Scratch2       ; C920
         lda     ObjectTable + Obj::Health,y     ; C922
         sta     LoadedObj + Obj::Health         ; C925
         rts                                     ; C927
@@ -114,16 +114,16 @@ ObjSlot_Save:
         sta     ObjectTable + Obj::Velocity_X,y ; C94A
         lda     LoadedObj + Obj::Velocity_Y     ; C94D
         sta     ObjectTable + Obj::Velocity_Y,y ; C94F
-        lda     $4E                             ; C952
-        sta     $0408,y                         ; C954
+        lda     LoadedObj + Obj::TileIndex      ; C952
+        sta     ObjectTable + Obj::TileIndex,y  ; C954
         lda     $4F                             ; C957
         sta     $0409,y                         ; C959
-        lda     $50                             ; C95C
-        sta     $040A,y                         ; C95E
-        lda     $51                             ; C961
-        sta     $040B,y                         ; C963
-        lda     $52                             ; C966
-        sta     $040C,y                         ; C968
+        lda     LoadedObj + Obj::Scratch0       ; C95C
+        sta     ObjectTable + Obj::Scratch0,y   ; C95E
+        lda     LoadedObj + Obj::Scratch1       ; C961
+        sta     ObjectTable + Obj::Scratch1,y   ; C963
+        lda     LoadedObj + Obj::Scratch2       ; C966
+        sta     ObjectTable + Obj::Scratch2,y   ; C968
         lda     LoadedObj + Obj::Health         ; C96B
         sta     ObjectTable + Obj::Health,y     ; C96D
         rts                                     ; C970
@@ -217,8 +217,8 @@ _Apply_Double_Velocity_X__OnSignExtensionByteChosen:
         sbc     LoadedObj + Obj::Position_X_Hi  ; D33C
         clc                                     ; D33E
 ; Update the TileIndex accordingly.
-        adc     $4E                             ; D33F
-        sta     $4E                             ; D341
+        adc     LoadedObj + Obj::TileIndex      ; D33F
+        sta     LoadedObj + Obj::TileIndex      ; D341
         pla                                     ; D343
         and     #$7F                            ; D344
         sta     LoadedObj + Obj::Position_X_Hi  ; D346
@@ -228,26 +228,48 @@ _Apply_Double_Velocity_X__OnSignExtensionByteChosen:
 
 .macro MAC_L_D7F8
 ; ----------------------------------------------------------------------------
-L_D7F8: ldx     ObjectSlot_Index                ; D7F8
+; Saves the current LoadedObj's ObjType into DormantSlot_SavedType.
+; Then, changes the ObjType to $02 (Tombstoned).
+; 
+; This is first stage of unloading an already-active object that has scrolled off-screen.
+; If the Camera scrolls this object back on-screen, the $02 Object Handler will take care of
+; restoring the slot to its original state.
+Obj_TombstoneSlot:
+        ldx     ObjectSlot_Index                ; D7F8
         lda     LoadedObj + Obj::Type           ; D7FA
-        sta     $0150,x                         ; D7FC
+        sta     DormantSlot_SavedType,x         ; D7FC
         lda     #$02                            ; D7FF
         sta     LoadedObj + Obj::Type           ; D801
         rts                                     ; D803
 
 ; ----------------------------------------------------------------------------
-L_D804: ldy     ObjectSlot_Index                ; D804
+; Despawn, logging the kill for slots ≥ 8.
+; 
+; Slot 0 is always the player.
+; Not yet confirmed:
+;   Slots 1-5 are for Player weapons.
+Obj_DespawnAndLog:
+        ldy     ObjectSlot_Index                ; D804
         cpy     #$08                            ; D806
-        bcc     L_D81C                          ; D808
+        bcc     Obj_Despawn                     ; D808
+; if slot ObjectSlot_Index ≥ 8, then advance ring index ThingIndex_DespawnRing_WriteIndex (modulo
+; 64).
         inc     $C6                             ; D80A
         lda     $C6                             ; D80C
         and     #$3F                            ; D80E
         tax                                     ; D810
+; Read the slot's saved Thing index before logging it
+;   effectively ObjectSlot_ThingIndex,y ($100,y) not Pad2Raw,y ($00F8,y) despite the $00F8 base. 
+;   This is because ObjectIndex (Y) is always >= 8 here.
         lda     $F8,y                           ; D811
+; Save the Thing index into ThingIndex_DespawnRing
         sta     $010A,x                         ; D814
         lda     #$FF                            ; D817
+; Clear the slot's saved Thing index back to the $FF sentinel.
         sta     $F8,y                           ; D819
-L_D81C: lda     #$00                            ; D81C
+; Despawn the current object: clear ObjType and IFrames 0.
+Obj_Despawn:
+        lda     #$00                            ; D81C
         sta     LoadedObj + Obj::Type           ; D81E
         sta     $4F                             ; D820
         rts                                     ; D822
@@ -256,14 +278,14 @@ L_D81C: lda     #$00                            ; D81C
 L_D823: ldy     ObjectSlot_Index                ; D823
         lda     #$FF                            ; D825
         sta     $F8,y                           ; D827
-        bne     L_D81C                          ; D82A
+        bne     Obj_Despawn                     ; D82A
 L_D82C: lda     ObjectSlot_Index                ; D82C
         sec                                     ; D82E
         sbc     #$01                            ; D82F
         cmp     #$05                            ; D831
-        bcs     L_D81C                          ; D833
+        bcs     Obj_Despawn                     ; D833
         jsr     L_D790                          ; D835
-        jmp     L_D81C                          ; D838
+        jmp     Obj_Despawn                     ; D838
 
 ; ----------------------------------------------------------------------------
 L_D83B: lda     LoadedObj + Obj::Position_X_Hi  ; D83B
@@ -282,7 +304,7 @@ L_D851: pha                                     ; D851
         ldx     #$54                            ; D852
         lda     #$EE                            ; D854
         sta     L0000                           ; D856
-        jsr     L_D7CF                          ; D858
+        jsr     FindEmptyObjectSlot             ; D858
         beq     L_D869                          ; D85B
         txa                                     ; D85D
         pha                                     ; D85E
@@ -315,29 +337,49 @@ L_D86D: ldx     #$4C                            ; D86D
 
 .macro MAC_L_DF0F
 ; ----------------------------------------------------------------------------
-L_DF0F: lda     #$D2                            ; DF0F
+; Tries to clone the current LoadedObject into an empty ObjectTable slot.
+; 
+; Since the new spawn is a clone of the parent, it inherits the parent's position and other
+; properties.  Callers will overwrite those as necessary.
+; 
+; Output:
+;   on succes,
+;     A = 1
+;     X = the found slot offset
+;   on failure to find slot,
+;     A = 0
+Obj_TryCloneLoadedObjectIntoEmptySlot:
+        lda     #$D2                            ; DF0F
         sta     L0000                           ; DF11
         ldx     #$70                            ; DF13
-        jsr     L_D7CF                          ; DF15
-        beq     L_DF24                          ; DF18
+; find the first empty object slot (scan from X=$70, limit $00=$D2)
+        jsr     FindEmptyObjectSlot             ; DF15
+        beq     _Obj_TryCloneLoadedObjectIntoEmptySlot__NoSlot; DF18
         stx     $A5                             ; DF1A
-        jsr     L_DF27                          ; DF1C
+        jsr     _Obj_TryCloneLoadedObjectIntoEmptySlot__CopyRecord; DF1C
         ldx     $A5                             ; DF1F
         lda     #$01                            ; DF21
         rts                                     ; DF23
 
 ; ----------------------------------------------------------------------------
-L_DF24: lda     #$00                            ; DF24
+; No free slot: return A=$00 (nothing spawned).
+_Obj_TryCloneLoadedObjectIntoEmptySlot__NoSlot:
+        lda     #$00                            ; DF24
         rts                                     ; DF26
 
 ; ----------------------------------------------------------------------------
-L_DF27: ldy     #$00                            ; DF27
-L_DF29: lda     LoadedObject + Obj::Type,y      ; DF29
+; Copy the 14-byte LoadedObject record into the new slot at ObjectTable,X (Y=0..$0D); X advances
+; past the slot.
+_Obj_TryCloneLoadedObjectIntoEmptySlot__CopyRecord:
+        ldy     #$00                            ; DF27
+; Copy 14 bytes ($0E) from ZP $46+Y into the slot at $0400,X.
+_Obj_TryCloneLoadedObjectIntoEmptySlot__CopyLoop:
+        lda     LoadedObject + Obj::Type,y      ; DF29
         sta     ObjectTable + Obj::Type,x       ; DF2C
         inx                                     ; DF2F
         iny                                     ; DF30
         cpy     #$0E                            ; DF31
-        bne     L_DF29                          ; DF33
+        bne     _Obj_TryCloneLoadedObjectIntoEmptySlot__CopyLoop; DF33
         rts                                     ; DF35
 
 ; ----------------------------------------------------------------------------
@@ -356,7 +398,7 @@ L_DF46: lda     L0000                           ; DF46
         lda     #$D2                            ; DF49
         sta     L0000                           ; DF4B
         ldx     #$70                            ; DF4D
-        jsr     L_D7CF                          ; DF4F
+        jsr     FindEmptyObjectSlot             ; DF4F
         beq     L_DF62                          ; DF52
         lda     $A0                             ; DF54
         sta     ObjectTable + Obj::Type,x       ; DF56
@@ -522,7 +564,7 @@ L_DFF6: sta     $9C                             ; DFF6
         jsr     L_E16B                          ; DFFB
         bne     L_E002                          ; DFFE
         lda     #$01                            ; E000
-L_E002: sta     $52                             ; E002
+L_E002: sta     LoadedObj + Obj::Scratch2       ; E002
         rts                                     ; E004
 
 ; ----------------------------------------------------------------------------
@@ -546,9 +588,9 @@ L_E018: lda     #$00                            ; E018
 .macro MAC_L_E02F
 ; ----------------------------------------------------------------------------
 L_E02F: jsr     L_DF68                          ; E02F
-        lda     $51                             ; E032
+        lda     LoadedObj + Obj::Scratch1       ; E032
         beq     L_E03B                          ; E034
-        dec     $51                             ; E036
+        dec     LoadedObj + Obj::Scratch1       ; E036
         jmp     L_E04D                          ; E038
 
 ; ----------------------------------------------------------------------------
@@ -560,7 +602,7 @@ L_E03B: lda     #$11                            ; E03B
         sbc     LoadedObj + Obj::Velocity_X     ; E045
         sta     LoadedObj + Obj::Velocity_X     ; E047
         lda     #$20                            ; E049
-        sta     $51                             ; E04B
+        sta     LoadedObj + Obj::Scratch1       ; E04B
 L_E04D: rts                                     ; E04D
 
 ; ----------------------------------------------------------------------------
@@ -581,17 +623,17 @@ L_E05D: sta     $44                             ; E05D
 
 .macro MAC_L_E071
 ; ----------------------------------------------------------------------------
-L_E071: lda     $52                             ; E071
+L_E071: lda     LoadedObj + Obj::Scratch2       ; E071
         eor     #$FF                            ; E073
         clc                                     ; E075
         adc     #$01                            ; E076
-        sta     $52                             ; E078
+        sta     LoadedObj + Obj::Scratch2       ; E078
         rts                                     ; E07A
 
 ; ----------------------------------------------------------------------------
 L_E07B: lda     LoadedObj + Obj::Facing         ; E07B
         clc                                     ; E07D
-        adc     $52                             ; E07E
+        adc     LoadedObj + Obj::Scratch2       ; E07E
         sta     LoadedObj + Obj::Facing         ; E080
         rts                                     ; E082
 

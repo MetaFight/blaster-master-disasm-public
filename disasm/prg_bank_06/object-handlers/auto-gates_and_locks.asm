@@ -4,9 +4,9 @@ L_9D3B: nop                                     ; 9D3B
         nop                                     ; 9D3C
         nop                                     ; 9D3D
 L_9D3E: lda     #$00                            ; 9D3E
-        sta     $51                             ; 9D40
+        sta     LoadedObj + Obj::Scratch1       ; 9D40
         lda     #$01                            ; 9D42
-        sta     $50                             ; 9D44
+        sta     LoadedObj + Obj::Scratch0       ; 9D44
         jsr     LD2B9                           ; 9D46
         inc     LoadedObj + Obj::Type           ; 9D49
         rts                                     ; 9D4B
@@ -53,7 +53,7 @@ L_9D83: sta     $08                             ; 9D83
         sta     $40                             ; 9D89
         lda     #$10                            ; 9D8B
         sta     $41                             ; 9D8D
-        jsr     LEF2B                           ; 9D8F
+        jsr     ScreenPos_Compute               ; 9D8F
         beq     L_9D97                          ; 9D92
         jmp     LD823                           ; 9D94
 
@@ -75,7 +75,7 @@ L_9DA1: lda     #$30                            ; 9DA1
         lda     #$00                            ; 9DB0
         jsr     LD71F                           ; 9DB2
         sta     $45                             ; 9DB5
-        lda     $50                             ; 9DB7
+        lda     LoadedObj + Obj::Scratch0       ; 9DB7
         cmp     #$01                            ; 9DB9
         beq     L_9DD4                          ; 9DBB
         cmp     #$02                            ; 9DBD
@@ -91,23 +91,23 @@ L_9DC4: cmp     #$04                            ; 9DC4
 L_9DCB: lda     $45                             ; 9DCB
         beq     L_9DD3                          ; 9DCD
         lda     #$04                            ; 9DCF
-        sta     $50                             ; 9DD1
+        sta     LoadedObj + Obj::Scratch0       ; 9DD1
 L_9DD3: rts                                     ; 9DD3
 
 ; ----------------------------------------------------------------------------
 L_9DD4: lda     $45                             ; 9DD4
         bne     L_9DDC                          ; 9DD6
         lda     #$02                            ; 9DD8
-        sta     $50                             ; 9DDA
+        sta     LoadedObj + Obj::Scratch0       ; 9DDA
 L_9DDC: rts                                     ; 9DDC
 
 ; ----------------------------------------------------------------------------
 L_9DDD: lda     LoadedObj + Obj::Position_Y_Hi  ; 9DDD
         pha                                     ; 9DDF
-        lda     $4E                             ; 9DE0
+        lda     LoadedObj + Obj::TileIndex      ; 9DE0
         pha                                     ; 9DE2
-        inc     $51                             ; 9DE3
-        lda     $51                             ; 9DE5
+        inc     LoadedObj + Obj::Scratch1       ; 9DE3
+        lda     LoadedObj + Obj::Scratch1       ; 9DE5
         cmp     #$10                            ; 9DE7
         beq     L_9DFF                          ; 9DE9
         cmp     #$20                            ; 9DEB
@@ -131,9 +131,9 @@ L_9DFF: lda     L_9E21                          ; 9DFF
 
 ; ----------------------------------------------------------------------------
 L_9E16: lda     #$03                            ; 9E16
-        sta     $50                             ; 9E18
+        sta     LoadedObj + Obj::Scratch0       ; 9E18
 L_9E1A: pla                                     ; 9E1A
-        sta     $4E                             ; 9E1B
+        sta     LoadedObj + Obj::TileIndex      ; 9E1B
         pla                                     ; 9E1D
         sta     LoadedObj + Obj::Position_Y_Hi  ; 9E1E
         rts                                     ; 9E20
@@ -146,11 +146,11 @@ L_9E24: .byte   $00,$00,$00,$00                 ; 9E24
 ; ----------------------------------------------------------------------------
 L_9E28: lda     LoadedObj + Obj::Position_Y_Hi  ; 9E28
         pha                                     ; 9E2A
-        lda     $4E                             ; 9E2B
+        lda     LoadedObj + Obj::TileIndex      ; 9E2B
         pha                                     ; 9E2D
-        dec     $51                             ; 9E2E
+        dec     LoadedObj + Obj::Scratch1       ; 9E2E
         beq     L_9E55                          ; 9E30
-        lda     $51                             ; 9E32
+        lda     LoadedObj + Obj::Scratch1       ; 9E32
         cmp     #$10                            ; 9E34
         beq     L_9E48                          ; 9E36
         cmp     #$20                            ; 9E38
@@ -168,9 +168,9 @@ L_9E48: lda     #$80                            ; 9E48
 
 ; ----------------------------------------------------------------------------
 L_9E55: lda     #$01                            ; 9E55
-        sta     $50                             ; 9E57
+        sta     LoadedObj + Obj::Scratch0       ; 9E57
 L_9E59: pla                                     ; 9E59
-        sta     $4E                             ; 9E5A
+        sta     LoadedObj + Obj::TileIndex      ; 9E5A
         pla                                     ; 9E5C
         sta     LoadedObj + Obj::Position_Y_Hi  ; 9E5D
         rts                                     ; 9E5F

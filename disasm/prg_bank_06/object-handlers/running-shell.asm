@@ -9,7 +9,7 @@ L_B57B: lda     #$18                            ; B57B
         sta     LoadedObj + Obj::Velocity_Y     ; B582
         sta     LoadedObj + Obj::Velocity_X     ; B584
         lda     #$02                            ; B586
-        sta     $50                             ; B588
+        sta     LoadedObj + Obj::Scratch0       ; B588
 L_B58A: rts                                     ; B58A
 
 ; ----------------------------------------------------------------------------
@@ -20,11 +20,11 @@ L_B58E: lda     #$80                            ; B58E
         sta     LoadedObj_CollisionBox_HalfWidth; B590
         lda     #$80                            ; B592
         sta     LoadedObj_CollisionBox_HalfHeight; B594
-        lda     $50                             ; B596
+        lda     LoadedObj + Obj::Scratch0       ; B596
         bne     L_B5B2                          ; B598
         jsr     LE0FA                           ; B59A
         bne     L_B5FB                          ; B59D
-        inc     $50                             ; B59F
+        inc     LoadedObj + Obj::Scratch0       ; B59F
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; B5A1
         bmi     L_B5AB                          ; B5A4
         lda     #$28                            ; B5A6
@@ -41,20 +41,20 @@ L_B5B2: cmp     #$01                            ; B5B2
         lda     #$11                            ; B5B6
         jsr     LD2B1                           ; B5B8
         bmi     L_B5C2                          ; B5BB
-        inc     $50                             ; B5BD
+        inc     LoadedObj + Obj::Scratch0       ; B5BD
         jmp     L_B5FB                          ; B5BF
 
 ; ----------------------------------------------------------------------------
 L_B5C2: jsr     LE083                           ; B5C2
         and     #$80                            ; B5C5
         beq     L_B5CE                          ; B5C7
-        dec     $50                             ; B5C9
+        dec     LoadedObj + Obj::Scratch0       ; B5C9
         jmp     L_B5FB                          ; B5CB
 
 ; ----------------------------------------------------------------------------
 L_B5CE: lda     LoadedObj + Obj::Velocity_X     ; B5CE
         bne     L_B5FB                          ; B5D0
-        dec     $50                             ; B5D2
+        dec     LoadedObj + Obj::Scratch0       ; B5D2
         jmp     L_B5FB                          ; B5D4
 
 ; ----------------------------------------------------------------------------
@@ -75,25 +75,25 @@ L_B5F1: and     #$40                            ; B5F1
         beq     L_B5FB                          ; B5F3
         lda     LoadedObj + Obj::Velocity_Y     ; B5F5
         bmi     L_B5FB                          ; B5F7
-        dec     $50                             ; B5F9
+        dec     LoadedObj + Obj::Scratch0       ; B5F9
 L_B5FB: lda     #$10                            ; B5FB
         sta     $40                             ; B5FD
         lda     #$10                            ; B5FF
         sta     $41                             ; B601
-        jsr     LEF2B                           ; B603
+        jsr     ScreenPos_Compute               ; B603
         beq     L_B60B                          ; B606
-        jmp     LD7F8                           ; B608
+        jmp     Obj_TombstoneSlot               ; B608
 
 ; ----------------------------------------------------------------------------
 L_B60B: lda     #$18                            ; B60B
-        jsr     L_A30A                          ; B60D
+        jsr     TankEnemy_DamageCheck           ; B60D
         beq     L_B615                          ; B610
-        jmp     L_A34D                          ; B612
+        jmp     TankEnemy_Defeat                ; B612
 
 ; ----------------------------------------------------------------------------
 L_B615: lda     #$01                            ; B615
         jsr     LE04E                           ; B617
-        lda     $50                             ; B61A
+        lda     LoadedObj + Obj::Scratch0       ; B61A
         bne     L_B623                          ; B61C
         lda     #$A2                            ; B61E
         jmp     L_B62C                          ; B620

@@ -30,15 +30,15 @@ L_A89F: lda     #$10                            ; A89F
         sta     $40                             ; A8A1
         lda     #$18                            ; A8A3
         sta     $41                             ; A8A5
-        jsr     LEF2B                           ; A8A7
+        jsr     ScreenPos_Compute               ; A8A7
         beq     L_A8AF                          ; A8AA
-        jmp     LD7F8                           ; A8AC
+        jmp     Obj_TombstoneSlot               ; A8AC
 
 ; ----------------------------------------------------------------------------
 L_A8AF: lda     #$05                            ; A8AF
-        jsr     L_A30A                          ; A8B1
+        jsr     TankEnemy_DamageCheck           ; A8B1
         beq     L_A8B9                          ; A8B4
-        jmp     L_A34D                          ; A8B6
+        jmp     TankEnemy_Defeat                ; A8B6
 
 ; ----------------------------------------------------------------------------
 L_A8B9: lda     #$01                            ; A8B9

@@ -17,7 +17,7 @@ L_B20F: lda     #$80                            ; B20F
         sta     LoadedObj_CollisionBox_HalfWidth; B211
         lda     #$80                            ; B213
         sta     LoadedObj_CollisionBox_HalfHeight; B215
-        jsr     LEF2B                           ; B217
+        jsr     ScreenPos_Compute               ; B217
         bne     L_B23F                          ; B21A
         lda     Global_FrameCounter             ; B21C
         and     #$1F                            ; B21E
@@ -38,9 +38,9 @@ L_B23F: lda     #$10                            ; B23F
         sta     $40                             ; B241
         lda     #$10                            ; B243
         sta     $41                             ; B245
-        jsr     LEF2B                           ; B247
+        jsr     ScreenPos_Compute               ; B247
         beq     L_B24F                          ; B24A
-        jmp     LD7F8                           ; B24C
+        jmp     Obj_TombstoneSlot               ; B24C
 
 ; ----------------------------------------------------------------------------
 L_B24F: rts                                     ; B24F
@@ -65,13 +65,13 @@ L_B26C: lda     #$10                            ; B26C
         sta     $40                             ; B26E
         lda     #$10                            ; B270
         sta     $41                             ; B272
-        jsr     LEF2B                           ; B274
+        jsr     ScreenPos_Compute               ; B274
         beq     L_B27C                          ; B277
-        jmp     LD81C                           ; B279
+        jmp     Obj_Despawn                     ; B279
 
 ; ----------------------------------------------------------------------------
 L_B27C: lda     #$13                            ; B27C
-        jsr     L_A30A                          ; B27E
+        jsr     TankEnemy_DamageCheck           ; B27E
         beq     L_B286                          ; B281
         jmp     L_A347                          ; B283
 

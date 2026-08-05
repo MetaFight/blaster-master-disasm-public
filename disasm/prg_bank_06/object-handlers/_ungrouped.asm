@@ -7,10 +7,10 @@ L_8127: lda     #$20                            ; 8127
         sta     $40                             ; 8129
         lda     #$20                            ; 812B
         sta     $41                             ; 812D
-        jsr     LEF2B                           ; 812F
+        jsr     ScreenPos_Compute               ; 812F
         bne     L_813C                          ; 8132
         ldx     ObjectSlot_Index                ; 8134
-        lda     $0150,x                         ; 8136
+        lda     DormantSlot_SavedType,x         ; 8136
         sta     LoadedObj + Obj::Type           ; 8139
         rts                                     ; 813B
 
@@ -67,7 +67,7 @@ L_A25D: lda     #$08                            ; A25D
         sta     $40                             ; A25F
         lda     #$08                            ; A261
         sta     $41                             ; A263
-        jsr     LEF2B                           ; A265
+        jsr     ScreenPos_Compute               ; A265
         bne     L_A27D                          ; A268
         lda     #$20                            ; A26A
         jsr     LD711                           ; A26C
@@ -79,7 +79,7 @@ L_A25D: lda     #$08                            ; A25D
 
 ; ----------------------------------------------------------------------------
 L_A27A: jsr     L_9B81                          ; A27A
-L_A27D: jmp     LD81C                           ; A27D
+L_A27D: jmp     Obj_Despawn                           ; A27D
 
 .endmacro
 

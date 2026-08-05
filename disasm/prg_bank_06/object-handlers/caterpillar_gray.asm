@@ -6,7 +6,7 @@ L_A3E2: jmp     L_A40A                          ; A3E2
 L_A3E5: lda     #$00                            ; A3E5
         jsr     TankEnemy_Init                  ; A3E7
         lda     #$01                            ; A3EA
-        sta     $50                             ; A3EC
+        sta     LoadedObj + Obj::Scratch0       ; A3EC
         lda     #$00                            ; A3EE
         sta     LoadedObj + Obj::Velocity_Y     ; A3F0
         lda     #$0F                            ; A3F2
@@ -18,9 +18,9 @@ L_A3E5: lda     #$00                            ; A3E5
         sbc     LoadedObj + Obj::Velocity_X     ; A3FE
         sta     LoadedObj + Obj::Velocity_X     ; A400
 L_A402: lda     #$00                            ; A402
-        sta     $51                             ; A404
+        sta     LoadedObj + Obj::Scratch1       ; A404
         sta     LoadedObj + Obj::Facing         ; A406
-        sta     $52                             ; A408
+        sta     LoadedObj + Obj::Scratch2       ; A408
 L_A40A: rts                                     ; A40A
 
 ; ----------------------------------------------------------------------------
@@ -31,11 +31,11 @@ L_A40E: lda     #$80                            ; A40E
         sta     LoadedObj_CollisionBox_HalfWidth; A410
         lda     #$40                            ; A412
         sta     LoadedObj_CollisionBox_HalfHeight; A414
-        lda     $50                             ; A416
+        lda     LoadedObj + Obj::Scratch0       ; A416
         bne     L_A485                          ; A418
-        lda     $52                             ; A41A
+        lda     LoadedObj + Obj::Scratch2       ; A41A
         beq     L_A423                          ; A41C
-        dec     $52                             ; A41E
+        dec     LoadedObj + Obj::Scratch2       ; A41E
         jmp     L_A44E                          ; A420
 
 ; ----------------------------------------------------------------------------
@@ -59,7 +59,7 @@ L_A442: sta     LoadedObj + Obj::Velocity_X     ; A442
         and     #$0F                            ; A447
         clc                                     ; A449
         adc     #$18                            ; A44A
-        sta     $52                             ; A44C
+        sta     LoadedObj + Obj::Scratch2       ; A44C
 L_A44E: lda     #$11                            ; A44E
         jsr     LD2B1                           ; A450
         bpl     L_A480                          ; A453
@@ -73,7 +73,7 @@ L_A44E: lda     #$11                            ; A44E
         and     #$0F                            ; A466
         clc                                     ; A468
         adc     #$30                            ; A469
-        sta     $52                             ; A46B
+        sta     LoadedObj + Obj::Scratch2       ; A46B
         lda     #$00                            ; A46D
         sec                                     ; A46F
         sbc     LoadedObj + Obj::Velocity_X     ; A470
@@ -85,7 +85,7 @@ L_A477: lda     #$29                            ; A477
         jsr     Enqueue_Sound_Command           ; A479
         lda     #$E0                            ; A47C
         sta     LoadedObj + Obj::Velocity_Y     ; A47E
-L_A480: inc     $50                             ; A480
+L_A480: inc     LoadedObj + Obj::Scratch0       ; A480
         jmp     L_A4A4                          ; A482
 
 ; ----------------------------------------------------------------------------
@@ -100,30 +100,30 @@ L_A485: lda     #$02                            ; A485
         beq     L_A4A4                          ; A498
         lda     LoadedObj + Obj::Velocity_Y     ; A49A
         bmi     L_A4A4                          ; A49C
-        dec     $50                             ; A49E
+        dec     LoadedObj + Obj::Scratch0       ; A49E
         lda     #$00                            ; A4A0
         sta     LoadedObj + Obj::Velocity_Y     ; A4A2
 L_A4A4: lda     #$10                            ; A4A4
         sta     $40                             ; A4A6
         lda     #$08                            ; A4A8
         sta     $41                             ; A4AA
-        jsr     LEF2B                           ; A4AC
+        jsr     ScreenPos_Compute               ; A4AC
         beq     L_A4B4                          ; A4AF
-        jmp     LD7F8                           ; A4B1
+        jmp     Obj_TombstoneSlot               ; A4B1
 
 ; ----------------------------------------------------------------------------
 L_A4B4: lda     #$00                            ; A4B4
-        jsr     L_A30A                          ; A4B6
+        jsr     TankEnemy_DamageCheck           ; A4B6
         beq     L_A4BE                          ; A4B9
-        jmp     L_A34D                          ; A4BB
+        jmp     TankEnemy_Defeat                ; A4BB
 
 ; ----------------------------------------------------------------------------
 L_A4BE: lda     #$01                            ; A4BE
         jsr     LE04E                           ; A4C0
-        dec     $51                             ; A4C3
+        dec     LoadedObj + Obj::Scratch1       ; A4C3
         bpl     L_A4D3                          ; A4C5
         lda     #$0C                            ; A4C7
-        sta     $51                             ; A4C9
+        sta     LoadedObj + Obj::Scratch1       ; A4C9
         dec     LoadedObj + Obj::Facing         ; A4CB
         bpl     L_A4D3                          ; A4CD
         lda     #$02                            ; A4CF

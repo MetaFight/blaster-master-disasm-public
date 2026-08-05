@@ -17,7 +17,7 @@ L_B63F: lda     #$80                            ; B63F
         sta     LoadedObj_CollisionBox_HalfWidth; B641
         lda     #$80                            ; B643
         sta     LoadedObj_CollisionBox_HalfHeight; B645
-        jsr     LEF2B                           ; B647
+        jsr     ScreenPos_Compute               ; B647
         bne     L_B66F                          ; B64A
         lda     Global_FrameCounter             ; B64C
         and     #$3F                            ; B64E
@@ -38,9 +38,9 @@ L_B66F: lda     #$10                            ; B66F
         sta     $40                             ; B671
         lda     #$10                            ; B673
         sta     $41                             ; B675
-        jsr     LEF2B                           ; B677
+        jsr     ScreenPos_Compute               ; B677
         beq     L_B67F                          ; B67A
-        jmp     LD7F8                           ; B67C
+        jmp     Obj_TombstoneSlot               ; B67C
 
 ; ----------------------------------------------------------------------------
 L_B67F: rts                                     ; B67F
@@ -59,7 +59,7 @@ L_B683: lda     #$80                            ; B683
         and     #$C0                            ; B693
         cmp     #$40                            ; B695
         beq     L_B69C                          ; B697
-        jmp     LD81C                           ; B699
+        jmp     Obj_Despawn                     ; B699
 
 ; ----------------------------------------------------------------------------
 L_B69C: lda     Global_FrameCounter             ; B69C
@@ -80,13 +80,13 @@ L_B6B8: lda     #$10                            ; B6B8
         sta     $40                             ; B6BA
         lda     #$10                            ; B6BC
         sta     $41                             ; B6BE
-        jsr     LEF2B                           ; B6C0
+        jsr     ScreenPos_Compute               ; B6C0
         beq     L_B6C8                          ; B6C3
-        jmp     LD81C                           ; B6C5
+        jmp     Obj_Despawn                     ; B6C5
 
 ; ----------------------------------------------------------------------------
 L_B6C8: lda     #$19                            ; B6C8
-        jsr     L_A30A                          ; B6CA
+        jsr     TankEnemy_DamageCheck           ; B6CA
         beq     L_B6D2                          ; B6CD
         jmp     L_A347                          ; B6CF
 

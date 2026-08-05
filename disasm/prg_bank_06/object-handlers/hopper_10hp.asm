@@ -17,8 +17,8 @@ L_B182: sta     LoadedObj + Obj::Velocity_X     ; B182
         lda     #$00                            ; B184
         sta     LoadedObj + Obj::Velocity_Y     ; B186
         lda     #$00                            ; B188
-        sta     $50                             ; B18A
-        sta     $51                             ; B18C
+        sta     LoadedObj + Obj::Scratch0       ; B18A
+        sta     LoadedObj + Obj::Scratch1       ; B18C
 L_B18E: rts                                     ; B18E
 
 ; ----------------------------------------------------------------------------
@@ -29,26 +29,26 @@ L_B192: lda     #$80                            ; B192
         sta     LoadedObj_CollisionBox_HalfWidth; B194
         lda     #$C0                            ; B196
         sta     LoadedObj_CollisionBox_HalfHeight; B198
-        lda     $50                             ; B19A
+        lda     LoadedObj + Obj::Scratch0       ; B19A
         bne     L_B1A5                          ; B19C
         jsr     LE005                           ; B19E
         beq     L_B1AB                          ; B1A1
-        inc     $50                             ; B1A3
+        inc     LoadedObj + Obj::Scratch0       ; B1A3
 L_B1A5: jsr     LDF68                           ; B1A5
         jsr     L_B1DE                          ; B1A8
 L_B1AB: lda     #$10                            ; B1AB
         sta     $40                             ; B1AD
         lda     #$10                            ; B1AF
         sta     $41                             ; B1B1
-        jsr     LEF2B                           ; B1B3
+        jsr     ScreenPos_Compute               ; B1B3
         beq     L_B1BB                          ; B1B6
-        jmp     LD7F8                           ; B1B8
+        jmp     Obj_TombstoneSlot               ; B1B8
 
 ; ----------------------------------------------------------------------------
 L_B1BB: lda     #$12                            ; B1BB
-        jsr     L_A30A                          ; B1BD
+        jsr     TankEnemy_DamageCheck           ; B1BD
         beq     L_B1C5                          ; B1C0
-        jmp     L_A34D                          ; B1C2
+        jmp     TankEnemy_Defeat                ; B1C2
 
 ; ----------------------------------------------------------------------------
 L_B1C5: lda     #$01                            ; B1C5
@@ -85,7 +85,7 @@ L_B1DE: lda     #$11                            ; B1DE
 L_B1F6: lda     #$E0                            ; B1F6
         sta     LoadedObj + Obj::Velocity_Y     ; B1F8
         lda     #$00                            ; B1FA
-        sta     $50                             ; B1FC
+        sta     LoadedObj + Obj::Scratch0       ; B1FC
 L_B1FE: rts                                     ; B1FE
 
 .endmacro

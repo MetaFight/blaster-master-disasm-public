@@ -8,7 +8,7 @@ L_B835: lda     #$1B                            ; B835
         lda     #$00                            ; B83A
         sta     LoadedObj + Obj::Velocity_Y     ; B83C
         sta     LoadedObj + Obj::Velocity_X     ; B83E
-        sta     $50                             ; B840
+        sta     LoadedObj + Obj::Scratch0       ; B840
 L_B842: rts                                     ; B842
 
 ; ----------------------------------------------------------------------------
@@ -19,10 +19,10 @@ L_B846: lda     #$80                            ; B846
         sta     LoadedObj_CollisionBox_HalfWidth; B848
         lda     #$80                            ; B84A
         sta     LoadedObj_CollisionBox_HalfHeight; B84C
-        lda     $50                             ; B84E
+        lda     LoadedObj + Obj::Scratch0       ; B84E
         bne     L_B87E                          ; B850
         lda     #$A7                            ; B852
-        sta     $51                             ; B854
+        sta     LoadedObj + Obj::Scratch1       ; B854
         jsr     LE0FA                           ; B856
         bpl     L_B860                          ; B859
         eor     #$FF                            ; B85B
@@ -43,22 +43,22 @@ L_B871: cmp     #$06                            ; B871
         jmp     L_B8EF                          ; B875
 
 ; ----------------------------------------------------------------------------
-L_B878: inc     $50                             ; B878
+L_B878: inc     LoadedObj + Obj::Scratch0       ; B878
         lda     #$00                            ; B87A
-        sta     $52                             ; B87C
+        sta     LoadedObj + Obj::Scratch2       ; B87C
 L_B87E: cmp     #$01                            ; B87E
         bne     L_B8C8                          ; B880
-        inc     $52                             ; B882
-        ldx     $52                             ; B884
+        inc     LoadedObj + Obj::Scratch2       ; B882
+        ldx     LoadedObj + Obj::Scratch2       ; B884
         lda     #$A8                            ; B886
-        sta     $51                             ; B888
+        sta     LoadedObj + Obj::Scratch1       ; B888
         cpx     #$18                            ; B88A
         bcc     L_B8EF                          ; B88C
         lda     #$A9                            ; B88E
-        sta     $51                             ; B890
+        sta     LoadedObj + Obj::Scratch1       ; B890
         cpx     #$30                            ; B892
         bne     L_B8A9                          ; B894
-        inc     $50                             ; B896
+        inc     LoadedObj + Obj::Scratch0       ; B896
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; B898
         bpl     L_B8A2                          ; B89B
         lda     #$10                            ; B89D
@@ -82,7 +82,7 @@ L_B8A9: jsr     Step_RNG                           ; B8A9
         sta     $A0                             ; B8BC
         jsr     LDF46                           ; B8BE
         lda     #$AA                            ; B8C1
-        sta     $51                             ; B8C3
+        sta     LoadedObj + Obj::Scratch1       ; B8C3
         jmp     L_B8EF                          ; B8C5
 
 ; ----------------------------------------------------------------------------
@@ -99,7 +99,7 @@ L_B8D3: lda     Global_FrameCounter             ; B8D3
 
 ; ----------------------------------------------------------------------------
 L_B8DE: lda     #$A9                            ; B8DE
-L_B8E0: sta     $51                             ; B8E0
+L_B8E0: sta     LoadedObj + Obj::Scratch1       ; B8E0
         lda     #$01                            ; B8E2
         jsr     Obj_GravityMoveBounce_Double    ; B8E4
         and     #$40                            ; B8E7
@@ -110,24 +110,24 @@ L_B8EF: lda     #$10                            ; B8EF
         sta     $40                             ; B8F1
         lda     #$10                            ; B8F3
         sta     $41                             ; B8F5
-        jsr     LEF2B                           ; B8F7
+        jsr     ScreenPos_Compute               ; B8F7
         beq     L_B906                          ; B8FA
         lda     #$00                            ; B8FC
         sec                                     ; B8FE
         sbc     LoadedObj + Obj::Velocity_X     ; B8FF
         sta     LoadedObj + Obj::Velocity_X     ; B901
-        jmp     LD7F8                           ; B903
+        jmp     Obj_TombstoneSlot               ; B903
 
 ; ----------------------------------------------------------------------------
 L_B906: lda     #$1B                            ; B906
-        jsr     L_A30A                          ; B908
+        jsr     TankEnemy_DamageCheck           ; B908
         beq     L_B910                          ; B90B
-        jmp     L_A34D                          ; B90D
+        jmp     TankEnemy_Defeat                ; B90D
 
 ; ----------------------------------------------------------------------------
 L_B910: lda     #$01                            ; B910
         jsr     LE04E                           ; B912
-        lda     $51                             ; B915
+        lda     LoadedObj + Obj::Scratch1       ; B915
         jmp     LF011                           ; B917
 
 .endmacro

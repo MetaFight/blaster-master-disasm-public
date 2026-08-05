@@ -9,7 +9,7 @@ L_A9CE: lda     #$07                            ; A9CE
         sta     LoadedObj + Obj::Velocity_X     ; A9D5
         sta     LoadedObj + Obj::Velocity_Y     ; A9D7
         lda     #$01                            ; A9D9
-        sta     $50                             ; A9DB
+        sta     LoadedObj + Obj::Scratch0       ; A9DB
 L_A9DD: rts                                     ; A9DD
 
 ; ----------------------------------------------------------------------------
@@ -20,25 +20,25 @@ L_A9E1: lda     #$80                            ; A9E1
         sta     LoadedObj_CollisionBox_HalfWidth; A9E3
         lda     #$80                            ; A9E5
         sta     LoadedObj_CollisionBox_HalfHeight; A9E7
-        lda     $50                             ; A9E9
+        lda     LoadedObj + Obj::Scratch0       ; A9E9
         beq     L_A9FA                          ; A9EB
         jsr     LE005                           ; A9ED
         beq     L_A9F8                          ; A9F0
         lda     #$00                            ; A9F2
         sta     LoadedObj + Obj::Velocity_X     ; A9F4
         beq     L_AA03                          ; A9F6
-L_A9F8: inc     $50                             ; A9F8
+L_A9F8: inc     LoadedObj + Obj::Scratch0       ; A9F8
 L_A9FA: lda     #$11                            ; A9FA
         jsr     LD2B1                           ; A9FC
         bmi     L_AA03                          ; A9FF
-        dec     $50                             ; AA01
+        dec     LoadedObj + Obj::Scratch0       ; AA01
 L_AA03: lda     #$10                            ; AA03
         sta     $40                             ; AA05
         lda     #$10                            ; AA07
         sta     $41                             ; AA09
-        jsr     LEF2B                           ; AA0B
+        jsr     ScreenPos_Compute               ; AA0B
         beq     L_AA13                          ; AA0E
-        jmp     LD7F8                           ; AA10
+        jmp     Obj_TombstoneSlot               ; AA10
 
 ; ----------------------------------------------------------------------------
 L_AA13: clc                                     ; AA13
@@ -46,10 +46,10 @@ L_AA13: clc                                     ; AA13
         adc     #$04                            ; AA16
         sta     $3F                             ; AA18
         lda     #$07                            ; AA1A
-        jsr     L_A30A                          ; AA1C
+        jsr     TankEnemy_DamageCheck           ; AA1C
         lda     $45                             ; AA1F
         bne     L_AA3B                          ; AA21
-        jsr     L_A34D                          ; AA23
+        jsr     TankEnemy_Defeat                ; AA23
         lda     $00                             ; AA26
         pha                                     ; AA28
         lda     #$06                            ; AA29

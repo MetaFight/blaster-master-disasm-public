@@ -11,9 +11,9 @@ L_ADE7: lda     #$0D                            ; ADE7
         sta     LoadedObj + Obj::Velocity_Y     ; ADF2
         lda     #$00                            ; ADF4
         sta     LoadedObj + Obj::Velocity_X     ; ADF6
-        sta     $50                             ; ADF8
+        sta     LoadedObj + Obj::Scratch0       ; ADF8
         lda     #$40                            ; ADFA
-        sta     $51                             ; ADFC
+        sta     LoadedObj + Obj::Scratch1       ; ADFC
 L_ADFE: rts                                     ; ADFE
 
 ; ----------------------------------------------------------------------------
@@ -24,7 +24,7 @@ L_AE02: lda     #$80                            ; AE02
         sta     LoadedObj_CollisionBox_HalfWidth; AE04
         lda     #$80                            ; AE06
         sta     LoadedObj_CollisionBox_HalfHeight; AE08
-        lda     $50                             ; AE0A
+        lda     LoadedObj + Obj::Scratch0       ; AE0A
         bne     L_AE2F                          ; AE0C
         lda     Global_FrameCounter             ; AE0E
         and     #$07                            ; AE10
@@ -34,9 +34,9 @@ L_AE02: lda     #$80                            ; AE02
 L_AE19: jsr     LDF68                           ; AE19
         bpl     L_AE21                          ; AE1C
         jsr     LE0D8                           ; AE1E
-L_AE21: dec     $51                             ; AE21
+L_AE21: dec     LoadedObj + Obj::Scratch1       ; AE21
         bne     L_AE49                          ; AE23
-        inc     $50                             ; AE25
+        inc     LoadedObj + Obj::Scratch0       ; AE25
         ldy     #$1D                            ; AE27
         jsr     Obj_AngleToVelocity             ; AE29
         jmp     L_AE49                          ; AE2C
@@ -51,22 +51,22 @@ L_AE39: lda     LoadedObj + Obj::Velocity_Y     ; AE39
         bcs     L_AE49                          ; AE3D
         lda     #$04                            ; AE3F
         sta     LoadedObj + Obj::Velocity_Y     ; AE41
-        dec     $50                             ; AE43
+        dec     LoadedObj + Obj::Scratch0       ; AE43
         lda     #$40                            ; AE45
-        sta     $51                             ; AE47
+        sta     LoadedObj + Obj::Scratch1       ; AE47
 L_AE49: lda     #$10                            ; AE49
         sta     $40                             ; AE4B
         lda     #$10                            ; AE4D
         sta     $41                             ; AE4F
-        jsr     LEF2B                           ; AE51
+        jsr     ScreenPos_Compute               ; AE51
         beq     L_AE59                          ; AE54
-        jmp     LD7F8                           ; AE56
+        jmp     Obj_TombstoneSlot               ; AE56
 
 ; ----------------------------------------------------------------------------
 L_AE59: lda     #$0D                            ; AE59
-        jsr     L_A30A                          ; AE5B
+        jsr     TankEnemy_DamageCheck           ; AE5B
         beq     L_AE63                          ; AE5E
-        jmp     L_A34D                          ; AE60
+        jmp     TankEnemy_Defeat                ; AE60
 
 ; ----------------------------------------------------------------------------
 L_AE63: lda     #$01                            ; AE63

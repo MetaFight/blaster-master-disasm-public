@@ -566,7 +566,7 @@ L_CAFF: stx     ObjectSlot_Offset               ; CAFF
 
 ; ----------------------------------------------------------------------------
 L_CB11: lda     L_CB7C,x                        ; CB11
-L_CB14: sta     $0150,y                         ; CB14
+L_CB14: sta     DormantSlot_SavedType,y         ; CB14
         ldx     ObjectSlot_Offset               ; CB17
         lda     #$01                            ; CB19
         sta     ObjectTable + Obj::Type,x       ; CB1B
@@ -574,8 +574,8 @@ L_CB14: sta     $0150,y                         ; CB14
         sta     ObjectTable + Obj::Facing,x     ; CB20
         sta     ObjectTable + Obj::Velocity_X,x ; CB23
         sta     ObjectTable + Obj::Velocity_Y,x ; CB26
-        sta     $040B,x                         ; CB29
-        sta     $040A,x                         ; CB2C
+        sta     ObjectTable + Obj::Scratch1,x   ; CB29
+        sta     ObjectTable + Obj::Scratch0,x   ; CB2C
         sta     $0409,x                         ; CB2F
         lda     #$20                            ; CB32
         sta     ObjectTable + Obj::Health,x     ; CB34
@@ -684,7 +684,7 @@ L_CEB4: inx                                     ; CEB4
         rts                                     ; CEC5
 
 ; ----------------------------------------------------------------------------
-L_CEC6: ldx     $4E                             ; CEC6
+L_CEC6: ldx     LoadedObj + Obj::TileIndex      ; CEC6
         sta     $0500,x                         ; CEC8
         jsr     L_E712                          ; CECB
         lda     $C7                             ; CECE
@@ -697,7 +697,7 @@ L_CEC6: ldx     $4E                             ; CEC6
 
 ; ----------------------------------------------------------------------------
 L_CEDD: lda     #$00                            ; CEDD
-        ldx     $4E                             ; CEDF
+        ldx     LoadedObj + Obj::TileIndex      ; CEDF
         sta     $0500,x                         ; CEE1
         jsr     L_E712                          ; CEE4
         lda     $C7                             ; CEE7
@@ -1006,13 +1006,13 @@ L_D2A8: lda     #$00                            ; D2A8
         rts                                     ; D2AA
 
 ; ----------------------------------------------------------------------------
-L_D2AB: ldx     $4E                             ; D2AB
+L_D2AB: ldx     LoadedObj + Obj::TileIndex      ; D2AB
         lda     $0500,x                         ; D2AD
         rts                                     ; D2B0
 
 ; ----------------------------------------------------------------------------
 L_D2B1: clc                                     ; D2B1
-        adc     $4E                             ; D2B2
+        adc     LoadedObj + Obj::TileIndex      ; D2B2
         tax                                     ; D2B4
         lda     $0500,x                         ; D2B5
         rts                                     ; D2B8
@@ -1022,23 +1022,23 @@ L_D2B9: lda     LoadedObj + Obj::Position_Y_Hi  ; D2B9
         sec                                     ; D2BB
         sbc     $1F                             ; D2BC
         and     #$0F                            ; D2BE
-        sta     $4E                             ; D2C0
+        sta     LoadedObj + Obj::TileIndex      ; D2C0
         asl     a                               ; D2C2
         asl     a                               ; D2C3
         asl     a                               ; D2C4
         asl     a                               ; D2C5
         clc                                     ; D2C6
-        adc     $4E                             ; D2C7
-        sta     $4E                             ; D2C9
+        adc     LoadedObj + Obj::TileIndex      ; D2C7
+        sta     LoadedObj + Obj::TileIndex      ; D2C9
         lda     LoadedObj + Obj::Position_X_Hi  ; D2CB
         sec                                     ; D2CD
         sbc     $1D                             ; D2CE
         and     #$1F                            ; D2D0
         clc                                     ; D2D2
-        adc     $4E                             ; D2D3
+        adc     LoadedObj + Obj::TileIndex      ; D2D3
         clc                                     ; D2D5
         adc     $3A                             ; D2D6
-        sta     $4E                             ; D2D8
+        sta     LoadedObj + Obj::TileIndex      ; D2D8
         rts                                     ; D2DA
 
 ; ----------------------------------------------------------------------------
@@ -1056,12 +1056,12 @@ L_D2DE: lda     LoadedObj + Obj::Position_X_Hi  ; D2DE
         lda     LoadedObj + Obj::Velocity_X     ; D2F0
         bmi     L_D2F9                          ; D2F2
         inc     LoadedObj + Obj::Position_X_Hi  ; D2F4
-        inc     $4E                             ; D2F6
+        inc     LoadedObj + Obj::TileIndex      ; D2F6
         rts                                     ; D2F8
 
 ; ----------------------------------------------------------------------------
 L_D2F9: dec     LoadedObj + Obj::Position_X_Hi  ; D2F9
-        dec     $4E                             ; D2FB
+        dec     LoadedObj + Obj::TileIndex      ; D2FB
 L_D2FD: rts                                     ; D2FD
 
 ; ----------------------------------------------------------------------------
@@ -1083,8 +1083,8 @@ L_D2FE: lda     LoadedObj + Obj::Position_Y_Hi  ; D2FE
 L_D31A: dec     LoadedObj + Obj::Position_Y_Hi  ; D31A
         lda     #$EF                            ; D31C
 L_D31E: clc                                     ; D31E
-        adc     $4E                             ; D31F
-        sta     $4E                             ; D321
+        adc     LoadedObj + Obj::TileIndex      ; D31F
+        sta     LoadedObj + Obj::TileIndex      ; D321
 L_D323: rts                                     ; D323
 
 .endmacro
@@ -1120,8 +1120,8 @@ _Apply_Double_Velocity_Y__PushSign:
         clc                                     ; D366
         adc     LoadedObj + Obj::Position_Y_Hi  ; D367
         clc                                     ; D369
-        adc     $4E                             ; D36A
-        sta     $4E                             ; D36C
+        adc     LoadedObj + Obj::TileIndex      ; D36A
+        sta     LoadedObj + Obj::TileIndex      ; D36C
         pla                                     ; D36E
         and     #$7F                            ; D36F
         sta     LoadedObj + Obj::Position_Y_Hi  ; D371
@@ -1168,7 +1168,7 @@ _H_Collision_Check__Exit:
 ; compute tile index for X pos + $42 (right edge); if overflow step to next column, then
 ; read/classify the tile
 _H_Collision_Check__TileRight:
-        ldx     $4E                             ; D394
+        ldx     LoadedObj + Obj::TileIndex      ; D394
         lda     LoadedObj + Obj::Position_X_Lo  ; D396
         clc                                     ; D398
         adc     LoadedObj_CollisionBox_HalfWidth; D399
@@ -1181,7 +1181,7 @@ _H_Collision_Check__TileRight:
 ; compute tile index for X pos vs $42 (left edge); if underflow step to prior column, then
 ; read/classify the tile
 _H_Collision_Check__TileLeft:
-        ldx     $4E                             ; D3A3
+        ldx     LoadedObj + Obj::TileIndex      ; D3A3
         lda     LoadedObj + Obj::Position_X_Lo  ; D3A5
         cmp     LoadedObj_CollisionBox_HalfWidth; D3A7
 ; branch if LoadedObj's X_Lo (fixed4.4) >= the collision box's HalfWidth.
@@ -1261,7 +1261,7 @@ _V_Collision_Check__CheckBelow:
 ; ----------------------------------------------------------------------------
 ; compute tile index for position + $43 (bottom edge); if overflow: step to next tile row
 _V_Collision_Check__TileBelow:
-        ldx     $4E                             ; D3F8
+        ldx     LoadedObj + Obj::TileIndex      ; D3F8
         lda     LoadedObj + Obj::Position_Y_Lo  ; D3FA
         clc                                     ; D3FC
         adc     LoadedObj_CollisionBox_HalfHeight; D3FD
@@ -1279,7 +1279,7 @@ _V_Collision_Check__TileBelow:
 ; ----------------------------------------------------------------------------
 ; compute tile index for position vs $43 (top edge); if BCS: step to prior tile row
 _V_Collision_Check__TileAbove:
-        ldx     $4E                             ; D40B
+        ldx     LoadedObj + Obj::TileIndex      ; D40B
         lda     LoadedObj + Obj::Position_Y_Lo  ; D40D
         cmp     LoadedObj_CollisionBox_HalfHeight; D40F
         bcs     _V_Collision_Check__ReadTile    ; D411
@@ -1606,12 +1606,12 @@ L_D5DA: lda     LoadedObj + Obj::Position_Y_Lo  ; D5DA
 L_D5ED: rts                                     ; D5ED
 
 ; ----------------------------------------------------------------------------
-L_D5EE: lda     $4E                             ; D5EE
+L_D5EE: lda     LoadedObj + Obj::TileIndex      ; D5EE
         pha                                     ; D5F0
         jsr     L_D2B9                          ; D5F1
         tax                                     ; D5F4
         pla                                     ; D5F5
-        sta     $4E                             ; D5F6
+        sta     LoadedObj + Obj::TileIndex      ; D5F6
         rts                                     ; D5F8
 
 ; ----------------------------------------------------------------------------
@@ -1674,10 +1674,10 @@ L_D643: ldx     LoadedObj + Obj::Facing         ; D643
         clc                                     ; D64F
         adc     L_D667,x                        ; D650
         sta     LoadedObj + Obj::Position_Y_Hi  ; D653
-        lda     $4E                             ; D655
+        lda     LoadedObj + Obj::TileIndex      ; D655
         clc                                     ; D657
         adc     L_D670,x                        ; D658
-        sta     $4E                             ; D65B
+        sta     LoadedObj + Obj::TileIndex      ; D65B
         rts                                     ; D65D
 
 ; ----------------------------------------------------------------------------
@@ -1689,60 +1689,107 @@ L_D670: .byte   $00,$EF,$F0,$01,$12,$11,$10,$FF ; D670
         .byte   $EE                             ; D678
 ; ----------------------------------------------------------------------------
 L_D679: inc     LoadedObj + Obj::Position_X_Hi  ; D679
-        inc     $4E                             ; D67B
+        inc     LoadedObj + Obj::TileIndex      ; D67B
         rts                                     ; D67D
 
 ; ----------------------------------------------------------------------------
 L_D67E: dec     LoadedObj + Obj::Position_X_Hi  ; D67E
-        dec     $4E                             ; D680
+        dec     LoadedObj + Obj::TileIndex      ; D680
         rts                                     ; D682
 
 ; ----------------------------------------------------------------------------
 L_D683: inc     LoadedObj + Obj::Position_Y_Hi  ; D683
-        lda     $4E                             ; D685
+        lda     LoadedObj + Obj::TileIndex      ; D685
         clc                                     ; D687
         adc     #$11                            ; D688
-        sta     $4E                             ; D68A
+        sta     LoadedObj + Obj::TileIndex      ; D68A
         rts                                     ; D68C
 
 ; ----------------------------------------------------------------------------
 L_D68D: dec     LoadedObj + Obj::Position_Y_Hi  ; D68D
-        lda     $4E                             ; D68F
+        lda     LoadedObj + Obj::TileIndex      ; D68F
         sec                                     ; D691
         sbc     #$11                            ; D692
-        sta     $4E                             ; D694
+        sta     LoadedObj + Obj::TileIndex      ; D694
         rts                                     ; D696
 
 ; ----------------------------------------------------------------------------
-L_D697: jsr     L_D6CD                          ; D697
+; (alpha: not fully human-verified / pending re-verification) Shared hit-resolution routine behind
+; TankEnemy_DamageCheck / _Drop and
+; WallGuardian_CheckDefeat. Tests our hitbox against every other object slot
+; (Collision_Detection_Sub) and, on a connecting hit, both applies whatever damage the other
+; side dealt to our own Health and stamps our own outgoing ContactDamage into the slot we hit.
+; 
+; Input:
+;   A = our outgoing ContactDamage (bits 0-6; parked in $44 for Collision_Detection_Sub to
+;   post into the target's Contact record).
+; 
+; Output:
+;   On a MISS, control never returns here at all — Collision_Detection_Sub's own
+;   'no collision found' exit discards this routine's pending return address and jumps
+;   straight back to whichever routine called Enemy_Damage_Check_Sub, with A=$FF. So callers
+;   see A=$FF for a miss and A=$00 for a connecting hit (this routine's own RTS), regardless
+;   of whether that hit was lethal — Health is the only signal of a kill.
+;   On a connecting hit: Health ($53) is reduced by the incoming damage
+;   (t_Projectile_Damage_45) and clamped at 0 (the $7F sentinel means 'harmless' and skips
+;   the Health change entirely); $4F (hit-response state) is set to $08; a hit SFX ($36), or
+;   if Health just reached 0 a death SFX ($1D), is enqueued.
+; 
+; Start by calling Collision_Detection_Sub.
+Enemy_Damage_Check_Sub:
+        jsr     L_D6CD                          ; D697
+; Only reached on a hit (see Output above): save the winning contact-record index (X, from
+; Collision_Detection_Sub) across the calls below.
         txa                                     ; D69A
         pha                                     ; D69B
         lda     $45                             ; D69C
         cmp     #$7F                            ; D69E
-        beq     L_D6C0                          ; D6A0
+; Check the value of t_Projectile_Damage_45 (the contact record's magnitude
+; Collision_Detection_Sub just copied in)
+;   if it's $7F (the harmless sentinel) then skip straight to StampContact, leaving Health
+;   untouched.
+        beq     _Enemy_Damage_Check_Sub__StampContact; D6A0
+; Otherwise subtract the damage from Health.
         lda     LoadedObj + Obj::Health         ; D6A2
         sec                                     ; D6A4
         sbc     $45                             ; D6A5
-        bcs     L_D6AB                          ; D6A7
+        bcs     _Enemy_Damage_Check_Sub__SaveHealth; D6A7
+; clamp at 0 if it would go negative.
         lda     #$00                            ; D6A9
-L_D6AB: sta     LoadedObj + Obj::Health         ; D6AB
-        bcc     L_D6B7                          ; D6AD
+_Enemy_Damage_Check_Sub__SaveHealth:
+        sta     LoadedObj + Obj::Health         ; D6AB
+; If health is 0, skip to the kill handler.
+        bcc     _Enemy_Damage_Check_Sub__Kill   ; D6AD
+; Otherwise, enqueue hit SFX $36, then join SetHitState.
         lda     #$36                            ; D6AF
         jsr     Enqueue_Sound_Command           ; D6B1
-        jmp     L_D6BC                          ; D6B4
+        jmp     _Enemy_Damage_Check_Sub__SetIFrames; D6B4
 
 ; ----------------------------------------------------------------------------
-L_D6B7: lda     #$1D                            ; D6B7
+; Health reached 0 this frame: enqueue death SFX $1D, then fall into SetHitState.
+_Enemy_Damage_Check_Sub__Kill:
+        lda     #$1D                            ; D6B7
         jsr     Enqueue_Sound_Command           ; D6B9
-L_D6BC: lda     #$08                            ; D6BC
+; Shared hit-response tail (alive or dead)
+_Enemy_Damage_Check_Sub__SetIFrames:
+        lda     #$08                            ; D6BC
+; Set object's invincibility frames.
         sta     $4F                             ; D6BE
-L_D6C0: pla                                     ; D6C0
+; Shared tail for every non-miss outcome (also reached directly from the $7F-sentinel skip above):
+; restore X (the winning contact-record index from Collision_Detection_Sub); if our own outgoing
+; ContactDamage ($44) is nonzero, OR in the hit flag (bit 7) and post it to that slot's Contact
+; record ($7E,X), so its owner sees it as $45 next frame.
+_Enemy_Damage_Check_Sub__StampContact:
+        pla                                     ; D6C0
         tax                                     ; D6C1
         lda     $44                             ; D6C2
-        beq     L_D6CA                          ; D6C4
+        beq     _Enemy_Damage_Check_Sub__Return ; D6C4
         ora     #$80                            ; D6C6
         sta     $7E,x                           ; D6C8
-L_D6CA: lda     #$00                            ; D6CA
+; Return $00 — reached only on a connecting hit (see Output above); a miss already returned from
+; inside Collision_Detection_Sub and never runs this code.
+_Enemy_Damage_Check_Sub__Return:
+        lda     #$00                            ; D6CA
         rts                                     ; D6CC
 
 ; ----------------------------------------------------------------------------
@@ -1839,7 +1886,7 @@ L_D760: lda     #$FF                            ; D760
         rts                                     ; D762
 
 ; ----------------------------------------------------------------------------
-L_D763: jsr     L_D697                          ; D763
+L_D763: jsr     Enemy_Damage_Check_Sub          ; D763
         bne     L_D76F                          ; D766
         lda     #$0C                            ; D768
         jsr     Enqueue_Sound_Command           ; D76A
@@ -1914,19 +1961,43 @@ L_D7C2: inx                                     ; D7C2
         rts                                     ; D7CE
 
 ; ----------------------------------------------------------------------------
-L_D7CF: lda     ObjectTable + Obj::Type,x       ; D7CF
-        beq     L_D7E0                          ; D7D2
+; Scan the ObjectTable (stride $0E) for a slot with ObjType  $00; 
+; 
+; Input:
+;   X = table search start offset
+;   WR_Context_Dependent_00 = table search end offset
+; 
+; Output:
+;   on success,
+;     A = $FF
+;     Z = 0
+;     X = slot offset
+; 
+;   on failure,
+;     Z = 1
+FindEmptyObjectSlot:
+        lda     ObjectTable + Obj::Type,x       ; D7CF
+; if ObjType == $00, skip to Found handler,
+        beq     _FindEmptyObjectSlot__FoundEmpty; D7D2
+; otherwise, compare current offset X with search-limit.
         cpx     L0000                           ; D7D4
-        beq     L_D7E2                          ; D7D6
+; if we've hit the end/limit, branch to NotFound tail.
+        beq     _FindEmptyObjectSlot__NotFound  ; D7D6
+; Otherwise, advance search index (X) by the table entry stried ($0E),
         txa                                     ; D7D8
         clc                                     ; D7D9
         adc     #$0E                            ; D7DA
         tax                                     ; D7DC
-        jmp     L_D7CF                          ; D7DD
+; And loop back to resume search.
+        jmp     FindEmptyObjectSlot             ; D7DD
 
 ; ----------------------------------------------------------------------------
-L_D7E0: lda     #$FF                            ; D7E0
-L_D7E2: rts                                     ; D7E2
+; empty slot found: A=$FF; X=slot byte-offset; RTS
+_FindEmptyObjectSlot__FoundEmpty:
+        lda     #$FF                            ; D7E0
+; search limit reached without finding empty slot; RTS
+_FindEmptyObjectSlot__NotFound:
+        rts                                     ; D7E2
 
 ; ----------------------------------------------------------------------------
 L_D7E3: lda     #$00                            ; D7E3
@@ -2379,12 +2450,67 @@ L_EBF4: .byte   $00,$01,$02,$03,$04,$05,$06,$07 ; EBF4
 
 .macro MAC_L_EF2B
 ; ----------------------------------------------------------------------------
-L_EF2B: lda     LoadedObj + Obj::Position_X_Lo  ; EF2B
+; Computes the object's on-screen visibility and offsets the provided X/Y screen coordinates to
+; the top-left corner of their OAM object (See ScreenPos_Adjust).
+; 
+; Every caller therefore receives draw-ready top-left coordinates.
+; 
+; We use the Hi-byte:Lo-byte notation to refer to 16-bit values.
+; 
+; Input:
+;   LoadedObj_Hitbox_Width = box's full width
+;   LoadedObj_Hitbox_Height = box's full height
+;     Note:  Both are assumed EVEN.  An odd extent is culled one pixel early.
+;   Local_Sprite_Screen_X = target object's center X coordinate
+;   Local_Sprite_Screen_Y = target object's center Y coordinate
+; 
+; Output:
+;   A = $00 when on-screen,
+;       $FF when off
+;       note: the visible Y band it accepts is $0C..$E3
+;   Local_Sprite_Screen_X = object's sprite top-left X position (screen-relative, already offset
+;   from centre)
+;   Local_Sprite_Screen_Y = object's sprite top-left Y position (screen-relative, already offset
+;   from centre)
+ScreenPos_Compute:
+        lda     LoadedObj + Obj::Position_X_Lo  ; EF2B
+; Here we start the 16-bit subtraction:
+; (Position_X_Hi:Position_X_Lo) − (Camera_X_Hi:Camera_X_Lo).
+; 
+; Both operands are 16-bit signed values in the sfixed12.4 format (SWWW WWWW:wwww.ffff).
+; 
+; the SEC below starts the Lo half first.  The Hi half starts at $EF32.
         sec                                     ; EF2D
         sbc     $1C                             ; EF2E
+; set Local_Sprite_Screen_X = (LoadedObj.Position_X_Lo − Camera_X_Lo)
+; this corresponds (roughly) to values 0..15px in fixed4.4 (wwww.ffff)
+; 
+; The borrow this subtraction produced is sitting in C for the Hi half to
+; consume.
         sta     $3E                             ; EF30
+; X Hi-byte half of the subtract:
+; 
+; set A = (LoadedObj.Position_X_Hi − Camera_X_Hi − borrow)
         lda     LoadedObj + Obj::Position_X_Hi  ; EF32
         sbc     $1D                             ; EF34
+; The full signed difference is now split across two places 
+;   Hi byte in A
+;   Lo byte in Local_Sprite_Screen_X
+; 
+; so A:Local_Sprite_Screen_X
+; 
+; Next we shift the 16-bit pair A:Local_Sprite_Screen_X right by 4 to drop the lower 4 fraction
+; bits leaving us with 12-bits representing WHOLE SCREEN PIXELS
+; 
+; This is done using 4 LSR/ROR pairs.
+; 
+; LSR shifts A one bit to the right
+;   this pushes A's rightmost bit into Carry.
+; ROR shifts Local_Sprite_Screen_X one bit to the right
+;   this brings in the previous Carry into Local_Sprite_Screen_X's leftmost bit.
+; 
+; After 4 such shift pairs, A's original sign bit (bit 7) has now travelled down to bit 3.
+; If you're wondering if this will cause any issues, don't worry.  It just gets discarded later.
         lsr     a                               ; EF36
         ror     $3E                             ; EF37
         lsr     a                               ; EF39
@@ -2393,13 +2519,27 @@ L_EF2B: lda     LoadedObj + Obj::Position_X_Lo  ; EF2B
         ror     $3E                             ; EF3D
         lsr     a                               ; EF3F
         ror     $3E                             ; EF40
+; A:Local_Sprite_Screen_X is now a signed 12-bit value stored in 16-bits (0000 SWWW:wwww wwww)
+; 
+; Lo (Local_Sprite_Screen_X) holds the Screen X value in whole pixels
+; 
+; Hi (A) holds the sign bit and 3 whole value bits.
+;   If any of those bit are set it means the object is more than 255px from the camera in X, i.e.
+;   off-screen.
+; 
+; Stash A in scratch $00 so both axes' leftovers can be tested by a single branch at $EF5B, once Y
+; has been through the same steps.
         sta     L0000                           ; EF42
+; Y Component (same as X Component)
         lda     LoadedObj + Obj::Position_Y_Lo  ; EF44
         sec                                     ; EF46
         sbc     $1E                             ; EF47
+; Save Lo-byte difference to Local_Sprite_Screen_Y
         sta     $3F                             ; EF49
+; Calculate Hi-byte difference into A
         lda     LoadedObj + Obj::Position_Y_Hi  ; EF4B
         sbc     $1F                             ; EF4D
+; 4-bit right shift
         lsr     a                               ; EF4F
         ror     $3F                             ; EF50
         lsr     a                               ; EF52
@@ -2408,36 +2548,103 @@ L_EF2B: lda     LoadedObj + Obj::Position_X_Lo  ; EF2B
         ror     $3F                             ; EF56
         lsr     a                               ; EF58
         ror     $3F                             ; EF59
+; A:Local_Sprite_Screen_Y is now a signed 12-bit value stored in 16-bits (0000 SWWW:wwww wwww)
+; 
+; We have have the leftover bits for both axes:
+;   A holds Y's bits,
+;   $00 holds X's
+; 
+; ORing them here let's us combine the off-screen test for both axes into one.
         ora     L0000                           ; EF5B
+; Bit 3, (the old sign bit shifted down 4 places) is deliberately masked off here.
+; 
+; It doesn't seem to be important in detecting whether the object is offscreen.
         and     #$07                            ; EF5D
-        bne     L_EF85                          ; EF5F
+; Now the off-screen test.
+; 
+; Keeping only bits 0-2 to drop the old sign bit,
+; if any of the remaining bits are set this means the the object is more than 255px away from the
+; camera on either the X or Y axis.
+; 
+; Branch and handle.
+        bne     _ScreenPos_Compute__OffScreen   ; EF5F
+; otherwise, check for overlaps with the screen edges:
+; == Left and Right edges ==
         lda     $40                             ; EF61
         lsr     a                               ; EF63
         clc                                     ; EF64
         adc     $3E                             ; EF65
+; At this point A = (Hitbox_Width / 2) + Screen_X
+;   This is the box's right edge
+; 
+; The CMP with Hitbox_Width works for both the left and right checks:
+;   offscreen is detected when Carry is Clear (ie, when A < Hitbox_Width)
+; 
+;   for the left screen edge:
+;     when A < Hitbox_Width (Carry clear),
+;       rightBoxEdge < Hitbox_Width
+; 
+;       taking Hitbox_Width from both sides gives
+;       (rightBoxEdge - Hitbox_Width) < (Hitbox_Width - Hitbox_Width)
+; 
+;       which simplifies to
+;       leftBoxEdge < 0
+; 
+;       which means the box overlaps with the left screen edge.
+; 
+;   for the right screen edge:
+;     the screen is 256px wide
+;     if A is off the right edge that means its value is > 255 and therefore wrapped around during
+;     the ADC.
+;     We know the box center is on screen, so its right edge has, at most, rolled over by
+;     (Hitbox_Width / 2).
+; 
+;     so, A < (Hitbox_Width / 2)
+; 
+;     and this case is caught by the left screen edge test.
         cmp     $40                             ; EF67
-        bcc     L_EF85                          ; EF69
+        bcc     _ScreenPos_Compute__OffScreen   ; EF69
+; == Top and Bottom edges ==
+; Unlike horizontally, the accepted band is not the full 0..255.
+; Instead: box's top edge must be >= $0C, and its bottom edge < $E4.
         lda     $41                             ; EF6B
+; Load the Hitbox height into A and then half it.
         lsr     a                               ; EF6D
         eor     #$FF                            ; EF6E
         clc                                     ; EF70
+; Negate A
         adc     #$01                            ; EF71
         clc                                     ; EF73
+; At this point A = (Hitbox_Height / 2) - Screen_Y
+;   This is the box's top edge
         adc     $3F                             ; EF74
-        bcc     L_EF85                          ; EF76
+; if this branches it means the subtraction wrapped.
+; i.e. the top edge sits above the top of the screen.
+        bcc     _ScreenPos_Compute__OffScreen   ; EF76
+; The top edge must also clear $0C.
         cmp     #$0C                            ; EF78
-        bcc     L_EF85                          ; EF7A
+        bcc     _ScreenPos_Compute__OffScreen   ; EF7A
         clc                                     ; EF7C
+; Add the HitBox full height.
         adc     $41                             ; EF7D
-        bcs     L_EF85                          ; EF7F
+; A is now the box's Bottom edge.
+; BCS branching means it ran past 255 and is, therefore, offscreen.
+        bcs     _ScreenPos_Compute__OffScreen   ; EF7F
+; The Bottom edge must be < $E4.
         cmp     #$E4                            ; EF81
-        bcc     L_EF8B                          ; EF83
-L_EF85: jsr     L_EFD7                          ; EF85
+; If this *doesn't* branches it means A >= $54 and is, therefore, out of bounds.
+; Fall through to OffScreen handler.
+        bcc     _ScreenPos_Compute__OnScreen    ; EF83
+; Adjust to sprite top-left (ScreenPos_Adjust) and return A=$FF (off-screen).
+_ScreenPos_Compute__OffScreen:
+        jsr     ScreenPos_Adjust                ; EF85
         lda     #$FF                            ; EF88
         rts                                     ; EF8A
 
 ; ----------------------------------------------------------------------------
-L_EF8B: jsr     L_EFD7                          ; EF8B
+; Adjust to sprite top-left and return A=$00 (on-screen).
+_ScreenPos_Compute__OnScreen:
+        jsr     ScreenPos_Adjust                ; EF8B
         lda     #$00                            ; EF8E
         rts                                     ; EF90
 
@@ -2486,13 +2693,18 @@ L_EF91: lda     $3F                             ; EF91
         rts                                     ; EFD6
 
 ; ----------------------------------------------------------------------------
-L_EFD7: lda     $3E                             ; EFD7
+; Subtract sprite-centre offset from Local_Sprite_Screen_X/Local_Sprite_Screen_Y.
+;   tank     sections (8×8  OAM objects): -4/-5
+;   overhead sections (8×16 OAM objects): -4/-9
+ScreenPos_Adjust:
+        lda     $3E                             ; EFD7
         sec                                     ; EFD9
         sbc     #$04                            ; EFDA
         sta     $3E                             ; EFDC
         lda     $FF                             ; EFDE
         and     #$20                            ; EFE0
-        bne     L_EFEC                          ; EFE2
+        bne     _ScreenPos_Adjust__Overhead     ; EFE2
+; otherwise, tank section case:
         lda     $3F                             ; EFE4
         sec                                     ; EFE6
         sbc     #$05                            ; EFE7
@@ -2500,7 +2712,9 @@ L_EFD7: lda     $3E                             ; EFD7
         rts                                     ; EFEB
 
 ; ----------------------------------------------------------------------------
-L_EFEC: lda     $3F                             ; EFEC
+; 8x16 sprite mode ($FF bit5): Y -= 9.
+_ScreenPos_Adjust__Overhead:
+        lda     $3F                             ; EFEC
         sec                                     ; EFEE
         sbc     #$09                            ; EFEF
         sta     $3F                             ; EFF1

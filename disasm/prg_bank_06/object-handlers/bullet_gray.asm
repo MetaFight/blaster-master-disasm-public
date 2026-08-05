@@ -7,21 +7,21 @@ L_A4E1: lda     LoadedObj + Obj::Position_X_Hi  ; A4E1
         lsr     a                               ; A4E3
         bcc     L_A4F1                          ; A4E4
         lda     #$A0                            ; A4E6
-        sta     $50                             ; A4E8
+        sta     LoadedObj + Obj::Scratch0       ; A4E8
         lda     #$A0                            ; A4EA
         sta     LoadedObj + Obj::Facing         ; A4EC
         jmp     L_A4F9                          ; A4EE
 
 ; ----------------------------------------------------------------------------
 L_A4F1: lda     #$60                            ; A4F1
-        sta     $50                             ; A4F3
+        sta     LoadedObj + Obj::Scratch0       ; A4F3
         lda     #$E0                            ; A4F5
         sta     LoadedObj + Obj::Facing         ; A4F7
 L_A4F9: ldy     #$10                            ; A4F9
         jsr     Obj_AngleToVelocity             ; A4FB
         lda     #$00                            ; A4FE
-        sta     $51                             ; A500
-        sta     $52                             ; A502
+        sta     LoadedObj + Obj::Scratch1       ; A500
+        sta     LoadedObj + Obj::Scratch2       ; A502
         lda     #$02                            ; A504
         jsr     TankEnemy_Init                  ; A506
         lda     #$59                            ; A509
@@ -36,21 +36,21 @@ L_A511: lda     LoadedObj + Obj::Position_X_Hi  ; A511
         lsr     a                               ; A513
         bcc     L_A521                          ; A514
         lda     #$A0                            ; A516
-        sta     $50                             ; A518
+        sta     LoadedObj + Obj::Scratch0       ; A518
         lda     #$20                            ; A51A
         sta     LoadedObj + Obj::Facing         ; A51C
         jmp     L_A529                          ; A51E
 
 ; ----------------------------------------------------------------------------
 L_A521: lda     #$60                            ; A521
-        sta     $50                             ; A523
+        sta     LoadedObj + Obj::Scratch0       ; A523
         lda     #$60                            ; A525
         sta     LoadedObj + Obj::Facing         ; A527
 L_A529: ldy     #$10                            ; A529
         jsr     Obj_AngleToVelocity             ; A52B
         lda     #$00                            ; A52E
-        sta     $51                             ; A530
-        sta     $52                             ; A532
+        sta     LoadedObj + Obj::Scratch1       ; A530
+        sta     LoadedObj + Obj::Scratch2       ; A532
         lda     #$02                            ; A534
         jsr     TankEnemy_Init                  ; A536
 L_A539: rts                                     ; A539
@@ -76,7 +76,7 @@ L_A558: jsr     LE120                           ; A558
         bne     L_A580                          ; A55D
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; A55F
         beq     L_A580                          ; A562
-L_A564: lda     $50                             ; A564
+L_A564: lda     LoadedObj + Obj::Scratch0       ; A564
         clc                                     ; A566
         adc     LoadedObj + Obj::Facing         ; A567
         sta     $01                             ; A569
@@ -87,7 +87,7 @@ L_A564: lda     $50                             ; A564
         ldy     #$40                            ; A574
         jsr     Obj_AngleToVelocity             ; A576
         lda     #$10                            ; A579
-        sta     $51                             ; A57B
+        sta     LoadedObj + Obj::Scratch1       ; A57B
         inc     LoadedObj + Obj::Type           ; A57D
         rts                                     ; A57F
 
@@ -96,18 +96,18 @@ L_A580: lda     #$10                            ; A580
         sta     $40                             ; A582
         lda     #$10                            ; A584
         sta     $41                             ; A586
-        jsr     LEF2B                           ; A588
+        jsr     ScreenPos_Compute               ; A588
         beq     L_A590                          ; A58B
-        jmp     LD7F8                           ; A58D
+        jmp     Obj_TombstoneSlot               ; A58D
 
 ; ----------------------------------------------------------------------------
 L_A590: lda     #$01                            ; A590
-        jsr     L_A30A                          ; A592
+        jsr     TankEnemy_DamageCheck           ; A592
         beq     L_A59A                          ; A595
-        jmp     L_A34D                          ; A597
+        jmp     TankEnemy_Defeat                ; A597
 
 ; ----------------------------------------------------------------------------
-L_A59A: lda     $50                             ; A59A
+L_A59A: lda     LoadedObj + Obj::Scratch0       ; A59A
         and     #$80                            ; A59C
         sta     $00                             ; A59E
         lda     LoadedObj + Obj::Facing         ; A5A0
@@ -142,11 +142,11 @@ L_A5C5: lda     #$80                            ; A5C5
         sta     LoadedObj_CollisionBox_HalfWidth; A5C7
         lda     #$80                            ; A5C9
         sta     LoadedObj_CollisionBox_HalfHeight; A5CB
-        lda     $51                             ; A5CD
+        lda     LoadedObj + Obj::Scratch1       ; A5CD
         beq     L_A5DB                          ; A5CF
         lda     #$43                            ; A5D1
         jsr     Enqueue_Sound_Command           ; A5D3
-        dec     $51                             ; A5D6
+        dec     LoadedObj + Obj::Scratch1       ; A5D6
         jmp     L_A605                          ; A5D8
 
 ; ----------------------------------------------------------------------------
@@ -165,11 +165,11 @@ L_A5EE: lda     #$A0                            ; A5EE
 L_A5F2: clc                                     ; A5F2
         adc     LoadedObj + Obj::Facing         ; A5F3
         sta     LoadedObj + Obj::Facing         ; A5F5
-        stx     $50                             ; A5F7
+        stx     LoadedObj + Obj::Scratch0       ; A5F7
         ldy     #$10                            ; A5F9
         jsr     Obj_AngleToVelocity             ; A5FB
         lda     #$00                            ; A5FE
-        sta     $51                             ; A600
+        sta     LoadedObj + Obj::Scratch1       ; A600
         dec     LoadedObj + Obj::Type           ; A602
         rts                                     ; A604
 
@@ -178,15 +178,15 @@ L_A605: lda     #$10                            ; A605
         sta     $40                             ; A607
         lda     #$10                            ; A609
         sta     $41                             ; A60B
-        jsr     LEF2B                           ; A60D
+        jsr     ScreenPos_Compute               ; A60D
         beq     L_A615                          ; A610
-        jmp     LD7F8                           ; A612
+        jmp     Obj_TombstoneSlot               ; A612
 
 ; ----------------------------------------------------------------------------
 L_A615: lda     #$02                            ; A615
-        jsr     L_A30A                          ; A617
+        jsr     TankEnemy_DamageCheck           ; A617
         beq     L_A61F                          ; A61A
-        jmp     L_A34D                          ; A61C
+        jmp     TankEnemy_Defeat                ; A61C
 
 ; ----------------------------------------------------------------------------
 L_A61F: lda     LoadedObj + Obj::Facing         ; A61F

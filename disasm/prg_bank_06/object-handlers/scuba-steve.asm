@@ -67,17 +67,17 @@ L_B508: lda     #$10                            ; B508
         sta     $40                             ; B50A
         lda     #$08                            ; B50C
         sta     $41                             ; B50E
-        jsr     LEF2B                           ; B510
+        jsr     ScreenPos_Compute               ; B510
         beq     L_B518                          ; B513
-        jmp     LD804                           ; B515
+        jmp     Obj_DespawnAndLog               ; B515
 
 ; ----------------------------------------------------------------------------
 L_B518: lda     #$17                            ; B518
-        jsr     L_A30A                          ; B51A
+        jsr     TankEnemy_DamageCheck           ; B51A
         beq     L_B529                          ; B51D
         inc     LoadedObj + Obj::Type           ; B51F
         lda     #$40                            ; B521
-        sta     $51                             ; B523
+        sta     LoadedObj + Obj::Scratch1       ; B523
         lda     #$00                            ; B525
         sta     LoadedObj + Obj::Velocity_Y     ; B527
 L_B529: lda     #$01                            ; B529
@@ -98,7 +98,7 @@ L_B53D: lda     #$80                            ; B53D
         sta     LoadedObj_CollisionBox_HalfWidth; B53F
         lda     #$40                            ; B541
         sta     LoadedObj_CollisionBox_HalfHeight; B543
-        dec     $51                             ; B545
+        dec     LoadedObj + Obj::Scratch1       ; B545
         lda     Global_FrameCounter             ; B547
         and     #$01                            ; B549
         bne     L_B557                          ; B54B
@@ -110,14 +110,14 @@ L_B557: lda     #$10                            ; B557
         sta     $40                             ; B559
         lda     #$08                            ; B55B
         sta     $41                             ; B55D
-        jsr     LEF2B                           ; B55F
+        jsr     ScreenPos_Compute               ; B55F
         beq     L_B567                          ; B562
-        jmp     LD804                           ; B564
+        jmp     Obj_DespawnAndLog               ; B564
 
 ; ----------------------------------------------------------------------------
-L_B567: lda     $51                             ; B567
+L_B567: lda     LoadedObj + Obj::Scratch1       ; B567
         bne     L_B56E                          ; B569
-        jmp     L_A34D                          ; B56B
+        jmp     TankEnemy_Defeat                ; B56B
 
 ; ----------------------------------------------------------------------------
 L_B56E: lda     #$01                            ; B56E

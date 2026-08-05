@@ -33,7 +33,7 @@ L_C334: lda     #$00                            ; C334
         sta     $90                             ; C33E
         sta     LoadedObj + Obj::Velocity_X     ; C340
         sta     LoadedObj + Obj::Velocity_Y     ; C342
-        sta     $50                             ; C344
+        sta     LoadedObj + Obj::Scratch0       ; C344
         sta     $4F                             ; C346
         sta     LoadedObj + Obj::Facing         ; C348
         sta     Sophia_LookUpAnimation_Counter  ; C34A

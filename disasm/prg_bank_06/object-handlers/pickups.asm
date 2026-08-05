@@ -45,11 +45,11 @@ L_9C54: nop                                     ; 9C54
         nop                                     ; 9C56
 L_9C57: lda     #$08                            ; 9C57
         bne     L_9C5B                          ; 9C59
-L_9C5B: sta     $50                             ; 9C5B
+L_9C5B: sta     LoadedObj + Obj::Scratch0       ; 9C5B
         lda     #$35                            ; 9C5D
         sta     LoadedObj + Obj::Type           ; 9C5F
         lda     #$FF                            ; 9C61
-        sta     $51                             ; 9C63
+        sta     LoadedObj + Obj::Scratch1       ; 9C63
         jmp     LD2B9                           ; 9C65
 
 ; ----------------------------------------------------------------------------
@@ -61,7 +61,7 @@ L_9C6B: jsr     LD2AB                           ; 9C6B
         lda     Global_FrameCounter             ; 9C70
         and     #$03                            ; 9C72
         bne     L_9C7D                          ; 9C74
-        dec     $51                             ; 9C76
+        dec     LoadedObj + Obj::Scratch1       ; 9C76
         bne     L_9C7D                          ; 9C78
         jmp     L_9D09                          ; 9C7A
 
@@ -72,21 +72,21 @@ L_9C7D: jsr     LD2AB                           ; 9C7D
         sta     $40                             ; 9C84
         lda     #$10                            ; 9C86
         sta     $41                             ; 9C88
-        jsr     LEF2B                           ; 9C8A
+        jsr     ScreenPos_Compute               ; 9C8A
         beq     L_9C92                          ; 9C8D
-        jmp     LD7F8                           ; 9C8F
+        jmp     Obj_TombstoneSlot               ; 9C8F
 
 ; ----------------------------------------------------------------------------
 L_9C92: lda     #$00                            ; 9C92
         jsr     LD71F                           ; 9C94
         beq     L_9CBD                          ; 9C97
-        lda     $51                             ; 9C99
+        lda     LoadedObj + Obj::Scratch1       ; 9C99
         cmp     #$20                            ; 9C9B
         bcs     L_9CA4                          ; 9C9D
         lda     $10                             ; 9C9F
         lsr     a                               ; 9CA1
         bcs     L_9CBC                          ; 9CA2
-L_9CA4: ldx     $50                             ; 9CA4
+L_9CA4: ldx     LoadedObj + Obj::Scratch0       ; 9CA4
         lda     L_9D0C,x                        ; 9CA6
         sta     $45                             ; 9CA9
         lda     L_9D15,x                        ; 9CAB
@@ -106,10 +106,10 @@ L_9CBD: lda     L_9D1E                          ; 9CBD
         sta     $7A                             ; 9CC0
         lda     L_9D1E+1                        ; 9CC2
         sta     $7B                             ; 9CC5
-        lda     $50                             ; 9CC7
+        lda     LoadedObj + Obj::Scratch0       ; 9CC7
         jsr     LEB51                           ; 9CC9
         lda     ($7A),y                         ; 9CCC
-        ldx     $50                             ; 9CCE
+        ldx     LoadedObj + Obj::Scratch0       ; 9CCE
         clc                                     ; 9CD0
         adc     L_9D32,x                        ; 9CD1
         bcc     L_9CD8                          ; 9CD4
@@ -123,7 +123,7 @@ L_9CDC: lda     $06F0,x                         ; 9CDC
         sta     $06F0,x                         ; 9CE5
 L_9CE8: dex                                     ; 9CE8
         bpl     L_9CDC                          ; 9CE9
-        lda     $50                             ; 9CEB
+        lda     LoadedObj + Obj::Scratch0       ; 9CEB
         cmp     #$06                            ; 9CED
         bcs     L_9D04                          ; 9CEF
         lsr     a                               ; 9CF1
@@ -140,7 +140,7 @@ L_9CFC: lda     #$3F                            ; 9CFC
 ; ----------------------------------------------------------------------------
 L_9D04: lda     #$40                            ; 9D04
         jsr     Enqueue_Sound_Command           ; 9D06
-L_9D09: jmp     LD804                           ; 9D09
+L_9D09: jmp     Obj_DespawnAndLog                           ; 9D09
 
 ; ----------------------------------------------------------------------------
 L_9D0C: .byte   $60,$60,$6A,$6A,$62,$62,$64,$68 ; 9D0C

@@ -2142,17 +2142,25 @@ NesPrgRom:1A2BC:L_A2BC
 NesPrgRom:1A2D1:L_A2D1
 NesPrgRom:1A2D4:L_A2D4
 NesPrgRom:1A2E8:L_A2E8
-NesPrgRom:1A2E9:TankEnemy_Init:(alpha: not fully human-verified / pending re-verification) Shared initialisation routine for every damageable tank enemy, called by each enemy's Init handler.\nOverhead parallel: OvhdEnemy_Init ($B2B4). See docs/entities/tank/_shared-enemy-system.md.\n\nInput:\n   A = descriptor index (aka Thing ID).\n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the\n    damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them\n  LoadedObj's Health is set from EnemyDesc::Health\n  LoadedObj's ActiveFlag is set to 0\n  LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's\n    own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field\n  ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler\n    need not advance $46 itself
+NesPrgRom:1A2E9:TankEnemy_Init:(alpha: not fully human-verified / pending re-verification) Shared initialisation routine for every damageable tank enemy, called by each enemy's Init handler.\nOverhead parallel: OvhdEnemy_Init ($B2B4). See docs/entities/tank/_shared-enemy-system.md.\n\nInput:\n   A = descriptor index (aka Thing ID).\n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the\n    damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them\n  LoadedObj's Health is set from EnemyDesc::Health\n  LoadedObj's IFrameCounter is set to 0\n  LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's\n    own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field\n  ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler\n    need not advance $46 itself
 NesPrgRom:1A2EC::Load desc[0] (EnemyDesc::Health, starting HP) via ($A1),Y → $53; clear anim state $4F.
 NesPrgRom:1A2F4::JSR $D2B9 init tile position; INC $46 → advance to the enemy's main handler.
 NesPrgRom:1A2FA:TankEnemy_Load_EnemyDescPtr:Points EnemyParam_Ptr[Lo/Hi] to the given enemy's TankEnemy_DescTable entry.\n\nInput:\n   A = TankEnemy_DescTable index (aka Thing ID). \n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) are set to point to the enemy's 4-byte EnemyDesc entry in TankEnemy_DescTable.\n\nStart by multiplying A by 4.  EnemyDesc entries are 4-bytes in size so this converts the array index into the target element's offset.
 NesPrgRom:1A2FD::A is now the offset into TankEnemy_DescTable for the enemy's EnemyDesc entry.\nAdd to first byte of TankEnemy_DescTablePtr to get EnemyParam_PtrLo (with carry)
 NesPrgRom:1A304::Add the carry to second byte of TankEnemy_DescTablePtr to get EnemyParam_PtrHi
-NesPrgRom:1A30A:L_A30A
-NesPrgRom:1A324:L_A324
+NesPrgRom:1A30A:TankEnemy_DamageCheck:Shared tank-enemy hit-and-kill test, called once per frame from a damageable enemy's Main\nhandler.\n\nEnemy health is updated according to damage taken.\n\nInput:\n   A = TankEnemy_DescTable index (aka Thing ID).\n\nOutput:\n  A = $FF when Obj is killed.  $00 otherwise.\n\nStart by fetching the pointer to this enemy type's Descriptor Record (set to EnemyParam_PtrLo/Hi by calling TankEnemy_Load_EnemyDescPtr).
+NesPrgRom:1A30F::Y=1 selects EnemyDesc field [1] = ContactDamage
+NesPrgRom:1A311::Pass A (the attacker's ContactDamage) into Enemy_Damage_Check_Sub
+NesPrgRom:1A314::Store Enemy_Damage_Check_Sub's return code into t_Projectile_Damage_45.\n  $00 on a connecting hit,\n  $FF on a miss
+NesPrgRom:1A316::If no hit occurred, then the target is necessarily still alive, so branch to the no-kill handler.
+NesPrgRom:1A318::Otherwise handle the hit.\n\nRe-read Health (already decremented by Enemy_Damage_Check_Sub).
+NesPrgRom:1A31A::If it's still > 0, then skill to the no-kill handler.
+NesPrgRom:1A31C::If Health is 0, play a sound effect and return $FF to indicate the kill.
+NesPrgRom:1A324:_TankEnemy_DamageCheck__NotKilled:Return $00 to indicate damage was not applied or it was applied but left Health > 0.
 NesPrgRom:1A327:L_A327
+NesPrgRom:1A344:L_A344
 NesPrgRom:1A347:L_A347
-NesPrgRom:1A34D:L_A34D
+NesPrgRom:1A34D:TankEnemy_Defeat:Shared enemy DEATH tail.\n\n~29 handlers JMP here after TankEnemy_DamageCheck reports a kill.\n\nFirst calls Obj_DespawnAndLog for object slot bookkeeping and then falls into TankEnemy_SpawnDrop."
 NesPrgRom:1A350:L_A350
 NesPrgRom:1A365:L_A365
 NesPrgRom:1A368:TankEnemy_DescTablePtr:LE self-pointer (=$A36A) to TankEnemy_DescTable. Tank parallel of OvhdEnemy_DescTablePtr ($B324).
@@ -2247,29 +2255,39 @@ NesPrgRom:1A7AE:L_A7AE
 NesPrgRom:1A7B8:L_A7B8
 NesPrgRom:1A7C6:L_A7C6
 NesPrgRom:1A7CA:L_A7CA
-NesPrgRom:1A7CB:ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:ObjType $5F — Gray Hopper (6 HP), init. One-frame setup for the hopping enemy.
+NesPrgRom:1A7CB:ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:ObjType $5F: Gray Hopper (6 HP) - Init.
 NesPrgRom:1A7CE:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__
 NesPrgRom:1A7D0::Init the enemy from descriptor $05.
-NesPrgRom:1A7D5::LoadedObj_Scratch is the base hop speed.  Set this to $30.
+NesPrgRom:1A7D5::LoadedObj_Scratch2 is the base hop speed.  Set this to $30.
 NesPrgRom:1A7D7::The next few lines set up the Facing field, but these values are overwritten before ever being used.\nAnd, unlike the attack phase, this choses to face AWAY from the player.
 NesPrgRom:1A7DC::player is to the LEFT so set heading $C8 (11.25° CW from UP) which is AWAY from the player
 NesPrgRom:1A7E1:_ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight:player is to the RIGHT so set heading to $B8 = $C0 (11.25° tilted CCW from UP) which, again, is AWAY from the player.
-NesPrgRom:1A7E3:_ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing:commit the heading, then zero Velocity X/Y and the wind-up timer LoadedObj_AnimFrame
+NesPrgRom:1A7E3:_ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing:commit the heading, then zero Velocity X/Y and the wind-up timer LoadedObj_Scratch1
 NesPrgRom:1A7ED:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done
 NesPrgRom:1A7EE:ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:ObjType $60 — Gray Hopper (6 HP), active: the hopping/attack half of the enemy. It falls under gravity; on each floor landing it either settles into the walking state $61 or aims a fresh, near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the ground before the stored hop velocity carries it up — so it bounds across the ground toward the player in bursts.
 NesPrgRom:1A7F1:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:$42 = $80 / $43 = $C0: terrain-collision half-extents (16×24 box) — then gate on the wind-up timer $51
-NesPrgRom:1A7FB::If LoadedObj_AnimFrame (wind-up) is at 0, then proceed to ground check.
-NesPrgRom:1A7FD::otherwise, decrement LoadedObj_AnimFrame (wind-up).
+NesPrgRom:1A7FB::If LoadedObj_Scratch1 (wind-up) is at 0, then proceed to ground check.
+NesPrgRom:1A7FD::otherwise, decrement LoadedObj_Scratch1 (wind-up).
 NesPrgRom:1A802:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired:wind-up over: take one ballistic step (Obj_GravityMoveBounce_Double with gravity $04, which also reflects and damps the velocity on contact) and test bit 6 of the wall flags it returns — a vertical, i.e. floor-or-ceiling, contact. Clear means still airborne, so just draw.
 NesPrgRom:1A80B::Handle vertical contact.  Obj_GravityMoveBounce_Double reflects LoadedObj's Velocity_Y on the hit so,\na negative value (pointing up) implies landing\na positive value implies a ceiling bonk.
-NesPrgRom:1A80F::On Landed:\nSet the 10-frame wind-up (AnimFrame)
+NesPrgRom:1A80F::On Landed:\nSet the 10-frame wind-up (Scratch1)
 NesPrgRom:1A813::then spin Step_RNG to choose whicn state to transition to.
 NesPrgRom:1A816::if either the Carry Flag is unset or if Global_FrameCounter is negative, then carry on with the attack.
 NesPrgRom:1A81C::Otherwise, transition to the patrolling state.
-NesPrgRom:1A821:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump:hop: play sound $29, then aim. The delta is the X distance (LoadedObj__Get_DeltaToPlayer_X = player.X − obj.X), not a Y distance — negative means the player is to the LEFT.
-NesPrgRom:1A830:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft:player to the LEFT → heading $B8 = $C0 − $08, tilted 11.25° left of straight up (the $C8 above is the mirror, for a player to the right). This is the correctly-aimed pair; the Init at $A7DC/$A7E1 assigns the same two constants the other way round.
-NesPrgRom:1A832:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:launch: commit the heading to $47 and pass the speed magnitude $52 + (Step_RNG & $0F) = $30..$3F to Obj_AngleToVelocity in Y. This is a velocity computation, not a child spawn — $E1BD resolves heading+speed into $4C/$4D through Trig_QuarterSineTable.\nBecause $B8/$C8 sit only $08 either side of straight up, the components come out about 4:1 in favour of the vertical: |cos| = 25 and |sin| = 125 out of the table's $7F peak, scaled by the speed and shifted down 8, giving $4D ≈ −23..−30 (upward) against $4C ≈ ±4..±6. So it leaps almost straight up and only drifts onto the player.
-NesPrgRom:1A840:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render__:+0 (fade/freeze) entry, and the tail every other path falls into: $40/$41 give ScreenPos_Compute the box's FULL extent — $10 wide by $18 tall, a 16x24 box, which that routine halves itself. It returns $00 on-screen; anything else means the hopper has scrolled away, so park the slot via Obj_StashTypeSetState02.
+NesPrgRom:1A821:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump:Carry out Jump attack.
+NesPrgRom:1A823::Play sound $29.
+NesPrgRom:1A826::Determine if the player is to the right or to the left.
+NesPrgRom:1A829::branch if player is to the left
+NesPrgRom:1A82B::otherwise, handle player to the right.\n$C0 the heading for UP.  We want a heading pointing right, so we add 8 increments (clockwise) and use $C8.
+NesPrgRom:1A830:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft:When the player to the left we want a heading pointing left, so we move 8 increments (counter-clockwise) from UP giving us $B8.
+NesPrgRom:1A832:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:Here he handle the physics of the jump.\n\n<<< continue here, editing the block below >>>\nadvance RNG\npass the speed magnitude (Scratch2) + (Step_RNG & $0F) = $30..$3F to Obj_AngleToVelocity in Y.\n\nObj_AngleToVelocity resolves heading+speed into $4C/$4D through Trig_QuarterSineTable.\nBecause $B8/$C8 sit only $08 either side of straight up, the components come out about 4:1 in favour of the vertical: |cos| = 25 and |sin| = 125 out of the table's $7F peak, scaled by the speed and shifted down 8, giving $4D ≈ −23..−30 (upward) against $4C ≈ ±4..±6. So it leaps almost straight up and only drifts onto the player.\n\nStart by committing the heading to LoadedObj.Facing
+NesPrgRom:1A834::Next, take the lower 4 bits of the next random number to add a bit of randomness to the base jump speed (stored in Scratch2)\n  The base speed is $30\n  The randomness rangess from $00 to $0F, so\n  The resulting speed is $30..$3F
+NesPrgRom:1A83C::Transfer this to Y to use as the Scale Factor argument when calling Obj_AngleToVelocity.
+NesPrgRom:1A83D::This sets the Obj's Velocity, causing it to jump/attack.
+NesPrgRom:1A840:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnScreenCheck
+NesPrgRom:1A848::Load Hitbox dimensions in LoadedObj_Hitbox_Width/Height and call ScreenPos_Compute\n  $00 means on-screen\n  $FF means off-screen
+NesPrgRom:1A84B::If still on-screen, run damage logic,
+NesPrgRom:1A84D::otherwise, prep for despawn by tombstoning.
 NesPrgRom:1A850:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage:on-screen: run the shared damage check against descriptor $05. A non-zero return means this hit killed it — tail-call TankEnemy_Defeat, which does the per-slot bookkeeping and falls into the drop spawner.
 NesPrgRom:1A85A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:still alive: $44 = sprite palette 1, plus the horizontal-flip bit when the X velocity $4C is non-negative (Obj_SetAttrFlipX derives the flip from $4C, NOT from the heading $47). Then pick the pose from the wind-up timer.
 NesPrgRom:1A863::$51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
@@ -3303,12 +3321,19 @@ NesPrgRom:1D679:L_D679
 NesPrgRom:1D67E:L_D67E
 NesPrgRom:1D683:L_D683
 NesPrgRom:1D68D:L_D68D
-NesPrgRom:1D697:L_D697
-NesPrgRom:1D6AB:L_D6AB
-NesPrgRom:1D6B7:L_D6B7
-NesPrgRom:1D6BC:L_D6BC
-NesPrgRom:1D6C0:L_D6C0
-NesPrgRom:1D6CA:L_D6CA
+NesPrgRom:1D697:Enemy_Damage_Check_Sub:(alpha: not fully human-verified / pending re-verification) Shared hit-resolution routine behind TankEnemy_DamageCheck / _Drop and\nWallGuardian_CheckDefeat. Tests our hitbox against every other object slot\n(Collision_Detection_Sub) and, on a connecting hit, both applies whatever damage the other\nside dealt to our own Health and stamps our own outgoing ContactDamage into the slot we hit.\n\nInput:\n  A = our outgoing ContactDamage (bits 0-6; parked in $44 for Collision_Detection_Sub to\n  post into the target's Contact record).\n\nOutput:\n  On a MISS, control never returns here at all — Collision_Detection_Sub's own\n  "no collision found" exit discards this routine's pending return address and jumps\n  straight back to whichever routine called Enemy_Damage_Check_Sub, with A=$FF. So callers\n  see A=$FF for a miss and A=$00 for a connecting hit (this routine's own RTS), regardless\n  of whether that hit was lethal — Health is the only signal of a kill.\n  On a connecting hit: Health ($53) is reduced by the incoming damage\n  (t_Projectile_Damage_45) and clamped at 0 (the $7F sentinel means "harmless" and skips\n  the Health change entirely); $4F (hit-response state) is set to $08; a hit SFX ($36), or\n  if Health just reached 0 a death SFX ($1D), is enqueued.\n\nStart by calling Collision_Detection_Sub.
+NesPrgRom:1D69A::Only reached on a hit (see Output above): save the winning contact-record index (X, from Collision_Detection_Sub) across the calls below.
+NesPrgRom:1D6A0::Check the value of t_Projectile_Damage_45 (the contact record's magnitude Collision_Detection_Sub just copied in)\n  if it's $7F (the harmless sentinel) then skip straight to StampContact, leaving Health untouched.
+NesPrgRom:1D6A2::Otherwise subtract the damage from Health.
+NesPrgRom:1D6A9::clamp at 0 if it would go negative.
+NesPrgRom:1D6AB:_Enemy_Damage_Check_Sub__SaveHealth
+NesPrgRom:1D6AD::If health is 0, skip to the kill handler.
+NesPrgRom:1D6AF::Otherwise, enqueue hit SFX $36, then join SetHitState.
+NesPrgRom:1D6B7:_Enemy_Damage_Check_Sub__Kill:Health reached 0 this frame: enqueue death SFX $1D, then fall into SetHitState.
+NesPrgRom:1D6BC:_Enemy_Damage_Check_Sub__SetIFrames:Shared hit-response tail (alive or dead)
+NesPrgRom:1D6BE::Set object's invincibility frames.
+NesPrgRom:1D6C0:_Enemy_Damage_Check_Sub__StampContact:Shared tail for every non-miss outcome (also reached directly from the $7F-sentinel skip above): restore X (the winning contact-record index from Collision_Detection_Sub); if our own outgoing ContactDamage ($44) is nonzero, OR in the hit flag (bit 7) and post it to that slot's Contact record ($7E,X), so its owner sees it as $45 next frame.
+NesPrgRom:1D6CA:_Enemy_Damage_Check_Sub__Return:Return $00 — reached only on a connecting hit (see Output above); a miss already returned from inside Collision_Detection_Sub and never runs this code.
 NesPrgRom:1D6CD:L_D6CD
 NesPrgRom:1D6E9:L_D6E9
 NesPrgRom:1D6FC:L_D6FC
@@ -3333,16 +3358,25 @@ NesPrgRom:1D7B6:L_D7B6
 NesPrgRom:1D7BA:L_D7BA
 NesPrgRom:1D7C0:L_D7C0
 NesPrgRom:1D7C2:L_D7C2
-NesPrgRom:1D7CF:L_D7CF
-NesPrgRom:1D7E0:L_D7E0
-NesPrgRom:1D7E2:L_D7E2
+NesPrgRom:1D7CF:FindEmptyObjectSlot:Scan the ObjectTable (stride $0E) for a slot with ObjType  $00; \n\nInput:\n  X = table search start offset\n  WR_Context_Dependent_00 = table search end offset\n\nOutput:\n  on success,\n    A = $FF\n    Z = 0\n    X = slot offset\n  \n  on failure,\n    Z = 1
+NesPrgRom:1D7D2::if ObjType == $00, skip to Found handler,
+NesPrgRom:1D7D4::otherwise, compare current offset X with search-limit.
+NesPrgRom:1D7D6::if we've hit the end/limit, branch to NotFound tail.
+NesPrgRom:1D7D8::Otherwise, advance search index (X) by the table entry stried ($0E),
+NesPrgRom:1D7DD::And loop back to resume search.
+NesPrgRom:1D7E0:_FindEmptyObjectSlot__FoundEmpty:empty slot found: A=$FF; X=slot byte-offset; RTS
+NesPrgRom:1D7E2:_FindEmptyObjectSlot__NotFound:search limit reached without finding empty slot; RTS
 NesPrgRom:1D7E3:L_D7E3
 NesPrgRom:1D7E7:L_D7E7
 NesPrgRom:1D7EE:L_D7EE
 NesPrgRom:1D7F2:L_D7F2
-NesPrgRom:1D7F8:L_D7F8
-NesPrgRom:1D804:L_D804
-NesPrgRom:1D81C:L_D81C
+NesPrgRom:1D7F8:Obj_TombstoneSlot:Saves the current LoadedObj's ObjType into DormantSlot_SavedType.\nThen, changes the ObjType to $02 (Tombstoned).\n\nThis is first stage of unloading an already-active object that has scrolled off-screen.\nIf the Camera scrolls this object back on-screen, the $02 Object Handler will take care of restoring the slot to its original state.
+NesPrgRom:1D804:Obj_DespawnAndLog:Despawn, logging the kill for slots ≥ 8.\n\nSlot 0 is always the player.\nNot yet confirmed:\n  Slots 1-5 are for Player weapons.
+NesPrgRom:1D80A::if slot ObjectSlot_Index ≥ 8, then advance ring index ThingIndex_DespawnRing_WriteIndex (modulo 64).
+NesPrgRom:1D811::Read the slot's saved Thing index before logging it\n  effectively ObjectSlot_ThingIndex,y ($100,y) not Pad2Raw,y ($00F8,y) despite the $00F8 base.  This is because ObjectIndex (Y) is always >= 8 here.
+NesPrgRom:1D814::Save the Thing index into ThingIndex_DespawnRing
+NesPrgRom:1D819::Clear the slot's saved Thing index back to the $FF sentinel.
+NesPrgRom:1D81C:Obj_Despawn:Despawn the current object: clear ObjType and IFrames 0.
 NesPrgRom:1D823:L_D823
 NesPrgRom:1D82C:L_D82C
 NesPrgRom:1D83B:L_D83B
@@ -3448,10 +3482,11 @@ NesPrgRom:1DEED:L_DEED
 NesPrgRom:1DEF7:L_DEF7
 NesPrgRom:1DF05:L_DF05
 NesPrgRom:1DF0A:L_DF0A
-NesPrgRom:1DF0F:L_DF0F
-NesPrgRom:1DF24:L_DF24
-NesPrgRom:1DF27:L_DF27
-NesPrgRom:1DF29:L_DF29
+NesPrgRom:1DF0F:Obj_TryCloneLoadedObjectIntoEmptySlot:Tries to clone the current LoadedObject into an empty ObjectTable slot.\n\nSince the new spawn is a clone of the parent, it inherits the parent's position and other properties.  Callers will overwrite those as necessary.\n\nOutput:\n  on succes,\n    A = 1\n    X = the found slot offset\n  on failure to find slot,\n    A = 0
+NesPrgRom:1DF15::find the first empty object slot (scan from X=$70, limit $00=$D2)
+NesPrgRom:1DF24:_Obj_TryCloneLoadedObjectIntoEmptySlot__NoSlot:No free slot: return A=$00 (nothing spawned).
+NesPrgRom:1DF27:_Obj_TryCloneLoadedObjectIntoEmptySlot__CopyRecord:Copy the 14-byte LoadedObject record into the new slot at ObjectTable,X (Y=0..$0D); X advances past the slot.
+NesPrgRom:1DF29:_Obj_TryCloneLoadedObjectIntoEmptySlot__CopyLoop:Copy 14 bytes ($0E) from ZP $46+Y into the slot at $0400,X.
 NesPrgRom:1DF36:L_DF36
 NesPrgRom:1DF43:L_DF43
 NesPrgRom:1DF46:L_DF46
@@ -3767,12 +3802,37 @@ NesPrgRom:1EEAF:L_EEAF
 NesPrgRom:1EEE9:L_EEE9
 NesPrgRom:1EF1B:L_EF1B
 NesPrgRom:1EF24:L_EF24
-NesPrgRom:1EF2B:L_EF2B
-NesPrgRom:1EF85:L_EF85
-NesPrgRom:1EF8B:L_EF8B
+NesPrgRom:1EF2B:ScreenPos_Compute:Computes the object's on-screen visibility and offsets the provided X/Y screen coordinates to the top-left corner of their OAM object (See ScreenPos_Adjust).\n\nEvery caller therefore receives draw-ready top-left coordinates.\n\nWe use the Hi-byte:Lo-byte notation to refer to 16-bit values.\n\nInput:\n  LoadedObj_Hitbox_Width = box's full width\n  LoadedObj_Hitbox_Height = box's full height\n    Note:  Both are assumed EVEN.  An odd extent is culled one pixel early.\n  Local_Sprite_Screen_X = target object's center X coordinate\n  Local_Sprite_Screen_Y = target object's center Y coordinate\n\nOutput:\n  A = $00 when on-screen,\n      $FF when off\n      note: the visible Y band it accepts is $0C..$E3\n  Local_Sprite_Screen_X = object's sprite top-left X position (screen-relative, already offset from centre)\n  Local_Sprite_Screen_Y = object's sprite top-left Y position (screen-relative, already offset from centre)
+NesPrgRom:1EF2D::Here we start the 16-bit subtraction:\n(Position_X_Hi:Position_X_Lo) − (Camera_X_Hi:Camera_X_Lo).\n\nBoth operands are 16-bit signed values in the sfixed12.4 format (SWWW WWWW:wwww.ffff).\n\nthe SEC below starts the Lo half first.  The Hi half starts at $EF32.
+NesPrgRom:1EF30::set Local_Sprite_Screen_X = (LoadedObj.Position_X_Lo − Camera_X_Lo)\nthis corresponds (roughly) to values 0..15px in fixed4.4 (wwww.ffff)\n\nThe borrow this subtraction produced is sitting in C for the Hi half to\nconsume.
+NesPrgRom:1EF32::X Hi-byte half of the subtract:\n\nset A = (LoadedObj.Position_X_Hi − Camera_X_Hi − borrow)
+NesPrgRom:1EF36::The full signed difference is now split across two places \n  Hi byte in A\n  Lo byte in Local_Sprite_Screen_X\n\nso A:Local_Sprite_Screen_X\n\nNext we shift the 16-bit pair A:Local_Sprite_Screen_X right by 4 to drop the lower 4 fraction bits leaving us with 12-bits representing WHOLE SCREEN PIXELS\n\nThis is done using 4 LSR/ROR pairs.\n\nLSR shifts A one bit to the right\n  this pushes A's rightmost bit into Carry.\nROR shifts Local_Sprite_Screen_X one bit to the right\n  this brings in the previous Carry into Local_Sprite_Screen_X's leftmost bit.\n\nAfter 4 such shift pairs, A's original sign bit (bit 7) has now travelled down to bit 3.\nIf you're wondering if this will cause any issues, don't worry.  It just gets discarded later.
+NesPrgRom:1EF42::A:Local_Sprite_Screen_X is now a signed 12-bit value stored in 16-bits (0000 SWWW:wwww wwww)\n\nLo (Local_Sprite_Screen_X) holds the Screen X value in whole pixels\n\nHi (A) holds the sign bit and 3 whole value bits.\n  If any of those bit are set it means the object is more than 255px from the camera in X, i.e. off-screen.\n\nStash A in scratch $00 so both axes' leftovers can be tested by a single branch at $EF5B, once Y has been through the same steps.
+NesPrgRom:1EF44::Y Component (same as X Component)
+NesPrgRom:1EF49::Save Lo-byte difference to Local_Sprite_Screen_Y
+NesPrgRom:1EF4B::Calculate Hi-byte difference into A
+NesPrgRom:1EF4F::4-bit right shift
+NesPrgRom:1EF5B::A:Local_Sprite_Screen_Y is now a signed 12-bit value stored in 16-bits (0000 SWWW:wwww wwww)\n\nWe have have the leftover bits for both axes:\n  A holds Y's bits,\n  $00 holds X's\n\nORing them here let's us combine the off-screen test for both axes into one.
+NesPrgRom:1EF5D::Bit 3, (the old sign bit shifted down 4 places) is deliberately masked off here.\n\nIt doesn't seem to be important in detecting whether the object is offscreen.
+NesPrgRom:1EF5F::Now the off-screen test.\n\nKeeping only bits 0-2 to drop the old sign bit,\nif any of the remaining bits are set this means the the object is more than 255px away from the camera on either the X or Y axis.\n\nBranch and handle.
+NesPrgRom:1EF61::otherwise, check for overlaps with the screen edges:\n== Left and Right edges ==
+NesPrgRom:1EF67::At this point A = (Hitbox_Width / 2) + Screen_X\n  This is the box's right edge\n\nThe CMP with Hitbox_Width works for both the left and right checks:\n  offscreen is detected when Carry is Clear (ie, when A < Hitbox_Width)\n\n  for the left screen edge:\n    when A < Hitbox_Width (Carry clear),\n      rightBoxEdge < Hitbox_Width\n\n      taking Hitbox_Width from both sides gives\n      (rightBoxEdge - Hitbox_Width) < (Hitbox_Width - Hitbox_Width)\n\n      which simplifies to\n      leftBoxEdge < 0\n\n      which means the box overlaps with the left screen edge.\n  \n  for the right screen edge:\n    the screen is 256px wide\n    if A is off the right edge that means its value is > 255 and therefore wrapped around during the ADC.\n    We know the box center is on screen, so its right edge has, at most, rolled over by (Hitbox_Width / 2).\n\n    so, A < (Hitbox_Width / 2)\n    \n    and this case is caught by the left screen edge test.
+NesPrgRom:1EF6B::== Top and Bottom edges ==\nUnlike horizontally, the accepted band is not the full 0..255.\nInstead: box's top edge must be >= $0C, and its bottom edge < $E4.
+NesPrgRom:1EF6D::Load the Hitbox height into A and then half it.
+NesPrgRom:1EF71::Negate A
+NesPrgRom:1EF74::At this point A = (Hitbox_Height / 2) - Screen_Y\n  This is the box's top edge
+NesPrgRom:1EF76::if this branches it means the subtraction wrapped.\ni.e. the top edge sits above the top of the screen.
+NesPrgRom:1EF78::The top edge must also clear $0C.
+NesPrgRom:1EF7D::Add the HitBox full height.
+NesPrgRom:1EF7F::A is now the box's Bottom edge.\nBCS branching means it ran past 255 and is, therefore, offscreen.
+NesPrgRom:1EF81::The Bottom edge must be < $E4.
+NesPrgRom:1EF83::If this *doesn't* branches it means A >= $54 and is, therefore, out of bounds.\nFall through to OffScreen handler.
+NesPrgRom:1EF85:_ScreenPos_Compute__OffScreen:Adjust to sprite top-left (ScreenPos_Adjust) and return A=$FF (off-screen).
+NesPrgRom:1EF8B:_ScreenPos_Compute__OnScreen:Adjust to sprite top-left and return A=$00 (on-screen).
 NesPrgRom:1EF91:L_EF91
-NesPrgRom:1EFD7:L_EFD7
-NesPrgRom:1EFEC:L_EFEC
+NesPrgRom:1EFD7:ScreenPos_Adjust:Subtract sprite-centre offset from Local_Sprite_Screen_X/Local_Sprite_Screen_Y.\n  tank     sections (8×8  OAM objects): -4/-5\n  overhead sections (8×16 OAM objects): -4/-9
+NesPrgRom:1EFE4::otherwise, tank section case:
+NesPrgRom:1EFEC:_ScreenPos_Adjust__Overhead:8x16 sprite mode ($FF bit5): Y -= 9.
 NesPrgRom:1EFF4:L_EFF4
 NesPrgRom:1F009:L_F009
 NesPrgRom:1F011:L_F011
@@ -4013,11 +4073,11 @@ NesInternalRam:004A:LoadedObj__Position_Y_Lo:The lower 8-bits of the Signed 16-b
 NesInternalRam:004B:LoadedObj__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:004C:LoadedObj__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:004D:LoadedObj__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:004E:LoadedObj__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:004F:LoadedObj__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:0050:LoadedObj__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:0051:LoadedObj__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:0052:LoadedObj__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:004E:LoadedObj__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:004F:LoadedObj__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:0050:LoadedObj__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:0051:LoadedObj__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:0052:LoadedObj__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:0053:LoadedObj__Health:HP for this entity.
 NesInternalRam:0056:ObjectSlot_Offset:Byte offset of the active slot
 NesInternalRam:0057:ObjectSlot_Index:Index of the active slot
@@ -4041,6 +4101,7 @@ NesInternalRam:008C:Projectile5__Screen_Y:(alpha: not fully human-verified / pen
 NesInternalRam:008D:Projectile5__Damage:(alpha: not fully human-verified / pending re-verification) Bit 7 = hit flag, bits 0-6 = damage magnitude. Sprite_Update posts (A & $7F) -- bit 7 is always cleared on post -- and returns the PREVIOUS byte, which is how the owner learns it was hit. An attacker stamps its own magnitude | $80 here (Enemy_Damage_Check_Sub $D6C8 / HitboxScan_LockOn $D71A / HitboxTest_LockOn $D75B). $7F posted means harmless: a scanner reads it as the damage TO ITSELF and $D69C skips on cmp #$7F, which is how touching Jason/Sophia costs an enemy nothing. See EnemyDesc::ContactDamage.
 NesInternalRam:0094:Sophia_LookUpAnimation_Counter:Counter for Sophia's "look up" animation.\n0x00 is not started\n0x0C is completed (looking straight up)\n\nin Sophia_Dismount ($888C): [w] TBD\nin Sophia_DoorwayEntry ($89BE): [w] TBD\nin ObjHandler_Tank_08_Sophia_Dive ($8CB0): [w] TBD\nin LevelInit ($C301): [w] TBD\nin Sophia_RenderOffsets ($9641): [rw] TBD\nin ObjHandler_Tank_07_Sophia_Ceiling ($8E97): [r] TBD\nin Get_Next_Tile_Call ($907B): [r] TBD\nin ObjHandler_Tank_06_Sophia_RightWall ($916E): [r] TBD\nin RenderWeaponSprite ($950D): [r] TBD
 NesInternalRam:009A:TerrainCollisionFlags:Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.\n\nbit 7 set means a collision happened to the left or right.\nbit 6 set means a collision happened above or below.\n\nThe value of LoadedObj's velocity is used to disambiguate the collision side.
+NesInternalRam:0150-0161:DormantSlot_SavedType:18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's\nreal ObjType when it is made Dormant (ObjType $02).\nThe Dormant ObjType handler then reads from this table to restore the tombstoned Object.
 NesInternalRam:0400:PlayerSlot__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0401:PlayerSlot__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
 NesInternalRam:0402:PlayerSlot__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
@@ -4049,11 +4110,11 @@ NesInternalRam:0404:PlayerSlot__Position_Y_Lo:The lower 8-bits of the Signed 16-
 NesInternalRam:0405:PlayerSlot__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0406:PlayerSlot__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0407:PlayerSlot__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0408:PlayerSlot__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:0409:PlayerSlot__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:040A:PlayerSlot__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:040B:PlayerSlot__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:040C:PlayerSlot__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:0408:PlayerSlot__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:0409:PlayerSlot__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:040A:PlayerSlot__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:040B:PlayerSlot__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:040C:PlayerSlot__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:040D:PlayerSlot__Health:HP for this entity.
 NesInternalRam:040E:Object_Slot_01__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:040F:Object_Slot_01__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4063,11 +4124,11 @@ NesInternalRam:0412:Object_Slot_01__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0413:Object_Slot_01__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0414:Object_Slot_01__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0415:Object_Slot_01__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0416:Object_Slot_01__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:0417:Object_Slot_01__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:0418:Object_Slot_01__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:0419:Object_Slot_01__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:041A:Object_Slot_01__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:0416:Object_Slot_01__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:0417:Object_Slot_01__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:0418:Object_Slot_01__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:0419:Object_Slot_01__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:041A:Object_Slot_01__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:041B:Object_Slot_01__Health:HP for this entity.
 NesInternalRam:041C:Object_Slot_02__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:041D:Object_Slot_02__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4077,11 +4138,11 @@ NesInternalRam:0420:Object_Slot_02__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0421:Object_Slot_02__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0422:Object_Slot_02__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0423:Object_Slot_02__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0424:Object_Slot_02__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:0425:Object_Slot_02__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:0426:Object_Slot_02__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:0427:Object_Slot_02__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:0428:Object_Slot_02__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:0424:Object_Slot_02__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:0425:Object_Slot_02__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:0426:Object_Slot_02__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:0427:Object_Slot_02__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:0428:Object_Slot_02__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:0429:Object_Slot_02__Health:HP for this entity.
 NesInternalRam:042A:Object_Slot_03__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:042B:Object_Slot_03__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4091,11 +4152,11 @@ NesInternalRam:042E:Object_Slot_03__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:042F:Object_Slot_03__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0430:Object_Slot_03__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0431:Object_Slot_03__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0432:Object_Slot_03__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:0433:Object_Slot_03__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:0434:Object_Slot_03__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:0435:Object_Slot_03__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:0436:Object_Slot_03__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:0432:Object_Slot_03__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:0433:Object_Slot_03__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:0434:Object_Slot_03__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:0435:Object_Slot_03__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:0436:Object_Slot_03__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:0437:Object_Slot_03__Health:HP for this entity.
 NesInternalRam:0438:Object_Slot_04__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0439:Object_Slot_04__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4105,11 +4166,11 @@ NesInternalRam:043C:Object_Slot_04__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:043D:Object_Slot_04__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:043E:Object_Slot_04__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:043F:Object_Slot_04__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0440:Object_Slot_04__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:0441:Object_Slot_04__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:0442:Object_Slot_04__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:0443:Object_Slot_04__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:0444:Object_Slot_04__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:0440:Object_Slot_04__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:0441:Object_Slot_04__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:0442:Object_Slot_04__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:0443:Object_Slot_04__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:0444:Object_Slot_04__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:0445:Object_Slot_04__Health:HP for this entity.
 NesInternalRam:0446:Object_Slot_05__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0447:Object_Slot_05__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4119,11 +4180,11 @@ NesInternalRam:044A:Object_Slot_05__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:044B:Object_Slot_05__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:044C:Object_Slot_05__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:044D:Object_Slot_05__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:044E:Object_Slot_05__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:044F:Object_Slot_05__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:0450:Object_Slot_05__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:0451:Object_Slot_05__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:0452:Object_Slot_05__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:044E:Object_Slot_05__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:044F:Object_Slot_05__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:0450:Object_Slot_05__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:0451:Object_Slot_05__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:0452:Object_Slot_05__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:0453:Object_Slot_05__Health:HP for this entity.
 NesInternalRam:0454:Object_Slot_06__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0455:Object_Slot_06__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4133,11 +4194,11 @@ NesInternalRam:0458:Object_Slot_06__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0459:Object_Slot_06__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:045A:Object_Slot_06__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:045B:Object_Slot_06__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:045C:Object_Slot_06__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:045D:Object_Slot_06__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:045E:Object_Slot_06__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:045F:Object_Slot_06__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:0460:Object_Slot_06__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:045C:Object_Slot_06__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:045D:Object_Slot_06__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:045E:Object_Slot_06__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:045F:Object_Slot_06__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:0460:Object_Slot_06__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:0461:Object_Slot_06__Health:HP for this entity.
 NesInternalRam:0462:Object_Slot_07__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0463:Object_Slot_07__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4147,11 +4208,11 @@ NesInternalRam:0466:Object_Slot_07__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0467:Object_Slot_07__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0468:Object_Slot_07__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0469:Object_Slot_07__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:046A:Object_Slot_07__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:046B:Object_Slot_07__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:046C:Object_Slot_07__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:046D:Object_Slot_07__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:046E:Object_Slot_07__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:046A:Object_Slot_07__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:046B:Object_Slot_07__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:046C:Object_Slot_07__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:046D:Object_Slot_07__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:046E:Object_Slot_07__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:046F:Object_Slot_07__Health:HP for this entity.
 NesInternalRam:0470:Object_Slot_08__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0471:Object_Slot_08__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4161,11 +4222,11 @@ NesInternalRam:0474:Object_Slot_08__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0475:Object_Slot_08__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0476:Object_Slot_08__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0477:Object_Slot_08__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0478:Object_Slot_08__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:0479:Object_Slot_08__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:047A:Object_Slot_08__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:047B:Object_Slot_08__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:047C:Object_Slot_08__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:0478:Object_Slot_08__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:0479:Object_Slot_08__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:047A:Object_Slot_08__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:047B:Object_Slot_08__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:047C:Object_Slot_08__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:047D:Object_Slot_08__Health:HP for this entity.
 NesInternalRam:047E:Object_Slot_09__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:047F:Object_Slot_09__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4175,11 +4236,11 @@ NesInternalRam:0482:Object_Slot_09__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0483:Object_Slot_09__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0484:Object_Slot_09__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0485:Object_Slot_09__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0486:Object_Slot_09__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:0487:Object_Slot_09__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:0488:Object_Slot_09__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:0489:Object_Slot_09__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:048A:Object_Slot_09__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:0486:Object_Slot_09__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:0487:Object_Slot_09__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:0488:Object_Slot_09__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:0489:Object_Slot_09__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:048A:Object_Slot_09__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:048B:Object_Slot_09__Health:HP for this entity.
 NesInternalRam:048C:Object_Slot_10__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:048D:Object_Slot_10__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4189,11 +4250,11 @@ NesInternalRam:0490:Object_Slot_10__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0491:Object_Slot_10__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0492:Object_Slot_10__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0493:Object_Slot_10__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0494:Object_Slot_10__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:0495:Object_Slot_10__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:0496:Object_Slot_10__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:0497:Object_Slot_10__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:0498:Object_Slot_10__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:0494:Object_Slot_10__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:0495:Object_Slot_10__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:0496:Object_Slot_10__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:0497:Object_Slot_10__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:0498:Object_Slot_10__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:0499:Object_Slot_10__Health:HP for this entity.
 NesInternalRam:049A:Object_Slot_11__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:049B:Object_Slot_11__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4203,11 +4264,11 @@ NesInternalRam:049E:Object_Slot_11__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:049F:Object_Slot_11__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04A0:Object_Slot_11__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04A1:Object_Slot_11__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04A2:Object_Slot_11__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:04A3:Object_Slot_11__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:04A4:Object_Slot_11__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:04A5:Object_Slot_11__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:04A6:Object_Slot_11__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:04A2:Object_Slot_11__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:04A3:Object_Slot_11__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:04A4:Object_Slot_11__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:04A5:Object_Slot_11__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:04A6:Object_Slot_11__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:04A7:Object_Slot_11__Health:HP for this entity.
 NesInternalRam:04A8:Object_Slot_12__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04A9:Object_Slot_12__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4217,11 +4278,11 @@ NesInternalRam:04AC:Object_Slot_12__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04AD:Object_Slot_12__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04AE:Object_Slot_12__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04AF:Object_Slot_12__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04B0:Object_Slot_12__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:04B1:Object_Slot_12__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:04B2:Object_Slot_12__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:04B3:Object_Slot_12__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:04B4:Object_Slot_12__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:04B0:Object_Slot_12__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:04B1:Object_Slot_12__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:04B2:Object_Slot_12__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:04B3:Object_Slot_12__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:04B4:Object_Slot_12__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:04B5:Object_Slot_12__Health:HP for this entity.
 NesInternalRam:04B6:Object_Slot_13__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04B7:Object_Slot_13__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4231,11 +4292,11 @@ NesInternalRam:04BA:Object_Slot_13__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04BB:Object_Slot_13__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04BC:Object_Slot_13__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04BD:Object_Slot_13__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04BE:Object_Slot_13__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:04BF:Object_Slot_13__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:04C0:Object_Slot_13__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:04C1:Object_Slot_13__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:04C2:Object_Slot_13__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:04BE:Object_Slot_13__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:04BF:Object_Slot_13__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:04C0:Object_Slot_13__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:04C1:Object_Slot_13__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:04C2:Object_Slot_13__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:04C3:Object_Slot_13__Health:HP for this entity.
 NesInternalRam:04C4:Object_Slot_14__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04C5:Object_Slot_14__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4245,11 +4306,11 @@ NesInternalRam:04C8:Object_Slot_14__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04C9:Object_Slot_14__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04CA:Object_Slot_14__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04CB:Object_Slot_14__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04CC:Object_Slot_14__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:04CD:Object_Slot_14__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:04CE:Object_Slot_14__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:04CF:Object_Slot_14__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:04D0:Object_Slot_14__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:04CC:Object_Slot_14__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:04CD:Object_Slot_14__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:04CE:Object_Slot_14__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:04CF:Object_Slot_14__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:04D0:Object_Slot_14__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:04D1:Object_Slot_14__Health:HP for this entity.
 NesInternalRam:04D2:Object_Slot_15__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04D3:Object_Slot_15__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4259,11 +4320,11 @@ NesInternalRam:04D6:Object_Slot_15__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04D7:Object_Slot_15__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04D8:Object_Slot_15__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04D9:Object_Slot_15__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04DA:Object_Slot_15__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:04DB:Object_Slot_15__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:04DC:Object_Slot_15__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:04DD:Object_Slot_15__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:04DE:Object_Slot_15__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:04DA:Object_Slot_15__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:04DB:Object_Slot_15__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:04DC:Object_Slot_15__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:04DD:Object_Slot_15__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:04DE:Object_Slot_15__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:04DF:Object_Slot_15__Health:HP for this entity.
 NesInternalRam:04E0:Object_Slot_16__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04E1:Object_Slot_16__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4273,11 +4334,11 @@ NesInternalRam:04E4:Object_Slot_16__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04E5:Object_Slot_16__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04E6:Object_Slot_16__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04E7:Object_Slot_16__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04E8:Object_Slot_16__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:04E9:Object_Slot_16__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:04EA:Object_Slot_16__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:04EB:Object_Slot_16__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:04EC:Object_Slot_16__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:04E8:Object_Slot_16__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:04E9:Object_Slot_16__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:04EA:Object_Slot_16__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:04EB:Object_Slot_16__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:04EC:Object_Slot_16__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:04ED:Object_Slot_16__Health:HP for this entity.
 NesInternalRam:04EE:Object_Slot_17__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:04EF:Object_Slot_17__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
@@ -4287,11 +4348,11 @@ NesInternalRam:04F2:Object_Slot_17__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04F3:Object_Slot_17__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04F4:Object_Slot_17__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04F5:Object_Slot_17__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04F6:Object_Slot_17__TileIndex:(alpha: not fully human-verified / pending re-verification) Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500) -- a COLLISION index, not a render/sprite tile id. Confirmed by its only dereferencing sites: $D2AB/$D2AD (LDX $4E / LDA $0500,X, the tile-flag read) and $CEC6/$CEC8 (LDX $4E / STA $0500,X, the write-back). The window is 17 tiles per row, which is why the movement helpers step it by +/-17 for a row change (_Apply_Velocity_Y__AdjTileIndex $D67B) and +/-1 for a column change.
-NesInternalRam:04F7:Object_Slot_17__ActiveFlag:(alpha: not fully human-verified / pending re-verification) Post-damage invincibility frames (drives the flashing damage animation).
-NesInternalRam:04F8:Object_Slot_17__Phase:(alpha: not fully human-verified / pending re-verification) State/phase byte -- which branch of the object's own state machine it is in (ObjType-defined): the player uses it as a physics sub-state (0 grounded, 1 jump/hit-recover, 2 crouch, 3 ladder, 4 walk); enemies use it as a behaviour phase -- e.g. the Jellyfish ($81) 0 = sinking / 1 = jetting, the Kamikaze Orb ($79) 0 = patrolling / 1 = charging, the Shooter ($77) as its recoil pose.
-NesInternalRam:04F9:Object_Slot_17__AnimFrame:(alpha: not fully human-verified / pending re-verification) Animation / timer counter.
-NesInternalRam:04FA:Object_Slot_17__Scratch:(alpha: not fully human-verified / pending re-verification) Type-specific scratch (slot byte 12).
+NesInternalRam:04F6:Object_Slot_17__TileIndex:Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500).  Used for collision, not rendering.
+NesInternalRam:04F7:Object_Slot_17__IFrameCounter:(alpha: not fully human-verified / pending re-verification) Invincibility-frame counter, not a boolean flag: set to $20 on taking damage (EntityStateGate $89A3-$89A5, 'invincibility timer') and decremented every frame by ObjectLoop regardless of ObjType. While nonzero, EntityStateGate ($8950) clears this slot's Contact::Damage entry each frame (Sprite_Clear $D790) so no further hit registers -- it does NOT hide the sprite, despite the target sublabel's name. The visible flash is a separate effect: HitFlash_UpdatePalette ($D77D, re-inlined in MetaSprite_RenderNoBank $F039) cycles sprite attribute $44's low palette bits by the NMI counter each frame this is nonzero.
+NesInternalRam:04F8:Object_Slot_17__Scratch0:General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+NesInternalRam:04F9:Object_Slot_17__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+NesInternalRam:04FA:Object_Slot_17__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:04FB:Object_Slot_17__Health:HP for this entity.
 NesInternalRam:0600:SpriteStagingBuf_Sprite0__Screen_Y:Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
 NesInternalRam:0601:SpriteStagingBuf_Sprite0__Tile:Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.

@@ -13,8 +13,8 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 26 / 849 (3%) |
-| **M6** — Verified docs (public, clean) | 2 / 119 (2%) |
+| **M4** — Verified subroutines (public, clean) | 35 / 848 (4%) |
+| **M6** — Verified docs (public, clean) | 2 / 120 (2%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
 - **M6** counts knowledge-base pages (`docs/entities/`, `docs/execution-flow/`, `docs/misc/`) marked `verified`, against every page in those trees — published or not.
@@ -29,7 +29,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 05 / `(ungrouped — no .groups file)` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
-| ◽⬛⬛⬛<br/>`12.5%` | 06 / `object-handlers/_common` |  |
+| ⬜◽⬛⬛<br/>`44.4%` | 06 / `object-handlers/_common` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/auto-gates_and_locks` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bee` |  |
@@ -50,7 +50,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-bomber_caterpillar_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-ship` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_10hp` |  |
-| ⬜⬜⬜◽<br/>`94.1%` | 06 / `object-handlers/hopper_6hp` | `ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking` depends on unverified routines `ScreenPos_Compute`, `Obj_StashTypeSetState02` and 4 more. |
+| ⬜⬜⬜◽<br/>`94.1%` | 06 / `object-handlers/hopper_6hp` | `ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking` depends on unverified routines `Obj_SetAttrFlipX` and `MetaSprite_Render`. |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_common` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hulk` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jason-small` |  |
@@ -78,9 +78,9 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/camera` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/game-loop` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/hud` |  |
-| ⬜▫️⬛⬛<br/>`27.5%` | 07 / `05_game-screen/object-system` |  |
+| ⬜▫️⬛⬛<br/>`36.2%` | 07 / `05_game-screen/object-system` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `06_pause-screen` |  |
-| ▫️⬛⬛⬛<br/>`6.5%` | 07 / `_ungrouped` |  |
+| ▫️⬛⬛⬛<br/>`9.2%` | 07 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `bank-tail` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `camera` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `continue-screen` |  |
@@ -101,7 +101,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **4** pages, of which **2** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-08-02 11:44 UTC_
+_Generated: 2026-08-05 00:05 UTC_
 
 ## Pages
 

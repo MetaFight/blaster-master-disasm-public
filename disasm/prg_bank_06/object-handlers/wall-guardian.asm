@@ -6,7 +6,7 @@ L_BA88: jmp     L_BAA3                          ; BA88
 L_BA8B: lda     $03FE                           ; BA8B
         and     #$01                            ; BA8E
         beq     L_BA95                          ; BA90
-        jmp     LD804                           ; BA92
+        jmp     Obj_DespawnAndLog               ; BA92
 
 ; ----------------------------------------------------------------------------
 L_BA95: jsr     LD7E3                           ; BA95
@@ -47,7 +47,7 @@ L_BACF: lda     #$1E                            ; BACF
         sta     $40                             ; BAD5
         lda     #$40                            ; BAD7
         sta     $41                             ; BAD9
-        jsr     LEF2B                           ; BADB
+        jsr     ScreenPos_Compute               ; BADB
         beq     L_BAE3                          ; BADE
         jmp     L_BB6B                          ; BAE0
 
@@ -67,10 +67,10 @@ L_BAF4: lda     $45                             ; BAF4
 L_BAFA: lda     #$40                            ; BAFA
         jsr     LD711                           ; BAFC
         bne     L_BB10                          ; BAFF
-L_BB01: lda     $51                             ; BB01
+L_BB01: lda     LoadedObj + Obj::Scratch1       ; BB01
         bne     L_BB10                          ; BB03
         lda     #$20                            ; BB05
-        sta     $51                             ; BB07
+        sta     LoadedObj + Obj::Scratch1       ; BB07
         dec     $3F                             ; BB09
         lda     #$31                            ; BB0B
         jsr     Enqueue_Sound_Command           ; BB0D
@@ -81,7 +81,7 @@ L_BB10: lda     #$42                            ; BB10
         sec                                     ; BB19
         sbc     #$10                            ; BB1A
         sta     $3F                             ; BB1C
-        lda     $51                             ; BB1E
+        lda     LoadedObj + Obj::Scratch1       ; BB1E
         bne     L_BB28                          ; BB20
         jsr     L_BB8D                          ; BB22
         jmp     L_BB2B                          ; BB25
@@ -150,8 +150,8 @@ L_BB8D: lda     #$B6                            ; BB8D
         rts                                     ; BB91
 
 ; ----------------------------------------------------------------------------
-L_BB92: dec     $51                             ; BB92
-        lda     $51                             ; BB94
+L_BB92: dec     LoadedObj + Obj::Scratch1       ; BB92
+        lda     LoadedObj + Obj::Scratch1       ; BB94
         lsr     a                               ; BB96
         lsr     a                               ; BB97
         tax                                     ; BB98
@@ -185,12 +185,12 @@ L_BBB8: asl     a                               ; BBB8
 L_BBC7: jsr     L_BBB8                          ; BBC7
         ldy     #$01                            ; BBCA
         lda     ($A6),y                         ; BBCC
-        jsr     LD697                           ; BBCE
+        jsr     Enemy_Damage_Check_Sub          ; BBCE
         sta     $45                             ; BBD1
         bne     L_BBE2                          ; BBD3
         lda     LoadedObj + Obj::Health         ; BBD5
         bne     L_BBE2                          ; BBD7
-        jsr     LD804                           ; BBD9
+        jsr     Obj_DespawnAndLog               ; BBD9
         jsr     L_BBF5                          ; BBDC
         lda     #$FF                            ; BBDF
         rts                                     ; BBE1
@@ -203,13 +203,13 @@ L_BBE2: lda     #$00                            ; BBE2
 L_BBE5: jsr     L_BBB8                          ; BBE5
         ldy     #$01                            ; BBE8
         lda     ($A6),y                         ; BBEA
-        jsr     LD697                           ; BBEC
+        jsr     Enemy_Damage_Check_Sub          ; BBEC
         bne     L_BBF4                          ; BBEF
         jsr     L_BBF8                          ; BBF1
 L_BBF4: rts                                     ; BBF4
 
 ; ----------------------------------------------------------------------------
-L_BBF5: jsr     LD804                           ; BBF5
+L_BBF5: jsr     Obj_DespawnAndLog                           ; BBF5
 L_BBF8: jsr     Step_RNG                           ; BBF8
         and     #$0F                            ; BBFB
         sta     $00                             ; BBFD
@@ -223,7 +223,7 @@ L_BBF8: jsr     Step_RNG                           ; BBF8
 ; ----------------------------------------------------------------------------
 L_BC0C: ldy     #$02                            ; BC0C
         lda     ($A6),y                         ; BC0E
-        jsr     LDF0F                           ; BC10
+        jsr     Obj_TryCloneLoadedObjectIntoEmptySlot ; BC10
         lda     #$2C                            ; BC13
         sta     ObjectTable + Obj::Type,x       ; BC15
 L_BC18: lda     #$4C                            ; BC18

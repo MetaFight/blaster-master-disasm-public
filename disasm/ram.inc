@@ -333,14 +333,18 @@ LoadedObj_CollisionBox_HalfHeight := $0043
         Position_Y_Hi .byte   ; +$05 (sbyte)  The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
         Velocity_X    .byte   ; +$06 (sfixed44)  X velocity in px/frame (signed 4.4: swww.ffff).
         Velocity_Y    .byte   ; +$07 (sfixed44)  Y velocity in px/frame (signed 4.4: swww.ffff).
-        .res          5       ; +$08..+$0C
+        TileIndex     .byte   ; +$08 (byte)  Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500). Used for collision, not rendering.
+        .res          1       ; +$09
+        Scratch0      .byte   ; +$0A (byte)  General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
+        Scratch1      .byte   ; +$0B (byte)  General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
+        Scratch2      .byte   ; +$0C (byte)  General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
         Health        .byte   ; +$0D (byte)  HP for this entity.
 .endstruct
 ; Contact: The 3-byte record in the contact table at $7C-$8D -- the hit-exchange channel
 ; between the player's side and the enemies. Six records, one per object slot 0-5 (slot 0 =
 ; the player, 1-5 = his shots/sub-weapons; the allocators keep enemies out of this range --
-; Obj_SpawnChild $D852 searches slots 6-17, Obj_SpawnFromZP $DF13 searches 8-15). Enemies
-; never occupy a record, they only scan it.
+; Obj_SpawnChild $D852 searches slots 6-17, Obj_TryCloneLoadedObjectIntoEmptySlot $DF13
+; searches 8-15). Enemies never occupy a record, they only scan it.
 .struct Contact
         .res 3       ; +$00..+$02
 .endstruct
@@ -354,12 +358,7 @@ LoadedObj_CollisionBox_HalfHeight := $0043
         Attr     .byte   ; +$02 (byte)  Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
         Screen_X .byte   ; +$03 (byte)  Screen X, left edge.
 .endstruct
-; The 14-byte zero-page working copy of the currently active object slot — the same Obj layout
-; as the $0400 object table. Before each AI dispatch, ObjSlot_Load ($C8DF) copies the active
-; slot ($0400,X with X = ObjectSlot_Offset $56) into $46-$53; ObjSlot_Save ($C928) writes it
-; back after the handler runs. Indexed access (,X/,Y) reaches any field generically (the
-; whole-record copy loops Obj_CopyFieldsToSlot $D7C0, _Obj_SpawnFromZP__CopyRecord $DF27 and
-; ClearObjWorkFields $D7EE); direct (unindexed) access is the single instance (LoadedObj).
+; The 14-byte zero-page working copy of the currently active object slot
 LoadedObject := $0046   ; Obj[] base — indexed access (any element)
 LoadedObj    := $0046   ; element 0 — direct access
 ; The contact table: 6 Contact records (3 bytes each) packed at $7C-$8D, one per object slot
@@ -445,3 +444,7 @@ Sophia_LookUpAnimation_Counter    := $0094
 ; bit 6 set means a collision happened above or below.
 ; The value of LoadedObj's velocity is used to disambiguate the collision side.
 TerrainCollisionFlags             := $009A
+; 18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's
+; real ObjType when it is made Dormant (ObjType $02).
+; The Dormant ObjType handler then reads from this table to restore the tombstoned Object.
+DormantSlot_SavedType             := $0150

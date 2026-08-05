@@ -26,7 +26,7 @@ _ObjHandler_Tank_76_Shooter_Init__Update__:
         jsr     Obj_AngleToVelocity             ; B00B
 ; gun ready — no recoil to work off
         lda     #$00                            ; B00E
-        sta     $52                             ; B010
+        sta     LoadedObj + Obj::Scratch2       ; B010
 ; Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
 _ObjHandler_Tank_76_Shooter_Init__Done:
         rts                                     ; B012
@@ -57,12 +57,12 @@ _ObjHandler_Tank_77_Shooter_Main__Update__:
 ; one)
         jsr     LDF68                           ; B01E
 ; fire cooldown $52 — zero means free to fire
-        lda     $52                             ; B021
+        lda     LoadedObj + Obj::Scratch2       ; B021
         beq     _ObjHandler_Tank_77_Shooter_Main__FireCheck; B023
 ; still cooling down: tick it and hold the recoil pose ($50 = 0)
-        dec     $52                             ; B025
+        dec     LoadedObj + Obj::Scratch2       ; B025
         lda     #$00                            ; B027
-        sta     $50                             ; B029
+        sta     LoadedObj + Obj::Scratch0       ; B029
         jmp     _ObjHandler_Tank_77_Shooter_Main__Render__; B02B
 
 ; ----------------------------------------------------------------------------
@@ -83,11 +83,11 @@ _ObjHandler_Tank_77_Shooter_Main__FireCheck:
         beq     _ObjHandler_Tank_77_Shooter_Main__SetActive; B041
 ; shot away: start the 16-frame recoil cooldown
         lda     #$10                            ; B043
-        sta     $52                             ; B045
+        sta     LoadedObj + Obj::Scratch2       ; B045
 ; Searching pose ($50 = 1) — reached whether or not a shot went out
 _ObjHandler_Tank_77_Shooter_Main__SetActive:
         lda     #$01                            ; B047
-        sta     $50                             ; B049
+        sta     LoadedObj + Obj::Scratch0       ; B049
 ; Shared hit/render tail — also the +0 (fade/freeze) entry
 ; $40/$41 = $10: 16×16 hitbox
 _ObjHandler_Tank_77_Shooter_Main__Render__:
@@ -96,20 +96,20 @@ _ObjHandler_Tank_77_Shooter_Main__Render__:
         lda     #$10                            ; B04F
         sta     $41                             ; B051
 ; screen position + overlap against the player's shots
-        jsr     LEF2B                           ; B053
+        jsr     ScreenPos_Compute               ; B053
         beq     _ObjHandler_Tank_77_Shooter_Main__Damage; B056
 ; off-screen: despawn
-        jmp     LD7F8                           ; B058
+        jmp     Obj_TombstoneSlot               ; B058
 
 ; ----------------------------------------------------------------------------
 ; Apply any hit, and die if it emptied the HP
 ; enemy descriptor $10 (HP 16)
 _ObjHandler_Tank_77_Shooter_Main__Damage:
         lda     #$10                            ; B05B
-        jsr     L_A30A                          ; B05D
+        jsr     TankEnemy_DamageCheck           ; B05D
         beq     _ObjHandler_Tank_77_Shooter_Main__Render; B060
 ; killed: explosion, and maybe a Health-x1 drop
-        jmp     L_A34D                          ; B062
+        jmp     TankEnemy_Defeat                ; B062
 
 ; ----------------------------------------------------------------------------
 ; Draw the sprite — pose follows the cooldown, facing follows the drift
@@ -119,7 +119,7 @@ _ObjHandler_Tank_77_Shooter_Main__Render:
         jsr     LE04E                           ; B067
 ; pose select: $50 non-zero (searching) keeps metasprite $6C…
         ldx     #$6C                            ; B06A
-        lda     $50                             ; B06C
+        lda     LoadedObj + Obj::Scratch0       ; B06C
         bne     _ObjHandler_Tank_77_Shooter_Main__TileBase; B06E
 ; …$50 == 0 (recoiling) bumps it to $6D
         inx                                     ; B070

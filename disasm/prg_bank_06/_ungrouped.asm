@@ -26,7 +26,7 @@ L_888C: lda     $F3                             ; 888C
         lda     #$1E                            ; 88C2
         sta     $03D6                           ; 88C4
         lda     #$00                            ; 88C7
-        sta     $50                             ; 88C9
+        sta     LoadedObj + Obj::Scratch0       ; 88C9
         lda     #$3E                            ; 88CB
         jsr     Enqueue_Sound_Command           ; 88CD
         lda     #$1B                            ; 88D0
@@ -80,7 +80,7 @@ L_88F1: lda     $C1                             ; 88F1
         sta     $40                             ; 892D
         lda     #$10                            ; 892F
         sta     $41                             ; 8931
-        jsr     LEF2B                           ; 8933
+        jsr     ScreenPos_Compute               ; 8933
         bne     L_893B                          ; 8936
         jsr     L_950D                          ; 8938
 L_893B: pla                                     ; 893B
@@ -105,7 +105,7 @@ L_894E: lda     $4F                             ; 894E
         lda     LoadedObj + Obj::Type           ; 8956
         cmp     #$03                            ; 8958
         bne     L_8960                          ; 895A
-        lda     $50                             ; 895C
+        lda     LoadedObj + Obj::Scratch0       ; 895C
         beq     L_8964                          ; 895E
 L_8960: inc     $4F                             ; 8960
         bne     L_89BB                          ; 8962
@@ -116,7 +116,7 @@ L_8964: jsr     LD7E3                           ; 8964
         ora     #$08                            ; 896D
         sta     $C5                             ; 896F
         lda     #$00                            ; 8971
-        sta     $51                             ; 8973
+        sta     LoadedObj + Obj::Scratch1       ; 8973
         sta     $91                             ; 8975
         sta     $90                             ; 8977
         beq     L_89BB                          ; 8979
@@ -138,7 +138,7 @@ L_8997: and     #$7F                            ; 8997
         ldx     #$03                            ; 899B
         stx     LoadedObj + Obj::Type           ; 899D
         ldx     #$02                            ; 899F
-        stx     $50                             ; 89A1
+        stx     LoadedObj + Obj::Scratch0       ; 89A1
         ldx     #$20                            ; 89A3
         stx     $4F                             ; 89A5
         eor     #$FF                            ; 89A7
@@ -162,8 +162,8 @@ L_89BB: jmp     LD790                           ; 89BB
 ; ----------------------------------------------------------------------------
 L_8C4D: pha                                     ; 8C4D
         jsr     LCBDF                           ; 8C4E
-        jsr     LEF2B                           ; 8C51
-        lda     $50                             ; 8C54
+        jsr     ScreenPos_Compute               ; 8C51
+        lda     LoadedObj + Obj::Scratch0       ; 8C54
         lsr     a                               ; 8C56
         ror     a                               ; 8C57
         ror     a                               ; 8C58
@@ -171,7 +171,7 @@ L_8C4D: pha                                     ; 8C4D
         sta     $44                             ; 8C5B
         pla                                     ; 8C5D
         clc                                     ; 8C5E
-        adc     $51                             ; 8C5F
+        adc     LoadedObj + Obj::Scratch1       ; 8C5F
         jmp     LF011                           ; 8C61
 
 .endmacro
@@ -181,7 +181,7 @@ L_8C4D: pha                                     ; 8C4D
 L_8E32: lda     LoadedObj + Obj::Health         ; 8E32
         beq     L_8E62                          ; 8E34
         jsr     LD21D                           ; 8E36
-        lda     $50                             ; 8E39
+        lda     LoadedObj + Obj::Scratch0       ; 8E39
         bne     L_8E47                          ; 8E3B
         lda     $D9                             ; 8E3D
         beq     L_8E47                          ; 8E3F
@@ -194,7 +194,7 @@ L_8E47: lda     $F7                             ; 8E47
         beq     L_8E63                          ; 8E4D
         cmp     #$02                            ; 8E4F
         beq     L_8E78                          ; 8E51
-        lda     $50                             ; 8E53
+        lda     LoadedObj + Obj::Scratch0       ; 8E53
         bne     L_8E62                          ; 8E55
         lda     LoadedObj + Obj::Velocity_X     ; 8E57
         beq     L_8E62                          ; 8E59
@@ -210,7 +210,7 @@ L_8E62: rts                                     ; 8E62
 L_8E63: lda     LoadedObj + Obj::Facing         ; 8E63
         and     #$7F                            ; 8E65
         sta     LoadedObj + Obj::Facing         ; 8E67
-        lda     $50                             ; 8E69
+        lda     LoadedObj + Obj::Scratch0       ; 8E69
         bne     L_8E73                          ; 8E6B
         bit     $98                             ; 8E6D
         bmi     L_8E73                          ; 8E6F
@@ -222,7 +222,7 @@ L_8E73: inc     LoadedObj + Obj::Velocity_X     ; 8E73
 L_8E78: lda     LoadedObj + Obj::Facing         ; 8E78
         ora     #$80                            ; 8E7A
         sta     LoadedObj + Obj::Facing         ; 8E7C
-        lda     $50                             ; 8E7E
+        lda     LoadedObj + Obj::Scratch0       ; 8E7E
         bne     L_8E88                          ; 8E80
         bit     $98                             ; 8E82
         bmi     L_8E88                          ; 8E84
@@ -271,7 +271,7 @@ L_9723: clc                                     ; 9723
 L_9738: ldx     #$0E                            ; 9738
         lda     #$2A                            ; 973A
         sta     $00                             ; 973C
-        jsr     LD7CF                           ; 973E
+        jsr     FindEmptyObjectSlot             ; 973E
         beq     L_976C                          ; 9741
         lda     #$13                            ; 9743
         sta     ObjectTable + Obj::Type,x       ; 9745
@@ -327,7 +327,7 @@ L_9E9E: lda     #$23                            ; 9E9E
 .macro MAC_L_A29E
 ; ----------------------------------------------------------------------------
 L_A29E: sta     $06                             ; A29E
-        jsr     LDF0F                           ; A2A0
+        jsr     Obj_TryCloneLoadedObjectIntoEmptySlot ; A2A0
         beq     L_A2D1                          ; A2A3
         stx     $05                             ; A2A5
         jsr     Step_RNG                        ; A2A7

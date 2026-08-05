@@ -12,11 +12,11 @@ L_AF3D: lda     #$0F                            ; AF3D
         lda     #$10                            ; AF4B
         bne     L_AF51                          ; AF4D
 L_AF4F: lda     #$F0                            ; AF4F
-L_AF51: sta     $52                             ; AF51
+L_AF51: sta     LoadedObj + Obj::Scratch2       ; AF51
         lda     #$00                            ; AF53
-        sta     $50                             ; AF55
+        sta     LoadedObj + Obj::Scratch0       ; AF55
         lda     #$00                            ; AF57
-        sta     $51                             ; AF59
+        sta     LoadedObj + Obj::Scratch1       ; AF59
         ldy     #$28                            ; AF5B
         jsr     Obj_AngleToVelocity             ; AF5D
 L_AF60: rts                                     ; AF60
@@ -29,17 +29,17 @@ L_AF64: lda     #$80                            ; AF64
         sta     LoadedObj_CollisionBox_HalfWidth; AF66
         lda     #$80                            ; AF68
         sta     LoadedObj_CollisionBox_HalfHeight; AF6A
-        lda     $51                             ; AF6C
+        lda     LoadedObj + Obj::Scratch1       ; AF6C
         beq     L_AF72                          ; AF6E
-        dec     $51                             ; AF70
-L_AF72: lda     $50                             ; AF72
+        dec     LoadedObj + Obj::Scratch1       ; AF70
+L_AF72: lda     LoadedObj + Obj::Scratch0       ; AF72
         beq     L_AF8C                          ; AF74
         jsr     LE07B                           ; AF76
         asl     a                               ; AF79
         asl     a                               ; AF7A
         bne     L_AF81                          ; AF7B
         lda     #$00                            ; AF7D
-        sta     $50                             ; AF7F
+        sta     LoadedObj + Obj::Scratch0       ; AF7F
 L_AF81: ldy     #$28                            ; AF81
         jsr     Obj_AngleToVelocity             ; AF83
         jsr     LE083                           ; AF86
@@ -53,13 +53,13 @@ L_AF8C: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; AF8C
         adc     #$01                            ; AF94
 L_AF96: cmp     #$01                            ; AF96
         bcs     L_AFC4                          ; AF98
-        lda     $51                             ; AF9A
+        lda     LoadedObj + Obj::Scratch1       ; AF9A
         bne     L_AFC4                          ; AF9C
-        jsr     LDF0F                           ; AF9E
+        jsr     Obj_TryCloneLoadedObjectIntoEmptySlot ; AF9E
         beq     L_AFBC                          ; AFA1
         lda     #$3A                            ; AFA3
         sta     ObjectTable + Obj::Type,x       ; AFA5
-        lda     $52                             ; AFA8
+        lda     LoadedObj + Obj::Scratch2       ; AFA8
         bpl     L_AFB1                          ; AFAA
         eor     #$FF                            ; AFAC
         clc                                     ; AFAE
@@ -69,11 +69,11 @@ L_AFB1: ldx     LoadedObj + Obj::Velocity_X     ; AFB1
         eor     #$FF                            ; AFB5
         clc                                     ; AFB7
         adc     #$01                            ; AFB8
-        sta     $52                             ; AFBA
+        sta     LoadedObj + Obj::Scratch2       ; AFBA
 L_AFBC: lda     #$40                            ; AFBC
-        sta     $51                             ; AFBE
+        sta     LoadedObj + Obj::Scratch1       ; AFBE
         lda     #$01                            ; AFC0
-        sta     $50                             ; AFC2
+        sta     LoadedObj + Obj::Scratch0       ; AFC2
 L_AFC4: jsr     LE083                           ; AFC4
         bpl     L_AFD1                          ; AFC7
         jsr     LE0D8                           ; AFC9
@@ -83,21 +83,21 @@ L_AFD1: lda     #$10                            ; AFD1
         sta     $40                             ; AFD3
         lda     #$10                            ; AFD5
         sta     $41                             ; AFD7
-        jsr     LEF2B                           ; AFD9
+        jsr     ScreenPos_Compute               ; AFD9
         beq     L_AFE1                          ; AFDC
-        jmp     LD7F8                           ; AFDE
+        jmp     Obj_TombstoneSlot               ; AFDE
 
 ; ----------------------------------------------------------------------------
 L_AFE1: lda     #$0F                            ; AFE1
-        jsr     L_A30A                          ; AFE3
+        jsr     TankEnemy_DamageCheck           ; AFE3
         beq     L_AFEB                          ; AFE6
-        jmp     L_A34D                          ; AFE8
+        jmp     TankEnemy_Defeat                ; AFE8
 
 ; ----------------------------------------------------------------------------
 L_AFEB: lda     #$00                            ; AFEB
         jsr     LE04E                           ; AFED
         ldx     #$2F                            ; AFF0
-        lda     $50                             ; AFF2
+        lda     LoadedObj + Obj::Scratch0       ; AFF2
         beq     L_AFF7                          ; AFF4
         inx                                     ; AFF6
 L_AFF7: txa                                     ; AFF7
