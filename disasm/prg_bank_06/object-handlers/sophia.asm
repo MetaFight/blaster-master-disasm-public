@@ -499,7 +499,7 @@ L_8D66: jsr     LD37A                           ; 8D66
         bit     LoadedObj + Obj::Velocity_X     ; 8D71
         bpl     L_8D77                          ; 8D73
         lda     #$EE                            ; 8D75
-L_8D77: jsr     LD2B1                           ; 8D77
+L_8D77: jsr     TileRead_WithOffset                           ; 8D77
         and     #$C0                            ; 8D7A
         bne     L_8D91                          ; 8D7C
         lda     #$80                            ; 8D7E
@@ -627,7 +627,7 @@ L_8EB7: lda     #$00                            ; 8EB7
         jsr     H_Collision_Check               ; 8ECB
         beq     L_8EF8                          ; 8ECE
         lda     #$11                            ; 8ED0
-        jsr     LD2B1                           ; 8ED2
+        jsr     TileRead_WithOffset             ; 8ED2
         bmi     L_8F2F                          ; 8ED5
         ldx     LoadedObj + Obj::Position_X_Lo  ; 8ED7
         lda     $F7                             ; 8ED9
@@ -668,7 +668,7 @@ L_8F14: cpx     #$01                            ; 8F14
         pha                                     ; 8F1A
         ldy     #$40                            ; 8F1B
         lda     #$EE                            ; 8F1D
-L_8F1F: jsr     LD2B1                           ; 8F1F
+L_8F1F: jsr     TileRead_WithOffset                           ; 8F1F
         bpl     L_8F27                          ; 8F22
         pla                                     ; 8F24
         bpl     L_8F2F                          ; 8F25
@@ -679,7 +679,7 @@ L_8F27: pla                                     ; 8F27
 
 ; ----------------------------------------------------------------------------
 L_8F2F: lda     #$EF                            ; 8F2F
-        jsr     LD2B1                           ; 8F31
+        jsr     TileRead_WithOffset             ; 8F31
         bpl     L_8F3E                          ; 8F34
         lda     $F3                             ; 8F36
         bpl     L_8F49                          ; 8F38
@@ -825,7 +825,7 @@ L_900C: lda     #$80                            ; 900C
         jsr     V_Collision_Check               ; 902C
         beq     L_9054                          ; 902F
         lda     #$01                            ; 9031
-        jsr     LD2B1                           ; 9033
+        jsr     TileRead_WithOffset             ; 9033
         bmi     L_908B                          ; 9036
         lda     $F7                             ; 9038
         and     #$03                            ; 903A
@@ -864,7 +864,7 @@ L_9070: cpx     #$02                            ; 9070
         pha                                     ; 9076
         ldy     #$40                            ; 9077
         lda     #$EE                            ; 9079
-L_907B: jsr     LD2B1                           ; 907B
+L_907B: jsr     TileRead_WithOffset                           ; 907B
         bpl     L_9083                          ; 907E
         pla                                     ; 9080
         bpl     L_908B                          ; 9081
@@ -1029,7 +1029,7 @@ L_9171: lda     #$80                            ; 9171
         jsr     V_Collision_Check               ; 9197
         beq     L_91BF                          ; 919A
         lda     #$FF                            ; 919C
-        jsr     LD2B1                           ; 919E
+        jsr     TileRead_WithOffset             ; 919E
         bmi     L_91F6                          ; 91A1
         lda     $F7                             ; 91A3
         and     #$03                            ; 91A5
@@ -1068,7 +1068,7 @@ L_91DB: cpx     #$01                            ; 91DB
         pha                                     ; 91E1
         ldy     #$40                            ; 91E2
         lda     #$F0                            ; 91E4
-L_91E6: jsr     LD2B1                           ; 91E6
+L_91E6: jsr     TileRead_WithOffset                           ; 91E6
         bpl     L_91EE                          ; 91E9
         pla                                     ; 91EB
         bpl     L_91F6                          ; 91EC
@@ -1298,7 +1298,7 @@ L_9376: jsr     LD37A                           ; 9376
 
 ; ----------------------------------------------------------------------------
 L_9384: lda     #$11                            ; 9384
-        jsr     LD2B1                           ; 9386
+        jsr     TileRead_WithOffset             ; 9386
         bmi     L_938E                          ; 9389
         jmp     L_9432                          ; 938B
 
@@ -1340,7 +1340,7 @@ L_93C2: ldy     #$40                            ; 93C2
         lda     #$01                            ; 93C4
         pha                                     ; 93C6
         lda     #$10                            ; 93C7
-L_93C9: jsr     LD2B1                           ; 93C9
+L_93C9: jsr     TileRead_WithOffset                           ; 93C9
         bmi     L_93D6                          ; 93CC
         pla                                     ; 93CE
         sta     LoadedObj + Obj::Scratch0       ; 93CF
@@ -1375,7 +1375,7 @@ L_93FD: cpx     #$01                            ; 93FD
         lda     #$0F                            ; 9401
         sta     LoadedObj + Obj::Facing         ; 9403
         lda     #$01                            ; 9405
-L_9407: jsr     LD2B1                           ; 9407
+L_9407: jsr     TileRead_WithOffset                           ; 9407
         jsr     LD238                           ; 940A
         bne     L_9416                          ; 940D
         lda     #$00                            ; 940F
@@ -1387,7 +1387,7 @@ L_9416: lda     $99                             ; 9416
         and     #$04                            ; 9418
         beq     L_9432                          ; 941A
         lda     #$EF                            ; 941C
-        jsr     LD2B1                           ; 941E
+        jsr     TileRead_WithOffset             ; 941E
         bmi     L_9432                          ; 9421
         lda     LoadedObj + Obj::Facing         ; 9423
         bmi     L_942B                          ; 9425
@@ -1752,7 +1752,7 @@ L_96A2: lda     $14                             ; 96A2
         cmp     #$02                            ; 96AA
         beq     L_96BD                          ; 96AC
         lda     #$11                            ; 96AE
-        jsr     LD2B1                           ; 96B0
+        jsr     TileRead_WithOffset             ; 96B0
         and     #$03                            ; 96B3
         cmp     #$01                            ; 96B5
         beq     L_96BD                          ; 96B7

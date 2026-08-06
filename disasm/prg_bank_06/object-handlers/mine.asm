@@ -29,7 +29,7 @@ L_A9E1: lda     #$80                            ; A9E1
         beq     L_AA03                          ; A9F6
 L_A9F8: inc     LoadedObj + Obj::Scratch0       ; A9F8
 L_A9FA: lda     #$11                            ; A9FA
-        jsr     LD2B1                           ; A9FC
+        jsr     TileRead_WithOffset             ; A9FC
         bmi     L_AA03                          ; A9FF
         dec     LoadedObj + Obj::Scratch0       ; AA01
 L_AA03: lda     #$10                            ; AA03

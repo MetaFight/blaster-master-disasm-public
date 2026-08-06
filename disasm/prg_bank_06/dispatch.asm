@@ -112,7 +112,7 @@ L_80B0: .addr   L_A50E                          ; 80B0
         .addr   L_A76A                          ; 80BC
         .addr   ObjHandler_Tank_5F_Gray_Hopper_6HP_Init; 80BE
         .addr   ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking; 80C0
-        .addr   L_A86E                          ; 80C2
+        .addr   ObjHandler_Tank_61_GrayHopper6HP_Patrolling; 80C2
         .addr   L_A8D2                          ; 80C4
         .addr   L_A8FB                          ; 80C6
         .addr   L_A9CB                          ; 80C8

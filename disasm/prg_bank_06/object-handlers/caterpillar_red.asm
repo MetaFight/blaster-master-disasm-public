@@ -61,7 +61,7 @@ L_A932: sta     LoadedObj + Obj::Velocity_X     ; A932
         adc     #$18                            ; A93A
         sta     LoadedObj + Obj::Scratch2       ; A93C
 L_A93E: lda     #$11                            ; A93E
-        jsr     LD2B1                           ; A940
+        jsr     TileRead_WithOffset             ; A940
         bpl     L_A970                          ; A943
         jsr     LE083                           ; A945
         and     #$80                            ; A948

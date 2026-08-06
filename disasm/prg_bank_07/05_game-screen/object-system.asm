@@ -587,23 +587,43 @@ L_E018: lda     #$00                            ; E018
 
 .macro MAC_L_E02F
 ; ----------------------------------------------------------------------------
-L_E02F: jsr     L_DF68                          ; E02F
+; Obj_MoveBounce plus terrain checks to turn at walls and ledge edges.
+; 
+; Input:
+;   LoadedObj.Scratch1 = an edge cooldown timer.  Edge checks only happen when it is 0.
+; 
+; # when the turn cooldown LoadedObj.Scratch1 is idle, probe the tile below via
+; TileRead_WithOffset arg $11 (the feet probe the ice check also uses); if it is not solid (bit7
+; clear - a dropoff) reverse XVel $4C and arm a $20-frame cooldown. Walker motion that turns back
+; at platform edges. Dispatch slot $C033 - no callers in USA ROM.'
+Obj_MoveBounce_TurnAtLedge:
+        jsr     L_DF68                          ; E02F
         lda     LoadedObj + Obj::Scratch1       ; E032
-        beq     L_E03B                          ; E034
+; if Scratch1 (probe cooldown) is 0, skip to probe logic,
+        beq     _Obj_MoveBounce_TurnAtLedge__Probe; E034
+; otherwise, decrement the cooldown and exit sub.
         dec     LoadedObj + Obj::Scratch1       ; E036
-        jmp     L_E04D                          ; E038
+        jmp     _Obj_MoveBounce_TurnAtLedge__Return; E038
 
 ; ----------------------------------------------------------------------------
-L_E03B: lda     #$11                            ; E03B
-        jsr     L_D2B1                          ; E03D
-        bmi     L_E04D                          ; E040
+; Probe logic
+_Obj_MoveBounce_TurnAtLedge__Probe:
+        lda     #$11                            ; E03B
+; Read the tile directly below ($11).
+        jsr     TileRead_WithOffset             ; E03D
+; if bit 7 is set, then it's solid.  Nothing else to do, so exit early.
+        bmi     _Obj_MoveBounce_TurnAtLedge__Return; E040
+; Otherwise, negate Velocity X,
         lda     #$00                            ; E042
         sec                                     ; E044
         sbc     LoadedObj + Obj::Velocity_X     ; E045
         sta     LoadedObj + Obj::Velocity_X     ; E047
         lda     #$20                            ; E049
+; and set the probe cooldown to 32 frames.
         sta     LoadedObj + Obj::Scratch1       ; E04B
-L_E04D: rts                                     ; E04D
+; RTS.
+_Obj_MoveBounce_TurnAtLedge__Return:
+        rts                                     ; E04D
 
 ; ----------------------------------------------------------------------------
 ; Sets the sprite OAM attribute ($44) to A, adding the horizontal-flip bit when the object faces

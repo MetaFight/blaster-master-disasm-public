@@ -34,7 +34,7 @@ L_888C: lda     $F3                             ; 888C
         lda     #$F0                            ; 88D4
         sta     LoadedObj + Obj::Velocity_Y     ; 88D6
         lda     #$EF                            ; 88D8
-        jsr     LD2B1                           ; 88DA
+        jsr     TileRead_WithOffset             ; 88DA
         bmi     L_88E3                          ; 88DD
         lda     #$00                            ; 88DF
         sta     LoadedObj + Obj::Position_Y_Lo  ; 88E1
@@ -359,7 +359,7 @@ L_A2D1: lda     #$00                            ; A2D1
 
 ; ----------------------------------------------------------------------------
 L_A2D4: lda     #$00                            ; A2D4
-        jsr     LD2B1                           ; A2D6
+        jsr     TileRead_WithOffset             ; A2D6
         and     #$C0                            ; A2D9
         cmp     #$40                            ; A2DB
         beq     L_A2E8                          ; A2DD

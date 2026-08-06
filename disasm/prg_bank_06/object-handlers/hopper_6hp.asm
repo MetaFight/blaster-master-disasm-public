@@ -186,12 +186,112 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile:
 
 ; ----------------------------------------------------------------------------
 ; Single unreachable $60 (RTS) after the Gray Hopper 6HP ($60) tile tail (tail-calls JMP $F011 at
-; $A86A). Distinct from DEAD_TankGrayHopper_OrphanRTS ($B1D9), the 10HP variant. The preceding
-; routine's tail call was peephole-optimised into a direct jump without removing the trailing
-; return, so this byte is never executed. Seeded as code so it decodes correctly. 20 instances
-; found 2026-07-12, joining the 4 already documented in docs/misc/dead-code.md.
-DEAD_TankGrayHopper6HP_OrphanRTS:
+; $A86A).
+DEAD_ObjHandler_Tank_60_GrayHopper6HP_Attacking_OrphanRTS:
         rts                                     ; A86D
 
+; ----------------------------------------------------------------------------
+; ObjType $61 — Gray Hopper 6HP 'Patrolling' state.
+; 
+; In this state, the Hopper paces horizontally, reversing at walls and platform edges.
+ObjHandler_Tank_61_GrayHopper6HP_Patrolling:
+        jmp     _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__AfterPhysics; A86E
+
+; ----------------------------------------------------------------------------
+; +3 body entry (normal-play)
+; 
+; Start by setting collision box dimensions
+_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Update__:
+        lda     #$80                            ; A871
+        sta     LoadedObj_CollisionBox_HalfWidth; A873
+        lda     #$C0                            ; A875
+        sta     LoadedObj_CollisionBox_HalfHeight; A877
+; and zeroing Velocity_Y.
+        lda     #$00                            ; A879
+        sta     LoadedObj + Obj::Velocity_Y     ; A87B
+; Next, set Velocity_X based on the sign of the previous Velocity_X.
+        lda     LoadedObj + Obj::Velocity_X     ; A87D
+        bmi     _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__VelLeft; A87F
+; >= 0 means moving right, Velocity_X = +8 (ie, +0.5)
+        lda     #$08                            ; A881
+        jmp     _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__VelStore; A883
+
+; ----------------------------------------------------------------------------
+; < 0 means moving left, so Velocity_X = -8 (ie, -0.5)
+_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__VelLeft:
+        lda     #$F8                            ; A886
+; Store new Velocity_X
+_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__VelStore:
+        sta     LoadedObj + Obj::Velocity_X     ; A888
+; Apply velocity by delegating to the Obj_MoveBounce_TurnAtLedge helper sub.
+; 
+; This takes care of bouncing off walls and turning around at ledge edges.
+        jsr     Obj_MoveBounce_TurnAtLedge      ; A88A
+; Now sample the lower 6 bits of RNG.
+        jsr     Step_RNG                        ; A88D
+        and     #$3F                            ; A890
+; If this is 0, skip to the afterPhysics tail.
+        bne     _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__AfterPhysics; A892
+        lda     Global_FrameCounter             ; A894
+; If the Global_FrameCounter's bit 7 is set, skip to the afterPhysics tail.
+        bmi     _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__AfterPhysics; A896
+; Otherwise, enqueue a jump sound and transition to the Attacking state.
+        lda     #$29                            ; A898
+        jsr     Enqueue_Sound_Command           ; A89A
+        dec     LoadedObj + Obj::Type           ; A89D
+; The 'render only' tail of this objType.
+_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__AfterPhysics:
+        lda     #$10                            ; A89F
+        sta     $40                             ; A8A1
+        lda     #$18                            ; A8A3
+        sta     $41                             ; A8A5
+; Load the object dimensions and do an on-screen test.
+        jsr     ScreenPos_Compute               ; A8A7
+; If still on-screen, progress to the Damage handler code,
+        beq     _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage; A8AA
+; otherwise, start the despawn process by tombstoning.
+        jmp     Obj_TombstoneSlot               ; A8AC
+
+; ----------------------------------------------------------------------------
+; Run shared damage check routine with enemy descriptor 5.
+_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage:
+        lda     #$05                            ; A8AF
+        jsr     TankEnemy_DamageCheck           ; A8B1
+; if non-fatal, skip to render tail,
+        beq     _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render; A8B4
+; otherwise, call shared death handler.
+        jmp     TankEnemy_Defeat                ; A8B6
+
+; ----------------------------------------------------------------------------
+; Render logic.
+; 
+; Prep A as with the OAM Attribute byte value,
+_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render:
+        lda     #$01                            ; A8B9
+; Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to WR_Context_Dependent_44
+        jsr     Obj_SetAttrFlipX                ; A8BB
+        lda     Global_FrameCounter             ; A8BE
+        lsr     a                               ; A8C0
+        lsr     a                               ; A8C1
+        lsr     a                               ; A8C2
+        lsr     a                               ; A8C3
+        and     #$03                            ; A8C4
+; Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation
+; frame index.
+; 
+; This means all patrolling hoppers of this variant walk in lock-step, updating their animation
+; frames every 16 game frames.
+        tax                                     ; A8C6
+; Load the animation frame Metasprite id and call the renderer sub.
+        lda     L_A8CE,x                        ; A8C7
+        jmp     MetaSprite_Render               ; A8CA
+
+; ----------------------------------------------------------------------------
+; Single unreachable $60 (RTS)
+DEAD_ObjHandler_Tank_61_GrayHopper6HP_Patrolling_OrphanRTS:
+        rts                                     ; A8CD
+
+; ----------------------------------------------------------------------------
+L_A8CE: .byte   $02,$03,$02,$04                 ; A8CE
 .endmacro
 

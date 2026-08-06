@@ -13,7 +13,7 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 43 / 849 (5%) |
+| **M4** — Verified subroutines (public, clean) | 47 / 849 (6%) |
 | **M6** — Verified docs (public, clean) | 1 / 120 (1%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -25,11 +25,13 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 | Progress | Bank / Group | Notes |
 |:-:|------|---|
+| ✅✅✅✅ | 06 / `object-handlers/hopper_6hp` |  |
+| ✅✅✅✅ | 07 / `rng` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 05 / `(ungrouped — no .groups file)` |  |
+| ⬜◽⬛⬛<br/>`44.4%` | 06 / `object-handlers/_common` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
-| ⬜◽⬛⬛<br/>`44.4%` | 06 / `object-handlers/_common` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/auto-gates_and_locks` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bee` |  |
@@ -50,8 +52,6 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-bomber_caterpillar_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-ship` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_10hp` |  |
-| ✅✅✅✅ | 06 / `object-handlers/hopper_6hp` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_common` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hulk` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jason-small` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jellyfish` |  |
@@ -68,6 +68,15 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/swooping-sphere` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/turret` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/wall-guardian` |  |
+| ⬜⬜▫️⬛<br/>`57.1%` | 07 / `screen-fade` |  |
+| ⬜⬜⬛⬛<br/>`50.0%` | 07 / `sound` |  |
+| ⬜◽⬛⬛<br/>`42.5%` | 07 / `05_game-screen/object-system` | `Obj_MoveBounce_TurnAtLedge` depends on unverified routine `Obj_MoveBounce`. |
+| ⬜◽⬛⬛<br/>`37.5%` | 07 / `mmc1` | `BankSave_Switch` depends on unverified routine `Nmi_DoWork`. |
+| ⬜▫️⬛⬛<br/>`33.3%` | 07 / `timing` | `NMI` depends on unverified routine `Nmi_DoWork`. |
+| ⬜▫️⬛⬛<br/>`30.2%` | 07 / `math` |  |
+| ▫️⬛⬛⬛<br/>`10.2%` | 07 / `_ungrouped` |  |
+| ▫️⬛⬛⬛<br/>`7.4%` | 07 / `drawing-metasprites` | `MetaSprite_Render` depends on unverified routine `MetaSprite_RenderNoBank`. |
+| ▫️⬛⬛⬛<br/>`5.8%` | 07 / `hardware` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `00_title-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `01a_story-sequence` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `01b_demo-screen` |  |
@@ -78,30 +87,20 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/camera` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/game-loop` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/hud` |  |
-| ⬜◽⬛⬛<br/>`38.8%` | 07 / `05_game-screen/object-system` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `06_pause-screen` |  |
-| ▫️⬛⬛⬛<br/>`9.9%` | 07 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `bank-tail` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `camera` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `continue-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `drawing-background` |  |
-| ▫️⬛⬛⬛<br/>`7.4%` | 07 / `drawing-metasprites` | `MetaSprite_Render` depends on unverified routine `MetaSprite_RenderNoBank`. |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `drawing-sprites` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `ending` |  |
-| ▫️⬛⬛⬛<br/>`5.8%` | 07 / `hardware` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `input` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `level-rendering` |  |
-| ⬜▫️⬛⬛<br/>`30.2%` | 07 / `math` |  |
-| ⬜◽⬛⬛<br/>`37.5%` | 07 / `mmc1` | `BankSave_Switch` depends on unverified routine `Nmi_DoWork`. |
-| ✅✅✅✅ | 07 / `rng` |  |
-| ⬜⬜▫️⬛<br/>`57.1%` | 07 / `screen-fade` |  |
-| ⬜⬜⬛⬛<br/>`50.0%` | 07 / `sound` |  |
-| ⬜▫️⬛⬛<br/>`33.3%` | 07 / `timing` | `NMI` depends on unverified routine `Nmi_DoWork`. |
 
 This export publishes **4** pages, of which **3** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-08-06 02:09 UTC_
+_Generated: 2026-08-06 14:46 UTC_
 
 ## Pages
 

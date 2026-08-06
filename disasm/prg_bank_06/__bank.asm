@@ -26,7 +26,7 @@ LD246           := $D246
 LD256           := $D256
 LD283           := $D283
 LD2AB           := $D2AB
-LD2B1           := $D2B1
+TileRead_WithOffset                   := $D2B1
 LD2B9           := $D2B9
 LD2DB           := $D2DB
 LD2DE           := $D2DE
@@ -62,7 +62,7 @@ Obj_GravityMoveBounce_Double          := $DFA0
 LDFD1           := $DFD1
 LDFDD           := $DFDD
 LE005           := $E005
-LE02F           := $E02F
+Obj_MoveBounce_TurnAtLedge            := $E02F
 Obj_SetAttrFlipX                      := $E04E
 LE060           := $E060
 LE06A           := $E06A
@@ -117,7 +117,6 @@ LF029           := $F029
 .include "object-handlers/flying-ship.asm"
 .include "object-handlers/hopper_10hp.asm"
 .include "object-handlers/hopper_6hp.asm"
-.include "object-handlers/hopper_common.asm"
 .include "object-handlers/hulk.asm"
 .include "object-handlers/jason-small.asm"
 .include "object-handlers/jellyfish.asm"
@@ -177,7 +176,6 @@ LF029           := $F029
         MAC_L_A6D7
         MAC_L_A74B
         MAC_L_A7CB
-        MAC_L_A86E
         MAC_L_A8D2
         MAC_L_A9CB
         MAC_L_AA5A

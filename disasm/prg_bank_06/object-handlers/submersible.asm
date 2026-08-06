@@ -55,7 +55,7 @@ L_B683: lda     #$80                            ; B683
         sta     LoadedObj_CollisionBox_HalfHeight; B689
         jsr     LD2B9                           ; B68B
         lda     #$00                            ; B68E
-        jsr     LD2B1                           ; B690
+        jsr     TileRead_WithOffset             ; B690
         and     #$C0                            ; B693
         cmp     #$40                            ; B695
         beq     L_B69C                          ; B697

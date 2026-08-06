@@ -1011,7 +1011,19 @@ L_D2AB: ldx     LoadedObj + Obj::TileIndex      ; D2AB
         rts                                     ; D2B0
 
 ; ----------------------------------------------------------------------------
-L_D2B1: clc                                     ; D2B1
+; Reads the tile byte at LoadedObj.TileIndex plus an offset (A).
+; 
+; Input:
+;   A = offset
+;     eg, $11 = immediately below
+;         $ff = 1 to the left
+;         $01 = 1 to the right
+; 
+; Output:
+;   A = Tile data
+TileRead_WithOffset:
+        clc                                     ; D2B1
+; A (step offset) + $4E → cell index; A = $0500[index] = the look-ahead tile.
         adc     LoadedObj + Obj::TileIndex      ; D2B2
         tax                                     ; D2B4
         lda     $0500,x                         ; D2B5

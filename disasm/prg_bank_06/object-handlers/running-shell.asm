@@ -39,7 +39,7 @@ L_B5AD: sta     LoadedObj + Obj::Velocity_X     ; B5AD
 L_B5B2: cmp     #$01                            ; B5B2
         bne     L_B5D7                          ; B5B4
         lda     #$11                            ; B5B6
-        jsr     LD2B1                           ; B5B8
+        jsr     TileRead_WithOffset             ; B5B8
         bmi     L_B5C2                          ; B5BB
         inc     LoadedObj + Obj::Scratch0       ; B5BD
         jmp     L_B5FB                          ; B5BF

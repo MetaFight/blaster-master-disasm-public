@@ -70,7 +70,7 @@ L_B1D9: rts                                     ; B1D9
 L_B1DA: .byte   $02,$03,$02,$04                 ; B1DA
 ; ----------------------------------------------------------------------------
 L_B1DE: lda     #$11                            ; B1DE
-        jsr     LD2B1                           ; B1E0
+        jsr     TileRead_WithOffset             ; B1E0
         bmi     L_B1FE                          ; B1E3
         jsr     Step_RNG                        ; B1E5
         and     #$0F                            ; B1E8

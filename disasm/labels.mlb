@@ -2299,15 +2299,31 @@ NesPrgRom:1A85A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:still alive:
 NesPrgRom:1A863::$51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
 NesPrgRom:1A868:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle:$51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose
 NesPrgRom:1A86A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile:tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
-NesPrgRom:1A86D:DEAD_TankGrayHopper6HP_OrphanRTS:Single unreachable $60 (RTS) after the Gray Hopper 6HP ($60) tile tail (tail-calls JMP $F011 at $A86A). Distinct from DEAD_TankGrayHopper_OrphanRTS ($B1D9), the 10HP variant. The preceding routine's tail call was peephole-optimised into a direct jump without removing the trailing return, so this byte is never executed. Seeded as code so it decodes correctly. 20 instances found 2026-07-12, joining the 4 already documented in docs/misc/dead-code.md.
-NesPrgRom:1A86E:L_A86E
-NesPrgRom:1A871:L_A871
-NesPrgRom:1A886:L_A886
-NesPrgRom:1A888:L_A888
-NesPrgRom:1A89F:L_A89F
-NesPrgRom:1A8AF:L_A8AF
-NesPrgRom:1A8B9:L_A8B9
-NesPrgRom:1A8CD:L_A8CD
+NesPrgRom:1A86D:DEAD_ObjHandler_Tank_60_GrayHopper6HP_Attacking_OrphanRTS:Single unreachable $60 (RTS) after the Gray Hopper 6HP ($60) tile tail (tail-calls JMP $F011 at $A86A).
+NesPrgRom:1A86E:ObjHandler_Tank_61_GrayHopper6HP_Patrolling:ObjType $61 — Gray Hopper 6HP "Patrolling" state.\n\nIn this state, the Hopper paces horizontally, reversing at walls and platform edges.
+NesPrgRom:1A871:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Update__:+3 body entry (normal-play)\n\nStart by setting collision box dimensions
+NesPrgRom:1A879::and zeroing Velocity_Y.
+NesPrgRom:1A87D::Next, set Velocity_X based on the sign of the previous Velocity_X.
+NesPrgRom:1A881::>= 0 means moving right, Velocity_X = +8 (ie, +0.5)
+NesPrgRom:1A886:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__VelLeft:< 0 means moving left, so Velocity_X = -8 (ie, -0.5)
+NesPrgRom:1A888:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__VelStore:Store new Velocity_X
+NesPrgRom:1A88A::Apply velocity by delegating to the Obj_MoveBounce_TurnAtLedge helper sub.\n\nThis takes care of bouncing off walls and turning around at ledge edges.
+NesPrgRom:1A88D::Now sample the lower 6 bits of RNG.
+NesPrgRom:1A892::If this is 0, skip to the afterPhysics tail.
+NesPrgRom:1A896::If the Global_FrameCounter's bit 7 is set, skip to the afterPhysics tail.
+NesPrgRom:1A898::Otherwise, enqueue a jump sound and transition to the Attacking state.
+NesPrgRom:1A89F:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__AfterPhysics:The 'render only' tail of this objType.
+NesPrgRom:1A8A7::Load the object dimensions and do an on-screen test.
+NesPrgRom:1A8AA::If still on-screen, progress to the Damage handler code,
+NesPrgRom:1A8AC::otherwise, start the despawn process by tombstoning.
+NesPrgRom:1A8AF:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage:Run shared damage check routine with enemy descriptor 5.
+NesPrgRom:1A8B4::if non-fatal, skip to render tail,
+NesPrgRom:1A8B6::otherwise, call shared death handler.
+NesPrgRom:1A8B9:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render:Render logic.\n\nPrep A as with the OAM Attribute byte value,
+NesPrgRom:1A8BB::Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to WR_Context_Dependent_44
+NesPrgRom:1A8C6::Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation frame index.\n\nThis means all patrolling hoppers of this variant walk in lock-step, updating their animation frames every 16 game frames.
+NesPrgRom:1A8C7::Load the animation frame Metasprite id and call the renderer sub.
+NesPrgRom:1A8CD:DEAD_ObjHandler_Tank_61_GrayHopper6HP_Patrolling_OrphanRTS:Single unreachable $60 (RTS)
 NesPrgRom:1A8CE:L_A8CE
 NesPrgRom:1A8D2:L_A8D2
 NesPrgRom:1A8D5:L_A8D5
@@ -3235,7 +3251,8 @@ NesPrgRom:1D29E:L_D29E
 NesPrgRom:1D2A1:L_D2A1
 NesPrgRom:1D2A8:L_D2A8
 NesPrgRom:1D2AB:L_D2AB
-NesPrgRom:1D2B1:L_D2B1
+NesPrgRom:1D2B1:TileRead_WithOffset:Reads the tile byte at LoadedObj.TileIndex plus an offset (A).\n\nInput:\n  A = offset\n    eg, $11 = immediately below\n        $ff = 1 to the left\n        $01 = 1 to the right\n\nOutput:\n  A = Tile data
+NesPrgRom:1D2B2::A (step offset) + $4E → cell index; A = $0500[index] = the look-ahead tile.
 NesPrgRom:1D2B9:L_D2B9
 NesPrgRom:1D2DB:L_D2DB
 NesPrgRom:1D2DE:L_D2DE
@@ -3528,9 +3545,15 @@ NesPrgRom:1E005:L_E005
 NesPrgRom:1E018:L_E018
 NesPrgRom:1E01B:L_E01B
 NesPrgRom:1E027:L_E027
-NesPrgRom:1E02F:L_E02F
-NesPrgRom:1E03B:L_E03B
-NesPrgRom:1E04D:L_E04D
+NesPrgRom:1E02F:Obj_MoveBounce_TurnAtLedge:Obj_MoveBounce plus terrain checks to turn at walls and ledge edges.\n\nInput:\n  LoadedObj.Scratch1 = an edge cooldown timer.  Edge checks only happen when it is 0.\n\n# when the turn cooldown LoadedObj.Scratch1 is idle, probe the tile below via TileRead_WithOffset arg $11 (the feet probe the ice check also uses); if it is not solid (bit7 clear - a dropoff) reverse XVel $4C and arm a $20-frame cooldown. Walker motion that turns back at platform edges. Dispatch slot $C033 - no callers in USA ROM."
+NesPrgRom:1E034::if Scratch1 (probe cooldown) is 0, skip to probe logic,
+NesPrgRom:1E036::otherwise, decrement the cooldown and exit sub.
+NesPrgRom:1E03B:_Obj_MoveBounce_TurnAtLedge__Probe:Probe logic
+NesPrgRom:1E03D::Read the tile directly below ($11).
+NesPrgRom:1E040::if bit 7 is set, then it's solid.  Nothing else to do, so exit early.
+NesPrgRom:1E042::Otherwise, negate Velocity X,
+NesPrgRom:1E04B::and set the probe cooldown to 32 frames.
+NesPrgRom:1E04D:_Obj_MoveBounce_TurnAtLedge__Return:RTS.
 NesPrgRom:1E04E:Obj_SetAttrFlipX:Sets the sprite OAM attribute ($44) to A, adding the horizontal-flip bit when the object faces right (X velocity $4C non-negative). One call sets both palette and facing — e.g. the Fliers pass their palette index (Red $7C = pal 0, Gray $7D = pal 1).
 NesPrgRom:1E052::If XVel $4C ≥ 0, XOR the horizontal-flip bit ($40) into attr A; store to $44.
 NesPrgRom:1E054:_Obj_SetAttrFlipX__Store:Store OAM attribute $44.
