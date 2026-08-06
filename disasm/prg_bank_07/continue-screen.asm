@@ -10,9 +10,9 @@ L_F71C: jsr     L_EA03                          ; F71C
         sta     $FF                             ; F72B
         sta     $2000                           ; F72D
         lda     L_F7C2                          ; F730
-        sta     DispatchPtr                     ; F733
+        sta     IndirectPtrLo                   ; F733
         lda     L_F7C2+1                        ; F735
-        sta     DispatchPtrHi                   ; F738
+        sta     IndirectPtrHi                   ; F738
         ldy     #$00                            ; F73A
         lda     #$0B                            ; F73C
         sta     $C7                             ; F73E

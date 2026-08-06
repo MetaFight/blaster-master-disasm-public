@@ -890,9 +890,9 @@ L_8EC6: .byte   $00                             ; 8EC6
 L8EC7:  .byte   $FF,$00,$00,$00,$01,$00,$00     ; 8EC7
 ; ----------------------------------------------------------------------------
 L_8ECE: lda     L_8F05                          ; 8ECE
-        sta     DispatchPtr                     ; 8ED1
+        sta     IndirectPtrLo                   ; 8ED1
         lda     L_8F05+1                        ; 8ED3
-        sta     DispatchPtrHi                   ; 8ED6
+        sta     IndirectPtrHi                   ; 8ED6
         ldy     #$00                            ; 8ED8
         jsr     LC0FF                           ; 8EDA
         beq     L_8EE2                          ; 8EDD
@@ -1914,9 +1914,9 @@ L_958C: jsr     LC0FF                           ; 958C
 
 ; ----------------------------------------------------------------------------
 L_9599: lda     L_95B5                          ; 9599
-        sta     DispatchPtr                     ; 959C
+        sta     IndirectPtrLo                   ; 959C
         lda     L_95B5+1                        ; 959E
-        sta     DispatchPtrHi                   ; 95A1
+        sta     IndirectPtrHi                   ; 95A1
         ldy     #$00                            ; 95A3
         lda     $4F                             ; 95A5
         pha                                     ; 95A7
@@ -2042,18 +2042,18 @@ L_9672: rts                                     ; 9672
 
 ; ----------------------------------------------------------------------------
 L_9673: lda     L_96D4                          ; 9673
-        sta     DispatchPtr                     ; 9676
+        sta     IndirectPtrLo                   ; 9676
         lda     L_96D4+1                        ; 9678
-        sta     DispatchPtrHi                   ; 967B
+        sta     IndirectPtrHi                   ; 967B
         lda     LoadedObj + Obj::Scratch0       ; 967D
         jsr     LC153                           ; 967F
-        lda     (DispatchPtr),y                 ; 9682
+        lda     (IndirectPtrLo),y               ; 9682
         ldx     LoadedObj + Obj::Scratch0       ; 9684
         clc                                     ; 9686
         adc     L_96E8,x                        ; 9687
         bcc     L_968E                          ; 968A
         lda     #$FF                            ; 968C
-L_968E: sta     (DispatchPtr),y                 ; 968E
+L_968E: sta     (IndirectPtrLo),y               ; 968E
         ldx     #$02                            ; 9690
 L_9692: lda     $06F0,x                         ; 9692
         cmp     #$64                            ; 9695
@@ -2135,19 +2135,19 @@ L_9728: dec     LoadedObj + Obj::Scratch1       ; 9728
         cmp     #$03                            ; 972E
         bne     L_973F                          ; 9730
         lda     L_9945                          ; 9732
-        sta     DispatchPtr                     ; 9735
+        sta     IndirectPtrLo                   ; 9735
         lda     L_9945+1                        ; 9737
-        sta     DispatchPtrHi                   ; 973A
+        sta     IndirectPtrHi                   ; 973A
         jmp     L_9749                          ; 973C
 
 ; ----------------------------------------------------------------------------
 L_973F: lda     L_9957                          ; 973F
-        sta     DispatchPtr                     ; 9742
+        sta     IndirectPtrLo                   ; 9742
         lda     L9958                           ; 9744
-        sta     DispatchPtrHi                   ; 9747
+        sta     IndirectPtrHi                   ; 9747
 L_9749: inc     $0672                           ; 9749
         ldy     $0672                           ; 974C
-L_974F: lda     (DispatchPtr),y                 ; 974F
+L_974F: lda     (IndirectPtrLo),y               ; 974F
         bpl     L_975A                          ; 9751
         ldy     #$00                            ; 9753
         sty     $0672                           ; 9755
@@ -3807,9 +3807,9 @@ LA343:  .byte   $02,$05,$40,$02,$04,$03,$02,$04 ; A343
         .byte   $04,$03,$04,$FF                 ; A353
 ; ----------------------------------------------------------------------------
 L_A357: lda     L_A381                          ; A357
-        sta     DispatchPtr                     ; A35A
+        sta     IndirectPtrLo                   ; A35A
         lda     L_A381+1                        ; A35C
-        sta     DispatchPtrHi                   ; A35F
+        sta     IndirectPtrHi                   ; A35F
         jsr     L_A3D1                          ; A361
         jsr     LC1B0                           ; A364
         lda     #$80                            ; A367
@@ -3836,9 +3836,9 @@ L_A383: .byte   $44,$20,$21,$22,$23,$04,$05,$06 ; A383
         .byte   $53                             ; A393
 ; ----------------------------------------------------------------------------
 L_A394: lda     L_A3BE                          ; A394
-        sta     DispatchPtr                     ; A397
+        sta     IndirectPtrLo                   ; A397
         lda     L_A3BE+1                        ; A399
-        sta     DispatchPtrHi                   ; A39C
+        sta     IndirectPtrHi                   ; A39C
         jsr     L_A3D1                          ; A39E
         jsr     LC1B0                           ; A3A1
         lda     #$00                            ; A3A4
@@ -4469,29 +4469,29 @@ L_A7EF: sta     $45                             ; A7EF
         lda     $03FD                           ; A7F1
         bne     L_A844                          ; A7F4
         lda     L_A8FA                          ; A7F6
-        sta     DispatchPtr                     ; A7F9
+        sta     IndirectPtrLo                   ; A7F9
         lda     LA8FB                           ; A7FB
-        sta     DispatchPtrHi                   ; A7FE
+        sta     IndirectPtrHi                   ; A7FE
         lda     $45                             ; A800
         jsr     LC153                           ; A802
-L_A805: lda     (DispatchPtr),y                 ; A805
+L_A805: lda     (IndirectPtrLo),y               ; A805
         iny                                     ; A807
         cmp     #$FF                            ; A808
         beq     L_A844                          ; A80A
         sta     $40                             ; A80C
-        lda     (DispatchPtr),y                 ; A80E
+        lda     (IndirectPtrLo),y               ; A80E
         iny                                     ; A810
         sta     $41                             ; A811
         lda     $3F                             ; A813
         pha                                     ; A815
         lda     $3E                             ; A816
         pha                                     ; A818
-        lda     (DispatchPtr),y                 ; A819
+        lda     (IndirectPtrLo),y               ; A819
         iny                                     ; A81B
         clc                                     ; A81C
         adc     $3E                             ; A81D
         sta     $3E                             ; A81F
-        lda     (DispatchPtr),y                 ; A821
+        lda     (IndirectPtrLo),y               ; A821
         iny                                     ; A823
         clc                                     ; A824
         adc     $3F                             ; A825

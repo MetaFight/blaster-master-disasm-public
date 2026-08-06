@@ -104,7 +104,7 @@ L_CC3E: lda     $1D                             ; CC3E
         adc     $3A                             ; CC61
         sta     $3A                             ; CC63
         jsr     L_D1AD                          ; CC65
-        lda     $D3                             ; CC68
+        lda     SavedPrgBank                    ; CC68
         jmp     BankSave_Switch                 ; CC6A
 
 ; ----------------------------------------------------------------------------
@@ -215,7 +215,7 @@ L_CD0A: lda     $1D                             ; CD0A
 L_CD1D: txa                                     ; CD1D
         and     #$07                            ; CD1E
         tax                                     ; CD20
-        lda     (DispatchPtr),y                 ; CD21
+        lda     (IndirectPtrLo),y               ; CD21
 L_CD23: asl     a                               ; CD23
         dex                                     ; CD24
         bpl     L_CD23                          ; CD25

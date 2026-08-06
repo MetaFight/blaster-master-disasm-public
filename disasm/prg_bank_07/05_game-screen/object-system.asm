@@ -169,7 +169,7 @@ L_C9AE: txa                                     ; C9AE
         lsr     a                               ; C9B6
         lsr     a                               ; C9B7
         and     #$0F                            ; C9B8
-        sta     $D3                             ; C9BA
+        sta     SavedPrgBank                    ; C9BA
         lda     LoadedObj + Obj::Type           ; C9BC
         sec                                     ; C9BE
         sbc     #$01                            ; C9BF
@@ -177,12 +177,12 @@ L_C9AE: txa                                     ; C9AE
         lda     $15                             ; C9C4
         bne     L_C9D3                          ; C9C6
         clc                                     ; C9C8
-        lda     DispatchPtr                     ; C9C9
+        lda     IndirectPtrLo                   ; C9C9
         adc     #$03                            ; C9CB
-        sta     DispatchPtr                     ; C9CD
+        sta     IndirectPtrLo                   ; C9CD
         bcc     L_C9D3                          ; C9CF
-        inc     DispatchPtrHi                   ; C9D1
-L_C9D3: jmp     (DispatchPtr)                   ; C9D3
+        inc     IndirectPtrHi                   ; C9D1
+L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
 
 .endmacro
 

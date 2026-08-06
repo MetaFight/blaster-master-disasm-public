@@ -13,9 +13,9 @@ L_F7D1: jsr     L_EA03                          ; F7D1
         lda     #$0D                            ; F7E7
         sta     $C8                             ; F7E9
         lda     L_F82C                          ; F7EB
-        sta     DispatchPtr                     ; F7EE
+        sta     IndirectPtrLo                   ; F7EE
         lda     L_F82C+1                        ; F7F0
-        sta     DispatchPtrHi                   ; F7F3
+        sta     IndirectPtrHi                   ; F7F3
         ldy     #$00                            ; F7F5
         jsr     L_E823                          ; F7F7
         lda     #$10                            ; F7FA

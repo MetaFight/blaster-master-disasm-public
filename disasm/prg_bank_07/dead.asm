@@ -65,11 +65,11 @@ L_E2C0: rts                                     ; E2C0
 ; ----------------------------------------------------------------------------
 L_EA56: tya                                     ; EA56
         clc                                     ; EA57
-        adc     DispatchPtr                     ; EA58
-        sta     DispatchPtr                     ; EA5A
+        adc     IndirectPtrLo                   ; EA58
+        sta     IndirectPtrLo                   ; EA5A
         bcc     L_EA60                          ; EA5C
-        inc     DispatchPtrHi                   ; EA5E
-L_EA60: jmp     (DispatchPtr)                   ; EA60
+        inc     IndirectPtrHi                   ; EA5E
+L_EA60: jmp     (IndirectPtrLo)                 ; EA60
 
 .endmacro
 
@@ -158,7 +158,7 @@ L_EB64: pha                                     ; EB64
         jsr     BankDispatch_Switch             ; EB67
         pla                                     ; EB6A
         jsr     L_EB51                          ; EB6B
-        jmp     (DispatchPtr)                   ; EB6E
+        jmp     (IndirectPtrLo)                 ; EB6E
 
 .endmacro
 
@@ -173,9 +173,9 @@ L_F465: lda     #$00                            ; F465
         sta     $D5                             ; F473
         sta     $D4                             ; F475
         lda     L_F523                          ; F477
-        sta     DispatchPtr                     ; F47A
+        sta     IndirectPtrLo                   ; F47A
         lda     LF524                           ; F47C
-        sta     DispatchPtrHi                   ; F47F
+        sta     IndirectPtrHi                   ; F47F
         ldy     #$00                            ; F481
         lda     #$08                            ; F483
         sta     $C7                             ; F485
@@ -273,9 +273,9 @@ L_F53B: .byte   $50,$52,$45,$53,$53,$20,$53,$54 ; F53B
 .macro MAC_L_F5AE
 ; ----------------------------------------------------------------------------
 L_F5AE: lda     L_F5CF                          ; F5AE
-        sta     DispatchPtr                     ; F5B1
+        sta     IndirectPtrLo                   ; F5B1
         lda     LF5D0                           ; F5B3
-        sta     DispatchPtrHi                   ; F5B6
+        sta     IndirectPtrHi                   ; F5B6
         ldy     #$00                            ; F5B8
         lda     #$02                            ; F5BA
         sta     $C7                             ; F5BC

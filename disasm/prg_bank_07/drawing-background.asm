@@ -42,11 +42,11 @@ L_E986: pha                                     ; E986
         rts                                     ; E995
 
 ; ----------------------------------------------------------------------------
-L_E996: lda     (DispatchPtr),y                 ; E996
+L_E996: lda     (IndirectPtrLo),y               ; E996
         sta     L0000                           ; E998
         iny                                     ; E99A
         bne     L_E99F                          ; E99B
-        inc     DispatchPtrHi                   ; E99D
+        inc     IndirectPtrHi                   ; E99D
 L_E99F: lda     L0000                           ; E99F
         rts                                     ; E9A1
 
@@ -65,13 +65,13 @@ L_E9A6: pha                                     ; E9A6
         pla                                     ; E9B7
 L_E9B8: pha                                     ; E9B8
         lda     $DB                             ; E9B9
-        sta     $D3                             ; E9BB
+        sta     SavedPrgBank                    ; E9BB
         lda     #$30                            ; E9BD
         jsr     BankDispatch_Switch             ; E9BF
         pla                                     ; E9C2
         jsr     L_EB51                          ; E9C3
         jsr     L_E953                          ; E9C6
-        lda     $D3                             ; E9C9
+        lda     SavedPrgBank                    ; E9C9
         jsr     BankSave_Switch                 ; E9CB
         rts                                     ; E9CE
 
@@ -79,7 +79,7 @@ L_E9B8: pha                                     ; E9B8
 L_E9CF: pha                                     ; E9CF
         jsr     L_EA03                          ; E9D0
         lda     $DB                             ; E9D3
-        sta     $D3                             ; E9D5
+        sta     SavedPrgBank                    ; E9D5
         lda     #$30                            ; E9D7
         jsr     BankDispatch_Switch             ; E9D9
         pla                                     ; E9DC
@@ -95,7 +95,7 @@ L_E9F3: jsr     ScreenFade_Step                 ; E9F3
         jsr     WaitNMI                         ; E9F6
         lda     $B6                             ; E9F9
         bne     L_E9F3                          ; E9FB
-        lda     $D3                             ; E9FD
+        lda     SavedPrgBank                    ; E9FD
         jsr     BankSave_Switch                 ; E9FF
         rts                                     ; EA02
 

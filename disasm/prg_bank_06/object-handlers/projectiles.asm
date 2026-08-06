@@ -60,9 +60,9 @@ L_97C6: lda     #$10                            ; 97C6
         jsr     LD7A0                           ; 97D8
         bmi     L_980C                          ; 97DB
         lda     L_9817                          ; 97DD
-        sta     DispatchPtr                     ; 97E0
+        sta     IndirectPtrLo                   ; 97E0
         lda     L9818                           ; 97E2
-        sta     DispatchPtrHi                   ; 97E5
+        sta     IndirectPtrHi                   ; 97E5
         ldy     #$00                            ; 97E7
         ldx     LoadedObj + Obj::Facing         ; 97E9
         lda     L_980F,x                        ; 97EB
@@ -205,9 +205,9 @@ L_9929: lda     #$08                            ; 9929
 L_9933: lda     #$00                            ; 9933
         sta     $44                             ; 9935
         lda     L_996E                          ; 9937
-        sta     DispatchPtr                     ; 993A
+        sta     IndirectPtrLo                   ; 993A
         lda     L_996E+1                        ; 993C
-        sta     DispatchPtrHi                   ; 993F
+        sta     IndirectPtrHi                   ; 993F
         ldy     #$00                            ; 9941
         lda     LoadedObj + Obj::Scratch2       ; 9943
         beq     L_9965                          ; 9945
@@ -435,9 +435,9 @@ L_9B47: lda     #$10                            ; 9B47
         lda     #$00                            ; 9B5B
         sta     $44                             ; 9B5D
         lda     L_996E                          ; 9B5F
-        sta     DispatchPtr                     ; 9B62
+        sta     IndirectPtrLo                   ; 9B62
         lda     L_996E+1                        ; 9B64
-        sta     DispatchPtrHi                   ; 9B67
+        sta     IndirectPtrHi                   ; 9B67
         ldy     #$00                            ; 9B69
         lda     $10                             ; 9B6B
         asl     a                               ; 9B6D

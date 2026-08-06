@@ -75,7 +75,7 @@ TankEnemy_DamageCheck:
         lda     ($A1),y                         ; A30F
 ; Pass A (the attacker's ContactDamage) into Enemy_Damage_Check_Sub
         jsr     Enemy_Damage_Check_Sub          ; A311
-; Store Enemy_Damage_Check_Sub's return code into t_Projectile_Damage_45.
+; Store Enemy_Damage_Check_Sub's return code into WR_Context_Dependent_45.
 ;   $00 on a connecting hit,
 ;   $FF on a miss
         sta     $45                             ; A314

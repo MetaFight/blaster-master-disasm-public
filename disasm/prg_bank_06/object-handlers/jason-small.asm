@@ -507,9 +507,9 @@ L_8515: jsr     MetaSprite_Render                           ; 8515
 
 ; ----------------------------------------------------------------------------
 L_851B: lda     L_8540                          ; 851B
-        sta     DispatchPtr                     ; 851E
+        sta     IndirectPtrLo                   ; 851E
         lda     L_8540+1                        ; 8520
-        sta     DispatchPtrHi                   ; 8523
+        sta     IndirectPtrHi                   ; 8523
         ldy     #$00                            ; 8525
         ldx     #$20                            ; 8527
         lda     $F7                             ; 8529

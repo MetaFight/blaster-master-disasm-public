@@ -134,9 +134,9 @@ L_F92D: pha                                     ; F92D
         lsr     $05                             ; F92E
         bcc     L_F966                          ; F930
         lda     L_F96F                          ; F932
-        sta     DispatchPtr                     ; F935
+        sta     IndirectPtrLo                   ; F935
         lda     L_F96F+1                        ; F937
-        sta     DispatchPtrHi                   ; F93A
+        sta     IndirectPtrHi                   ; F93A
         ldy     #$00                            ; F93C
         pla                                     ; F93E
         pha                                     ; F93F
@@ -144,20 +144,20 @@ L_F92D: pha                                     ; F92D
         tay                                     ; F941
         jsr     L_EA63                          ; F942
         ldy     #$00                            ; F945
-        lda     (DispatchPtr),y                 ; F947
+        lda     (IndirectPtrLo),y               ; F947
         iny                                     ; F949
         sta     $C7                             ; F94A
-        lda     (DispatchPtr),y                 ; F94C
+        lda     (IndirectPtrLo),y               ; F94C
         iny                                     ; F94E
         sta     $C8                             ; F94F
         bit     $C7                             ; F951
         bmi     L_F966                          ; F953
         clc                                     ; F955
-        lda     DispatchPtr                     ; F956
+        lda     IndirectPtrLo                   ; F956
         adc     #$02                            ; F958
-        sta     DispatchPtr                     ; F95A
+        sta     IndirectPtrLo                   ; F95A
         bcc     L_F960                          ; F95C
-        inc     DispatchPtrHi                   ; F95E
+        inc     IndirectPtrHi                   ; F95E
 L_F960: jsr     L_E797                          ; F960
         jsr     L_F1CA                          ; F963
 L_F966: pla                                     ; F966

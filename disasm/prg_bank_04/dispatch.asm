@@ -1,6 +1,6 @@
 .macro MAC_L_8000
 ; Bank-04 top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 + nibble×2) to
-; seed DispatchPtr ($7A/$7B). 3 LE16 sub-table pointers: [0]=$8006 ObjDispatch_Table_Bk04 (the
+; seed IndirectPtr ($7A/$7B). 3 LE16 sub-table pointers: [0]=$8006 ObjDispatch_Table_Bk04 (the
 ; overhead AI handler table — nibble 0, the RunObjectHandler path), [1]=$8907
 ; Metasprite_Table_Tank (read by MetaSprite_Render $F011 with A=#$41), [2]=$8006 again (no known
 ; caller uses nibble 2). Entry [1] is the *tank* metasprite table, so this table is not AI-only.
@@ -10,8 +10,8 @@ BankDispatch_TopTable_Bk04:
         .addr   L_8907                          ; 8002
         .addr   ObjDispatch_Table_Bk04          ; 8004
 ; Bank-04 (overhead) AI handler table: 134 × 2-byte LE handler pointers, spanning $8006–$8111, for
-; ObjType $01–$86. Read by BankDispatch_Index ($EB51) as DispatchPtr[(ObjType−1)×2] with
-; DispatchPtr = $8006, so ObjType N's handler pointer sits at $8004 + N×2. Entries 0/1 → null
+; ObjType $01–$86. Read by BankDispatch_Index ($EB51) as IndirectPtr[(ObjType−1)×2] with
+; IndirectPtr = $8006, so ObjType N's handler pointer sits at $8004 + N×2. Entries 0/1 → null
 ; handler ($8AF1); entry 2 (ObjType=$03) → ObjHandler_Ovhd_03_Jason ($8C38, OvhdJason main).
 ; Bank-06 counterpart: ObjDispatch_Table_Bk06 ($8002)
 ObjDispatch_Table_Bk04:

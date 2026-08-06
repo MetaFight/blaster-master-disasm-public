@@ -274,9 +274,9 @@ L_FA09: pha                                     ; FA09
 
 ; ----------------------------------------------------------------------------
 L_FA17: lda     L_FCF9                          ; FA17
-        sta     DispatchPtr                     ; FA1A
+        sta     IndirectPtrLo                   ; FA1A
         lda     L_FCF9+1                        ; FA1C
-        sta     DispatchPtrHi                   ; FA1F
+        sta     IndirectPtrHi                   ; FA1F
         ldy     #$00                            ; FA21
         lda     #$00                            ; FA23
         sta     $C8                             ; FA25
@@ -364,21 +364,21 @@ L_FAB8: rts                                     ; FAB8
 
 ; ----------------------------------------------------------------------------
 L_FAB9: lda     L_FAF8                          ; FAB9
-        sta     DispatchPtr                     ; FABC
+        sta     IndirectPtrLo                   ; FABC
         lda     L_FAF8+1                        ; FABE
-        sta     DispatchPtrHi                   ; FAC1
+        sta     IndirectPtrHi                   ; FAC1
         ldy     #$00                            ; FAC3
 L_FAC5: jsr     L_FC42                          ; FAC5
         ldy     #$00                            ; FAC8
-        lda     (DispatchPtr),y                 ; FACA
+        lda     (IndirectPtrLo),y               ; FACA
         iny                                     ; FACC
         sta     $BF                             ; FACD
-        lda     (DispatchPtr),y                 ; FACF
+        lda     (IndirectPtrLo),y               ; FACF
         beq     L_FAF5                          ; FAD1
         iny                                     ; FAD3
         sta     $C0                             ; FAD4
         jsr     L_F19B                          ; FAD6
-L_FAD9: lda     (DispatchPtr),y                 ; FAD9
+L_FAD9: lda     (IndirectPtrLo),y               ; FAD9
         iny                                     ; FADB
         cmp     #$FF                            ; FADC
         beq     L_FAE7                          ; FADE
@@ -431,7 +431,7 @@ L_FAFA: .byte   $D2,$20,$04,$00,$05,$00,$14,$00 ; FAFA
 L_FBD6: jsr     L_E74D                          ; FBD6
         jsr     L_F19B                          ; FBD9
         ldy     #$00                            ; FBDC
-L_FBDE: lda     (DispatchPtr),y                 ; FBDE
+L_FBDE: lda     (IndirectPtrLo),y               ; FBDE
         iny                                     ; FBE0
         cmp     #$2F                            ; FBE1
         beq     L_FBEF                          ; FBE3

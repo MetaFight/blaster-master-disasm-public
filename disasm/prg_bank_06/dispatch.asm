@@ -1,13 +1,13 @@
 .macro MAC_L_8000
 ; Bank-06 (tank) top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 +
-; nibble×2) to seed DispatchPtr ($7A/$7B). 1 LE16 entry: [0]=$8002 ObjDispatch_Table_Bk06. Only
+; nibble×2) to seed IndirectPtr ($7A/$7B). 1 LE16 entry: [0]=$8002 ObjDispatch_Table_Bk06. Only
 ; nibble 0 is ever used in this bank, and the word points at the immediately following byte, so
 ; top table and handler table are contiguous — the bank-04 counterpart
 ; (BankDispatch_TopTable_Bk04) has 3 entries and a real gap before its handler table
 BankDispatch_TopTable_Bk06:
         .addr   ObjDispatch_Table_Bk06          ; 8000
 ; Bank-06 (tank) AI handler table: 145 × 2-byte LE handler pointers, $8002–$8123, for ObjType
-; $01–$91. Read by BankDispatch_Index ($EB51) as DispatchPtr[(ObjType−1)×2] with DispatchPtr =
+; $01–$91. Read by BankDispatch_Index ($EB51) as IndirectPtr[(ObjType−1)×2] with IndirectPtr =
 ; $8002, so ObjType N's handler pointer sits at $8000 + N×2. Two null slots ($806E ObjType $37,
 ; $80AE ObjType $57) split the run — see _NullSlot37/_NullSlot57. Bank-04 counterpart:
 ; ObjDispatch_Table_Bk04 ($8006)

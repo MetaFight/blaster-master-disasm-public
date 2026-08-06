@@ -27,20 +27,20 @@ _MetaSprite_Render__SelectTable:
         jsr     BankDispatch_Switch             ; F01D
         pla                                     ; F020
         jsr     L_F029                          ; F021
-        lda     $D3                             ; F024
+        lda     SavedPrgBank                    ; F024
         jmp     BankSave_Switch                 ; F026
 
 ; ----------------------------------------------------------------------------
 L_F029: asl     a                               ; F029
         tay                                     ; F02A
         bcc     L_F02F                          ; F02B
-        inc     DispatchPtrHi                   ; F02D
-L_F02F: lda     (DispatchPtr),y                 ; F02F
+        inc     IndirectPtrHi                   ; F02D
+L_F02F: lda     (IndirectPtrLo),y               ; F02F
         iny                                     ; F031
         tax                                     ; F032
-        lda     (DispatchPtr),y                 ; F033
-        sta     DispatchPtrHi                   ; F035
-        stx     DispatchPtr                     ; F037
+        lda     (IndirectPtrLo),y               ; F033
+        sta     IndirectPtrHi                   ; F035
+        stx     IndirectPtrLo                   ; F037
         lda     $4F                             ; F039
         beq     L_F04B                          ; F03B
         lda     $44                             ; F03D
@@ -61,7 +61,7 @@ L_F058: ldy     #$00                            ; F058
         lda     $44                             ; F05A
         asl     a                               ; F05C
         asl     a                               ; F05D
-        lda     (DispatchPtr),y                 ; F05E
+        lda     (IndirectPtrLo),y               ; F05E
         iny                                     ; F060
         bcc     L_F065                          ; F061
         eor     #$FF                            ; F063
@@ -69,17 +69,17 @@ L_F065: adc     $3E                             ; F065
         sta     $3E                             ; F067
         lda     $44                             ; F069
         asl     a                               ; F06B
-        lda     (DispatchPtr),y                 ; F06C
+        lda     (IndirectPtrLo),y               ; F06C
         iny                                     ; F06E
         bcc     L_F073                          ; F06F
         eor     #$FF                            ; F071
 L_F073: adc     $3F                             ; F073
         sta     $3F                             ; F075
         ldy     #$03                            ; F077
-        lda     (DispatchPtr),y                 ; F079
+        lda     (IndirectPtrLo),y               ; F079
         sta     $45                             ; F07B
         dey                                     ; F07D
-        lda     (DispatchPtr),y                 ; F07E
+        lda     (IndirectPtrLo),y               ; F07E
         tax                                     ; F080
         and     #$0C                            ; F081
         beq     L_F0E8                          ; F083
@@ -93,26 +93,26 @@ L_F08C: cmp     #$08                            ; F08C
         lda     $44                             ; F090
         pha                                     ; F092
         and     #$C3                            ; F093
-        eor     (DispatchPtr),y                 ; F095
+        eor     (IndirectPtrLo),y               ; F095
         sta     $44                             ; F097
         ldy     #$04                            ; F099
-        lda     (DispatchPtr),y                 ; F09B
+        lda     (IndirectPtrLo),y               ; F09B
         jsr     L_F0BC                          ; F09D
         pla                                     ; F0A0
         sta     $44                             ; F0A1
 L_F0A3: ldy     #$02                            ; F0A3
-        lda     (DispatchPtr),y                 ; F0A5
+        lda     (IndirectPtrLo),y               ; F0A5
         and     #$10                            ; F0A7
         beq     L_F0AE                          ; F0A9
         jmp     L_F138                          ; F0AB
 
 ; ----------------------------------------------------------------------------
 L_F0AE: clc                                     ; F0AE
-        lda     DispatchPtr                     ; F0AF
+        lda     IndirectPtrLo                   ; F0AF
         adc     #$05                            ; F0B1
-        sta     DispatchPtr                     ; F0B3
+        sta     IndirectPtrLo                   ; F0B3
         bcc     L_F0B9                          ; F0B5
-        inc     DispatchPtrHi                   ; F0B7
+        inc     IndirectPtrHi                   ; F0B7
 L_F0B9: jmp     L_F04F                          ; F0B9
 
 ; ----------------------------------------------------------------------------
@@ -164,22 +164,22 @@ L_F0E8: ldx     $3C                             ; F0E8
         sta     SpriteStagingBuf + OamEntry::Tile,x ; F0F6
         lda     $44                             ; F0F9
         and     #$C3                            ; F0FB
-        eor     (DispatchPtr),y                 ; F0FD
+        eor     (IndirectPtrLo),y               ; F0FD
         sta     SpriteStagingBuf + OamEntry::Attr,x ; F0FF
         txa                                     ; F102
         clc                                     ; F103
         adc     #$04                            ; F104
         sta     $3C                             ; F106
 L_F108: ldy     #$02                            ; F108
-        lda     (DispatchPtr),y                 ; F10A
+        lda     (IndirectPtrLo),y               ; F10A
         and     #$10                            ; F10C
         bne     L_F138                          ; F10E
         clc                                     ; F110
-        lda     DispatchPtr                     ; F111
+        lda     IndirectPtrLo                   ; F111
         adc     #$04                            ; F113
-        sta     DispatchPtr                     ; F115
+        sta     IndirectPtrLo                   ; F115
         bcc     L_F11B                          ; F117
-        inc     DispatchPtrHi                   ; F119
+        inc     IndirectPtrHi                   ; F119
 L_F11B: jmp     L_F04F                          ; F11B
 
 ; ----------------------------------------------------------------------------
@@ -187,25 +187,25 @@ L_F11E: txa                                     ; F11E
         and     #$C3                            ; F11F
         eor     $44                             ; F121
         sta     $44                             ; F123
-        lda     DispatchPtrHi                   ; F125
+        lda     IndirectPtrHi                   ; F125
         pha                                     ; F127
-        lda     DispatchPtr                     ; F128
+        lda     IndirectPtrLo                   ; F128
         pha                                     ; F12A
         ldy     #$04                            ; F12B
-        lda     (DispatchPtr),y                 ; F12D
-        sta     DispatchPtrHi                   ; F12F
+        lda     (IndirectPtrLo),y               ; F12D
+        sta     IndirectPtrHi                   ; F12F
         lda     $45                             ; F131
-        sta     DispatchPtr                     ; F133
+        sta     IndirectPtrLo                   ; F133
         jmp     L_F04F                          ; F135
 
 ; ----------------------------------------------------------------------------
 L_F138: pla                                     ; F138
-        sta     DispatchPtr                     ; F139
+        sta     IndirectPtrLo                   ; F139
         pla                                     ; F13B
-        sta     DispatchPtrHi                   ; F13C
+        sta     IndirectPtrHi                   ; F13C
         beq     L_F0E7                          ; F13E
         ldy     #$02                            ; F140
-        lda     (DispatchPtr),y                 ; F142
+        lda     (IndirectPtrLo),y               ; F142
         and     #$C0                            ; F144
         eor     $44                             ; F146
         sta     $44                             ; F148

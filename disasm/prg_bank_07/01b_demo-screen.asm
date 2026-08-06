@@ -34,9 +34,9 @@ L_E257: lda     #$2C                            ; E257
         lda     $06F4                           ; E25C
         and     #$03                            ; E25F
         jsr     L_EB51                          ; E261
-        lda     DispatchPtr                     ; E264
+        lda     IndirectPtrLo                   ; E264
         sta     $CE                             ; E266
-        lda     DispatchPtrHi                   ; E268
+        lda     IndirectPtrHi                   ; E268
         sta     $CF                             ; E26A
 L_E26C: lda     #$00                            ; E26C
         sta     $CD                             ; E26E
@@ -87,7 +87,7 @@ L_E2E1: dec     $D0                             ; E2E1
 L_E2FB: lda     $D1                             ; E2FB
         sta     $F7                             ; E2FD
         jsr     L_E308                          ; E2FF
-L_E302: lda     $D3                             ; E302
+L_E302: lda     SavedPrgBank                    ; E302
         jsr     BankSave_Switch                 ; E304
         rts                                     ; E307
 

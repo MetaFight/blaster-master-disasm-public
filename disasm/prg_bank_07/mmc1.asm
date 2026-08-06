@@ -109,7 +109,7 @@ L_E68C: lda     #$80                            ; E68C
         rts                                     ; E691
 
 ; ----------------------------------------------------------------------------
-L_E692: sta     $D3                             ; E692
+L_E692: sta     SavedPrgBank                    ; E692
         jmp     BankSave_Switch                 ; E694
 
 .endmacro

@@ -8,9 +8,9 @@ L_F6A7: jsr     L_EA03                          ; F6A7
         lda     #$0D                            ; F6B2
         sta     $C8                             ; F6B4
         lda     L_F706                          ; F6B6
-        sta     DispatchPtr                     ; F6B9
+        sta     IndirectPtrLo                   ; F6B9
         lda     L_F706+1                        ; F6BB
-        sta     DispatchPtrHi                   ; F6BE
+        sta     IndirectPtrHi                   ; F6BE
         ldy     #$00                            ; F6C0
         jsr     L_E823                          ; F6C2
         lda     #$0D                            ; F6C5

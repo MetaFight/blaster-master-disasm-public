@@ -36,9 +36,9 @@ L_E351: ldx     $01                             ; E351
 L_E355: lda     #$04                            ; E355
         sta     $D5                             ; E357
         lda     L_E368                          ; E359
-        sta     DispatchPtr                     ; E35C
+        sta     IndirectPtrLo                   ; E35C
         lda     LE369                           ; E35E
-        sta     DispatchPtrHi                   ; E361
+        sta     IndirectPtrHi                   ; E361
         ldy     #$00                            ; E363
         jmp     L_E3BF                          ; E365
 
@@ -53,9 +53,9 @@ L_E36A: .byte   $07,$21,$17,$30,$07,$29,$17,$30 ; E36A
 L_E38A: lda     #$05                            ; E38A
         sta     $D5                             ; E38C
         lda     L_E39D                          ; E38E
-        sta     DispatchPtr                     ; E391
+        sta     IndirectPtrLo                   ; E391
         lda     LE39E                           ; E393
-        sta     DispatchPtrHi                   ; E396
+        sta     IndirectPtrHi                   ; E396
         ldy     #$00                            ; E398
         jmp     L_E3BF                          ; E39A
 
@@ -70,7 +70,7 @@ L_E39F: .byte   $07,$11,$15,$30,$07,$29,$17,$3F ; E39F
 L_E3BF: lda     #$16                            ; E3BF
         sta     $D4                             ; E3C1
         ldx     #$00                            ; E3C3
-L_E3C5: lda     (DispatchPtr),y                 ; E3C5
+L_E3C5: lda     (IndirectPtrLo),y               ; E3C5
         iny                                     ; E3C7
         sta     $0650,x                         ; E3C8
         inx                                     ; E3CB
@@ -112,9 +112,9 @@ L_E3F8: pha                                     ; E3F8
         lda     #$0B                            ; E406
         sta     $C8                             ; E408
         lda     L_E44C                          ; E40A
-        sta     DispatchPtr                     ; E40D
+        sta     IndirectPtrLo                   ; E40D
         lda     LE44D                           ; E40F
-        sta     DispatchPtrHi                   ; E412
+        sta     IndirectPtrHi                   ; E412
         ldy     #$00                            ; E414
         jsr     L_E797                          ; E416
         lda     #$3C                            ; E419
@@ -129,9 +129,9 @@ L_E41B: pha                                     ; E41B
         lda     #$0B                            ; E429
         sta     $C8                             ; E42B
         lda     L_E479                          ; E42D
-        sta     DispatchPtr                     ; E430
+        sta     IndirectPtrLo                   ; E430
         lda     LE47A                           ; E432
-        sta     DispatchPtrHi                   ; E435
+        sta     IndirectPtrHi                   ; E435
         ldy     #$00                            ; E437
         jsr     L_E797                          ; E439
         lda     #$78                            ; E43C
@@ -219,18 +219,18 @@ L_E4FD: lda     #$00                            ; E4FD
         lda     LE53E,x                         ; E50A
         sta     $3F                             ; E50D
         lda     L_E54D                          ; E50F
-        sta     DispatchPtr                     ; E512
+        sta     IndirectPtrLo                   ; E512
         lda     LE54E                           ; E514
-        sta     DispatchPtrHi                   ; E517
+        sta     IndirectPtrHi                   ; E517
         ldy     #$00                            ; E519
         lda     $02                             ; E51B
         asl     a                               ; E51D
         jsr     L_F029                          ; E51E
         jsr     L_EC73                          ; E521
         lda     L_E54D                          ; E524
-        sta     DispatchPtr                     ; E527
+        sta     IndirectPtrLo                   ; E527
         lda     LE54E                           ; E529
-        sta     DispatchPtrHi                   ; E52C
+        sta     IndirectPtrHi                   ; E52C
         ldy     #$00                            ; E52E
         lda     $02                             ; E530
         asl     a                               ; E532

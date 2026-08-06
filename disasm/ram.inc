@@ -127,10 +127,13 @@ SpriteStagingBuf_Sprite3 := $060C   ; element 3
 ObjectSlot_Offset                 := $0056
 ; Index of the active slot
 ObjectSlot_Index                  := $0057
-; Indirect dispatch pointer, lo byte.
-DispatchPtr                       := $007A
-; Indirect dispatch pointer, hi byte.
-DispatchPtrHi                     := $007B
+; Shared zero-page indirect pointer, lo byte -- the base of (ptr),Y addressing used throughout
+; the fixed bank and both AI banks for whatever data the caller needs indexed: bank-dispatch
+; handler tables, metasprite definition tables, and text/VRAM-queue streams among them. Not
+; dedicated to dispatch despite the address's history.
+IndirectPtrLo                     := $007A
+; Shared zero-page indirect pointer, hi byte. See IndirectPtrLo ($7A).
+IndirectPtrHi                     := $007B
 ; Counter for Sophia's "look up" animation.
 ; 0x00 is not started
 ; 0x0C is completed (looking straight up)
@@ -140,6 +143,8 @@ Sophia_LookUpAnimation_Counter    := $0094
 ; bit 6 set means a collision happened above or below.
 ; The value of LoadedObj's velocity is used to disambiguate the collision side.
 TerrainCollisionFlags             := $009A
+; PRG bank number to restore via BankSave_Switch ($E619) once a temporary bank switch is done.
+SavedPrgBank                      := $00D3
 ; 18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's
 ; real ObjType when it is made Dormant (ObjType $02).
 ; The Dormant ObjType handler then reads from this table to restore the tombstoned Object.

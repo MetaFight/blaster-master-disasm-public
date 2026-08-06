@@ -199,9 +199,9 @@ L_8AF8: jmp     L_8B0E                          ; 8AF8
 L_8AFB: lda     #$3A                            ; 8AFB
         sta     $45                             ; 8AFD
         lda     L_8B13                          ; 8AFF
-        sta     DispatchPtr                     ; 8B02
+        sta     IndirectPtrLo                   ; 8B02
         lda     L_8B13+1                        ; 8B04
-        sta     DispatchPtrHi                   ; 8B07
+        sta     IndirectPtrHi                   ; 8B07
         ldy     #$00                            ; 8B09
         jsr     L_8BE5                          ; 8B0B
 L_8B0E: lda     #$3A                            ; 8B0E
@@ -225,9 +225,9 @@ L_8B36: jmp     L_8B4C                          ; 8B36
 L_8B39: lda     #$43                            ; 8B39
         sta     $45                             ; 8B3B
         lda     L_8B51                          ; 8B3D
-        sta     DispatchPtr                     ; 8B40
+        sta     IndirectPtrLo                   ; 8B40
         lda     L_8B51+1                        ; 8B42
-        sta     DispatchPtrHi                   ; 8B45
+        sta     IndirectPtrHi                   ; 8B45
         ldy     #$00                            ; 8B47
         jsr     L_8BE5                          ; 8B49
 L_8B4C: lda     #$43                            ; 8B4C
@@ -251,9 +251,9 @@ L_8B74: jmp     L_8B8A                          ; 8B74
 L_8B77: lda     #$4C                            ; 8B77
         sta     $45                             ; 8B79
         lda     L_8B8F                          ; 8B7B
-        sta     DispatchPtr                     ; 8B7E
+        sta     IndirectPtrLo                   ; 8B7E
         lda     L_8B8F+1                        ; 8B80
-        sta     DispatchPtrHi                   ; 8B83
+        sta     IndirectPtrHi                   ; 8B83
         ldy     #$00                            ; 8B85
         jsr     L_8BE5                          ; 8B87
 L_8B8A: lda     #$4C                            ; 8B8A
@@ -277,9 +277,9 @@ L_8BB2: jmp     L_8BC8                          ; 8BB2
 L_8BB5: lda     #$55                            ; 8BB5
         sta     $45                             ; 8BB7
         lda     L_8BCD                          ; 8BB9
-        sta     DispatchPtr                     ; 8BBC
+        sta     IndirectPtrLo                   ; 8BBC
         lda     L_8BCD+1                        ; 8BBE
-        sta     DispatchPtrHi                   ; 8BC1
+        sta     IndirectPtrHi                   ; 8BC1
         ldy     #$00                            ; 8BC3
         jsr     L_8BE5                          ; 8BC5
 L_8BC8: lda     #$55                            ; 8BC8
@@ -295,13 +295,13 @@ L_8BCF: .byte   $20,$10,$10,$00,$10,$00,$00,$F0 ; 8BCF
 L_8BE5: ldy     LoadedObj + Obj::Scratch1       ; 8BE5
         cpy     #$08                            ; 8BE7
         beq     L_8C00                          ; 8BE9
-        lda     (DispatchPtr),y                 ; 8BEB
+        lda     (IndirectPtrLo),y               ; 8BEB
         sta     LoadedObj + Obj::Velocity_X     ; 8BED
         tya                                     ; 8BEF
         clc                                     ; 8BF0
         adc     #$08                            ; 8BF1
         tay                                     ; 8BF3
-        lda     (DispatchPtr),y                 ; 8BF4
+        lda     (IndirectPtrLo),y               ; 8BF4
         sta     LoadedObj + Obj::Velocity_Y     ; 8BF6
         inc     LoadedObj + Obj::Scratch1       ; 8BF8
         jsr     L_8C32                          ; 8BFA
@@ -318,13 +318,13 @@ L_8C0A: sta     LoadedObj + Obj::Facing         ; 8C0A
         clc                                     ; 8C0E
         adc     #$10                            ; 8C0F
         tay                                     ; 8C11
-        lda     (DispatchPtr),y                 ; 8C12
+        lda     (IndirectPtrLo),y               ; 8C12
         sta     LoadedObj + Obj::Type           ; 8C14
         ldy     #$14                            ; 8C16
-        lda     (DispatchPtr),y                 ; 8C18
+        lda     (IndirectPtrLo),y               ; 8C18
         sta     LoadedObj + Obj::Velocity_X     ; 8C1A
         iny                                     ; 8C1C
-        lda     (DispatchPtr),y                 ; 8C1D
+        lda     (IndirectPtrLo),y               ; 8C1D
         sta     LoadedObj + Obj::Velocity_Y     ; 8C1F
         jsr     L_8C32                          ; 8C21
         lda     $45                             ; 8C24

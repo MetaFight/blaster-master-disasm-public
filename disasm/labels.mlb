@@ -286,8 +286,8 @@ NesPrgRom:FCA5:L_BCA5
 NesPrgRom:FEF1:L_BEF1
 NesPrgRom:FFE2:L_BFE2
 NesPrgRom:FFF4:L_BFF4
-NesPrgRom:10000:BankDispatch_TopTable_Bk04:Bank-04 top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 + nibble×2) to seed DispatchPtr ($7A/$7B). 3 LE16 sub-table pointers: [0]=$8006 ObjDispatch_Table_Bk04 (the overhead AI handler table — nibble 0, the RunObjectHandler path), [1]=$8907 Metasprite_Table_Tank (read by MetaSprite_Render $F011 with A=#$41), [2]=$8006 again (no known caller uses nibble 2). Entry [1] is the *tank* metasprite table, so this table is not AI-only. Bank-06 counterpart: BankDispatch_TopTable_Bk06 ($8000, 1 entry)
-NesPrgRom:10006:ObjDispatch_Table_Bk04:Bank-04 (overhead) AI handler table: 134 × 2-byte LE handler pointers, spanning $8006–$8111, for ObjType $01–$86. Read by BankDispatch_Index ($EB51) as DispatchPtr[(ObjType−1)×2] with DispatchPtr = $8006, so ObjType N's handler pointer sits at $8004 + N×2. Entries 0/1 → null handler ($8AF1); entry 2 (ObjType=$03) → ObjHandler_Ovhd_03_Jason ($8C38, OvhdJason main). Bank-06 counterpart: ObjDispatch_Table_Bk06 ($8002)
+NesPrgRom:10000:BankDispatch_TopTable_Bk04:Bank-04 top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 + nibble×2) to seed IndirectPtr ($7A/$7B). 3 LE16 sub-table pointers: [0]=$8006 ObjDispatch_Table_Bk04 (the overhead AI handler table — nibble 0, the RunObjectHandler path), [1]=$8907 Metasprite_Table_Tank (read by MetaSprite_Render $F011 with A=#$41), [2]=$8006 again (no known caller uses nibble 2). Entry [1] is the *tank* metasprite table, so this table is not AI-only. Bank-06 counterpart: BankDispatch_TopTable_Bk06 ($8000, 1 entry)
+NesPrgRom:10006:ObjDispatch_Table_Bk04:Bank-04 (overhead) AI handler table: 134 × 2-byte LE handler pointers, spanning $8006–$8111, for ObjType $01–$86. Read by BankDispatch_Index ($EB51) as IndirectPtr[(ObjType−1)×2] with IndirectPtr = $8006, so ObjType N's handler pointer sits at $8004 + N×2. Entries 0/1 → null handler ($8AF1); entry 2 (ObjType=$03) → ObjHandler_Ovhd_03_Jason ($8C38, OvhdJason main). Bank-06 counterpart: ObjDispatch_Table_Bk06 ($8002)
 NesPrgRom:10112:L_8112
 NesPrgRom:107F9:L_87F9
 NesPrgRom:1080B:L_880B
@@ -1440,8 +1440,8 @@ NesPrgRom:17FEB:L_BFEB
 NesPrgRom:17FEE:L_BFEE
 NesPrgRom:17FF1:L_BFF1
 NesPrgRom:17FF4:L_BFF4
-NesPrgRom:18000:BankDispatch_TopTable_Bk06:Bank-06 (tank) top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 + nibble×2) to seed DispatchPtr ($7A/$7B). 1 LE16 entry: [0]=$8002 ObjDispatch_Table_Bk06. Only nibble 0 is ever used in this bank, and the word points at the immediately following byte, so top table and handler table are contiguous — the bank-04 counterpart (BankDispatch_TopTable_Bk04) has 3 entries and a real gap before its handler table
-NesPrgRom:18002:ObjDispatch_Table_Bk06:Bank-06 (tank) AI handler table: 145 × 2-byte LE handler pointers, $8002–$8123, for ObjType $01–$91. Read by BankDispatch_Index ($EB51) as DispatchPtr[(ObjType−1)×2] with DispatchPtr = $8002, so ObjType N's handler pointer sits at $8000 + N×2. Two null slots ($806E ObjType $37, $80AE ObjType $57) split the run — see _NullSlot37/_NullSlot57. Bank-04 counterpart: ObjDispatch_Table_Bk04 ($8006)
+NesPrgRom:18000:BankDispatch_TopTable_Bk06:Bank-06 (tank) top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 + nibble×2) to seed IndirectPtr ($7A/$7B). 1 LE16 entry: [0]=$8002 ObjDispatch_Table_Bk06. Only nibble 0 is ever used in this bank, and the word points at the immediately following byte, so top table and handler table are contiguous — the bank-04 counterpart (BankDispatch_TopTable_Bk04) has 3 entries and a real gap before its handler table
+NesPrgRom:18002:ObjDispatch_Table_Bk06:Bank-06 (tank) AI handler table: 145 × 2-byte LE handler pointers, $8002–$8123, for ObjType $01–$91. Read by BankDispatch_Index ($EB51) as IndirectPtr[(ObjType−1)×2] with IndirectPtr = $8002, so ObjType N's handler pointer sits at $8000 + N×2. Two null slots ($806E ObjType $37, $80AE ObjType $57) split the run — see _NullSlot37/_NullSlot57. Bank-04 counterpart: ObjDispatch_Table_Bk04 ($8006)
 NesPrgRom:1806E:L_806E
 NesPrgRom:18070:L_8070
 NesPrgRom:180AE:L_80AE
@@ -2157,7 +2157,7 @@ NesPrgRom:1A304::Add the carry to second byte of TankEnemy_DescTablePtr to get E
 NesPrgRom:1A30A:TankEnemy_DamageCheck:Shared tank-enemy hit-and-kill test, called once per frame from a damageable enemy's Main\nhandler.\n\nEnemy health is updated according to damage taken.\n\nInput:\n   A = TankEnemy_DescTable index (aka Thing ID).\n\nOutput:\n  A = $FF when Obj is killed.  $00 otherwise.\n\nStart by fetching the pointer to this enemy type's Descriptor Record (set to EnemyParam_PtrLo/Hi by calling TankEnemy_Load_EnemyDescPtr).
 NesPrgRom:1A30F::Y=1 selects EnemyDesc field [1] = ContactDamage
 NesPrgRom:1A311::Pass A (the attacker's ContactDamage) into Enemy_Damage_Check_Sub
-NesPrgRom:1A314::Store Enemy_Damage_Check_Sub's return code into t_Projectile_Damage_45.\n  $00 on a connecting hit,\n  $FF on a miss
+NesPrgRom:1A314::Store Enemy_Damage_Check_Sub's return code into WR_Context_Dependent_45.\n  $00 on a connecting hit,\n  $FF on a miss
 NesPrgRom:1A316::If no hit occurred, then the target is necessarily still alive, so branch to the no-kill handler.
 NesPrgRom:1A318::Otherwise handle the hit.\n\nRe-read Health (already decremented by Enemy_Damage_Check_Sub).
 NesPrgRom:1A31A::If it's still > 0, then skill to the no-kill handler.
@@ -3327,9 +3327,9 @@ NesPrgRom:1D679:L_D679
 NesPrgRom:1D67E:L_D67E
 NesPrgRom:1D683:L_D683
 NesPrgRom:1D68D:L_D68D
-NesPrgRom:1D697:Enemy_Damage_Check_Sub:(alpha: not fully human-verified / pending re-verification) Shared hit-resolution routine behind TankEnemy_DamageCheck / _Drop and\nWallGuardian_CheckDefeat. Tests our hitbox against every other object slot\n(Collision_Detection_Sub) and, on a connecting hit, both applies whatever damage the other\nside dealt to our own Health and stamps our own outgoing ContactDamage into the slot we hit.\n\nInput:\n  A = our outgoing ContactDamage (bits 0-6; parked in $44 for Collision_Detection_Sub to\n  post into the target's Contact record).\n\nOutput:\n  On a MISS, control never returns here at all — Collision_Detection_Sub's own\n  "no collision found" exit discards this routine's pending return address and jumps\n  straight back to whichever routine called Enemy_Damage_Check_Sub, with A=$FF. So callers\n  see A=$FF for a miss and A=$00 for a connecting hit (this routine's own RTS), regardless\n  of whether that hit was lethal — Health is the only signal of a kill.\n  On a connecting hit: Health ($53) is reduced by the incoming damage\n  (t_Projectile_Damage_45) and clamped at 0 (the $7F sentinel means "harmless" and skips\n  the Health change entirely); $4F (hit-response state) is set to $08; a hit SFX ($36), or\n  if Health just reached 0 a death SFX ($1D), is enqueued.\n\nStart by calling Collision_Detection_Sub.
+NesPrgRom:1D697:Enemy_Damage_Check_Sub:(alpha: not fully human-verified / pending re-verification) Shared hit-resolution routine behind TankEnemy_DamageCheck / _Drop and\nWallGuardian_CheckDefeat. Tests our hitbox against every other object slot\n(Collision_Detection_Sub) and, on a connecting hit, both applies whatever damage the other\nside dealt to our own Health and stamps our own outgoing ContactDamage into the slot we hit.\n\nInput:\n  A = our outgoing ContactDamage (bits 0-6; parked in $44 for Collision_Detection_Sub to\n  post into the target's Contact record).\n\nOutput:\n  On a MISS, control never returns here at all — Collision_Detection_Sub's own\n  "no collision found" exit discards this routine's pending return address and jumps\n  straight back to whichever routine called Enemy_Damage_Check_Sub, with A=$FF. So callers\n  see A=$FF for a miss and A=$00 for a connecting hit (this routine's own RTS), regardless\n  of whether that hit was lethal — Health is the only signal of a kill.\n  On a connecting hit: Health ($53) is reduced by the incoming damage\n  (WR_Context_Dependent_45) and clamped at 0 (the $7F sentinel means "harmless" and skips\n  the Health change entirely); $4F (hit-response state) is set to $08; a hit SFX ($36), or\n  if Health just reached 0 a death SFX ($1D), is enqueued.\n\nStart by calling Collision_Detection_Sub.
 NesPrgRom:1D69A::Only reached on a hit (see Output above): save the winning contact-record index (X, from Collision_Detection_Sub) across the calls below.
-NesPrgRom:1D6A0::Check the value of t_Projectile_Damage_45 (the contact record's magnitude Collision_Detection_Sub just copied in)\n  if it's $7F (the harmless sentinel) then skip straight to StampContact, leaving Health untouched.
+NesPrgRom:1D6A0::Check the value of WR_Context_Dependent_45 (the contact record's magnitude Collision_Detection_Sub just copied in)\n  if it's $7F (the harmless sentinel) then skip straight to StampContact, leaving Health untouched.
 NesPrgRom:1D6A2::Otherwise subtract the damage from Health.
 NesPrgRom:1D6A9::clamp at 0 if it would go negative.
 NesPrgRom:1D6AB:_Enemy_Damage_Check_Sub__SaveHealth
@@ -3735,7 +3735,7 @@ NesPrgRom:1E9CF:L_E9CF
 NesPrgRom:1E9F3:L_E9F3
 NesPrgRom:1EA03:L_EA03
 NesPrgRom:1EA30:L_EA30
-NesPrgRom:1EA3A:BankDispatch_Switch:Helper routine to switch PRG banks.  This variant hardcodes X (DispatchPtr) to #$7A.\n\nInput:\n  A (upper nibble) = Target bank\n  A (lower nibble) = entry index into the target bank's top dispatch table\n                     bank 6: BankDispatch_TopTable_Bk06 $8000\n                     bank 4: BankDispatch_TopTable_Bk04 $8000
+NesPrgRom:1EA3A:BankDispatch_Switch:Helper routine to switch PRG banks.  This variant hardcodes X (IndirectPtrLo) to #$7A.\n\nInput:\n  A (upper nibble) = Target bank\n  A (lower nibble) = entry index into the target bank's top dispatch table\n                     bank 6: BankDispatch_TopTable_Bk06 $8000\n                     bank 4: BankDispatch_TopTable_Bk04 $8000
 NesPrgRom:1EA3C:BankDispatch_Switch_NoX:Helper routine to switch PRG banks.\n\nInput:\n  A (upper nibble) = Target bank\n  A (lower nibble) = Entry Index of target bank's BankDispatch_TopTable\n  X = Dispatch Pointer Address
 NesPrgRom:1EA3D::Save a copy of the input to Y,\nthen >> 4 so that A = Target bank."
 NesPrgRom:1EA41::Switch PRG Bank.
@@ -4109,8 +4109,8 @@ NesInternalRam:0052:LoadedObj__Scratch2:General-purpose per-handler byte (offset
 NesInternalRam:0053:LoadedObj__Health:HP for this entity.
 NesInternalRam:0056:ObjectSlot_Offset:Byte offset of the active slot
 NesInternalRam:0057:ObjectSlot_Index:Index of the active slot
-NesInternalRam:007A:DispatchPtr:Indirect dispatch pointer, lo byte.
-NesInternalRam:007B:DispatchPtrHi:Indirect dispatch pointer, hi byte.
+NesInternalRam:007A:IndirectPtrLo:Shared zero-page indirect pointer, lo byte -- the base of (ptr),Y addressing used throughout the fixed bank and both AI banks for whatever data the caller needs indexed: bank-dispatch handler tables, metasprite definition tables, and text/VRAM-queue streams among them. Not dedicated to dispatch despite the address's history.
+NesInternalRam:007B:IndirectPtrHi:Shared zero-page indirect pointer, hi byte. See IndirectPtrLo ($7A).
 NesInternalRam:007C:PlayerContact__Screen_X:(alpha: not fully human-verified / pending re-verification) Screen X, posted by Sprite_Update ($D7A0) from Local_Sprite_Screen_X.
 NesInternalRam:007D:PlayerContact__Screen_Y:(alpha: not fully human-verified / pending re-verification) Screen Y, posted by Sprite_Update ($D7A0) from Local_Sprite_Screen_Y.
 NesInternalRam:007E:PlayerContact__Damage:(alpha: not fully human-verified / pending re-verification) Bit 7 = hit flag, bits 0-6 = damage magnitude. Sprite_Update posts (A & $7F) -- bit 7 is always cleared on post -- and returns the PREVIOUS byte, which is how the owner learns it was hit. An attacker stamps its own magnitude | $80 here (Enemy_Damage_Check_Sub $D6C8 / HitboxScan_LockOn $D71A / HitboxTest_LockOn $D75B). $7F posted means harmless: a scanner reads it as the damage TO ITSELF and $D69C skips on cmp #$7F, which is how touching Jason/Sophia costs an enemy nothing. See EnemyDesc::ContactDamage.
@@ -4131,6 +4131,7 @@ NesInternalRam:008C:Projectile5__Screen_Y:(alpha: not fully human-verified / pen
 NesInternalRam:008D:Projectile5__Damage:(alpha: not fully human-verified / pending re-verification) Bit 7 = hit flag, bits 0-6 = damage magnitude. Sprite_Update posts (A & $7F) -- bit 7 is always cleared on post -- and returns the PREVIOUS byte, which is how the owner learns it was hit. An attacker stamps its own magnitude | $80 here (Enemy_Damage_Check_Sub $D6C8 / HitboxScan_LockOn $D71A / HitboxTest_LockOn $D75B). $7F posted means harmless: a scanner reads it as the damage TO ITSELF and $D69C skips on cmp #$7F, which is how touching Jason/Sophia costs an enemy nothing. See EnemyDesc::ContactDamage.
 NesInternalRam:0094:Sophia_LookUpAnimation_Counter:Counter for Sophia's "look up" animation.\n0x00 is not started\n0x0C is completed (looking straight up)
 NesInternalRam:009A:TerrainCollisionFlags:Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.\n\nbit 7 set means a collision happened to the left or right.\nbit 6 set means a collision happened above or below.\n\nThe value of LoadedObj's velocity is used to disambiguate the collision side.
+NesInternalRam:00D3:SavedPrgBank:PRG bank number to restore via BankSave_Switch ($E619) once a temporary bank switch is done.
 NesInternalRam:0150-0161:DormantSlot_SavedType:18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's\nreal ObjType when it is made Dormant (ObjType $02).\nThe Dormant ObjType handler then reads from this table to restore the tombstoned Object.
 NesInternalRam:0400:PlayerSlot__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0401:PlayerSlot__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).

@@ -208,7 +208,7 @@ L_C659: lda     $C5                             ; C659
         lda     #$00                            ; C667
         jsr     L_EB51                          ; C669
         ldy     #$0F                            ; C66C
-L_C66E: lda     (DispatchPtr),y                 ; C66E
+L_C66E: lda     (IndirectPtrLo),y               ; C66E
         sta     $0650,y                         ; C670
         dey                                     ; C673
         bpl     L_C66E                          ; C674
@@ -335,12 +335,12 @@ L_C789: sta     $FF                             ; C789
 
 ; ----------------------------------------------------------------------------
 L_C78F: lda     L_DD76                          ; C78F
-        sta     DispatchPtr                     ; C792
+        sta     IndirectPtrLo                   ; C792
         lda     L_DD76+1                        ; C794
-        sta     DispatchPtrHi                   ; C797
+        sta     IndirectPtrHi                   ; C797
         ldy     #$00                            ; C799
         ldy     #$05                            ; C79B
-L_C79D: lda     (DispatchPtr),y                 ; C79D
+L_C79D: lda     (IndirectPtrLo),y               ; C79D
 L_C79F: sta     L0000,y                         ; C79F
         dey                                     ; C7A2
         bpl     L_C79D                          ; C7A3
@@ -376,9 +376,9 @@ L_C7C7: tya                                     ; C7C7
 
 ; ----------------------------------------------------------------------------
 L_C7D8: lda     L_C7F8                          ; C7D8
-        sta     DispatchPtr                     ; C7DB
+        sta     IndirectPtrLo                   ; C7DB
         lda     L_C7F8+1                        ; C7DD
-        sta     DispatchPtrHi                   ; C7E0
+        sta     IndirectPtrHi                   ; C7E0
         ldy     #$00                            ; C7E2
         lda     #$00                            ; C7E4
         sta     $3E                             ; C7E6
@@ -475,7 +475,7 @@ L_CA73: lda     #$31                            ; CA73
         and     #$0F                            ; CA7A
         jsr     L_EB51                          ; CA7C
         ldy     #$05                            ; CA7F
-L_CA81: lda     (DispatchPtr),y                 ; CA81
+L_CA81: lda     (IndirectPtrLo),y               ; CA81
         sta     L0000,y                         ; CA83
         dey                                     ; CA86
         bpl     L_CA81                          ; CA87
@@ -707,9 +707,9 @@ L_CEDD: lda     #$00                            ; CEDD
         and     #$FE                            ; CEEF
         sta     $C8                             ; CEF1
         lda     L_CF00                          ; CEF3
-        sta     DispatchPtr                     ; CEF6
+        sta     IndirectPtrLo                   ; CEF6
         lda     L_CF00+1                        ; CEF8
-        sta     DispatchPtrHi                   ; CEFB
+        sta     IndirectPtrHi                   ; CEFB
         jmp     L_E797                          ; CEFD
 
 ; ----------------------------------------------------------------------------
@@ -1731,7 +1731,7 @@ L_D68D: dec     LoadedObj + Obj::Position_Y_Hi  ; D68D
 ;   see A=$FF for a miss and A=$00 for a connecting hit (this routine's own RTS), regardless
 ;   of whether that hit was lethal — Health is the only signal of a kill.
 ;   On a connecting hit: Health ($53) is reduced by the incoming damage
-;   (t_Projectile_Damage_45) and clamped at 0 (the $7F sentinel means 'harmless' and skips
+;   (WR_Context_Dependent_45) and clamped at 0 (the $7F sentinel means 'harmless' and skips
 ;   the Health change entirely); $4F (hit-response state) is set to $08; a hit SFX ($36), or
 ;   if Health just reached 0 a death SFX ($1D), is enqueued.
 ; 
@@ -1744,7 +1744,7 @@ Enemy_Damage_Check_Sub:
         pha                                     ; D69B
         lda     $45                             ; D69C
         cmp     #$7F                            ; D69E
-; Check the value of t_Projectile_Damage_45 (the contact record's magnitude
+; Check the value of WR_Context_Dependent_45 (the contact record's magnitude
 ; Collision_Detection_Sub just copied in)
 ;   if it's $7F (the harmless sentinel) then skip straight to StampContact, leaving Health
 ;   untouched.
@@ -2218,7 +2218,7 @@ L_DF05: lda     #$05                            ; DF05
         jmp     BankSave_Switch                 ; DF07
 
 ; ----------------------------------------------------------------------------
-L_DF0A: lda     $D3                             ; DF0A
+L_DF0A: lda     SavedPrgBank                    ; DF0A
         jmp     BankSave_Switch                 ; DF0C
 
 .endmacro
@@ -2377,7 +2377,7 @@ L_E796: rts                                     ; E796
 
 .macro MAC_L_EA3A
 ; ----------------------------------------------------------------------------
-; Helper routine to switch PRG banks.  This variant hardcodes X (DispatchPtr) to #$7A.
+; Helper routine to switch PRG banks.  This variant hardcodes X (IndirectPtrLo) to #$7A.
 ; 
 ; Input:
 ;   A (upper nibble) = Target bank
@@ -2422,13 +2422,13 @@ BankDispatch_Switch_NoX:
 
 .macro MAC_L_EA63
 ; ----------------------------------------------------------------------------
-L_EA63: lda     (DispatchPtr),y                 ; EA63
+L_EA63: lda     (IndirectPtrLo),y               ; EA63
         pha                                     ; EA65
         iny                                     ; EA66
-        lda     (DispatchPtr),y                 ; EA67
-        sta     DispatchPtrHi                   ; EA69
+        lda     (IndirectPtrLo),y               ; EA67
+        sta     IndirectPtrHi                   ; EA69
         pla                                     ; EA6B
-        sta     DispatchPtr                     ; EA6C
+        sta     IndirectPtrLo                   ; EA6C
         rts                                     ; EA6E
 
 .endmacro
@@ -2437,10 +2437,10 @@ L_EA63: lda     (DispatchPtr),y                 ; EA63
 ; ----------------------------------------------------------------------------
 L_EB44: tya                                     ; EB44
         clc                                     ; EB45
-        adc     DispatchPtr                     ; EB46
-        sta     DispatchPtr                     ; EB48
+        adc     IndirectPtrLo                   ; EB46
+        sta     IndirectPtrLo                   ; EB48
         bcc     L_EB4E                          ; EB4A
-        inc     DispatchPtrHi                   ; EB4C
+        inc     IndirectPtrHi                   ; EB4C
 L_EB4E: ldy     #$00                            ; EB4E
         rts                                     ; EB50
 
@@ -2448,13 +2448,13 @@ L_EB4E: ldy     #$00                            ; EB4E
 L_EB51: asl     a                               ; EB51
         tay                                     ; EB52
         bcc     L_EB57                          ; EB53
-        inc     DispatchPtrHi                   ; EB55
-L_EB57: lda     (DispatchPtr),y                 ; EB57
+        inc     IndirectPtrHi                   ; EB55
+L_EB57: lda     (IndirectPtrLo),y               ; EB57
         iny                                     ; EB59
         tax                                     ; EB5A
-        lda     (DispatchPtr),y                 ; EB5B
-        sta     DispatchPtrHi                   ; EB5D
-        stx     DispatchPtr                     ; EB5F
+        lda     (IndirectPtrLo),y               ; EB5B
+        sta     IndirectPtrHi                   ; EB5D
+        stx     IndirectPtrLo                   ; EB5F
         ldy     #$00                            ; EB61
         rts                                     ; EB63
 
