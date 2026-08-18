@@ -21,9 +21,9 @@ L_AE95: jmp     L_AF03                          ; AE95
 
 ; ----------------------------------------------------------------------------
 L_AE98: lda     #$80                            ; AE98
-        sta     LoadedObj_CollisionBox_HalfWidth; AE9A
+        sta     $42                             ; AE9A
         lda     #$80                            ; AE9C
-        sta     LoadedObj_CollisionBox_HalfHeight; AE9E
+        sta     $43                             ; AE9E
         lda     LoadedObj + Obj::Scratch0       ; AEA0
         bne     L_AEDC                          ; AEA2
         jsr     LD2DE                           ; AEA4

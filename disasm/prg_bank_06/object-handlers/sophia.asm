@@ -361,9 +361,9 @@ L_8C64: jmp     L_8C8B                          ; 8C64
 
 ; ----------------------------------------------------------------------------
 L_8C67: lda     #$C0                            ; 8C67
-        sta     LoadedObj_CollisionBox_HalfWidth; 8C69
+        sta     $42                             ; 8C69
         lda     #$80                            ; 8C6B
-        sta     LoadedObj_CollisionBox_HalfHeight; 8C6D
+        sta     $43                             ; 8C6D
         lda     LoadedObj + Obj::Scratch1       ; 8C6F
         bne     L_8C7C                          ; 8C71
         lda     #$06                            ; 8C73
@@ -401,9 +401,9 @@ L_8CB0: jmp     L_8DC0                          ; 8CB0
 
 ; ----------------------------------------------------------------------------
 L_8CB3: lda     #$C0                            ; 8CB3
-        sta     LoadedObj_CollisionBox_HalfWidth; 8CB5
+        sta     $42                             ; 8CB5
         lda     #$80                            ; 8CB7
-        sta     LoadedObj_CollisionBox_HalfHeight; 8CB9
+        sta     $43                             ; 8CB9
         jsr     LCF07                           ; 8CBB
         jsr     L_96C2                          ; 8CBE
         bne     L_8CCA                          ; 8CC1
@@ -601,9 +601,9 @@ L_8E97: jmp     L_8F64                          ; 8E97
 ; ----------------------------------------------------------------------------
 L_8E9A: jsr     LCF07                           ; 8E9A
         lda     #$C0                            ; 8E9D
-        sta     LoadedObj_CollisionBox_HalfWidth; 8E9F
+        sta     $42                             ; 8E9F
         lda     #$80                            ; 8EA1
-        sta     LoadedObj_CollisionBox_HalfHeight; 8EA3
+        sta     $43                             ; 8EA3
         jsr     L_96C2                          ; 8EA5
         lda     #$80                            ; 8EA8
         sta     LoadedObj + Obj::Position_Y_Lo  ; 8EAA
@@ -809,9 +809,9 @@ L_9009: jmp     L_90C9                          ; 9009
 
 ; ----------------------------------------------------------------------------
 L_900C: lda     #$80                            ; 900C
-        sta     LoadedObj_CollisionBox_HalfWidth; 900E
+        sta     $42                             ; 900E
         lda     #$C0                            ; 9010
-        sta     LoadedObj_CollisionBox_HalfHeight; 9012
+        sta     $43                             ; 9012
         jsr     L_96C2                          ; 9014
         jsr     LCF07                           ; 9017
         lda     #$80                            ; 901A
@@ -1009,9 +1009,9 @@ L_916E: jmp     L_9234                          ; 916E
 
 ; ----------------------------------------------------------------------------
 L_9171: lda     #$80                            ; 9171
-        sta     LoadedObj_CollisionBox_HalfWidth; 9173
+        sta     $42                             ; 9173
         lda     #$C0                            ; 9175
-        sta     LoadedObj_CollisionBox_HalfHeight; 9177
+        sta     $43                             ; 9177
         jsr     LCF07                           ; 9179
         jsr     L_96C2                          ; 917C
         lda     #$80                            ; 917F
@@ -1214,9 +1214,9 @@ L_92DB: jmp     L_94FC                          ; 92DB
 
 ; ----------------------------------------------------------------------------
 L_92DE: lda     #$C0                            ; 92DE
-        sta     LoadedObj_CollisionBox_HalfWidth; 92E0
+        sta     $42                             ; 92E0
         lda     #$80                            ; 92E2
-        sta     LoadedObj_CollisionBox_HalfHeight; 92E4
+        sta     $43                             ; 92E4
         jsr     LCF07                           ; 92E6
         jsr     L_96C2                          ; 92E9
         jsr     L_96A2                          ; 92EC

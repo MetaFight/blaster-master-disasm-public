@@ -58,9 +58,9 @@ L_A24D: jmp     L_A25D                          ; A24D
 
 ; ----------------------------------------------------------------------------
 L_A250: lda     #$40                            ; A250
-        sta     LoadedObj_CollisionBox_HalfWidth; A252
+        sta     $42                             ; A252
         lda     #$40                            ; A254
-        sta     LoadedObj_CollisionBox_HalfHeight; A256
+        sta     $43                             ; A256
         jsr     LE083                           ; A258
         bne     L_A27A                          ; A25B
 L_A25D: lda     #$08                            ; A25D

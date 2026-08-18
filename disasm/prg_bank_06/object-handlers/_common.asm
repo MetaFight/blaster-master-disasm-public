@@ -2,7 +2,7 @@
 ; ----------------------------------------------------------------------------
 ; (alpha: not fully human-verified / pending re-verification) Shared initialisation routine for
 ; every damageable tank enemy, called by each enemy's Init handler.
-; Overhead parallel: OvhdEnemy_Init ($B2B4). See docs/entities/tank/_shared-enemy-system.md.
+; Overhead parallel: OvhdEnemy_Init ($B2B4). See docs/us/entities/tank/_shared-enemy-system.md.
 ; 
 ; Input:
 ;    A = descriptor index (aka Thing ID).
@@ -149,11 +149,12 @@ L_A365: jmp     L_9B8B                          ; A365
 TankEnemy_DescTablePtr:
         .addr   TankEnemy_DescTable             ; A368
 ; ----------------------------------------------------------------------------
-; 30 x EnemyDesc, indexed by descriptor index via TankEnemy_Load_EnemyDescPtr (accessed only via
-; computed ($A1) pointer). See the EnemyDesc struct.
+; (alpha: not fully human-verified / pending re-verification) 30 x EnemyDesc, indexed by
+; descriptor index via TankEnemy_Load_EnemyDescPtr (accessed only via computed ($A1) pointer). See
+; the EnemyDesc struct.
 ; 
 ; The descriptor index equals the spawn-list Thing id for all 30 entries (see
-; docs/entities/entity-map.md), so this is one descriptor per Thing.
+; docs/us/entities/entity-map.md), so this is one descriptor per Thing.
 ; 
 ; Index->enemy:
 ;   00=GrayCaterpillar($54)
@@ -192,7 +193,7 @@ TankEnemy_DescTablePtr:
 ; 1D, but $8E Main and $8F Locked both pass 1C. Behaviourally harmless — 01/02 and 1C/1D are
 ; byte-identical — so which of a pair a handler names is not evidence of that handler's Thing.
 ; 
-; Tank parallel of OvhdEnemy_DescTable ($B326). See docs/entities/tank/_shared-enemy-system.md.
+; Tank parallel of OvhdEnemy_DescTable ($B326). See docs/us/entities/tank/_shared-enemy-system.md.
 TankEnemy_DescTable:
         .byte   $04,$08,$2C,$60 ; A36A  Health=$04 DropType=$2C DropChance=$60
         .byte   $08,$10,$2C,$80 ; A36E  Health=$08 DropType=$2C DropChance=$80

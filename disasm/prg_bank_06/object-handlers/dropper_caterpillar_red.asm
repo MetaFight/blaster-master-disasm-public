@@ -14,9 +14,9 @@ L_A6E4: jmp     L_A71F                          ; A6E4
 
 ; ----------------------------------------------------------------------------
 L_A6E7: lda     #$80                            ; A6E7
-        sta     LoadedObj_CollisionBox_HalfWidth; A6E9
+        sta     $42                             ; A6E9
         lda     #$80                            ; A6EB
-        sta     LoadedObj_CollisionBox_HalfHeight; A6ED
+        sta     $43                             ; A6ED
         lda     LoadedObj + Obj::Scratch0       ; A6EF
         bne     L_A71F                          ; A6F1
         jsr     LE0FA                           ; A6F3

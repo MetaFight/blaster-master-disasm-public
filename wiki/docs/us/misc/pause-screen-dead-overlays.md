@@ -1,5 +1,10 @@
 # Pause Screen — Dead Ability Overlay Tiles
 
+> ⚠️ **Alpha — not fully verified.** This page is published for early access. It has
+> either not yet completed human verification, or was verified and has since been
+> modified and is awaiting re-verification. It may still contain errors.
+
+
 ## Summary
 
 CHR bank `$15` contains cut content: graphical overlay tiles designed to be drawn directly onto the Sophia vehicle illustration in the pause-screen nametable when a vehicle upgrade is collected. In the shipped game these tiles go completely unused; the ability labels (text tiles) are drawn instead. The overlay tiles exist in the ROM alongside the text tiles and are reachable using the same `VramQueue_StageRow` + `VramQueue_Flush` pipeline — the only changes needed are the nametable position, descriptor, and tile index in the item data records at `$F985`–`$F98C`.
@@ -102,7 +107,7 @@ localisation but never completed; its sentinel byte ensures it is always skipped
 `PauseScreen_SophiaPowerUps ($0099)` is the collected-upgrades bitfield — one bit per record above, in the
 same bit order. Setting a bit marks that upgrade "collected", so it shows on the pause screen
 and its ability is enabled in tank physics (e.g. the WALL bits gate wall-climb; see
-`docs/execution-flow/07-sophia-physics.md`). To change loadout live, write `$0099`:
+`docs/us/execution-flow/07-sophia-physics.md`). To change loadout live, write `$0099`:
 
 | Bit | Value | Upgrade |
 |---|---|---|

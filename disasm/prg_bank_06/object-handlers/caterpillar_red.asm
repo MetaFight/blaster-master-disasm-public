@@ -28,9 +28,9 @@ L_A8FB: jmp     L_A994                          ; A8FB
 
 ; ----------------------------------------------------------------------------
 L_A8FE: lda     #$80                            ; A8FE
-        sta     LoadedObj_CollisionBox_HalfWidth; A900
+        sta     $42                             ; A900
         lda     #$40                            ; A902
-        sta     LoadedObj_CollisionBox_HalfHeight; A904
+        sta     $43                             ; A904
         lda     LoadedObj + Obj::Scratch0       ; A906
         bne     L_A975                          ; A908
         lda     LoadedObj + Obj::Scratch2       ; A90A

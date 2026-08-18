@@ -60,9 +60,9 @@ L_A53A: jmp     L_A580                          ; A53A
 
 ; ----------------------------------------------------------------------------
 L_A53D: lda     #$80                            ; A53D
-        sta     LoadedObj_CollisionBox_HalfWidth; A53F
+        sta     $42                             ; A53F
         lda     #$80                            ; A541
-        sta     LoadedObj_CollisionBox_HalfHeight; A543
+        sta     $43                             ; A543
         ldy     #$10                            ; A545
         jsr     L_A670                          ; A547
         jsr     LE107                           ; A54A
@@ -139,9 +139,9 @@ L_A5C2: jmp     L_A605                          ; A5C2
 
 ; ----------------------------------------------------------------------------
 L_A5C5: lda     #$80                            ; A5C5
-        sta     LoadedObj_CollisionBox_HalfWidth; A5C7
+        sta     $42                             ; A5C7
         lda     #$80                            ; A5C9
-        sta     LoadedObj_CollisionBox_HalfHeight; A5CB
+        sta     $43                             ; A5CB
         lda     LoadedObj + Obj::Scratch1       ; A5CD
         beq     L_A5DB                          ; A5CF
         lda     #$43                            ; A5D1

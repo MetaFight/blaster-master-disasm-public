@@ -26,9 +26,9 @@ L_AC63: jmp     L_ACD0                          ; AC63
 
 ; ----------------------------------------------------------------------------
 L_AC66: lda     #$80                            ; AC66
-        sta     LoadedObj_CollisionBox_HalfWidth; AC68
+        sta     $42                             ; AC68
         lda     #$80                            ; AC6A
-        sta     LoadedObj_CollisionBox_HalfHeight; AC6C
+        sta     $43                             ; AC6C
         lda     LoadedObj + Obj::Scratch1       ; AC6E
         beq     L_AC74                          ; AC70
         dec     LoadedObj + Obj::Scratch1       ; AC72

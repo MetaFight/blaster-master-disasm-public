@@ -37,11 +37,11 @@ _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done:
         rts                                     ; A7ED
 
 ; ----------------------------------------------------------------------------
-; ObjType $60 — Gray Hopper (6 HP), active: the hopping/attack half of the enemy. It falls under
-; gravity; on each floor landing it either settles into the walking state $61 or aims a fresh,
-; near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the
-; ground before the stored hop velocity carries it up — so it bounds across the ground toward the
-; player in bursts.
+; ObjType $60: Gray Hopper (6 HP) - Attacking.
+; The hopping/attack half of the enemy. It falls under gravity; on each floor landing it either
+; settles into the walking state $61 or aims a fresh, near-vertical hop at the player, and either
+; way it then sits out a 10-frame wind-up on the ground before the stored hop velocity carries it
+; up — so it bounds across the ground toward the player in bursts.
 ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:
         jmp     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnScreenCheck; A7EE
 
@@ -50,9 +50,9 @@ ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:
 ; timer $51
 _ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:
         lda     #$80                            ; A7F1
-        sta     LoadedObj_CollisionBox_HalfWidth; A7F3
+        sta     $42                             ; A7F3
         lda     #$C0                            ; A7F5
-        sta     LoadedObj_CollisionBox_HalfHeight; A7F7
+        sta     $43                             ; A7F7
         lda     LoadedObj + Obj::Scratch1       ; A7F9
 ; If LoadedObj_Scratch1 (wind-up) is at 0, then proceed to ground check.
         beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired; A7FB
@@ -203,9 +203,9 @@ ObjHandler_Tank_61_GrayHopper6HP_Patrolling:
 ; Start by setting collision box dimensions
 _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Update__:
         lda     #$80                            ; A871
-        sta     LoadedObj_CollisionBox_HalfWidth; A873
+        sta     $42                             ; A873
         lda     #$C0                            ; A875
-        sta     LoadedObj_CollisionBox_HalfHeight; A877
+        sta     $43                             ; A877
 ; and zeroing Velocity_Y.
         lda     #$00                            ; A879
         sta     LoadedObj + Obj::Velocity_Y     ; A87B
@@ -239,7 +239,7 @@ _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__VelStore:
         lda     #$29                            ; A898
         jsr     Enqueue_Sound_Command           ; A89A
         dec     LoadedObj + Obj::Type           ; A89D
-; The 'render only' tail of this objType.
+; The post-physics tail of this objType.
 _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__AfterPhysics:
         lda     #$10                            ; A89F
         sta     $40                             ; A8A1
@@ -253,13 +253,13 @@ _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__AfterPhysics:
         jmp     Obj_TombstoneSlot               ; A8AC
 
 ; ----------------------------------------------------------------------------
-; Run shared damage check routine with enemy descriptor 5.
+; Run shared damage check routine with enemy descriptor $05.
 _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage:
         lda     #$05                            ; A8AF
         jsr     TankEnemy_DamageCheck           ; A8B1
 ; if non-fatal, skip to render tail,
         beq     _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render; A8B4
-; otherwise, call shared death handler.
+; otherwise, call the shared death handler.
         jmp     TankEnemy_Defeat                ; A8B6
 
 ; ----------------------------------------------------------------------------
@@ -279,8 +279,8 @@ _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render:
 ; Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation
 ; frame index.
 ; 
-; This means all patrolling hoppers of this variant walk in lock-step, updating their animation
-; frames every 16 game frames.
+; This means all patrolling hoppers walk in lock-step, updating their animation frames every 16
+; game frames.
         tax                                     ; A8C6
 ; Load the animation frame Metasprite id and call the renderer sub.
         lda     L_A8CE,x                        ; A8C7

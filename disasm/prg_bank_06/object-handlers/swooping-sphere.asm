@@ -14,9 +14,9 @@ L_AD08: jmp     L_ADA9                          ; AD08
 
 ; ----------------------------------------------------------------------------
 L_AD0B: lda     #$80                            ; AD0B
-        sta     LoadedObj_CollisionBox_HalfWidth; AD0D
+        sta     $42                             ; AD0D
         lda     #$80                            ; AD0F
-        sta     LoadedObj_CollisionBox_HalfHeight; AD11
+        sta     $43                             ; AD11
         lda     LoadedObj + Obj::Scratch0       ; AD13
         bne     L_AD4A                          ; AD15
         jsr     LE0FA                           ; AD17

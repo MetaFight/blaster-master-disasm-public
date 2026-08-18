@@ -21,9 +21,9 @@ L_ADFF: jmp     L_AE49                          ; ADFF
 
 ; ----------------------------------------------------------------------------
 L_AE02: lda     #$80                            ; AE02
-        sta     LoadedObj_CollisionBox_HalfWidth; AE04
+        sta     $42                             ; AE04
         lda     #$80                            ; AE06
-        sta     LoadedObj_CollisionBox_HalfHeight; AE08
+        sta     $43                             ; AE08
         lda     LoadedObj + Obj::Scratch0       ; AE0A
         bne     L_AE2F                          ; AE0C
         lda     Global_FrameCounter             ; AE0E
@@ -31,7 +31,7 @@ L_AE02: lda     #$80                            ; AE02
         bne     L_AE19                          ; AE12
         lda     #$45                            ; AE14
         jsr     Enqueue_Sound_Command           ; AE16
-L_AE19: jsr     LDF68                           ; AE19
+L_AE19: jsr     Obj_MoveBounce                           ; AE19
         bpl     L_AE21                          ; AE1C
         jsr     LE0D8                           ; AE1E
 L_AE21: dec     LoadedObj + Obj::Scratch1       ; AE21

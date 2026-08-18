@@ -28,9 +28,9 @@ L_A40B: jmp     L_A4A4                          ; A40B
 
 ; ----------------------------------------------------------------------------
 L_A40E: lda     #$80                            ; A40E
-        sta     LoadedObj_CollisionBox_HalfWidth; A410
+        sta     $42                             ; A410
         lda     #$40                            ; A412
-        sta     LoadedObj_CollisionBox_HalfHeight; A414
+        sta     $43                             ; A414
         lda     LoadedObj + Obj::Scratch0       ; A416
         bne     L_A485                          ; A418
         lda     LoadedObj + Obj::Scratch2       ; A41A

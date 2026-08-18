@@ -6,7 +6,7 @@
 ; different direction, and it is the Main handler's terrain bouncing that turns that into the
 ; circling patrol the player sees. TankEnemy_Init advances it to ObjType $77, so this runs for
 ; exactly one frame. Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this
-; Init draws nothing. See docs/entities/tank/76-77_shooter.md
+; Init draws nothing. See docs/us/entities/tank/76-77_shooter.md
 ObjHandler_Tank_76_Shooter_Init:
         jmp     _ObjHandler_Tank_76_Shooter_Init__Done; AFFC
 
@@ -40,7 +40,7 @@ _ObjHandler_Tank_76_Shooter_Init__Done:
 ; fire again. HP 16; on death it explodes and may drop a Health-x1 pickup. Dual-entry: in normal
 ; play ($15 == 0) the object loop enters at +3 and runs the whole body; while a fade or freeze is
 ; up ($15 != 0) it enters at +0, which skips straight to the hit/render tail. See
-; docs/entities/tank/76-77_shooter.md
+; docs/us/entities/tank/76-77_shooter.md
 ; +0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail
 ObjHandler_Tank_77_Shooter_Main:
         jmp     _ObjHandler_Tank_77_Shooter_Main__Render__; B013
@@ -50,12 +50,12 @@ ObjHandler_Tank_77_Shooter_Main:
 ; $42/$43 = $80: terrain-collision half-extents for the move below
 _ObjHandler_Tank_77_Shooter_Main__Update__:
         lda     #$80                            ; B016
-        sta     LoadedObj_CollisionBox_HalfWidth; B018
+        sta     $42                             ; B018
         lda     #$80                            ; B01A
-        sta     LoadedObj_CollisionBox_HalfHeight; B01C
+        sta     $43                             ; B01C
 ; advance by velocity and bounce off walls (reflects $4C on a horizontal wall, $4D on a vertical
 ; one)
-        jsr     LDF68                           ; B01E
+        jsr     Obj_MoveBounce                  ; B01E
 ; fire cooldown $52 — zero means free to fire
         lda     LoadedObj + Obj::Scratch2       ; B021
         beq     _ObjHandler_Tank_77_Shooter_Main__FireCheck; B023

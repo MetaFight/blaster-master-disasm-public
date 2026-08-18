@@ -415,22 +415,39 @@ L_DF62: pla                                     ; DF62
         rts                                     ; DF67
 
 ; ----------------------------------------------------------------------------
-L_DF68: jsr     L_E083                          ; DF68
-        bpl     L_DF77                          ; DF6B
+; Applies Velocity_X and Velocity_Y to LoadedObject (via Obj_MoveAndCollide).
+; 
+; Then, handles bouncing horizontally and/or vertically based on collisions.
+; 
+; Returns:
+;   A = TerrainCollisionFlags
+;     bit 7: horizontal collision
+;     bit 6: vertical collision
+Obj_MoveBounce:
+        jsr     L_E083                          ; DF68
+; If bit 7 (side wall collision flag) is clear, skip to vertical checks.
+        bpl     _Obj_MoveBounce__CheckVertical  ; DF6B
+; Otherwise, flip Velocity_X and return.
         lda     #$00                            ; DF6D
         sec                                     ; DF6F
         sbc     LoadedObj + Obj::Velocity_X     ; DF70
         sta     LoadedObj + Obj::Velocity_X     ; DF72
-        jmp     L_DF81                          ; DF74
+        jmp     _Obj_MoveBounce__Return         ; DF74
 
 ; ----------------------------------------------------------------------------
-L_DF77: asl     a                               ; DF77
-        bpl     L_DF81                          ; DF78
+; Handle vertical collisions
+_Obj_MoveBounce__CheckVertical:
+        asl     a                               ; DF77
+; Probe bit 6 (floor/ceiling collision flag).  Return early if clear.
+        bpl     _Obj_MoveBounce__Return         ; DF78
+; Otherwise, flip Velocity_Y.
         lda     #$00                            ; DF7A
         sec                                     ; DF7C
         sbc     LoadedObj + Obj::Velocity_Y     ; DF7D
         sta     LoadedObj + Obj::Velocity_Y     ; DF7F
-L_DF81: lda     TerrainCollisionFlags           ; DF81
+; Return the TerrainCollisionFlags.
+_Obj_MoveBounce__Return:
+        lda     TerrainCollisionFlags           ; DF81
         rts                                     ; DF83
 
 ; ----------------------------------------------------------------------------
@@ -568,19 +585,33 @@ L_E002: sta     LoadedObj + Obj::Scratch2       ; E002
         rts                                     ; E004
 
 ; ----------------------------------------------------------------------------
-L_E005: lda     #$02                            ; E005
+; Applies a gravity of 2 px/s^2 (via Obj_GravityMoveBounce_Double).
+; 
+; Returns:
+;   on landing,
+;     Velocity_Y = 0
+;     A = $FF (landed)
+;   otherwise,
+;     A = $00
+Obj_FallAndLand:
+        lda     #$02                            ; E005
         jsr     Obj_GravityMoveBounce_Double    ; E007
         asl     a                               ; E00A
-        bpl     L_E018                          ; E00B
+; Test bit 6.  If clear, skip to 'not landed' tail.
+        bpl     _Obj_FallAndLand__NotLanded     ; E00B
+; Test Velocity_Y.  If positive, skip to 'not landed' tail.
         lda     LoadedObj + Obj::Velocity_Y     ; E00D
-        bpl     L_E018                          ; E00F
+        bpl     _Obj_FallAndLand__NotLanded     ; E00F
+; otherwise, set Velocity_Y to 0 and A to $FF and return.
         lda     #$00                            ; E011
         sta     LoadedObj + Obj::Velocity_Y     ; E013
         lda     #$FF                            ; E015
         rts                                     ; E017
 
 ; ----------------------------------------------------------------------------
-L_E018: lda     #$00                            ; E018
+; No floor hit (or hit the ceiling): return A=$00.
+_Obj_FallAndLand__NotLanded:
+        lda     #$00                            ; E018
         rts                                     ; E01A
 
 .endmacro
@@ -597,7 +628,7 @@ L_E018: lda     #$00                            ; E018
 ; clear - a dropoff) reverse XVel $4C and arm a $20-frame cooldown. Walker motion that turns back
 ; at platform edges. Dispatch slot $C033 - no callers in USA ROM.'
 Obj_MoveBounce_TurnAtLedge:
-        jsr     L_DF68                          ; E02F
+        jsr     Obj_MoveBounce                  ; E02F
         lda     LoadedObj + Obj::Scratch1       ; E032
 ; if Scratch1 (probe cooldown) is 0, skip to probe logic,
         beq     _Obj_MoveBounce_TurnAtLedge__Probe; E034

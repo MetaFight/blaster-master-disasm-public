@@ -6,23 +6,10 @@
 ; not yet signed off stays a bare number in the listings rather than shipping a name the
 ; project has not stood behind — see docs/meta/verification-workflow.md.
 ;
-; Prose lives in hints.yaml and docs/wip/ram-map.md; the one-liners below are a legend.
+; Prose lives in hints.yaml and docs/us/wip/ram-map.md; the one-liners below are a legend.
 
 ; Global counter incremented every frame.  Does not increment on lag frames.
-Global_FrameCounter               := $0011
-; Half-WIDTH of the active object's terrain-collision box, measured from the object's centre,
-; in the same 4.4 fixed-pixel units as LoadedObj_Position_X_Lo (so $80 = 8.0 px = a 16 px wide
-; box, $40 = 8 px wide, $C0 = 24 px wide). Set by the object's handler on entry, every frame.
-; Together with LoadedObj_CollisionBox_HalfHeight it defines one axis-aligned box centred on
-; the object. Both bytes are read ONLY by H_Collision_Check ($D37D) and V_Collision_Check
-; ($D3E1). So this is strictly terrain/tile collision.
-; Full write-up: docs/misc/terrain-collision.md
-LoadedObj_CollisionBox_HalfWidth  := $0042
-; Half-HEIGHT of the active object's terrain-collision box, measured from the object's centre,
-; in the same 4.4 fixed-pixel units as LoadedObj_Position_Y_Lo (so $80 = 8.0 px = a 16 px tall
-; box, $40 = 8 px tall, $C0 = 24 px tall). Set by the object's handler on entry, every frame.
-; Full write-up: docs/misc/terrain-collision.md
-LoadedObj_CollisionBox_HalfHeight := $0043
+Global_FrameCounter            := $0011
 ; Obj: The 14-byte record every active object occupies. 18 are packed at $0400 (the object
 ; table); slot 0 is the player.
 .struct Obj
@@ -124,28 +111,28 @@ SpriteStagingBuf_Sprite2 := $0608   ; element 2
 SpriteStagingBuf_Sprite3 := $060C   ; element 3
 
 ; Byte offset of the active slot
-ObjectSlot_Offset                 := $0056
+ObjectSlot_Offset              := $0056
 ; Index of the active slot
-ObjectSlot_Index                  := $0057
+ObjectSlot_Index               := $0057
 ; Shared zero-page indirect pointer, lo byte -- the base of (ptr),Y addressing used throughout
 ; the fixed bank and both AI banks for whatever data the caller needs indexed: bank-dispatch
 ; handler tables, metasprite definition tables, and text/VRAM-queue streams among them. Not
 ; dedicated to dispatch despite the address's history.
-IndirectPtrLo                     := $007A
+IndirectPtrLo                  := $007A
 ; Shared zero-page indirect pointer, hi byte. See IndirectPtrLo ($7A).
-IndirectPtrHi                     := $007B
+IndirectPtrHi                  := $007B
 ; Counter for Sophia's "look up" animation.
 ; 0x00 is not started
 ; 0x0C is completed (looking straight up)
-Sophia_LookUpAnimation_Counter    := $0094
+Sophia_LookUpAnimation_Counter := $0094
 ; Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.
 ; bit 7 set means a collision happened to the left or right.
 ; bit 6 set means a collision happened above or below.
 ; The value of LoadedObj's velocity is used to disambiguate the collision side.
-TerrainCollisionFlags             := $009A
+TerrainCollisionFlags          := $009A
 ; PRG bank number to restore via BankSave_Switch ($E619) once a temporary bank switch is done.
-SavedPrgBank                      := $00D3
+SavedPrgBank                   := $00D3
 ; 18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's
 ; real ObjType when it is made Dormant (ObjType $02).
 ; The Dormant ObjType handler then reads from this table to restore the tombstoned Object.
-DormantSlot_SavedType             := $0150
+DormantSlot_SavedType          := $0150

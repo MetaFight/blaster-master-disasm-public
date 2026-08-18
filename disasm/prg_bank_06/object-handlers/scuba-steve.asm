@@ -15,9 +15,9 @@ L_B4A3: jmp     L_B508                          ; B4A3
 
 ; ----------------------------------------------------------------------------
 L_B4A6: lda     #$80                            ; B4A6
-        sta     LoadedObj_CollisionBox_HalfWidth; B4A8
+        sta     $42                             ; B4A8
         lda     #$40                            ; B4AA
-        sta     LoadedObj_CollisionBox_HalfHeight; B4AC
+        sta     $43                             ; B4AC
         jsr     LE120                           ; B4AE
         ldx     #$02                            ; B4B1
         jsr     LE06A                           ; B4B3
@@ -61,7 +61,7 @@ L_B4EE: lda     Global_FrameCounter             ; B4EE
         clc                                     ; B4FD
         adc     LoadedObj + Obj::Velocity_Y     ; B4FE
         sta     LoadedObj + Obj::Velocity_Y     ; B500
-        jsr     LDF68                           ; B502
+        jsr     Obj_MoveBounce                  ; B502
         jsr     L_A2D4                          ; B505
 L_B508: lda     #$10                            ; B508
         sta     $40                             ; B50A
@@ -95,9 +95,9 @@ L_B53A: jmp     L_B557                          ; B53A
 
 ; ----------------------------------------------------------------------------
 L_B53D: lda     #$80                            ; B53D
-        sta     LoadedObj_CollisionBox_HalfWidth; B53F
+        sta     $42                             ; B53F
         lda     #$40                            ; B541
-        sta     LoadedObj_CollisionBox_HalfHeight; B543
+        sta     $43                             ; B543
         dec     LoadedObj + Obj::Scratch1       ; B545
         lda     Global_FrameCounter             ; B547
         and     #$01                            ; B549

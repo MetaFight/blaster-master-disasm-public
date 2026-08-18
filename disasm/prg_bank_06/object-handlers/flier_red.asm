@@ -14,9 +14,9 @@ L_B20C: jmp     L_B23F                          ; B20C
 
 ; ----------------------------------------------------------------------------
 L_B20F: lda     #$80                            ; B20F
-        sta     LoadedObj_CollisionBox_HalfWidth; B211
+        sta     $42                             ; B211
         lda     #$80                            ; B213
-        sta     LoadedObj_CollisionBox_HalfHeight; B215
+        sta     $43                             ; B215
         jsr     ScreenPos_Compute               ; B217
         bne     L_B23F                          ; B21A
         lda     Global_FrameCounter             ; B21C
@@ -50,9 +50,9 @@ L_B250: jmp     L_B26C                          ; B250
 
 ; ----------------------------------------------------------------------------
 L_B253: lda     #$80                            ; B253
-        sta     LoadedObj_CollisionBox_HalfWidth; B255
+        sta     $42                             ; B255
         lda     #$80                            ; B257
-        sta     LoadedObj_CollisionBox_HalfHeight; B259
+        sta     $43                             ; B259
         lda     Global_FrameCounter             ; B25B
         asl     a                               ; B25D
         asl     a                               ; B25E

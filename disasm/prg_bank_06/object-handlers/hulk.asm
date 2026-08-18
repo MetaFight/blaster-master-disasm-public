@@ -25,15 +25,15 @@ L_A76A: jmp     L_A79E                          ; A76A
 
 ; ----------------------------------------------------------------------------
 L_A76D: lda     #$80                            ; A76D
-        sta     LoadedObj_CollisionBox_HalfWidth; A76F
+        sta     $42                             ; A76F
         lda     #$C0                            ; A771
-        sta     LoadedObj_CollisionBox_HalfHeight; A773
+        sta     $43                             ; A773
         lda     LoadedObj + Obj::Scratch0       ; A775
         bne     L_A780                          ; A777
-        jsr     LE005                           ; A779
+        jsr     Obj_FallAndLand                 ; A779
         beq     L_A79E                          ; A77C
         inc     LoadedObj + Obj::Scratch0       ; A77E
-L_A780: jsr     LDF68                           ; A780
+L_A780: jsr     Obj_MoveBounce                           ; A780
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; A783
         eor     LoadedObj + Obj::Velocity_X     ; A786
         bmi     L_A79B                          ; A788
@@ -45,7 +45,7 @@ L_A780: jsr     LDF68                           ; A780
         lda     #$48                            ; A794
         sta     $A0                             ; A796
         jsr     LDF36                           ; A798
-L_A79B: jsr     L_B1DE                          ; A79B
+L_A79B: jsr     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__EdgeHop; A79B
 L_A79E: lda     #$10                            ; A79E
         sta     $40                             ; A7A0
         lda     #$18                            ; A7A2

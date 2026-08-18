@@ -3253,9 +3253,10 @@ L_B82B: .byte   $00,$EC,$0C,$08,$04,$00,$10,$1C ; B82B
         .byte   $1C,$6F,$02,$00,$F0,$0C,$8B,$02 ; BE8B
         .byte   $00,$10,$0C,$8D,$02,$FC,$10,$10 ; BE93
         .byte   $8F,$04,$00,$1C,$31,$04         ; BE9B
-; Overhead-section metasprite pointer table (8×16 sprites); 2-byte LE def pointers indexed by
-; sprite-id×2, walked by MetaSprite_RenderNoBank ($F029) after MetaSprite_Render ($F011) maps bank
-; 1 (via $EA3A index $1A). Defs sit below the table. See docs/entities/metasprite-system.md
+; (alpha: not fully human-verified / pending re-verification) Overhead-section metasprite pointer
+; table (8×16 sprites); 2-byte LE def pointers indexed by sprite-id×2, walked by
+; MetaSprite_RenderNoBank ($F029) after MetaSprite_Render ($F011) maps bank 1 (via $EA3A index
+; $1A). Defs sit below the table. See docs/us/entities/metasprite-system.md
 Metasprite_Table_Overhead:
         .byte   $2B,$B8,$35,$B8,$3F,$B8,$49,$B8 ; BEA1
         .byte   $53,$B8,$5D,$B8,$67,$B8,$71,$B8 ; BEA9

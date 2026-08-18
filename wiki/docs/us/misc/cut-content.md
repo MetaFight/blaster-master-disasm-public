@@ -15,7 +15,7 @@ This is an index: several cut-content findings already live in their subsystem d
 with a pointer to the detailed doc.
 
 Every image on this page is produced by a committed script under
-`scripts/chr-rom-explorations/` that writes straight to its final `docs/misc/img/` path (no manual
+`scripts/chr-rom-explorations/` that writes straight to its final `docs/us/misc/img/` path (no manual
 copy step) — see each section's **Regenerate** block for its script, or run
 `scripts/chr-rom-explorations/regen-cut-content-images.sh` to rebuild all of them at once.
 
@@ -43,13 +43,13 @@ velocity `$4C/$4D`), a subroutine argument, or a `CMP`. Neither id is a nested s
 appears in any sprite-id table, so nothing ever loads `$0C`/`$0D` into the renderer (`$F011`). They
 are flagged `DEAD_Metasprite_Tank_0C_Unused` / `DEAD_Metasprite_Tank_0D_Unused` in the labels. See
 the full reasoning in
-docs/entities/metasprite-system.md.
+docs/us/entities/metasprite-system.md.
 
 ### Regenerate
 
 ```
 bash scripts/chr-rom-explorations/cut-enemy-chr00-bomber.sh
-# → docs/misc/img/chr-00_tank_cut-enemy_alt-bomber.{png,gif}  (writes the committed images directly)
+# → docs/us/misc/img/chr-00_tank_cut-enemy_alt-bomber.{png,gif}  (writes the committed images directly)
 ```
 
 The pair renders `--gray` (white/gray/black — no sprite sub-palette is recoverable for content
@@ -90,7 +90,7 @@ table — no live code path renders the moai.
 
 ```
 bash scripts/chr-rom-explorations/cut-enemy-chr01-moai.sh
-# → docs/misc/img/chr-01_tank_cut-enemy_moai.{png,gif}  (writes the committed images directly)
+# → docs/us/misc/img/chr-01_tank_cut-enemy_moai.{png,gif}  (writes the committed images directly)
 ```
 
 Renders the two frames `--gray` (no sprite sub-palette is recoverable for content that never
@@ -131,7 +131,7 @@ sprite-id table — no live code path renders this enemy.
 
 ```
 bash scripts/chr-rom-explorations/cut-enemy-area5.sh
-# → docs/misc/img/area-5_tank_cut-enemy.{png,gif}  (writes the committed images directly)
+# → docs/us/misc/img/area-5_tank_cut-enemy.{png,gif}  (writes the committed images directly)
 ```
 
 Renders the five frames `--gray` (no sprite sub-palette is recoverable for content that never
@@ -170,7 +170,7 @@ ObjType-vs-metasprite-id namespace collision noted for the phase-2 `$64` frame a
 
 ```
 bash scripts/chr-rom-explorations/cut-boss-phase1-projectile.sh
-# → docs/misc/img/area-8_ovhd_boss_phase-1_cut-projectile.{png,gif} + _slow.gif
+# → docs/us/misc/img/area-8_ovhd_boss_phase-1_cut-projectile.{png,gif} + _slow.gif
 ```
 
 Uses the phase-1 boss CHR (even bank `$10` / odd bank `$1B`) and the `$C6D7` area-8 boss palette
@@ -323,8 +323,8 @@ bank 4's `$FF` tail padding, but that is an invented child type, not a restorati
 
 ```
 bash scripts/chr-rom-explorations/area8-boss-cut-attack-gif.sh
-# → docs/misc/img/area-8_ovhd_boss_phase-2_cut-attack.gif
-# → docs/misc/img/area-8_ovhd_boss_phase-2_cut-metasprites.png  (static sheet, ids $64-$66)
+# → docs/us/misc/img/area-8_ovhd_boss_phase-2_cut-attack.gif
+# → docs/us/misc/img/area-8_ovhd_boss_phase-2_cut-metasprites.png  (static sheet, ids $64-$66)
 ```
 
 ## Area 8 final boss (phase 2) — cut **beam weapon** (CHR `$1C`)
@@ -401,7 +401,7 @@ whip's custom tile-staging, not a metasprite — and are folded into the phase-2
 
 ```
 bash scripts/chr-rom-explorations/cut-beam-weapon-frames.sh
-# → docs/misc/img/area-8_ovhd_boss_phase-2_cut-beam-{charging,down,diagonal}.gif
+# → docs/us/misc/img/area-8_ovhd_boss_phase-2_cut-beam-{charging,down,diagonal}.gif
 ```
 
 These use the `gif` **raw-tile** part `t<tile>` with **in-place** flips (`h`) and pixel offsets
@@ -409,7 +409,7 @@ These use the `gif` **raw-tile** part `t<tile>` with **in-place** flips (`h`) an
 8×16, phase-2 palette. See the script for the exact per-frame tile expressions.
 
 The **full attack mock-ups** are produced by two more committed scripts (each writes three gifs
-straight to `docs/misc/img/`):
+straight to `docs/us/misc/img/`):
 - `scripts/chr-rom-explorations/beam_attack.sh` → the realistic version (`*-cut-beam-attack-*.gif`)
 - `scripts/chr-rom-explorations/beam_attack_alt.sh` → the fantasy animated-palette version
   (`*-cut-beam-attack-alt-*.gif`)
@@ -428,8 +428,8 @@ Cut content documented in detail elsewhere:
 - **Pause-screen vehicle-upgrade overlays** (CHR bank `$15`) — a full set of overlay tiles
   meant to draw onto the Sophia illustration when an upgrade is collected; the shipped game
   draws ability text labels instead. See
-  [docs/misc/pause-screen-dead-overlays.md](pause-screen-dead-overlays.md).
+  [docs/us/misc/pause-screen-dead-overlays.md](pause-screen-dead-overlays.md).
 - **Orphaned metasprite compositions `$0C`/`$0D`** — likely cut. See
-  docs/entities/metasprite-system.md.
+  docs/us/entities/metasprite-system.md.
 - **`$16`/`$17` E-Canister pickup handler** — handler exists but is unreachable in normal
-  play (DEAD). See docs/wip/missing-object-types.md.
+  play (DEAD). See docs/us/wip/missing-object-types.md.

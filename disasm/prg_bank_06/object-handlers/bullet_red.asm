@@ -62,9 +62,9 @@ L_B97A: jmp     L_B9C0                          ; B97A
 
 ; ----------------------------------------------------------------------------
 L_B97D: lda     #$80                            ; B97D
-        sta     LoadedObj_CollisionBox_HalfWidth; B97F
+        sta     $42                             ; B97F
         lda     #$80                            ; B981
-        sta     LoadedObj_CollisionBox_HalfHeight; B983
+        sta     $43                             ; B983
         ldy     #$18                            ; B985
         jsr     L_A670                          ; B987
         jsr     LE107                           ; B98A
@@ -140,9 +140,9 @@ L_BA00: jmp     L_BA43                          ; BA00
 
 ; ----------------------------------------------------------------------------
 L_BA03: lda     #$80                            ; BA03
-        sta     LoadedObj_CollisionBox_HalfWidth; BA05
+        sta     $42                             ; BA05
         lda     #$80                            ; BA07
-        sta     LoadedObj_CollisionBox_HalfHeight; BA09
+        sta     $43                             ; BA09
         lda     LoadedObj + Obj::Scratch1       ; BA0B
         beq     L_BA19                          ; BA0D
         lda     #$43                            ; BA0F

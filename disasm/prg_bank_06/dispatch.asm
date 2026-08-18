@@ -137,8 +137,8 @@ L_80B0: .addr   L_A50E                          ; 80B0
         .addr   ObjHandler_Tank_77_Shooter_Main ; 80EE
         .addr   L_B076                          ; 80F0
         .addr   L_B095                          ; 80F2
-        .addr   L_B16E                          ; 80F4
-        .addr   L_B18F                          ; 80F6
+        .addr   ObjHandler_Tank_7A_Gray_Hopper_10HP_Init; 80F4
+        .addr   ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling; 80F6
         .addr   L_B250                          ; 80F8
         .addr   L_B2EC                          ; 80FA
         .addr   L_B337                          ; 80FC

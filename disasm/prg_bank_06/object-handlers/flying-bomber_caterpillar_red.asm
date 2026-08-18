@@ -26,9 +26,9 @@ L_AF61: jmp     L_AFD1                          ; AF61
 
 ; ----------------------------------------------------------------------------
 L_AF64: lda     #$80                            ; AF64
-        sta     LoadedObj_CollisionBox_HalfWidth; AF66
+        sta     $42                             ; AF66
         lda     #$80                            ; AF68
-        sta     LoadedObj_CollisionBox_HalfHeight; AF6A
+        sta     $43                             ; AF6A
         lda     LoadedObj + Obj::Scratch1       ; AF6C
         beq     L_AF72                          ; AF6E
         dec     LoadedObj + Obj::Scratch1       ; AF70

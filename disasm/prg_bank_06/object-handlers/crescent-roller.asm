@@ -15,9 +15,9 @@ L_B6F4: jmp     L_B787                          ; B6F4
 
 ; ----------------------------------------------------------------------------
 L_B6F7: lda     #$C0                            ; B6F7
-        sta     LoadedObj_CollisionBox_HalfWidth; B6F9
+        sta     $42                             ; B6F9
         lda     #$80                            ; B6FB
-        sta     LoadedObj_CollisionBox_HalfHeight; B6FD
+        sta     $43                             ; B6FD
         lda     LoadedObj + Obj::Scratch0       ; B6FF
         bne     L_B72D                          ; B701
         lda     #$01                            ; B703

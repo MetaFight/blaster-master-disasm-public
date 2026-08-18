@@ -128,7 +128,7 @@ NesPrgRom:73C1:OvhdLvl3_MapData:32×32 chunk-index grid = 1024 bytes
 NesPrgRom:77C1:OvhdLvl3_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
 NesPrgRom:77D1:OvhdLvl3_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
 NesPrgRom:782B:L_B82B
-NesPrgRom:7EA1:Metasprite_Table_Overhead:Overhead-section metasprite pointer table (8×16 sprites); 2-byte LE def pointers indexed by sprite-id×2, walked by MetaSprite_RenderNoBank ($F029) after MetaSprite_Render ($F011) maps bank 1 (via $EA3A index $1A). Defs sit below the table. See docs/entities/metasprite-system.md
+NesPrgRom:7EA1:Metasprite_Table_Overhead:(alpha: not fully human-verified / pending re-verification) Overhead-section metasprite pointer table (8×16 sprites); 2-byte LE def pointers indexed by sprite-id×2, walked by MetaSprite_RenderNoBank ($F029) after MetaSprite_Render ($F011) maps bank 1 (via $EA3A index $1A). Defs sit below the table. See docs/us/entities/metasprite-system.md
 NesPrgRom:7F81:L_BF81
 NesPrgRom:7F8E:L_BF8E
 NesPrgRom:7FE2:L_BFE2
@@ -2148,7 +2148,7 @@ NesPrgRom:1A2BC:L_A2BC
 NesPrgRom:1A2D1:L_A2D1
 NesPrgRom:1A2D4:L_A2D4
 NesPrgRom:1A2E8:L_A2E8
-NesPrgRom:1A2E9:TankEnemy_Init:(alpha: not fully human-verified / pending re-verification) Shared initialisation routine for every damageable tank enemy, called by each enemy's Init handler.\nOverhead parallel: OvhdEnemy_Init ($B2B4). See docs/entities/tank/_shared-enemy-system.md.\n\nInput:\n   A = descriptor index (aka Thing ID).\n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the\n    damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them\n  LoadedObj's Health is set from EnemyDesc::Health\n  LoadedObj's IFrameCounter is set to 0\n  LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's\n    own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field\n  ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler\n    need not advance $46 itself
+NesPrgRom:1A2E9:TankEnemy_Init:(alpha: not fully human-verified / pending re-verification) Shared initialisation routine for every damageable tank enemy, called by each enemy's Init handler.\nOverhead parallel: OvhdEnemy_Init ($B2B4). See docs/us/entities/tank/_shared-enemy-system.md.\n\nInput:\n   A = descriptor index (aka Thing ID).\n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the\n    damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them\n  LoadedObj's Health is set from EnemyDesc::Health\n  LoadedObj's IFrameCounter is set to 0\n  LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's\n    own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field\n  ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler\n    need not advance $46 itself
 NesPrgRom:1A2EC::Load desc[0] (EnemyDesc::Health, starting HP) via ($A1),Y → $53; clear anim state $4F.
 NesPrgRom:1A2F4::JSR $D2B9 init tile position; INC $46 → advance to the enemy's main handler.
 NesPrgRom:1A2FA:TankEnemy_Load_EnemyDescPtr:Points EnemyParam_Ptr[Lo/Hi] to the given enemy's TankEnemy_DescTable entry.\n\nInput:\n   A = TankEnemy_DescTable index (aka Thing ID). \n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) are set to point to the enemy's 4-byte EnemyDesc entry in TankEnemy_DescTable.\n\nStart by multiplying A by 4.  EnemyDesc entries are 4-bytes in size so this converts the array index into the target element's offset.
@@ -2170,7 +2170,7 @@ NesPrgRom:1A34D:TankEnemy_Defeat:Shared enemy DEATH tail.\n\n~29 handlers JMP he
 NesPrgRom:1A350:L_A350
 NesPrgRom:1A365:L_A365
 NesPrgRom:1A368:TankEnemy_DescTablePtr:LE self-pointer (=$A36A) to TankEnemy_DescTable. Tank parallel of OvhdEnemy_DescTablePtr ($B324).
-NesPrgRom:1A36A:TankEnemy_DescTable:30 x EnemyDesc, indexed by descriptor index via TankEnemy_Load_EnemyDescPtr (accessed only via computed ($A1) pointer). See the EnemyDesc struct.\n\nThe descriptor index equals the spawn-list Thing id for all 30 entries (see docs/entities/entity-map.md), so this is one descriptor per Thing.\n\nIndex->enemy:\n  00=GrayCaterpillar($54)\n  01=GrayBulletA($56)*\n  02=GrayBulletB($58)*\n  03=RedCatDropper($5B)\n  04=Hulk($5D)\n  05=GrayHopper6($5F)\n  06=RedCaterpillar($62)\n  07=Mine($64)\n  08=Turret($66)\n  09=BomberRock($68)\n  0A=FlyingShip($6A)\n  0B=FlyingBomber($6C)\n  0C=SwoopingSphere($6E)\n  0D=Bee($70) 0E=Orb($72)\n  0F=FlyingRedCatBomber($74)\n  10=Shooter($76)\n  11=KamikazeOrb($78)\n  12=GrayHopper10($7A)\n  13=RedFlierSpawner($4E)\n  14=GrayFlierSpawner($50)\n  15=BombLobbingHand($7E)\n  16=Jellyfish($80)\n  17=ScubaSteve($82)\n  18=RunningShell($85)\n  19=SubmersibleSpawner($52)\n  1A=CrescentRoller($88)\n  1B=BombCanister($8A)\n  1C=RedBulletA($8C)*\n  1D=RedBulletB($8D)*\n\n* The two bullet families each own a Thing pair whose descriptors hold identical bytes, and their handlers do not respect the split. Gray: $56 Init, $58 Init and $5A Attacking all pass 02, while 01 is reached only by $59 Main's damage check. Red: $8C Init passes 1C and $8D Init passes 1D, but $8E Main and $8F Locked both pass 1C. Behaviourally harmless — 01/02 and 1C/1D are byte-identical — so which of a pair a handler names is not evidence of that handler's Thing.\n\nTank parallel of OvhdEnemy_DescTable ($B326). See docs/entities/tank/_shared-enemy-system.md.
+NesPrgRom:1A36A:TankEnemy_DescTable:(alpha: not fully human-verified / pending re-verification) 30 x EnemyDesc, indexed by descriptor index via TankEnemy_Load_EnemyDescPtr (accessed only via computed ($A1) pointer). See the EnemyDesc struct.\n\nThe descriptor index equals the spawn-list Thing id for all 30 entries (see docs/us/entities/entity-map.md), so this is one descriptor per Thing.\n\nIndex->enemy:\n  00=GrayCaterpillar($54)\n  01=GrayBulletA($56)*\n  02=GrayBulletB($58)*\n  03=RedCatDropper($5B)\n  04=Hulk($5D)\n  05=GrayHopper6($5F)\n  06=RedCaterpillar($62)\n  07=Mine($64)\n  08=Turret($66)\n  09=BomberRock($68)\n  0A=FlyingShip($6A)\n  0B=FlyingBomber($6C)\n  0C=SwoopingSphere($6E)\n  0D=Bee($70) 0E=Orb($72)\n  0F=FlyingRedCatBomber($74)\n  10=Shooter($76)\n  11=KamikazeOrb($78)\n  12=GrayHopper10($7A)\n  13=RedFlierSpawner($4E)\n  14=GrayFlierSpawner($50)\n  15=BombLobbingHand($7E)\n  16=Jellyfish($80)\n  17=ScubaSteve($82)\n  18=RunningShell($85)\n  19=SubmersibleSpawner($52)\n  1A=CrescentRoller($88)\n  1B=BombCanister($8A)\n  1C=RedBulletA($8C)*\n  1D=RedBulletB($8D)*\n\n* The two bullet families each own a Thing pair whose descriptors hold identical bytes, and their handlers do not respect the split. Gray: $56 Init, $58 Init and $5A Attacking all pass 02, while 01 is reached only by $59 Main's damage check. Red: $8C Init passes 1C and $8D Init passes 1D, but $8E Main and $8F Locked both pass 1C. Behaviourally harmless — 01/02 and 1C/1D are byte-identical — so which of a pair a handler names is not evidence of that handler's Thing.\n\nTank parallel of OvhdEnemy_DescTable ($B326). See docs/us/entities/tank/_shared-enemy-system.md.
 NesPrgRom:1A3E2:L_A3E2
 NesPrgRom:1A3E5:L_A3E5
 NesPrgRom:1A402:L_A402
@@ -2270,7 +2270,7 @@ NesPrgRom:1A7DC::player is to the LEFT so set heading $C8 (11.25° CW from UP) w
 NesPrgRom:1A7E1:_ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight:player is to the RIGHT so set heading to $B8 = $C0 (11.25° tilted CCW from UP) which, again, is AWAY from the player.
 NesPrgRom:1A7E3:_ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing:commit the heading, then zero Velocity X/Y and the wind-up timer LoadedObj_Scratch1
 NesPrgRom:1A7ED:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done
-NesPrgRom:1A7EE:ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:ObjType $60 — Gray Hopper (6 HP), active: the hopping/attack half of the enemy. It falls under gravity; on each floor landing it either settles into the walking state $61 or aims a fresh, near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the ground before the stored hop velocity carries it up — so it bounds across the ground toward the player in bursts.
+NesPrgRom:1A7EE:ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:ObjType $60: Gray Hopper (6 HP) - Attacking.\nThe hopping/attack half of the enemy. It falls under gravity; on each floor landing it either settles into the walking state $61 or aims a fresh, near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the ground before the stored hop velocity carries it up — so it bounds across the ground toward the player in bursts.
 NesPrgRom:1A7F1:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:$42 = $80 / $43 = $C0: terrain-collision half-extents (16×24 box) — then gate on the wind-up timer $51
 NesPrgRom:1A7FB::If LoadedObj_Scratch1 (wind-up) is at 0, then proceed to ground check.
 NesPrgRom:1A7FD::otherwise, decrement LoadedObj_Scratch1 (wind-up).
@@ -2312,16 +2312,16 @@ NesPrgRom:1A88D::Now sample the lower 6 bits of RNG.
 NesPrgRom:1A892::If this is 0, skip to the afterPhysics tail.
 NesPrgRom:1A896::If the Global_FrameCounter's bit 7 is set, skip to the afterPhysics tail.
 NesPrgRom:1A898::Otherwise, enqueue a jump sound and transition to the Attacking state.
-NesPrgRom:1A89F:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__AfterPhysics:The 'render only' tail of this objType.
+NesPrgRom:1A89F:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__AfterPhysics:The post-physics tail of this objType.
 NesPrgRom:1A8A7::Load the object dimensions and do an on-screen test.
 NesPrgRom:1A8AA::If still on-screen, progress to the Damage handler code,
 NesPrgRom:1A8AC::otherwise, start the despawn process by tombstoning.
-NesPrgRom:1A8AF:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage:Run shared damage check routine with enemy descriptor 5.
+NesPrgRom:1A8AF:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage:Run shared damage check routine with enemy descriptor $05.
 NesPrgRom:1A8B4::if non-fatal, skip to render tail,
-NesPrgRom:1A8B6::otherwise, call shared death handler.
+NesPrgRom:1A8B6::otherwise, call the shared death handler.
 NesPrgRom:1A8B9:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render:Render logic.\n\nPrep A as with the OAM Attribute byte value,
 NesPrgRom:1A8BB::Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to WR_Context_Dependent_44
-NesPrgRom:1A8C6::Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation frame index.\n\nThis means all patrolling hoppers of this variant walk in lock-step, updating their animation frames every 16 game frames.
+NesPrgRom:1A8C6::Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation frame index.\n\nThis means all patrolling hoppers walk in lock-step, updating their animation frames every 16 game frames.
 NesPrgRom:1A8C7::Load the animation frame Metasprite id and call the renderer sub.
 NesPrgRom:1A8CD:DEAD_ObjHandler_Tank_61_GrayHopper6HP_Patrolling_OrphanRTS:Single unreachable $60 (RTS)
 NesPrgRom:1A8CE:L_A8CE
@@ -2487,13 +2487,13 @@ NesPrgRom:1AFE1:L_AFE1
 NesPrgRom:1AFEB:L_AFEB
 NesPrgRom:1AFF7:L_AFF7
 NesPrgRom:1AFFB:L_AFFB
-NesPrgRom:1AFFC:ObjHandler_Tank_76_Shooter_Init:(alpha: not fully human-verified / pending re-verification) ObjType $76 — Shooter (Thing $10, "Gray Shooter"), init. Launches the Shooter on a random straight line: a heading drawn from the RNG and a fixed speed, with its gun already loaded. Every Shooter therefore starts drifting in a different direction, and it is the Main handler's terrain bouncing that turns that into the circling patrol the player sees. TankEnemy_Init advances it to ObjType $77, so this runs for exactly one frame. Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this Init draws nothing. See docs/entities/tank/76-77_shooter.md
+NesPrgRom:1AFFC:ObjHandler_Tank_76_Shooter_Init:(alpha: not fully human-verified / pending re-verification) ObjType $76 — Shooter (Thing $10, "Gray Shooter"), init. Launches the Shooter on a random straight line: a heading drawn from the RNG and a fixed speed, with its gun already loaded. Every Shooter therefore starts drifting in a different direction, and it is the Main handler's terrain bouncing that turns that into the circling patrol the player sees. TankEnemy_Init advances it to ObjType $77, so this runs for exactly one frame. Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this Init draws nothing. See docs/us/entities/tank/76-77_shooter.md
 NesPrgRom:1AFFF:_ObjHandler_Tank_76_Shooter_Init__Update__:Normal-play body — pick a random heading and launch  [+3 body entry]\nenemy descriptor $10: HP 16, and a $80/256 (50%) chance of a Health-x1 ($2C) drop. TankEnemy_Init also does INC $46, so the next frame runs ObjType $77
 NesPrgRom:1B004::$47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG
 NesPrgRom:1B009::speed $14, converted with the heading into the velocity pair $4C/$4D. This is the only place the Shooter's velocity is set; nothing steers it afterwards
 NesPrgRom:1B00E::gun ready — no recoil to work off
 NesPrgRom:1B012:_ObjHandler_Tank_76_Shooter_Init__Done:Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
-NesPrgRom:1B013:ObjHandler_Tank_77_Shooter_Main:(alpha: not fully human-verified / pending re-verification) ObjType $77 — Shooter (Thing $10), active. A free-drifting enemy that bounces off terrain and shoots Small Red shots at the player, but only while its drift already carries it toward them and only at a player level with or below it — so it never fires backwards or upwards, and spends its time circling until the geometry lines up. Each shot costs a 16-frame recoil during which it holds a distinct pose and cannot fire again. HP 16; on death it explodes and may drop a Health-x1 pickup. Dual-entry: in normal play ($15 == 0) the object loop enters at +3 and runs the whole body; while a fade or freeze is up ($15 != 0) it enters at +0, which skips straight to the hit/render tail. See docs/entities/tank/76-77_shooter.md\n+0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail
+NesPrgRom:1B013:ObjHandler_Tank_77_Shooter_Main:(alpha: not fully human-verified / pending re-verification) ObjType $77 — Shooter (Thing $10), active. A free-drifting enemy that bounces off terrain and shoots Small Red shots at the player, but only while its drift already carries it toward them and only at a player level with or below it — so it never fires backwards or upwards, and spends its time circling until the geometry lines up. Each shot costs a 16-frame recoil during which it holds a distinct pose and cannot fire again. HP 16; on death it explodes and may drop a Health-x1 pickup. Dual-entry: in normal play ($15 == 0) the object loop enters at +3 and runs the whole body; while a fade or freeze is up ($15 != 0) it enters at +0, which skips straight to the hit/render tail. See docs/us/entities/tank/76-77_shooter.md\n+0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail
 NesPrgRom:1B016:_ObjHandler_Tank_77_Shooter_Main__Update__:Normal-play body — drift, then decide whether to fire  [+3 body entry]\n$42/$43 = $80: terrain-collision half-extents for the move below
 NesPrgRom:1B01E::advance by velocity and bounce off walls (reflects $4C on a horizontal wall, $4D on a vertical one)
 NesPrgRom:1B021::fire cooldown $52 — zero means free to fire
@@ -2534,22 +2534,45 @@ NesPrgRom:1B14B:L_B14B
 NesPrgRom:1B155:L_B155
 NesPrgRom:1B165:L_B165
 NesPrgRom:1B166:L_B166
-NesPrgRom:1B16E:L_B16E
-NesPrgRom:1B171:L_B171
-NesPrgRom:1B180:L_B180
-NesPrgRom:1B182:L_B182
-NesPrgRom:1B18E:L_B18E
-NesPrgRom:1B18F:L_B18F
-NesPrgRom:1B192:L_B192
-NesPrgRom:1B1A5:L_B1A5
-NesPrgRom:1B1AB:L_B1AB
-NesPrgRom:1B1BB:L_B1BB
-NesPrgRom:1B1C5:L_B1C5
-NesPrgRom:1B1D9:L_B1D9
-NesPrgRom:1B1DA:L_B1DA
-NesPrgRom:1B1DE:L_B1DE
-NesPrgRom:1B1F6:L_B1F6
-NesPrgRom:1B1FE:L_B1FE
+NesPrgRom:1B16E:ObjHandler_Tank_7A_Gray_Hopper_10HP_Init:ObjType $7A: Gray Hopper (10 HP) - Init.
+NesPrgRom:1B171:_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Update__
+NesPrgRom:1B173::Init the enemy from descriptor $12.
+NesPrgRom:1B179::On even columns, set positive Velocity_X.
+NesPrgRom:1B17B::Otherwise, set Velocity_X to -0.75
+NesPrgRom:1B180:_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__VelRight:set Velocity_X to +0.75
+NesPrgRom:1B182:_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__VelStore:Commit the Velocity_X, then clear Velocity_Y, Scratch0 and Scratch1.
+NesPrgRom:1B18E:_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Done
+NesPrgRom:1B18F:ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling:ObjType $7B: Gray Hopper (10 HP) - Patrolling.\nIt drops to the ground, then paces back and forth, reversing off walls and turning back at platform edges. At each edge there is a 1-in-16 chance it leaps out over the gap.
+NesPrgRom:1B192:_ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling__Update__:+3 body entry (normal play)\n\nStart by setting collision box dimensions.
+NesPrgRom:1B19A::Scratch0 is the Grounded flag.  0 = airborne, 1 = grounded.
+NesPrgRom:1B19C::If grounded, skip gravity physics.
+NesPrgRom:1B19E::Otherwise, handle falling and landing.
+NesPrgRom:1B1A1::Skip to post-physics tail if landing didn't happen.
+NesPrgRom:1B1A3::On landing: Set Grounded = 1 and fall through to Grounded physics.
+NesPrgRom:1B1A5:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__GroundedPhysics:Obj_MoveBounce advances the hopper and reverses Velocity_X off any side wall.
+NesPrgRom:1B1A8::Handle edge-hop.
+NesPrgRom:1B1AB:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__AfterPhysics:The post-physics tail every other path falls into
+NesPrgRom:1B1B3::Load the object dimensions and do an on-screen test
+NesPrgRom:1B1B6::If still on-screen, progress to the Damage handler code,
+NesPrgRom:1B1B8::otherwise, start the despawn process by tombstoning.
+NesPrgRom:1B1BB:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Damage:Run shared damage check routine with enemy descriptor $12.
+NesPrgRom:1B1C0::If non-fatal, skip to render tail,
+NesPrgRom:1B1C2::otherwise, call the shared death handler.
+NesPrgRom:1B1C5:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Render:Render logic.\n\nPrep A as with the OAM Attribute byte value,
+NesPrgRom:1B1C7::Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to WR_Context_Dependent_44
+NesPrgRom:1B1D2::Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation frame index.\n\nThis means all patrolling hoppers walk in lock-step, updating their animation frames every 16 game frames.
+NesPrgRom:1B1D3::Load the animation frame Metasprite id and call the renderer sub.
+NesPrgRom:1B1D9:DEAD_TankGrayHopper_OrphanRTS:Single unreachable $60 (RTS)
+NesPrgRom:1B1DA:GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame:Table of 4 metasprite ids used to animate the patrolling state.
+NesPrgRom:1B1DE:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__EdgeHop:Handler that has a chance of making the Hopper hop when at a platform edges.\n(well, more accurately, when the tile directly below its center is not solid.  This assumes the hopper walked there from a neighboring solid tile.)
+NesPrgRom:1B1E0::Test tile below ($11)
+NesPrgRom:1B1E3::If bit 7 is set then the tile is solid.  Nothing to do.  Exit early.
+NesPrgRom:1B1E5::Otherwise, roll the dice to see if a hop is warranted.
+NesPrgRom:1B1EA::If the lower nibble is zero, perform a jump.
+NesPrgRom:1B1F1::otherwise, flip Velocity_X (bounce off edge).
+NesPrgRom:1B1F6:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__WalkJump:Initiate jump by setting Velocity_Y to -2.
+NesPrgRom:1B1FC::Set Grounded = 0
+NesPrgRom:1B1FE:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__WalkReturn:shared exit.
 NesPrgRom:1B1FF:L_B1FF
 NesPrgRom:1B202:L_B202
 NesPrgRom:1B20B:L_B20B
@@ -3273,7 +3296,7 @@ NesPrgRom:1D349:Apply_Double_Velocity_Y:Apply DOUBLE the LoadedObject's Y veloci
 NesPrgRom:1D351:_Apply_Double_Velocity_Y__PushSign:PHA the sign-extension byte ($00 or $FF) then add 2×YVel
 NesPrgRom:1D374:L_D374
 NesPrgRom:1D37A:L_D37A
-NesPrgRom:1D37D:H_Collision_Check:X-axis terrain collision check and response — the horizontal mirror of V_Collision_Check.\nTests the level tiles the active object's collision box overlaps and, on a solid hit, snaps\nthe object flush against the blocking tile's edge. Reached through MoveX_WithCollision\n($D37A) and Collision_Checks ($D374); dispatch slot $C015.\nIn: LoadedObj_CollisionBox_HalfWidth/_HalfHeight (the box, centred on the object),\nLoadedObj_Position_X_Lo/_Y_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a\nhit LoadedObj_Position_X_Lo is rewritten so the box edge sits exactly on the tile boundary.\nThe X axis resolves on the exact edge; the Y axis it tests as a cross-check tolerates ~2 px\nof overlap before it counts, which is what stops an object catching on tile corners.\nSee docs/misc/terrain-collision.md
+NesPrgRom:1D37D:H_Collision_Check:(alpha: not fully human-verified / pending re-verification) X-axis terrain collision check and response — the horizontal mirror of V_Collision_Check.\nTests the level tiles the active object's collision box overlaps and, on a solid hit, snaps\nthe object flush against the blocking tile's edge. Reached through MoveX_WithCollision\n($D37A) and Collision_Checks ($D374); dispatch slot $C015.\nIn: LoadedObj_CollisionBox_HalfWidth/_HalfHeight (the box, centred on the object),\nLoadedObj_Position_X_Lo/_Y_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a\nhit LoadedObj_Position_X_Lo is rewritten so the box edge sits exactly on the tile boundary.\nThe X axis resolves on the exact edge; the Y axis it tests as a cross-check tolerates ~2 px\nof overlap before it counts, which is what stops an object catching on tile corners.\nSee docs/us/misc/terrain-collision.md
 NesPrgRom:1D387:_H_Collision_Check__CheckRight:left edge clear → test the right edge (JSR _H_Collision_Check__TileRight); on hit snap $48 = -$42
 NesPrgRom:1D393:_H_Collision_Check__Exit:RTS
 NesPrgRom:1D394:_H_Collision_Check__TileRight:compute tile index for X pos + $42 (right edge); if overflow step to next column, then read/classify the tile
@@ -3286,7 +3309,7 @@ NesPrgRom:1D3B1::Otherwise, do the cross-axis checks
 NesPrgRom:1D3C6:_H_Collision_Check__CheckTop:check the top Y edge ($4A - $43, -$11 row); solid → collision
 NesPrgRom:1D3DB:_H_Collision_Check__NoCollide:all tiles clear → LDA #$00 (Z=1 no collision); RTS
 NesPrgRom:1D3DE:L_D3DE
-NesPrgRom:1D3E1:V_Collision_Check:Y-axis terrain collision check and response — the vertical mirror of H_Collision_Check.\nTests the level tiles the active object's collision box overlaps and, on a solid hit, snaps\nthe object flush against the blocking tile's edge — this is what makes an object land on a\nfloor or stop under a ceiling. Reached through MoveY_WithCollision ($D3DE) and\nCollision_Checks ($D374); dispatch slot $C018.\nIn: LoadedObj_CollisionBox_HalfHeight/_HalfWidth (the box, centred on the object),\nLoadedObj_Position_Y_Lo/_X_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a\nhit LoadedObj_Position_Y_Lo is rewritten so the box edge sits exactly on the tile boundary.\nSee docs/misc/terrain-collision.md\ncheck the tile above ($D40B); if solid, snap the position so the box top rests on it
+NesPrgRom:1D3E1:V_Collision_Check:(alpha: not fully human-verified / pending re-verification) Y-axis terrain collision check and response — the vertical mirror of H_Collision_Check.\nTests the level tiles the active object's collision box overlaps and, on a solid hit, snaps\nthe object flush against the blocking tile's edge — this is what makes an object land on a\nfloor or stop under a ceiling. Reached through MoveY_WithCollision ($D3DE) and\nCollision_Checks ($D374); dispatch slot $C018.\nIn: LoadedObj_CollisionBox_HalfHeight/_HalfWidth (the box, centred on the object),\nLoadedObj_Position_Y_Lo/_X_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a\nhit LoadedObj_Position_Y_Lo is rewritten so the box edge sits exactly on the tile boundary.\nSee docs/us/misc/terrain-collision.md\ncheck the tile above ($D40B); if solid, snap the position so the box top rests on it
 NesPrgRom:1D3E4::tile above solid: LDA $43 → STA $4A (snap position to tile edge); RTS
 NesPrgRom:1D3EB:_V_Collision_Check__CheckBelow:check tile below ($D3F8); if solid: snap ObjYFrac = -$43 (push up to tile bottom)
 NesPrgRom:1D3EE::tile below solid: 0-$43 → $4A; RTS
@@ -3514,9 +3537,13 @@ NesPrgRom:1DF36:L_DF36
 NesPrgRom:1DF43:L_DF43
 NesPrgRom:1DF46:L_DF46
 NesPrgRom:1DF62:L_DF62
-NesPrgRom:1DF68:L_DF68
-NesPrgRom:1DF77:L_DF77
-NesPrgRom:1DF81:L_DF81
+NesPrgRom:1DF68:Obj_MoveBounce:Applies Velocity_X and Velocity_Y to LoadedObject (via Obj_MoveAndCollide).\n\nThen, handles bouncing horizontally and/or vertically based on collisions.\n\nReturns:\n  A = TerrainCollisionFlags\n    bit 7: horizontal collision\n    bit 6: vertical collision
+NesPrgRom:1DF6B::If bit 7 (side wall collision flag) is clear, skip to vertical checks.
+NesPrgRom:1DF6D::Otherwise, flip Velocity_X and return.
+NesPrgRom:1DF77:_Obj_MoveBounce__CheckVertical:Handle vertical collisions
+NesPrgRom:1DF78::Probe bit 6 (floor/ceiling collision flag).  Return early if clear.
+NesPrgRom:1DF7A::Otherwise, flip Velocity_Y.
+NesPrgRom:1DF81:_Obj_MoveBounce__Return:Return the TerrainCollisionFlags.
 NesPrgRom:1DF84:Obj_MoveBounce_Double:Double-speed variant of Obj_MoveBounce: advance via Obj_MoveAndCollide_Double and reflect velocity on collisions.\nFlags:\n  bit7 (side wall) negates XVel $4C,\n  bit6 (floor/ceiling) negates YVel $4D. \n\nOutput:\n A = wall flags\n TerrainCollisionFlags = wall flags
 NesPrgRom:1DF87::Branch on positive, means branch when bit 7 is 0.  This means no x-collision.
 NesPrgRom:1DF89::On negative, however, handle X-bounce.\nSet Accumulator to 0, then subtract X-Velocity to get the mirrored value
@@ -3541,8 +3568,11 @@ NesPrgRom:1DFE7:L_DFE7
 NesPrgRom:1DFF2:L_DFF2
 NesPrgRom:1DFF6:L_DFF6
 NesPrgRom:1E002:L_E002
-NesPrgRom:1E005:L_E005
-NesPrgRom:1E018:L_E018
+NesPrgRom:1E005:Obj_FallAndLand:Applies a gravity of 2 px/s^2 (via Obj_GravityMoveBounce_Double).\n\nReturns:\n  on landing,\n    Velocity_Y = 0\n    A = $FF (landed)\n  otherwise,\n    A = $00
+NesPrgRom:1E00B::Test bit 6.  If clear, skip to 'not landed' tail.
+NesPrgRom:1E00D::Test Velocity_Y.  If positive, skip to 'not landed' tail.
+NesPrgRom:1E011::otherwise, set Velocity_Y to 0 and A to $FF and return.
+NesPrgRom:1E018:_Obj_FallAndLand__NotLanded:No floor hit (or hit the ceiling): return A=$00.
 NesPrgRom:1E01B:L_E01B
 NesPrgRom:1E027:L_E027
 NesPrgRom:1E02F:Obj_MoveBounce_TurnAtLedge:Obj_MoveBounce plus terrain checks to turn at walls and ledge edges.\n\nInput:\n  LoadedObj.Scratch1 = an edge cooldown timer.  Edge checks only happen when it is 0.\n\n# when the turn cooldown LoadedObj.Scratch1 is idle, probe the tile below via TileRead_WithOffset arg $11 (the feet probe the ice check also uses); if it is not solid (bit7 clear - a dropoff) reverse XVel $4C and arm a $20-frame cooldown. Walker motion that turns back at platform edges. Dispatch slot $C033 - no callers in USA ROM."
@@ -4114,8 +4144,8 @@ NesPrgRom:1FFD8:L_FFD8
 NesPrgRom:1FFF4:L_FFF4
 NesPrgRom:1FFFA:L_FFFA
 NesInternalRam:0011:Global_FrameCounter:Global counter incremented every frame.  Does not increment on lag frames.
-NesInternalRam:0042:LoadedObj_CollisionBox_HalfWidth:Half-WIDTH of the active object's terrain-collision box, measured from the object's centre,\nin the same 4.4 fixed-pixel units as LoadedObj_Position_X_Lo (so $80 = 8.0 px = a 16 px wide\nbox, $40 = 8 px wide, $C0 = 24 px wide). Set by the object's handler on entry, every frame.\n\nTogether with LoadedObj_CollisionBox_HalfHeight it defines one axis-aligned box centred on\nthe object. Both bytes are read ONLY by H_Collision_Check ($D37D) and V_Collision_Check\n($D3E1). So this is strictly terrain/tile collision.\n\nFull write-up: docs/misc/terrain-collision.md
-NesInternalRam:0043:LoadedObj_CollisionBox_HalfHeight:Half-HEIGHT of the active object's terrain-collision box, measured from the object's centre,\nin the same 4.4 fixed-pixel units as LoadedObj_Position_Y_Lo (so $80 = 8.0 px = a 16 px tall\nbox, $40 = 8 px tall, $C0 = 24 px tall). Set by the object's handler on entry, every frame.\n\nFull write-up: docs/misc/terrain-collision.md
+NesInternalRam:0042:LoadedObj_CollisionBox_HalfWidth:(alpha: not fully human-verified / pending re-verification) Half-WIDTH of the active object's terrain-collision box, measured from the object's centre,\nin the same 4.4 fixed-pixel units as LoadedObj_Position_X_Lo (so $80 = 8.0 px = a 16 px wide\nbox, $40 = 8 px wide, $C0 = 24 px wide). Set by the object's handler on entry, every frame.\n\nTogether with LoadedObj_CollisionBox_HalfHeight it defines one axis-aligned box centred on\nthe object. Both bytes are read ONLY by H_Collision_Check ($D37D) and V_Collision_Check\n($D3E1). So this is strictly terrain/tile collision.\n\nFull write-up: docs/us/misc/terrain-collision.md
+NesInternalRam:0043:LoadedObj_CollisionBox_HalfHeight:(alpha: not fully human-verified / pending re-verification) Half-HEIGHT of the active object's terrain-collision box, measured from the object's centre,\nin the same 4.4 fixed-pixel units as LoadedObj_Position_Y_Lo (so $80 = 8.0 px = a 16 px tall\nbox, $40 = 8 px tall, $C0 = 24 px tall). Set by the object's handler on entry, every frame.\n\nFull write-up: docs/us/misc/terrain-collision.md
 NesInternalRam:0046:LoadedObj__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0047:LoadedObj__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
 NesInternalRam:0048:LoadedObj__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
