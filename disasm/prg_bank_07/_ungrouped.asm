@@ -1965,13 +1965,22 @@ L_D7BA: sta     $7C,x                           ; D7BA
         rts                                     ; D7BF
 
 ; ----------------------------------------------------------------------------
-L_D7C0: ldy     #$01                            ; D7C0
-L_D7C2: inx                                     ; D7C2
+; Copies fields 1-13 (all except ObjType) from LoadedObj into another Object in the Object table.
+; 
+; Input:
+;   X = Object Table slot Offset
+Obj_CopyFieldsToSlot:
+        ldy     #$01                            ; D7C0
+; INX; copy $46,y → $0400,x; INY until Y=$0E
+_Obj_CopyFieldsToSlot__Loop:
+        inx                                     ; D7C2
+; Copy parent fields 1-13 ($47-$53) → child slot $0401,X-$040D,X (field 0 ObjType is preset by the
+; caller).
         lda     LoadedObject + Obj::Type,y      ; D7C3
         sta     ObjectTable + Obj::Type,x       ; D7C6
         iny                                     ; D7C9
         cpy     #$0E                            ; D7CA
-        bne     L_D7C2                          ; D7CC
+        bne     _Obj_CopyFieldsToSlot__Loop     ; D7CC
         rts                                     ; D7CE
 
 ; ----------------------------------------------------------------------------

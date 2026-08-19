@@ -2271,7 +2271,7 @@ NesPrgRom:1A7E1:_ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight:play
 NesPrgRom:1A7E3:_ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing:commit the heading, then zero Velocity X/Y and the wind-up timer LoadedObj_Scratch1
 NesPrgRom:1A7ED:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done
 NesPrgRom:1A7EE:ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:ObjType $60: Gray Hopper (6 HP) - Attacking.\nThe hopping/attack half of the enemy. It falls under gravity; on each floor landing it either settles into the walking state $61 or aims a fresh, near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the ground before the stored hop velocity carries it up — so it bounds across the ground toward the player in bursts.
-NesPrgRom:1A7F1:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:$42 = $80 / $43 = $C0: terrain-collision half-extents (16×24 box) — then gate on the wind-up timer $51
+NesPrgRom:1A7F1:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:Attack main logic.\n\nStart by setting collision box dimensions
 NesPrgRom:1A7FB::If LoadedObj_Scratch1 (wind-up) is at 0, then proceed to ground check.
 NesPrgRom:1A7FD::otherwise, decrement LoadedObj_Scratch1 (wind-up).
 NesPrgRom:1A802:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired:wind-up over: take one ballistic step (Obj_GravityMoveBounce_Double with gravity $04, which also reflects and damps the velocity on contact) and test bit 6 of the wall flags it returns — a vertical, i.e. floor-or-ceiling, contact. Clear means still airborne, so just draw.
@@ -2286,7 +2286,7 @@ NesPrgRom:1A826::Determine if the player is to the right or to the left.
 NesPrgRom:1A829::branch if player is to the left
 NesPrgRom:1A82B::otherwise, handle player to the right.\n$C0 the heading for UP.  We want a heading pointing right, so we add 8 increments (clockwise) and use $C8.
 NesPrgRom:1A830:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft:When the player to the left we want a heading pointing left, so we move 8 increments (counter-clockwise) from UP giving us $B8.
-NesPrgRom:1A832:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:Here he handle the physics of the jump.\n\n<<< continue here, editing the block below >>>\nadvance RNG\npass the speed magnitude (Scratch2) + (Step_RNG & $0F) = $30..$3F to Obj_AngleToVelocity in Y.\n\nObj_AngleToVelocity resolves heading+speed into $4C/$4D through Trig_QuarterSineTable.\nBecause $B8/$C8 sit only $08 either side of straight up, the components come out about 4:1 in favour of the vertical: |cos| = 25 and |sin| = 125 out of the table's $7F peak, scaled by the speed and shifted down 8, giving $4D ≈ −23..−30 (upward) against $4C ≈ ±4..±6. So it leaps almost straight up and only drifts onto the player.\n\nStart by committing the heading to LoadedObj.Facing
+NesPrgRom:1A832:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:Here we handle the physics of the jump.\nStart by committing the heading to LoadedObj.Facing
 NesPrgRom:1A834::Next, take the lower 4 bits of the next random number to add a bit of randomness to the base jump speed (stored in Scratch2)\n  The base speed is $30\n  The randomness rangess from $00 to $0F, so\n  The resulting speed is $30..$3F
 NesPrgRom:1A83C::Transfer this to Y to use as the Scale Factor argument when calling Obj_AngleToVelocity.
 NesPrgRom:1A83D::This sets the Obj's Velocity, causing it to jump/attack.
@@ -2409,20 +2409,48 @@ NesPrgRom:1AC57::Clear Scratch0
 NesPrgRom:1AC5B::Clear Scratch1.
 NesPrgRom:1AC5F::call Obj_AngleToVelocity to set velocity based on LoadedObj.Facing (angle) and scalar $28 (2.5)
 NesPrgRom:1AC62:_ObjHandler_Tank_6C_Flying_Bomber_Init__Done
-NesPrgRom:1AC63:L_AC63
-NesPrgRom:1AC66:L_AC66
-NesPrgRom:1AC74:L_AC74
-NesPrgRom:1AC83:L_AC83
-NesPrgRom:1AC8E:L_AC8E
-NesPrgRom:1AC98:L_AC98
-NesPrgRom:1ACB0:L_ACB0
-NesPrgRom:1ACBB:L_ACBB
-NesPrgRom:1ACC3:L_ACC3
-NesPrgRom:1ACD0:L_ACD0
-NesPrgRom:1ACE0:L_ACE0
-NesPrgRom:1ACEA:L_ACEA
-NesPrgRom:1ACF6:L_ACF6
-NesPrgRom:1ACFA:L_ACFA
+NesPrgRom:1AC63:ObjHandler_Tank_6D_Flying_Bomber_Main:ObjType $6D: Flying Bomber - Main
+NesPrgRom:1AC66:_ObjHandler_Tank_6D_Flying_Bomber_Main__Update__:Main behaviour logic.\n\nStart by setting collision box dimensions
+NesPrgRom:1AC70::if bomb-drop cooldown is 0, skip ahead.
+NesPrgRom:1AC72::otherwise, decrement cooldown.
+NesPrgRom:1AC74:_ObjHandler_Tank_6D_FlyingBomber_Main__ActiveCheck
+NesPrgRom:1AC76::if HasFired flag not set, skip to approach logic.
+NesPrgRom:1AC78::otherwise, update heading to 'swoop up'.  This moves heading towards UP.
+NesPrgRom:1AC7B::The following section checks if the Facing heading is 'UP' ($C0 aka 1100_0000)\n\nSince the initial headings and the angle increments applied to them don't use the bottom nibble, we know they're always 0.\n\nAnd since UP is 1100_0000, we test if the heading is UP by dropping the top two bits and checking the Z status flag.\n\nThis seems convoluted.  The two ASL require 4 cycles.\nCMP #$C0 would have required just 2.
+NesPrgRom:1AC7D::If the heading isn't UP yet, skip ahead.
+NesPrgRom:1AC81::Otherwise, clear the HasFired flag (Scratch0)
+NesPrgRom:1AC83:_ObjHandler_Tank_6D_FlyingBomber_Main__ActiveMove
+NesPrgRom:1AC85::Compute new velocities according to heading and scalar in Y
+NesPrgRom:1AC88::Apply velocities and handle collisions.
+NesPrgRom:1AC8B::Skip to post-physics tail.
+NesPrgRom:1AC8E:_ObjHandler_Tank_6D_FlyingBomber_Main__ApproachPhase:Start by calculating X-delta to player
+NesPrgRom:1AC91::If already positive, skip to x-align check.
+NesPrgRom:1AC93::Otherwise, negate signed A to get absolute value.
+NesPrgRom:1AC98:_ObjHandler_Tank_6D_FlyingBomber_Main__XAlignCheck
+NesPrgRom:1AC9A::if player is 1 or more tiles away, skip to physics.
+NesPrgRom:1AC9E::if still in cooldown, skip to physics.
+NesPrgRom:1ACA4::otherwise, drop a Big Gray bomb ($38) via Obj_SpawnChild_A0
+NesPrgRom:1ACA9::if the angle delta used in the swoop-up is positive, skip to Bomb physics
+NesPrgRom:1ACAB::otherwise, negate angle to get absolute value.
+NesPrgRom:1ACB0:_ObjHandler_Tank_6D_FlyingBomber_Main__DirCompute:orient the dropped bomb by the bomber's own X-velocity sign
+NesPrgRom:1ACB2::If parent is moving the the left, skip to post-drop logic.
+NesPrgRom:1ACB4::Otherwise, flip heading vertically (eg, down-right becomes up-right)
+NesPrgRom:1ACBB:_ObjHandler_Tank_6D_FlyingBomber_Main__AfterDrop:arm the cooldown (Scratch1) and set the HasFired flag (Scratch0)
+NesPrgRom:1ACC3:_ObjHandler_Tank_6D_FlyingBomber_Main__ApplyPhysics:Apply physics.\n\nStart by applying velocities and collisions.
+NesPrgRom:1ACC6::if A is positive, no horizontal collision happened, so skip ahead.
+NesPrgRom:1ACC8::otherwise, handle reflecting off a side wall.
+NesPrgRom:1ACCD::and update velocities based on Facing heading and scalar Y
+NesPrgRom:1ACD0:_ObjHandler_Tank_6D_FlyingBomber_Main__AfterPhysics
+NesPrgRom:1ACD8::if object is on-screen, handle damage logic.
+NesPrgRom:1ACDD::Otherwise, immediately despawn.  No tombstoning.
+NesPrgRom:1ACE0:_ObjHandler_Tank_6D_FlyingBomber_Main__Damage
+NesPrgRom:1ACE2::Run common damage handler TankEnemy_DamageCheck with enemy descriptor $0B
+NesPrgRom:1ACE5::if still alive, skip to render tail, otherwise call defeat handler.
+NesPrgRom:1ACEA:_ObjHandler_Tank_6D_FlyingBomber_Main__Render
+NesPrgRom:1ACEC::Update OAM FlipX bit.
+NesPrgRom:1ACF3::Select metasprite id to draw (affected by HasFired flag).
+NesPrgRom:1ACF6:_ObjHandler_Tank_6D_FlyingBomber_Main__TileActive:draw metasprite.
+NesPrgRom:1ACFA:DEAD_TankFlyingBomber_OrphanRTS:Single unreachable $60 (RTS).
 NesPrgRom:1ACFB:L_ACFB
 NesPrgRom:1ACFE:L_ACFE
 NesPrgRom:1AD07:L_AD07
@@ -3409,8 +3437,9 @@ NesPrgRom:1D798:L_D798
 NesPrgRom:1D7A0:L_D7A0
 NesPrgRom:1D7B6:L_D7B6
 NesPrgRom:1D7BA:L_D7BA
-NesPrgRom:1D7C0:L_D7C0
-NesPrgRom:1D7C2:L_D7C2
+NesPrgRom:1D7C0:Obj_CopyFieldsToSlot:Copies fields 1-13 (all except ObjType) from LoadedObj into another Object in the Object table.\n\nInput:\n  X = Object Table slot Offset
+NesPrgRom:1D7C2:_Obj_CopyFieldsToSlot__Loop:INX; copy $46,y → $0400,x; INY until Y=$0E
+NesPrgRom:1D7C3::Copy parent fields 1-13 ($47-$53) → child slot $0401,X-$040D,X (field 0 ObjType is preset by the caller).
 NesPrgRom:1D7CF:FindEmptyObjectSlot:Scan the ObjectTable (stride $0E) for a slot with ObjType  $00; \n\nInput:\n  X = table search start offset\n  WR_Context_Dependent_00 = table search end offset\n\nOutput:\n  on success,\n    A = $FF\n    Z = 0\n    X = slot offset\n  \n  on failure,\n    Z = 1
 NesPrgRom:1D7D2::if ObjType == $00, skip to Found handler,
 NesPrgRom:1D7D4::otherwise, compare current offset X with search-limit.
@@ -3542,8 +3571,10 @@ NesPrgRom:1DF27:_Obj_TryCloneLoadedObjectIntoEmptySlot__CopyRecord:Copy the 14-b
 NesPrgRom:1DF29:_Obj_TryCloneLoadedObjectIntoEmptySlot__CopyLoop:Copy 14 bytes ($0E) from ZP $46+Y into the slot at $0400,X.
 NesPrgRom:1DF36:L_DF36
 NesPrgRom:1DF43:L_DF43
-NesPrgRom:1DF46:L_DF46
-NesPrgRom:1DF62:L_DF62
+NesPrgRom:1DF46:Obj_SpawnChild_A0:Spawns a child object if an empty slot is available.\n\nThe child's ObjType is taken from WR_Context_Dependent_A0.  The remaining fields are cloned from the parent.\n\nItput:\n  WR_Context_Dependent_00 = TBD\n  WR_Context_Dependent_A0 = The child's Object Type\n\nOutput:\n  on success,\n    A = $FF\n    Z = 0 \n  on failure (no empty slot)\n    A = $00\n    Z = 1\n\nTakes special care to restore WR_Context_Dependent_00 to its pre-call value.
+NesPrgRom:1DF4F::find the first empty object slot (scan from X=$70, limit $00=$D2)
+NesPrgRom:1DF54::child ObjType = $A0 → $0400,X, then clone the parent's fields 1–13 (Obj_CopyFieldsToSlot)
+NesPrgRom:1DF62:_Obj_SpawnChild_A0__NoSlot:No free slot.  Restore WR_Context_Dependent_00 and return A=$00/Z=1 (nothing spawned).
 NesPrgRom:1DF68:Obj_MoveBounce:Applies Velocity_X and Velocity_Y to LoadedObject (via Obj_MoveAndCollide).\n\nThen, handles bouncing horizontally and/or vertically based on collisions.\n\nReturns:\n  A = TerrainCollisionFlags\n    bit 7: horizontal collision\n    bit 6: vertical collision
 NesPrgRom:1DF6B::If bit 7 (side wall collision flag) is clear, skip to vertical checks.
 NesPrgRom:1DF6D::Otherwise, flip Velocity_X and return.
@@ -3600,7 +3631,7 @@ NesPrgRom:1E060:L_E060
 NesPrgRom:1E065:L_E065
 NesPrgRom:1E06A:L_E06A
 NesPrgRom:1E071:L_E071
-NesPrgRom:1E07B:L_E07B
+NesPrgRom:1E07B:Obj_TurnHeading:Updates the LoadedObj.Facing heading by adding an angle delta.\n\nInput:\n  LoadedObj.Scratch2 = the angle delta\n\nOutput:\n  LoadedObj.Facing = the updated heading
 NesPrgRom:1E083:L_E083
 NesPrgRom:1E090:L_E090
 NesPrgRom:1E092:L_E092
@@ -3613,7 +3644,7 @@ NesPrgRom:1E0C7:Obj_ScaleVelY:Scale LoadedObj's Velocity_Y by the fraction in A.
 NesPrgRom:1E0D0:L_E0D0
 NesPrgRom:1E0D8:L_E0D8
 NesPrgRom:1E0E5:L_E0E5
-NesPrgRom:1E0ED:LoadedObj__Get_DeltaToPlayer_X:Signed X-distance from this object to the player:  Returns X = pixel/frac byte, A = metatile byte (carries the sign).
+NesPrgRom:1E0ED:LoadedObj__Get_DeltaToPlayer_X:Calculates signed X-distance from this object to the player.\n  Returns:\n    A = Hi byte (signed)\n    X = Lo byte (unsigned)
 NesPrgRom:1E0FA:L_E0FA
 NesPrgRom:1E107:L_E107
 NesPrgRom:1E120:L_E120

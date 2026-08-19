@@ -60,7 +60,7 @@ L_AEDC: cmp     #$01                            ; AEDC
         bne     L_AEE6                          ; AEDE
         jsr     LD2FE                           ; AEE0
         jsr     V_Collision_Check               ; AEE3
-L_AEE6: jsr     LE07B                           ; AEE6
+L_AEE6: jsr     Obj_TurnHeading                           ; AEE6
         and     #$7F                            ; AEE9
         bne     L_AF03                          ; AEEB
         lda     LoadedObj + Obj::Scratch0       ; AEED

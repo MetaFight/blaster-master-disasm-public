@@ -909,7 +909,7 @@ L_880B: lda     $F3                             ; 880B
         beq     L_8829                          ; 881A
         lda     #$2A                            ; 881C
         sta     ObjectTable + Obj::Type,x       ; 881E
-        jsr     LD7C0                           ; 8821
+        jsr     Obj_CopyFieldsToSlot            ; 8821
         lda     #$34                            ; 8824
         jsr     Enqueue_Sound_Command           ; 8826
 L_8829: rts                                     ; 8829

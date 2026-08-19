@@ -308,7 +308,7 @@ L_D851: pha                                     ; D851
         beq     L_D869                          ; D85B
         txa                                     ; D85D
         pha                                     ; D85E
-        jsr     L_D7C0                          ; D85F
+        jsr     Obj_CopyFieldsToSlot            ; D85F
         pla                                     ; D862
         tax                                     ; D863
         pla                                     ; D864
@@ -388,28 +388,51 @@ L_DF36: lda     Global_FrameCounter             ; DF36
         bne     L_DF43                          ; DF3A
         jsr     Step_RNG                        ; DF3C
         and     #$03                            ; DF3F
-        beq     L_DF46                          ; DF41
+        beq     Obj_SpawnChild_A0               ; DF41
 L_DF43: lda     #$00                            ; DF43
         rts                                     ; DF45
 
 ; ----------------------------------------------------------------------------
-L_DF46: lda     L0000                           ; DF46
+; Spawns a child object if an empty slot is available.
+; 
+; The child's ObjType is taken from WR_Context_Dependent_A0.  The remaining fields are cloned from
+; the parent.
+; 
+; Itput:
+;   WR_Context_Dependent_00 = TBD
+;   WR_Context_Dependent_A0 = The child's Object Type
+; 
+; Output:
+;   on success,
+;     A = $FF
+;     Z = 0 
+;   on failure (no empty slot)
+;     A = $00
+;     Z = 1
+; 
+; Takes special care to restore WR_Context_Dependent_00 to its pre-call value.
+Obj_SpawnChild_A0:
+        lda     L0000                           ; DF46
         pha                                     ; DF48
         lda     #$D2                            ; DF49
         sta     L0000                           ; DF4B
         ldx     #$70                            ; DF4D
+; find the first empty object slot (scan from X=$70, limit $00=$D2)
         jsr     FindEmptyObjectSlot             ; DF4F
-        beq     L_DF62                          ; DF52
+        beq     _Obj_SpawnChild_A0__NoSlot      ; DF52
+; child ObjType = $A0 → $0400,X, then clone the parent's fields 1–13 (Obj_CopyFieldsToSlot)
         lda     $A0                             ; DF54
         sta     ObjectTable + Obj::Type,x       ; DF56
-        jsr     L_D7C0                          ; DF59
+        jsr     Obj_CopyFieldsToSlot            ; DF59
         pla                                     ; DF5C
         sta     L0000                           ; DF5D
         lda     #$FF                            ; DF5F
         rts                                     ; DF61
 
 ; ----------------------------------------------------------------------------
-L_DF62: pla                                     ; DF62
+; No free slot.  Restore WR_Context_Dependent_00 and return A=$00/Z=1 (nothing spawned).
+_Obj_SpawnChild_A0__NoSlot:
+        pla                                     ; DF62
         sta     L0000                           ; DF63
         lda     #$00                            ; DF65
         rts                                     ; DF67
@@ -689,7 +712,15 @@ L_E071: lda     LoadedObj + Obj::Scratch2       ; E071
         rts                                     ; E07A
 
 ; ----------------------------------------------------------------------------
-L_E07B: lda     LoadedObj + Obj::Facing         ; E07B
+; Updates the LoadedObj.Facing heading by adding an angle delta.
+; 
+; Input:
+;   LoadedObj.Scratch2 = the angle delta
+; 
+; Output:
+;   LoadedObj.Facing = the updated heading
+Obj_TurnHeading:
+        lda     LoadedObj + Obj::Facing         ; E07B
         clc                                     ; E07D
         adc     LoadedObj + Obj::Scratch2       ; E07E
         sta     LoadedObj + Obj::Facing         ; E080
@@ -786,8 +817,10 @@ L_E0E5: lda     #$00                            ; E0E5
         rts                                     ; E0EC
 
 ; ----------------------------------------------------------------------------
-; Signed X-distance from this object to the player:  Returns X = pixel/frac byte, A = metatile
-; byte (carries the sign).
+; Calculates signed X-distance from this object to the player.
+;   Returns:
+;     A = Hi byte (signed)
+;     X = Lo byte (unsigned)
 LoadedObj__Get_DeltaToPlayer_X:
         lda     PlayerSlot + Obj::Position_X_Lo ; E0ED
         sec                                     ; E0F0

@@ -34,7 +34,7 @@ L_AF64: lda     #$80                            ; AF64
         dec     LoadedObj + Obj::Scratch1       ; AF70
 L_AF72: lda     LoadedObj + Obj::Scratch0       ; AF72
         beq     L_AF8C                          ; AF74
-        jsr     LE07B                           ; AF76
+        jsr     Obj_TurnHeading                 ; AF76
         asl     a                               ; AF79
         asl     a                               ; AF7A
         bne     L_AF81                          ; AF7B

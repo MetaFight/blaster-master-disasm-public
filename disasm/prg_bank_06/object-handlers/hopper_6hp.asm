@@ -46,8 +46,9 @@ ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:
         jmp     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnScreenCheck; A7EE
 
 ; ----------------------------------------------------------------------------
-; $42 = $80 / $43 = $C0: terrain-collision half-extents (16×24 box) — then gate on the wind-up
-; timer $51
+; Attack main logic.
+; 
+; Start by setting collision box dimensions
 _ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:
         lda     #$80                            ; A7F1
         sta     $42                             ; A7F3
@@ -111,18 +112,7 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump:
 ; (counter-clockwise) from UP giving us $B8.
 _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft:
         lda     #$B8                            ; A830
-; Here he handle the physics of the jump.
-; 
-; <<< continue here, editing the block below >>>
-; advance RNG
-; pass the speed magnitude (Scratch2) + (Step_RNG & $0F) = $30..$3F to Obj_AngleToVelocity in Y.
-; 
-; Obj_AngleToVelocity resolves heading+speed into $4C/$4D through Trig_QuarterSineTable.
-; Because $B8/$C8 sit only $08 either side of straight up, the components come out about 4:1 in
-; favour of the vertical: |cos| = 25 and |sin| = 125 out of the table's $7F peak, scaled by the
-; speed and shifted down 8, giving $4D ≈ −23..−30 (upward) against $4C ≈ ±4..±6. So it leaps
-; almost straight up and only drifts onto the player.
-; 
+; Here we handle the physics of the jump.
 ; Start by committing the heading to LoadedObj.Facing
 _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:
         sta     LoadedObj + Obj::Facing         ; A832

@@ -22,7 +22,7 @@ Areas 1, 2, 7
 ## Fields
 | Name | Description |
 | --- | --- |
-| Facing   | format:  8-bit heading
-| Scratch0 | `HasFired` flag (1 = fired, 0 = otherwise) |
-| Scratch1 | Bomb drop cooldown |
-| Scratch2 | Angle delta applied to Facing during post-attack swoop up. |
+| `Facing`   | format:  8-bit heading
+| `Scratch0` | `HasFired` flag (1 = fired, 0 = otherwise) |
+| `Scratch1` | Bomb drop cooldown |
+| `Scratch2` | Angle delta applied to Facing during post-attack swoop up. |

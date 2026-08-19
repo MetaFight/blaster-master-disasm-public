@@ -275,7 +275,7 @@ L_9738: ldx     #$0E                            ; 9738
         beq     L_976C                          ; 9741
         lda     #$13                            ; 9743
         sta     ObjectTable + Obj::Type,x       ; 9745
-L_9748: jsr     LD7C0                           ; 9748
+L_9748: jsr     Obj_CopyFieldsToSlot                           ; 9748
         lda     $03FC                           ; 974B
         bit     $E6E2                           ; 974E
         bne     L_9763                          ; 9751

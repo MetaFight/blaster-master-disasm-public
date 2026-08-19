@@ -124,7 +124,7 @@ L_80B0: .addr   L_A50E                          ; 80B0
         .addr   L_ABCF                          ; 80D4
         .addr   L_ABEC                          ; 80D6
         .addr   ObjHandler_Tank_6C_Flying_Bomber_Init; 80D8
-        .addr   L_AC63                          ; 80DA
+        .addr   ObjHandler_Tank_6D_Flying_Bomber_Main; 80DA
         .addr   L_ACFB                          ; 80DC
         .addr   L_AD08                          ; 80DE
         .addr   L_ADE4                          ; 80E0

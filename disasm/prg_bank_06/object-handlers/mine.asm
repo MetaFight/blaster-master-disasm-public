@@ -56,7 +56,7 @@ L_AA13: clc                                     ; AA13
         sta     $00                             ; AA2B
 L_AA2D: lda     #$44                            ; AA2D
         sta     $A0                             ; AA2F
-        jsr     LDF46                           ; AA31
+        jsr     Obj_SpawnChild_A0               ; AA31
         dec     $00                             ; AA34
         bne     L_AA2D                          ; AA36
         pla                                     ; AA38

@@ -80,7 +80,7 @@ L_AAE4: lda     #$08                            ; AAE4
         jmp     TankEnemy_Defeat                ; AAEB
 
 ; ----------------------------------------------------------------------------
-L_AAEE: jsr     LE07B                           ; AAEE
+L_AAEE: jsr     Obj_TurnHeading                           ; AAEE
         lsr     a                               ; AAF1
         lsr     a                               ; AAF2
         lsr     a                               ; AAF3

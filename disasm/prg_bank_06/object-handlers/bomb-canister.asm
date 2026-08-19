@@ -80,7 +80,7 @@ L_B8A9: jsr     Step_RNG                           ; B8A9
         sta     $9E                             ; B8B8
         lda     #$36                            ; B8BA
         sta     $A0                             ; B8BC
-        jsr     LDF46                           ; B8BE
+        jsr     Obj_SpawnChild_A0               ; B8BE
         lda     #$AA                            ; B8C1
         sta     LoadedObj + Obj::Scratch1       ; B8C3
         jmp     L_B8EF                          ; B8C5

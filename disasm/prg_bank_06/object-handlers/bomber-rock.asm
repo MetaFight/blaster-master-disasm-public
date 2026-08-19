@@ -72,7 +72,7 @@ L_AB86: cmp     #$08                            ; AB86
         bne     L_AB97                          ; AB8E
         lda     #$38                            ; AB90
         sta     $A0                             ; AB92
-        jsr     LDF46                           ; AB94
+        jsr     Obj_SpawnChild_A0               ; AB94
 L_AB97: lda     LoadedObj + Obj::Scratch0       ; AB97
         and     #$BF                            ; AB99
         jmp     L_ABA2                          ; AB9B

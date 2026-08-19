@@ -39,7 +39,7 @@ L_BAA7: lda     Global_FrameCounter             ; BAA7
         inc     LoadedObj + Obj::Position_Y_Hi  ; BAC4
         lda     #$48                            ; BAC6
         sta     $A0                             ; BAC8
-        jsr     LDF46                           ; BACA
+        jsr     Obj_SpawnChild_A0               ; BACA
         dec     LoadedObj + Obj::Position_Y_Hi  ; BACD
 L_BACF: lda     #$1E                            ; BACF
         sta     $D4                             ; BAD1

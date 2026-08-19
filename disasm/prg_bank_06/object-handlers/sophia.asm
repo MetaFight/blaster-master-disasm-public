@@ -1833,7 +1833,7 @@ L_983E: pha                                     ; 983E
         dec     $06F0                           ; 9858
         txa                                     ; 985B
         pha                                     ; 985C
-        jsr     LD7C0                           ; 985D
+        jsr     Obj_CopyFieldsToSlot            ; 985D
         pla                                     ; 9860
         tax                                     ; 9861
         lda     $02                             ; 9862
@@ -1871,7 +1871,7 @@ L_99B0: ldx     #$46                            ; 99B0
         dec     $06F1                           ; 99C0
         lda     #$17                            ; 99C3
         sta     ObjectTable + Obj::Type,x       ; 99C5
-        jmp     LD7C0                           ; 99C8
+        jmp     Obj_CopyFieldsToSlot            ; 99C8
 
 ; ----------------------------------------------------------------------------
 L_99CB: rts                                     ; 99CB
@@ -1889,7 +1889,7 @@ L_9ACA: lda     $06F2                           ; 9ACA
         bne     L_9AE1                          ; 9AD4
         lda     #$19                            ; 9AD6
         sta     ObjectTable + Obj::Type,x       ; 9AD8
-        jsr     LD7C0                           ; 9ADB
+        jsr     Obj_CopyFieldsToSlot            ; 9ADB
         dec     $06F2                           ; 9ADE
 L_9AE1: pla                                     ; 9AE1
         clc                                     ; 9AE2

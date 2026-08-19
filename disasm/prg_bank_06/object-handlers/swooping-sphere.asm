@@ -49,7 +49,7 @@ L_AD42: sta     LoadedObj + Obj::Scratch2       ; AD42
         lda     #$40                            ; AD44
         sta     LoadedObj + Obj::Facing         ; AD46
         inc     LoadedObj + Obj::Scratch0       ; AD48
-L_AD4A: jsr     LE07B                           ; AD4A
+L_AD4A: jsr     Obj_TurnHeading                           ; AD4A
         and     #$7F                            ; AD4D
         bne     L_AD65                          ; AD4F
         lda     LoadedObj + Obj::Facing         ; AD51

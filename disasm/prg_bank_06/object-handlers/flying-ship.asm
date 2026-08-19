@@ -35,7 +35,7 @@ L_ABEF: lda     #$80                            ; ABEF
         bcc     L_AC10                          ; AC07
         lda     #$3C                            ; AC09
         sta     $A0                             ; AC0B
-        jsr     LDF46                           ; AC0D
+        jsr     Obj_SpawnChild_A0               ; AC0D
 L_AC10: lda     #$10                            ; AC10
         sta     $40                             ; AC12
         lda     #$10                            ; AC14
