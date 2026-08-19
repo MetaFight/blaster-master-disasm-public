@@ -8,6 +8,7 @@ either they have not completed it yet, or they were verified and have since been
 
 ### Entities — Tank
 
+- [Flying Bomber](docs/us/entities/tank/6c-6d_flying-bomber.md)
 - [Shooter](docs/us/entities/tank/76-77_shooter.md) — ⚠️ alpha
 
 ### Misc

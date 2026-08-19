@@ -1,25 +1,40 @@
 .macro MAC_L_AC3C
 ; ----------------------------------------------------------------------------
-L_AC3C: jmp     L_AC62                          ; AC3C
+; ObjType $6C: Flying Bomber - Init.
+ObjHandler_Tank_6C_Flying_Bomber_Init:
+        jmp     _ObjHandler_Tank_6C_Flying_Bomber_Init__Done; AC3C
 
 ; ----------------------------------------------------------------------------
-L_AC3F: lda     #$0B                            ; AC3F
+_ObjHandler_Tank_6C_Flying_Bomber_Init__Update__:
+        lda     #$0B                            ; AC3F
+; Init the enemy from descriptor $0B.
         jsr     TankEnemy_Init                  ; AC41
+; call LoadedObj__Get_DeltaToPlayer_X to store signed X distance to player in A
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; AC44
         and     #$80                            ; AC47
+; Keep only bit 7 and store as LoadedObj.Facing
         sta     LoadedObj + Obj::Facing         ; AC49
-        bpl     L_AC51                          ; AC4B
+        bpl     _ObjHandler_Tank_6C_Flying_Bomber_Init__PlayerRight; AC4B
+; if facing left, 'swoop-up' turn-increment is angle $10
         lda     #$10                            ; AC4D
-        bne     L_AC53                          ; AC4F
-L_AC51: lda     #$F0                            ; AC51
-L_AC53: sta     LoadedObj + Obj::Scratch2       ; AC53
+        bne     _ObjHandler_Tank_6C_Flying_Bomber_Init__StoreTurnIncrement; AC4F
+; if facing right, 'swoop-up' turn-increment is angle $f0
+_ObjHandler_Tank_6C_Flying_Bomber_Init__PlayerRight:
+        lda     #$F0                            ; AC51
+; Store turn-increment into Scratch2
+_ObjHandler_Tank_6C_Flying_Bomber_Init__StoreTurnIncrement:
+        sta     LoadedObj + Obj::Scratch2       ; AC53
         lda     #$00                            ; AC55
+; Clear Scratch0
         sta     LoadedObj + Obj::Scratch0       ; AC57
         lda     #$00                            ; AC59
+; Clear Scratch1.
         sta     LoadedObj + Obj::Scratch1       ; AC5B
         ldy     #$28                            ; AC5D
+; call Obj_AngleToVelocity to set velocity based on LoadedObj.Facing (angle) and scalar $28 (2.5)
         jsr     Obj_AngleToVelocity             ; AC5F
-L_AC62: rts                                     ; AC62
+_ObjHandler_Tank_6C_Flying_Bomber_Init__Done:
+        rts                                     ; AC62
 
 ; ----------------------------------------------------------------------------
 L_AC63: jmp     L_ACD0                          ; AC63

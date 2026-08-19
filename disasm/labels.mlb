@@ -2397,11 +2397,18 @@ NesPrgRom:1AC10:L_AC10
 NesPrgRom:1AC20:L_AC20
 NesPrgRom:1AC2A:L_AC2A
 NesPrgRom:1AC38:L_AC38
-NesPrgRom:1AC3C:L_AC3C
-NesPrgRom:1AC3F:L_AC3F
-NesPrgRom:1AC51:L_AC51
-NesPrgRom:1AC53:L_AC53
-NesPrgRom:1AC62:L_AC62
+NesPrgRom:1AC3C:ObjHandler_Tank_6C_Flying_Bomber_Init:ObjType $6C: Flying Bomber - Init.
+NesPrgRom:1AC3F:_ObjHandler_Tank_6C_Flying_Bomber_Init__Update__
+NesPrgRom:1AC41::Init the enemy from descriptor $0B.
+NesPrgRom:1AC44::call LoadedObj__Get_DeltaToPlayer_X to store signed X distance to player in A
+NesPrgRom:1AC49::Keep only bit 7 and store as LoadedObj.Facing
+NesPrgRom:1AC4D::if facing left, 'swoop-up' turn-increment is angle $10
+NesPrgRom:1AC51:_ObjHandler_Tank_6C_Flying_Bomber_Init__PlayerRight:if facing right, 'swoop-up' turn-increment is angle $f0
+NesPrgRom:1AC53:_ObjHandler_Tank_6C_Flying_Bomber_Init__StoreTurnIncrement:Store turn-increment into Scratch2
+NesPrgRom:1AC57::Clear Scratch0
+NesPrgRom:1AC5B::Clear Scratch1.
+NesPrgRom:1AC5F::call Obj_AngleToVelocity to set velocity based on LoadedObj.Facing (angle) and scalar $28 (2.5)
+NesPrgRom:1AC62:_ObjHandler_Tank_6C_Flying_Bomber_Init__Done
 NesPrgRom:1AC63:L_AC63
 NesPrgRom:1AC66:L_AC66
 NesPrgRom:1AC74:L_AC74
