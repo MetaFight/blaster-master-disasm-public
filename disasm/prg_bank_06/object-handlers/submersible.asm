@@ -26,7 +26,7 @@ L_B63F: lda     #$80                            ; B63F
         and     #$41                            ; B655
         bne     L_B66F                          ; B657
         lda     #$20                            ; B659
-        jsr     L_A29E                          ; B65B
+        jsr     Obj_TryCloneAtScreenEdge        ; B65B
         beq     L_B66F                          ; B65E
         lda     #$87                            ; B660
         sta     ObjectTable + Obj::Type,x       ; B662

@@ -31,8 +31,8 @@ Global_FrameCounter            := $0011
 ; Contact: The 3-byte record in the contact table at $7C-$8D -- the hit-exchange channel
 ; between the player's side and the enemies. Six records, one per object slot 0-5 (slot 0 =
 ; the player, 1-5 = his shots/sub-weapons; the allocators keep enemies out of this range --
-; Obj_SpawnChild $D852 searches slots 6-17, Obj_TryCloneLoadedObjectIntoEmptySlot $DF13
-; searches 8-15). Enemies never occupy a record, they only scan it.
+; Obj_SpawnChild $D852 searches slots 6-17, Obj_TryCloneIntoEmptySlot $DF13 searches 8-15).
+; Enemies never occupy a record, they only scan it.
 .struct Contact
         .res 3       ; +$00..+$02
 .endstruct

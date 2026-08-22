@@ -106,8 +106,25 @@ LC222           := $C222
 .segment        "BANK04": absolute
 
 .include "_ungrouped.asm"
+.include "bank-tail.asm"
+.include "dead.asm"
 .include "dispatch.asm"
 
 ; Emit every group's code in address order (see GroupSplitter).
         MAC_L_8000
         MAC_L_8112
+        MAC_L_87F9
+        MAC_L_8907
+        MAC_L_A73F
+        MAC_L_A74E
+        MAC_L_AC4F
+        MAC_L_AC54
+        MAC_L_AD99
+        MAC_L_ADA2
+        MAC_L_AE42
+        MAC_L_AE5A
+        MAC_L_B285
+        MAC_L_B2B4
+        MAC_L_BC28
+        MAC_L_BC65
+        MAC_L_BF92

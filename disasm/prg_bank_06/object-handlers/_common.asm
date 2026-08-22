@@ -136,7 +136,7 @@ L_A350: jsr     Step_RNG                           ; A350
         ldy     #$03                            ; A353
         cmp     ($A1),y                         ; A355
         bcs     L_A365                          ; A357
-        jsr     Obj_TryCloneLoadedObjectIntoEmptySlot ; A359
+        jsr     Obj_TryCloneIntoEmptySlot       ; A359
         beq     L_A365                          ; A35C
         ldy     #$02                            ; A35E
         lda     ($A1),y                         ; A360

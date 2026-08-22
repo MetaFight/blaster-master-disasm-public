@@ -348,38 +348,38 @@ L_D86D: ldx     #$4C                            ; D86D
 ;     X = the found slot offset
 ;   on failure to find slot,
 ;     A = 0
-Obj_TryCloneLoadedObjectIntoEmptySlot:
+Obj_TryCloneIntoEmptySlot:
         lda     #$D2                            ; DF0F
         sta     L0000                           ; DF11
         ldx     #$70                            ; DF13
 ; find the first empty object slot (scan from X=$70, limit $00=$D2)
         jsr     FindEmptyObjectSlot             ; DF15
-        beq     _Obj_TryCloneLoadedObjectIntoEmptySlot__NoSlot; DF18
+        beq     _Obj_TryCloneIntoEmptySlot__NoSlot; DF18
         stx     $A5                             ; DF1A
-        jsr     _Obj_TryCloneLoadedObjectIntoEmptySlot__CopyRecord; DF1C
+        jsr     _Obj_TryCloneIntoEmptySlot__CopyRecord; DF1C
         ldx     $A5                             ; DF1F
         lda     #$01                            ; DF21
         rts                                     ; DF23
 
 ; ----------------------------------------------------------------------------
 ; No free slot: return A=$00 (nothing spawned).
-_Obj_TryCloneLoadedObjectIntoEmptySlot__NoSlot:
+_Obj_TryCloneIntoEmptySlot__NoSlot:
         lda     #$00                            ; DF24
         rts                                     ; DF26
 
 ; ----------------------------------------------------------------------------
 ; Copy the 14-byte LoadedObject record into the new slot at ObjectTable,X (Y=0..$0D); X advances
 ; past the slot.
-_Obj_TryCloneLoadedObjectIntoEmptySlot__CopyRecord:
+_Obj_TryCloneIntoEmptySlot__CopyRecord:
         ldy     #$00                            ; DF27
 ; Copy 14 bytes ($0E) from ZP $46+Y into the slot at $0400,X.
-_Obj_TryCloneLoadedObjectIntoEmptySlot__CopyLoop:
+_Obj_TryCloneIntoEmptySlot__CopyLoop:
         lda     LoadedObject + Obj::Type,y      ; DF29
         sta     ObjectTable + Obj::Type,x       ; DF2C
         inx                                     ; DF2F
         iny                                     ; DF30
         cpy     #$0E                            ; DF31
-        bne     _Obj_TryCloneLoadedObjectIntoEmptySlot__CopyLoop; DF33
+        bne     _Obj_TryCloneIntoEmptySlot__CopyLoop; DF33
         rts                                     ; DF35
 
 ; ----------------------------------------------------------------------------

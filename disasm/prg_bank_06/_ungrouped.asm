@@ -326,35 +326,63 @@ L_9E9E: lda     #$23                            ; 9E9E
 
 .macro MAC_L_A29E
 ; ----------------------------------------------------------------------------
-L_A29E: sta     $06                             ; A29E
-        jsr     Obj_TryCloneLoadedObjectIntoEmptySlot ; A2A0
-        beq     L_A2D1                          ; A2A3
+; Spawn a child object at either the left or right screen edge (chosen randomly).
+; 
+; Input:
+;   A = Velocity_X
+; 
+; Output:
+;   on success,
+;     A = 1
+;     X = slot spawned into
+;   on failure (no empty slot)
+;     A = 0
+; 
+; Start by storing a copy of Velocity_X into WR_Context_Dependent_06
+Obj_TryCloneAtScreenEdge:
+        sta     $06                             ; A29E
+; Try to clone using Obj_TryCloneIntoEmptySlot.
+        jsr     Obj_TryCloneIntoEmptySlot       ; A2A0
+        beq     _Obj_TryCloneAtScreenEdge__NoSlot; A2A3
+; Store X (slot allocated to) for later retrieval
         stx     $05                             ; A2A5
+; Roll the dice, 1 out of 2 times, flip Velocity_X.
         jsr     Step_RNG                        ; A2A7
         and     #$40                            ; A2AA
-        bne     L_A2B3                          ; A2AC
+        bne     _Obj_TryCloneAtScreenEdge__NegDir; A2AC
         lda     #$01                            ; A2AE
-        jmp     L_A2BC                          ; A2B0
+; Otherwise, select x-offset of +1 (tiles) and skip to edge-spawn logic
+        jmp     _Obj_TryCloneAtScreenEdge__Write; A2B0
 
 ; ----------------------------------------------------------------------------
-L_A2B3: lda     #$00                            ; A2B3
+_Obj_TryCloneAtScreenEdge__NegDir:
+        lda     #$00                            ; A2B3
         sec                                     ; A2B5
         sbc     $06                             ; A2B6
+; Save negated value.
         sta     $06                             ; A2B8
+; select x-offset +15 (tiles)
         lda     #$0F                            ; A2BA
-L_A2BC: clc                                     ; A2BC
+_Obj_TryCloneAtScreenEdge__Write:
+        clc                                     ; A2BC
         adc     $1D                             ; A2BD
+; Restore the slot allocated to into X (though it should still be there, no??)
         ldx     $05                             ; A2BF
+; Set the child's Position_X to the Camera's + the selected offset
         sta     ObjectTable + Obj::Position_X_Hi,x ; A2C1
         lda     $1C                             ; A2C4
         sta     ObjectTable + Obj::Position_X_Lo,x ; A2C6
         lda     $06                             ; A2C9
+; Save Velocity_X to spawned child
         sta     ObjectTable + Obj::Velocity_X,x ; A2CB
+; Return A = 1 for sucess
         lda     #$01                            ; A2CE
         rts                                     ; A2D0
 
 ; ----------------------------------------------------------------------------
-L_A2D1: lda     #$00                            ; A2D1
+; Return A = 0 for failure (no free slot).
+_Obj_TryCloneAtScreenEdge__NoSlot:
+        lda     #$00                            ; A2D1
         rts                                     ; A2D3
 
 ; ----------------------------------------------------------------------------

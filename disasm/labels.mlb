@@ -2142,10 +2142,20 @@ NesPrgRom:1A280:L_A280
 NesPrgRom:1A28A:L_A28A
 NesPrgRom:1A290:L_A290
 NesPrgRom:1A299:L_A299
-NesPrgRom:1A29E:L_A29E
-NesPrgRom:1A2B3:L_A2B3
-NesPrgRom:1A2BC:L_A2BC
-NesPrgRom:1A2D1:L_A2D1
+NesPrgRom:1A29E:Obj_TryCloneAtScreenEdge:Spawn a child object at either the left or right screen edge (chosen randomly).\n\nInput:\n  A = Velocity_X\n\nOutput:\n  on success,\n    A = 1\n    X = slot spawned into\n  on failure (no empty slot)\n    A = 0\n\nStart by storing a copy of Velocity_X into WR_Context_Dependent_06
+NesPrgRom:1A2A0::Try to clone using Obj_TryCloneIntoEmptySlot.
+NesPrgRom:1A2A5::Store X (slot allocated to) for later retrieval
+NesPrgRom:1A2A7::Roll the dice, 1 out of 2 times, flip Velocity_X.
+NesPrgRom:1A2B0::Otherwise, select x-offset of +1 (tiles) and skip to edge-spawn logic
+NesPrgRom:1A2B3:_Obj_TryCloneAtScreenEdge__NegDir
+NesPrgRom:1A2B8::Save negated value.
+NesPrgRom:1A2BA::select x-offset +15 (tiles)
+NesPrgRom:1A2BC:_Obj_TryCloneAtScreenEdge__Write
+NesPrgRom:1A2BF::Restore the slot allocated to into X (though it should still be there, no??)
+NesPrgRom:1A2C1::Set the child's Position_X to the Camera's + the selected offset
+NesPrgRom:1A2CB::Save Velocity_X to spawned child
+NesPrgRom:1A2CE::Return A = 1 for sucess
+NesPrgRom:1A2D1:_Obj_TryCloneAtScreenEdge__NoSlot:Return A = 0 for failure (no free slot).
 NesPrgRom:1A2D4:L_A2D4
 NesPrgRom:1A2E8:L_A2E8
 NesPrgRom:1A2E9:TankEnemy_Init:(alpha: not fully human-verified / pending re-verification) Shared initialisation routine for every damageable tank enemy, called by each enemy's Init handler.\nOverhead parallel: OvhdEnemy_Init ($B2B4). See docs/us/entities/tank/_shared-enemy-system.md.\n\nInput:\n   A = descriptor index (aka Thing ID).\n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the\n    damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them\n  LoadedObj's Health is set from EnemyDesc::Health\n  LoadedObj's IFrameCounter is set to 0\n  LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's\n    own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field\n  ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler\n    need not advance $46 itself
@@ -2621,13 +2631,24 @@ NesPrgRom:1B26C:L_B26C
 NesPrgRom:1B27C:L_B27C
 NesPrgRom:1B286:L_B286
 NesPrgRom:1B297:L_B297
-NesPrgRom:1B29B:L_B29B
-NesPrgRom:1B29E:L_B29E
-NesPrgRom:1B2A7:L_B2A7
-NesPrgRom:1B2A8:L_B2A8
-NesPrgRom:1B2AB:L_B2AB
-NesPrgRom:1B2DB:L_B2DB
-NesPrgRom:1B2EB:L_B2EB
+NesPrgRom:1B29B:ObjHandler_Tank_50_Gray_Flier_Spawner_Init:ObjType $50: Gray Flier Spawner - Init
+NesPrgRom:1B29E:_ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Update__
+NesPrgRom:1B2A3::TankEnemy_Init has already INC'd LoadedObj.ObjType from $50 to $51, so the following lines are redundant.
+NesPrgRom:1B2A7:_ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Done
+NesPrgRom:1B2A8:ObjHandler_Tank_51_Gray_Flier_Spawner_Main:ObjType $51: Gray Flier Spawner - Main
+NesPrgRom:1B2AB:_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Update__:Normal-play entry points.\n\nSpawns a Gray Flier, on average, every 128 frames (~2s).\n\nStart by setting the collision box dimensions...
+NesPrgRom:1B2B3::...which are promptly never used again.  Probably copy-pasta.\n\nThen perform an on-screen test via ScreenPos_Compute
+NesPrgRom:1B2B6::Note:  ScreenPos_Compute expects LoadedObj_Hitbox_Width/Height to be set but this subroutine, however, does not set them.  So this check will used whatever values are left over from the previous object.\n\nSpawning a child will only happen if the following 3 checks pass:\nCheck 1: the spawner must be on-screen.
+NesPrgRom:1B2BC::Check 2: Global_FrameCounter's lower 5 bits must be 0 (every 32nd tick)
+NesPrgRom:1B2C3::Check 3: A 1-in-4 roll (bits 6 and 5 must both be clear)
+NesPrgRom:1B2C7::call Obj_TryCloneAtScreenEdge with arg A = $28 (Velocity_X 2.5) to spawn a clone at either side of screen (chosen randomly).  The child's Velocity_X will be set to point to into the screen.
+NesPrgRom:1B2CA::On failure, skip to tombstone tail.
+NesPrgRom:1B2CC::overwrite the two inherited fields that must not carry over: ObjType ($7D: Gray Flier), and Velocity_Y.
+NesPrgRom:1B2D6::spawn SFX $24
+NesPrgRom:1B2DB:_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__TombstoneTail
+NesPrgRom:1B2E3::Test if still on screen.  If so, skip to end.
+NesPrgRom:1B2E8::otherwise, tombstone.
+NesPrgRom:1B2EB:_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Return
 NesPrgRom:1B2EC:L_B2EC
 NesPrgRom:1B2EF:L_B2EF
 NesPrgRom:1B308:L_B308
@@ -3564,11 +3585,11 @@ NesPrgRom:1DEED:L_DEED
 NesPrgRom:1DEF7:L_DEF7
 NesPrgRom:1DF05:L_DF05
 NesPrgRom:1DF0A:L_DF0A
-NesPrgRom:1DF0F:Obj_TryCloneLoadedObjectIntoEmptySlot:Tries to clone the current LoadedObject into an empty ObjectTable slot.\n\nSince the new spawn is a clone of the parent, it inherits the parent's position and other properties.  Callers will overwrite those as necessary.\n\nOutput:\n  on succes,\n    A = 1\n    X = the found slot offset\n  on failure to find slot,\n    A = 0
+NesPrgRom:1DF0F:Obj_TryCloneIntoEmptySlot:Tries to clone the current LoadedObject into an empty ObjectTable slot.\n\nSince the new spawn is a clone of the parent, it inherits the parent's position and other properties.  Callers will overwrite those as necessary.\n\nOutput:\n  on succes,\n    A = 1\n    X = the found slot offset\n  on failure to find slot,\n    A = 0
 NesPrgRom:1DF15::find the first empty object slot (scan from X=$70, limit $00=$D2)
-NesPrgRom:1DF24:_Obj_TryCloneLoadedObjectIntoEmptySlot__NoSlot:No free slot: return A=$00 (nothing spawned).
-NesPrgRom:1DF27:_Obj_TryCloneLoadedObjectIntoEmptySlot__CopyRecord:Copy the 14-byte LoadedObject record into the new slot at ObjectTable,X (Y=0..$0D); X advances past the slot.
-NesPrgRom:1DF29:_Obj_TryCloneLoadedObjectIntoEmptySlot__CopyLoop:Copy 14 bytes ($0E) from ZP $46+Y into the slot at $0400,X.
+NesPrgRom:1DF24:_Obj_TryCloneIntoEmptySlot__NoSlot:No free slot: return A=$00 (nothing spawned).
+NesPrgRom:1DF27:_Obj_TryCloneIntoEmptySlot__CopyRecord:Copy the 14-byte LoadedObject record into the new slot at ObjectTable,X (Y=0..$0D); X advances past the slot.
+NesPrgRom:1DF29:_Obj_TryCloneIntoEmptySlot__CopyLoop:Copy 14 bytes ($0E) from ZP $46+Y into the slot at $0400,X.
 NesPrgRom:1DF36:L_DF36
 NesPrgRom:1DF43:L_DF43
 NesPrgRom:1DF46:Obj_SpawnChild_A0:Spawns a child object if an empty slot is available.\n\nThe child's ObjType is taken from WR_Context_Dependent_A0.  The remaining fields are cloned from the parent.\n\nItput:\n  WR_Context_Dependent_00 = TBD\n  WR_Context_Dependent_A0 = The child's Object Type\n\nOutput:\n  on success,\n    A = $FF\n    Z = 0 \n  on failure (no empty slot)\n    A = $00\n    Z = 1\n\nTakes special care to restore WR_Context_Dependent_00 to its pre-call value.

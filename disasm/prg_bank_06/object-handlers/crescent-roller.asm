@@ -47,7 +47,7 @@ L_B72D: lda     Global_FrameCounter             ; B72D
         jsr     Step_RNG                        ; B733
         and     #$03                            ; B736
         bne     L_B76D                          ; B738
-        jsr     Obj_TryCloneLoadedObjectIntoEmptySlot ; B73A
+        jsr     Obj_TryCloneIntoEmptySlot       ; B73A
         beq     L_B76D                          ; B73D
         stx     $09                             ; B73F
         jsr     LoadedObj__Get_DeltaToPlayer_X  ; B741

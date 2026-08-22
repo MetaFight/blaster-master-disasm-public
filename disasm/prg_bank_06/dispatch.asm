@@ -93,8 +93,8 @@ L_8070: .addr   L_9EBF                          ; 8070
         .addr   L_9BED                          ; 809A
         .addr   L_B1FF                          ; 809C
         .addr   L_B20C                          ; 809E
-        .addr   L_B29B                          ; 80A0
-        .addr   L_B2A8                          ; 80A2
+        .addr   ObjHandler_Tank_50_Gray_Flier_Spawner_Init; 80A0
+        .addr   ObjHandler_Tank_51_Gray_Flier_Spawner_Main; 80A2
         .addr   L_B62F                          ; 80A4
         .addr   L_B63C                          ; 80A6
         .addr   L_A3E2                          ; 80A8

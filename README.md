@@ -13,7 +13,7 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 56 / 849 (7%) |
+| **M4** — Verified subroutines (public, clean) | 59 / 849 (7%) |
 | **M6** — Verified docs (public, clean) | 1 / 119 (1%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -22,7 +22,7 @@ verified and have since been modified.
 ### Area 1
 
 <details open>
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 15.9% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 20.5% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -36,7 +36,7 @@ verified and have since been modified.
 | <details><summary>⬜ Bullet; Red B?</summary>⬜ <code>ObjHandler_Tank_8D_Red_Bullet_B_Init</code></details> | 0 / 1 |
 | <details><summary>⬜ Flier; Gray</summary>⬜ <code>ObjHandler_Tank_7D_Gray_Flier_Main</code></details> | 0 / 1 |
 | <details><summary>✅ Flying Bomber</summary>✅ <code>ObjHandler_Tank_6C_Flying_Bomber_Init</code><br/>✅ <code>ObjHandler_Tank_6D_Flying_Bomber_Main</code></details> | 2 / 2 |
-| <details><summary>⬜ Gray Flier Spawner</summary>⬜ <code>ObjHandler_Tank_50_Gray_Flier_Spawner_Init</code><br/>⬜ <code>ObjHandler_Tank_51_Gray_Flier_Spawner_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Gray Flier Spawner</summary>✅ <code>ObjHandler_Tank_50_Gray_Flier_Spawner_Init</code><br/>✅ <code>ObjHandler_Tank_51_Gray_Flier_Spawner_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Gray Hopper; 10HP</summary>✅ <code>ObjHandler_Tank_7A_Gray_Hopper_10HP_Init</code><br/>✅ <code>ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling</code></details> | 2 / 2 |
 | <details><summary>✅ Gray Hopper; 6HP</summary>✅ <code>ObjHandler_Tank_5F_Gray_Hopper_6HP_Init</code><br/>✅ <code>ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking</code><br/>✅ <code>ObjHandler_Tank_61_GrayHopper6HP_Patrolling</code></details> | 3 / 3 |
 | <details><summary>⬜ Hulk</summary>⬜ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>⬜ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 0 / 2 |
@@ -73,7 +73,7 @@ verified and have since been modified.
 
 ### Area 2
 
-<details open>
+<details >
 <summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 18.4% </b></summary>
 
 | Entity Variant | Handlers |
@@ -118,7 +118,7 @@ verified and have since been modified.
 ### Area 3
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 7.7% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -132,7 +132,7 @@ verified and have since been modified.
 | <details><summary>⬜ Caterpillar; Red</summary>⬜ <code>ObjHandler_Tank_62_Red_Caterpillar</code><br/>⬜ <code>ObjHandler_Tank_63_Red_Caterpillar_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Crescent Roller</summary>⬜ <code>ObjHandler_Tank_88_Crescent_Roller_Init</code><br/>⬜ <code>ObjHandler_Tank_89_Crescent_Roller_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Flier; Gray</summary>⬜ <code>ObjHandler_Tank_7D_Gray_Flier_Main</code></details> | 0 / 1 |
-| <details><summary>⬜ Gray Flier Spawner</summary>⬜ <code>ObjHandler_Tank_50_Gray_Flier_Spawner_Init</code><br/>⬜ <code>ObjHandler_Tank_51_Gray_Flier_Spawner_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Gray Flier Spawner</summary>✅ <code>ObjHandler_Tank_50_Gray_Flier_Spawner_Init</code><br/>✅ <code>ObjHandler_Tank_51_Gray_Flier_Spawner_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Orb; Kamikaze</summary>⬜ <code>ObjHandler_Tank_78_Kamikaze_Orb_Init</code><br/>⬜ <code>ObjHandler_Tank_79_Kamikaze_Orb_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Red Caterpillar Dropper</summary>⬜ <code>ObjHandler_Tank_5B_Red_Caterpillar_Dropper_Init</code><br/>⬜ <code>ObjHandler_Tank_5C_Red_Caterpillar_Dropper_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Swooping Sphere</summary>⬜ <code>ObjHandler_Tank_6E_Swooping_Sphere_Init</code><br/>⬜ <code>ObjHandler_Tank_6F_Swooping_Sphere_Main</code></details> | 0 / 2 |
@@ -155,8 +155,8 @@ verified and have since been modified.
 
 ### Area 4
 
-<details open>
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜▫️⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 6.7% </b></summary>
+<details >
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 13.3% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -168,7 +168,7 @@ verified and have since been modified.
 | <details><summary>⬜ Bullet; Gray A</summary>⬜ <code>ObjHandler_Tank_56_Gray_Bullet_A_Init</code></details> | 0 / 1 |
 | <details><summary>⬜ Bullet; Gray B</summary>⬜ <code>ObjHandler_Tank_58_Gray_Bullet_B_Init</code></details> | 0 / 1 |
 | <details><summary>⬜ Flier; Gray</summary>⬜ <code>ObjHandler_Tank_7D_Gray_Flier_Main</code></details> | 0 / 1 |
-| <details><summary>⬜ Gray Flier Spawner</summary>⬜ <code>ObjHandler_Tank_50_Gray_Flier_Spawner_Init</code><br/>⬜ <code>ObjHandler_Tank_51_Gray_Flier_Spawner_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Gray Flier Spawner</summary>✅ <code>ObjHandler_Tank_50_Gray_Flier_Spawner_Init</code><br/>✅ <code>ObjHandler_Tank_51_Gray_Flier_Spawner_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Gray Hopper; 10HP</summary>✅ <code>ObjHandler_Tank_7A_Gray_Hopper_10HP_Init</code><br/>✅ <code>ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling</code></details> | 2 / 2 |
 | <details><summary>⬜ Hulk</summary>⬜ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>⬜ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Mine</summary>⬜ <code>ObjHandler_Tank_64_Mine_Init</code><br/>⬜ <code>ObjHandler_Tank_65_Mine_Main</code></details> | 0 / 2 |
@@ -261,7 +261,7 @@ verified and have since been modified.
 
 ### Area 7
 
-<details open>
+<details >
 <summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 10.3% </b></summary>
 
 | Entity Variant | Handlers |
@@ -363,9 +363,11 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ✅✅✅✅ | 06 / `object-handlers/hopper_6hp` |  |
 | ✅✅✅✅ | 07 / `rng` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `_ungrouped` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 04 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 05 / `(ungrouped — no .groups file)` |  |
+| ⬜⬜▫️⬛<br/>`58.3%` | 06 / `object-handlers/flier_gray` |  |
 | ⬜◽⬛⬛<br/>`44.4%` | 06 / `object-handlers/_common` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `_ungrouped` |  |
+| ▫️⬛⬛⬛<br/>`7.3%` | 06 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/auto-gates_and_locks` |  |
@@ -381,7 +383,6 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/crescent-roller` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/dropper_caterpillar_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/explosions` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flier_gray` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flier_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-bomber_caterpillar_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-ship` |  |
@@ -433,7 +434,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **5** pages, of which **4** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-08-19 15:03 UTC_
+_Generated: 2026-08-22 01:08 UTC_
 
 ## Pages
 

@@ -223,7 +223,7 @@ L_BBF8: jsr     Step_RNG                           ; BBF8
 ; ----------------------------------------------------------------------------
 L_BC0C: ldy     #$02                            ; BC0C
         lda     ($A6),y                         ; BC0E
-        jsr     Obj_TryCloneLoadedObjectIntoEmptySlot ; BC10
+        jsr     Obj_TryCloneIntoEmptySlot       ; BC10
         lda     #$2C                            ; BC13
         sta     ObjectTable + Obj::Type,x       ; BC15
 L_BC18: lda     #$4C                            ; BC18

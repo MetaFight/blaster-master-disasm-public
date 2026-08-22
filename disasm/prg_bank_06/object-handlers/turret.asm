@@ -42,7 +42,7 @@ L_AA96: lda     LoadedObj + Obj::Scratch2       ; AA96
         lda     LoadedObj + Obj::Scratch1       ; AA9C
         and     #$07                            ; AA9E
         bne     L_AAD4                          ; AAA0
-        jsr     Obj_TryCloneLoadedObjectIntoEmptySlot ; AAA2
+        jsr     Obj_TryCloneIntoEmptySlot       ; AAA2
         beq     L_AAD4                          ; AAA5
         jsr     Step_RNG                        ; AAA7
         and     #$40                            ; AAAA

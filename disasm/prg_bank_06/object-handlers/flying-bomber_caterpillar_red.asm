@@ -55,7 +55,7 @@ L_AF96: cmp     #$01                            ; AF96
         bcs     L_AFC4                          ; AF98
         lda     LoadedObj + Obj::Scratch1       ; AF9A
         bne     L_AFC4                          ; AF9C
-        jsr     Obj_TryCloneLoadedObjectIntoEmptySlot ; AF9E
+        jsr     Obj_TryCloneIntoEmptySlot       ; AF9E
         beq     L_AFBC                          ; AFA1
         lda     #$3A                            ; AFA3
         sta     ObjectTable + Obj::Type,x       ; AFA5

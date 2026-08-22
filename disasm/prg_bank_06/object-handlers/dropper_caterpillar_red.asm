@@ -38,7 +38,7 @@ L_A70E: cmp     $00                             ; A70E
         jmp     L_A71F                          ; A712
 
 ; ----------------------------------------------------------------------------
-L_A715: jsr     Obj_TryCloneLoadedObjectIntoEmptySlot                           ; A715
+L_A715: jsr     Obj_TryCloneIntoEmptySlot                           ; A715
         lda     #$42                            ; A718
         sta     ObjectTable + Obj::Type,x       ; A71A
         inc     LoadedObj + Obj::Scratch0       ; A71D

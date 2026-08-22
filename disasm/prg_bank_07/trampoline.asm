@@ -212,7 +212,7 @@ L_C0CF: jmp     L_CFCE                          ; C0CF
 L_C0D2: jmp     L_CF6F                          ; C0D2
 
 ; ----------------------------------------------------------------------------
-L_C0D5: jmp     _Obj_TryCloneLoadedObjectIntoEmptySlot__CopyRecord; C0D5
+L_C0D5: jmp     _Obj_TryCloneIntoEmptySlot__CopyRecord; C0D5
 
 ; ----------------------------------------------------------------------------
 L_C0D8: jmp     Obj_CopyFieldsToSlot            ; C0D8
@@ -302,7 +302,7 @@ L_C129: jmp     L_E0E5                          ; C129
 L_C12C: jmp     L_D77D                          ; C12C
 
 ; ----------------------------------------------------------------------------
-L_C12F: jmp     Obj_TryCloneLoadedObjectIntoEmptySlot; C12F
+L_C12F: jmp     Obj_TryCloneIntoEmptySlot       ; C12F
 
 ; ----------------------------------------------------------------------------
 L_C132: jmp     L_D21D                          ; C132

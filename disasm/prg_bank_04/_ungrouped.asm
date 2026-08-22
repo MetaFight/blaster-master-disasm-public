@@ -221,41 +221,9 @@ L_8112: .byte   $F4,$E4,$0C,$A5,$04,$00,$08,$0C ; 8112
         .byte   $0C,$C7,$02,$00,$08,$1C,$C8,$02 ; 87E2
         .byte   $00,$00,$1C,$E8,$02,$00,$FC,$8C ; 87EA
         .byte   $C8,$02,$00,$08,$9C,$C7,$02     ; 87F2
-L_87F9: .byte   $FC,$FC,$0C,$CC,$02,$0C,$00,$00 ; 87F9
-        .byte   $CE,$F4,$08,$0C,$CD,$02,$04,$08 ; 8801
-        .byte   $10,$DE                         ; 8809
-L_880B: .byte   $FC,$FC,$0C,$CC,$02,$0C,$00,$00 ; 880B
-        .byte   $CE,$F4,$08,$0C,$CD,$02,$0C,$00 ; 8813
-        .byte   $10,$CF,$00,$00,$0C,$CB,$05,$00 ; 881B
-        .byte   $FC,$0C,$C9,$04,$00,$08,$1C,$CA ; 8823
-        .byte   $04,$00,$FC,$0C,$C9,$04,$F8,$08 ; 882B
-        .byte   $00,$CA,$10,$00,$10,$EA,$00,$00 ; 8833
-        .byte   $1C,$C0,$02,$00,$00,$1C,$C1,$02 ; 883B
-        .byte   $00,$00,$1C,$C2,$02,$00,$00,$1C ; 8843
-        .byte   $E4,$05,$00,$00,$1C,$E6,$05,$FC ; 884B
-        .byte   $FF,$00,$C6,$08,$01,$10,$D5,$FC ; 8853
-        .byte   $FF,$00,$C6,$08,$01,$10,$D6,$00 ; 885B
-        .byte   $00,$1C,$C7,$02,$00,$00,$1C,$E0 ; 8863
-        .byte   $05,$00,$00,$1C,$E2,$05,$00,$00 ; 886B
-        .byte   $1C,$E4,$05,$00,$FC,$0C,$D8,$04 ; 8873
-        .byte   $00,$08,$1C,$D9,$04,$00,$FC,$0C ; 887B
-        .byte   $D8,$04,$00,$08,$1C,$DA,$04,$00 ; 8883
-        .byte   $FE,$0C,$AC,$02,$00,$08,$1C,$AF ; 888B
-        .byte   $02,$00,$FD,$0C,$AC,$02,$00,$08 ; 8893
-        .byte   $1C,$AE,$02,$00,$FC,$0C,$AC,$02 ; 889B
-        .byte   $00,$08,$1C,$AD,$02,$00,$FD,$0C ; 88A3
-        .byte   $AB,$02,$00,$08,$1C,$AE,$02,$04 ; 88AB
-        .byte   $FC,$0C,$A3,$05,$F4,$FC,$00,$A5 ; 88B3
-        .byte   $00,$08,$00,$A6,$00,$08,$10,$A7 ; 88BB
-        .byte   $04,$FC,$0C,$A3,$05,$F4,$FC,$00 ; 88C3
-        .byte   $A5,$00,$08,$00,$B6,$00,$08,$10 ; 88CB
-        .byte   $A7,$0C,$00,$1C,$C3,$01,$0C,$00 ; 88D3
-        .byte   $1C,$C4,$01,$0C,$00,$1C,$C5,$01 ; 88DB
-        .byte   $F8,$FC,$00,$EB,$00,$08,$00,$EC ; 88E3
-        .byte   $10,$00,$00,$EE,$00,$F8,$10,$ED ; 88EB
-        .byte   $00,$00,$1C,$80,$05,$00,$00,$1C ; 88F3
-        .byte   $82,$07,$00,$00,$1C,$84,$05,$00 ; 88FB
-        .byte   $00,$1C,$86,$05                 ; 8903
+.endmacro
+
+.macro MAC_L_8907
 L_8907: .byte   $12,$81,$44,$81,$85,$87,$94,$87 ; 8907
         .byte   $A3,$87,$B2,$87,$BC,$87,$C9,$87 ; 890F
         .byte   $D6,$87,$E0,$87,$EA,$87,$EF,$87 ; 8917
@@ -4359,16 +4327,9 @@ L_A730: jsr     LC1B3                           ; A730
         sta     LoadedObj + Obj::Scratch0       ; A73C
         rts                                     ; A73E
 
-; ----------------------------------------------------------------------------
-L_A73F: jsr     LC1B3                           ; A73F
-        and     #$38                            ; A742
-        clc                                     ; A744
-        adc     #$10                            ; A745
-        sta     LoadedObj + Obj::Scratch1       ; A747
-        lda     #$04                            ; A749
-        sta     LoadedObj + Obj::Scratch0       ; A74B
-        rts                                     ; A74D
+.endmacro
 
+.macro MAC_L_A74E
 ; ----------------------------------------------------------------------------
 L_A74E: lda     LoadedObj + Obj::Scratch1       ; A74E
         bne     L_A760                          ; A750
@@ -5065,11 +5026,9 @@ L_AC3D: lda     #$02                            ; AC3D
         jsr     LC063                           ; AC4B
         rts                                     ; AC4E
 
-; ----------------------------------------------------------------------------
-L_AC4F: lda     #$14                            ; AC4F
-        sta     LoadedObj + Obj::Type           ; AC51
-        rts                                     ; AC53
+.endmacro
 
+.macro MAC_L_AC54
 ; ----------------------------------------------------------------------------
 L_AC54: .byte   $5A,$5B,$5C,$5D                 ; AC54
 ; ----------------------------------------------------------------------------
@@ -5266,13 +5225,9 @@ L_AD90: lda     #$03                            ; AD90
         sta     LoadedObj + Obj::Scratch1       ; AD96
         rts                                     ; AD98
 
-; ----------------------------------------------------------------------------
-L_AD99: lda     #$04                            ; AD99
-        sta     LoadedObj + Obj::Scratch0       ; AD9B
-        lda     #$37                            ; AD9D
-        sta     LoadedObj + Obj::Scratch1       ; AD9F
-        rts                                     ; ADA1
+.endmacro
 
+.macro MAC_L_ADA2
 ; ----------------------------------------------------------------------------
 L_ADA2: lda     #$30                            ; ADA2
         sta     $40                             ; ADA4
@@ -5359,20 +5314,9 @@ L_AE3A: clc                                     ; AE3A
         sta     $0670                           ; AE3E
         rts                                     ; AE41
 
-; ----------------------------------------------------------------------------
-L_AE42: lda     LoadedObj + Obj::Scratch1       ; AE42
-        cmp     #$30                            ; AE44
-        bcs     L_AE54                          ; AE46
-        cmp     #$18                            ; AE48
-        bcs     L_AE50                          ; AE4A
-        lda     #$08                            ; AE4C
-        bne     L_AE56                          ; AE4E
-L_AE50: lda     #$07                            ; AE50
-        bne     L_AE56                          ; AE52
-L_AE54: lda     #$06                            ; AE54
-L_AE56: sta     $0670                           ; AE56
-        rts                                     ; AE59
+.endmacro
 
+.macro MAC_L_AE5A
 ; ----------------------------------------------------------------------------
 L_AE5A: lda     $0671                           ; AE5A
         asl     a                               ; AE5D
@@ -6014,41 +5958,9 @@ L_B27E: pla                                     ; B27E
         sta     LoadedObj + Obj::Health         ; B282
         rts                                     ; B284
 
-; ----------------------------------------------------------------------------
-L_B285: jsr     L_B29E                          ; B285
-        clc                                     ; B288
-        lda     LoadedObj + Obj::Position_X_Lo  ; B289
-        adc     LoadedObj + Obj::Velocity_X     ; B28B
-        sta     LoadedObj + Obj::Position_X_Lo  ; B28D
-        ror     a                               ; B28F
-        eor     LoadedObj + Obj::Velocity_X     ; B290
-        bpl     L_B29D                          ; B292
-        lda     LoadedObj + Obj::Velocity_X     ; B294
-        bmi     L_B29B                          ; B296
-        inc     LoadedObj + Obj::Position_X_Hi  ; B298
-        rts                                     ; B29A
+.endmacro
 
-; ----------------------------------------------------------------------------
-L_B29B: dec     LoadedObj + Obj::Position_X_Hi  ; B29B
-L_B29D: rts                                     ; B29D
-
-; ----------------------------------------------------------------------------
-L_B29E: clc                                     ; B29E
-        lda     LoadedObj + Obj::Position_Y_Lo  ; B29F
-        adc     LoadedObj + Obj::Velocity_Y     ; B2A1
-        sta     LoadedObj + Obj::Position_Y_Lo  ; B2A3
-        ror     a                               ; B2A5
-        eor     LoadedObj + Obj::Velocity_Y     ; B2A6
-        bpl     L_B2B3                          ; B2A8
-        lda     LoadedObj + Obj::Velocity_Y     ; B2AA
-        bmi     L_B2B1                          ; B2AC
-        inc     LoadedObj + Obj::Position_Y_Hi  ; B2AE
-        rts                                     ; B2B0
-
-; ----------------------------------------------------------------------------
-L_B2B1: dec     LoadedObj + Obj::Position_Y_Hi  ; B2B1
-L_B2B3: rts                                     ; B2B3
-
+.macro MAC_L_B2B4
 ; ----------------------------------------------------------------------------
 L_B2B4: jsr     L_B314                          ; B2B4
         ldy     #$00                            ; B2B7
@@ -7373,46 +7285,9 @@ L_BC1C: lda     #$00                            ; BC1C
 ; ----------------------------------------------------------------------------
 L_BC27: rts                                     ; BC27
 
-; ----------------------------------------------------------------------------
-L_BC28: jsr     LC105                           ; BC28
-        lda     L_BC61,x                        ; BC2B
-        sta     $04                             ; BC2E
-        lda     #$04                            ; BC30
-L_BC32: pha                                     ; BC32
-        ldx     #$8C                            ; BC33
-        lda     #$D2                            ; BC35
-        sta     $00                             ; BC37
-        jsr     LC1D7                           ; BC39
-        beq     L_BC5F                          ; BC3C
-        txa                                     ; BC3E
-        pha                                     ; BC3F
-        lda     #$4A                            ; BC40
-        sta     ObjectTable + Obj::Type,x       ; BC42
-        jsr     LC0D8                           ; BC45
-        pla                                     ; BC48
-        tax                                     ; BC49
-        pla                                     ; BC4A
-        pha                                     ; BC4B
-        asl     a                               ; BC4C
-        asl     a                               ; BC4D
-        asl     a                               ; BC4E
-        sec                                     ; BC4F
-        sbc     #$10                            ; BC50
-        clc                                     ; BC52
-        adc     $04                             ; BC53
-        sta     ObjectTable + Obj::Facing,x     ; BC55
-        pla                                     ; BC58
-        sec                                     ; BC59
-        sbc     #$01                            ; BC5A
-        bpl     L_BC32                          ; BC5C
-        rts                                     ; BC5E
+.endmacro
 
-; ----------------------------------------------------------------------------
-L_BC5F: pla                                     ; BC5F
-        rts                                     ; BC60
-
-; ----------------------------------------------------------------------------
-L_BC61: .byte   $C0,$00,$40,$80                 ; BC61
+.macro MAC_L_BC65
 ; ----------------------------------------------------------------------------
 L_BC65: jmp     L_BC83                          ; BC65
 
@@ -7861,29 +7736,6 @@ L_BF86: jmp     LC063                           ; BF86
 
 ; ----------------------------------------------------------------------------
 L_BF89: rts                                     ; BF89
-
-; ----------------------------------------------------------------------------
-L_BF8A: .byte   $01,$02,$04,$08,$10,$20,$40,$80 ; BF8A
-L_BF92: .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BF92
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BF9A
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFA2
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFAA
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFB2
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFBA
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFC2
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFCA
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFD2
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFDA
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFE2
-        .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFEA
-        .byte   $FF,$FF                         ; BFF2
-L_BFF4: .byte   $EE,$F4,$FF,$FF,$FF,$FF,$00,$00 ; BFF4
-        .byte   $F4,$FF,$FF                     ; BFFC
-        .byte   $FF                             ; BFFF
-
-; End of "BANK04" segment
-; ----------------------------------------------------------------------------
-.code
 
 .endmacro
 
