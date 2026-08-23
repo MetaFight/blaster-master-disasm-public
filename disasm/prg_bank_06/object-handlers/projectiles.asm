@@ -25,7 +25,7 @@ L_978B: lda     #$80                            ; 978B
         lda     $B9                             ; 9793
         cmp     #$03                            ; 9795
         bcs     L_979F                          ; 9797
-        jsr     LD2DB                           ; 9799
+        jsr     Apply_Velocity_XY               ; 9799
         jmp     L_97A2                          ; 979C
 
 ; ----------------------------------------------------------------------------
@@ -186,7 +186,7 @@ L_990A: sta     LoadedObj + Obj::Velocity_Y     ; 990A
 L_990F: lda     #$10                            ; 990F
         ldx     #$4D                            ; 9911
         jsr     Speed_Limit_Sub                 ; 9913
-L_9916: jsr     LD2DB                           ; 9916
+L_9916: jsr     Apply_Velocity_XY                           ; 9916
 L_9919: lda     #$18                            ; 9919
         sta     $40                             ; 991B
         lda     #$18                            ; 991D
@@ -658,7 +658,7 @@ L_9FFC: lda     #$40                            ; 9FFC
         sta     $42                             ; 9FFE
         lda     #$40                            ; A000
         sta     $43                             ; A002
-        jsr     LE083                           ; A004
+        jsr     Obj_MoveAndCollide              ; A004
         bne     L_A029                          ; A007
 L_A009: lda     #$08                            ; A009
         sta     $40                             ; A00B
@@ -752,7 +752,7 @@ L_A097: cmp     #$10                            ; A097
         sta     LoadedObj + Obj::Facing         ; A0A3
         tya                                     ; A0A5
         bpl     L_A0AB                          ; A0A6
-        jsr     LE0D8                           ; A0A8
+        jsr     _Obj_ReflectHeading__SideWall   ; A0A8
 L_A0AB: ldy     #$30                            ; A0AB
         jsr     Obj_AngleToVelocity             ; A0AD
         inc     LoadedObj + Obj::Type           ; A0B0
@@ -911,8 +911,8 @@ L_A1B0: lda     #$80                            ; A1B0
 L_A1BF: lda     #$02                            ; A1BF
         ldx     #$00                            ; A1C1
         jsr     LDFD1                           ; A1C3
-        jsr     LD2DE                           ; A1C6
-        jsr     LD2FE                           ; A1C9
+        jsr     Apply_Velocity_X                ; A1C6
+        jsr     Apply_Velocity_Y                ; A1C9
 L_A1CC: lda     #$10                            ; A1CC
         sta     $40                             ; A1CE
         lda     #$10                            ; A1D0

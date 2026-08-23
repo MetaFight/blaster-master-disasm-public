@@ -63,7 +63,7 @@ L_A932: sta     LoadedObj + Obj::Velocity_X     ; A932
 L_A93E: lda     #$11                            ; A93E
         jsr     TileRead_WithOffset             ; A940
         bpl     L_A970                          ; A943
-        jsr     LE083                           ; A945
+        jsr     Obj_MoveAndCollide              ; A945
         and     #$80                            ; A948
         beq     L_A994                          ; A94A
         jsr     Step_RNG                        ; A94C
@@ -95,7 +95,7 @@ L_A975: lda     #$02                            ; A975
         lda     #$30                            ; A97C
         ldx     #$4D                            ; A97E
         jsr     Speed_Limit_Sub                 ; A980
-        jsr     LE083                           ; A983
+        jsr     Obj_MoveAndCollide              ; A983
         and     #$40                            ; A986
         beq     L_A994                          ; A988
         lda     LoadedObj + Obj::Velocity_Y     ; A98A
@@ -115,7 +115,7 @@ L_A994: lda     #$10                            ; A994
 L_A9A4: lda     #$06                            ; A9A4
         jsr     TankEnemy_DamageCheck           ; A9A6
         beq     L_A9AE                          ; A9A9
-        jmp     TankEnemy_Defeat                ; A9AB
+        jmp     TankEnemy_DefeatTrackedEnemy    ; A9AB
 
 ; ----------------------------------------------------------------------------
 L_A9AE: lda     #$00                            ; A9AE

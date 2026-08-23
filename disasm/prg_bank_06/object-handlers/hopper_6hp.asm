@@ -145,13 +145,13 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnScreenCheck:
 
 ; ----------------------------------------------------------------------------
 ; on-screen: run the shared damage check against descriptor $05. A non-zero return means this hit
-; killed it — tail-call TankEnemy_Defeat, which does the per-slot bookkeeping and falls into the
-; drop spawner.
+; killed it — tail-call TankEnemy_DefeatTrackedEnemy, which does the per-slot bookkeeping and
+; falls into the drop spawner.
 _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage:
         lda     #$05                            ; A850
         jsr     TankEnemy_DamageCheck           ; A852
         beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render; A855
-        jmp     TankEnemy_Defeat                ; A857
+        jmp     TankEnemy_DefeatTrackedEnemy    ; A857
 
 ; ----------------------------------------------------------------------------
 ; still alive: $44 = sprite palette 1, plus the horizontal-flip bit when the X velocity $4C is
@@ -250,7 +250,7 @@ _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage:
 ; if non-fatal, skip to render tail,
         beq     _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render; A8B4
 ; otherwise, call the shared death handler.
-        jmp     TankEnemy_Defeat                ; A8B6
+        jmp     TankEnemy_DefeatTrackedEnemy    ; A8B6
 
 ; ----------------------------------------------------------------------------
 ; Render logic.

@@ -34,9 +34,9 @@ L_B098: lda     #$80                            ; B098
         jsr     L_9B90                          ; B0AD
 L_B0B0: lda     LoadedObj + Obj::Scratch0       ; B0B0
         bne     L_B0ED                          ; B0B2
-        jsr     LD2FE                           ; B0B4
+        jsr     Apply_Velocity_Y                ; B0B4
         jsr     V_Collision_Check               ; B0B7
-        jsr     LD2DE                           ; B0BA
+        jsr     Apply_Velocity_X                ; B0BA
         jsr     H_Collision_Check               ; B0BD
         beq     L_B0C9                          ; B0C0
         lda     #$00                            ; B0C2
@@ -89,7 +89,7 @@ L_B118: dec     LoadedObj + Obj::Velocity_Y     ; B118
 L_B11A: lda     #$40                            ; B11A
         ldx     #$4D                            ; B11C
         jsr     Speed_Limit_Sub                 ; B11E
-        jsr     LE083                           ; B121
+        jsr     Obj_MoveAndCollide              ; B121
         bpl     L_B13B                          ; B124
         lda     #$00                            ; B126
         sta     LoadedObj + Obj::Scratch0       ; B128
@@ -114,7 +114,7 @@ L_B13B: lda     #$20                            ; B13B
 L_B14B: lda     #$11                            ; B14B
         jsr     TankEnemy_DamageCheck           ; B14D
         beq     L_B155                          ; B150
-        jmp     TankEnemy_Defeat                ; B152
+        jmp     TankEnemy_DefeatTrackedEnemy    ; B152
 
 ; ----------------------------------------------------------------------------
 L_B155: lda     #$01                            ; B155

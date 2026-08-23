@@ -127,7 +127,7 @@ JSR $EF2B             ; ScreenPos_Compute + player-projectile overlap
   JMP $D7F8           ;   off-screen → despawn
 LDA #$10 : JSR $A30A  ; TankEnemy_DamageCheck(desc $10): apply pending shot damage vs HP 16
   BEQ +               ;   alive → render
-  JMP $A34D           ;   killed → TankEnemy_Defeat
+  JMP $A34D           ;   killed → TankEnemy_DefeatTrackedEnemy
 ```
 
 `$EF2B` computes screen position (despawning if it scrolls off) and registers overlap with the

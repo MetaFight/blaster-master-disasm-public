@@ -54,7 +54,7 @@ L_A71F: lda     #$10                            ; A71F
 L_A72F: lda     #$03                            ; A72F
         jsr     TankEnemy_DamageCheck           ; A731
         beq     L_A739                          ; A734
-        jmp     TankEnemy_Defeat                ; A736
+        jmp     TankEnemy_DefeatTrackedEnemy    ; A736
 
 ; ----------------------------------------------------------------------------
 L_A739: lda     #$00                            ; A739

@@ -106,7 +106,7 @@ L_B9C0: lda     #$10                            ; B9C0
 L_B9D0: lda     #$1C                            ; B9D0
         jsr     TankEnemy_DamageCheck           ; B9D2
         beq     L_B9DA                          ; B9D5
-        jmp     TankEnemy_Defeat                ; B9D7
+        jmp     TankEnemy_DefeatTrackedEnemy    ; B9D7
 
 ; ----------------------------------------------------------------------------
 L_B9DA: lda     LoadedObj + Obj::Scratch0       ; B9DA
@@ -151,7 +151,7 @@ L_BA03: lda     #$80                            ; BA03
         jmp     L_BA43                          ; BA16
 
 ; ----------------------------------------------------------------------------
-L_BA19: jsr     LE083                           ; BA19
+L_BA19: jsr     Obj_MoveAndCollide                           ; BA19
         beq     L_BA43                          ; BA1C
         jsr     Step_RNG                        ; BA1E
         and     #$40                            ; BA21
@@ -187,7 +187,7 @@ L_BA43: lda     #$10                            ; BA43
 L_BA53: lda     #$1C                            ; BA53
         jsr     TankEnemy_DamageCheck           ; BA55
         beq     L_BA5D                          ; BA58
-        jmp     TankEnemy_Defeat                ; BA5A
+        jmp     TankEnemy_DefeatTrackedEnemy    ; BA5A
 
 ; ----------------------------------------------------------------------------
 L_BA5D: lda     LoadedObj + Obj::Facing         ; BA5D

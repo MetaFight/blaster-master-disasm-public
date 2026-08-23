@@ -88,9 +88,9 @@ L_AD8C: lda     #$FC                            ; AD8C
 L_AD8E: clc                                     ; AD8E
         adc     LoadedObj + Obj::Velocity_X     ; AD8F
         sta     LoadedObj + Obj::Velocity_X     ; AD91
-        jsr     LD2DE                           ; AD93
+        jsr     Apply_Velocity_X                ; AD93
         jsr     H_Collision_Check               ; AD96
-        jsr     LD2FE                           ; AD99
+        jsr     Apply_Velocity_Y                ; AD99
         jsr     V_Collision_Check               ; AD9C
         beq     L_ADA9                          ; AD9F
         lda     LoadedObj + Obj::Velocity_Y     ; ADA1
@@ -109,7 +109,7 @@ L_ADA9: lda     #$10                            ; ADA9
 L_ADB9: lda     #$0C                            ; ADB9
         jsr     TankEnemy_DamageCheck           ; ADBB
         beq     L_ADC3                          ; ADBE
-        jmp     TankEnemy_Defeat                ; ADC0
+        jmp     TankEnemy_DefeatTrackedEnemy    ; ADC0
 
 ; ----------------------------------------------------------------------------
 L_ADC3: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; ADC3

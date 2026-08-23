@@ -95,7 +95,7 @@ L_B787: lda     #$18                            ; B787
 L_B797: lda     #$1A                            ; B797
         jsr     TankEnemy_DamageCheck           ; B799
         beq     L_B7A1                          ; B79C
-        jsr     TankEnemy_Defeat                ; B79E
+        jsr     TankEnemy_DefeatTrackedEnemy    ; B79E
 L_B7A1: lda     LoadedObj + Obj::Scratch0       ; B7A1
         bne     L_B7A8                          ; B7A3
         jmp     L_B7AB                          ; B7A5

@@ -1,7 +1,7 @@
 .macro MAC_L_A670
 ; ----------------------------------------------------------------------------
 L_A670: sty     $05                             ; A670
-        jsr     LE083                           ; A672
+        jsr     Obj_MoveAndCollide              ; A672
         lda     LoadedObj + Obj::Scratch1       ; A675
         beq     L_A6AD                          ; A677
         dec     LoadedObj + Obj::Scratch1       ; A679

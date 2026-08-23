@@ -447,7 +447,7 @@ _Obj_SpawnChild_A0__NoSlot:
 ;     bit 7: horizontal collision
 ;     bit 6: vertical collision
 Obj_MoveBounce:
-        jsr     L_E083                          ; DF68
+        jsr     Obj_MoveAndCollide              ; DF68
 ; If bit 7 (side wall collision flag) is clear, skip to vertical checks.
         bpl     _Obj_MoveBounce__CheckVertical  ; DF6B
 ; Otherwise, flip Velocity_X and return.
@@ -727,22 +727,50 @@ Obj_TurnHeading:
         rts                                     ; E082
 
 ; ----------------------------------------------------------------------------
-L_E083: jsr     L_D2DE                          ; E083
+; Advance an object by its velocity and resolve the terrain collision, on both axes.
+; 
+; Input:
+;   Collision box (half extents)
+;     LoadedObj_CollisionBox_HalfHeight
+;     LoadedObj_CollisionBox_HalfWidth
+;   Object sub-tile position
+;     LoadedObj_Position_Y_Lo
+;     LoadedObj_Position_X_Lo
+; LoadedObj_TileIndex
+; 
+; Output:
+;   A = the wall flags (also stored TerrainCollisionFlags)
+;     bit7 ($80) = side wall hit,
+;     bit6 ($40) = floor/ceiling hit.
+Obj_MoveAndCollide:
+        jsr     Apply_Velocity_X                ; E083
         jsr     H_Collision_Check               ; E086
-        beq     L_E090                          ; E089
+; Apply_Velocity_X then H_Collision_Check.
+; Z = 1 means no collision happend.  Skip ahead.
+        beq     _Obj_MoveAndCollide__NoWallX    ; E089
+; Otherwise, prepare TerrainCollisionFlags value with side-wall flag (bit7) set.
         lda     #$80                            ; E08B
-        jmp     L_E092                          ; E08D
+        jmp     _Obj_MoveAndCollide__StoreX     ; E08D
 
 ; ----------------------------------------------------------------------------
-L_E090: lda     #$00                            ; E090
-L_E092: sta     TerrainCollisionFlags           ; E092
-        jsr     L_D2FE                          ; E094
+; No horizontal collisions, so result side-wall flag is off.
+_Obj_MoveAndCollide__NoWallX:
+        lda     #$00                            ; E090
+; store side-wall flag (bit7).
+_Obj_MoveAndCollide__StoreX:
+        sta     TerrainCollisionFlags           ; E092
+        jsr     Apply_Velocity_Y                ; E094
         jsr     V_Collision_Check               ; E097
-        beq     L_E0A2                          ; E09A
+; Apply_Velocity_Y then V_Collision_Check.
+; Z = 1 means no collision happend.  Skip ahead.
+        beq     _Obj_MoveAndCollide__Return     ; E09A
+; Otherwise, set the ceiling-floor flag (bit6) on in TerrainCollisionFlags.
         lda     TerrainCollisionFlags           ; E09C
         ora     #$40                            ; E09E
         sta     TerrainCollisionFlags           ; E0A0
-L_E0A2: lda     TerrainCollisionFlags           ; E0A2
+; Copy result (TerrainCollisionFlags) into A and return
+_Obj_MoveAndCollide__Return:
+        lda     TerrainCollisionFlags           ; E0A2
         rts                                     ; E0A4
 
 ; ----------------------------------------------------------------------------
@@ -793,14 +821,21 @@ Obj_ScaleVelY:
         rts                                     ; E0CF
 
 ; ----------------------------------------------------------------------------
-L_E0D0: lda     TerrainCollisionFlags           ; E0D0
-        bmi     L_E0D8                          ; E0D2
+; Bounce the heading angle LoadedObj.Facing according to the boundary flags in
+; TerrainCollisionFlags:
+;   bit7 (side wall) -> Mirror about vertical (Facing = $80 - Facing) 
+;   bit6 (floor/ceiling) -> Mirror about horizontal (Facing = -Facing)
+Obj_ReflectHeading:
+        lda     TerrainCollisionFlags           ; E0D0
+        bmi     _Obj_ReflectHeading__SideWall   ; E0D2
         asl     a                               ; E0D4
-        bmi     L_E0E5                          ; E0D5
+        bmi     _Obj_ReflectHeading__FloorCeiling; E0D5
         rts                                     ; E0D7
 
 ; ----------------------------------------------------------------------------
-L_E0D8: lda     LoadedObj + Obj::Facing         ; E0D8
+; LoadedObj.Facing = $80 - LoadedObj.Facing.
+_Obj_ReflectHeading__SideWall:
+        lda     LoadedObj + Obj::Facing         ; E0D8
         sec                                     ; E0DA
         sbc     #$40                            ; E0DB
         eor     #$FF                            ; E0DD
@@ -810,7 +845,9 @@ L_E0D8: lda     LoadedObj + Obj::Facing         ; E0D8
         rts                                     ; E0E4
 
 ; ----------------------------------------------------------------------------
-L_E0E5: lda     #$00                            ; E0E5
+; LoadedObj.Facing = -LoadedObj.Facing.
+_Obj_ReflectHeading__FloorCeiling:
+        lda     #$00                            ; E0E5
         sec                                     ; E0E7
         sbc     LoadedObj + Obj::Facing         ; E0E8
         sta     LoadedObj + Obj::Facing         ; E0EA

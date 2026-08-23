@@ -33,7 +33,7 @@ L_AE02: lda     #$80                            ; AE02
         jsr     Enqueue_Sound_Command           ; AE16
 L_AE19: jsr     Obj_MoveBounce                           ; AE19
         bpl     L_AE21                          ; AE1C
-        jsr     LE0D8                           ; AE1E
+        jsr     _Obj_ReflectHeading__SideWall   ; AE1E
 L_AE21: dec     LoadedObj + Obj::Scratch1       ; AE21
         bne     L_AE49                          ; AE23
         inc     LoadedObj + Obj::Scratch0       ; AE25
@@ -45,7 +45,7 @@ L_AE21: dec     LoadedObj + Obj::Scratch1       ; AE21
 L_AE2F: lda     #$02                            ; AE2F
         jsr     Obj_GravityMoveBounce_Double    ; AE31
         bpl     L_AE39                          ; AE34
-        jsr     LE0D8                           ; AE36
+        jsr     _Obj_ReflectHeading__SideWall   ; AE36
 L_AE39: lda     LoadedObj + Obj::Velocity_Y     ; AE39
         cmp     #$04                            ; AE3B
         bcs     L_AE49                          ; AE3D
@@ -66,7 +66,7 @@ L_AE49: lda     #$10                            ; AE49
 L_AE59: lda     #$0D                            ; AE59
         jsr     TankEnemy_DamageCheck           ; AE5B
         beq     L_AE63                          ; AE5E
-        jmp     TankEnemy_Defeat                ; AE60
+        jmp     TankEnemy_DefeatTrackedEnemy    ; AE60
 
 ; ----------------------------------------------------------------------------
 L_AE63: lda     #$01                            ; AE63

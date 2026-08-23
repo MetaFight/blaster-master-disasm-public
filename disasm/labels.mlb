@@ -2175,10 +2175,17 @@ NesPrgRom:1A31C::If Health is 0, play a sound effect and return $FF to indicate 
 NesPrgRom:1A324:_TankEnemy_DamageCheck__NotKilled:Return $00 to indicate damage was not applied or it was applied but left Health > 0.
 NesPrgRom:1A327:L_A327
 NesPrgRom:1A344:L_A344
-NesPrgRom:1A347:L_A347
-NesPrgRom:1A34D:TankEnemy_Defeat:Shared enemy DEATH tail.\n\n~29 handlers JMP here after TankEnemy_DamageCheck reports a kill.\n\nFirst calls Obj_DespawnAndLog for object slot bookkeeping and then falls into TankEnemy_SpawnDrop."
-NesPrgRom:1A350:L_A350
-NesPrgRom:1A365:L_A365
+NesPrgRom:1A347:TankEnemy_DefeatUntrackedEnemy:Shared enemy DEATH tail used by untracked/spawner-spawned enemies.\n\nDespawns object and calls pick-up spawn routine.
+NesPrgRom:1A34A::tail-call TankEnemy_SpawnDrop: roll for a pickup drop, then morph the slot to Big Explosion
+NesPrgRom:1A34D:TankEnemy_DefeatTrackedEnemy:Shared enemy DEATH tail.\n\n~29 handlers JMP here after TankEnemy_DamageCheck reports a kill.\n\nFirst calls Obj_DespawnAndLog for object slot bookkeeping and then falls into TankEnemy_SpawnDrop."
+NesPrgRom:1A350:TankEnemy_SpawnDrop:On enemy death, roll the RNG for a chance to drop a Pickup.
+NesPrgRom:1A355::Load Enemy's DropRate to compare with RNG
+NesPrgRom:1A357::Branch to Explode tail if RNG >= DropRate (miss).
+NesPrgRom:1A359::Otherwise, acquire an Object Slot for the Pickup.
+NesPrgRom:1A35C::On failure, skip to Explode tail,
+NesPrgRom:1A35E::On success, load Pickup ObjType from Descriptor record,
+NesPrgRom:1A362::and set it in the newly allocated object slot.
+NesPrgRom:1A365:_TankEnemy_SpawnDrop__Explode:Tail — JMP SpawnBigExplosion ($9B8B), always taken after the optional drop.
 NesPrgRom:1A368:TankEnemy_DescTablePtr:LE self-pointer (=$A36A) to TankEnemy_DescTable. Tank parallel of OvhdEnemy_DescTablePtr ($B324).
 NesPrgRom:1A36A:TankEnemy_DescTable:(alpha: not fully human-verified / pending re-verification) 30 x EnemyDesc, indexed by descriptor index via TankEnemy_Load_EnemyDescPtr (accessed only via computed ($A1) pointer). See the EnemyDesc struct.\n\nThe descriptor index equals the spawn-list Thing id for all 30 entries (see docs/us/entities/entity-map.md), so this is one descriptor per Thing.\n\nIndex->enemy:\n  00=GrayCaterpillar($54)\n  01=GrayBulletA($56)*\n  02=GrayBulletB($58)*\n  03=RedCatDropper($5B)\n  04=Hulk($5D)\n  05=GrayHopper6($5F)\n  06=RedCaterpillar($62)\n  07=Mine($64)\n  08=Turret($66)\n  09=BomberRock($68)\n  0A=FlyingShip($6A)\n  0B=FlyingBomber($6C)\n  0C=SwoopingSphere($6E)\n  0D=Bee($70) 0E=Orb($72)\n  0F=FlyingRedCatBomber($74)\n  10=Shooter($76)\n  11=KamikazeOrb($78)\n  12=GrayHopper10($7A)\n  13=RedFlierSpawner($4E)\n  14=GrayFlierSpawner($50)\n  15=BombLobbingHand($7E)\n  16=Jellyfish($80)\n  17=ScubaSteve($82)\n  18=RunningShell($85)\n  19=SubmersibleSpawner($52)\n  1A=CrescentRoller($88)\n  1B=BombCanister($8A)\n  1C=RedBulletA($8C)*\n  1D=RedBulletB($8D)*\n\n* The two bullet families each own a Thing pair whose descriptors hold identical bytes, and their handlers do not respect the split. Gray: $56 Init, $58 Init and $5A Attacking all pass 02, while 01 is reached only by $59 Main's damage check. Red: $8C Init passes 1C and $8D Init passes 1D, but $8E Main and $8F Locked both pass 1C. Behaviourally harmless — 01/02 and 1C/1D are byte-identical — so which of a pair a handler names is not evidence of that handler's Thing.\n\nTank parallel of OvhdEnemy_DescTable ($B326). See docs/us/entities/tank/_shared-enemy-system.md.
 NesPrgRom:1A3E2:L_A3E2
@@ -2304,7 +2311,7 @@ NesPrgRom:1A840:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnScreenCheck
 NesPrgRom:1A848::Load Hitbox dimensions in LoadedObj_Hitbox_Width/Height and call ScreenPos_Compute\n  $00 means on-screen\n  $FF means off-screen
 NesPrgRom:1A84B::If still on-screen, run damage logic,
 NesPrgRom:1A84D::otherwise, prep for despawn by tombstoning.
-NesPrgRom:1A850:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage:on-screen: run the shared damage check against descriptor $05. A non-zero return means this hit killed it — tail-call TankEnemy_Defeat, which does the per-slot bookkeeping and falls into the drop spawner.
+NesPrgRom:1A850:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage:on-screen: run the shared damage check against descriptor $05. A non-zero return means this hit killed it — tail-call TankEnemy_DefeatTrackedEnemy, which does the per-slot bookkeeping and falls into the drop spawner.
 NesPrgRom:1A85A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:still alive: $44 = sprite palette 1, plus the horizontal-flip bit when the X velocity $4C is non-negative (Obj_SetAttrFlipX derives the flip from $4C, NOT from the heading $47). Then pick the pose from the wind-up timer.
 NesPrgRom:1A863::$51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
 NesPrgRom:1A868:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle:$51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose
@@ -2649,12 +2656,20 @@ NesPrgRom:1B2DB:_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__TombstoneTail
 NesPrgRom:1B2E3::Test if still on screen.  If so, skip to end.
 NesPrgRom:1B2E8::otherwise, tombstone.
 NesPrgRom:1B2EB:_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Return
-NesPrgRom:1B2EC:L_B2EC
-NesPrgRom:1B2EF:L_B2EF
-NesPrgRom:1B308:L_B308
-NesPrgRom:1B318:L_B318
-NesPrgRom:1B322:L_B322
-NesPrgRom:1B333:L_B333
+NesPrgRom:1B2EC:ObjHandler_Tank_7D_Gray_Flier_Main:ObjType $7D: Gray Flier - Main\n\nEnemy follows a sine wave path across the screen.
+NesPrgRom:1B2EF:_ObjHandler_Tank_7D_Gray_Flier_Main__Update__:Start by setting collision box.
+NesPrgRom:1B2F7::then source oscillation phase from Global_FrameCounter (the two ASL limit the angle range from 00..FC, but also quadruple the oscillation frequency).
+NesPrgRom:1B2FD::Use phase to source Heading for this frame via Trig_SinByAngle
+NesPrgRom:1B300::Scale by Y ($20) via ScaleBySignedFrac and save as Velocity_Y
+NesPrgRom:1B305::apply velocities (without terrain collision)
+NesPrgRom:1B308:_ObjHandler_Tank_7D_Gray_Flier_Main__AfterPhysics
+NesPrgRom:1B310::do on-screen test.  If on-screen, jump to Damage handler, otherwise, despawn.
+NesPrgRom:1B318:_ObjHandler_Tank_7D_Gray_Flier_Main__Damage
+NesPrgRom:1B31A::Called shared damage check routine TankEnemy_DamageCheck with enemy descriptor $14.
+NesPrgRom:1B31D::if still alive, skip to render tail.
+NesPrgRom:1B31F::otherwise, call shared defeat handler.
+NesPrgRom:1B322:_ObjHandler_Tank_7D_Gray_Flier_Main__Render:Typical render tail.  Sets OAM X-flip attribute, then uses Global_FrameCounter to select current animation metasprite id, then calls shared renderer.
+NesPrgRom:1B333:TankGrayFlier_MetaSpriteId_ByFrame:Gray Flier ($7D) metasprite id table.
 NesPrgRom:1B337:L_B337
 NesPrgRom:1B33A:L_B33A
 NesPrgRom:1B34A:L_B34A
@@ -3333,14 +3348,22 @@ NesPrgRom:1D2AB:L_D2AB
 NesPrgRom:1D2B1:TileRead_WithOffset:Reads the tile byte at LoadedObj.TileIndex plus an offset (A).\n\nInput:\n  A = offset\n    eg, $11 = immediately below\n        $ff = 1 to the left\n        $01 = 1 to the right\n\nOutput:\n  A = Tile data
 NesPrgRom:1D2B2::A (step offset) + $4E → cell index; A = $0500[index] = the look-ahead tile.
 NesPrgRom:1D2B9:L_D2B9
-NesPrgRom:1D2DB:L_D2DB
-NesPrgRom:1D2DE:L_D2DE
-NesPrgRom:1D2F9:L_D2F9
-NesPrgRom:1D2FD:L_D2FD
-NesPrgRom:1D2FE:L_D2FE
-NesPrgRom:1D31A:L_D31A
-NesPrgRom:1D31E:L_D31E
-NesPrgRom:1D323:L_D323
+NesPrgRom:1D2DB:Apply_Velocity_XY:Applies Velocity_X and Velocity_Y to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.\n\nNotes:\n  I'm not sure what the benefits of this variant's arithmetic are over Apply_Double_Velocity_XY's appreach.\n  Why is the sign of the high byte dropped?  Why isn't the Lo addition done first for easy carry into the high byte?
+NesPrgRom:1D2DE:Apply_Velocity_X:Applies Velocity_X to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.
+NesPrgRom:1D2E2::Clear position hi-byte's sign (not sure why).
+NesPrgRom:1D2E9::Add Velocity_X to position lo-byte and save result.
+NesPrgRom:1D2EB::If the carry flag is set, we need to adjust the hi-byte and TileIndex.\nROR A; EOR $4C: bit 7 = 1 if carry-out and velocity sign disagree (page crossing)
+NesPrgRom:1D2EC::This following EOR produces a positive number if\n  * Velocity_X is negative (bit7 on) and the shifted Carry flag is set (A's bit7 on); (is this even possible) or\n  * Velocity_X is positive and the shifted Carry flag is not set
+NesPrgRom:1D2EE::In either case, no additional care required.  Skip to end.
+NesPrgRom:1D2F2::If Velocity_X is negative, DECrement the position hi-byte and TileIndex.
+NesPrgRom:1D2F4::otherwise, INCrement the position hi-byte and TileIndex.
+NesPrgRom:1D2F9:_Apply_Velocity_X__MovedLeft
+NesPrgRom:1D2FD:_Apply_Velocity_X__Done
+NesPrgRom:1D2FE:Apply_Velocity_Y:Identical to Apply_Velocity_X apart from TileIndex adjustment logic.\n\nMoving up requires subracting $11 from TileIndex and moving down requires adding $11 to id.  That is the only different between the two.
+NesPrgRom:1D314::Handle moving down a tile.\n\nINC position hi-byte and prep TileIndex addition of $11 (17, one row).
+NesPrgRom:1D31A:_Apply_Velocity_Y__MovedUp:Handle moving up a tile.\n\nDEC position hi-byte and prep TileIndex addition of $EF (-17, one row).
+NesPrgRom:1D31E:_Apply_Velocity_Y__AdjTileIndex:add ±17 to TileIndex
+NesPrgRom:1D323:_Apply_Velocity_Y__Done
 NesPrgRom:1D324:Apply_Double_Velocity_XY:Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point arithmetic.\nAlso keeps track of TileIndex correctly.
 NesPrgRom:1D327:Apply_Double_Velocity_X:Apply DOUBLE the LoadedObject's X velocity to its position, adjusting tilemap column $4E and keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Double_Velocity_XY.
 NesPrgRom:1D32B::If Velocity_X is positive, use sign-extension byte $00, otherwise use $FF
@@ -3352,33 +3375,42 @@ NesPrgRom:1D349:Apply_Double_Velocity_Y:Apply DOUBLE the LoadedObject's Y veloci
 NesPrgRom:1D351:_Apply_Double_Velocity_Y__PushSign:PHA the sign-extension byte ($00 or $FF) then add 2×YVel
 NesPrgRom:1D374:L_D374
 NesPrgRom:1D37A:L_D37A
-NesPrgRom:1D37D:H_Collision_Check:(alpha: not fully human-verified / pending re-verification) X-axis terrain collision check and response — the horizontal mirror of V_Collision_Check.\nTests the level tiles the active object's collision box overlaps and, on a solid hit, snaps\nthe object flush against the blocking tile's edge. Reached through MoveX_WithCollision\n($D37A) and Collision_Checks ($D374); dispatch slot $C015.\nIn: LoadedObj_CollisionBox_HalfWidth/_HalfHeight (the box, centred on the object),\nLoadedObj_Position_X_Lo/_Y_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a\nhit LoadedObj_Position_X_Lo is rewritten so the box edge sits exactly on the tile boundary.\nThe X axis resolves on the exact edge; the Y axis it tests as a cross-check tolerates ~2 px\nof overlap before it counts, which is what stops an object catching on tile corners.\nSee docs/us/misc/terrain-collision.md
-NesPrgRom:1D387:_H_Collision_Check__CheckRight:left edge clear → test the right edge (JSR _H_Collision_Check__TileRight); on hit snap $48 = -$42
-NesPrgRom:1D393:_H_Collision_Check__Exit:RTS
-NesPrgRom:1D394:_H_Collision_Check__TileRight:compute tile index for X pos + $42 (right edge); if overflow step to next column, then read/classify the tile
-NesPrgRom:1D3A3:_H_Collision_Check__TileLeft:compute tile index for X pos vs $42 (left edge); if underflow step to prior column, then read/classify the tile
-NesPrgRom:1D3A9::branch if LoadedObj's X_Lo (fixed4.4) >= the collision box's HalfWidth.\nThis means we can use LoadedObj's TileIndex as is.
-NesPrgRom:1D3AB::Otherwise, decrement TileIndex (so we check one tile to the left)
-NesPrgRom:1D3AC:_H_Collision_Check__ReadTile:Load tile flags into A.  Also check the bottom Y edge ($4A + $43, +$11 row)
-NesPrgRom:1D3AF::Bit 7 (negative) means a solid tile was found.  Skip to Exit tail.
-NesPrgRom:1D3B1::Otherwise, do the cross-axis checks
-NesPrgRom:1D3C6:_H_Collision_Check__CheckTop:check the top Y edge ($4A - $43, -$11 row); solid → collision
-NesPrgRom:1D3DB:_H_Collision_Check__NoCollide:all tiles clear → LDA #$00 (Z=1 no collision); RTS
+NesPrgRom:1D37D:H_Collision_Check:X-axis terrain collision check and overlap pushback.\n\nMirror of V_Collision_Check.\n\nInput:\n  Collision box (half extents)\n    LoadedObj_CollisionBox_HalfHeight\n    LoadedObj_CollisionBox_HalfWidth\n  Object sub-tile position\n    LoadedObj_Position_Y_Lo\n    LoadedObj_Position_X_Lo\n LoadedObj_TileIndex\n\nOutput:\n  on terrain overlap,\n    Z = 0\n    LoadedObj_Position_X_Lo: pushed back to the tile boundary to undo overlap\n  otherwise,\n    Z = 1
+NesPrgRom:1D380::If there is no overlap to the left (Z = 0) we branch to check for overlap to the right.
+NesPrgRom:1D382::otherwise, handle overlap to the left by snapping the object's left-edge to the right-edge of the overlapping tile.
+NesPrgRom:1D387:_H_Collision_Check__CheckRight:Check for overlap with solid tile to the right and apply push-back on overlap.
+NesPrgRom:1D38A::If there is no overlap (A = 0) there's nothing left to do.  Exit.
+NesPrgRom:1D38C::otherwise, handle overlap to the right by snapping the object's right-edge to the left-edge of the overlapping tile.
+NesPrgRom:1D393:_H_Collision_Check__Exit:Overlap detected.  Return Z = 0.
+NesPrgRom:1D394:_H_Collision_Check__TileRight:compute tile index for the right-edge of the collision box.
+NesPrgRom:1D39B::if flush with, or not-overlapping, tile to the right, skip to tile read.
+NesPrgRom:1D39F::Otherwise, adjust X right one col before tile read.
+NesPrgRom:1D3A3:_H_Collision_Check__TileLeft:compute tile index for the left-edge of the collision box.
+NesPrgRom:1D3A9::if Position_X_Lo >= HalfWidth (no overlap), skip to tile read.
+NesPrgRom:1D3AB::Otherwise, adjust X left on col before tile read.
+NesPrgRom:1D3AC:_H_Collision_Check__ReadTile:Use TileIndex (X) to load the target tile's flags.\nbit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.\nOtherwise, check top/bottom Y edge tiles
+NesPrgRom:1D3B1:_H_Collision_Check__CheckBottom:BOTTOM-edge Y cross-check:\nIf (Position_Y_Lo + the half-height) > $FF the bottom edge has spilled into the next row, so test that tile too (but only once the spill reaches $20 (2px) to allow objects to smoothly round corners)
+NesPrgRom:1D3C6:_H_Collision_Check__CheckTop:TOP-edge Y cross-check:\nSame as bottom-edge check, but with subtraction.
+NesPrgRom:1D3DB:_H_Collision_Check__NoCollide:No overlap detected.  Return Z = 1.
 NesPrgRom:1D3DE:L_D3DE
-NesPrgRom:1D3E1:V_Collision_Check:(alpha: not fully human-verified / pending re-verification) Y-axis terrain collision check and response — the vertical mirror of H_Collision_Check.\nTests the level tiles the active object's collision box overlaps and, on a solid hit, snaps\nthe object flush against the blocking tile's edge — this is what makes an object land on a\nfloor or stop under a ceiling. Reached through MoveY_WithCollision ($D3DE) and\nCollision_Checks ($D374); dispatch slot $C018.\nIn: LoadedObj_CollisionBox_HalfHeight/_HalfWidth (the box, centred on the object),\nLoadedObj_Position_Y_Lo/_X_Lo, LoadedObj_TileIndex. Out: Z=1 clear / Z=0 blocked, and on a\nhit LoadedObj_Position_Y_Lo is rewritten so the box edge sits exactly on the tile boundary.\nSee docs/us/misc/terrain-collision.md\ncheck the tile above ($D40B); if solid, snap the position so the box top rests on it
-NesPrgRom:1D3E4::tile above solid: LDA $43 → STA $4A (snap position to tile edge); RTS
-NesPrgRom:1D3EB:_V_Collision_Check__CheckBelow:check tile below ($D3F8); if solid: snap ObjYFrac = -$43 (push up to tile bottom)
-NesPrgRom:1D3EE::tile below solid: 0-$43 → $4A; RTS
-NesPrgRom:1D3F8:_V_Collision_Check__TileBelow:compute tile index for position + $43 (bottom edge); if overflow: step to next tile row
+NesPrgRom:1D3E1:V_Collision_Check:Y-axis terrain collision check and overlap pushback.\n\nInput:\n  Collision box (half extents)\n    LoadedObj_CollisionBox_HalfHeight\n    LoadedObj_CollisionBox_HalfWidth\n  Object sub-tile position\n    LoadedObj_Position_Y_Lo\n    LoadedObj_Position_X_Lo\n  LoadedObj_TileIndex\n\nOutput:\n  on terrain overlap,\n    Z = 0\n    LoadedObj_Position_Y_Lo: pushed back to the tile boundary to undo overlap\n  otherwise,\n    Z = 1
+NesPrgRom:1D3E4::If there is no overlap above (Z = 0) we branch to check for overlap below.
+NesPrgRom:1D3E6::otherwise, handle overlap above by snapping the object's top-edge to the bottom-edge of the tile above.
+NesPrgRom:1D3EB:_V_Collision_Check__CheckBelow:Check for overlap with solid tile below and apply push-back on overlap.
+NesPrgRom:1D3EE::If there is no overlap below (A = 0) there's nothing left to do.  Exit.
+NesPrgRom:1D3F0::otherwise, handle overlap above by snapping the object's bottom-edge to the top-edge of the tile below.
+NesPrgRom:1D3F8:_V_Collision_Check__TileBelow:compute tile index for the bottom-edge of the collision box.
 NesPrgRom:1D3FF::Branch if A is 0
 NesPrgRom:1D401::Branch if Y_Lo and HalfHeight didn't overflow
-NesPrgRom:1D403::otherwise, adjust TileIndex (to one row lower) before testing tile
-NesPrgRom:1D40B:_V_Collision_Check__TileAbove:compute tile index for position vs $43 (top edge); if BCS: step to prior tile row
+NesPrgRom:1D403::otherwise, adjust X down one row before tile read.
+NesPrgRom:1D40B:_V_Collision_Check__TileAbove:compute tile index for the top-edge of the collision box.
+NesPrgRom:1D411::if Position_Y_Lo >= HalfHeight (no overlap), skip to tile read.
+NesPrgRom:1D413::Otherwise, adjust X up one row before tile read.
 NesPrgRom:1D418:_V_Collision_Check__ReadTile:Use TileIndex (X) to load the target tile's flags.\nbit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.\nOtherwise, check left/right X edge tiles
-NesPrgRom:1D41D:_V_Collision_Check__CheckRight:RIGHT-edge X cross-check: Position_X_Lo + the half-width. If it carries, the right edge has spilled into the next column, so test that tile too — but only once the spill reaches $20 (2 px); a shallower overlap is ignored, which is what keeps an object from catching on a tile corner.
-NesPrgRom:1D42F:_V_Collision_Check__CheckLeft:LEFT-edge X cross-check: Position_X_Lo − the half-width. If it borrows, the left edge has crossed into the previous column, so test that tile too — subject to the same 2 px ($E0) corner tolerance as the right edge above.
-NesPrgRom:1D440:_V_Collision_Check__NoCollide:all tiles clear; Z=1 → signals no collision to caller
-NesPrgRom:1D442:_V_Collision_Check__Exit:RTS (Z=0 from a solid-tile BMI = collision; Z=1 = clear)
+NesPrgRom:1D41D:_V_Collision_Check__CheckRight:RIGHT-edge X cross-check:\nIf (Position_X_Lo + the half-width) > $FF the right edge has spilled into the next column, so test that tile too (but only once the spill reaches $20 (2px) to allow objects to smoothly round corners)"
+NesPrgRom:1D42F:_V_Collision_Check__CheckLeft:LEFT-edge X cross-check:\nSame as right-edge check, but with subtraction.
+NesPrgRom:1D440:_V_Collision_Check__NoCollide:No overlap detected.  Return Z = 1.
+NesPrgRom:1D442:_V_Collision_Check__Exit:Overlap detected.  Return Z = 0 (guranteed by BMI branch here on tile overlap).
 NesPrgRom:1D443:L_D443
 NesPrgRom:1D44E:L_D44E
 NesPrgRom:1D452:L_D452
@@ -3653,18 +3685,22 @@ NesPrgRom:1E065:L_E065
 NesPrgRom:1E06A:L_E06A
 NesPrgRom:1E071:L_E071
 NesPrgRom:1E07B:Obj_TurnHeading:Updates the LoadedObj.Facing heading by adding an angle delta.\n\nInput:\n  LoadedObj.Scratch2 = the angle delta\n\nOutput:\n  LoadedObj.Facing = the updated heading
-NesPrgRom:1E083:L_E083
-NesPrgRom:1E090:L_E090
-NesPrgRom:1E092:L_E092
-NesPrgRom:1E0A2:L_E0A2
+NesPrgRom:1E083:Obj_MoveAndCollide:Advance an object by its velocity and resolve the terrain collision, on both axes.\n\nInput:\n  Collision box (half extents)\n    LoadedObj_CollisionBox_HalfHeight\n    LoadedObj_CollisionBox_HalfWidth\n  Object sub-tile position\n    LoadedObj_Position_Y_Lo\n    LoadedObj_Position_X_Lo\nLoadedObj_TileIndex\n\nOutput:\n  A = the wall flags (also stored TerrainCollisionFlags)\n    bit7 ($80) = side wall hit,\n    bit6 ($40) = floor/ceiling hit.
+NesPrgRom:1E089::Apply_Velocity_X then H_Collision_Check.\nZ = 1 means no collision happend.  Skip ahead.
+NesPrgRom:1E08B::Otherwise, prepare TerrainCollisionFlags value with side-wall flag (bit7) set.
+NesPrgRom:1E090:_Obj_MoveAndCollide__NoWallX:No horizontal collisions, so result side-wall flag is off.
+NesPrgRom:1E092:_Obj_MoveAndCollide__StoreX:store side-wall flag (bit7).
+NesPrgRom:1E09A::Apply_Velocity_Y then V_Collision_Check.\nZ = 1 means no collision happend.  Skip ahead.
+NesPrgRom:1E09C::Otherwise, set the ceiling-floor flag (bit6) on in TerrainCollisionFlags.
+NesPrgRom:1E0A2:_Obj_MoveAndCollide__Return:Copy result (TerrainCollisionFlags) into A and return
 NesPrgRom:1E0A5:Obj_MoveAndCollide_Double:Double-speed Obj_MoveAndCollide: Apply_Double_Velocity_X + H_Collision_Check → $9A bit7 (side wall); Apply_Double_Velocity_Y + V_Collision_Check → bit6 (floor/ceiling); returns $9A. Dispatch slot $C030; used by the overhead projectile handlers (Slider Laser $53, Spitter Shot $55, Th2C Shot $57) and in-bank by Obj_MoveBounce_Double ($DF84).
 NesPrgRom:1E0B2:_Obj_MoveAndCollide_Double__NoWallX:No side wall: X flag = 0.
 NesPrgRom:1E0B4:_Obj_MoveAndCollide_Double__StoreX:$9A = side-wall flag (bit7).
 NesPrgRom:1E0C4:_Obj_MoveAndCollide_Double__Return:Copy result (TerrainCollisionFlags) into A and return
 NesPrgRom:1E0C7:Obj_ScaleVelY:Scale LoadedObj's Velocity_Y by the fraction in A.\n\nInput:\n  A = fraction, unsigned byte, in any fixed-point format.\n  LoadedObj's Velocity_Y = signed\n\nOutput:\n  A = LoadedObj's Velocity_Y scaled by A\n  LoadedObj's Velocity_Y = same as A
-NesPrgRom:1E0D0:L_E0D0
-NesPrgRom:1E0D8:L_E0D8
-NesPrgRom:1E0E5:L_E0E5
+NesPrgRom:1E0D0:Obj_ReflectHeading:Bounce the heading angle LoadedObj.Facing according to the boundary flags in TerrainCollisionFlags:\n  bit7 (side wall) -> Mirror about vertical (Facing = $80 - Facing) \n  bit6 (floor/ceiling) -> Mirror about horizontal (Facing = -Facing)
+NesPrgRom:1E0D8:_Obj_ReflectHeading__SideWall:LoadedObj.Facing = $80 - LoadedObj.Facing.
+NesPrgRom:1E0E5:_Obj_ReflectHeading__FloorCeiling:LoadedObj.Facing = -LoadedObj.Facing.
 NesPrgRom:1E0ED:LoadedObj__Get_DeltaToPlayer_X:Calculates signed X-distance from this object to the player.\n  Returns:\n    A = Hi byte (signed)\n    X = Lo byte (unsigned)
 NesPrgRom:1E0FA:L_E0FA
 NesPrgRom:1E107:L_E107

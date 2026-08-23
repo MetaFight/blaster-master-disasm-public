@@ -77,7 +77,7 @@ L_AAD4: lda     #$10                            ; AAD4
 L_AAE4: lda     #$08                            ; AAE4
         jsr     TankEnemy_DamageCheck           ; AAE6
         beq     L_AAEE                          ; AAE9
-        jmp     TankEnemy_Defeat                ; AAEB
+        jmp     TankEnemy_DefeatTrackedEnemy    ; AAEB
 
 ; ----------------------------------------------------------------------------
 L_AAEE: jsr     Obj_TurnHeading                           ; AAEE

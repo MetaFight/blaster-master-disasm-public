@@ -305,7 +305,7 @@ L_8BE5: ldy     LoadedObj + Obj::Scratch1       ; 8BE5
         sta     LoadedObj + Obj::Velocity_Y     ; 8BF6
         inc     LoadedObj + Obj::Scratch1       ; 8BF8
         jsr     L_8C32                          ; 8BFA
-        jmp     LD2DB                           ; 8BFD
+        jmp     Apply_Velocity_XY               ; 8BFD
 
 ; ----------------------------------------------------------------------------
 L_8C00: lda     LoadedObj + Obj::Facing         ; 8C00
@@ -623,7 +623,7 @@ L_8EB7: lda     #$00                            ; 8EB7
         sec                                     ; 8EC3
         sbc     LoadedObj + Obj::Velocity_X     ; 8EC4
         sta     LoadedObj + Obj::Velocity_X     ; 8EC6
-        jsr     LD2DE                           ; 8EC8
+        jsr     Apply_Velocity_X                ; 8EC8
         jsr     H_Collision_Check               ; 8ECB
         beq     L_8EF8                          ; 8ECE
         lda     #$11                            ; 8ED0
@@ -821,7 +821,7 @@ L_900C: lda     #$80                            ; 900C
         jsr     L_8E32                          ; 9022
         lda     LoadedObj + Obj::Velocity_X     ; 9025
         sta     LoadedObj + Obj::Velocity_Y     ; 9027
-        jsr     LD2FE                           ; 9029
+        jsr     Apply_Velocity_Y                ; 9029
         jsr     V_Collision_Check               ; 902C
         beq     L_9054                          ; 902F
         lda     #$01                            ; 9031
@@ -1025,7 +1025,7 @@ L_9171: lda     #$80                            ; 9171
         sec                                     ; 918F
         sbc     LoadedObj + Obj::Velocity_X     ; 9190
         sta     LoadedObj + Obj::Velocity_Y     ; 9192
-        jsr     LD2FE                           ; 9194
+        jsr     Apply_Velocity_Y                ; 9194
         jsr     V_Collision_Check               ; 9197
         beq     L_91BF                          ; 919A
         lda     #$FF                            ; 919C

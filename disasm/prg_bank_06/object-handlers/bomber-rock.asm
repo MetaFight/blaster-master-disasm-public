@@ -93,7 +93,7 @@ L_ABA4: lda     #$10                            ; ABA4
 L_ABB4: lda     #$09                            ; ABB4
         jsr     TankEnemy_DamageCheck           ; ABB6
         beq     L_ABBE                          ; ABB9
-        jmp     TankEnemy_Defeat                ; ABBB
+        jmp     TankEnemy_DefeatTrackedEnemy    ; ABBB
 
 ; ----------------------------------------------------------------------------
 L_ABBE: lda     #$41                            ; ABBE

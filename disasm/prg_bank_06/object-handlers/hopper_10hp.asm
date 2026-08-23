@@ -84,7 +84,7 @@ _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Damage:
 ; If non-fatal, skip to render tail,
         beq     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Render; B1C0
 ; otherwise, call the shared death handler.
-        jmp     TankEnemy_Defeat                ; B1C2
+        jmp     TankEnemy_DefeatTrackedEnemy    ; B1C2
 
 ; ----------------------------------------------------------------------------
 ; Render logic.

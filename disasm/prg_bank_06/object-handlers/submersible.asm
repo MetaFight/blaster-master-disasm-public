@@ -69,7 +69,7 @@ L_B69C: lda     Global_FrameCounter             ; B69C
         jsr     Trig_SinByAngle                 ; B6A2
         jsr     ScaleBySignedFrac               ; B6A5
         sta     LoadedObj + Obj::Velocity_Y     ; B6A8
-        jsr     LE083                           ; B6AA
+        jsr     Obj_MoveAndCollide              ; B6AA
         and     #$80                            ; B6AD
         beq     L_B6B8                          ; B6AF
         lda     #$00                            ; B6B1
@@ -88,7 +88,7 @@ L_B6B8: lda     #$10                            ; B6B8
 L_B6C8: lda     #$19                            ; B6C8
         jsr     TankEnemy_DamageCheck           ; B6CA
         beq     L_B6D2                          ; B6CD
-        jmp     L_A347                          ; B6CF
+        jmp     TankEnemy_DefeatUntrackedEnemy  ; B6CF
 
 ; ----------------------------------------------------------------------------
 L_B6D2: lda     #$01                            ; B6D2

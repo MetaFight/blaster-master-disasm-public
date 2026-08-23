@@ -111,7 +111,7 @@ L_A327: jsr     TankEnemy_Load_EnemyDescPtr     ; A327
         bne     L_A344                          ; A337
         lda     #$1D                            ; A339
         jsr     Enqueue_Sound_Command           ; A33B
-        jsr     L_A350                          ; A33E
+        jsr     TankEnemy_SpawnDrop             ; A33E
         lda     #$FF                            ; A341
         rts                                     ; A343
 
@@ -120,8 +120,13 @@ L_A344: lda     #$00                            ; A344
         rts                                     ; A346
 
 ; ----------------------------------------------------------------------------
-L_A347: jsr     Obj_Despawn                           ; A347
-        jmp     L_A350                          ; A34A
+; Shared enemy DEATH tail used by untracked/spawner-spawned enemies.
+; 
+; Despawns object and calls pick-up spawn routine.
+TankEnemy_DefeatUntrackedEnemy:
+        jsr     Obj_Despawn                     ; A347
+; tail-call TankEnemy_SpawnDrop: roll for a pickup drop, then morph the slot to Big Explosion
+        jmp     TankEnemy_SpawnDrop             ; A34A
 
 ; ----------------------------------------------------------------------------
 ; Shared enemy DEATH tail.
@@ -130,18 +135,28 @@ L_A347: jsr     Obj_Despawn                           ; A347
 ; 
 ; First calls Obj_DespawnAndLog for object slot bookkeeping and then falls into
 ; TankEnemy_SpawnDrop.'
-TankEnemy_Defeat:
+TankEnemy_DefeatTrackedEnemy:
         jsr     Obj_DespawnAndLog               ; A34D
-L_A350: jsr     Step_RNG                           ; A350
+; On enemy death, roll the RNG for a chance to drop a Pickup.
+TankEnemy_SpawnDrop:
+        jsr     Step_RNG                        ; A350
         ldy     #$03                            ; A353
+; Load Enemy's DropRate to compare with RNG
         cmp     ($A1),y                         ; A355
-        bcs     L_A365                          ; A357
+; Branch to Explode tail if RNG >= DropRate (miss).
+        bcs     _TankEnemy_SpawnDrop__Explode   ; A357
+; Otherwise, acquire an Object Slot for the Pickup.
         jsr     Obj_TryCloneIntoEmptySlot       ; A359
-        beq     L_A365                          ; A35C
+; On failure, skip to Explode tail,
+        beq     _TankEnemy_SpawnDrop__Explode   ; A35C
+; On success, load Pickup ObjType from Descriptor record,
         ldy     #$02                            ; A35E
         lda     ($A1),y                         ; A360
+; and set it in the newly allocated object slot.
         sta     ObjectTable + Obj::Type,x       ; A362
-L_A365: jmp     L_9B8B                          ; A365
+; Tail — JMP SpawnBigExplosion ($9B8B), always taken after the optional drop.
+_TankEnemy_SpawnDrop__Explode:
+        jmp     L_9B8B                          ; A365
 
 ; ----------------------------------------------------------------------------
 ; LE self-pointer (=$A36A) to TankEnemy_DescTable. Tank parallel of OvhdEnemy_DescTablePtr

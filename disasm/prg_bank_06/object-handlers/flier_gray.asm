@@ -81,46 +81,68 @@ _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Return:
         rts                                     ; B2EB
 
 ; ----------------------------------------------------------------------------
-L_B2EC: jmp     L_B308                          ; B2EC
+; ObjType $7D: Gray Flier - Main
+; 
+; Enemy follows a sine wave path across the screen.
+ObjHandler_Tank_7D_Gray_Flier_Main:
+        jmp     _ObjHandler_Tank_7D_Gray_Flier_Main__AfterPhysics; B2EC
 
 ; ----------------------------------------------------------------------------
-L_B2EF: lda     #$80                            ; B2EF
+; Start by setting collision box.
+_ObjHandler_Tank_7D_Gray_Flier_Main__Update__:
+        lda     #$80                            ; B2EF
         sta     $42                             ; B2F1
         lda     #$80                            ; B2F3
         sta     $43                             ; B2F5
+; then source oscillation phase from Global_FrameCounter (the two ASL limit the angle range from
+; 00..FC, but also quadruple the oscillation frequency).
         lda     Global_FrameCounter             ; B2F7
         asl     a                               ; B2F9
         asl     a                               ; B2FA
         ldy     #$20                            ; B2FB
+; Use phase to source Heading for this frame via Trig_SinByAngle
         jsr     Trig_SinByAngle                 ; B2FD
+; Scale by Y ($20) via ScaleBySignedFrac and save as Velocity_Y
         jsr     ScaleBySignedFrac               ; B300
         sta     LoadedObj + Obj::Velocity_Y     ; B303
-        jsr     LD2DB                           ; B305
-L_B308: lda     #$10                            ; B308
+; apply velocities (without terrain collision)
+        jsr     Apply_Velocity_XY               ; B305
+_ObjHandler_Tank_7D_Gray_Flier_Main__AfterPhysics:
+        lda     #$10                            ; B308
         sta     $40                             ; B30A
         lda     #$10                            ; B30C
         sta     $41                             ; B30E
+; do on-screen test.  If on-screen, jump to Damage handler, otherwise, despawn.
         jsr     ScreenPos_Compute               ; B310
-        beq     L_B318                          ; B313
+        beq     _ObjHandler_Tank_7D_Gray_Flier_Main__Damage; B313
         jmp     Obj_Despawn                     ; B315
 
 ; ----------------------------------------------------------------------------
-L_B318: lda     #$14                            ; B318
+_ObjHandler_Tank_7D_Gray_Flier_Main__Damage:
+        lda     #$14                            ; B318
+; Called shared damage check routine TankEnemy_DamageCheck with enemy descriptor $14.
         jsr     TankEnemy_DamageCheck           ; B31A
-        beq     L_B322                          ; B31D
-        jmp     L_A347                          ; B31F
+; if still alive, skip to render tail.
+        beq     _ObjHandler_Tank_7D_Gray_Flier_Main__Render; B31D
+; otherwise, call shared defeat handler.
+        jmp     TankEnemy_DefeatUntrackedEnemy  ; B31F
 
 ; ----------------------------------------------------------------------------
-L_B322: lda     #$01                            ; B322
+; Typical render tail.  Sets OAM X-flip attribute, then uses Global_FrameCounter to select current
+; animation metasprite id, then calls shared renderer.
+_ObjHandler_Tank_7D_Gray_Flier_Main__Render:
+        lda     #$01                            ; B322
         jsr     Obj_SetAttrFlipX                ; B324
         lda     Global_FrameCounter             ; B327
         lsr     a                               ; B329
         and     #$03                            ; B32A
         tax                                     ; B32C
-        lda     L_B333,x                        ; B32D
+        lda     TankGrayFlier_MetaSpriteId_ByFrame,x; B32D
         jmp     MetaSprite_Render               ; B330
 
 ; ----------------------------------------------------------------------------
-L_B333: .byte   $08,$09,$0A,$0B                 ; B333
+; Gray Flier ($7D) metasprite id table.
+TankGrayFlier_MetaSpriteId_ByFrame:
+        .byte   $08,$09,$0A,$0B                 ; B333
 .endmacro
 

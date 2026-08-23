@@ -61,7 +61,7 @@ L_A250: lda     #$40                            ; A250
         sta     $42                             ; A252
         lda     #$40                            ; A254
         sta     $43                             ; A256
-        jsr     LE083                           ; A258
+        jsr     Obj_MoveAndCollide              ; A258
         bne     L_A27A                          ; A25B
 L_A25D: lda     #$08                            ; A25D
         sta     $40                             ; A25F

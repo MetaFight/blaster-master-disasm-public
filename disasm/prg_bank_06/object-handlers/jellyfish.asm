@@ -26,9 +26,9 @@ L_B401: lda     #$80                            ; B401
         sta     $43                             ; B407
         lda     LoadedObj + Obj::Scratch0       ; B409
         bne     L_B43A                          ; B40B
-        jsr     LE083                           ; B40D
+        jsr     Obj_MoveAndCollide              ; B40D
         bpl     L_B418                          ; B410
-        jsr     LE0D8                           ; B412
+        jsr     _Obj_ReflectHeading__SideWall   ; B412
         jmp     L_B420                          ; B415
 
 ; ----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ L_B420: dec     LoadedObj + Obj::Scratch1       ; B420
 L_B43A: lda     #$01                            ; B43A
         ldx     #$00                            ; B43C
         jsr     LDFD1                           ; B43E
-        jsr     LE083                           ; B441
+        jsr     Obj_MoveAndCollide              ; B441
         jsr     L_A2D4                          ; B444
         lda     LoadedObj + Obj::Velocity_Y     ; B447
         cmp     #$04                            ; B449
@@ -75,7 +75,7 @@ L_B457: lda     #$10                            ; B457
 L_B467: lda     #$16                            ; B467
         jsr     TankEnemy_DamageCheck           ; B469
         beq     L_B471                          ; B46C
-        jmp     TankEnemy_Defeat                ; B46E
+        jmp     TankEnemy_DefeatTrackedEnemy    ; B46E
 
 ; ----------------------------------------------------------------------------
 L_B471: lda     #$01                            ; B471

@@ -105,7 +105,7 @@ L_B53D: lda     #$80                            ; B53D
         lda     #$01                            ; B54D
         ldx     #$00                            ; B54F
         jsr     LDFD1                           ; B551
-        jsr     LE083                           ; B554
+        jsr     Obj_MoveAndCollide              ; B554
 L_B557: lda     #$10                            ; B557
         sta     $40                             ; B559
         lda     #$08                            ; B55B
@@ -117,7 +117,7 @@ L_B557: lda     #$10                            ; B557
 ; ----------------------------------------------------------------------------
 L_B567: lda     LoadedObj + Obj::Scratch1       ; B567
         bne     L_B56E                          ; B569
-        jmp     TankEnemy_Defeat                ; B56B
+        jmp     TankEnemy_DefeatTrackedEnemy    ; B56B
 
 ; ----------------------------------------------------------------------------
 L_B56E: lda     #$01                            ; B56E

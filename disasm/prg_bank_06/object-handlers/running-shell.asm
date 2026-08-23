@@ -45,7 +45,7 @@ L_B5B2: cmp     #$01                            ; B5B2
         jmp     L_B5FB                          ; B5BF
 
 ; ----------------------------------------------------------------------------
-L_B5C2: jsr     LE083                           ; B5C2
+L_B5C2: jsr     Obj_MoveAndCollide                           ; B5C2
         and     #$80                            ; B5C5
         beq     L_B5CE                          ; B5C7
         dec     LoadedObj + Obj::Scratch0       ; B5C9
@@ -64,7 +64,7 @@ L_B5D7: lda     #$01                            ; B5D7
         lda     #$20                            ; B5DE
         ldx     #$4D                            ; B5E0
         jsr     Speed_Limit_Sub                 ; B5E2
-        jsr     LE083                           ; B5E5
+        jsr     Obj_MoveAndCollide              ; B5E5
         bpl     L_B5F1                          ; B5E8
         lda     #$00                            ; B5EA
         sta     LoadedObj + Obj::Velocity_X     ; B5EC
@@ -88,7 +88,7 @@ L_B5FB: lda     #$10                            ; B5FB
 L_B60B: lda     #$18                            ; B60B
         jsr     TankEnemy_DamageCheck           ; B60D
         beq     L_B615                          ; B610
-        jmp     TankEnemy_Defeat                ; B612
+        jmp     TankEnemy_DefeatTrackedEnemy    ; B612
 
 ; ----------------------------------------------------------------------------
 L_B615: lda     #$01                            ; B615

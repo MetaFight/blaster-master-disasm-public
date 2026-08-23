@@ -42,7 +42,7 @@ L_AF72: lda     LoadedObj + Obj::Scratch0       ; AF72
         sta     LoadedObj + Obj::Scratch0       ; AF7F
 L_AF81: ldy     #$28                            ; AF81
         jsr     Obj_AngleToVelocity             ; AF83
-        jsr     LE083                           ; AF86
+        jsr     Obj_MoveAndCollide              ; AF86
         jmp     L_AFD1                          ; AF89
 
 ; ----------------------------------------------------------------------------
@@ -74,9 +74,9 @@ L_AFBC: lda     #$40                            ; AFBC
         sta     LoadedObj + Obj::Scratch1       ; AFBE
         lda     #$01                            ; AFC0
         sta     LoadedObj + Obj::Scratch0       ; AFC2
-L_AFC4: jsr     LE083                           ; AFC4
+L_AFC4: jsr     Obj_MoveAndCollide                           ; AFC4
         bpl     L_AFD1                          ; AFC7
-        jsr     LE0D8                           ; AFC9
+        jsr     _Obj_ReflectHeading__SideWall   ; AFC9
         ldy     #$28                            ; AFCC
         jsr     Obj_AngleToVelocity             ; AFCE
 L_AFD1: lda     #$10                            ; AFD1
@@ -91,7 +91,7 @@ L_AFD1: lda     #$10                            ; AFD1
 L_AFE1: lda     #$0F                            ; AFE1
         jsr     TankEnemy_DamageCheck           ; AFE3
         beq     L_AFEB                          ; AFE6
-        jmp     TankEnemy_Defeat                ; AFE8
+        jmp     TankEnemy_DefeatTrackedEnemy    ; AFE8
 
 ; ----------------------------------------------------------------------------
 L_AFEB: lda     #$00                            ; AFEB

@@ -60,7 +60,7 @@ L_B253: lda     #$80                            ; B253
         jsr     Trig_SinByAngle                 ; B261
         jsr     ScaleBySignedFrac               ; B264
         sta     LoadedObj + Obj::Velocity_Y     ; B267
-        jsr     LD2DB                           ; B269
+        jsr     Apply_Velocity_XY               ; B269
 L_B26C: lda     #$10                            ; B26C
         sta     $40                             ; B26E
         lda     #$10                            ; B270
@@ -73,7 +73,7 @@ L_B26C: lda     #$10                            ; B26C
 L_B27C: lda     #$13                            ; B27C
         jsr     TankEnemy_DamageCheck           ; B27E
         beq     L_B286                          ; B281
-        jmp     L_A347                          ; B283
+        jmp     TankEnemy_DefeatUntrackedEnemy  ; B283
 
 ; ----------------------------------------------------------------------------
 L_B286: lda     #$00                            ; B286

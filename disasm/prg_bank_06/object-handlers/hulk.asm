@@ -58,7 +58,7 @@ L_A79E: lda     #$10                            ; A79E
 L_A7AE: lda     #$04                            ; A7AE
         jsr     TankEnemy_DamageCheck           ; A7B0
         beq     L_A7B8                          ; A7B3
-        jmp     TankEnemy_Defeat                ; A7B5
+        jmp     TankEnemy_DefeatTrackedEnemy    ; A7B5
 
 ; ----------------------------------------------------------------------------
 L_A7B8: lda     #$01                            ; A7B8

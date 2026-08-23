@@ -49,7 +49,7 @@ L_AA13: clc                                     ; AA13
         jsr     TankEnemy_DamageCheck           ; AA1C
         lda     $45                             ; AA1F
         bne     L_AA3B                          ; AA21
-        jsr     TankEnemy_Defeat                ; AA23
+        jsr     TankEnemy_DefeatTrackedEnemy    ; AA23
         lda     $00                             ; AA26
         pha                                     ; AA28
         lda     #$06                            ; AA29

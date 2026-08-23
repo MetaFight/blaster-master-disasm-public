@@ -122,7 +122,7 @@ L_B8EF: lda     #$10                            ; B8EF
 L_B906: lda     #$1B                            ; B906
         jsr     TankEnemy_DamageCheck           ; B908
         beq     L_B910                          ; B90B
-        jmp     TankEnemy_Defeat                ; B90D
+        jmp     TankEnemy_DefeatTrackedEnemy    ; B90D
 
 ; ----------------------------------------------------------------------------
 L_B910: lda     #$01                            ; B910

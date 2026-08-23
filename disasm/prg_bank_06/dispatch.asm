@@ -140,7 +140,7 @@ L_80B0: .addr   L_A50E                          ; 80B0
         .addr   ObjHandler_Tank_7A_Gray_Hopper_10HP_Init; 80F4
         .addr   ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling; 80F6
         .addr   L_B250                          ; 80F8
-        .addr   L_B2EC                          ; 80FA
+        .addr   ObjHandler_Tank_7D_Gray_Flier_Main; 80FA
         .addr   L_B337                          ; 80FC
         .addr   L_B34F                          ; 80FE
         .addr   L_B3E3                          ; 8100

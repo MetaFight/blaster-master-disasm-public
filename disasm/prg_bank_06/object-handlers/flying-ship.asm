@@ -48,7 +48,7 @@ L_AC10: lda     #$10                            ; AC10
 L_AC20: lda     #$0A                            ; AC20
         jsr     TankEnemy_DamageCheck           ; AC22
         beq     L_AC2A                          ; AC25
-        jmp     TankEnemy_Defeat                ; AC27
+        jmp     TankEnemy_DefeatTrackedEnemy    ; AC27
 
 ; ----------------------------------------------------------------------------
 L_AC2A: lda     #$01                            ; AC2A

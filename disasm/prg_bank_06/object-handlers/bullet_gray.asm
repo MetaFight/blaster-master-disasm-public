@@ -104,7 +104,7 @@ L_A580: lda     #$10                            ; A580
 L_A590: lda     #$01                            ; A590
         jsr     TankEnemy_DamageCheck           ; A592
         beq     L_A59A                          ; A595
-        jmp     TankEnemy_Defeat                ; A597
+        jmp     TankEnemy_DefeatTrackedEnemy    ; A597
 
 ; ----------------------------------------------------------------------------
 L_A59A: lda     LoadedObj + Obj::Scratch0       ; A59A
@@ -150,7 +150,7 @@ L_A5C5: lda     #$80                            ; A5C5
         jmp     L_A605                          ; A5D8
 
 ; ----------------------------------------------------------------------------
-L_A5DB: jsr     LE083                           ; A5DB
+L_A5DB: jsr     Obj_MoveAndCollide                           ; A5DB
         beq     L_A605                          ; A5DE
         jsr     Step_RNG                        ; A5E0
         and     #$40                            ; A5E3
@@ -186,7 +186,7 @@ L_A605: lda     #$10                            ; A605
 L_A615: lda     #$02                            ; A615
         jsr     TankEnemy_DamageCheck           ; A617
         beq     L_A61F                          ; A61A
-        jmp     TankEnemy_Defeat                ; A61C
+        jmp     TankEnemy_DefeatTrackedEnemy    ; A61C
 
 ; ----------------------------------------------------------------------------
 L_A61F: lda     LoadedObj + Obj::Facing         ; A61F

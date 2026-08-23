@@ -109,7 +109,7 @@ _ObjHandler_Tank_77_Shooter_Main__Damage:
         jsr     TankEnemy_DamageCheck           ; B05D
         beq     _ObjHandler_Tank_77_Shooter_Main__Render; B060
 ; killed: explosion, and maybe a Health-x1 drop
-        jmp     TankEnemy_Defeat                ; B062
+        jmp     TankEnemy_DefeatTrackedEnemy    ; B062
 
 ; ----------------------------------------------------------------------------
 ; Draw the sprite — pose follows the cooldown, facing follows the drift

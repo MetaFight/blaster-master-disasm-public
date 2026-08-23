@@ -83,7 +83,7 @@ _ObjHandler_Tank_6D_FlyingBomber_Main__ActiveMove:
 ; Compute new velocities according to heading and scalar in Y
         jsr     Obj_AngleToVelocity             ; AC85
 ; Apply velocities and handle collisions.
-        jsr     LE083                           ; AC88
+        jsr     Obj_MoveAndCollide              ; AC88
 ; Skip to post-physics tail.
         jmp     _ObjHandler_Tank_6D_FlyingBomber_Main__AfterPhysics; AC8B
 
@@ -135,11 +135,11 @@ _ObjHandler_Tank_6D_FlyingBomber_Main__AfterDrop:
 ; 
 ; Start by applying velocities and collisions.
 _ObjHandler_Tank_6D_FlyingBomber_Main__ApplyPhysics:
-        jsr     LE083                           ; ACC3
+        jsr     Obj_MoveAndCollide              ; ACC3
 ; if A is positive, no horizontal collision happened, so skip ahead.
         bpl     _ObjHandler_Tank_6D_FlyingBomber_Main__AfterPhysics; ACC6
 ; otherwise, handle reflecting off a side wall.
-        jsr     LE0D8                           ; ACC8
+        jsr     _Obj_ReflectHeading__SideWall   ; ACC8
         ldy     #$28                            ; ACCB
 ; and update velocities based on Facing heading and scalar Y
         jsr     Obj_AngleToVelocity             ; ACCD
@@ -161,7 +161,7 @@ _ObjHandler_Tank_6D_FlyingBomber_Main__Damage:
         jsr     TankEnemy_DamageCheck           ; ACE2
 ; if still alive, skip to render tail, otherwise call defeat handler.
         beq     _ObjHandler_Tank_6D_FlyingBomber_Main__Render; ACE5
-        jmp     TankEnemy_Defeat                ; ACE7
+        jmp     TankEnemy_DefeatTrackedEnemy    ; ACE7
 
 ; ----------------------------------------------------------------------------
 _ObjHandler_Tank_6D_FlyingBomber_Main__Render:

@@ -80,7 +80,7 @@ L_B3AF: lda     #$10                            ; B3AF
 L_B3BF: lda     #$15                            ; B3BF
         jsr     TankEnemy_DamageCheck           ; B3C1
         beq     L_B3C9                          ; B3C4
-        jmp     TankEnemy_Defeat                ; B3C6
+        jmp     TankEnemy_DefeatTrackedEnemy    ; B3C6
 
 ; ----------------------------------------------------------------------------
 L_B3C9: lda     #$01                            ; B3C9
