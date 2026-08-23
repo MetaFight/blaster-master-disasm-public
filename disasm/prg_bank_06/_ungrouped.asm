@@ -306,13 +306,19 @@ L_9784: .byte   $C0,$00,$40,$00                 ; 9784
 L_9B81: lda     #$28                            ; 9B81
         jsr     Enqueue_Sound_Command           ; 9B83
         lda     #$4A                            ; 9B86
-        jmp     LD851                           ; 9B88
+        jmp     Obj_SpawnChild                  ; 9B88
 
 ; ----------------------------------------------------------------------------
-L_9B8B: lda     #$28                            ; 9B8B
+; Spawn a Big Explosion with sound effect.
+SpawnBigExplosion:
+        lda     #$28                            ; 9B8B
+; Enqueue explosion SFX $28, then fall into SpawnBigExplosion_NoSound.
         jsr     Enqueue_Sound_Command           ; 9B8D
-L_9B90: lda     #$4C                            ; 9B90
-        jmp     LD851                           ; 9B92
+; Call Obj_SpawnChild argument with A=$4C (Big Explosion).
+SpawnBigExplosion_NoSound:
+        lda     #$4C                            ; 9B90
+; A=$4C (Big Explosion ObjType); JMP $D851 Obj_SpawnChild (no SFX).
+        jmp     Obj_SpawnChild                  ; 9B92
 
 .endmacro
 

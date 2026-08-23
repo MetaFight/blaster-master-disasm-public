@@ -116,7 +116,7 @@ L_BB56: lda     $03FE                           ; BB56
         ora     #$01                            ; BB59
         sta     $03FE                           ; BB5B
         lda     #$4C                            ; BB5E
-        jsr     LD851                           ; BB60
+        jsr     Obj_SpawnChild                  ; BB60
         jsr     LCBA9                           ; BB63
         lda     #$32                            ; BB66
         jsr     Enqueue_Sound_Command           ; BB68

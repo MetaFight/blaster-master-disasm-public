@@ -31,7 +31,7 @@ L_B098: lda     #$80                            ; B098
         jsr     LE0FA                           ; B0A5
         bne     L_B0B0                          ; B0A8
         jsr     Obj_DespawnAndLog               ; B0AA
-        jsr     L_9B90                          ; B0AD
+        jsr     SpawnBigExplosion_NoSound       ; B0AD
 L_B0B0: lda     LoadedObj + Obj::Scratch0       ; B0B0
         bne     L_B0ED                          ; B0B2
         jsr     Apply_Velocity_Y                ; B0B4

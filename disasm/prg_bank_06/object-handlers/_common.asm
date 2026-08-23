@@ -156,7 +156,7 @@ TankEnemy_SpawnDrop:
         sta     ObjectTable + Obj::Type,x       ; A362
 ; Tail — JMP SpawnBigExplosion ($9B8B), always taken after the optional drop.
 _TankEnemy_SpawnDrop__Explode:
-        jmp     L_9B8B                          ; A365
+        jmp     SpawnBigExplosion               ; A365
 
 ; ----------------------------------------------------------------------------
 ; LE self-pointer (=$A36A) to TankEnemy_DescTable. Tank parallel of OvhdEnemy_DescTablePtr

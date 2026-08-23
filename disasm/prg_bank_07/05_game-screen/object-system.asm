@@ -300,12 +300,20 @@ L_D83B: lda     LoadedObj + Obj::Position_X_Hi  ; D83B
         rts                                     ; D850
 
 ; ----------------------------------------------------------------------------
-L_D851: pha                                     ; D851
+; Quick-spawn a child object with ObjType = A
+; 
+; Input:
+;   A = target child ObjType
+Obj_SpawnChild:
+        pha                                     ; D851
         ldx     #$54                            ; D852
         lda     #$EE                            ; D854
         sta     L0000                           ; D856
+; Search ObjectTable for an empty slot from offset $54 (to limit $EE).
         jsr     FindEmptyObjectSlot             ; D858
-        beq     L_D869                          ; D85B
+; If unable to find empty slot, skip to fail tail.
+        beq     _Obj_SpawnChild__NoSlot         ; D85B
+; Otherwise, clone the parent via Obj_CopyFieldsToSlot and store the child ObjType.
         txa                                     ; D85D
         pha                                     ; D85E
         jsr     Obj_CopyFieldsToSlot            ; D85F
@@ -316,7 +324,9 @@ L_D851: pha                                     ; D851
         rts                                     ; D868
 
 ; ----------------------------------------------------------------------------
-L_D869: pla                                     ; D869
+; Fail tail (no free slot).  Pull the saved ObjType and return 0.
+_Obj_SpawnChild__NoSlot:
+        pla                                     ; D869
         lda     #$00                            ; D86A
         rts                                     ; D86C
 

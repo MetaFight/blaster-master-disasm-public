@@ -447,7 +447,7 @@ L_9B47: lda     #$10                            ; 9B47
         jmp     LF029                           ; 9B73
 
 ; ----------------------------------------------------------------------------
-L_9B76: jsr     L_9B8B                          ; 9B76
+L_9B76: jsr     SpawnBigExplosion               ; 9B76
 L_9B79: jmp     LD82C                           ; 9B79
 
 ; ----------------------------------------------------------------------------
@@ -536,7 +536,7 @@ L_9F15: clc                                     ; 9F15
         jmp     LECB4                           ; 9F2B
 
 ; ----------------------------------------------------------------------------
-L_9F2E: jsr     L_9B90                          ; 9F2E
+L_9F2E: jsr     SpawnBigExplosion_NoSound       ; 9F2E
         lda     #$27                            ; 9F31
         jsr     Enqueue_Sound_Command           ; 9F33
         jmp     Obj_Despawn                     ; 9F36
@@ -605,7 +605,7 @@ L_9F8F: clc                                     ; 9F8F
         jmp     LECB4                           ; 9FA5
 
 ; ----------------------------------------------------------------------------
-L_9FA8: jsr     L_9B90                          ; 9FA8
+L_9FA8: jsr     SpawnBigExplosion_NoSound       ; 9FA8
         lda     #$27                            ; 9FAB
         jsr     Enqueue_Sound_Command           ; 9FAD
         lda     #$06                            ; 9FB0
@@ -853,7 +853,7 @@ L_A14D: lda     #$20                            ; A14D
         jmp     LECB4                           ; A15C
 
 ; ----------------------------------------------------------------------------
-L_A15F: jsr     L_9B90                          ; A15F
+L_A15F: jsr     SpawnBigExplosion_NoSound       ; A15F
         lda     #$27                            ; A162
         jsr     Enqueue_Sound_Command           ; A164
         lda     #$06                            ; A167

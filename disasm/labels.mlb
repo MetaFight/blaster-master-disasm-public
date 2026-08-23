@@ -1950,8 +1950,10 @@ NesPrgRom:19B76:L_9B76
 NesPrgRom:19B79:L_9B79
 NesPrgRom:19B7C:L_9B7C
 NesPrgRom:19B81:L_9B81
-NesPrgRom:19B8B:L_9B8B
-NesPrgRom:19B90:L_9B90
+NesPrgRom:19B8B:SpawnBigExplosion:Spawn a Big Explosion with sound effect.
+NesPrgRom:19B8D::Enqueue explosion SFX $28, then fall into SpawnBigExplosion_NoSound.
+NesPrgRom:19B90:SpawnBigExplosion_NoSound:Call Obj_SpawnChild argument with A=$4C (Big Explosion).
+NesPrgRom:19B92::A=$4C (Big Explosion ObjType); JMP $D851 Obj_SpawnChild (no SFX).
 NesPrgRom:19B95:L_9B95
 NesPrgRom:19B98:L_9B98
 NesPrgRom:19BAA:L_9BAA
@@ -3515,8 +3517,11 @@ NesPrgRom:1D81C:Obj_Despawn:Despawn the current object: clear ObjType and IFrame
 NesPrgRom:1D823:L_D823
 NesPrgRom:1D82C:L_D82C
 NesPrgRom:1D83B:L_D83B
-NesPrgRom:1D851:L_D851
-NesPrgRom:1D869:L_D869
+NesPrgRom:1D851:Obj_SpawnChild:Quick-spawn a child object with ObjType = A\n\nInput:\n  A = target child ObjType
+NesPrgRom:1D858::Search ObjectTable for an empty slot from offset $54 (to limit $EE).
+NesPrgRom:1D85B::If unable to find empty slot, skip to fail tail.
+NesPrgRom:1D85D::Otherwise, clone the parent via Obj_CopyFieldsToSlot and store the child ObjType.
+NesPrgRom:1D869:_Obj_SpawnChild__NoSlot:Fail tail (no free slot).  Pull the saved ObjType and return 0.
 NesPrgRom:1D86D:L_D86D
 NesPrgRom:1D883:L_D883
 NesPrgRom:1D8A2:L_D8A2

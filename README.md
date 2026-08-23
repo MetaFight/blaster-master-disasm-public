@@ -13,7 +13,7 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 69 / 849 (8%) |
+| **M4** — Verified subroutines (public, clean) | 72 / 849 (8%) |
 | **M6** — Verified docs (public, clean) | 1 / 119 (1%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -366,8 +366,8 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 05 / `(ungrouped — no .groups file)` |  |
-| ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/_common` | `TankEnemy_SpawnDrop` depends on unverified routine `SpawnBigExplosion`. |
-| ▫️⬛⬛⬛<br/>`7.3%` | 06 / `_ungrouped` |  |
+| ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/_common` |  |
+| ▫️⬛⬛⬛<br/>`10.9%` | 06 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/auto-gates_and_locks` |  |
@@ -402,7 +402,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/swooping-sphere` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/turret` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/wall-guardian` |  |
-| ⬜⬜▫️⬛<br/>`61.2%` | 07 / `05_game-screen/object-system` |  |
+| ⬜⬜◽⬛<br/>`63.8%` | 07 / `05_game-screen/object-system` |  |
 | ⬜⬜▫️⬛<br/>`57.1%` | 07 / `screen-fade` |  |
 | ⬜⬜⬛⬛<br/>`50.0%` | 07 / `sound` |  |
 | ⬜◽⬛⬛<br/>`37.5%` | 07 / `mmc1` | `BankSave_Switch` depends on unverified routine `Nmi_DoWork`. |
@@ -434,7 +434,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **5** pages, of which **4** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-08-23 01:03 UTC_
+_Generated: 2026-08-23 01:30 UTC_
 
 ## Pages
 
