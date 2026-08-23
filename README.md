@@ -13,7 +13,7 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 68 / 849 (8%) |
+| **M4** — Verified subroutines (public, clean) | 69 / 849 (8%) |
 | **M6** — Verified docs (public, clean) | 1 / 119 (1%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -366,7 +366,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 05 / `(ungrouped — no .groups file)` |  |
-| ⬜⬜▫️⬛<br/>`55.6%` | 06 / `object-handlers/_common` | `TankEnemy_DefeatUntrackedEnemy` depends on unverified routine `TankEnemy_SpawnDrop`. |
+| ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/_common` | `TankEnemy_SpawnDrop` depends on unverified routine `SpawnBigExplosion`. |
 | ▫️⬛⬛⬛<br/>`7.3%` | 06 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
@@ -434,7 +434,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **5** pages, of which **4** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-08-23 00:51 UTC_
+_Generated: 2026-08-23 01:03 UTC_
 
 ## Pages
 
