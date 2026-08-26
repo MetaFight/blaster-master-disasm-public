@@ -95,7 +95,7 @@ L_F33B: lda     LoadedObj + Obj::Scratch1       ; F33B
         ldx     #$07                            ; F34A
 L_F34C: lda     L_F359,y                        ; F34C
         sta     $0650,x                         ; F34F
-        sta     $58,x                           ; F352
+        sta     Background_Palettes + BgPalette::Backdrop,x ; F352
         dey                                     ; F354
         dex                                     ; F355
         bpl     L_F34C                          ; F356
@@ -331,7 +331,7 @@ L_FA7A: jsr     L_FC42                          ; FA7A
         jsr     WaitNMI                         ; FA7D
         ldx     #$0F                            ; FA80
         txa                                     ; FA82
-L_FA83: sta     $58,x                           ; FA83
+L_FA83: sta     Background_Palettes + BgPalette::Backdrop,x ; FA83
         dex                                     ; FA85
         bpl     L_FA83                          ; FA86
         jsr     L_FC42                          ; FA88
@@ -562,7 +562,7 @@ L_FCA8: pha                                     ; FCA8
 L_FCBC: jsr     L_E6FA                          ; FCBC
         ldx     #$13                            ; FCBF
 L_FCC1: lda     L_FCCD,x                        ; FCC1
-        sta     $58,x                           ; FCC4
+        sta     Background_Palettes + BgPalette::Backdrop,x ; FCC4
         sta     $0650,x                         ; FCC6
         dex                                     ; FCC9
         bpl     L_FCC1                          ; FCCA

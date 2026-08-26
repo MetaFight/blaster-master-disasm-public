@@ -3,7 +3,7 @@
 L_E953: ldy     #$00                            ; E953
         jsr     L_E949                          ; E955
         jsr     L_E6F0                          ; E958
-        jsr     L_E895                          ; E95B
+        jsr     PPU_SetAddressIncrementTo_1     ; E95B
 L_E95E: jsr     L_E996                          ; E95E
         beq     L_E971                          ; E961
         bmi     L_E96B                          ; E963

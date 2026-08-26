@@ -167,7 +167,7 @@ L_BBA7: jsr     L_BBB8                          ; BBA7
         lda     ($A6),y                         ; BBAC
         sta     LoadedObj + Obj::Health         ; BBAE
         sty     $4F                             ; BBB0
-        jsr     LD2B9                           ; BBB2
+        jsr     Obj_CalcTileIndex               ; BBB2
         inc     LoadedObj + Obj::Type           ; BBB5
         rts                                     ; BBB7
 

@@ -466,30 +466,40 @@ L_9EA7: lda     $9D                             ; 9EA7
         sta     LoadedObj + Obj::Scratch1       ; 9EAD
         ldy     $9E                             ; 9EAF
         jsr     Obj_AngleToVelocity             ; 9EB1
-        jsr     LD2B9                           ; 9EB4
+        jsr     Obj_CalcTileIndex               ; 9EB4
         lda     #$39                            ; 9EB7
         sta     LoadedObj + Obj::Type           ; 9EB9
         jsr     L_9E9E                          ; 9EBB
 L_9EBE: rts                                     ; 9EBE
 
 ; ----------------------------------------------------------------------------
-L_9EBF: jmp     L_9EDF                          ; 9EBF
+; ObjType $38: Big Gray Ballistic Ball - Init
+ObjHandler_Tank_38_Big_Gray_Init:
+        jmp     _ObjHandler_Tank_38_Big_Gray_Init__Done; 9EBF
 
 ; ----------------------------------------------------------------------------
-L_9EC2: jsr     Step_RNG                           ; 9EC2
+_ObjHandler_Tank_38_Big_Gray_Init__Body:
+        jsr     Step_RNG                        ; 9EC2
         and     #$1F                            ; 9EC5
         clc                                     ; 9EC7
         adc     #$B0                            ; 9EC8
+; Facing = (rng & 1F) + $B0.  Range of values: [$B0..$CF]
         sta     LoadedObj + Obj::Facing         ; 9ECA
         lda     #$70                            ; 9ECC
+; Scratch1 is the Lifetime timer.  Init this to 112 frames
         sta     LoadedObj + Obj::Scratch1       ; 9ECE
         ldy     #$28                            ; 9ED0
+; Derive initial Velocities from Facing heading and provided scalar (Y)
         jsr     Obj_AngleToVelocity             ; 9ED2
-        jsr     LD2B9                           ; 9ED5
+; Set TileIndex
+        jsr     Obj_CalcTileIndex               ; 9ED5
+; Increment ObjType to Main type.
         inc     LoadedObj + Obj::Type           ; 9ED8
         lda     #$25                            ; 9EDA
+; Play launch sound.
         jsr     Enqueue_Sound_Command           ; 9EDC
-L_9EDF: rts                                     ; 9EDF
+_ObjHandler_Tank_38_Big_Gray_Init__Done:
+        rts                                     ; 9EDF
 
 ; ----------------------------------------------------------------------------
 L_9EE0: jmp     L_9F05                          ; 9EE0
@@ -554,7 +564,7 @@ L_9F3C: jsr     Step_RNG                           ; 9F3C
         sta     LoadedObj + Obj::Scratch1       ; 9F48
         ldy     #$18                            ; 9F4A
         jsr     Obj_AngleToVelocity             ; 9F4C
-        jsr     LD2B9                           ; 9F4F
+        jsr     Obj_CalcTileIndex               ; 9F4F
         inc     LoadedObj + Obj::Type           ; 9F52
         lda     #$25                            ; 9F54
         jsr     Enqueue_Sound_Command           ; 9F56
@@ -812,7 +822,7 @@ L_A10A: clc                                     ; A10A
         inc     LoadedObj + Obj::Position_Y_Hi  ; A113
 L_A115: lda     #$0A                            ; A115
         sta     LoadedObj + Obj::Scratch1       ; A117
-        jsr     LD2B9                           ; A119
+        jsr     Obj_CalcTileIndex               ; A119
         inc     LoadedObj + Obj::Type           ; A11C
         jsr     L_9E9E                          ; A11E
 L_A121: rts                                     ; A121
@@ -891,7 +901,7 @@ L_A194: jsr     Step_RNG                           ; A194
         sta     LoadedObj + Obj::Scratch1       ; A1A0
         ldy     #$20                            ; A1A2
         jsr     Obj_AngleToVelocity             ; A1A4
-        jsr     LD2B9                           ; A1A7
+        jsr     Obj_CalcTileIndex               ; A1A7
         inc     LoadedObj + Obj::Type           ; A1AA
 L_A1AC: rts                                     ; A1AC
 
@@ -938,7 +948,7 @@ L_A1F1: jmp     L_A201                          ; A1F1
 ; ----------------------------------------------------------------------------
 L_A1F4: ldy     LoadedObj + Obj::Scratch1       ; A1F4
         jsr     Obj_AngleToVelocity             ; A1F6
-        jsr     LD2B9                           ; A1F9
+        jsr     Obj_CalcTileIndex               ; A1F9
         inc     LoadedObj + Obj::Type           ; A1FC
         jsr     L_9E9E                          ; A1FE
 L_A201: rts                                     ; A201

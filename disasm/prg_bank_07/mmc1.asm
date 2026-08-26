@@ -24,12 +24,12 @@ BankSave_Switch:
 ; Set Nmi_SignalFlags to just bit 6 on.
 ; This signals the NMI handler to defer its work during the bank switch.
         lda     #$40                            ; E621
-        sta     $12                             ; E623
+        sta     Nmi_SignalFlags                 ; E623
         lda     $DB                             ; E625
 ; reload bank number from ActiveBank and call MMC1_WritePRG to do the trigger the bank switch.
         jsr     MMC1_WritePRG                   ; E627
 ; Check Nmi_SignalFlags to see if NMI ran during bank switch.
-        lda     $12                             ; E62A
+        lda     Nmi_SignalFlags                 ; E62A
         and     #$20                            ; E62C
 ; if bit 5 is not set then NMI did not occur.  Carry on with cleanup.
         beq     _BankSave_Switch__Cleanup       ; E62E
@@ -38,7 +38,7 @@ BankSave_Switch:
 _BankSave_Switch__Cleanup:
         lda     #$00                            ; E633
 ; Clear Nmi_SignalFlags
-        sta     $12                             ; E635
+        sta     Nmi_SignalFlags                 ; E635
 ; restore Y
         pla                                     ; E637
         tay                                     ; E638

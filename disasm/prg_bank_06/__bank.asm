@@ -27,7 +27,7 @@ LD256           := $D256
 LD283           := $D283
 LD2AB           := $D2AB
 TileRead_WithOffset            := $D2B1
-LD2B9           := $D2B9
+Obj_CalcTileIndex              := $D2B9
 Apply_Velocity_XY              := $D2DB
 Apply_Velocity_X               := $D2DE
 Apply_Velocity_Y               := $D2FE
@@ -124,7 +124,7 @@ LF029           := $F029
 .include "object-handlers/orb.asm"
 .include "object-handlers/orb_kamikaze.asm"
 .include "object-handlers/pickups.asm"
-.include "object-handlers/projectiles.asm"
+.include "object-handlers/projectiles-and-ballistics.asm"
 .include "object-handlers/running-shell.asm"
 .include "object-handlers/scuba-steve.asm"
 .include "object-handlers/shooter.asm"

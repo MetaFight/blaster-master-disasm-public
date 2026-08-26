@@ -186,6 +186,47 @@ L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
 
 .endmacro
 
+.macro MAC_L_D2B9
+; ----------------------------------------------------------------------------
+; Computes the index (+TilemapBaseIndex) into the LevelTileData tile map corresponding to
+; LoadedObj's current position.
+Obj_CalcTileIndex:
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D2B9
+        sec                                     ; D2BB
+        sbc     $1F                             ; D2BC
+        and     #$0F                            ; D2BE
+; At this point, TileIndex holds a temp value corresponding to the *row offset* in the 17x15
+; table.
+        sta     LoadedObj + Obj::TileIndex      ; D2C0
+        asl     a                               ; D2C2
+        asl     a                               ; D2C3
+        asl     a                               ; D2C4
+        asl     a                               ; D2C5
+        clc                                     ; D2C6
+        adc     LoadedObj + Obj::TileIndex      ; D2C7
+; Here, we convert TileIndex (currently a row offset) into an actual *Index*.
+; Because a row is 17-wide, we do this by multiplying by 17.
+; 
+; The multiplication by 17 is implemented as
+; TileIndex = TileIndex + (16 * TileIndex)
+        sta     LoadedObj + Obj::TileIndex      ; D2C9
+        lda     LoadedObj + Obj::Position_X_Hi  ; D2CB
+        sec                                     ; D2CD
+        sbc     $1D                             ; D2CE
+        and     #$1F                            ; D2D0
+        clc                                     ; D2D2
+; This adds the X component (how far ito the row) to TileIndex
+; 
+; TileIndex = (Obj.X - Camera.X) + TileIndex
+        adc     LoadedObj + Obj::TileIndex      ; D2D3
+        clc                                     ; D2D5
+        adc     $3A                             ; D2D6
+; Finally, we add in TilemapBaseIndex
+        sta     LoadedObj + Obj::TileIndex      ; D2D8
+        rts                                     ; D2DA
+
+.endmacro
+
 .macro MAC_L_D324
 ; ----------------------------------------------------------------------------
 ; Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point

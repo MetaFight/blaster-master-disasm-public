@@ -191,9 +191,9 @@ L_C642: lda     $10                             ; C642
         and     #$07                            ; C644
         tax                                     ; C646
         lda     L_C651,x                        ; C647
-        sta     $75                             ; C64A
-        sta     $76                             ; C64C
-        sta     $77                             ; C64E
+        sta     Palette_Sprite_3 + SpritePalette::Colour1 ; C64A
+        sta     Palette_Sprite_3 + SpritePalette::Colour2 ; C64C
+        sta     Palette_Sprite_3 + SpritePalette::Colour3 ; C64E
         rts                                     ; C650
 
 ; ----------------------------------------------------------------------------
@@ -410,7 +410,7 @@ L_C9DA: ldx     ObjectSlot_Offset               ; C9DA
         lda     ObjectTable + Obj::Type,x       ; C9DC
         beq     L_C9EA                          ; C9DF
         jsr     ObjSlot_Load                    ; C9E1
-        jsr     L_D2B9                          ; C9E4
+        jsr     Obj_CalcTileIndex               ; C9E4
         jsr     ObjSlot_Save                    ; C9E7
 L_C9EA: lda     ObjectSlot_Offset               ; C9EA
         clc                                     ; C9EC
@@ -630,7 +630,7 @@ L_CE60: lda     $45                             ; CE60
         sta     $45                             ; CE67
         lda     $0650,x                         ; CE69
         eor     $45                             ; CE6C
-        sta     $58,x                           ; CE6E
+        sta     Background_Palettes + BgPalette::Backdrop,x ; CE6E
         dex                                     ; CE70
         bpl     L_CE60                          ; CE71
         pla                                     ; CE73
@@ -640,7 +640,7 @@ L_CE60: lda     $45                             ; CE60
 ; ----------------------------------------------------------------------------
 L_CE77: ldx     #$0F                            ; CE77
 L_CE79: lda     $0650,x                         ; CE79
-        sta     $58,x                           ; CE7C
+        sta     Background_Palettes + BgPalette::Backdrop,x ; CE7C
         dex                                     ; CE7E
         bpl     L_CE79                          ; CE7F
         rts                                     ; CE81
@@ -667,7 +667,7 @@ L_CEA3: lda     $0650,x                         ; CEA3
         sbc     $45                             ; CEAB
         bcs     L_CEB1                          ; CEAD
         lda     #$0F                            ; CEAF
-L_CEB1: sta     $58,x                           ; CEB1
+L_CEB1: sta     Background_Palettes + BgPalette::Backdrop,x ; CEB1
 L_CEB3: rts                                     ; CEB3
 
 ; ----------------------------------------------------------------------------
@@ -685,7 +685,7 @@ L_CEB4: inx                                     ; CEB4
 
 ; ----------------------------------------------------------------------------
 L_CEC6: ldx     LoadedObj + Obj::TileIndex      ; CEC6
-        sta     $0500,x                         ; CEC8
+        sta     LevelTileData,x                 ; CEC8
         jsr     L_E712                          ; CECB
         lda     $C7                             ; CECE
         and     #$FE                            ; CED0
@@ -698,7 +698,7 @@ L_CEC6: ldx     LoadedObj + Obj::TileIndex      ; CEC6
 ; ----------------------------------------------------------------------------
 L_CEDD: lda     #$00                            ; CEDD
         ldx     LoadedObj + Obj::TileIndex      ; CEDF
-        sta     $0500,x                         ; CEE1
+        sta     LevelTileData,x                 ; CEE1
         jsr     L_E712                          ; CEE4
         lda     $C7                             ; CEE7
         and     #$FE                            ; CEE9
@@ -868,7 +868,7 @@ L_D17D: .byte   $01,$00,$02,$03                 ; D17D
 ; ----------------------------------------------------------------------------
 L_D181: lda     #$0F                            ; D181
         tax                                     ; D183
-L_D184: sta     $58,x                           ; D184
+L_D184: sta     Background_Palettes + BgPalette::Backdrop,x ; D184
         sta     $0650,x                         ; D186
         dex                                     ; D189
         bpl     L_D184                          ; D18A
@@ -1007,7 +1007,7 @@ L_D2A8: lda     #$00                            ; D2A8
 
 ; ----------------------------------------------------------------------------
 L_D2AB: ldx     LoadedObj + Obj::TileIndex      ; D2AB
-        lda     $0500,x                         ; D2AD
+        lda     LevelTileData,x                 ; D2AD
         rts                                     ; D2B0
 
 ; ----------------------------------------------------------------------------
@@ -1026,33 +1026,12 @@ TileRead_WithOffset:
 ; A (step offset) + $4E → cell index; A = $0500[index] = the look-ahead tile.
         adc     LoadedObj + Obj::TileIndex      ; D2B2
         tax                                     ; D2B4
-        lda     $0500,x                         ; D2B5
+        lda     LevelTileData,x                 ; D2B5
         rts                                     ; D2B8
 
-; ----------------------------------------------------------------------------
-L_D2B9: lda     LoadedObj + Obj::Position_Y_Hi  ; D2B9
-        sec                                     ; D2BB
-        sbc     $1F                             ; D2BC
-        and     #$0F                            ; D2BE
-        sta     LoadedObj + Obj::TileIndex      ; D2C0
-        asl     a                               ; D2C2
-        asl     a                               ; D2C3
-        asl     a                               ; D2C4
-        asl     a                               ; D2C5
-        clc                                     ; D2C6
-        adc     LoadedObj + Obj::TileIndex      ; D2C7
-        sta     LoadedObj + Obj::TileIndex      ; D2C9
-        lda     LoadedObj + Obj::Position_X_Hi  ; D2CB
-        sec                                     ; D2CD
-        sbc     $1D                             ; D2CE
-        and     #$1F                            ; D2D0
-        clc                                     ; D2D2
-        adc     LoadedObj + Obj::TileIndex      ; D2D3
-        clc                                     ; D2D5
-        adc     $3A                             ; D2D6
-        sta     LoadedObj + Obj::TileIndex      ; D2D8
-        rts                                     ; D2DA
+.endmacro
 
+.macro MAC_L_D2DB
 ; ----------------------------------------------------------------------------
 ; Applies Velocity_X and Velocity_Y to LoadedObj's position with carry-aware 16-bit fixed-point
 ; arithmetic.
@@ -1257,7 +1236,7 @@ _H_Collision_Check__TileLeft:
 ; bit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.
 ; Otherwise, check top/bottom Y edge tiles
 _H_Collision_Check__ReadTile:
-        lda     $0500,x                         ; D3AC
+        lda     LevelTileData,x                 ; D3AC
         bmi     _H_Collision_Check__Exit        ; D3AF
 ; BOTTOM-edge Y cross-check:
 ; If (Position_Y_Lo + the half-height) > $FF the bottom edge has spilled into the next row, so
@@ -1274,7 +1253,7 @@ _H_Collision_Check__CheckBottom:
         clc                                     ; D3BD
         adc     #$11                            ; D3BE
         tay                                     ; D3C0
-        lda     $0500,y                         ; D3C1
+        lda     LevelTileData,y                 ; D3C1
         bmi     _H_Collision_Check__Exit        ; D3C4
 ; TOP-edge Y cross-check:
 ; Same as bottom-edge check, but with subtraction.
@@ -1289,7 +1268,7 @@ _H_Collision_Check__CheckTop:
         sec                                     ; D3D2
         sbc     #$11                            ; D3D3
         tay                                     ; D3D5
-        lda     $0500,y                         ; D3D6
+        lda     LevelTileData,y                 ; D3D6
         bmi     _H_Collision_Check__Exit        ; D3D9
 ; No overlap detected.  Return Z = 1.
 _H_Collision_Check__NoCollide:
@@ -1374,7 +1353,7 @@ _V_Collision_Check__TileAbove:
 ; bit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.
 ; Otherwise, check left/right X edge tiles
 _V_Collision_Check__ReadTile:
-        lda     $0500,x                         ; D418
+        lda     LevelTileData,x                 ; D418
         bmi     _V_Collision_Check__Exit        ; D41B
 ; RIGHT-edge X cross-check:
 ; If (Position_X_Lo + the half-width) > $FF the right edge has spilled into the next column, so
@@ -1388,7 +1367,7 @@ _V_Collision_Check__CheckRight:
         cmp     #$20                            ; D424
         bcc     _V_Collision_Check__CheckLeft   ; D426
         inx                                     ; D428
-        lda     $0500,x                         ; D429
+        lda     LevelTileData,x                 ; D429
         bmi     _V_Collision_Check__Exit        ; D42C
         dex                                     ; D42E
 ; LEFT-edge X cross-check:
@@ -1401,7 +1380,7 @@ _V_Collision_Check__CheckLeft:
         cmp     #$E0                            ; D436
         bcs     _V_Collision_Check__NoCollide   ; D438
         dex                                     ; D43A
-        lda     $0500,x                         ; D43B
+        lda     LevelTileData,x                 ; D43B
         bmi     _V_Collision_Check__Exit        ; D43E
 ; No overlap detected.  Return Z = 1.
 _V_Collision_Check__NoCollide:
@@ -1593,7 +1572,7 @@ L_D547: lda     LoadedObj + Obj::Position_X_Hi  ; D547
         sta     LoadedObj + Obj::Position_X_Hi  ; D558
         jsr     L_D5AA                          ; D55A
         jsr     L_D5EE                          ; D55D
-L_D560: lda     $0500,x                         ; D560
+L_D560: lda     LevelTileData,x                 ; D560
         bmi     L_D5A5                          ; D563
         inx                                     ; D565
         lda     LoadedObj + Obj::Position_X_Hi  ; D566
@@ -1620,7 +1599,7 @@ L_D574: lda     LoadedObj + Obj::Position_Y_Hi  ; D574
         sta     LoadedObj + Obj::Position_Y_Hi  ; D585
         jsr     L_D5CC                          ; D587
         jsr     L_D5EE                          ; D58A
-L_D58D: lda     $0500,x                         ; D58D
+L_D58D: lda     LevelTileData,x                 ; D58D
         bmi     L_D5A5                          ; D590
         txa                                     ; D592
         clc                                     ; D593
@@ -1690,7 +1669,7 @@ L_D5ED: rts                                     ; D5ED
 ; ----------------------------------------------------------------------------
 L_D5EE: lda     LoadedObj + Obj::TileIndex      ; D5EE
         pha                                     ; D5F0
-        jsr     L_D2B9                          ; D5F1
+        jsr     Obj_CalcTileIndex               ; D5F1
         tax                                     ; D5F4
         pla                                     ; D5F5
         sta     LoadedObj + Obj::TileIndex      ; D5F6
@@ -2364,7 +2343,7 @@ LE6E6:  .byte   $20,$40,$80                     ; E6E6
 ; ----------------------------------------------------------------------------
 L_E6FA: lda     #$0F                            ; E6FA
         ldx     #$1F                            ; E6FC
-L_E6FE: sta     $58,x                           ; E6FE
+L_E6FE: sta     Background_Palettes + BgPalette::Backdrop,x ; E6FE
         dex                                     ; E700
         bpl     L_E6FE                          ; E701
         rts                                     ; E703

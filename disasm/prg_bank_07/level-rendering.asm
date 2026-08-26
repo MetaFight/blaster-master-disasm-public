@@ -183,7 +183,7 @@ L_DA3C: lda     ($33),y                         ; DA3C
         tay                                     ; DA3E
         lda     ($27),y                         ; DA3F
         ldx     $0D                             ; DA41
-        sta     $0500,x                         ; DA43
+        sta     LevelTileData,x                 ; DA43
         jsr     L_DCDD                          ; DA46
         ldx     $19                             ; DA49
         ldy     #$00                            ; DA4B
@@ -286,7 +286,7 @@ L_DAF7: lda     ($33),y                         ; DAF7
         tay                                     ; DAF9
         lda     ($27),y                         ; DAFA
         ldx     $0D                             ; DAFC
-        sta     $0500,x                         ; DAFE
+        sta     LevelTileData,x                 ; DAFE
         jsr     L_DCDD                          ; DB01
 L_DB04: ldx     $19                             ; DB04
         ldy     #$00                            ; DB06
@@ -471,7 +471,7 @@ L_DC3E: lda     $04                             ; DC3E
 L_DC46: rts                                     ; DC46
 
 ; ----------------------------------------------------------------------------
-L_DC47: lda     $0500,x                         ; DC47
+L_DC47: lda     LevelTileData,x                 ; DC47
         lsr     a                               ; DC4A
         ror     L0000                           ; DC4B
         lsr     a                               ; DC4D

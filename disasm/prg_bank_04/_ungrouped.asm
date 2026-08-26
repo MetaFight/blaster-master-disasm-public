@@ -620,7 +620,7 @@ L_8CE0: jsr     LC165                           ; 8CE0
         inx                                     ; 8CFF
         inx                                     ; 8D00
 L_8D01: dex                                     ; 8D01
-        lda     $0500,x                         ; 8D02
+        lda     LevelTileData,x                 ; 8D02
         and     #$08                            ; 8D05
         beq     L_8D27                          ; 8D07
         lda     #$03                            ; 8D09
@@ -663,7 +663,7 @@ L_8D2B: jsr     LC03F                           ; 8D2B
         clc                                     ; 8D4E
         adc     #$22                            ; 8D4F
 L_8D51: tax                                     ; 8D51
-        lda     $0500,x                         ; 8D52
+        lda     LevelTileData,x                 ; 8D52
         and     #$08                            ; 8D55
         beq     L_8D72                          ; 8D57
         lda     #$00                            ; 8D59
@@ -1728,7 +1728,7 @@ L_9488: lda     #$00                            ; 9488
         jmp     L_941E                          ; 9498
 
 ; ----------------------------------------------------------------------------
-L_949B: lda     $0500,x                         ; 949B
+L_949B: lda     LevelTileData,x                 ; 949B
         lsr     a                               ; 949E
         lsr     a                               ; 949F
         lsr     a                               ; 94A0
@@ -1761,7 +1761,7 @@ L_94A9: lda     $3F                             ; 94A9
         dec     LoadedObj + Obj::Position_X_Hi  ; 94C7
         dec     LoadedObj + Obj::TileIndex      ; 94C9
 L_94CB: ldx     LoadedObj + Obj::TileIndex      ; 94CB
-        ldy     $0500,x                         ; 94CD
+        ldy     LevelTileData,x                 ; 94CD
         lda     LoadedObj + Obj::Position_X_Hi  ; 94D0
         and     #$03                            ; 94D2
         cmp     #$02                            ; 94D4
@@ -1840,7 +1840,7 @@ L_9549: dec     LoadedObj + Obj::Position_Y_Hi  ; 9549
         sbc     #$11                            ; 954E
         sta     LoadedObj + Obj::TileIndex      ; 9550
         ldx     LoadedObj + Obj::TileIndex      ; 9552
-        ldy     $0500,x                         ; 9554
+        ldy     LevelTileData,x                 ; 9554
         lda     LoadedObj + Obj::Position_Y_Hi  ; 9557
         and     #$02                            ; 9559
         beq     L_9568                          ; 955B
@@ -3168,7 +3168,7 @@ L_9EB3: jsr     LC10E                           ; 9EB3
         lda     #$04                            ; 9EC8
 L_9ECA: pha                                     ; 9ECA
         lda     L_9F21,x                        ; 9ECB
-        sta     $58,y                           ; 9ECE
+        sta     Background_Palettes + BgPalette::Backdrop,y ; 9ECE
         sta     $0650,y                         ; 9ED1
         inx                                     ; 9ED4
         iny                                     ; 9ED5
@@ -3193,8 +3193,8 @@ L_9EED: lda     $10                             ; 9EED
         tax                                     ; 9EF3
         lda     #$04                            ; 9EF4
 L_9EF6: pha                                     ; 9EF6
-        lda     $68,x                           ; 9EF7
-        sta     $58,y                           ; 9EF9
+        lda     Sprite_Palettes + SpritePalette::Transparency,x ; 9EF7
+        sta     Background_Palettes + BgPalette::Backdrop,y ; 9EF9
         inx                                     ; 9EFC
         iny                                     ; 9EFD
         pla                                     ; 9EFE
@@ -3764,7 +3764,7 @@ L_A32F: lda     L_A33A,x                        ; A32F
         clc                                     ; A332
         adc     LoadedObj + Obj::TileIndex      ; A333
         tay                                     ; A335
-        lda     $0500,y                         ; A336
+        lda     LevelTileData,y                 ; A336
         rts                                     ; A339
 
 ; ----------------------------------------------------------------------------
@@ -3782,18 +3782,18 @@ L_A357: lda     L_A381                          ; A357
         jsr     LC1B0                           ; A364
         lda     #$80                            ; A367
         ldx     LoadedObj + Obj::TileIndex      ; A369
-        sta     $0500,x                         ; A36B
+        sta     LevelTileData,x                 ; A36B
         dex                                     ; A36E
-        sta     $0500,x                         ; A36F
+        sta     LevelTileData,x                 ; A36F
         pha                                     ; A372
         txa                                     ; A373
         sec                                     ; A374
         sbc     #$11                            ; A375
         tax                                     ; A377
         pla                                     ; A378
-        sta     $0500,x                         ; A379
+        sta     LevelTileData,x                 ; A379
         inx                                     ; A37C
-        sta     $0500,x                         ; A37D
+        sta     LevelTileData,x                 ; A37D
         rts                                     ; A380
 
 ; ----------------------------------------------------------------------------
@@ -3811,18 +3811,18 @@ L_A394: lda     L_A3BE                          ; A394
         jsr     LC1B0                           ; A3A1
         lda     #$00                            ; A3A4
         ldx     LoadedObj + Obj::TileIndex      ; A3A6
-        sta     $0500,x                         ; A3A8
+        sta     LevelTileData,x                 ; A3A8
         dex                                     ; A3AB
-        sta     $0500,x                         ; A3AC
+        sta     LevelTileData,x                 ; A3AC
         pha                                     ; A3AF
         txa                                     ; A3B0
         sec                                     ; A3B1
         sbc     #$11                            ; A3B2
         tax                                     ; A3B4
         pla                                     ; A3B5
-        sta     $0500,x                         ; A3B6
+        sta     LevelTileData,x                 ; A3B6
         inx                                     ; A3B9
-        sta     $0500,x                         ; A3BA
+        sta     LevelTileData,x                 ; A3BA
         rts                                     ; A3BD
 
 ; ----------------------------------------------------------------------------
@@ -3947,7 +3947,7 @@ L_A4A4: rts                                     ; A4A4
 ; ----------------------------------------------------------------------------
 L_A4A5: ldx     #$0F                            ; A4A5
 L_A4A7: lda     L_A4B3,x                        ; A4A7
-        sta     $58,x                           ; A4AA
+        sta     Background_Palettes + BgPalette::Backdrop,x ; A4AA
         sta     $0650,x                         ; A4AC
         dex                                     ; A4AF
         bpl     L_A4A7                          ; A4B0
@@ -4544,7 +4544,7 @@ L_A895: pla                                     ; A895
         bne     L_A8D7                          ; A8C5
         ldy     #$03                            ; A8C7
 L_A8C9: lda     LA8F2,y                         ; A8C9
-        sta     $58,x                           ; A8CC
+        sta     Background_Palettes + BgPalette::Backdrop,x ; A8CC
         sta     $0650,x                         ; A8CE
         dex                                     ; A8D1
         dey                                     ; A8D2
@@ -4557,8 +4557,8 @@ L_A8D9: pha                                     ; A8D9
         sbc     #$04                            ; A8DC
         and     #$0F                            ; A8DE
         tay                                     ; A8E0
-        lda     $58,y                           ; A8E1
-        sta     $58,x                           ; A8E4
+        lda     Background_Palettes + BgPalette::Backdrop,y ; A8E1
+        sta     Background_Palettes + BgPalette::Backdrop,x ; A8E4
         dex                                     ; A8E6
         pla                                     ; A8E7
         sec                                     ; A8E8
@@ -4931,13 +4931,13 @@ L_AB98: rts                                     ; AB98
 L_AB99: ldx     #$0F                            ; AB99
 L_AB9B: lda     L_ABB6,x                        ; AB9B
         sta     $0650,x                         ; AB9E
-        sta     $58,x                           ; ABA1
+        sta     Background_Palettes + BgPalette::Backdrop,x ; ABA1
         dex                                     ; ABA3
         bpl     L_AB9B                          ; ABA4
         ldx     #$03                            ; ABA6
 L_ABA8: lda     L_ABB6,x                        ; ABA8
         sta     $0668,x                         ; ABAB
-        sta     $70,x                           ; ABAE
+        sta     Sprite_Palettes + $08 + SpritePalette::Transparency,x ; ABAE
         dex                                     ; ABB0
         bpl     L_ABA8                          ; ABB1
         jmp     L_9F41                          ; ABB3
@@ -5327,13 +5327,13 @@ L_AE5A: lda     $0671                           ; AE5A
 L_AE62: ldx     #$0F                            ; AE62
 L_AE64: lda     L_AE7F,x                        ; AE64
         sta     $0650,x                         ; AE67
-        sta     $58,x                           ; AE6A
+        sta     Background_Palettes + BgPalette::Backdrop,x ; AE6A
         dex                                     ; AE6C
         bpl     L_AE64                          ; AE6D
         ldx     #$03                            ; AE6F
 L_AE71: lda     L_AE8F,x                        ; AE71
         sta     $0668,x                         ; AE74
-        sta     $70,x                           ; AE77
+        sta     Sprite_Palettes + $08 + SpritePalette::Transparency,x ; AE77
         dex                                     ; AE79
         bpl     L_AE71                          ; AE7A
         jmp     L_9F41                          ; AE7C
@@ -7049,7 +7049,7 @@ L_BA7D: stx     LoadedObj + Obj::Facing         ; BA7D
         clc                                     ; BA81
         adc     LBADE,x                         ; BA82
         tax                                     ; BA85
-        lda     $0500,x                         ; BA86
+        lda     LevelTileData,x                 ; BA86
         and     #$C0                            ; BA89
         bne     L_BAA5                          ; BA8B
         stx     LoadedObj + Obj::TileIndex      ; BA8D

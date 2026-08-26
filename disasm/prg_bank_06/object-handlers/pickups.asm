@@ -50,7 +50,7 @@ L_9C5B: sta     LoadedObj + Obj::Scratch0       ; 9C5B
         sta     LoadedObj + Obj::Type           ; 9C5F
         lda     #$FF                            ; 9C61
         sta     LoadedObj + Obj::Scratch1       ; 9C63
-        jmp     LD2B9                           ; 9C65
+        jmp     Obj_CalcTileIndex               ; 9C65
 
 ; ----------------------------------------------------------------------------
 L_9C68: jmp     L_9C7D                          ; 9C68

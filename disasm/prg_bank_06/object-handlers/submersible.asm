@@ -53,7 +53,7 @@ L_B683: lda     #$80                            ; B683
         sta     $42                             ; B685
         lda     #$80                            ; B687
         sta     $43                             ; B689
-        jsr     LD2B9                           ; B68B
+        jsr     Obj_CalcTileIndex               ; B68B
         lda     #$00                            ; B68E
         jsr     TileRead_WithOffset             ; B690
         and     #$C0                            ; B693

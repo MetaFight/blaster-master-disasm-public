@@ -24,7 +24,7 @@ TankEnemy_Init:
         sta     LoadedObj + Obj::Health         ; A2F0
         sty     $4F                             ; A2F2
 ; JSR $D2B9 init tile position; INC $46 → advance to the enemy's main handler.
-        jsr     LD2B9                           ; A2F4
+        jsr     Obj_CalcTileIndex               ; A2F4
         inc     LoadedObj + Obj::Type           ; A2F7
         rts                                     ; A2F9
 

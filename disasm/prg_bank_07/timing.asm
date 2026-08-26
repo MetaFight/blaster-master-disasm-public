@@ -12,12 +12,12 @@ L_CE4A: pha                                     ; CE4A
 
 .macro MAC_L_E936
 ; ----------------------------------------------------------------------------
-; Set Nmi_SignalFlags bit 7 then spin until NMI handler clears it; guarantees 60 Hz pacing
+; Sets Nmi_SignalFlags bit 7 then spin-waits until NMI handler clears it.  This is the mechanism
+; that paces the game loop at 60Hz.
 WaitNMI:lda     #$80                            ; E936
-; Set $12 bit7, then spin until the NMI handler clears it (waits exactly one frame).
-        sta     $12                             ; E938
+        sta     Nmi_SignalFlags                 ; E938
 _WaitNMI__Loop:
-        bit     $12                             ; E93A
+        bit     Nmi_SignalFlags                 ; E93A
         bmi     _WaitNMI__Loop                  ; E93C
         rts                                     ; E93E
 
@@ -50,17 +50,17 @@ NMI:    pha                                     ; EB7E
         pha                                     ; EB80
         tya                                     ; EB81
         pha                                     ; EB82
-        bit     $12                             ; EB83
+        bit     Nmi_SignalFlags                 ; EB83
         bvs     _NMI__Deferred                  ; EB85
         jsr     L_EB98                          ; EB87
         jmp     _NMI__Restore                   ; EB8A
 
 ; ----------------------------------------------------------------------------
 ; Nmi_SignalFlags bit 6 was set (busy during bank switch); record deferred NMI by writing $20 (bit
-; 5) to Nmi_SignalFlags and RTI — BankSave_Switch will replay Nmi_DoWork on return
+; 5) to Nmi_SignalFlags and RTI.  This signals BankSave_Switch to call Nmi_DoWork on return
 _NMI__Deferred:
         lda     #$20                            ; EB8D
-        sta     $12                             ; EB8F
+        sta     Nmi_SignalFlags                 ; EB8F
 ; Pop Y/X/A; RTI
 _NMI__Restore:
         pla                                     ; EB91
@@ -74,13 +74,13 @@ _NMI__Restore:
 L_EB97: rti                                     ; EB97
 
 ; ----------------------------------------------------------------------------
-L_EB98: bit     $12                             ; EB98
+L_EB98: bit     Nmi_SignalFlags                 ; EB98
         bmi     L_EB9F                          ; EB9A
         jmp     L_EC51                          ; EB9C
 
 ; ----------------------------------------------------------------------------
 L_EB9F: lda     #$00                            ; EB9F
-        sta     $12                             ; EBA1
+        sta     Nmi_SignalFlags                 ; EBA1
         sta     $2001                           ; EBA3
         jsr     OAM_Copy_To_PPU                 ; EBA6
         lda     $19                             ; EBA9
@@ -88,22 +88,22 @@ L_EB9F: lda     #$00                            ; EB9F
         jmp     L_EC34                          ; EBAD
 
 ; ----------------------------------------------------------------------------
-L_EBB0: lda     $58                             ; EBB0
-        sta     $5C                             ; EBB2
-        sta     $60                             ; EBB4
-        sta     $64                             ; EBB6
-        sta     $68                             ; EBB8
-        sta     $6C                             ; EBBA
-        sta     $70                             ; EBBC
-        sta     $74                             ; EBBE
-        jsr     L_E895                          ; EBC0
+L_EBB0: lda     Palette_BG_0 + BgPalette::Backdrop ; EBB0
+        sta     Palette_BG_1 + BgPalette::Backdrop ; EBB2
+        sta     Palette_BG_2 + BgPalette::Backdrop ; EBB4
+        sta     Palette_BG_3 + BgPalette::Backdrop ; EBB6
+        sta     Palette_Sprite_0 + SpritePalette::Transparency ; EBB8
+        sta     Palette_Sprite_1 + SpritePalette::Transparency ; EBBA
+        sta     Palette_Sprite_2 + SpritePalette::Transparency ; EBBC
+        sta     Palette_Sprite_3 + SpritePalette::Transparency ; EBBE
+        jsr     PPU_SetAddressIncrementTo_1     ; EBC0
         lda     $2002                           ; EBC3
         lda     #$3F                            ; EBC6
         sta     $2006                           ; EBC8
         lda     #$00                            ; EBCB
         sta     $2006                           ; EBCD
         ldx     #$00                            ; EBD0
-L_EBD2: lda     $58,x                           ; EBD2
+L_EBD2: lda     Background_Palettes + BgPalette::Backdrop,x ; EBD2
         and     #$3F                            ; EBD4
         tay                                     ; EBD6
         lda     L_EBF4,y                        ; EBD7

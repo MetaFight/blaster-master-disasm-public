@@ -260,7 +260,7 @@ L_9723: clc                                     ; 9723
         txa                                     ; 9728
         adc     LoadedObj + Obj::Position_Y_Hi  ; 9729
         sta     LoadedObj + Obj::Position_Y_Hi  ; 972B
-        jsr     LD2B9                           ; 972D
+        jsr     Obj_CalcTileIndex               ; 972D
         lda     $BE                             ; 9730
         and     #$03                            ; 9732
         sta     LoadedObj + Obj::Facing         ; 9734
@@ -400,7 +400,7 @@ L_A2D4: lda     #$00                            ; A2D4
         lda     #$00                            ; A2DF
         sta     LoadedObj + Obj::Position_Y_Lo  ; A2E1
         inc     LoadedObj + Obj::Position_Y_Hi  ; A2E3
-        jsr     LD2B9                           ; A2E5
+        jsr     Obj_CalcTileIndex               ; A2E5
 L_A2E8: rts                                     ; A2E8
 
 .endmacro

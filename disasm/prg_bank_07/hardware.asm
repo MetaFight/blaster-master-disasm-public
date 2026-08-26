@@ -224,14 +224,20 @@ L_E884: pha                                     ; E884
         jmp     L_F1BC                          ; E892
 
 ; ----------------------------------------------------------------------------
-L_E895: lda     $FF                             ; E895
+; Clear PPU_CTRL bit2 ($FF shadow + $2000): VRAM address increment = +1 (write across a row).
+; Dispatch slot $C234; callers: Nametable_RLE_Decompress ($E95B), NMI palette upload ($EBC0).
+PPU_SetAddressIncrementTo_1:
+        lda     $FF                             ; E895
         and     #$FB                            ; E897
         sta     $2000                           ; E899
         sta     $FF                             ; E89C
         rts                                     ; E89E
 
 ; ----------------------------------------------------------------------------
-L_E89F: lda     $FF                             ; E89F
+; Set PPU_CTRL bit2 ($FF shadow + $2000): VRAM address increment = +32 (write down a column).
+; Dispatch slot $C237 (no external callers).
+PPU_SetAddressIncrementTo_32:
+        lda     $FF                             ; E89F
         ora     #$04                            ; E8A1
         sta     $2000                           ; E8A3
         sta     $FF                             ; E8A6

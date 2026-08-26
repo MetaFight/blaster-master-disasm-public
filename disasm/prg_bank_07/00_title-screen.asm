@@ -16,7 +16,7 @@ L_C267: sta     L0000,x                         ; C267
         sta     $0200,x                         ; C26C
         sta     $0300,x                         ; C26F
         sta     ObjectTable + Obj::Type,x       ; C272
-        sta     $0500,x                         ; C275
+        sta     LevelTileData,x                 ; C275
         sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; C278
         sta     $0700,x                         ; C27B
         inx                                     ; C27E
@@ -97,7 +97,7 @@ L_F56D: dec     $01                             ; F56D
 
 ; ----------------------------------------------------------------------------
 L_F579: lda     #$12                            ; F579
-L_F57B: sta     $5B                             ; F57B
+L_F57B: sta     Palette_BG_0 + BgPalette::Colour3 ; F57B
         lda     $01                             ; F57D
         ora     $02                             ; F57F
         bne     L_F55E                          ; F581

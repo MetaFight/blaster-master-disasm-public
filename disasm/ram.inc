@@ -10,6 +10,14 @@
 
 ; Global counter incremented every frame.  Does not increment on lag frames.
 Global_FrameCounter            := $0011
+; Use to communicate between NMI handler and regular execution.
+; bit7 on: Full frame update (video + audio) required.
+; bit6 on: Bank switch in progress.
+; Set by BankSave_Switch routine.
+; Read by NMI to avoid screwing things up during a bank switch.
+; bit5 on: NMI happened during bank switch.
+; Set by NMI to signal BankSave_Switch must complete the deferred NMI work.
+Nmi_SignalFlags                := $0012
 ; Obj: The 14-byte record every active object occupies. 18 are packed at $0400 (the object
 ; table); slot 0 is the player.
 .struct Obj
@@ -27,6 +35,20 @@ Global_FrameCounter            := $0011
         Scratch1      .byte   ; +$0B (byte)  General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
         Scratch2      .byte   ; +$0C (byte)  General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
         Health        .byte   ; +$0D (byte)  HP for this entity.
+.endstruct
+; BgPalette: Background palette: 4 NES master-palette indices.
+.struct BgPalette
+        Backdrop .byte   ; +$00 (byte)  entry 0 -- always treated as the backdrop colour.
+        Colour1  .byte   ; +$01 (byte)  entry 1
+        Colour2  .byte   ; +$02 (byte)  entry 2
+        Colour3  .byte   ; +$03 (byte)  entry 3
+.endstruct
+; SpritePalette: Sprite palette: 4 NES master-palette indices.
+.struct SpritePalette
+        Transparency .byte   ; +$00 (byte)  entry 0 -- always treated as transparent.
+        Colour1      .byte   ; +$01 (byte)  entry 1
+        Colour2      .byte   ; +$02 (byte)  entry 2
+        Colour3      .byte   ; +$03 (byte)  entry 3
 .endstruct
 ; Contact: The 3-byte record in the contact table at $7C-$8D -- the hit-exchange channel
 ; between the player's side and the enemies. Six records, one per object slot 0-5 (slot 0 =
@@ -49,6 +71,16 @@ Global_FrameCounter            := $0011
 ; The 14-byte zero-page working copy of the currently active object slot
 LoadedObject := $0046   ; Obj[] base — indexed access (any element)
 LoadedObj    := $0046   ; element 0 — direct access
+Background_Palettes := $0058   ; BgPalette[] base — indexed access (any element)
+Palette_BG_0        := $0058   ; element 0 — direct access
+Palette_BG_1        := $005C   ; element 1
+Palette_BG_2        := $0060   ; element 2
+Palette_BG_3        := $0064   ; element 3
+Sprite_Palettes  := $0068   ; SpritePalette[] base — indexed access (any element)
+Palette_Sprite_0 := $0068   ; element 0 — direct access
+Palette_Sprite_1 := $006C   ; element 1
+Palette_Sprite_2 := $0070   ; element 2
+Palette_Sprite_3 := $0074   ; element 3
 ; The contact table: 6 Contact records (3 bytes each) packed at $7C-$8D, one per object slot
 ; 0-5 -- slot 0 is the player, 1-5 are his shots/sub-weapons. NOT three separate tables: the
 ; three columns are interleaved, so indexed access (X = ObjectSlot_Index $57 x 3, via
@@ -136,3 +168,7 @@ SavedPrgBank                   := $00D3
 ; real ObjType when it is made Dormant (ObjType $02).
 ; The Dormant ObjType handler then reads from this table to restore the tombstoned Object.
 DormantSlot_SavedType          := $0150
+; A 17x15 (+1? TBD) table of level tile attributes for the tiles currently on screen.
+; This is used for detecting player and object terrain collision.
+; It's probably also used for spike and water tile interactions, but that is TBC.
+LevelTileData                  := $0500

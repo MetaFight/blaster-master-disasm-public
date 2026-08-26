@@ -7,7 +7,7 @@ L_9D3E: lda     #$00                            ; 9D3E
         sta     LoadedObj + Obj::Scratch1       ; 9D40
         lda     #$01                            ; 9D42
         sta     LoadedObj + Obj::Scratch0       ; 9D44
-        jsr     LD2B9                           ; 9D46
+        jsr     Obj_CalcTileIndex               ; 9D46
         inc     LoadedObj + Obj::Type           ; 9D49
         rts                                     ; 9D4B
 

@@ -2055,9 +2055,15 @@ NesPrgRom:19E9E:L_9E9E
 NesPrgRom:19EA4:L_9EA4
 NesPrgRom:19EA7:L_9EA7
 NesPrgRom:19EBE:L_9EBE
-NesPrgRom:19EBF:L_9EBF
-NesPrgRom:19EC2:L_9EC2
-NesPrgRom:19EDF:L_9EDF
+NesPrgRom:19EBF:ObjHandler_Tank_38_Big_Gray_Init:ObjType $38: Big Gray Ballistic Ball - Init
+NesPrgRom:19EC2:_ObjHandler_Tank_38_Big_Gray_Init__Body
+NesPrgRom:19ECA::Facing = (rng & 1F) + $B0.  Range of values: [$B0..$CF]
+NesPrgRom:19ECE::Scratch1 is the Lifetime timer.  Init this to 112 frames
+NesPrgRom:19ED2::Derive initial Velocities from Facing heading and provided scalar (Y)
+NesPrgRom:19ED5::Set TileIndex
+NesPrgRom:19ED8::Increment ObjType to Main type.
+NesPrgRom:19EDC::Play launch sound.
+NesPrgRom:19EDF:_ObjHandler_Tank_38_Big_Gray_Init__Done
 NesPrgRom:19EE0:L_9EE0
 NesPrgRom:19EE3:L_9EE3
 NesPrgRom:19F05:L_9F05
@@ -3349,7 +3355,11 @@ NesPrgRom:1D2A8:L_D2A8
 NesPrgRom:1D2AB:L_D2AB
 NesPrgRom:1D2B1:TileRead_WithOffset:Reads the tile byte at LoadedObj.TileIndex plus an offset (A).\n\nInput:\n  A = offset\n    eg, $11 = immediately below\n        $ff = 1 to the left\n        $01 = 1 to the right\n\nOutput:\n  A = Tile data
 NesPrgRom:1D2B2::A (step offset) + $4E → cell index; A = $0500[index] = the look-ahead tile.
-NesPrgRom:1D2B9:L_D2B9
+NesPrgRom:1D2B9:Obj_CalcTileIndex:Computes the index (+TilemapBaseIndex) into the LevelTileData tile map corresponding to LoadedObj's current position.
+NesPrgRom:1D2C0::At this point, TileIndex holds a temp value corresponding to the *row offset* in the 17x15 table.
+NesPrgRom:1D2C9::Here, we convert TileIndex (currently a row offset) into an actual *Index*.\nBecause a row is 17-wide, we do this by multiplying by 17.\n\nThe multiplication by 17 is implemented as\nTileIndex = TileIndex + (16 * TileIndex)
+NesPrgRom:1D2D3::This adds the X component (how far ito the row) to TileIndex\n\nTileIndex = (Obj.X - Camera.X) + TileIndex
+NesPrgRom:1D2D8::Finally, we add in TilemapBaseIndex
 NesPrgRom:1D2DB:Apply_Velocity_XY:Applies Velocity_X and Velocity_Y to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.\n\nNotes:\n  I'm not sure what the benefits of this variant's arithmetic are over Apply_Double_Velocity_XY's appreach.\n  Why is the sign of the high byte dropped?  Why isn't the Lo addition done first for easy carry into the high byte?
 NesPrgRom:1D2DE:Apply_Velocity_X:Applies Velocity_X to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.
 NesPrgRom:1D2E2::Clear position hi-byte's sign (not sure why).
@@ -3857,8 +3867,8 @@ NesPrgRom:1E85A:L_E85A
 NesPrgRom:1E862:L_E862
 NesPrgRom:1E87C:L_E87C
 NesPrgRom:1E884:L_E884
-NesPrgRom:1E895:L_E895
-NesPrgRom:1E89F:L_E89F
+NesPrgRom:1E895:PPU_SetAddressIncrementTo_1:Clear PPU_CTRL bit2 ($FF shadow + $2000): VRAM address increment = +1 (write across a row). Dispatch slot $C234; callers: Nametable_RLE_Decompress ($E95B), NMI palette upload ($EBC0).
+NesPrgRom:1E89F:PPU_SetAddressIncrementTo_32:Set PPU_CTRL bit2 ($FF shadow + $2000): VRAM address increment = +32 (write down a column). Dispatch slot $C237 (no external callers).
 NesPrgRom:1E8A9:L_E8A9
 NesPrgRom:1E8C2:L_E8C2
 NesPrgRom:1E8D2:L_E8D2
@@ -3867,8 +3877,7 @@ NesPrgRom:1E90B:L_E90B
 NesPrgRom:1E913:L_E913
 NesPrgRom:1E914:L_E914
 NesPrgRom:1E920:L_E920
-NesPrgRom:1E936:WaitNMI:Set Nmi_SignalFlags bit 7 then spin until NMI handler clears it; guarantees 60 Hz pacing
-NesPrgRom:1E938::Set $12 bit7, then spin until the NMI handler clears it (waits exactly one frame).
+NesPrgRom:1E936:WaitNMI:Sets Nmi_SignalFlags bit 7 then spin-waits until NMI handler clears it.  This is the mechanism that paces the game loop at 60Hz.
 NesPrgRom:1E93A:_WaitNMI__Loop
 NesPrgRom:1E93F:L_E93F
 NesPrgRom:1E949:L_E949
@@ -3939,7 +3948,7 @@ NesPrgRom:1EB64:L_EB64
 NesPrgRom:1EB71:Step_RNG:Steps the pseudo-random number generator state RNG_State ($13) by one 8-bit LCG step and returns the new byte in A ($13 := $13×5 − 1). Full period 256, so the returned byte's individual bits (AND #imm, or its sign via BMI/BPL) are genuinely close to uniform/50-50. Its CARRY FLAG is not: the closing SEC/SBC #$01 only clears carry when $13 was $00 on entry, which happens exactly once per 256 calls — so a caller that branches on BCC/BCS right after JSR Step_RNG is not flipping a coin, it is gating on a ~1-in-256 event. A caller must use the returned byte, not the carry, to get an even chance.
 NesPrgRom:1EB73::Advance the PRNG: $13 = $13×5 − 1 (returns the new $13).
 NesPrgRom:1EB7E:NMI:Hardware NMI (VBlank) handler.\n\nSaves the registers.\nIf a bank switch is in progress (Nmi_SignalFlags bit 6) records a deferred NMI and returns.\nOtherwise, runs the frame-update work (Nmi_DoWork).\nRestores the registers before returning.
-NesPrgRom:1EB8D:_NMI__Deferred:Nmi_SignalFlags bit 6 was set (busy during bank switch); record deferred NMI by writing $20 (bit 5) to Nmi_SignalFlags and RTI — BankSave_Switch will replay Nmi_DoWork on return
+NesPrgRom:1EB8D:_NMI__Deferred:Nmi_SignalFlags bit 6 was set (busy during bank switch); record deferred NMI by writing $20 (bit 5) to Nmi_SignalFlags and RTI.  This signals BankSave_Switch to call Nmi_DoWork on return
 NesPrgRom:1EB91:_NMI__Restore:Pop Y/X/A; RTI
 NesPrgRom:1EB97:L_EB97
 NesPrgRom:1EB98:L_EB98
@@ -4244,6 +4253,7 @@ NesPrgRom:1FFD8:L_FFD8
 NesPrgRom:1FFF4:L_FFF4
 NesPrgRom:1FFFA:L_FFFA
 NesInternalRam:0011:Global_FrameCounter:Global counter incremented every frame.  Does not increment on lag frames.
+NesInternalRam:0012:Nmi_SignalFlags:Use to communicate between NMI handler and regular execution.\n  bit7 on: Full frame update (video + audio) required.\n  bit6 on: Bank switch in progress.\n    Set by BankSave_Switch routine.\n    Read by NMI to avoid screwing things up during a bank switch.\n  bit5 on: NMI happened during bank switch.\n    Set by NMI to signal BankSave_Switch must complete the deferred NMI work.
 NesInternalRam:0042:LoadedObj_CollisionBox_HalfWidth:(alpha: not fully human-verified / pending re-verification) Half-WIDTH of the active object's terrain-collision box, measured from the object's centre,\nin the same 4.4 fixed-pixel units as LoadedObj_Position_X_Lo (so $80 = 8.0 px = a 16 px wide\nbox, $40 = 8 px wide, $C0 = 24 px wide). Set by the object's handler on entry, every frame.\n\nTogether with LoadedObj_CollisionBox_HalfHeight it defines one axis-aligned box centred on\nthe object. Both bytes are read ONLY by H_Collision_Check ($D37D) and V_Collision_Check\n($D3E1). So this is strictly terrain/tile collision.\n\nFull write-up: docs/us/misc/terrain-collision.md
 NesInternalRam:0043:LoadedObj_CollisionBox_HalfHeight:(alpha: not fully human-verified / pending re-verification) Half-HEIGHT of the active object's terrain-collision box, measured from the object's centre,\nin the same 4.4 fixed-pixel units as LoadedObj_Position_Y_Lo (so $80 = 8.0 px = a 16 px tall\nbox, $40 = 8 px tall, $C0 = 24 px tall). Set by the object's handler on entry, every frame.\n\nFull write-up: docs/us/misc/terrain-collision.md
 NesInternalRam:0046:LoadedObj__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
@@ -4262,6 +4272,38 @@ NesInternalRam:0052:LoadedObj__Scratch2:General-purpose per-handler byte (offset
 NesInternalRam:0053:LoadedObj__Health:HP for this entity.
 NesInternalRam:0056:ObjectSlot_Offset:Byte offset of the active slot
 NesInternalRam:0057:ObjectSlot_Index:Index of the active slot
+NesInternalRam:0058:Palette_BG_0__Backdrop:entry 0 -- always treated as the backdrop colour.
+NesInternalRam:0059:Palette_BG_0__Colour1:entry 1
+NesInternalRam:005A:Palette_BG_0__Colour2:entry 2
+NesInternalRam:005B:Palette_BG_0__Colour3:entry 3
+NesInternalRam:005C:Palette_BG_1__Backdrop:entry 0 -- always treated as the backdrop colour.
+NesInternalRam:005D:Palette_BG_1__Colour1:entry 1
+NesInternalRam:005E:Palette_BG_1__Colour2:entry 2
+NesInternalRam:005F:Palette_BG_1__Colour3:entry 3
+NesInternalRam:0060:Palette_BG_2__Backdrop:entry 0 -- always treated as the backdrop colour.
+NesInternalRam:0061:Palette_BG_2__Colour1:entry 1
+NesInternalRam:0062:Palette_BG_2__Colour2:entry 2
+NesInternalRam:0063:Palette_BG_2__Colour3:entry 3
+NesInternalRam:0064:Palette_BG_3__Backdrop:entry 0 -- always treated as the backdrop colour.
+NesInternalRam:0065:Palette_BG_3__Colour1:entry 1
+NesInternalRam:0066:Palette_BG_3__Colour2:entry 2
+NesInternalRam:0067:Palette_BG_3__Colour3:entry 3
+NesInternalRam:0068:Palette_Sprite_0__Transparency:entry 0 -- always treated as transparent.
+NesInternalRam:0069:Palette_Sprite_0__Colour1:entry 1
+NesInternalRam:006A:Palette_Sprite_0__Colour2:entry 2
+NesInternalRam:006B:Palette_Sprite_0__Colour3:entry 3
+NesInternalRam:006C:Palette_Sprite_1__Transparency:entry 0 -- always treated as transparent.
+NesInternalRam:006D:Palette_Sprite_1__Colour1:entry 1
+NesInternalRam:006E:Palette_Sprite_1__Colour2:entry 2
+NesInternalRam:006F:Palette_Sprite_1__Colour3:entry 3
+NesInternalRam:0070:Palette_Sprite_2__Transparency:entry 0 -- always treated as transparent.
+NesInternalRam:0071:Palette_Sprite_2__Colour1:entry 1
+NesInternalRam:0072:Palette_Sprite_2__Colour2:entry 2
+NesInternalRam:0073:Palette_Sprite_2__Colour3:entry 3
+NesInternalRam:0074:Palette_Sprite_3__Transparency:entry 0 -- always treated as transparent.
+NesInternalRam:0075:Palette_Sprite_3__Colour1:entry 1
+NesInternalRam:0076:Palette_Sprite_3__Colour2:entry 2
+NesInternalRam:0077:Palette_Sprite_3__Colour3:entry 3
 NesInternalRam:007A:IndirectPtrLo:Shared zero-page indirect pointer, lo byte -- the base of (ptr),Y addressing used throughout the fixed bank and both AI banks for whatever data the caller needs indexed: bank-dispatch handler tables, metasprite definition tables, and text/VRAM-queue streams among them. Not dedicated to dispatch despite the address's history.
 NesInternalRam:007B:IndirectPtrHi:Shared zero-page indirect pointer, hi byte. See IndirectPtrLo ($7A).
 NesInternalRam:007C:PlayerContact__Screen_X:(alpha: not fully human-verified / pending re-verification) Screen X, posted by Sprite_Update ($D7A0) from Local_Sprite_Screen_X.
@@ -4538,6 +4580,7 @@ NesInternalRam:04F8:Object_Slot_17__Scratch0:General-purpose per-handler byte (o
 NesInternalRam:04F9:Object_Slot_17__Scratch1:General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
 NesInternalRam:04FA:Object_Slot_17__Scratch2:General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
 NesInternalRam:04FB:Object_Slot_17__Health:HP for this entity.
+NesInternalRam:0500-05FF:LevelTileData:A 17x15 (+1? TBD) table of level tile attributes for the tiles currently on screen.\n\nThis is used for detecting player and object terrain collision.\nIt's probably also used for spike and water tile interactions, but that is TBC.
 NesInternalRam:0600:SpriteStagingBuf_Sprite0__Screen_Y:Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
 NesInternalRam:0601:SpriteStagingBuf_Sprite0__Tile:Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
 NesInternalRam:0602:SpriteStagingBuf_Sprite0__Attr:Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.

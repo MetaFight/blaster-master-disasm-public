@@ -211,7 +211,7 @@ L_82E4: lda     $F3                             ; 82E4
         and     #$04                            ; 82E6
         beq     L_831B                          ; 82E8
         ldx     LoadedObj + Obj::TileIndex      ; 82EA
-        lda     $0500,x                         ; 82EC
+        lda     LevelTileData,x                 ; 82EC
         jsr     LD238                           ; 82EF
         bne     L_82FC                          ; 82F2
         lda     #$01                            ; 82F4
@@ -223,7 +223,7 @@ L_82FC: txa                                     ; 82FC
         clc                                     ; 82FD
         adc     #$11                            ; 82FE
         tax                                     ; 8300
-        lda     $0500,x                         ; 8301
+        lda     LevelTileData,x                 ; 8301
         jsr     LD283                           ; 8304
         beq     L_8314                          ; 8307
         lda     #$02                            ; 8309
@@ -698,7 +698,7 @@ L_868C: bne     L_86CC                          ; 868C
         sta     LoadedObj + Obj::Position_Y_Hi  ; 86AF
         lda     $03D5                           ; 86B1
         sta     LoadedObj + Obj::Facing         ; 86B4
-        jsr     LD2B9                           ; 86B6
+        jsr     Obj_CalcTileIndex               ; 86B6
         lda     #$18                            ; 86B9
         sta     $40                             ; 86BB
         lda     #$10                            ; 86BD
@@ -931,7 +931,7 @@ L_8835: stx     LoadedObj + Obj::Velocity_X     ; 8835
         sta     LoadedObj + Obj::Position_Y_Lo  ; 8840
         bcc     L_8846                          ; 8842
         inc     LoadedObj + Obj::Position_Y_Hi  ; 8844
-L_8846: jsr     LD2B9                           ; 8846
+L_8846: jsr     Obj_CalcTileIndex                           ; 8846
         lda     #$20                            ; 8849
         sta     LoadedObj + Obj::Scratch1       ; 884B
         inc     LoadedObj + Obj::Type           ; 884D

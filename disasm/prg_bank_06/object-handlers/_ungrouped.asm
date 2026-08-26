@@ -48,7 +48,7 @@ L_A23A: lda     $9D                             ; A23A
         lda     $9E                             ; A23E
         tay                                     ; A240
         jsr     Obj_AngleToVelocity             ; A241
-        jsr     LD2B9                           ; A244
+        jsr     Obj_CalcTileIndex               ; A244
         inc     LoadedObj + Obj::Type           ; A247
         jsr     L_9E9E                          ; A249
 L_A24C: rts                                     ; A24C

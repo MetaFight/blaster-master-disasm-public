@@ -44,7 +44,7 @@ _ScreenFade_Step__Apply_To_Palette_Entry_X:
 ; Clamp to $0F on underflow
         lda     #$0F                            ; CE00
 _ScreenFade_Step__Save_Palette_Entry:
-        sta     $58,x                           ; CE02
+        sta     Background_Palettes + BgPalette::Backdrop,x ; CE02
         dex                                     ; CE04
         bpl     _ScreenFade_Step__Apply_To_Palette_Entry_X; CE05
         rts                                     ; CE07

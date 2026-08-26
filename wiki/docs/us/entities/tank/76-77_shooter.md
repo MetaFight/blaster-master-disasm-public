@@ -42,7 +42,7 @@ Descriptor **index `$10`** in `TankEnemy_DescTable` (`$A36A`), via the tank enem
 
 ```
 LDA #$10 : JSR $A2E9   ; TankEnemy_Init(desc $10): desc[0]→$53, $4F=0,
-                       ;   CalcTilemapIndex, INC $46 → $77 (active)
+                       ;   Obj_CalcTileIndex, INC $46 → $77 (active)
 JSR $EB71 : STA $47    ; Step_RNG (pseudo-random) → $47 = launch ANGLE
 LDY #$14  : JSR $E1BD  ; Obj_AngleToVelocity: angle($47)+speed(Y=$14) → $4C/$4D
 LDA #$00  : STA $52    ; clear fire-cooldown timer
