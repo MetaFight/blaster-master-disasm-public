@@ -23,7 +23,7 @@ _ObjHandler_Tank_76_Shooter_Init__Update__:
 ; speed $14, converted with the heading into the velocity pair $4C/$4D. This is the only place the
 ; Shooter's velocity is set; nothing steers it afterwards
         ldy     #$14                            ; B009
-        jsr     Obj_AngleToVelocity             ; B00B
+        jsr     Obj_FacingToVelocity            ; B00B
 ; gun ready — no recoil to work off
         lda     #$00                            ; B00E
         sta     LoadedObj + Obj::Scratch2       ; B010
@@ -69,11 +69,11 @@ _ObjHandler_Tank_77_Shooter_Main__Update__:
 ; Fire gate — both aim conditions must hold, else fall through unfired
 ; signed X-distance to player EOR X-velocity sign: negative = drifting AWAY, so hold fire
 _ObjHandler_Tank_77_Shooter_Main__FireCheck:
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B02E
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B02E
         eor     LoadedObj + Obj::Velocity_X     ; B031
         bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B033
 ; signed Y-distance: negative = player is above, so hold fire (it only shoots level or downward)
-        jsr     LE0FA                           ; B035
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B035
         bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B038
 ; child to spawn = ObjType $3C (Small Red shot)
         lda     #$3C                            ; B03A

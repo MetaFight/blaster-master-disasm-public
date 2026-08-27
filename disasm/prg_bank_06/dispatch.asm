@@ -70,7 +70,7 @@ ObjDispatch_Table_Bk06:
 L_806E: .byte   $00,$00                         ; 806E
 ; ----------------------------------------------------------------------------
 L_8070: .addr   ObjHandler_Tank_38_Big_Gray_Init; 8070
-        .addr   L_9EE0                          ; 8072
+        .addr   ObjHandler_Tank_39_Big_Gray_Main; 8072
         .addr   L_9F39                          ; 8074
         .addr   L_9F5A                          ; 8076
         .addr   L_9FDA                          ; 8078
@@ -103,9 +103,9 @@ L_8070: .addr   ObjHandler_Tank_38_Big_Gray_Init; 8070
 ; ----------------------------------------------------------------------------
 L_80AE: .byte   $00,$00                         ; 80AE
 ; ----------------------------------------------------------------------------
-L_80B0: .addr   L_A50E                          ; 80B0
-        .addr   L_A53A                          ; 80B2
-        .addr   L_A5C2                          ; 80B4
+L_80B0: .addr   ObjHandler_Tank_58_Gray_Bullet_B_Init; 80B0
+        .addr   ObjHandler_Tank_59_Gray_Bullet_Main; 80B2
+        .addr   ObjHandler_Tank_5A_Gray_Bullet_Attacking; 80B4
         .addr   L_A6D7                          ; 80B6
         .addr   L_A6E4                          ; 80B8
         .addr   L_A74B                          ; 80BA

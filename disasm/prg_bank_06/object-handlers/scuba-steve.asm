@@ -18,14 +18,14 @@ L_B4A6: lda     #$80                            ; B4A6
         sta     $42                             ; B4A8
         lda     #$40                            ; B4AA
         sta     $43                             ; B4AC
-        jsr     LE120                           ; B4AE
+        jsr     Obj_Get_DeltaToPlayer_Y         ; B4AE
         ldx     #$02                            ; B4B1
         jsr     LE06A                           ; B4B3
         sta     LoadedObj + Obj::Velocity_Y     ; B4B6
         lda     #$0A                            ; B4B8
         ldx     #$4D                            ; B4BA
         jsr     Speed_Limit_Sub                 ; B4BC
-        jsr     LE107                           ; B4BF
+        jsr     Obj_Get_DeltaToPlayer_X         ; B4BF
         pha                                     ; B4C2
         ldx     #$02                            ; B4C3
         jsr     LE06A                           ; B4C5
@@ -44,7 +44,7 @@ L_B4D2: cmp     #$40                            ; B4D2
 L_B4DB: lda     #$0A                            ; B4DB
 L_B4DD: ldx     #$4C                            ; B4DD
         jsr     Speed_Limit_Sub                 ; B4DF
-        jsr     LE0FA                           ; B4E2
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B4E2
         bne     L_B4EE                          ; B4E5
         lda     #$3C                            ; B4E7
         sta     $A0                             ; B4E9

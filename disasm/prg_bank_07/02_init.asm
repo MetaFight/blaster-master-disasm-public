@@ -84,7 +84,7 @@ L_C3AA: jsr     L_C772                          ; C3AA
         sta     $8E                             ; C3AF
         lda     #$00                            ; C3B1
         sta     ObjectSlot_Offset               ; C3B3
-        jsr     ObjSlot_Save                    ; C3B5
+        jsr     Obj_SaveToSlot                  ; C3B5
         jsr     L_C9D6                          ; C3B8
         jsr     L_D7B6                          ; C3BB
         jsr     L_CE0F                          ; C3BE
@@ -93,7 +93,7 @@ L_C3AA: jsr     L_C772                          ; C3AA
         beq     L_C3D5                          ; C3C6
         lda     #$00                            ; C3C8
         sta     ObjectSlot_Offset               ; C3CA
-        jsr     ObjSlot_Load                    ; C3CC
+        jsr     Obj_LoadFromSlot                ; C3CC
         jsr     L0000                           ; C3CF
         jmp     L_C465                          ; C3D2
 

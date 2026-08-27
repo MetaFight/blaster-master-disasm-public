@@ -44,12 +44,12 @@ Descriptor **index `$10`** in `TankEnemy_DescTable` (`$A36A`), via the tank enem
 LDA #$10 : JSR $A2E9   ; TankEnemy_Init(desc $10): desc[0]→$53, $4F=0,
                        ;   Obj_CalcTileIndex, INC $46 → $77 (active)
 JSR $EB71 : STA $47    ; Step_RNG (pseudo-random) → $47 = launch ANGLE
-LDY #$14  : JSR $E1BD  ; Obj_AngleToVelocity: angle($47)+speed(Y=$14) → $4C/$4D
+LDY #$14  : JSR $E1BD  ; Obj_FacingToVelocity: angle($47)+speed(Y=$14) → $4C/$4D
 LDA #$00  : STA $52    ; clear fire-cooldown timer
 RTS
 ```
 
-**How the direction is decided.** `$E1BD` (`Obj_AngleToVelocity`) is the engine's *angle →
+**How the direction is decided.** `$E1BD` (`Obj_FacingToVelocity`) is the engine's *angle →
 velocity* routine. It treats `$47` as an 8-bit heading (0–255 spanning a full circle) and `Y` as a
 speed magnitude. It looks the heading up in the quarter-sine table at `$E202`
 (`Trig_QuarterSineTable`) — `$E1D2` (`Trig_CosByAngle`, angle + `$40`) for the X component and
@@ -79,10 +79,10 @@ Firing is gated by a cooldown, two aiming tests, and a further internal throttle
 1. **Cooldown**: if `$52 ≠ 0`, decrement it, force `$50 = 0` (recoil pose), and skip to render —
    no fire this frame.
 2. When `$52 == 0`, evaluate the aiming gates:
-   - `JSR $E0ED` (`LoadedObj__Get_DeltaToPlayer_X`) → **signed X-distance to the player** (player_X − obj_X).
+   - `JSR $E0ED` (`Obj_Get_DeltaToPlayer_X_q12_4`) → **signed X-distance to the player** (player_X − obj_X).
      `EOR $4C` then `BMI skip`: fire only when the sign of the X-distance matches the sign of the
      X-velocity — i.e. **only while drifting toward Sophia horizontally**.
-   - `JSR $E0FA` (`Obj_DeltaToPlayerY`) → **signed Y-distance to the player**. `BMI skip`: fire
+   - `JSR $E0FA` (`Obj_Get_DeltaToPlayer_Y_q12_4`) → **signed Y-distance to the player**. `BMI skip`: fire
      only when the player is **at or below** the Shooter (non-negative Y-distance).
 3. If both gates pass: `LDA #$3C : STA $A0 : JSR $DF36` (`Obj_SpawnChild_A0_Throttled`) spawns
    child ObjType **`$3C` (the "Small Red" projectile)** into a free slot. `$DF36` has its **own
@@ -151,7 +151,7 @@ X travel direction.
 ## Projectile
 
 The shot it fires is **Small Red** — ObjType `$3C`/`$3D` (init `$9FDA`, main `$9FF9`). A single
-8×8 tile (`$25`, sprite sub-palette 0) stamped via `Sprite_Stage` (`$ECB4`) — **not** a
+8×8 tile (`$25`, sprite sub-palette 0) stamped via `OAM_Stage_Pattern` (`$ECB4`) — **not** a
 metasprite. The same projectile Jason fires on foot (see 1b-23_jason.md and
 projectiles-ballistics.md).
 
@@ -161,8 +161,8 @@ projectiles-ballistics.md).
 
 - ObjType chain `$76 → $77` confirmed from the bank-06 dispatch table and disassembly.
 - Helper semantics used above (verified by decoding bank 07, now labelled in the MLB):
-  `$E0ED` = `LoadedObj__Get_DeltaToPlayer_X` (signed X-distance to player), `$E0FA` = `Obj_DeltaToPlayerY`
-  (signed Y-distance to player), `$E1BD` = `Obj_AngleToVelocity` (angle `$47` + speed Y → velocity;
+  `$E0ED` = `Obj_Get_DeltaToPlayer_X_q12_4` (signed X-distance to player), `$E0FA` = `Obj_Get_DeltaToPlayer_Y_q12_4`
+  (signed Y-distance to player), `$E1BD` = `Obj_FacingToVelocity` (angle `$47` + speed Y → velocity;
   internals `Trig_CosByAngle` `$E1D2` / `Trig_SinByAngle` `$E1D5` / `ScaleBySignedFrac` `$E196` /
   `ScaleByUnsignedFrac` `$E182` over `Trig_QuarterSineTable` `$E202`), `$DF68` = `Obj_MoveBounce` (move +
   reflect velocity on wall collision, via `Obj_MoveAndCollide` `$E083`), `$DF36` =

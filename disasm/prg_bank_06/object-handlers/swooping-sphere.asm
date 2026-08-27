@@ -19,12 +19,12 @@ L_AD0B: lda     #$80                            ; AD0B
         sta     $43                             ; AD11
         lda     LoadedObj + Obj::Scratch0       ; AD13
         bne     L_AD4A                          ; AD15
-        jsr     LE0FA                           ; AD17
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; AD17
         bpl     L_AD1F                          ; AD1A
         jmp     L_ADA9                          ; AD1C
 
 ; ----------------------------------------------------------------------------
-L_AD1F: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; AD1F
+L_AD1F: jsr     Obj_Get_DeltaToPlayer_X_q12_4                           ; AD1F
         tax                                     ; AD22
         bpl     L_AD2A                          ; AD23
         eor     #$FF                            ; AD25
@@ -78,7 +78,7 @@ L_AD7A: tay                                     ; AD7A
         lda     LoadedObj + Obj::Facing         ; AD7B
         jsr     LE1B7                           ; AD7D
         sta     LoadedObj + Obj::Velocity_Y     ; AD80
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AD82
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; AD82
         bmi     L_AD8C                          ; AD85
         lda     #$04                            ; AD87
         jmp     L_AD8E                          ; AD89
@@ -112,7 +112,7 @@ L_ADB9: lda     #$0C                            ; ADB9
         jmp     TankEnemy_DefeatTrackedEnemy    ; ADC0
 
 ; ----------------------------------------------------------------------------
-L_ADC3: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; ADC3
+L_ADC3: jsr     Obj_Get_DeltaToPlayer_X_q12_4                           ; ADC3
         bmi     L_ADCD                          ; ADC6
         lda     #$01                            ; ADC8
         jmp     L_ADCF                          ; ADCA

@@ -157,15 +157,15 @@ L_F0E7: rts                                     ; F0E7
 ; ----------------------------------------------------------------------------
 L_F0E8: ldx     $3C                             ; F0E8
         lda     $3E                             ; F0EA
-        sta     SpriteStagingBuf + OamEntry::Screen_X,x ; F0EC
+        sta     OAM_Staging_Buffer + OamEntry::Screen_X,x ; F0EC
         lda     $3F                             ; F0EF
-        sta     SpriteStagingBuf + OamEntry::Screen_Y,x ; F0F1
+        sta     OAM_Staging_Buffer + OamEntry::Screen_Y,x ; F0F1
         lda     $45                             ; F0F4
-        sta     SpriteStagingBuf + OamEntry::Tile,x ; F0F6
+        sta     OAM_Staging_Buffer + OamEntry::Tile,x ; F0F6
         lda     $44                             ; F0F9
         and     #$C3                            ; F0FB
         eor     (IndirectPtrLo),y               ; F0FD
-        sta     SpriteStagingBuf + OamEntry::Attr,x ; F0FF
+        sta     OAM_Staging_Buffer + OamEntry::Attr,x ; F0FF
         txa                                     ; F102
         clc                                     ; F103
         adc     #$04                            ; F104

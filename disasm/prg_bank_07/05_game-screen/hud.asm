@@ -47,7 +47,7 @@ L_C845: pha                                     ; C845
         dex                                     ; C867
         dex                                     ; C868
 L_C869: stx     $45                             ; C869
-        jsr     L_ECB4                          ; C86B
+        jsr     OAM_Stage_Pattern               ; C86B
         lda     L0000                           ; C86E
         sec                                     ; C870
         sbc     #$80                            ; C871
@@ -99,7 +99,7 @@ L_C8B2: pha                                     ; C8B2
         bcc     L_C8C8                          ; C8C5
         inx                                     ; C8C7
 L_C8C8: stx     $45                             ; C8C8
-        jsr     L_ECB4                          ; C8CA
+        jsr     OAM_Stage_Pattern               ; C8CA
         lda     L0000                           ; C8CD
         sec                                     ; C8CF
         sbc     #$40                            ; C8D0

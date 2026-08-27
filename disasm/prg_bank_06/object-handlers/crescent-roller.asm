@@ -28,9 +28,9 @@ L_B6F7: lda     #$C0                            ; B6F7
         sta     LoadedObj + Obj::Velocity_Y     ; B70E
 L_B710: jsr     L_B82B                          ; B710
         bne     L_B787                          ; B713
-        jsr     LE0FA                           ; B715
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B715
         bne     L_B72A                          ; B718
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B71A
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B71A
         bpl     L_B724                          ; B71D
         eor     #$FF                            ; B71F
         clc                                     ; B721
@@ -50,7 +50,7 @@ L_B72D: lda     Global_FrameCounter             ; B72D
         jsr     Obj_TryCloneIntoEmptySlot       ; B73A
         beq     L_B76D                          ; B73D
         stx     $09                             ; B73F
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B741
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B741
         bmi     L_B74B                          ; B744
         lda     #$E8                            ; B746
         jmp     L_B74D                          ; B748
@@ -121,14 +121,14 @@ L_B7AB: lda     $3F                             ; B7AB
         clc                                     ; B7C4
         adc     #$FC                            ; B7C5
         sta     $45                             ; B7C7
-        jsr     LECB4                           ; B7C9
+        jsr     OAM_Stage_Pattern               ; B7C9
         lda     $3F                             ; B7CC
         sec                                     ; B7CE
         sbc     #$08                            ; B7CF
         sta     $3F                             ; B7D1
         lda     #$FB                            ; B7D3
         sta     $45                             ; B7D5
-        jsr     LECB4                           ; B7D7
+        jsr     OAM_Stage_Pattern               ; B7D7
         pla                                     ; B7DA
         sta     $3F                             ; B7DB
         lda     #$B0                            ; B7DD
@@ -138,7 +138,7 @@ L_B7AB: lda     $3F                             ; B7AB
 ; ----------------------------------------------------------------------------
 L_B7E3: lda     $3F                             ; B7E3
         pha                                     ; B7E5
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B7E6
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B7E6
         bmi     L_B7F0                          ; B7E9
         lda     #$41                            ; B7EB
         jmp     L_B7F2                          ; B7ED
@@ -153,14 +153,14 @@ L_B7F2: sta     $44                             ; B7F2
         sta     $3F                             ; B7FC
         lda     #$FC                            ; B7FE
         sta     $45                             ; B800
-        jsr     LECB4                           ; B802
+        jsr     OAM_Stage_Pattern               ; B802
         lda     $3F                             ; B805
         sec                                     ; B807
         sbc     #$0C                            ; B808
         sta     $3F                             ; B80A
         lda     #$FB                            ; B80C
         sta     $45                             ; B80E
-        jsr     LECB4                           ; B810
+        jsr     OAM_Stage_Pattern               ; B810
         pla                                     ; B813
         sta     $3F                             ; B814
         lda     #$B0                            ; B816
@@ -168,7 +168,7 @@ L_B7F2: sta     $44                             ; B7F2
         rts                                     ; B81B
 
 ; ----------------------------------------------------------------------------
-L_B81C: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; B81C
+L_B81C: jsr     Obj_Get_DeltaToPlayer_X_q12_4                           ; B81C
         bmi     L_B826                          ; B81F
         lda     #$08                            ; B821
         jmp     L_B828                          ; B823

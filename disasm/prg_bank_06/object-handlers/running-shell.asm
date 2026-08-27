@@ -22,10 +22,10 @@ L_B58E: lda     #$80                            ; B58E
         sta     $43                             ; B594
         lda     LoadedObj + Obj::Scratch0       ; B596
         bne     L_B5B2                          ; B598
-        jsr     LE0FA                           ; B59A
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B59A
         bne     L_B5FB                          ; B59D
         inc     LoadedObj + Obj::Scratch0       ; B59F
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B5A1
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B5A1
         bmi     L_B5AB                          ; B5A4
         lda     #$28                            ; B5A6
         jmp     L_B5AD                          ; B5A8

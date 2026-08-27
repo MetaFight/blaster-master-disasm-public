@@ -62,7 +62,7 @@ L_C5FA: lda     $03F5                           ; C5FA
 .macro MAC_L_C8DF
 ; ----------------------------------------------------------------------------
 ; Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*.
-ObjSlot_Load:
+Obj_LoadFromSlot:
         ldy     ObjectSlot_Offset               ; C8DF
         lda     ObjectTable + Obj::Type,y       ; C8E1
         sta     LoadedObj + Obj::Type           ; C8E4
@@ -96,7 +96,7 @@ ObjSlot_Load:
 
 ; ----------------------------------------------------------------------------
 ; Save LoadedObj_* back to ObjectTable.
-ObjSlot_Save:
+Obj_SaveToSlot:
         ldy     ObjectSlot_Offset               ; C928
         lda     LoadedObj + Obj::Type           ; C92A
         sta     ObjectTable + Obj::Type,y       ; C92C
@@ -135,12 +135,12 @@ L_C971: lda     #$00                            ; C971
 L_C977: ldx     ObjectSlot_Offset               ; C977
         lda     ObjectTable + Obj::Type,x       ; C979
         beq     L_C990                          ; C97C
-        jsr     ObjSlot_Load                    ; C97E
+        jsr     Obj_LoadFromSlot                ; C97E
         lda     $4F                             ; C981
         beq     L_C987                          ; C983
         dec     $4F                             ; C985
 L_C987: jsr     L_C9A4                          ; C987
-        jsr     ObjSlot_Save                    ; C98A
+        jsr     Obj_SaveToSlot                  ; C98A
         jsr     L_EC73                          ; C98D
 L_C990: lda     ObjectSlot_Offset               ; C990
         clc                                     ; C992
@@ -264,6 +264,110 @@ _Apply_Double_Velocity_X__OnSignExtensionByteChosen:
         and     #$7F                            ; D344
         sta     LoadedObj + Obj::Position_X_Hi  ; D346
         rts                                     ; D348
+
+.endmacro
+
+.macro MAC_L_D71F
+; ----------------------------------------------------------------------------
+; Deal contact damage to the PLAYER specifically -- the single-record twin of HitboxScan_LockOn.
+; 
+; Input:
+;   A = the contact damage to deal (bits 0-6),
+;   box $40/$41 centred on $3E/$3F
+; 
+; Output:
+;   on a hit,
+;     A=$00
+;     (Z=1)
+;     PlayerContact.Damage = damage inflicted
+;     WR_Context_Dependent_45 = damange inflicted
+; 
+;   on a miss (or when Damage already flagged in bit7 of PlayerContact.Damage)
+;     A=$FF
+;     (Z=0)
+; 
+; Note:
+;   Unlike Collision_Detection_Sub this tests only record 0 and returns normally, so its caller
+;   must branch on Z. Reached via dispatch slot $6D ($C147). See the Contact struct.
+; 
+; Start by stashing A (contact damage to deal) into OAM_Attribute__or__Outgoing_Contact_Damage.
+Obj_TryDamagePlayer:
+        sta     $44                             ; D71F
+        lda     $40                             ; D721
+        lsr     a                               ; D723
+; $00 = hitbox_width / 2
+        sta     L0000                           ; D724
+        lda     $3E                             ; D726
+        sec                                     ; D728
+        sbc     L0000                           ; D729
+; $00 = Obj.X - (hitbox_width / 2)
+;     = Object left edge
+        sta     L0000                           ; D72B
+        lda     $41                             ; D72D
+        lsr     a                               ; D72F
+; $01 = hitbox_height / 2
+        sta     $01                             ; D730
+        lda     $3F                             ; D732
+        sec                                     ; D734
+        sbc     $01                             ; D735
+; $01 = Obj.Y - (hitbox_height / 2)
+;     = Object top edge
+        sta     $01                             ; D737
+        lda     $7E                             ; D739
+; If PlayerContact.Damage <= 0 (negative means already set, 0 means nothing to do), skip to miss
+; handler.
+        bmi     _Obj_TryDamagePlayer__Miss      ; D73B
+        beq     _Obj_TryDamagePlayer__Miss      ; D73D
+; WR_Context_Dependent_45 = Previous PlayerContact.Damage value
+        sta     $45                             ; D73F
+        lda     $7C                             ; D741
+        sec                                     ; D743
+        sbc     L0000                           ; D744
+        cmp     $40                             ; D746
+; If
+;   PlayerContact.Screen_X - (Object Left Edge) == (Object Hitbox_Width)
+;   aka: PlayerContact.Screen_X == (Object Left Edge) + (Object Hitbox_Width)
+; X-overlap detected (Player overlaps right edge of object).
+; Skip to Y-overlap test.
+        beq     _Obj_TryDamagePlayer__CheckY    ; D748
+; If
+;   PlayerContact.Screen_X - (Object Left Edge) > (Object Hitbox_Width)
+;   aka: PlayerContact.Screen_X > (Object Left Edge) + (Object Hitbox_Width)
+;   also matches case when (PlayerContact.Screen_X - (Object Left Edge)) wraps negative, meaning
+;   player is to left of obj box.
+; No X-overlap detected.
+; Skip to Miss handler.
+        bcs     _Obj_TryDamagePlayer__Miss      ; D74A
+; Otherwise,
+;   PlayerContact.Screen_X < (Object Left Edge) + Object Hitbox_Width
+; Do Y-overlap test:
+_Obj_TryDamagePlayer__CheckY:
+        lda     $7D                             ; D74C
+        sec                                     ; D74E
+        sbc     $01                             ; D74F
+        cmp     $41                             ; D751
+; If PlayerContact.Screen_Y == (Object Top Edge) + (Object Hitbox_Height)
+; Y-overlap detected (Player overlaps bottom edge of object).  Skip to Hit handler.
+        beq     _Obj_TryDamagePlayer__Hit       ; D753
+; If PlayerContact.Screen_Y > (Object Top Edge) + (Object Hitbox_Height)
+; No Y-overlap detected.  Skip to Miss handler.
+        bcs     _Obj_TryDamagePlayer__Miss      ; D755
+; Overlap detected.
+_Obj_TryDamagePlayer__Hit:
+        lda     $44                             ; D757
+        ora     #$80                            ; D759
+; PlayerContact.Damage = (incoming damage) | #$80
+;                      = incoming damage with bit7 (hit flag) set
+        sta     $7E                             ; D75B
+; hit exit: return A = #$00, Z=1 (hit)
+        lda     #$00                            ; D75D
+        rts                                     ; D75F
+
+; ----------------------------------------------------------------------------
+; miss exit: return A = #$FF, Z=0 (no hit)
+_Obj_TryDamagePlayer__Miss:
+        lda     #$FF                            ; D760
+        rts                                     ; D762
 
 .endmacro
 
@@ -636,13 +740,13 @@ L_DFD1: clc                                     ; DFD1
         rts                                     ; DFDC
 
 ; ----------------------------------------------------------------------------
-L_DFDD: jsr     LoadedObj__Get_DeltaToPlayer_X  ; DFDD
+L_DFDD: jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; DFDD
         bpl     L_DFE7                          ; DFE0
         eor     #$FF                            ; DFE2
         clc                                     ; DFE4
         adc     #$01                            ; DFE5
 L_DFE7: pha                                     ; DFE7
-        jsr     L_E0FA                          ; DFE8
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; DFE8
         bpl     L_DFF2                          ; DFEB
         eor     #$FF                            ; DFED
         clc                                     ; DFEF
@@ -909,7 +1013,7 @@ _Obj_ReflectHeading__FloorCeiling:
 ;   Returns:
 ;     A = Hi byte (signed)
 ;     X = Lo byte (unsigned)
-LoadedObj__Get_DeltaToPlayer_X:
+Obj_Get_DeltaToPlayer_X_q12_4:
         lda     PlayerSlot + Obj::Position_X_Lo ; E0ED
         sec                                     ; E0F0
         sbc     LoadedObj + Obj::Position_X_Lo  ; E0F1
@@ -919,7 +1023,12 @@ LoadedObj__Get_DeltaToPlayer_X:
         rts                                     ; E0F9
 
 ; ----------------------------------------------------------------------------
-L_E0FA: lda     PlayerSlot + Obj::Position_Y_Lo ; E0FA
+; Calculates signed Y-distance from this object to the player.
+;   Returns:
+;     A = Hi byte (signed)
+;     X = Lo byte (unsigned)
+Obj_Get_DeltaToPlayer_Y_q12_4:
+        lda     PlayerSlot + Obj::Position_Y_Lo ; E0FA
         sec                                     ; E0FD
         sbc     LoadedObj + Obj::Position_Y_Lo  ; E0FE
         tax                                     ; E100
@@ -928,9 +1037,14 @@ L_E0FA: lda     PlayerSlot + Obj::Position_Y_Lo ; E0FA
         rts                                     ; E106
 
 ; ----------------------------------------------------------------------------
-L_E107: lda     L0000                           ; E107
+; Signed X-distance to the player as single byte.
+; 
+; Recombines Obj_Get_DeltaToPlayer_X_q12_4's 16-bit result A (hi-byte in q8) and X (lo-byte in
+; q4.4) as (A<<4)|(X>>4).
+Obj_Get_DeltaToPlayer_X:
+        lda     L0000                           ; E107
         pha                                     ; E109
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; E10A
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; E10A
         asl     a                               ; E10D
         asl     a                               ; E10E
         asl     a                               ; E10F
@@ -949,9 +1063,14 @@ L_E107: lda     L0000                           ; E107
         rts                                     ; E11F
 
 ; ----------------------------------------------------------------------------
-L_E120: lda     L0000                           ; E120
+; Signed Y-distance to the player as single byte.
+; 
+; Recombines Obj_Get_DeltaToPlayer_Y_q12_4's 16-bit result A (hi-byte in q8) and X (lo-byte in
+; q4.4) as (A<<4)|(X>>4).
+Obj_Get_DeltaToPlayer_Y:
+        lda     L0000                           ; E120
         pha                                     ; E122
-        jsr     L_E0FA                          ; E123
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; E123
         asl     a                               ; E126
         asl     a                               ; E127
         asl     a                               ; E128
@@ -972,7 +1091,7 @@ L_E120: lda     L0000                           ; E120
 ; ----------------------------------------------------------------------------
 L_E139: lda     L0000                           ; E139
         pha                                     ; E13B
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; E13C
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; E13C
         asl     a                               ; E13F
         asl     a                               ; E140
         asl     a                               ; E141
@@ -993,7 +1112,7 @@ L_E139: lda     L0000                           ; E139
 ; ----------------------------------------------------------------------------
 L_E152: lda     L0000                           ; E152
         pha                                     ; E154
-        jsr     L_E0FA                          ; E155
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; E155
         asl     a                               ; E158
         asl     a                               ; E159
         asl     a                               ; E15A
@@ -1024,7 +1143,7 @@ L_E152: lda     L0000                           ; E152
 ; Output:
 ;   LoadedObj.Velocity_X = cos(LoadedObj.Facing) x scale
 ;   LoadedObj.Velocity_Y = sin(LoadedObj.Facing) x scale
-Obj_AngleToVelocity:
+Obj_FacingToVelocity:
         lda     LoadedObj + Obj::Facing         ; E1BD
 ; Look up cos(A)
         jsr     Trig_CosByAngle                 ; E1BF

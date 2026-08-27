@@ -35,9 +35,9 @@ _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Update__:
 ; 
 ; Then perform an on-screen test via ScreenPos_Compute
         jsr     ScreenPos_Compute               ; B2B3
-; Note:  ScreenPos_Compute expects LoadedObj_Hitbox_Width/Height to be set but this subroutine,
-; however, does not set them.  So this check will used whatever values are left over from the
-; previous object.
+; Note:  ScreenPos_Compute expects LoadedObj_Width/Height to be set but this subroutine, however,
+; does not set them.  So this check will used whatever values are left over from the previous
+; object.
 ; 
 ; Spawning a child will only happen if the following 3 checks pass:
 ; Check 1: the spawner must be on-screen.

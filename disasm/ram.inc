@@ -59,7 +59,7 @@ Nmi_SignalFlags                := $0012
         .res 3       ; +$00..+$02
 .endstruct
 ; OamEntry: One hardware sprite as the NES OAM lays it out: 4 bytes, Y / tile / attribute / X.
-; This is the PPU's own record format, not a game-defined one -- SpriteStagingBuf ($0600) is
+; This is the PPU's own record format, not a game-defined one -- OAM_Staging_Buffer ($0600) is
 ; an array of these, and OAM_BlitFromStaging ($EC73) copies whole records straight into the
 ; $0200 OAM shadow, which the NMI DMAs to $2004 via $4014.
 .struct OamEntry
@@ -91,7 +91,7 @@ Palette_Sprite_3 := $0074   ; element 3
 ; records). The record count is pinned three independent ways: Collision_Detection_Sub scans
 ; ldx #$0F then dex x3 ($D6E7) = records 5 down to 0; SpriteX_ClearAll ($D7B6) zeroes exactly
 ; $7C-$8D at AreaInit; and $8E is an unrelated variable. Direct (unindexed) access is record
-; 0, the player -- see PlayerContact, and HitboxTest_LockOn ($D71F), which is the "did this
+; 0, the player -- see PlayerContact, and Obj_TryDamagePlayer ($D71F), which is the "did this
 ; enemy attack hit the player?" test and reads $7C/$7D/$7E with no index at all.
 ContactTable  := $007C   ; Contact[] base — indexed access (any element)
 PlayerContact := $007C   ; element 0 — direct access
@@ -103,8 +103,8 @@ Projectile5   := $008B   ; element 5
 ; The object table: 18 Obj records (14 bytes each) packed at $0400-$04FB. Slot 0 is reserved
 ; for the player (Sophia/Jason); slots 1-17 hold enemies, projectiles, pickups, gates and
 ; other objects. Indexed access ($0400,X with X = ObjectSlot_Offset $56) reaches any slot;
-; direct access is slot 0 (PlayerSlot). Before each AI dispatch ObjSlot_Load copies the active
-; slot to ZP $46-$53; ObjSlot_Save writes it back.
+; direct access is slot 0 (PlayerSlot). Before each AI dispatch Obj_LoadFromSlot copies the
+; active slot to ZP $46-$53; Obj_SaveToSlot writes it back.
 ObjectTable    := $0400   ; Obj[] base — indexed access (any element)
 PlayerSlot     := $0400   ; element 0 — direct access
 Object_Slot_01 := $040E   ; element 1
@@ -126,21 +126,21 @@ Object_Slot_16 := $04E0   ; element 16
 Object_Slot_17 := $04EE   ; element 17
 ; The sprite staging buffer: 20 OamEntry records the renderers append to, then blitted
 ; wholesale into the $0200 OAM shadow by OAM_BlitFromStaging ($EC73) and DMAd to the PPU from
-; there. The write head is a BYTE offset in OAM_Staging_Entry_Length ($3C), so every access is
-; $0600,X with X a multiple of 4 -- the stagers index the array, they do not address a slot by
-; name. Extent: MetaSprite_RenderNoBank ($F04F) flushes the buffer whenever $3C reaches $40,
-; BEFORE staging each entry, and the largest single stager adds $10 bytes (4 sprites,
+; there. The write head is a BYTE offset in OAM_Staging_Buffer_TailPos ($3C), so every access
+; is $0600,X with X a multiple of 4 -- the stagers index the array, they do not address a slot
+; by name. Extent: MetaSprite_RenderNoBank ($F04F) flushes the buffer whenever $3C reaches
+; $40, BEFORE staging each entry, and the largest single stager adds $10 bytes (4 sprites,
 ; $EE77/$EEE9) at offsets +$00..+$0F. $40 + $10 = $50 = 80 bytes = exactly 20 records, which
 ; lands the buffer at $0600-$064F and stops one byte short of Palette_Shadow ($0650) -- the
 ; threshold looks chosen so the largest entry cannot overrun the palette. Appended by
-; Sprite_Stage ($ECB4, 1 sprite) and the shape stagers $ECD1/$ED12/$ED54/$EDA4/$EDF5/
+; OAM_Stage_Pattern ($ECB4, 1 sprite) and the shape stagers $ECD1/$ED12/$ED54/$EDA4/$EDF5/
 ; $EE77/$EEE9 (2-4 sprites each), all of which write $0600+N,X for N = 0..$0F and then advance
 ; $3C by their own byte count.
-SpriteStagingBuf         := $0600   ; OamEntry[] base — indexed access (any element)
-SpriteStagingBuf_Sprite0 := $0600   ; element 0 — direct access
-SpriteStagingBuf_Sprite1 := $0604   ; element 1
-SpriteStagingBuf_Sprite2 := $0608   ; element 2
-SpriteStagingBuf_Sprite3 := $060C   ; element 3
+OAM_Staging_Buffer         := $0600   ; OamEntry[] base — indexed access (any element)
+OAM_Staging_Buffer_Sprite0 := $0600   ; element 0 — direct access
+OAM_Staging_Buffer_Sprite1 := $0604   ; element 1
+OAM_Staging_Buffer_Sprite2 := $0608   ; element 2
+OAM_Staging_Buffer_Sprite3 := $060C   ; element 3
 
 ; Byte offset of the active slot
 ObjectSlot_Offset              := $0056

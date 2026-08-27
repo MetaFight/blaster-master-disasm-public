@@ -73,7 +73,7 @@ L_9DA1: lda     #$30                            ; 9DA1
         sbc     #$10                            ; 9DAC
         sta     $3F                             ; 9DAE
         lda     #$00                            ; 9DB0
-        jsr     LD71F                           ; 9DB2
+        jsr     Obj_TryDamagePlayer             ; 9DB2
         sta     $45                             ; 9DB5
         lda     LoadedObj + Obj::Scratch0       ; 9DB7
         cmp     #$01                            ; 9DB9
@@ -185,7 +185,7 @@ L_9E60: lda     $09                             ; 9E60
         and     #$08                            ; 9E6C
         beq     L_9E85                          ; 9E6E
         lda     #$00                            ; 9E70
-        jsr     LD71F                           ; 9E72
+        jsr     Obj_TryDamagePlayer             ; 9E72
         bne     L_9E85                          ; 9E75
         lda     #$44                            ; 9E77
         jsr     Enqueue_Sound_Command           ; 9E79

@@ -92,7 +92,8 @@ _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Damage:
 ; Prep A as with the OAM Attribute byte value,
 _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Render:
         lda     #$01                            ; B1C5
-; Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to WR_Context_Dependent_44
+; Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to
+; OAM_Attribute__or__Outgoing_Contact_Damage
         jsr     Obj_SetAttrFlipX                ; B1C7
         lda     Global_FrameCounter             ; B1CA
         lsr     a                               ; B1CC

@@ -9,7 +9,7 @@ L_AE7B: lda     #$0E                            ; AE7B
         and     #$80                            ; AE83
         sta     LoadedObj + Obj::Facing         ; AE85
         ldy     #$10                            ; AE87
-        jsr     Obj_AngleToVelocity             ; AE89
+        jsr     Obj_FacingToVelocity            ; AE89
         lda     #$00                            ; AE8C
         sta     LoadedObj + Obj::Scratch0       ; AE8E
         lda     #$10                            ; AE90
@@ -72,7 +72,7 @@ L_AEE6: jsr     Obj_TurnHeading                           ; AEE6
 L_AEFA: lda     #$00                            ; AEFA
         sta     LoadedObj + Obj::Scratch0       ; AEFC
         ldy     #$10                            ; AEFE
-        jsr     Obj_AngleToVelocity             ; AF00
+        jsr     Obj_FacingToVelocity            ; AF00
 L_AF03: lda     #$10                            ; AF03
         sta     $40                             ; AF05
         lda     #$10                            ; AF07

@@ -47,7 +47,7 @@ L_A23A: lda     $9D                             ; A23A
         sta     LoadedObj + Obj::Facing         ; A23C
         lda     $9E                             ; A23E
         tay                                     ; A240
-        jsr     Obj_AngleToVelocity             ; A241
+        jsr     Obj_FacingToVelocity            ; A241
         jsr     Obj_CalcTileIndex               ; A244
         inc     LoadedObj + Obj::Type           ; A247
         jsr     L_9E9E                          ; A249
@@ -75,7 +75,7 @@ L_A25D: lda     #$08                            ; A25D
         sta     $44                             ; A271
         lda     #$54                            ; A273
         sta     $45                             ; A275
-        jmp     LECB4                           ; A277
+        jmp     OAM_Stage_Pattern               ; A277
 
 ; ----------------------------------------------------------------------------
 L_A27A: jsr     L_9B81                          ; A27A

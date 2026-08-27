@@ -86,6 +86,8 @@ MMC1_PrgBank_FFFF  := $FFFF
         MAC_L_D2DB
         MAC_L_D324
         MAC_L_D349
+        MAC_L_D71F
+        MAC_L_D763
         MAC_L_D7F8
         MAC_L_D883
         MAC_L_D908

@@ -38,7 +38,7 @@ L_AE21: dec     LoadedObj + Obj::Scratch1       ; AE21
         bne     L_AE49                          ; AE23
         inc     LoadedObj + Obj::Scratch0       ; AE25
         ldy     #$1D                            ; AE27
-        jsr     Obj_AngleToVelocity             ; AE29
+        jsr     Obj_FacingToVelocity            ; AE29
         jmp     L_AE49                          ; AE2C
 
 ; ----------------------------------------------------------------------------

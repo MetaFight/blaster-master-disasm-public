@@ -5,7 +5,7 @@ L_AF3A: jmp     L_AF60                          ; AF3A
 ; ----------------------------------------------------------------------------
 L_AF3D: lda     #$0F                            ; AF3D
         jsr     TankEnemy_Init                  ; AF3F
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AF42
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; AF42
         and     #$80                            ; AF45
         sta     LoadedObj + Obj::Facing         ; AF47
         bpl     L_AF4F                          ; AF49
@@ -18,7 +18,7 @@ L_AF51: sta     LoadedObj + Obj::Scratch2       ; AF51
         lda     #$00                            ; AF57
         sta     LoadedObj + Obj::Scratch1       ; AF59
         ldy     #$28                            ; AF5B
-        jsr     Obj_AngleToVelocity             ; AF5D
+        jsr     Obj_FacingToVelocity            ; AF5D
 L_AF60: rts                                     ; AF60
 
 ; ----------------------------------------------------------------------------
@@ -41,12 +41,12 @@ L_AF72: lda     LoadedObj + Obj::Scratch0       ; AF72
         lda     #$00                            ; AF7D
         sta     LoadedObj + Obj::Scratch0       ; AF7F
 L_AF81: ldy     #$28                            ; AF81
-        jsr     Obj_AngleToVelocity             ; AF83
+        jsr     Obj_FacingToVelocity            ; AF83
         jsr     Obj_MoveAndCollide              ; AF86
         jmp     L_AFD1                          ; AF89
 
 ; ----------------------------------------------------------------------------
-L_AF8C: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; AF8C
+L_AF8C: jsr     Obj_Get_DeltaToPlayer_X_q12_4                           ; AF8C
         bpl     L_AF96                          ; AF8F
         eor     #$FF                            ; AF91
         clc                                     ; AF93
@@ -78,7 +78,7 @@ L_AFC4: jsr     Obj_MoveAndCollide                           ; AFC4
         bpl     L_AFD1                          ; AFC7
         jsr     _Obj_ReflectHeading__SideWall   ; AFC9
         ldy     #$28                            ; AFCC
-        jsr     Obj_AngleToVelocity             ; AFCE
+        jsr     Obj_FacingToVelocity            ; AFCE
 L_AFD1: lda     #$10                            ; AFD1
         sta     $40                             ; AFD3
         lda     #$10                            ; AFD5

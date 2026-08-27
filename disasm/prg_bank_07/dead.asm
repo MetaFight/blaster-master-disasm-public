@@ -162,6 +162,55 @@ L_EB64: pha                                     ; EB64
 
 .endmacro
 
+.macro MAC_L_F14E
+; ----------------------------------------------------------------------------
+L_F14E: pha                                     ; F14E
+        lsr     a                               ; F14F
+        lsr     a                               ; F150
+        lsr     a                               ; F151
+        lsr     a                               ; F152
+        jsr     L_F157                          ; F153
+        pla                                     ; F156
+L_F157: and     #$0F                            ; F157
+        clc                                     ; F159
+        adc     #$30                            ; F15A
+        cmp     #$3A                            ; F15C
+        bcc     L_F163                          ; F15E
+        clc                                     ; F160
+        adc     #$07                            ; F161
+L_F163: sta     $45                             ; F163
+        jsr     OAM_Stage_Pattern               ; F165
+        lda     $3E                             ; F168
+        clc                                     ; F16A
+        adc     #$08                            ; F16B
+        sta     $3E                             ; F16D
+        rts                                     ; F16F
+
+; ----------------------------------------------------------------------------
+L_F170: ldy     #$00                            ; F170
+L_F172: lda     (IndirectPtrLo),y               ; F172
+        beq     L_F186                          ; F174
+        sta     $45                             ; F176
+        jsr     OAM_Stage_Pattern               ; F178
+        lda     $3E                             ; F17B
+        clc                                     ; F17D
+        adc     #$08                            ; F17E
+        sta     $3E                             ; F180
+        iny                                     ; F182
+        jmp     L_F172                          ; F183
+
+; ----------------------------------------------------------------------------
+L_F186: iny                                     ; F186
+        tya                                     ; F187
+        clc                                     ; F188
+        adc     IndirectPtrLo                   ; F189
+        sta     IndirectPtrLo                   ; F18B
+        bcc     L_F191                          ; F18D
+        inc     IndirectPtrHi                   ; F18F
+L_F191: rts                                     ; F191
+
+.endmacro
+
 .macro MAC_L_F465
 ; ----------------------------------------------------------------------------
 L_F465: lda     #$00                            ; F465

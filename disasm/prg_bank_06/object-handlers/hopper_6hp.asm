@@ -15,7 +15,7 @@ _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__:
 ; The next few lines set up the Facing field, but these values are overwritten before ever being
 ; used.
 ; And, unlike the attack phase, this choses to face AWAY from the player.
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A7D7
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; A7D7
         bpl     _ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight; A7DA
 ; player is to the LEFT so set heading $C8 (11.25° CW from UP) which is AWAY from the player
         lda     #$C8                            ; A7DC
@@ -98,7 +98,7 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Jump:
 ; Play sound $29.
         jsr     Enqueue_Sound_Command           ; A823
 ; Determine if the player is to the right or to the left.
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A826
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; A826
 ; branch if player is to the left
         bmi     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Heading_PlayerLeft; A829
 ; otherwise, handle player to the right.
@@ -125,16 +125,16 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Launch:
         and     #$0F                            ; A837
         clc                                     ; A839
         adc     LoadedObj + Obj::Scratch2       ; A83A
-; Transfer this to Y to use as the Scale Factor argument when calling Obj_AngleToVelocity.
+; Transfer this to Y to use as the Scale Factor argument when calling Obj_FacingToVelocity.
         tay                                     ; A83C
 ; This sets the Obj's Velocity, causing it to jump/attack.
-        jsr     Obj_AngleToVelocity             ; A83D
+        jsr     Obj_FacingToVelocity            ; A83D
 _ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnScreenCheck:
         lda     #$10                            ; A840
         sta     $40                             ; A842
         lda     #$18                            ; A844
         sta     $41                             ; A846
-; Load Hitbox dimensions in LoadedObj_Hitbox_Width/Height and call ScreenPos_Compute
+; Load Hitbox dimensions in LoadedObj_Width/Height and call ScreenPos_Compute
 ;   $00 means on-screen
 ;   $FF means off-screen
         jsr     ScreenPos_Compute               ; A848
@@ -258,7 +258,8 @@ _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage:
 ; Prep A as with the OAM Attribute byte value,
 _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render:
         lda     #$01                            ; A8B9
-; Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to WR_Context_Dependent_44
+; Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to
+; OAM_Attribute__or__Outgoing_Contact_Damage
         jsr     Obj_SetAttrFlipX                ; A8BB
         lda     Global_FrameCounter             ; A8BE
         lsr     a                               ; A8C0

@@ -81,7 +81,7 @@ L_97FE: txa                                     ; 97FE
 ; ----------------------------------------------------------------------------
 L_9804: lda     L_9813,x                        ; 9804
         sta     $45                             ; 9807
-        jmp     LECB4                           ; 9809
+        jmp     OAM_Stage_Pattern               ; 9809
 
 ; ----------------------------------------------------------------------------
 L_980C: jmp     LD82C                           ; 980C
@@ -465,7 +465,7 @@ L_9EA7: lda     $9D                             ; 9EA7
         lda     #$70                            ; 9EAB
         sta     LoadedObj + Obj::Scratch1       ; 9EAD
         ldy     $9E                             ; 9EAF
-        jsr     Obj_AngleToVelocity             ; 9EB1
+        jsr     Obj_FacingToVelocity            ; 9EB1
         jsr     Obj_CalcTileIndex               ; 9EB4
         lda     #$39                            ; 9EB7
         sta     LoadedObj + Obj::Type           ; 9EB9
@@ -490,7 +490,7 @@ _ObjHandler_Tank_38_Big_Gray_Init__Body:
         sta     LoadedObj + Obj::Scratch1       ; 9ECE
         ldy     #$28                            ; 9ED0
 ; Derive initial Velocities from Facing heading and provided scalar (Y)
-        jsr     Obj_AngleToVelocity             ; 9ED2
+        jsr     Obj_FacingToVelocity            ; 9ED2
 ; Set TileIndex
         jsr     Obj_CalcTileIndex               ; 9ED5
 ; Increment ObjType to Main type.
@@ -502,51 +502,77 @@ _ObjHandler_Tank_38_Big_Gray_Init__Done:
         rts                                     ; 9EDF
 
 ; ----------------------------------------------------------------------------
-L_9EE0: jmp     L_9F05                          ; 9EE0
+; ObjType $39: Big Gray Ballistic Ball - Main.
+; 
+; Affected by gravity.  Bounces off walls and the ground.  Also rolls on the ground.
+; Explodes when its lifetime timer (Scratch1) runs out.
+ObjHandler_Tank_39_Big_Gray_Main:
+        jmp     _ObjHandler_Tank_39_Ballistic_BigGray_Main__AfterPhysics; 9EE0
 
 ; ----------------------------------------------------------------------------
-L_9EE3: lda     #$80                            ; 9EE3
+; Normal-play body.
+; 
+; Starts by setting collision box.
+_ObjHandler_Tank_39_Big_Gray_Main__Update__:
+        lda     #$80                            ; 9EE3
         sta     $42                             ; 9EE5
         lda     #$80                            ; 9EE7
         sta     $43                             ; 9EE9
+; Apply gravity of 2 to Velocity_Y, then apply Velocities to position twice, accounting for
+; bouncing off solid terrain.
         lda     #$02                            ; 9EEB
         jsr     Obj_GravityMoveBounce_Double    ; 9EED
+; tick the lifetime timer.
         dec     LoadedObj + Obj::Scratch1       ; 9EF0
-        beq     L_9F2E                          ; 9EF2
+; At zero, skip to explosion logic.
+        beq     _ObjHandler_Tank_39_Ballistic_BigGray_Main__Explode; 9EF2
         lda     LoadedObj + Obj::Scratch1       ; 9EF4
         cmp     #$01                            ; 9EF6
-        bne     L_9F05                          ; 9EF8
+; Otherwise, at NOT one, skip to post-physics tail.
+        bne     _ObjHandler_Tank_39_Ballistic_BigGray_Main__AfterPhysics; 9EF8
         lda     #$80                            ; 9EFA
         sta     $42                             ; 9EFC
         lda     #$80                            ; 9EFE
         sta     $43                             ; 9F00
-        jmp     L_9F0D                          ; 9F02
+; Otherwise (at 1), set the collision box again (not sure why) and skip the code that sets the
+; object dimensions for the on-screen test to go straight to the on-screen test.  This looks like
+; a bug.
+        jmp     _ObjHandler_Tank_39_Ballistic_BigGray_Main__ScreenCheck; 9F02
 
 ; ----------------------------------------------------------------------------
-L_9F05: lda     #$10                            ; 9F05
+; set object dimensions and fall through into on-screen test.
+_ObjHandler_Tank_39_Ballistic_BigGray_Main__AfterPhysics:
+        lda     #$10                            ; 9F05
         sta     $40                             ; 9F07
         lda     #$10                            ; 9F09
         sta     $41                             ; 9F0B
-L_9F0D: jsr     ScreenPos_Compute                           ; 9F0D
-        beq     L_9F15                          ; 9F10
+_ObjHandler_Tank_39_Ballistic_BigGray_Main__ScreenCheck:
+        jsr     ScreenPos_Compute               ; 9F0D
+; if on-screen, jump to render code.
+        beq     _ObjHandler_Tank_39_Ballistic_BigGray_Main__Render; 9F10
+; otherwise, despawn immediately.  No tombstoning.
         jmp     Obj_Despawn                     ; 9F12
 
 ; ----------------------------------------------------------------------------
-L_9F15: clc                                     ; 9F15
+; Nudge the draw position, test player contact, and draw tile $6D
+_ObjHandler_Tank_39_Ballistic_BigGray_Main__Render:
+        clc                                     ; 9F15
         lda     $3F                             ; 9F16
         adc     #$03                            ; 9F18
         sta     $3F                             ; 9F1A
         lda     #$40                            ; 9F1C
-        jsr     LD71F                           ; 9F1E
-        beq     L_9F2E                          ; 9F21
+        jsr     Obj_TryDamagePlayer             ; 9F1E
+        beq     _ObjHandler_Tank_39_Ballistic_BigGray_Main__Explode; 9F21
         lda     #$01                            ; 9F23
         sta     $44                             ; 9F25
         lda     #$6D                            ; 9F27
         sta     $45                             ; 9F29
-        jmp     LECB4                           ; 9F2B
+        jmp     OAM_Stage_Pattern               ; 9F2B
 
 ; ----------------------------------------------------------------------------
-L_9F2E: jsr     SpawnBigExplosion_NoSound       ; 9F2E
+; lifetime expired: JSR $9B90 explosion; sound $27; JMP $D81C
+_ObjHandler_Tank_39_Ballistic_BigGray_Main__Explode:
+        jsr     SpawnBigExplosion_NoSound       ; 9F2E
         lda     #$27                            ; 9F31
         jsr     Enqueue_Sound_Command           ; 9F33
         jmp     Obj_Despawn                     ; 9F36
@@ -563,7 +589,7 @@ L_9F3C: jsr     Step_RNG                           ; 9F3C
         lda     #$50                            ; 9F46
         sta     LoadedObj + Obj::Scratch1       ; 9F48
         ldy     #$18                            ; 9F4A
-        jsr     Obj_AngleToVelocity             ; 9F4C
+        jsr     Obj_FacingToVelocity            ; 9F4C
         jsr     Obj_CalcTileIndex               ; 9F4F
         inc     LoadedObj + Obj::Type           ; 9F52
         lda     #$25                            ; 9F54
@@ -606,13 +632,13 @@ L_9F8F: clc                                     ; 9F8F
         adc     #$03                            ; 9F92
         sta     $3F                             ; 9F94
         lda     #$40                            ; 9F96
-        jsr     LD71F                           ; 9F98
+        jsr     Obj_TryDamagePlayer             ; 9F98
         beq     L_9FA8                          ; 9F9B
         lda     #$00                            ; 9F9D
         sta     $44                             ; 9F9F
         lda     #$6D                            ; 9FA1
         sta     $45                             ; 9FA3
-        jmp     LECB4                           ; 9FA5
+        jmp     OAM_Stage_Pattern               ; 9FA5
 
 ; ----------------------------------------------------------------------------
 L_9FA8: jsr     SpawnBigExplosion_NoSound       ; 9FA8
@@ -628,7 +654,7 @@ L_9FA8: jsr     SpawnBigExplosion_NoSound       ; 9FA8
         sta     LoadedObj + Obj::Velocity_Y     ; 9FBF
         lda     #$11                            ; 9FC1
         sta     LoadedObj + Obj::Velocity_X     ; 9FC3
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; 9FC5
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; 9FC5
         bpl     L_9FD1                          ; 9FC8
         lda     #$00                            ; 9FCA
         sec                                     ; 9FCC
@@ -680,12 +706,12 @@ L_A009: lda     #$08                            ; A009
 
 ; ----------------------------------------------------------------------------
 L_A019: lda     #$0C                            ; A019
-        jsr     LD71F                           ; A01B
+        jsr     Obj_TryDamagePlayer             ; A01B
         lda     #$00                            ; A01E
         sta     $44                             ; A020
         lda     #$25                            ; A022
         sta     $45                             ; A024
-        jmp     LECB4                           ; A026
+        jmp     OAM_Stage_Pattern               ; A026
 
 ; ----------------------------------------------------------------------------
 L_A029: jsr     L_9B81                          ; A029
@@ -718,9 +744,9 @@ L_A04A: lda     #$40                            ; A04A
         lda     #$02                            ; A052
         jsr     Obj_GravityMoveBounce_Double    ; A054
         bne     L_A083                          ; A057
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A059
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; A059
         bne     L_A063                          ; A05C
-        jsr     LE0FA                           ; A05E
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; A05E
         beq     L_A083                          ; A061
 L_A063: lda     #$08                            ; A063
         sta     $40                             ; A065
@@ -732,12 +758,12 @@ L_A063: lda     #$08                            ; A063
 
 ; ----------------------------------------------------------------------------
 L_A073: lda     #$08                            ; A073
-        jsr     LD71F                           ; A075
+        jsr     Obj_TryDamagePlayer             ; A075
         lda     #$00                            ; A078
         sta     $44                             ; A07A
         lda     #$54                            ; A07C
         sta     $45                             ; A07E
-        jmp     LECB4                           ; A080
+        jmp     OAM_Stage_Pattern               ; A080
 
 ; ----------------------------------------------------------------------------
 L_A083: jsr     L_9B81                          ; A083
@@ -747,7 +773,7 @@ L_A083: jsr     L_9B81                          ; A083
 L_A089: jmp     L_A0B5                          ; A089
 
 ; ----------------------------------------------------------------------------
-L_A08C: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; A08C
+L_A08C: jsr     Obj_Get_DeltaToPlayer_X_q12_4                           ; A08C
         tay                                     ; A08F
         bpl     L_A097                          ; A090
         eor     #$FF                            ; A092
@@ -764,7 +790,7 @@ L_A097: cmp     #$10                            ; A097
         bpl     L_A0AB                          ; A0A6
         jsr     _Obj_ReflectHeading__SideWall   ; A0A8
 L_A0AB: ldy     #$30                            ; A0AB
-        jsr     Obj_AngleToVelocity             ; A0AD
+        jsr     Obj_FacingToVelocity            ; A0AD
         inc     LoadedObj + Obj::Type           ; A0B0
         jsr     L_9E9E                          ; A0B2
 L_A0B5: rts                                     ; A0B5
@@ -787,12 +813,12 @@ L_A0C8: lda     #$0C                            ; A0C8
         jsr     ScreenPos_Compute               ; A0D0
         bne     L_A0E8                          ; A0D3
         lda     #$20                            ; A0D5
-        jsr     LD71F                           ; A0D7
+        jsr     Obj_TryDamagePlayer             ; A0D7
         lda     #$00                            ; A0DA
         sta     $44                             ; A0DC
         lda     #$54                            ; A0DE
         sta     $45                             ; A0E0
-        jmp     LECB4                           ; A0E2
+        jmp     OAM_Stage_Pattern               ; A0E2
 
 ; ----------------------------------------------------------------------------
 L_A0E5: jsr     L_9B81                          ; A0E5
@@ -854,13 +880,13 @@ L_A13D: lda     #$10                            ; A13D
 
 ; ----------------------------------------------------------------------------
 L_A14D: lda     #$20                            ; A14D
-        jsr     LD71F                           ; A14F
+        jsr     Obj_TryDamagePlayer             ; A14F
         beq     L_A15F                          ; A152
         lda     #$00                            ; A154
         sta     $44                             ; A156
         lda     #$DA                            ; A158
         sta     $45                             ; A15A
-        jmp     LECB4                           ; A15C
+        jmp     OAM_Stage_Pattern               ; A15C
 
 ; ----------------------------------------------------------------------------
 L_A15F: jsr     SpawnBigExplosion_NoSound       ; A15F
@@ -876,7 +902,7 @@ L_A15F: jsr     SpawnBigExplosion_NoSound       ; A15F
         sta     LoadedObj + Obj::Velocity_Y     ; A176
         lda     #$11                            ; A178
         sta     LoadedObj + Obj::Velocity_X     ; A17A
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A17C
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; A17C
         bpl     L_A188                          ; A17F
         lda     #$00                            ; A181
         sec                                     ; A183
@@ -900,7 +926,7 @@ L_A194: jsr     Step_RNG                           ; A194
         lda     #$40                            ; A19E
         sta     LoadedObj + Obj::Scratch1       ; A1A0
         ldy     #$20                            ; A1A2
-        jsr     Obj_AngleToVelocity             ; A1A4
+        jsr     Obj_FacingToVelocity            ; A1A4
         jsr     Obj_CalcTileIndex               ; A1A7
         inc     LoadedObj + Obj::Type           ; A1AA
 L_A1AC: rts                                     ; A1AC
@@ -930,13 +956,13 @@ L_A1CC: lda     #$10                            ; A1CC
         jsr     ScreenPos_Compute               ; A1D4
         bne     L_A1EE                          ; A1D7
         lda     #$10                            ; A1D9
-        jsr     LD71F                           ; A1DB
+        jsr     Obj_TryDamagePlayer             ; A1DB
         beq     L_A1EB                          ; A1DE
         lda     #$00                            ; A1E0
         sta     $44                             ; A1E2
         lda     #$54                            ; A1E4
         sta     $45                             ; A1E6
-        jmp     LECB4                           ; A1E8
+        jmp     OAM_Stage_Pattern               ; A1E8
 
 ; ----------------------------------------------------------------------------
 L_A1EB: jsr     L_9B81                          ; A1EB
@@ -947,7 +973,7 @@ L_A1F1: jmp     L_A201                          ; A1F1
 
 ; ----------------------------------------------------------------------------
 L_A1F4: ldy     LoadedObj + Obj::Scratch1       ; A1F4
-        jsr     Obj_AngleToVelocity             ; A1F6
+        jsr     Obj_FacingToVelocity            ; A1F6
         jsr     Obj_CalcTileIndex               ; A1F9
         inc     LoadedObj + Obj::Type           ; A1FC
         jsr     L_9E9E                          ; A1FE
@@ -976,7 +1002,7 @@ L_A214: lda     #$08                            ; A214
         sta     $44                             ; A228
         lda     #$54                            ; A22A
         sta     $45                             ; A22C
-        jmp     LECB4                           ; A22E
+        jmp     OAM_Stage_Pattern               ; A22E
 
 ; ----------------------------------------------------------------------------
 L_A231: jsr     L_9B81                          ; A231

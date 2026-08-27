@@ -19,7 +19,7 @@ L_A6E7: lda     #$80                            ; A6E7
         sta     $43                             ; A6ED
         lda     LoadedObj + Obj::Scratch0       ; A6EF
         bne     L_A71F                          ; A6F1
-        jsr     LE0FA                           ; A6F3
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; A6F3
         bmi     L_A71F                          ; A6F6
         bpl     L_A6FF                          ; A6F8
         eor     #$FF                            ; A6FA
@@ -28,7 +28,7 @@ L_A6E7: lda     #$80                            ; A6E7
 L_A6FF: lsr     a                               ; A6FF
         sta     $00                             ; A700
         inc     $00                             ; A702
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A704
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; A704
         bpl     L_A70E                          ; A707
         eor     #$FF                            ; A709
         clc                                     ; A70B

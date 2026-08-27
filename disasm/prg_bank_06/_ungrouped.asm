@@ -409,20 +409,20 @@ L_A2E8: rts                                     ; A2E8
 ; ----------------------------------------------------------------------------
 L_A634: lda     $00                             ; A634
         pha                                     ; A636
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A637
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; A637
         bpl     L_A641                          ; A63A
         eor     #$FF                            ; A63C
         clc                                     ; A63E
         adc     #$01                            ; A63F
 L_A641: sta     $00                             ; A641
-        jsr     LE0FA                           ; A643
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; A643
         bpl     L_A64D                          ; A646
         eor     #$FF                            ; A648
         clc                                     ; A64A
         adc     #$01                            ; A64B
 L_A64D: cmp     $00                             ; A64D
         bcs     L_A660                          ; A64F
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A651
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; A651
         bmi     L_A65B                          ; A654
         ldx     #$00                            ; A656
         jmp     L_A66C                          ; A658
@@ -432,7 +432,7 @@ L_A65B: ldx     #$80                            ; A65B
         jmp     L_A66C                          ; A65D
 
 ; ----------------------------------------------------------------------------
-L_A660: jsr     LE0FA                           ; A660
+L_A660: jsr     Obj_Get_DeltaToPlayer_Y_q12_4                           ; A660
         bmi     L_A66A                          ; A663
         ldx     #$40                            ; A665
         jmp     L_A66C                          ; A667

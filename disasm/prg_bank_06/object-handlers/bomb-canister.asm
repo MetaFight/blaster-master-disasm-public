@@ -23,7 +23,7 @@ L_B846: lda     #$80                            ; B846
         bne     L_B87E                          ; B850
         lda     #$A7                            ; B852
         sta     LoadedObj + Obj::Scratch1       ; B854
-        jsr     LE0FA                           ; B856
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B856
         bpl     L_B860                          ; B859
         eor     #$FF                            ; B85B
         clc                                     ; B85D
@@ -33,7 +33,7 @@ L_B860: cmp     #$02                            ; B860
         jmp     L_B8EF                          ; B864
 
 ; ----------------------------------------------------------------------------
-L_B867: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; B867
+L_B867: jsr     Obj_Get_DeltaToPlayer_X_q12_4                           ; B867
         bpl     L_B871                          ; B86A
         eor     #$FF                            ; B86C
         clc                                     ; B86E
@@ -59,7 +59,7 @@ L_B87E: cmp     #$01                            ; B87E
         cpx     #$30                            ; B892
         bne     L_B8A9                          ; B894
         inc     LoadedObj + Obj::Scratch0       ; B896
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B898
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B898
         bpl     L_B8A2                          ; B89B
         lda     #$10                            ; B89D
         jmp     L_B8A4                          ; B89F

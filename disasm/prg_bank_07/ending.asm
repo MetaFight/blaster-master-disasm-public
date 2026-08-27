@@ -511,7 +511,7 @@ L_FC62: pha                                     ; FC62
         pha                                     ; FC69
         lda     #$08                            ; FC6A
 L_FC6C: pha                                     ; FC6C
-        jsr     L_ECB4                          ; FC6D
+        jsr     OAM_Stage_Pattern               ; FC6D
         lda     $3E                             ; FC70
         clc                                     ; FC72
         adc     #$08                            ; FC73

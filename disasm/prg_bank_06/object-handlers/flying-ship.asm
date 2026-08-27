@@ -9,7 +9,7 @@ L_ABD2: lda     #$0A                            ; ABD2
         sta     LoadedObj + Obj::Velocity_X     ; ABD9
         lda     #$00                            ; ABDB
         sta     LoadedObj + Obj::Velocity_Y     ; ABDD
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; ABDF
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; ABDF
         bpl     L_ABEB                          ; ABE2
         lda     #$00                            ; ABE4
         sec                                     ; ABE6
@@ -29,7 +29,7 @@ L_ABEF: lda     #$80                            ; ABEF
         lda     Global_FrameCounter             ; ABFA
         and     #$4F                            ; ABFC
         bne     L_AC10                          ; ABFE
-        jsr     LE0FA                           ; AC00
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; AC00
         bmi     L_AC10                          ; AC03
         cmp     #$03                            ; AC05
         bcc     L_AC10                          ; AC07

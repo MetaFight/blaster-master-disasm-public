@@ -34,7 +34,7 @@ L_A76D: lda     #$80                            ; A76D
         beq     L_A79E                          ; A77C
         inc     LoadedObj + Obj::Scratch0       ; A77E
 L_A780: jsr     Obj_MoveBounce                           ; A780
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; A783
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; A783
         eor     LoadedObj + Obj::Velocity_X     ; A786
         bmi     L_A79B                          ; A788
         lda     LoadedObj + Obj::Velocity_X     ; A78A

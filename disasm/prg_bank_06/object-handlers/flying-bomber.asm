@@ -9,8 +9,8 @@ _ObjHandler_Tank_6C_Flying_Bomber_Init__Update__:
         lda     #$0B                            ; AC3F
 ; Init the enemy from descriptor $0B.
         jsr     TankEnemy_Init                  ; AC41
-; call LoadedObj__Get_DeltaToPlayer_X to store signed X distance to player in A
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AC44
+; call Obj_Get_DeltaToPlayer_X_q12_4 to store signed X distance to player in A
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; AC44
         and     #$80                            ; AC47
 ; Keep only bit 7 and store as LoadedObj.Facing
         sta     LoadedObj + Obj::Facing         ; AC49
@@ -31,8 +31,8 @@ _ObjHandler_Tank_6C_Flying_Bomber_Init__StoreTurnIncrement:
 ; Clear Scratch1.
         sta     LoadedObj + Obj::Scratch1       ; AC5B
         ldy     #$28                            ; AC5D
-; call Obj_AngleToVelocity to set velocity based on LoadedObj.Facing (angle) and scalar $28 (2.5)
-        jsr     Obj_AngleToVelocity             ; AC5F
+; call Obj_FacingToVelocity to set velocity based on LoadedObj.Facing (angle) and scalar $28 (2.5)
+        jsr     Obj_FacingToVelocity            ; AC5F
 _ObjHandler_Tank_6C_Flying_Bomber_Init__Done:
         rts                                     ; AC62
 
@@ -81,7 +81,7 @@ _ObjHandler_Tank_6D_FlyingBomber_Main__ActiveCheck:
 _ObjHandler_Tank_6D_FlyingBomber_Main__ActiveMove:
         ldy     #$28                            ; AC83
 ; Compute new velocities according to heading and scalar in Y
-        jsr     Obj_AngleToVelocity             ; AC85
+        jsr     Obj_FacingToVelocity            ; AC85
 ; Apply velocities and handle collisions.
         jsr     Obj_MoveAndCollide              ; AC88
 ; Skip to post-physics tail.
@@ -90,7 +90,7 @@ _ObjHandler_Tank_6D_FlyingBomber_Main__ActiveMove:
 ; ----------------------------------------------------------------------------
 ; Start by calculating X-delta to player
 _ObjHandler_Tank_6D_FlyingBomber_Main__ApproachPhase:
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AC8E
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; AC8E
 ; If already positive, skip to x-align check.
         bpl     _ObjHandler_Tank_6D_FlyingBomber_Main__XAlignCheck; AC91
 ; Otherwise, negate signed A to get absolute value.
@@ -142,7 +142,7 @@ _ObjHandler_Tank_6D_FlyingBomber_Main__ApplyPhysics:
         jsr     _Obj_ReflectHeading__SideWall   ; ACC8
         ldy     #$28                            ; ACCB
 ; and update velocities based on Facing heading and scalar Y
-        jsr     Obj_AngleToVelocity             ; ACCD
+        jsr     Obj_FacingToVelocity            ; ACCD
 _ObjHandler_Tank_6D_FlyingBomber_Main__AfterPhysics:
         lda     #$10                            ; ACD0
         sta     $40                             ; ACD2

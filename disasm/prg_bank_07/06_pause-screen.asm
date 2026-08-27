@@ -88,14 +88,14 @@ L_F8B6: asl     a                               ; F8B6
         sta     $44                             ; F8CC
         lda     #$5A                            ; F8CE
         sta     $45                             ; F8D0
-        jsr     L_ECB4                          ; F8D2
+        jsr     OAM_Stage_Pattern               ; F8D2
         lda     $3E                             ; F8D5
         clc                                     ; F8D7
         adc     #$18                            ; F8D8
         sta     $3E                             ; F8DA
         lda     #$41                            ; F8DC
         sta     $44                             ; F8DE
-        jsr     L_ECB4                          ; F8E0
+        jsr     OAM_Stage_Pattern               ; F8E0
 L_F8E3: lda     #$00                            ; F8E3
         sta     $44                             ; F8E5
         lda     #$5C                            ; F8E7

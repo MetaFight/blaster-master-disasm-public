@@ -10,7 +10,7 @@ L_B079: lda     #$11                            ; B079
         sta     LoadedObj + Obj::Velocity_Y     ; B082
         lda     #$10                            ; B084
         sta     LoadedObj + Obj::Velocity_X     ; B086
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B088
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B088
         bpl     L_B094                          ; B08B
         lda     #$00                            ; B08D
         sec                                     ; B08F
@@ -26,9 +26,9 @@ L_B098: lda     #$80                            ; B098
         sta     $42                             ; B09A
         lda     #$80                            ; B09C
         sta     $43                             ; B09E
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B0A0
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B0A0
         bne     L_B0B0                          ; B0A3
-        jsr     LE0FA                           ; B0A5
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B0A5
         bne     L_B0B0                          ; B0A8
         jsr     Obj_DespawnAndLog               ; B0AA
         jsr     SpawnBigExplosion_NoSound       ; B0AD
@@ -45,9 +45,9 @@ L_B0B0: lda     LoadedObj + Obj::Scratch0       ; B0B0
         sta     LoadedObj + Obj::Velocity_X     ; B0C7
 L_B0C9: lda     LoadedObj + Obj::Velocity_Y     ; B0C9
         bne     L_B0D2                          ; B0CB
-        jsr     LE0FA                           ; B0CD
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B0CD
         bmi     L_B13B                          ; B0D0
-L_B0D2: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; B0D2
+L_B0D2: jsr     Obj_Get_DeltaToPlayer_X_q12_4                           ; B0D2
         eor     LoadedObj + Obj::Velocity_X     ; B0D5
         bmi     L_B13B                          ; B0D7
         lda     #$01                            ; B0D9
@@ -65,7 +65,7 @@ L_B0ED: lda     Global_FrameCounter             ; B0ED
         and     #$3F                            ; B0EF
         bne     L_B0F6                          ; B0F1
         jsr     LDFDD                           ; B0F3
-L_B0F6: jsr     LoadedObj__Get_DeltaToPlayer_X                           ; B0F6
+L_B0F6: jsr     Obj_Get_DeltaToPlayer_X_q12_4                           ; B0F6
         bmi     L_B101                          ; B0F9
         clc                                     ; B0FB
         adc     #$20                            ; B0FC
@@ -79,7 +79,7 @@ L_B104: sta     LoadedObj + Obj::Velocity_X     ; B104
         bne     L_B11A                          ; B108
         lda     LoadedObj + Obj::Scratch2       ; B10A
         sta     LoadedObj + Obj::Scratch1       ; B10C
-        jsr     LE0FA                           ; B10E
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B10E
         bmi     L_B118                          ; B111
         inc     LoadedObj + Obj::Velocity_Y     ; B113
         jmp     L_B11A                          ; B115

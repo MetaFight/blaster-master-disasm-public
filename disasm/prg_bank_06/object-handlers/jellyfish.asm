@@ -46,7 +46,7 @@ L_B420: dec     LoadedObj + Obj::Scratch1       ; B420
         clc                                     ; B430
         adc     #$20                            ; B431
         tay                                     ; B433
-        jsr     Obj_AngleToVelocity             ; B434
+        jsr     Obj_FacingToVelocity            ; B434
         jmp     L_B457                          ; B437
 
 ; ----------------------------------------------------------------------------

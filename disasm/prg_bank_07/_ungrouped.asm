@@ -1,17 +1,33 @@
 .macro MAC_L_C438
 ; ----------------------------------------------------------------------------
-L_C438: .byte   $A5,$F4,$29,$80,$D0,$0E,$A5,$F4 ; C438
-        .byte   $29,$08,$D0,$10,$A5,$F4,$29,$40 ; C440
-        .byte   $D0,$0E,$F0,$89,$A9,$FF,$8D,$FB ; C448
-        .byte   $03,$4C,$D5,$C3,$A9,$03,$D0,$07 ; C450
-        .byte   $A9,$FF,$85,$C3,$4C,$D5,$C3     ; C458
+L_C438: lda     $F4                             ; C438
+        and     #$80                            ; C43A
+        bne     L_C44C                          ; C43C
+        lda     $F4                             ; C43E
+        and     #$08                            ; C440
+        bne     L_C454                          ; C442
+        lda     $F4                             ; C444
+        and     #$40                            ; C446
+        bne     L_C458                          ; C448
+        beq     L_C3D5                          ; C44A
+L_C44C: lda     #$FF                            ; C44C
+        sta     $03FB                           ; C44E
+        jmp     L_C3D5                          ; C451
+
+; ----------------------------------------------------------------------------
+L_C454: lda     #$03                            ; C454
+        bne     L_C45F                          ; C456
+L_C458: lda     #$FF                            ; C458
+        sta     $C3                             ; C45A
+        jmp     L_C3D5                          ; C45C
+
 .endmacro
 
 .macro MAC_L_C465
 ; ----------------------------------------------------------------------------
 L_C465: lda     #$00                            ; C465
         sta     ObjectSlot_Offset               ; C467
-        jsr     ObjSlot_Load                    ; C469
+        jsr     Obj_LoadFromSlot                ; C469
         lda     $B7                             ; C46C
         cmp     #$01                            ; C46E
         bne     L_C475                          ; C470
@@ -409,9 +425,9 @@ L_C9D6: lda     #$00                            ; C9D6
 L_C9DA: ldx     ObjectSlot_Offset               ; C9DA
         lda     ObjectTable + Obj::Type,x       ; C9DC
         beq     L_C9EA                          ; C9DF
-        jsr     ObjSlot_Load                    ; C9E1
+        jsr     Obj_LoadFromSlot                ; C9E1
         jsr     Obj_CalcTileIndex               ; C9E4
-        jsr     ObjSlot_Save                    ; C9E7
+        jsr     Obj_SaveToSlot                  ; C9E7
 L_C9EA: lda     ObjectSlot_Offset               ; C9EA
         clc                                     ; C9EC
         adc     #$0E                            ; C9ED
@@ -1904,48 +1920,9 @@ L_D711: jsr     L_D6CD                          ; D711
         lda     #$00                            ; D71C
 L_D71E: rts                                     ; D71E
 
-; ----------------------------------------------------------------------------
-L_D71F: sta     $44                             ; D71F
-        lda     $40                             ; D721
-        lsr     a                               ; D723
-        sta     L0000                           ; D724
-        lda     $3E                             ; D726
-        sec                                     ; D728
-        sbc     L0000                           ; D729
-        sta     L0000                           ; D72B
-        lda     $41                             ; D72D
-        lsr     a                               ; D72F
-        sta     $01                             ; D730
-        lda     $3F                             ; D732
-        sec                                     ; D734
-        sbc     $01                             ; D735
-        sta     $01                             ; D737
-        lda     $7E                             ; D739
-        bmi     L_D760                          ; D73B
-        beq     L_D760                          ; D73D
-        sta     $45                             ; D73F
-        lda     $7C                             ; D741
-        sec                                     ; D743
-        sbc     L0000                           ; D744
-        cmp     $40                             ; D746
-        beq     L_D74C                          ; D748
-        bcs     L_D760                          ; D74A
-L_D74C: lda     $7D                             ; D74C
-        sec                                     ; D74E
-        sbc     $01                             ; D74F
-        cmp     $41                             ; D751
-        beq     L_D757                          ; D753
-        bcs     L_D760                          ; D755
-L_D757: lda     $44                             ; D757
-        ora     #$80                            ; D759
-        sta     $7E                             ; D75B
-        lda     #$00                            ; D75D
-        rts                                     ; D75F
+.endmacro
 
-; ----------------------------------------------------------------------------
-L_D760: lda     #$FF                            ; D760
-        rts                                     ; D762
-
+.macro MAC_L_D763
 ; ----------------------------------------------------------------------------
 L_D763: jsr     Enemy_Damage_Check_Sub          ; D763
         bne     L_D76F                          ; D766
@@ -2551,8 +2528,8 @@ L_EBF4: .byte   $00,$01,$02,$03,$04,$05,$06,$07 ; EBF4
 ; We use the Hi-byte:Lo-byte notation to refer to 16-bit values.
 ; 
 ; Input:
-;   LoadedObj_Hitbox_Width = box's full width
-;   LoadedObj_Hitbox_Height = box's full height
+;   LoadedObj_Width = box's full width
+;   LoadedObj_Height = box's full height
 ;     Note:  Both are assumed EVEN.  An odd extent is culled one pixel early.
 ;   Local_Sprite_Screen_X = target object's center X coordinate
 ;   Local_Sprite_Screen_Y = target object's center Y coordinate

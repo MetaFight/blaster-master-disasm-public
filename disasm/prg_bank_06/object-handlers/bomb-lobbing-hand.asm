@@ -23,14 +23,14 @@ L_B352: lda     #$80                            ; B352
         sta     $42                             ; B354
         lda     #$C0                            ; B356
         sta     $43                             ; B358
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B35A
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B35A
         sta     LoadedObj + Obj::Velocity_X     ; B35D
         bpl     L_B366                          ; B35F
         eor     #$FF                            ; B361
         clc                                     ; B363
         adc     #$01                            ; B364
 L_B366: sta     $00                             ; B366
-        jsr     LE0FA                           ; B368
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B368
         bpl     L_B372                          ; B36B
         eor     #$FF                            ; B36D
         clc                                     ; B36F

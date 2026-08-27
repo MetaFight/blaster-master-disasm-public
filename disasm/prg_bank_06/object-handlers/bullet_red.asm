@@ -18,7 +18,7 @@ L_B92D: lda     #$60                            ; B92D
         lda     #$E0                            ; B931
         sta     LoadedObj + Obj::Facing         ; B933
 L_B935: ldy     #$18                            ; B935
-        jsr     Obj_AngleToVelocity             ; B937
+        jsr     Obj_FacingToVelocity            ; B937
         lda     #$00                            ; B93A
         sta     LoadedObj + Obj::Scratch1       ; B93C
         sta     LoadedObj + Obj::Scratch2       ; B93E
@@ -47,7 +47,7 @@ L_B95D: lda     #$60                            ; B95D
         lda     #$60                            ; B961
         sta     LoadedObj + Obj::Facing         ; B963
 L_B965: ldy     #$18                            ; B965
-        jsr     Obj_AngleToVelocity             ; B967
+        jsr     Obj_FacingToVelocity            ; B967
         lda     #$00                            ; B96A
         sta     LoadedObj + Obj::Scratch1       ; B96C
         sta     LoadedObj + Obj::Scratch2       ; B96E
@@ -66,17 +66,17 @@ L_B97D: lda     #$80                            ; B97D
         lda     #$80                            ; B981
         sta     $43                             ; B983
         ldy     #$18                            ; B985
-        jsr     L_A670                          ; B987
-        jsr     LE107                           ; B98A
+        jsr     Bullet_WalkSurface              ; B987
+        jsr     Obj_Get_DeltaToPlayer_X         ; B98A
         and     #$FC                            ; B98D
         bne     L_B998                          ; B98F
-        jsr     LE0FA                           ; B991
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B991
         beq     L_B9C0                          ; B994
         bne     L_B9A4                          ; B996
-L_B998: jsr     LE120                           ; B998
+L_B998: jsr     Obj_Get_DeltaToPlayer_Y                           ; B998
         and     #$FC                            ; B99B
         bne     L_B9C0                          ; B99D
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; B99F
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B99F
         beq     L_B9C0                          ; B9A2
 L_B9A4: lda     LoadedObj + Obj::Scratch0       ; B9A4
         clc                                     ; B9A6
@@ -87,7 +87,7 @@ L_B9A4: lda     LoadedObj + Obj::Scratch0       ; B9A4
         bne     L_B9C0                          ; B9B0
         stx     LoadedObj + Obj::Facing         ; B9B2
         ldy     #$60                            ; B9B4
-        jsr     Obj_AngleToVelocity             ; B9B6
+        jsr     Obj_FacingToVelocity            ; B9B6
         lda     #$10                            ; B9B9
         sta     LoadedObj + Obj::Scratch1       ; B9BB
         inc     LoadedObj + Obj::Type           ; B9BD
@@ -168,7 +168,7 @@ L_BA30: clc                                     ; BA30
         sta     LoadedObj + Obj::Facing         ; BA33
         stx     LoadedObj + Obj::Scratch0       ; BA35
         ldy     #$18                            ; BA37
-        jsr     Obj_AngleToVelocity             ; BA39
+        jsr     Obj_FacingToVelocity            ; BA39
         lda     #$00                            ; BA3C
         sta     LoadedObj + Obj::Scratch1       ; BA3E
         dec     LoadedObj + Obj::Type           ; BA40

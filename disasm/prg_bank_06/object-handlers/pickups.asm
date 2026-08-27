@@ -78,7 +78,7 @@ L_9C7D: jsr     LD2AB                           ; 9C7D
 
 ; ----------------------------------------------------------------------------
 L_9C92: lda     #$00                            ; 9C92
-        jsr     LD71F                           ; 9C94
+        jsr     Obj_TryDamagePlayer             ; 9C94
         beq     L_9CBD                          ; 9C97
         lda     LoadedObj + Obj::Scratch1       ; 9C99
         cmp     #$20                            ; 9C9B

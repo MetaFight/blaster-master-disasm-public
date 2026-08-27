@@ -21,14 +21,14 @@ L_AB27: lda     #$80                            ; AB27
         sta     $43                             ; AB2D
         lda     LoadedObj + Obj::Scratch0       ; AB2F
         bmi     L_AB56                          ; AB31
-        jsr     LE0FA                           ; AB33
+        jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; AB33
         bpl     L_AB3D                          ; AB36
         eor     #$FF                            ; AB38
         clc                                     ; AB3A
         adc     #$01                            ; AB3B
 L_AB3D: cmp     #$04                            ; AB3D
         bcs     L_AB9E                          ; AB3F
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AB41
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; AB41
         bpl     L_AB4B                          ; AB44
         eor     #$FF                            ; AB46
         clc                                     ; AB48
@@ -53,14 +53,14 @@ L_AB56: and     #$01                            ; AB56
         jmp     L_AB9E                          ; AB6B
 
 ; ----------------------------------------------------------------------------
-L_AB6E: jsr     LE0FA                           ; AB6E
+L_AB6E: jsr     Obj_Get_DeltaToPlayer_Y_q12_4                           ; AB6E
         bpl     L_AB78                          ; AB71
         eor     #$FF                            ; AB73
         clc                                     ; AB75
         adc     #$01                            ; AB76
 L_AB78: cmp     #$04                            ; AB78
         bcs     L_AB9E                          ; AB7A
-        jsr     LoadedObj__Get_DeltaToPlayer_X  ; AB7C
+        jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; AB7C
         bpl     L_AB86                          ; AB7F
         eor     #$FF                            ; AB81
         clc                                     ; AB83
