@@ -570,7 +570,7 @@ _ObjHandler_Tank_39_Ballistic_BigGray_Main__Render:
         jmp     OAM_Stage_Pattern               ; 9F2B
 
 ; ----------------------------------------------------------------------------
-; lifetime expired: JSR $9B90 explosion; sound $27; JMP $D81C
+; lifetime expired: Spawn explosion, enqueue sfx, and despawn.
 _ObjHandler_Tank_39_Ballistic_BigGray_Main__Explode:
         jsr     SpawnBigExplosion_NoSound       ; 9F2E
         lda     #$27                            ; 9F31

@@ -2076,7 +2076,7 @@ NesPrgRom:19F0D:_ObjHandler_Tank_39_Ballistic_BigGray_Main__ScreenCheck
 NesPrgRom:19F10::if on-screen, jump to render code.
 NesPrgRom:19F12::otherwise, despawn immediately.  No tombstoning.
 NesPrgRom:19F15:_ObjHandler_Tank_39_Ballistic_BigGray_Main__Render:Nudge the draw position, test player contact, and draw tile $6D
-NesPrgRom:19F2E:_ObjHandler_Tank_39_Ballistic_BigGray_Main__Explode:lifetime expired: JSR $9B90 explosion; sound $27; JMP $D81C
+NesPrgRom:19F2E:_ObjHandler_Tank_39_Ballistic_BigGray_Main__Explode:lifetime expired: Spawn explosion, enqueue sfx, and despawn.
 NesPrgRom:19F39:L_9F39
 NesPrgRom:19F3C:L_9F3C
 NesPrgRom:19F59:L_9F59
