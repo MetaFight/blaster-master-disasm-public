@@ -13,8 +13,8 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 85 / 850 (10%) |
-| **M6** — Verified docs (public, clean) | 1 / 119 (1%) |
+| **M4** — Verified subroutines (public, clean) | 88 / 850 (10%) |
+| **M6** — Verified docs (public, clean) | 2 / 117 (2%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
 - **M6** counts knowledge-base pages (`docs/us/entities/`, `docs/us/execution-flow/`, `docs/us/misc/`) marked `verified`, against every page in those trees — published or not.
@@ -24,7 +24,7 @@ verified and have since been modified.
 #### Area 1
 
 <details open>
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 34.1% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 40.9% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -34,8 +34,8 @@ verified and have since been modified.
 | <details><summary>⬜ Ballistic: Medium Red; Turret Shot</summary>⬜ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>⬜ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 0 / 2 |
 | <details><summary>✅ Bullet; Gray</summary>✅ <code>ObjHandler_Tank_59_Gray_Bullet_Main</code><br/>✅ <code>ObjHandler_Tank_5A_Gray_Bullet_Attacking</code></details> | 2 / 2 |
 | <details><summary>✅ Bullet; Gray B</summary>✅ <code>ObjHandler_Tank_58_Gray_Bullet_B_Init</code></details> | 1 / 1 |
-| <details><summary>⬜ Bullet; Red</summary>⬜ <code>ObjHandler_Tank_8E_Red_Bullet_Main</code><br/>⬜ <code>ObjHandler_Tank_8F_Red_Bullet_Locked</code></details> | 0 / 2 |
-| <details><summary>⬜ Bullet; Red B?</summary>⬜ <code>ObjHandler_Tank_8D_Red_Bullet_B_Init</code></details> | 0 / 1 |
+| <details><summary>✅ Bullet; Red</summary>✅ <code>ObjHandler_Tank_8E_Red_Bullet_Main</code><br/>✅ <code>ObjHandler_Tank_8F_Red_Bullet_Attacking</code></details> | 2 / 2 |
+| <details><summary>✅ Bullet; Red B</summary>✅ <code>ObjHandler_Tank_8D_Red_Bullet_B_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Flier; Gray</summary>✅ <code>ObjHandler_Tank_7D_Gray_Flier_Main</code></details> | 1 / 1 |
 | <details><summary>✅ Flying Bomber</summary>✅ <code>ObjHandler_Tank_6C_Flying_Bomber_Init</code><br/>✅ <code>ObjHandler_Tank_6D_Flying_Bomber_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Gray Flier Spawner</summary>✅ <code>ObjHandler_Tank_50_Gray_Flier_Spawner_Init</code><br/>✅ <code>ObjHandler_Tank_51_Gray_Flier_Spawner_Main</code></details> | 2 / 2 |
@@ -264,16 +264,16 @@ verified and have since been modified.
 #### Area 7
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 15.4% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 23.1% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
 | <details><summary>✅ Ballistic: Big; Gray</summary>✅ <code>ObjHandler_Tank_38_Big_Gray_Init</code><br/>✅ <code>ObjHandler_Tank_39_Big_Gray_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Ballistic: Medium Red; Mine Shrapnel</summary>⬜ <code>ObjHandler_Tank_44_Mine_Shrapnel_Init</code><br/>⬜ <code>ObjHandler_Tank_45_Mine_Shrapnel_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Ballistic: Medium Red; Turret Shot</summary>⬜ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>⬜ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 0 / 2 |
-| <details><summary>⬜ Bullet; Red</summary>⬜ <code>ObjHandler_Tank_8E_Red_Bullet_Main</code><br/>⬜ <code>ObjHandler_Tank_8F_Red_Bullet_Locked</code></details> | 0 / 2 |
-| <details><summary>⬜ Bullet; Red A?</summary>⬜ <code>ObjHandler_Tank_8C_Red_Bullet_A_Init</code></details> | 0 / 1 |
-| <details><summary>⬜ Bullet; Red B?</summary>⬜ <code>ObjHandler_Tank_8D_Red_Bullet_B_Init</code></details> | 0 / 1 |
+| <details><summary>✅ Bullet; Red</summary>✅ <code>ObjHandler_Tank_8E_Red_Bullet_Main</code><br/>✅ <code>ObjHandler_Tank_8F_Red_Bullet_Attacking</code></details> | 2 / 2 |
+| <details><summary>⬜ Bullet; Red A</summary>⬜ <code>ObjHandler_Tank_8C_Red_Bullet_A_Init</code></details> | 0 / 1 |
+| <details><summary>✅ Bullet; Red B</summary>✅ <code>ObjHandler_Tank_8D_Red_Bullet_B_Init</code></details> | 1 / 1 |
 | <details><summary>⬜ Flier; Red</summary>⬜ <code>ObjHandler_Tank_7C_Red_Flier</code></details> | 0 / 1 |
 | <details><summary>✅ Flying Bomber</summary>✅ <code>ObjHandler_Tank_6C_Flying_Bomber_Init</code><br/>✅ <code>ObjHandler_Tank_6D_Flying_Bomber_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Gray Hopper; 10HP</summary>✅ <code>ObjHandler_Tank_7A_Gray_Hopper_10HP_Init</code><br/>✅ <code>ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling</code></details> | 2 / 2 |
@@ -308,7 +308,7 @@ verified and have since been modified.
 #### Area 8
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 11.4% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 20.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -321,9 +321,9 @@ verified and have since been modified.
 | <details><summary>✅ Bullet; Gray</summary>✅ <code>ObjHandler_Tank_59_Gray_Bullet_Main</code><br/>✅ <code>ObjHandler_Tank_5A_Gray_Bullet_Attacking</code></details> | 2 / 2 |
 | <details><summary>⬜ Bullet; Gray A</summary>⬜ <code>ObjHandler_Tank_56_Gray_Bullet_A_Init</code></details> | 0 / 1 |
 | <details><summary>✅ Bullet; Gray B</summary>✅ <code>ObjHandler_Tank_58_Gray_Bullet_B_Init</code></details> | 1 / 1 |
-| <details><summary>⬜ Bullet; Red</summary>⬜ <code>ObjHandler_Tank_8E_Red_Bullet_Main</code><br/>⬜ <code>ObjHandler_Tank_8F_Red_Bullet_Locked</code></details> | 0 / 2 |
-| <details><summary>⬜ Bullet; Red A?</summary>⬜ <code>ObjHandler_Tank_8C_Red_Bullet_A_Init</code></details> | 0 / 1 |
-| <details><summary>⬜ Bullet; Red B?</summary>⬜ <code>ObjHandler_Tank_8D_Red_Bullet_B_Init</code></details> | 0 / 1 |
+| <details><summary>✅ Bullet; Red</summary>✅ <code>ObjHandler_Tank_8E_Red_Bullet_Main</code><br/>✅ <code>ObjHandler_Tank_8F_Red_Bullet_Attacking</code></details> | 2 / 2 |
+| <details><summary>⬜ Bullet; Red A</summary>⬜ <code>ObjHandler_Tank_8C_Red_Bullet_A_Init</code></details> | 0 / 1 |
+| <details><summary>✅ Bullet; Red B</summary>✅ <code>ObjHandler_Tank_8D_Red_Bullet_B_Init</code></details> | 1 / 1 |
 | <details><summary>⬜ Caterpillar; Gray</summary>⬜ <code>ObjHandler_Tank_54_Gray_Caterpillar_Init</code><br/>⬜ <code>ObjHandler_Tank_55_Gray_Caterpillar_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Caterpillar; Red</summary>⬜ <code>ObjHandler_Tank_62_Red_Caterpillar</code><br/>⬜ <code>ObjHandler_Tank_63_Red_Caterpillar_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Flying Bomber; Red Caterpillar</summary>⬜ <code>ObjHandler_Tank_74_Flying_Red_Caterpillar_Bomber</code><br/>⬜ <code>ObjHandler_Tank_75_Flying_Red_Caterpillar_Bomber</code></details> | 0 / 2 |
@@ -370,6 +370,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 05 / `(ungrouped — no .groups file)` |  |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/_common` |  |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_gray` | `ObjHandler_Tank_59_Gray_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
+| ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_red` | `ObjHandler_Tank_8E_Red_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ▫️⬛⬛⬛<br/>`10.9%` | 06 / `_ungrouped` |  |
 | ▫️⬛⬛⬛<br/>`6.9%` | 06 / `object-handlers/projectiles-and-ballistics` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
@@ -380,7 +381,6 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomb-lobbing-hand` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomber-rock` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bullet_common` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bullet_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/caterpillar_gray` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/caterpillar_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/crescent-roller` |  |
@@ -434,14 +434,15 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `input` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `level-rendering` |  |
 
-This export publishes **5** pages, of which **4** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
+This export publishes **6** pages, of which **4** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-08-28 10:50 UTC_
+_Generated: 2026-08-29 18:21 UTC_
 
 ## Pages
 
 ### Entities — Tank
 
+- [Gray Bullet](wiki/docs/us/entities/tank/55-56,58-59_gray-bullet.md)
 - [Flying Bomber](wiki/docs/us/entities/tank/6c-6d_flying-bomber.md)
 - [Shooter](wiki/docs/us/entities/tank/76-77_shooter.md) — ⚠️ alpha
 

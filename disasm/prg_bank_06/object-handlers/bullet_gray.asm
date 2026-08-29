@@ -46,7 +46,7 @@ _ObjHandler_Tank_58_Gray_Bullet_B_Init__Body:
         sta     LoadedObj + Obj::Scratch0       ; A518
         lda     #$20                            ; A51A
         sta     LoadedObj + Obj::Facing         ; A51C
-        jmp     _ObjHandler_Tank_58_Gray_Bullet_B_Init__Launch; A51E
+        jmp     _ObjHandler_Tank_58_Gray_Bullet_B_Init__SetProps; A51E
 
 ; ----------------------------------------------------------------------------
 ; spawn with Orientation (Scratch0) = #$60 (down-left) and Facing = #$60 (down-left)
@@ -56,7 +56,7 @@ _ObjHandler_Tank_58_Gray_Bullet_B_Init__LeftSide:
         lda     #$60                            ; A525
         sta     LoadedObj + Obj::Facing         ; A527
 ; Convert the chosen heading to Velocity_X/Y scaled by 1.0 (Y), then go live as the tracking Main
-_ObjHandler_Tank_58_Gray_Bullet_B_Init__Launch:
+_ObjHandler_Tank_58_Gray_Bullet_B_Init__SetProps:
         ldy     #$10                            ; A529
         jsr     Obj_FacingToVelocity            ; A52B
 ; Clear the orient timer (Scratch1) and Scratch2
@@ -171,7 +171,7 @@ _ObjHandler_Tank_59_Gray_Bullet_Main__Render:
 ; X = (((Facing - #$20) >> 1) | WR_Context_Dependent_00) >> 4
         tax                                     ; A5AC
 ; Look up the current orientation's OAM Attributes,
-        lda     L_A6BF,x                        ; A5AD
+        lda     GrayBullet_Walking_RenderParamLookup,x; A5AD
 ; OR with 1 to specity Sprite palette 1,
         ora     #$01                            ; A5B0
 ; and store in OAM_Attribute__or__Outgoing_Contact_Damage.
@@ -182,9 +182,9 @@ _ObjHandler_Tank_59_Gray_Bullet_Main__Render:
         lsr     a                               ; A5B8
 ; Animation frame index = bit 3 of Global_FrameCounter.
         and     #$01                            ; A5B9
-; Look up the current orientatoin's base Metasprite Id and OR it with the frame index, then call
+; Look up the current orientation's base Metasprite Id and OR it with the frame index, then call
 ; MetaSprite_Render.
-        ora     L_A6C0,x                        ; A5BB
+        ora     LA6C0,x                         ; A5BB
         jmp     MetaSprite_Render               ; A5BE
 
 ; ----------------------------------------------------------------------------
@@ -197,7 +197,7 @@ ObjHandler_Tank_5A_Gray_Bullet_Attacking:
 
 ; ----------------------------------------------------------------------------
 ; Start by setting collision box.
-_ObjHandler_Tank_5A_Gray_Bullet_Attacking__Update__:
+_ObjHandler_Tank_5A_Gray_Bullet_Attacking__Body:
         lda     #$80                            ; A5C5
         sta     $42                             ; A5C7
         lda     #$80                            ; A5C9
@@ -280,7 +280,7 @@ _ObjHandler_Tank_5A_Gray_Bullet_Attacking__Render:
         lsr     a                               ; A624
         lsr     a                               ; A625
         tax                                     ; A626
-        lda     LA6CF,x                         ; A627
+        lda     GrayBullet_Attacking_RenderParamLookup,x; A627
         ora     #$01                            ; A62A
         sta     $44                             ; A62C
         lda     LA6D0,x                         ; A62E
@@ -290,10 +290,21 @@ _ObjHandler_Tank_5A_Gray_Bullet_Attacking__Render:
 
 .macro MAC_L_A6BF
 ; ----------------------------------------------------------------------------
-L_A6BF: .byte   $C0                             ; A6BF
-L_A6C0: .byte   $6A,$00,$68,$00,$6A,$C0,$68,$40 ; A6C0
-        .byte   $68,$80,$6A,$80,$68,$40,$6A     ; A6C8
-LA6CF:  .byte   $00                             ; A6CF
-LA6D0:  .byte   $6A,$80,$68,$40,$6A,$00,$68     ; A6D0
+; Gray Bullet, walking phase, rendering parameters per-orientation.
+GrayBullet_Walking_RenderParamLookup:
+        .byte   $C0,$6A ; A6BF  OamAttributes=$C0 BaseMetaSpriteId=$6A
+        .byte   $00,$68 ; A6C1  OamAttributes=$00 BaseMetaSpriteId=$68
+        .byte   $00,$6A ; A6C3  OamAttributes=$00 BaseMetaSpriteId=$6A
+        .byte   $C0,$68 ; A6C5  OamAttributes=$C0 BaseMetaSpriteId=$68
+        .byte   $40,$68 ; A6C7  OamAttributes=$40 BaseMetaSpriteId=$68
+        .byte   $80,$6A ; A6C9  OamAttributes=$80 BaseMetaSpriteId=$6A
+        .byte   $80,$68 ; A6CB  OamAttributes=$80 BaseMetaSpriteId=$68
+        .byte   $40,$6A ; A6CD  OamAttributes=$40 BaseMetaSpriteId=$6A
+; Gray Bullet, attacking phase, rendering parameters per-orientation.
+GrayBullet_Attacking_RenderParamLookup:
+        .byte   $00,$6A ; A6CF  OamAttributes=$00 BaseMetaSpriteId=$6A
+        .byte   $80,$68 ; A6D1  OamAttributes=$80 BaseMetaSpriteId=$68
+        .byte   $40,$6A ; A6D3  OamAttributes=$40 BaseMetaSpriteId=$6A
+        .byte   $00,$68 ; A6D5  OamAttributes=$00 BaseMetaSpriteId=$68
 .endmacro
 

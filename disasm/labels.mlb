@@ -2231,7 +2231,7 @@ NesPrgRom:1A511:_ObjHandler_Tank_58_Gray_Bullet_B_Init__Body
 NesPrgRom:1A514::if bit0 of Position_X_Hi is set, skip to down-left spawn.
 NesPrgRom:1A516::otherwise, spawn with Orientation (Scratch0) = #$A0 (up-left) and Facing = #$20 (down-right)
 NesPrgRom:1A521:_ObjHandler_Tank_58_Gray_Bullet_B_Init__LeftSide:spawn with Orientation (Scratch0) = #$60 (down-left) and Facing = #$60 (down-left)
-NesPrgRom:1A529:_ObjHandler_Tank_58_Gray_Bullet_B_Init__Launch:Convert the chosen heading to Velocity_X/Y scaled by 1.0 (Y), then go live as the tracking Main
+NesPrgRom:1A529:_ObjHandler_Tank_58_Gray_Bullet_B_Init__SetProps:Convert the chosen heading to Velocity_X/Y scaled by 1.0 (Y), then go live as the tracking Main
 NesPrgRom:1A52E::Clear the orient timer (Scratch1) and Scratch2
 NesPrgRom:1A534::Call standard enemy init routine with descriptor $02.  This bumps ObjType to $59.
 NesPrgRom:1A539:_ObjHandler_Tank_58_Gray_Bullet_B_Init__Done
@@ -2265,10 +2265,10 @@ NesPrgRom:1A5AD::Look up the current orientation's OAM Attributes,
 NesPrgRom:1A5B0::OR with 1 to specity Sprite palette 1,
 NesPrgRom:1A5B2::and store in OAM_Attribute__or__Outgoing_Contact_Damage.
 NesPrgRom:1A5B9::Animation frame index = bit 3 of Global_FrameCounter.
-NesPrgRom:1A5BB::Look up the current orientatoin's base Metasprite Id and OR it with the frame index, then call MetaSprite_Render.
+NesPrgRom:1A5BB::Look up the current orientation's base Metasprite Id and OR it with the frame index, then call MetaSprite_Render.
 NesPrgRom:1A5C1:L_A5C1
 NesPrgRom:1A5C2:ObjHandler_Tank_5A_Gray_Bullet_Attacking:ObjType $5A: Gray Bullet - Attacking.
-NesPrgRom:1A5C5:_ObjHandler_Tank_5A_Gray_Bullet_Attacking__Update__:Start by setting collision box.
+NesPrgRom:1A5C5:_ObjHandler_Tank_5A_Gray_Bullet_Attacking__Body:Start by setting collision box.
 NesPrgRom:1A5CF::If AttackWindUpCounter (Scratch1) is 0, skip to Launch handler.
 NesPrgRom:1A5D1::Otherwise, telegraph the attack by making a buzzing sound (restart sound each frame).
 NesPrgRom:1A5D8::Decrement counter and skip to post-physics tail.
@@ -2317,8 +2317,8 @@ NesPrgRom:1A6B1::if TerrainCollisionFlags bit7 is set, invert bit6 and bit7 flag
 NesPrgRom:1A6B3:_Bullet_WalkSurface__MaybeArm:if not aligned, re-arm cooldown $51=$08.
 NesPrgRom:1A6B9:_Bullet_WalkSurface__Return_NotRotated
 NesPrgRom:1A6BC:_Bullet_WalkSurface__Return_Rotated
-NesPrgRom:1A6BF:L_A6BF
-NesPrgRom:1A6C0:L_A6C0
+NesPrgRom:1A6BF:GrayBullet_Walking_RenderParamLookup:Gray Bullet, walking phase, rendering parameters per-orientation.
+NesPrgRom:1A6CF:GrayBullet_Attacking_RenderParamLookup:Gray Bullet, attacking phase, rendering parameters per-orientation.
 NesPrgRom:1A6D7:L_A6D7
 NesPrgRom:1A6DA:L_A6DA
 NesPrgRom:1A6E3:L_A6E3
@@ -2867,29 +2867,32 @@ NesPrgRom:1B91D:L_B91D
 NesPrgRom:1B92D:L_B92D
 NesPrgRom:1B935:L_B935
 NesPrgRom:1B949:L_B949
-NesPrgRom:1B94A:L_B94A
-NesPrgRom:1B94D:L_B94D
-NesPrgRom:1B95D:L_B95D
-NesPrgRom:1B965:L_B965
-NesPrgRom:1B979:L_B979
-NesPrgRom:1B97A:L_B97A
-NesPrgRom:1B97D:L_B97D
-NesPrgRom:1B998:L_B998
-NesPrgRom:1B9A4:L_B9A4
-NesPrgRom:1B9C0:L_B9C0
-NesPrgRom:1B9D0:L_B9D0
-NesPrgRom:1B9DA:L_B9DA
+NesPrgRom:1B94A:ObjHandler_Tank_8D_Red_Bullet_B_Init:ObjType $8D: Red Bullet (spawn variant B) - Init.\n\nExact same logic as ObjHandler_Tank_58_Gray_Bullet_B_Init.  Only differs in values used during init:\n  * Uses a movement speed of #$18 (1.5) instead of #$10 (1.0).\n  * Uses Enemy Descriptor #$8E instead of #$02.
+NesPrgRom:1B94D:_ObjHandler_Tank_8D_Red_Bullet_B_Init__Body
+NesPrgRom:1B95D:_ObjHandler_Tank_8D_Red_Bullet_B_Init__LeftSide
+NesPrgRom:1B965:_ObjHandler_Tank_8D_Red_Bullet_B_Init__SetProps
+NesPrgRom:1B977::Set ObjType to #$8E (which is redundant since TankEnemy_Init already INCed it to that value).
+NesPrgRom:1B979:_ObjHandler_Tank_8D_Red_Bullet_B_Init__Done
+NesPrgRom:1B97A:ObjHandler_Tank_8E_Red_Bullet_Main:ObjType $8E: Red Bullet - Cling-walking.\n\nIdentical to ObjHandler_Tank_59_Gray_Bullet_Main apart from:\n  * Walking speed (#$18 instead of #$10)\n  * Attack launching speed (#$60 instead of #$40)\n  * Render code doesn't override palette (defaults to red palette).
+NesPrgRom:1B97D:_ObjHandler_Tank_8E_Red_Bullet_Main__Body
+NesPrgRom:1B991:_ObjHandler_Tank_8E_Red_Bullet_Main__XBandCheck
+NesPrgRom:1B998:_ObjHandler_Tank_8E_Red_Bullet_Main__YBandCheck
+NesPrgRom:1B9A4:_ObjHandler_Tank_8E_Red_Bullet_Main__TryAttack
+NesPrgRom:1B9C0:_ObjHandler_Tank_8E_Red_Bullet_Main__AfterPhysics
+NesPrgRom:1B9D0:_ObjHandler_Tank_8E_Red_Bullet_Main__DamageCheck
+NesPrgRom:1B9DA:_ObjHandler_Tank_8E_Red_Bullet_Main__Render
 NesPrgRom:1B9FF:L_B9FF
-NesPrgRom:1BA00:L_BA00
-NesPrgRom:1BA03:L_BA03
-NesPrgRom:1BA19:L_BA19
-NesPrgRom:1BA2C:L_BA2C
-NesPrgRom:1BA30:L_BA30
-NesPrgRom:1BA43:L_BA43
-NesPrgRom:1BA53:L_BA53
-NesPrgRom:1BA5D:L_BA5D
-NesPrgRom:1BA70:L_BA70
-NesPrgRom:1BA80:L_BA80
+NesPrgRom:1BA00:ObjHandler_Tank_8F_Red_Bullet_Attacking:ObjType $8F: Red Bullet - Attacking.\n\nIdentitcal to ObjHandler_Tank_5A_Gray_Bullet_Attacking apart from:\n  * Movement speed when returning to Walking state (#$18 instead of #$10)\n  * Rendering palette\n  * Damage Check enemy descriptor (#$1C instead of #$02)
+NesPrgRom:1BA03:_ObjHandler_Tank_8F_Red_Bullet_Attacking__Body
+NesPrgRom:1BA19:_ObjHandler_Tank_8F_Red_Bullet_Attacking__Movement
+NesPrgRom:1BA25::TurnB
+NesPrgRom:1BA2C:_ObjHandler_Tank_8F_Red_Bullet_Attacking__TurnA
+NesPrgRom:1BA30:_ObjHandler_Tank_8F_Red_Bullet_Attacking__TransitionToWalking
+NesPrgRom:1BA43:_ObjHandler_Tank_8F_Red_Bullet_Attacking__AfterPhysics
+NesPrgRom:1BA53:_ObjHandler_Tank_8F_Red_Bullet_Attacking__OnScreen
+NesPrgRom:1BA5D:_ObjHandler_Tank_8F_Red_Bullet_Attacking__Render
+NesPrgRom:1BA70:RedBullet_Walking_RenderParamLookup:Red Bullet, walking phase, rendering parameters per-orientation.
+NesPrgRom:1BA80:RedBullet_Attacking_RenderParamLookup:Red Bullet, attacking phase, rendering parameters per-orientation.
 NesPrgRom:1BA88:L_BA88
 NesPrgRom:1BA8B:L_BA8B
 NesPrgRom:1BA95:L_BA95

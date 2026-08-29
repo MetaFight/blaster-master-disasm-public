@@ -156,9 +156,9 @@ L_80B0: .addr   ObjHandler_Tank_58_Gray_Bullet_B_Init; 80B0
         .addr   L_B832                          ; 8114
         .addr   L_B843                          ; 8116
         .addr   L_B91A                          ; 8118
-        .addr   L_B94A                          ; 811A
-        .addr   L_B97A                          ; 811C
-        .addr   L_BA00                          ; 811E
+        .addr   ObjHandler_Tank_8D_Red_Bullet_B_Init; 811A
+        .addr   ObjHandler_Tank_8E_Red_Bullet_Main; 811C
+        .addr   ObjHandler_Tank_8F_Red_Bullet_Attacking; 811E
         .addr   L_BA88                          ; 8120
         .addr   L_BAA4                          ; 8122
 .endmacro
