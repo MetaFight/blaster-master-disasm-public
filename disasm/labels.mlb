@@ -2091,7 +2091,7 @@ NesPrgRom:19E93:L_9E93
 NesPrgRom:19E97:L_9E97
 NesPrgRom:19E99:L_9E99
 NesPrgRom:19E9A:L_9E9A
-NesPrgRom:19E9E:L_9E9E
+NesPrgRom:19E9E:PlaySound_23:Helper sub to enqueue sfx #$23.
 NesPrgRom:19EA4:L_9EA4
 NesPrgRom:19EA7:L_9EA7
 NesPrgRom:19EBE:L_9EBE
@@ -2177,14 +2177,24 @@ NesPrgRom:1A1BF:L_A1BF
 NesPrgRom:1A1CC:L_A1CC
 NesPrgRom:1A1EB:L_A1EB
 NesPrgRom:1A1EE:L_A1EE
-NesPrgRom:1A1F1:L_A1F1
-NesPrgRom:1A1F4:L_A1F4
-NesPrgRom:1A201:L_A201
-NesPrgRom:1A202:L_A202
-NesPrgRom:1A205:L_A205
-NesPrgRom:1A214:L_A214
-NesPrgRom:1A231:L_A231
-NesPrgRom:1A234:L_A234
+NesPrgRom:1A1F1:ObjHandler_Tank_46_Turret_Shot_Init:ObjType $46: Turret Shot (Medium Red ballistic) - Init.
+NesPrgRom:1A1F4:_ObjHandler_Tank_46_Turret_Shot_Init__Body
+NesPrgRom:1A1F6::Update Velocities according to LoadedObj.Facing and LoadedObj.Scratch1 (passed in from parent) as the scalar.
+NesPrgRom:1A1F9::Set LoadedObj.TileIndex.
+NesPrgRom:1A1FC::Increment ObjType to Main state.
+NesPrgRom:1A1FE::Play firing SFX.
+NesPrgRom:1A201:_ObjHandler_Tank_46_Turret_Shot_Init__Done:Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
+NesPrgRom:1A202:ObjHandler_Tank_47_Turret_Shot_Main:ObjType $47: Turret Shot (Medium Red ballistic) - Main.
+NesPrgRom:1A205:_ObjHandler_Tank_47_Turret_Shot_Main__Body:Start by setting collision box.
+NesPrgRom:1A20D::Apply movement using gravity constant #$02.
+NesPrgRom:1A212::On terrain hit, skip to Explode tail.
+NesPrgRom:1A214:_ObjHandler_Tank_47_Turret_Shot_Main__AfterPhysics
+NesPrgRom:1A21C::Do on-screen test.
+NesPrgRom:1A21F::If off-screen, skip to Despawn.
+NesPrgRom:1A223::Otherwise, handle collisions with other objects.
+NesPrgRom:1A22E::Draw as single 8x8 pattern #$54 with Sprite Palette #$00.
+NesPrgRom:1A231:_ObjHandler_Tank_47_Turret_Shot_Main__Explode
+NesPrgRom:1A234:_ObjHandler_Tank_47_Turret_Shot_Main__Despawn
 NesPrgRom:1A237:L_A237
 NesPrgRom:1A23A:L_A23A
 NesPrgRom:1A24C:L_A24C
@@ -2489,16 +2499,30 @@ NesPrgRom:1AA5F::Init via TankEnemy_Init with descriptor #$08.
 NesPrgRom:1AA64::Set Ballistic Speed (Scratch2) to #$02 (0.125).
 NesPrgRom:1AA69::Set PhaseCounter (Scratch1) to a random initial value.
 NesPrgRom:1AA6B:_ObjHandler_Tank_66_Turret_Init__Done
-NesPrgRom:1AA6C:L_AA6C
-NesPrgRom:1AA6F:L_AA6F
-NesPrgRom:1AA8E:L_AA8E
-NesPrgRom:1AA96:L_AA96
-NesPrgRom:1AAB2:L_AAB2
-NesPrgRom:1AAB4:L_AAB4
-NesPrgRom:1AAD4:L_AAD4
-NesPrgRom:1AAE4:L_AAE4
-NesPrgRom:1AAEE:L_AAEE
-NesPrgRom:1AB03:L_AB03
+NesPrgRom:1AA6C:ObjHandler_Tank_67_Turret_Main:ObjType $67: Ceiling Turret - Main.
+NesPrgRom:1AA6F:_ObjHandler_Tank_67_Turret_Main__Body:Start by setting the collision box.
+NesPrgRom:1AA77::Increment the PhaseCounter.
+NesPrgRom:1AA7D::On odd frames, skip straight to bookkeeping tail.
+NesPrgRom:1AA81::If bit7 of PhaseCounter (Scratch1) is not set, skip to the SpinUp handler.
+NesPrgRom:1AA83:_ObjHandler_Tank_67_Turret_Main__SpinDown:If SpinSpeed (Scratch2) <= #$01, skip to bookkeeping.\notherwise, decrement and skip to FireCheck.
+NesPrgRom:1AA8E:_ObjHandler_Tank_67_Turret_Main__SpinUp:If SpinSpeed (Scratch2) >= #$20, skip to bookkeeping.\notherwise, increment and fall through to FireCheck.
+NesPrgRom:1AA96:_ObjHandler_Tank_67_Turret_Main__FireCheck
+NesPrgRom:1AA9A::If SpinSpeed (Scratch2) <= #$04, skip to bookkeeping.
+NesPrgRom:1AAA0::If lower 3 bits of PhaseCounter (Scratch1) not clear, skip to bookkeeping.
+NesPrgRom:1AAA2::Otherwise, try to spawn a ballistic projectile.
+NesPrgRom:1AAA5::On failure, skip to bookkeeping.
+NesPrgRom:1AAAC::On success, (X = BallisticSlot) pick shot direction randomly.
+NesPrgRom:1AAB2:_ObjHandler_Tank_67_Turret_Main__DirAlt
+NesPrgRom:1AAB4:_ObjHandler_Tank_67_Turret_Main__FireShot:Store selected shot direction into BallisticSlot.Facing,
+NesPrgRom:1AABD::Set BallisticSlot.Scratch1 to (SpinSpeed * 2 + 1)
+NesPrgRom:1AACC::Set Ballistic y position relative to parent.
+NesPrgRom:1AAD4:_ObjHandler_Tank_67_Turret_Main__Bookkeeping:Do on-screen test.  If on-screen, handle damage path.  Otherwise, tombstone.
+NesPrgRom:1AAE4:_ObjHandler_Tank_67_Turret_Main__Damage:Used shared damage handler with descriptor #$08.  If non-fatal, skip to renderer, otherwise skip to shared defeat handler.
+NesPrgRom:1AAEE:_ObjHandler_Tank_67_Turret_Main__Render:Update Facing based on SpinSpeed (Scratch2)
+NesPrgRom:1AAF5::Convert the heading to a lookup table index,
+NesPrgRom:1AAFB::set the OAM attributes,
+NesPrgRom:1AB00::and fetch the MetaSprite Id before calling the shared MetaSprite_Render.
+NesPrgRom:1AB03:TankTurret_SpriteByAngle:Turret render table.  8 interleaved [metaspriteId, attr] pairs.
 NesPrgRom:1AB13:L_AB13
 NesPrgRom:1AB16:L_AB16
 NesPrgRom:1AB23:L_AB23
@@ -3821,7 +3845,7 @@ NesPrgRom:1E060:L_E060
 NesPrgRom:1E065:L_E065
 NesPrgRom:1E06A:L_E06A
 NesPrgRom:1E071:L_E071
-NesPrgRom:1E07B:Obj_TurnHeading:Updates the LoadedObj.Facing heading by adding an angle delta.\n\nInput:\n  LoadedObj.Scratch2 = the angle delta\n\nOutput:\n  LoadedObj.Facing = the updated heading
+NesPrgRom:1E07B:Obj_TurnHeading:Updates the LoadedObj.Facing heading by adding an angle delta.\n\nInput:\n  LoadedObj.Scratch2 = the angle delta\n\nOutput:\n  LoadedObj.Facing = the updated heading\n  A = the updated heading
 NesPrgRom:1E083:Obj_MoveAndCollide:Advance an object by its velocity and resolve the terrain collision, on both axes.\n\nInput:\n  Collision box (half extents)\n    LoadedObj_CollisionBox_HalfHeight\n    LoadedObj_CollisionBox_HalfWidth\n  Object sub-tile position\n    LoadedObj_Position_Y_Lo\n    LoadedObj_Position_X_Lo\nLoadedObj_TileIndex\n\nOutput:\n  A = the wall flags (also stored TerrainCollisionFlags)\n    bit7 ($80) = side wall hit,\n    bit6 ($40) = floor/ceiling hit.
 NesPrgRom:1E089::Apply_Velocity_X then H_Collision_Check.\nZ = 1 means no collision happend.  Skip ahead.
 NesPrgRom:1E08B::Otherwise, prepare TerrainCollisionFlags value with side-wall flag (bit7) set.

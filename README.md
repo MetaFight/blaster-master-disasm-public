@@ -13,7 +13,7 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 100 / 851 (12%) |
+| **M4** — Verified subroutines (public, clean) | 104 / 851 (12%) |
 | **M6** — Verified docs (public, clean) | 2 / 117 (2%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -24,14 +24,14 @@ verified and have since been modified.
 #### Area 1
 
 <details open>
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛ 54.5% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛ 61.4% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
 | <details><summary>⬜ Auto Gate</summary>⬜ <code>ObjHandler_Tank_24_26_28_Auto_Gate_Init</code><br/>⬜ <code>ObjHandler_Tank_25_Auto_Gate_Main</code></details> | 0 / 2 |
 | <details><summary>✅ Ballistic: Big; Gray</summary>✅ <code>ObjHandler_Tank_38_Big_Gray_Init</code><br/>✅ <code>ObjHandler_Tank_39_Big_Gray_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Ballistic: Medium Red; Mine Shrapnel</summary>⬜ <code>ObjHandler_Tank_44_Mine_Shrapnel_Init</code><br/>⬜ <code>ObjHandler_Tank_45_Mine_Shrapnel_Main</code></details> | 0 / 2 |
-| <details><summary>⬜ Ballistic: Medium Red; Turret Shot</summary>⬜ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>⬜ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Ballistic: Medium Red; Turret Shot</summary>✅ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>✅ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Bullet; Gray</summary>✅ <code>ObjHandler_Tank_59_Gray_Bullet_Main</code><br/>✅ <code>ObjHandler_Tank_5A_Gray_Bullet_Attacking</code></details> | 2 / 2 |
 | <details><summary>✅ Bullet; Gray B</summary>✅ <code>ObjHandler_Tank_58_Gray_Bullet_B_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Bullet; Red</summary>✅ <code>ObjHandler_Tank_8E_Red_Bullet_Main</code><br/>✅ <code>ObjHandler_Tank_8F_Red_Bullet_Attacking</code></details> | 2 / 2 |
@@ -52,7 +52,7 @@ verified and have since been modified.
 | <details><summary>⬜ Projectile: Medium Red; Various</summary>⬜ <code>ObjHandler_Tank_48_Various_Init</code><br/>⬜ <code>ObjHandler_Tank_49_Various_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Projectile: Small Red</summary>⬜ <code>ObjHandler_Tank_3C_Small_Red_Init</code><br/>⬜ <code>ObjHandler_Tank_3D_Small_Red_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Shooter</summary>⬜ <code>ObjHandler_Tank_76_Shooter_Init</code><br/>⬜ <code>ObjHandler_Tank_77_Shooter_Main</code></details> | 0 / 2 |
-| <details><summary>⏳ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>⬜ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 1 / 2 |
+| <details><summary>✅ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>✅ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Wall Guardian</summary>⬜ <code>ObjHandler_Tank_90_Wall_Guardian_Init</code><br/>⬜ <code>ObjHandler_Tank_91_Wall_Guardian_Main</code></details> | 0 / 2 |
 </details>
 
@@ -120,14 +120,14 @@ verified and have since been modified.
 #### Area 3
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 19.2% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 30.8% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
 | <details><summary>✅ Ballistic: Big; Gray</summary>✅ <code>ObjHandler_Tank_38_Big_Gray_Init</code><br/>✅ <code>ObjHandler_Tank_39_Big_Gray_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Ballistic: Big; Gray, from Bomb Canister</summary>⬜ <code>ObjHandler_Tank_36_Big_Gray_Bomb_Canister_Init</code></details> | 0 / 1 |
 | <details><summary>⬜ Ballistic: Medium Red; Mine Shrapnel</summary>⬜ <code>ObjHandler_Tank_44_Mine_Shrapnel_Init</code><br/>⬜ <code>ObjHandler_Tank_45_Mine_Shrapnel_Main</code></details> | 0 / 2 |
-| <details><summary>⬜ Ballistic: Medium Red; Turret Shot</summary>⬜ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>⬜ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Ballistic: Medium Red; Turret Shot</summary>✅ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>✅ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Ballistic: Red Caterpillar Shell (From Dropper)</summary>⬜ <code>ObjHandler_Tank_42_Red_Caterpillar_Shell_Init</code><br/>⬜ <code>ObjHandler_Tank_43_Red_Caterpillar_Shell_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Bomb Canister</summary>⬜ <code>ObjHandler_Tank_8A_Bomb_Canister_Init</code><br/>⬜ <code>ObjHandler_Tank_8B_Bomb_Canister_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Caterpillar; Gray</summary>⬜ <code>ObjHandler_Tank_54_Gray_Caterpillar_Init</code><br/>⬜ <code>ObjHandler_Tank_55_Gray_Caterpillar_Main</code></details> | 0 / 2 |
@@ -138,7 +138,7 @@ verified and have since been modified.
 | <details><summary>⬜ Orb; Kamikaze</summary>⬜ <code>ObjHandler_Tank_78_Kamikaze_Orb_Init</code><br/>⬜ <code>ObjHandler_Tank_79_Kamikaze_Orb_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Red Caterpillar Dropper</summary>⬜ <code>ObjHandler_Tank_5B_Red_Caterpillar_Dropper_Init</code><br/>⬜ <code>ObjHandler_Tank_5C_Red_Caterpillar_Dropper_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Swooping Sphere</summary>⬜ <code>ObjHandler_Tank_6E_Swooping_Sphere_Init</code><br/>⬜ <code>ObjHandler_Tank_6F_Swooping_Sphere_Main</code></details> | 0 / 2 |
-| <details><summary>⏳ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>⬜ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 1 / 2 |
+| <details><summary>✅ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>✅ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 2 / 2 |
 </details>
 
 <details >
@@ -158,14 +158,14 @@ verified and have since been modified.
 #### Area 4
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 30.0% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 40.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
 | <details><summary>⬜ Area 4 Lock; Left</summary>⬜ <code>ObjHandler_Tank_24_26_28_Auto_Gate_Init</code><br/>⬜ <code>ObjHandler_Tank_27_Area_4_Left_Lock_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Area 4 Lock; Right</summary>⬜ <code>ObjHandler_Tank_24_26_28_Auto_Gate_Init</code><br/>⬜ <code>ObjHandler_Tank_29_Area_4_Right_Lock_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Ballistic: Medium Red; Mine Shrapnel</summary>⬜ <code>ObjHandler_Tank_44_Mine_Shrapnel_Init</code><br/>⬜ <code>ObjHandler_Tank_45_Mine_Shrapnel_Main</code></details> | 0 / 2 |
-| <details><summary>⬜ Ballistic: Medium Red; Turret Shot</summary>⬜ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>⬜ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Ballistic: Medium Red; Turret Shot</summary>✅ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>✅ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Bullet; Gray</summary>✅ <code>ObjHandler_Tank_59_Gray_Bullet_Main</code><br/>✅ <code>ObjHandler_Tank_5A_Gray_Bullet_Attacking</code></details> | 2 / 2 |
 | <details><summary>⬜ Bullet; Gray A</summary>⬜ <code>ObjHandler_Tank_56_Gray_Bullet_A_Init</code></details> | 0 / 1 |
 | <details><summary>✅ Bullet; Gray B</summary>✅ <code>ObjHandler_Tank_58_Gray_Bullet_B_Init</code></details> | 1 / 1 |
@@ -178,7 +178,7 @@ verified and have since been modified.
 | <details><summary>⬜ Projectile: Medium Red; Various</summary>⬜ <code>ObjHandler_Tank_48_Various_Init</code><br/>⬜ <code>ObjHandler_Tank_49_Various_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Projectile: Small Red</summary>⬜ <code>ObjHandler_Tank_3C_Small_Red_Init</code><br/>⬜ <code>ObjHandler_Tank_3D_Small_Red_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Shooter</summary>⬜ <code>ObjHandler_Tank_76_Shooter_Init</code><br/>⬜ <code>ObjHandler_Tank_77_Shooter_Main</code></details> | 0 / 2 |
-| <details><summary>⏳ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>⬜ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 1 / 2 |
+| <details><summary>✅ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>✅ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 2 / 2 |
 </details>
 
 <details >
@@ -264,13 +264,13 @@ verified and have since been modified.
 #### Area 7
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 46.2% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛ 53.8% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
 | <details><summary>✅ Ballistic: Big; Gray</summary>✅ <code>ObjHandler_Tank_38_Big_Gray_Init</code><br/>✅ <code>ObjHandler_Tank_39_Big_Gray_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Ballistic: Medium Red; Mine Shrapnel</summary>⬜ <code>ObjHandler_Tank_44_Mine_Shrapnel_Init</code><br/>⬜ <code>ObjHandler_Tank_45_Mine_Shrapnel_Main</code></details> | 0 / 2 |
-| <details><summary>⬜ Ballistic: Medium Red; Turret Shot</summary>⬜ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>⬜ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Ballistic: Medium Red; Turret Shot</summary>✅ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>✅ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Bullet; Red</summary>✅ <code>ObjHandler_Tank_8E_Red_Bullet_Main</code><br/>✅ <code>ObjHandler_Tank_8F_Red_Bullet_Attacking</code></details> | 2 / 2 |
 | <details><summary>⬜ Bullet; Red A</summary>⬜ <code>ObjHandler_Tank_8C_Red_Bullet_A_Init</code></details> | 0 / 1 |
 | <details><summary>✅ Bullet; Red B</summary>✅ <code>ObjHandler_Tank_8D_Red_Bullet_B_Init</code></details> | 1 / 1 |
@@ -292,7 +292,7 @@ verified and have since been modified.
 | <details><summary>⬜ Projectile: Small Red</summary>⬜ <code>ObjHandler_Tank_3C_Small_Red_Init</code><br/>⬜ <code>ObjHandler_Tank_3D_Small_Red_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Red Flier Spawner</summary>⬜ <code>ObjHandler_Tank_4E_Red_Flier_Spawner_Init</code><br/>⬜ <code>ObjHandler_Tank_4F_Red_Flier_Spawner_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Shooter</summary>⬜ <code>ObjHandler_Tank_76_Shooter_Init</code><br/>⬜ <code>ObjHandler_Tank_77_Shooter_Main</code></details> | 0 / 2 |
-| <details><summary>⏳ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>⬜ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 1 / 2 |
+| <details><summary>✅ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>✅ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 2 / 2 |
 </details>
 
 <details >
@@ -364,6 +364,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ✅✅✅✅ | 06 / `object-handlers/flying-bomber` |  |
 | ✅✅✅✅ | 06 / `object-handlers/hopper_10hp` |  |
 | ✅✅✅✅ | 06 / `object-handlers/hopper_6hp` |  |
+| ✅✅✅✅ | 06 / `object-handlers/turret` |  |
 | ✅✅✅✅ | 07 / `rng` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `dead` |  |
@@ -372,9 +373,8 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/_common` |  |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_gray` | `ObjHandler_Tank_59_Gray_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_red` | `ObjHandler_Tank_8E_Red_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
-| ⬜⬛⬛⬛<br/>`25.0%` | 06 / `object-handlers/turret` |  |
-| ▫️⬛⬛⬛<br/>`10.9%` | 06 / `_ungrouped` |  |
-| ▫️⬛⬛⬛<br/>`6.9%` | 06 / `object-handlers/projectiles-and-ballistics` |  |
+| ◽⬛⬛⬛<br/>`13.1%` | 06 / `object-handlers/projectiles-and-ballistics` | `ObjHandler_Tank_47_Turret_Shot_Main` depends on unverified routines `HitboxScan_LockOn` and `SpawnMidExplosion`. |
+| ◽⬛⬛⬛<br/>`12.7%` | 06 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/auto-gates_and_locks` |  |
@@ -436,7 +436,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **6** pages, of which **4** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-09-02 10:54 UTC_
+_Generated: 2026-09-02 12:20 UTC_
 
 ## Pages
 

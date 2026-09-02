@@ -469,7 +469,7 @@ L_9EA7: lda     $9D                             ; 9EA7
         jsr     Obj_CalcTileIndex               ; 9EB4
         lda     #$39                            ; 9EB7
         sta     LoadedObj + Obj::Type           ; 9EB9
-        jsr     L_9E9E                          ; 9EBB
+        jsr     PlaySound_23                    ; 9EBB
 L_9EBE: rts                                     ; 9EBE
 
 ; ----------------------------------------------------------------------------
@@ -683,7 +683,7 @@ L_9FDD: inc     LoadedObj + Obj::Type           ; 9FDD
         jmp     LD02D                           ; 9FF2
 
 ; ----------------------------------------------------------------------------
-L_9FF5: jsr     L_9E9E                          ; 9FF5
+L_9FF5: jsr     PlaySound_23                    ; 9FF5
 L_9FF8: rts                                     ; 9FF8
 
 ; ----------------------------------------------------------------------------
@@ -730,7 +730,7 @@ L_A032: jsr     Step_RNG                           ; A032
         adc     #$01                            ; A03D
 L_A03F: sta     LoadedObj + Obj::Velocity_X     ; A03F
         inc     LoadedObj + Obj::Type           ; A041
-        jsr     L_9E9E                          ; A043
+        jsr     PlaySound_23                    ; A043
 L_A046: rts                                     ; A046
 
 ; ----------------------------------------------------------------------------
@@ -792,7 +792,7 @@ L_A097: cmp     #$10                            ; A097
 L_A0AB: ldy     #$30                            ; A0AB
         jsr     Obj_FacingToVelocity            ; A0AD
         inc     LoadedObj + Obj::Type           ; A0B0
-        jsr     L_9E9E                          ; A0B2
+        jsr     PlaySound_23                    ; A0B2
 L_A0B5: rts                                     ; A0B5
 
 ; ----------------------------------------------------------------------------
@@ -850,7 +850,7 @@ L_A115: lda     #$0A                            ; A115
         sta     LoadedObj + Obj::Scratch1       ; A117
         jsr     Obj_CalcTileIndex               ; A119
         inc     LoadedObj + Obj::Type           ; A11C
-        jsr     L_9E9E                          ; A11E
+        jsr     PlaySound_23                    ; A11E
 L_A121: rts                                     ; A121
 
 ; ----------------------------------------------------------------------------
@@ -969,44 +969,67 @@ L_A1EB: jsr     L_9B81                          ; A1EB
 L_A1EE: jmp     Obj_Despawn                           ; A1EE
 
 ; ----------------------------------------------------------------------------
-L_A1F1: jmp     L_A201                          ; A1F1
+; ObjType $46: Turret Shot (Medium Red ballistic) - Init.
+ObjHandler_Tank_46_Turret_Shot_Init:
+        jmp     _ObjHandler_Tank_46_Turret_Shot_Init__Done; A1F1
 
 ; ----------------------------------------------------------------------------
-L_A1F4: ldy     LoadedObj + Obj::Scratch1       ; A1F4
+_ObjHandler_Tank_46_Turret_Shot_Init__Body:
+        ldy     LoadedObj + Obj::Scratch1       ; A1F4
+; Update Velocities according to LoadedObj.Facing and LoadedObj.Scratch1 (passed in from parent)
+; as the scalar.
         jsr     Obj_FacingToVelocity            ; A1F6
+; Set LoadedObj.TileIndex.
         jsr     Obj_CalcTileIndex               ; A1F9
+; Increment ObjType to Main state.
         inc     LoadedObj + Obj::Type           ; A1FC
-        jsr     L_9E9E                          ; A1FE
-L_A201: rts                                     ; A201
+; Play firing SFX.
+        jsr     PlaySound_23                    ; A1FE
+; Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
+_ObjHandler_Tank_46_Turret_Shot_Init__Done:
+        rts                                     ; A201
 
 ; ----------------------------------------------------------------------------
-L_A202: jmp     L_A214                          ; A202
+; ObjType $47: Turret Shot (Medium Red ballistic) - Main.
+ObjHandler_Tank_47_Turret_Shot_Main:
+        jmp     _ObjHandler_Tank_47_Turret_Shot_Main__AfterPhysics; A202
 
 ; ----------------------------------------------------------------------------
-L_A205: lda     #$40                            ; A205
+; Start by setting collision box.
+_ObjHandler_Tank_47_Turret_Shot_Main__Body:
+        lda     #$40                            ; A205
         sta     $42                             ; A207
         lda     #$40                            ; A209
         sta     $43                             ; A20B
+; Apply movement using gravity constant #$02.
         lda     #$02                            ; A20D
         jsr     Obj_GravityMoveBounce_Double    ; A20F
-        bne     L_A231                          ; A212
-L_A214: lda     #$08                            ; A214
+; On terrain hit, skip to Explode tail.
+        bne     _ObjHandler_Tank_47_Turret_Shot_Main__Explode; A212
+_ObjHandler_Tank_47_Turret_Shot_Main__AfterPhysics:
+        lda     #$08                            ; A214
         sta     $40                             ; A216
         lda     #$08                            ; A218
         sta     $41                             ; A21A
+; Do on-screen test.
         jsr     ScreenPos_Compute               ; A21C
-        bne     L_A234                          ; A21F
+; If off-screen, skip to Despawn.
+        bne     _ObjHandler_Tank_47_Turret_Shot_Main__Despawn; A21F
         lda     #$08                            ; A221
+; Otherwise, handle collisions with other objects.
         jsr     LD711                           ; A223
         lda     #$00                            ; A226
         sta     $44                             ; A228
         lda     #$54                            ; A22A
         sta     $45                             ; A22C
+; Draw as single 8x8 pattern #$54 with Sprite Palette #$00.
         jmp     OAM_Stage_Pattern               ; A22E
 
 ; ----------------------------------------------------------------------------
-L_A231: jsr     L_9B81                          ; A231
-L_A234: jmp     Obj_Despawn                           ; A234
+_ObjHandler_Tank_47_Turret_Shot_Main__Explode:
+        jsr     L_9B81                          ; A231
+_ObjHandler_Tank_47_Turret_Shot_Main__Despawn:
+        jmp     Obj_Despawn                     ; A234
 
 .endmacro
 

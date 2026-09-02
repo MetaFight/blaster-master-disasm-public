@@ -324,7 +324,9 @@ SpawnBigExplosion_NoSound:
 
 .macro MAC_L_9E9E
 ; ----------------------------------------------------------------------------
-L_9E9E: lda     #$23                            ; 9E9E
+; Helper sub to enqueue sfx #$23.
+PlaySound_23:
+        lda     #$23                            ; 9E9E
         jsr     Enqueue_Sound_Command           ; 9EA0
         rts                                     ; 9EA3
 

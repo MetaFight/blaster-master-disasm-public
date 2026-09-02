@@ -1609,6 +1609,7 @@ L_E071: lda     LoadedObj + Obj::Scratch2       ; E071
 ; 
 ; Output:
 ;   LoadedObj.Facing = the updated heading
+;   A = the updated heading
 Obj_TurnHeading:
         lda     LoadedObj + Obj::Facing         ; E07B
         clc                                     ; E07D

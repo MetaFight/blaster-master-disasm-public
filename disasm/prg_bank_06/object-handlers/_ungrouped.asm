@@ -50,7 +50,7 @@ L_A23A: lda     $9D                             ; A23A
         jsr     Obj_FacingToVelocity            ; A241
         jsr     Obj_CalcTileIndex               ; A244
         inc     LoadedObj + Obj::Type           ; A247
-        jsr     L_9E9E                          ; A249
+        jsr     PlaySound_23                    ; A249
 L_A24C: rts                                     ; A24C
 
 ; ----------------------------------------------------------------------------
