@@ -5,7 +5,7 @@ ObjHandler_Tank_6C_Flying_Bomber_Init:
         jmp     _ObjHandler_Tank_6C_Flying_Bomber_Init__Done; AC3C
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_6C_Flying_Bomber_Init__Update__:
+_ObjHandler_Tank_6C_Flying_Bomber_Init__Body:
         lda     #$0B                            ; AC3F
 ; Init the enemy from descriptor $0B.
         jsr     TankEnemy_Init                  ; AC41
@@ -45,7 +45,7 @@ ObjHandler_Tank_6D_Flying_Bomber_Main:
 ; Main behaviour logic.
 ; 
 ; Start by setting collision box dimensions
-_ObjHandler_Tank_6D_Flying_Bomber_Main__Update__:
+_ObjHandler_Tank_6D_Flying_Bomber_Main__Body:
         lda     #$80                            ; AC66
         sta     $42                             ; AC68
         lda     #$80                            ; AC6A

@@ -8,6 +8,12 @@
         .include "../ram.inc"
 
 ; ----------------------------------------------------------------------------
+L0092           := $0092
+L00C3           := $00C3
+L040D           := $040D
+L06F0           := $06F0
+L06F1           := $06F1
+L06F2           := $06F2
 LC5B2           := $C5B2
 LCBA9           := $CBA9
 LCBDF           := $CBDF
@@ -25,8 +31,8 @@ LD238           := $D238
 LD246           := $D246
 LD256           := $D256
 LD283           := $D283
-LD2AB           := $D2AB
-TileRead_WithOffset           := $D2B1
+Obj_ReadTile                  := $D2AB
+Obj_ReadTile_WithOffset       := $D2B1
 Obj_CalcTileIndex             := $D2B9
 Apply_Velocity_XY             := $D2DB
 Apply_Velocity_X              := $D2DE

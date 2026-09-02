@@ -1970,44 +1970,84 @@ NesPrgRom:19BF4:L_9BF4
 NesPrgRom:19C11:L_9C11
 NesPrgRom:19C14:L_9C14
 NesPrgRom:19C15:L_9C15
-NesPrgRom:19C1C:L_9C1C
-NesPrgRom:19C1F:L_9C1F
-NesPrgRom:19C23:L_9C23
-NesPrgRom:19C26:L_9C26
-NesPrgRom:19C2A:L_9C2A
-NesPrgRom:19C2D:L_9C2D
-NesPrgRom:19C31:L_9C31
-NesPrgRom:19C34:L_9C34
-NesPrgRom:19C38:L_9C38
-NesPrgRom:19C3B:L_9C3B
-NesPrgRom:19C3F:L_9C3F
-NesPrgRom:19C42:L_9C42
-NesPrgRom:19C46:L_9C46
-NesPrgRom:19C49:L_9C49
-NesPrgRom:19C4D:L_9C4D
-NesPrgRom:19C50:L_9C50
-NesPrgRom:19C54:L_9C54
-NesPrgRom:19C57:L_9C57
-NesPrgRom:19C5B:L_9C5B
-NesPrgRom:19C68:L_9C68
-NesPrgRom:19C6B:L_9C6B
-NesPrgRom:19C7D:L_9C7D
-NesPrgRom:19C92:L_9C92
-NesPrgRom:19CA4:L_9CA4
-NesPrgRom:19CB7:L_9CB7
-NesPrgRom:19CBC:L_9CBC
-NesPrgRom:19CBD:L_9CBD
-NesPrgRom:19CD8:L_9CD8
-NesPrgRom:19CDC:L_9CDC
-NesPrgRom:19CE8:L_9CE8
-NesPrgRom:19CFC:L_9CFC
-NesPrgRom:19D04:L_9D04
-NesPrgRom:19D09:L_9D09
-NesPrgRom:19D0C:L_9D0C
-NesPrgRom:19D15:L_9D15
-NesPrgRom:19D1E:L_9D1E
-NesPrgRom:19D20:L_9D20
-NesPrgRom:19D32:L_9D32
+NesPrgRom:19C1C:ObjHandler_Tank_2C_Pick_up_Pow_x1_Init:-\n\n\nObjType $2C: Pow x1 pickup - Init
+NesPrgRom:19C1F:_ObjHandler_Tank_2C_Pick_up_Pow_x1_Init__Body
+NesPrgRom:19C21::Delegate to shared init tail, passing in PickUp Type as A = 0
+NesPrgRom:19C23:ObjHandler_Tank_2D_Pick_up_Pow_x4_Init:-\n\n\nObjType $2D: Pow x4 pickup - Init
+NesPrgRom:19C26:_ObjHandler_Tank_2D_Pick_up_Pow_x4_Init__Body
+NesPrgRom:19C28::Delegate to shared init tail, passing in PickUp Type as A = 1
+NesPrgRom:19C2A:ObjHandler_Tank_30_Gun_gun_x1:-\n\n\nObjType $30: Gun x1 pickup - Init
+NesPrgRom:19C2D:_ObjHandler_Tank_30_Gun_gun_x1__Body
+NesPrgRom:19C2F::Delegate to shared init tail, passing in PickUp Type as A = 2
+NesPrgRom:19C31:ObjHandler_Tank_31_Pickup_Gun_x4_Init:-\n\n\nObjType $31: Gun x4 pickup - Init
+NesPrgRom:19C34:_ObjHandler_Tank_31_Pickup_Gun_x4_Init__Body
+NesPrgRom:19C36::Delegate to shared init tail, passing in PickUp Type as A = 3
+NesPrgRom:19C38:ObjHandler_Tank_2E_Pick_up_Hover_x1_Init:-\n\n\nObjType $2E: Hover x1 pickup - Init
+NesPrgRom:19C3B:_ObjHandler_Tank_2E_Pick_up_Hover_x1_Init__Body
+NesPrgRom:19C3D::Delegate to shared init tail, passing in PickUp Type as A = 4
+NesPrgRom:19C3F:ObjHandler_Tank_2F_Pick_up_Hover_x4_Init:-\n\n\nObjType $2F: Hover x4 pickup - Init
+NesPrgRom:19C42:_ObjHandler_Tank_2F_Pick_up_Hover_x4_Init__Body
+NesPrgRom:19C44::Delegate to shared init tail, passing in PickUp Type as A = 5
+NesPrgRom:19C46:ObjHandler_Tank_32_Homing_Missiles_x20_Init:-\n\n\nObjType $32: Homing Missile pickup - Init
+NesPrgRom:19C49:_ObjHandler_Tank_32_Homing_Missiles_x20_Init__Body
+NesPrgRom:19C4B::Delegate to shared init tail, passing in PickUp Type as A = 6
+NesPrgRom:19C4D:ObjHandler_Tank_33_Pick_up_Lightning_x20_Init:-\n\n\nObjType $33: Thunder Break x20 pickup - Init
+NesPrgRom:19C50:_ObjHandler_Tank_33_Pick_up_Lightning_x20_Init__Body
+NesPrgRom:19C52::Delegate to shared init tail, passing in PickUp Type as A = 7
+NesPrgRom:19C54:ObjHandler_Tank_34_Pickup_Warheads_x20_Init:-\n\n\nObjType $33: Warheads x20 pickup - Init
+NesPrgRom:19C57:_ObjHandler_Tank_34_Pickup_Warheads_x20_Init__Body
+NesPrgRom:19C59::Delegate to shared init tail, passing in PickUp Type as A = 8
+NesPrgRom:19C5B:_PickUp_Shared_InitTail:-\n\n\nShared Init Tail for ObjTypes $2C–$34 (discriminators 0–8)\n\nInput:\n  A = PickUp Type\n\nStart by saving PickUp Type to Scratch0
+NesPrgRom:19C5D::Bump ObjType to #$35, the Main PickUp state.
+NesPrgRom:19C61::Prime Lifetime Counter (Scratch1) to 255.
+NesPrgRom:19C65::Calculate TileIndex
+NesPrgRom:19C68:ObjHandler_Common_35_PickUp_Main:ObjType $35: PickUp - Main
+NesPrgRom:19C6B:_ObjHandler_Common_35_PickUp_Main__Body
+NesPrgRom:19C6E::If tile value is negative (unset, maybe?) skip to exit.
+NesPrgRom:19C74::if (Global_FrameCounter & 3) != 0, skip aging code.
+NesPrgRom:19C76::Otherwise (once every 3 frames), decrement the LifetimeCounter (Scratch1),
+NesPrgRom:19C78::if still alive, skip to AfterAging handler,
+NesPrgRom:19C7A::otherwise, handle despawn.
+NesPrgRom:19C7D:_ObjHandler_Common_35_PickUp_Main__AfterAging
+NesPrgRom:19C80::Again, read tile data and exit early on negative (unset?) value.
+NesPrgRom:19C8A::Set bounding box and do on-screen test.
+NesPrgRom:19C8D::If still on-screen, proceed to player collision check.
+NesPrgRom:19C8F::Otherwise, tombstone.
+NesPrgRom:19C92:_ObjHandler_Common_35_PickUp_Main__OnScreen
+NesPrgRom:19C94::Detect contact with Player by calling Obj_TryDamagePlayer with Damage amount = 0
+NesPrgRom:19C97::If overlapping, award PickUp payload.
+NesPrgRom:19C9D::If LifetimeCounter (Scratch1) >= 32, always render (no flicker).
+NesPrgRom:19CA1::Otherwise, skip rendering every other frame (flicker).
+NesPrgRom:19CA4:_ObjHandler_Common_35_PickUp_Main__Render
+NesPrgRom:19CAB::Use the PickUp type (Scratch0) to retrieve the palette mode (static=1, animated=4)
+NesPrgRom:19CB0::If not type #$04 (Hover x4), skip animated palette code.
+NesPrgRom:19CB2::otherwise, animate palette by cycling values 0-3 holding each 2 frames.
+NesPrgRom:19CB7:_ObjHandler_Common_35_PickUp_Main__DrawMetasprite
+NesPrgRom:19CB9::Store A as OAM_Stage_Sprite (Palette Index) and call Quad renderer.
+NesPrgRom:19CBC:_ObjHandler_Common_35_PickUp_Main__Exit
+NesPrgRom:19CBD:_ObjHandler_Common_35_PickUp_Main__AwardPayload
+NesPrgRom:19CC5::Copy award target address into IndirectPtrLo/Hi.
+NesPrgRom:19CC9::Use BankDispatch_Index to sanitise IndirectPtrLo/Hi
+NesPrgRom:19CCC::Read pre-award value.
+NesPrgRom:19CD1::Add awarded amount.
+NesPrgRom:19CD6::On overflow, cap the value.
+NesPrgRom:19CD8:_ObjHandler_Common_35_PickUp_Main__CommitAward:Commit updated value back to source address.
+NesPrgRom:19CDA::Loop over all 3 sub-weapon ammo slots to cap each at 99.
+NesPrgRom:19CDC:_ObjHandler_Common_35_PickUp_Main__AmmoCapLoop:For each sub-weapon slot,
+NesPrgRom:19CE3::if slot >= 100, cap at 99.
+NesPrgRom:19CE8:_ObjHandler_Common_35_PickUp_Main__AmmoCapNext
+NesPrgRom:19CEB::Finally, enqueue the appropriate sound and despawn.
+NesPrgRom:19CEF::Play sub-weapon sound (pickup type >= #$06)
+NesPrgRom:19CF2::Play x4 sound (bit1 is set)
+NesPrgRom:19CF4:_ObjHandler_Common_35_PickUp_Main__x1PickUpSound:Otherwise, play x1 sound.
+NesPrgRom:19CFC:_ObjHandler_Common_35_PickUp_Main__x4PickUpSound
+NesPrgRom:19D04:_ObjHandler_Common_35_PickUp_Main__SubWeaponPickUpSound
+NesPrgRom:19D09:_ObjHandler_Common_35_PickUp_Main__Despawn
+NesPrgRom:19D0C:PickUp_MetaSprite_LookUp:9 MetaSprite ids. $60=health, $6A=gun, $62=hover, $64=homing, $68=thunder, $66=multi-warhead. Each is the top-left CHR tile of a 16x16 column-major quad (id, id+1, id+$10, id+$11) staged by OAM_Stage_Sprite_Shape5_Quad2x2.
+NesPrgRom:19D15:PickUp_PaletteMode_LookUp:9 palette mode entries. One of two options: $01=static (doubles as palette index to use), $04=animated.
+NesPrgRom:19D1E:PickUp_TargetAddress_LookUpPtr:Pointer to PickUp_TargetAddress_LookUp
+NesPrgRom:19D20:PickUp_TargetAddress_LookUp:9 pointers: HP, HP, Gun, Gun, Hover, Hover, Homing, Lightning, MultiWarhead.
+NesPrgRom:19D32:PickUp_TargetAmount_LookUp:9 amounts: Px1=$20; Px4=$80; Gunx1=$20; Gunx4=$80; Hx1=$20; Hx4=$80; Homing/Thunder/Multi-Warhead=$14 (20 units).
 NesPrgRom:19D3B:L_9D3B
 NesPrgRom:19D3E:L_9D3E
 NesPrgRom:19D4C:L_9D4C
@@ -2065,7 +2105,7 @@ NesPrgRom:19ED8::Increment ObjType to Main type.
 NesPrgRom:19EDC::Play launch sound.
 NesPrgRom:19EDF:_ObjHandler_Tank_38_Big_Gray_Init__Done
 NesPrgRom:19EE0:ObjHandler_Tank_39_Big_Gray_Main:ObjType $39: Big Gray Ballistic Ball - Main.\n\nAffected by gravity.  Bounces off walls and the ground.  Also rolls on the ground.\nExplodes when its lifetime timer (Scratch1) runs out.
-NesPrgRom:19EE3:_ObjHandler_Tank_39_Big_Gray_Main__Update__:Normal-play body.\n\nStarts by setting collision box.
+NesPrgRom:19EE3:_ObjHandler_Tank_39_Big_Gray_Main__Body:Normal-play body.\n\nStarts by setting collision box.
 NesPrgRom:19EEB::Apply gravity of 2 to Velocity_Y, then apply Velocities to position twice, accounting for bouncing off solid terrain.
 NesPrgRom:19EF0::tick the lifetime timer.
 NesPrgRom:19EF2::At zero, skip to explosion logic.
@@ -2348,7 +2388,7 @@ NesPrgRom:1A7B8:L_A7B8
 NesPrgRom:1A7C6:L_A7C6
 NesPrgRom:1A7CA:L_A7CA
 NesPrgRom:1A7CB:ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:ObjType $5F: Gray Hopper (6 HP) - Init.
-NesPrgRom:1A7CE:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__
+NesPrgRom:1A7CE:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Body
 NesPrgRom:1A7D0::Init the enemy from descriptor $05.
 NesPrgRom:1A7D5::LoadedObj_Scratch2 is the base hop speed.  Set this to $30.
 NesPrgRom:1A7D7::The next few lines set up the Facing field, but these values are overwritten before ever being used.\nAnd, unlike the attack phase, this choses to face AWAY from the player.
@@ -2357,7 +2397,7 @@ NesPrgRom:1A7E1:_ObjHandler_Tank_5F_GrayHopper6HP_Init__Heading_PlayerRight:play
 NesPrgRom:1A7E3:_ObjHandler_Tank_5F_GrayHopper6HP_Init__StoreFacing:commit the heading, then zero Velocity X/Y and the wind-up timer LoadedObj_Scratch1
 NesPrgRom:1A7ED:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done
 NesPrgRom:1A7EE:ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:ObjType $60: Gray Hopper (6 HP) - Attacking.\nThe hopping/attack half of the enemy. It falls under gravity; on each floor landing it either settles into the walking state $61 or aims a fresh, near-vertical hop at the player, and either way it then sits out a 10-frame wind-up on the ground before the stored hop velocity carries it up — so it bounds across the ground toward the player in bursts.
-NesPrgRom:1A7F1:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:Attack main logic.\n\nStart by setting collision box dimensions
+NesPrgRom:1A7F1:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Body:Attack main logic.\n\nStart by setting collision box dimensions
 NesPrgRom:1A7FB::If LoadedObj_Scratch1 (wind-up) is at 0, then proceed to ground check.
 NesPrgRom:1A7FD::otherwise, decrement LoadedObj_Scratch1 (wind-up).
 NesPrgRom:1A802:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnWindUpExpired:wind-up over: take one ballistic step (Obj_GravityMoveBounce_Double with gravity $04, which also reflects and damps the velocity on contact) and test bit 6 of the wall flags it returns — a vertical, i.e. floor-or-ceiling, contact. Clear means still airborne, so just draw.
@@ -2387,7 +2427,7 @@ NesPrgRom:1A868:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle:$51 = 0 �
 NesPrgRom:1A86A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile:tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
 NesPrgRom:1A86D:DEAD_ObjHandler_Tank_60_GrayHopper6HP_Attacking_OrphanRTS:Single unreachable $60 (RTS) after the Gray Hopper 6HP ($60) tile tail (tail-calls JMP $F011 at $A86A).
 NesPrgRom:1A86E:ObjHandler_Tank_61_GrayHopper6HP_Patrolling:ObjType $61 — Gray Hopper 6HP "Patrolling" state.\n\nIn this state, the Hopper paces horizontally, reversing at walls and platform edges.
-NesPrgRom:1A871:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Update__:+3 body entry (normal-play)\n\nStart by setting collision box dimensions
+NesPrgRom:1A871:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Body:+3 body entry (normal-play)\n\nStart by setting collision box dimensions
 NesPrgRom:1A879::and zeroing Velocity_Y.
 NesPrgRom:1A87D::Next, set Velocity_X based on the sign of the previous Velocity_X.
 NesPrgRom:1A881::>= 0 means moving right, Velocity_X = +8 (ie, +0.5)
@@ -2443,9 +2483,12 @@ NesPrgRom:1AA50:L_AA50
 NesPrgRom:1AA54:L_AA54
 NesPrgRom:1AA56:L_AA56
 NesPrgRom:1AA59:L_AA59
-NesPrgRom:1AA5A:L_AA5A
-NesPrgRom:1AA5D:L_AA5D
-NesPrgRom:1AA6B:L_AA6B
+NesPrgRom:1AA5A:ObjHandler_Tank_66_Turret_Init:ObjType $66: Ceiling Turret - Init.
+NesPrgRom:1AA5D:_ObjHandler_Tank_66_Turret_Init__Body
+NesPrgRom:1AA5F::Init via TankEnemy_Init with descriptor #$08.
+NesPrgRom:1AA64::Set Ballistic Speed (Scratch2) to #$02 (0.125).
+NesPrgRom:1AA69::Set PhaseCounter (Scratch1) to a random initial value.
+NesPrgRom:1AA6B:_ObjHandler_Tank_66_Turret_Init__Done
 NesPrgRom:1AA6C:L_AA6C
 NesPrgRom:1AA6F:L_AA6F
 NesPrgRom:1AA8E:L_AA8E
@@ -2484,7 +2527,7 @@ NesPrgRom:1AC20:L_AC20
 NesPrgRom:1AC2A:L_AC2A
 NesPrgRom:1AC38:L_AC38
 NesPrgRom:1AC3C:ObjHandler_Tank_6C_Flying_Bomber_Init:ObjType $6C: Flying Bomber - Init.
-NesPrgRom:1AC3F:_ObjHandler_Tank_6C_Flying_Bomber_Init__Update__
+NesPrgRom:1AC3F:_ObjHandler_Tank_6C_Flying_Bomber_Init__Body
 NesPrgRom:1AC41::Init the enemy from descriptor $0B.
 NesPrgRom:1AC44::call Obj_Get_DeltaToPlayer_X_q12_4 to store signed X distance to player in A
 NesPrgRom:1AC49::Keep only bit 7 and store as LoadedObj.Facing
@@ -2496,7 +2539,7 @@ NesPrgRom:1AC5B::Clear Scratch1.
 NesPrgRom:1AC5F::call Obj_FacingToVelocity to set velocity based on LoadedObj.Facing (angle) and scalar $28 (2.5)
 NesPrgRom:1AC62:_ObjHandler_Tank_6C_Flying_Bomber_Init__Done
 NesPrgRom:1AC63:ObjHandler_Tank_6D_Flying_Bomber_Main:ObjType $6D: Flying Bomber - Main
-NesPrgRom:1AC66:_ObjHandler_Tank_6D_Flying_Bomber_Main__Update__:Main behaviour logic.\n\nStart by setting collision box dimensions
+NesPrgRom:1AC66:_ObjHandler_Tank_6D_Flying_Bomber_Main__Body:Main behaviour logic.\n\nStart by setting collision box dimensions
 NesPrgRom:1AC70::if bomb-drop cooldown is 0, skip ahead.
 NesPrgRom:1AC72::otherwise, decrement cooldown.
 NesPrgRom:1AC74:_ObjHandler_Tank_6D_FlyingBomber_Main__ActiveCheck
@@ -2609,13 +2652,13 @@ NesPrgRom:1AFEB:L_AFEB
 NesPrgRom:1AFF7:L_AFF7
 NesPrgRom:1AFFB:L_AFFB
 NesPrgRom:1AFFC:ObjHandler_Tank_76_Shooter_Init:(alpha: not fully human-verified / pending re-verification) ObjType $76 — Shooter (Thing $10, "Gray Shooter"), init. Launches the Shooter on a random straight line: a heading drawn from the RNG and a fixed speed, with its gun already loaded. Every Shooter therefore starts drifting in a different direction, and it is the Main handler's terrain bouncing that turns that into the circling patrol the player sees. TankEnemy_Init advances it to ObjType $77, so this runs for exactly one frame. Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this Init draws nothing. See docs/us/entities/tank/76-77_shooter.md
-NesPrgRom:1AFFF:_ObjHandler_Tank_76_Shooter_Init__Update__:Normal-play body — pick a random heading and launch  [+3 body entry]\nenemy descriptor $10: HP 16, and a $80/256 (50%) chance of a Health-x1 ($2C) drop. TankEnemy_Init also does INC $46, so the next frame runs ObjType $77
+NesPrgRom:1AFFF:_ObjHandler_Tank_76_Shooter_Init__Body:Normal-play body — pick a random heading and launch  [+3 body entry]\nenemy descriptor $10: HP 16, and a $80/256 (50%) chance of a Health-x1 ($2C) drop. TankEnemy_Init also does INC $46, so the next frame runs ObjType $77
 NesPrgRom:1B004::$47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG
 NesPrgRom:1B009::speed $14, converted with the heading into the velocity pair $4C/$4D. This is the only place the Shooter's velocity is set; nothing steers it afterwards
 NesPrgRom:1B00E::gun ready — no recoil to work off
 NesPrgRom:1B012:_ObjHandler_Tank_76_Shooter_Init__Done:Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
 NesPrgRom:1B013:ObjHandler_Tank_77_Shooter_Main:(alpha: not fully human-verified / pending re-verification) ObjType $77 — Shooter (Thing $10), active. A free-drifting enemy that bounces off terrain and shoots Small Red shots at the player, but only while its drift already carries it toward them and only at a player level with or below it — so it never fires backwards or upwards, and spends its time circling until the geometry lines up. Each shot costs a 16-frame recoil during which it holds a distinct pose and cannot fire again. HP 16; on death it explodes and may drop a Health-x1 pickup. Dual-entry: in normal play ($15 == 0) the object loop enters at +3 and runs the whole body; while a fade or freeze is up ($15 != 0) it enters at +0, which skips straight to the hit/render tail. See docs/us/entities/tank/76-77_shooter.md\n+0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail
-NesPrgRom:1B016:_ObjHandler_Tank_77_Shooter_Main__Update__:Normal-play body — drift, then decide whether to fire  [+3 body entry]\n$42/$43 = $80: terrain-collision half-extents for the move below
+NesPrgRom:1B016:_ObjHandler_Tank_77_Shooter_Main__Body:Normal-play body — drift, then decide whether to fire  [+3 body entry]\n$42/$43 = $80: terrain-collision half-extents for the move below
 NesPrgRom:1B01E::advance by velocity and bounce off walls (reflects $4C on a horizontal wall, $4D on a vertical one)
 NesPrgRom:1B021::fire cooldown $52 — zero means free to fire
 NesPrgRom:1B025::still cooling down: tick it and hold the recoil pose ($50 = 0)
@@ -2656,7 +2699,7 @@ NesPrgRom:1B155:L_B155
 NesPrgRom:1B165:L_B165
 NesPrgRom:1B166:L_B166
 NesPrgRom:1B16E:ObjHandler_Tank_7A_Gray_Hopper_10HP_Init:ObjType $7A: Gray Hopper (10 HP) - Init.
-NesPrgRom:1B171:_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Update__
+NesPrgRom:1B171:_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Body
 NesPrgRom:1B173::Init the enemy from descriptor $12.
 NesPrgRom:1B179::On even columns, set positive Velocity_X.
 NesPrgRom:1B17B::Otherwise, set Velocity_X to -0.75
@@ -2664,7 +2707,7 @@ NesPrgRom:1B180:_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__VelRight:set Velocity
 NesPrgRom:1B182:_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__VelStore:Commit the Velocity_X, then clear Velocity_Y, Scratch0 and Scratch1.
 NesPrgRom:1B18E:_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Done
 NesPrgRom:1B18F:ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling:ObjType $7B: Gray Hopper (10 HP) - Patrolling.\nIt drops to the ground, then paces back and forth, reversing off walls and turning back at platform edges. At each edge there is a 1-in-16 chance it leaps out over the gap.
-NesPrgRom:1B192:_ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling__Update__:+3 body entry (normal play)\n\nStart by setting collision box dimensions.
+NesPrgRom:1B192:_ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling__Body:+3 body entry (normal play)\n\nStart by setting collision box dimensions.
 NesPrgRom:1B19A::Scratch0 is the Grounded flag.  0 = airborne, 1 = grounded.
 NesPrgRom:1B19C::If grounded, skip gravity physics.
 NesPrgRom:1B19E::Otherwise, handle falling and landing.
@@ -2708,11 +2751,11 @@ NesPrgRom:1B27C:L_B27C
 NesPrgRom:1B286:L_B286
 NesPrgRom:1B297:L_B297
 NesPrgRom:1B29B:ObjHandler_Tank_50_Gray_Flier_Spawner_Init:ObjType $50: Gray Flier Spawner - Init
-NesPrgRom:1B29E:_ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Update__
+NesPrgRom:1B29E:_ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Body
 NesPrgRom:1B2A3::TankEnemy_Init has already INC'd LoadedObj.ObjType from $50 to $51, so the following lines are redundant.
 NesPrgRom:1B2A7:_ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Done
 NesPrgRom:1B2A8:ObjHandler_Tank_51_Gray_Flier_Spawner_Main:ObjType $51: Gray Flier Spawner - Main
-NesPrgRom:1B2AB:_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Update__:Normal-play entry points.\n\nSpawns a Gray Flier, on average, every 128 frames (~2s).\n\nStart by setting the collision box dimensions...
+NesPrgRom:1B2AB:_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Body:Normal-play entry points.\n\nSpawns a Gray Flier, on average, every 128 frames (~2s).\n\nStart by setting the collision box dimensions...
 NesPrgRom:1B2B3::...which are promptly never used again.  Probably copy-pasta.\n\nThen perform an on-screen test via ScreenPos_Compute
 NesPrgRom:1B2B6::Note:  ScreenPos_Compute expects LoadedObj_Width/Height to be set but this subroutine, however, does not set them.  So this check will used whatever values are left over from the previous object.\n\nSpawning a child will only happen if the following 3 checks pass:\nCheck 1: the spawner must be on-screen.
 NesPrgRom:1B2BC::Check 2: Global_FrameCounter's lower 5 bits must be 0 (every 32nd tick)
@@ -2726,7 +2769,7 @@ NesPrgRom:1B2E3::Test if still on screen.  If so, skip to end.
 NesPrgRom:1B2E8::otherwise, tombstone.
 NesPrgRom:1B2EB:_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Return
 NesPrgRom:1B2EC:ObjHandler_Tank_7D_Gray_Flier_Main:ObjType $7D: Gray Flier - Main\n\nEnemy follows a sine wave path across the screen.
-NesPrgRom:1B2EF:_ObjHandler_Tank_7D_Gray_Flier_Main__Update__:Start by setting collision box.
+NesPrgRom:1B2EF:_ObjHandler_Tank_7D_Gray_Flier_Main__Body:Start by setting collision box.
 NesPrgRom:1B2F7::then source oscillation phase from Global_FrameCounter (the two ASL limit the angle range from 00..FC, but also quadruple the oscillation frequency).
 NesPrgRom:1B2FD::Use phase to source Heading for this frame via Trig_SinByAngle
 NesPrgRom:1B300::Scale by Y ($20) via ScaleBySignedFrac and save as Velocity_Y
@@ -3419,8 +3462,8 @@ NesPrgRom:1D29B:L_D29B
 NesPrgRom:1D29E:L_D29E
 NesPrgRom:1D2A1:L_D2A1
 NesPrgRom:1D2A8:L_D2A8
-NesPrgRom:1D2AB:L_D2AB
-NesPrgRom:1D2B1:TileRead_WithOffset:Reads the tile byte at LoadedObj.TileIndex plus an offset (A).\n\nInput:\n  A = offset\n    eg, $11 = immediately below\n        $ff = 1 to the left\n        $01 = 1 to the right\n\nOutput:\n  A = Tile data
+NesPrgRom:1D2AB:Obj_ReadTile:Read LevelTileData[LoadedObj.TileIndex].\n\nInput:\n  LoadedObj.TileIndex\n\nOutput:\n  A = tile data from LevelTileData
+NesPrgRom:1D2B1:Obj_ReadTile_WithOffset:Reads the tile byte at LoadedObj.TileIndex plus an offset (A).\n\nInput:\n  A = offset\n    eg, $11 = immediately below\n        $ff = 1 to the left\n        $01 = 1 to the right\n\nOutput:\n  A = Tile data
 NesPrgRom:1D2B2::A (step offset) + $4E → cell index; A = $0500[index] = the look-ahead tile.
 NesPrgRom:1D2B9:Obj_CalcTileIndex:Computes the index (+TilemapBaseIndex) into the LevelTileData tile map corresponding to LoadedObj's current position.
 NesPrgRom:1D2C0::At this point, TileIndex holds a temp value corresponding to the *row offset* in the 17x15 table.
@@ -3760,7 +3803,7 @@ NesPrgRom:1E011::otherwise, set Velocity_Y to 0 and A to $FF and return.
 NesPrgRom:1E018:_Obj_FallAndLand__NotLanded:No floor hit (or hit the ceiling): return A=$00.
 NesPrgRom:1E01B:L_E01B
 NesPrgRom:1E027:L_E027
-NesPrgRom:1E02F:Obj_MoveBounce_TurnAtLedge:Obj_MoveBounce plus terrain checks to turn at walls and ledge edges.\n\nInput:\n  LoadedObj.Scratch1 = an edge cooldown timer.  Edge checks only happen when it is 0.\n\n# when the turn cooldown LoadedObj.Scratch1 is idle, probe the tile below via TileRead_WithOffset arg $11 (the feet probe the ice check also uses); if it is not solid (bit7 clear - a dropoff) reverse XVel $4C and arm a $20-frame cooldown. Walker motion that turns back at platform edges. Dispatch slot $C033 - no callers in USA ROM."
+NesPrgRom:1E02F:Obj_MoveBounce_TurnAtLedge:Obj_MoveBounce plus terrain checks to turn at walls and ledge edges.\n\nInput:\n  LoadedObj.Scratch1 = an edge cooldown timer.  Edge checks only happen when it is 0.\n\n# when the turn cooldown LoadedObj.Scratch1 is idle, probe the tile below via Obj_ReadTile_WithOffset arg $11 (the feet probe the ice check also uses); if it is not solid (bit7 clear - a dropoff) reverse XVel $4C and arm a $20-frame cooldown. Walker motion that turns back at platform edges. Dispatch slot $C033 - no callers in USA ROM."
 NesPrgRom:1E034::if Scratch1 (probe cooldown) is 0, skip to probe logic,
 NesPrgRom:1E036::otherwise, decrement the cooldown and exit sub.
 NesPrgRom:1E03B:_Obj_MoveBounce_TurnAtLedge__Probe:Probe logic
@@ -4410,6 +4453,7 @@ NesInternalRam:008C:Projectile5__Screen_Y:(alpha: not fully human-verified / pen
 NesInternalRam:008D:Projectile5__Damage:(alpha: not fully human-verified / pending re-verification) Bit 7 = hit flag, bits 0-6 = damage magnitude. Sprite_Update posts (A & $7F) -- bit 7 is always cleared on post -- and returns the PREVIOUS byte, which is how the owner learns it was hit. An attacker stamps its own magnitude | $80 here (Enemy_Damage_Check_Sub $D6C8 / HitboxScan_LockOn $D71A / Obj_TryDamagePlayer $D75B). $7F posted means harmless: a scanner reads it as the damage TO ITSELF and $D69C skips on cmp #$7F, which is how touching Jason/Sophia costs an enemy nothing. See EnemyDesc::ContactDamage.
 NesInternalRam:0094:Sophia_LookUpAnimation_Counter:Counter for Sophia's "look up" animation.\n0x00 is not started\n0x0C is completed (looking straight up)
 NesInternalRam:009A:TerrainCollisionFlags:Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.\n\nbit 7 set means a collision happened to the left or right.\nbit 6 set means a collision happened above or below.\n\nThe value of LoadedObj's velocity is used to disambiguate the collision side.
+NesInternalRam:00C3:Player_GunLevel:Overhead Jason's persistent gun level.
 NesInternalRam:00D3:SavedPrgBank:PRG bank number to restore via BankSave_Switch ($E619) once a temporary bank switch is done.
 NesInternalRam:0150-0161:DormantSlot_SavedType:18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's\nreal ObjType when it is made Dormant (ObjType $02).\nThe Dormant ObjType handler then reads from this table to restore the tombstoned Object.
 NesInternalRam:0400:PlayerSlot__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.

@@ -1,15 +1,22 @@
 .macro MAC_L_AA5A
 ; ----------------------------------------------------------------------------
-L_AA5A: jmp     L_AA6B                          ; AA5A
+; ObjType $66: Ceiling Turret - Init.
+ObjHandler_Tank_66_Turret_Init:
+        jmp     _ObjHandler_Tank_66_Turret_Init__Done; AA5A
 
 ; ----------------------------------------------------------------------------
-L_AA5D: lda     #$08                            ; AA5D
+_ObjHandler_Tank_66_Turret_Init__Body:
+        lda     #$08                            ; AA5D
+; Init via TankEnemy_Init with descriptor #$08.
         jsr     TankEnemy_Init                  ; AA5F
         lda     #$02                            ; AA62
+; Set Ballistic Speed (Scratch2) to #$02 (0.125).
         sta     LoadedObj + Obj::Scratch2       ; AA64
         jsr     Step_RNG                        ; AA66
+; Set PhaseCounter (Scratch1) to a random initial value.
         sta     LoadedObj + Obj::Scratch1       ; AA69
-L_AA6B: rts                                     ; AA6B
+_ObjHandler_Tank_66_Turret_Init__Done:
+        rts                                     ; AA6B
 
 ; ----------------------------------------------------------------------------
 L_AA6C: jmp     L_AAD4                          ; AA6C

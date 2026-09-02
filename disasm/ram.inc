@@ -162,6 +162,8 @@ Sophia_LookUpAnimation_Counter := $0094
 ; bit 6 set means a collision happened above or below.
 ; The value of LoadedObj's velocity is used to disambiguate the collision side.
 TerrainCollisionFlags          := $009A
+; Overhead Jason's persistent gun level.
+Player_GunLevel                := $00C3
 ; PRG bank number to restore via BankSave_Switch ($E619) once a temporary bank switch is done.
 SavedPrgBank                   := $00D3
 ; 18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's

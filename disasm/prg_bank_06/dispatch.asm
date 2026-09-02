@@ -55,16 +55,16 @@ ObjDispatch_Table_Bk06:
         .addr   L_9D72                          ; 8052
         .addr   L_882A                          ; 8054
         .addr   L_8850                          ; 8056
-        .addr   L_9C1C                          ; 8058
-        .addr   L_9C23                          ; 805A
-        .addr   L_9C38                          ; 805C
-        .addr   L_9C3F                          ; 805E
-        .addr   L_9C2A                          ; 8060
-        .addr   L_9C31                          ; 8062
-        .addr   L_9C46                          ; 8064
-        .addr   L_9C4D                          ; 8066
-        .addr   L_9C54                          ; 8068
-        .addr   L_9C68                          ; 806A
+        .addr   ObjHandler_Tank_2C_Pick_up_Pow_x1_Init; 8058
+        .addr   ObjHandler_Tank_2D_Pick_up_Pow_x4_Init; 805A
+        .addr   ObjHandler_Tank_2E_Pick_up_Hover_x1_Init; 805C
+        .addr   ObjHandler_Tank_2F_Pick_up_Hover_x4_Init; 805E
+        .addr   ObjHandler_Tank_30_Gun_gun_x1   ; 8060
+        .addr   ObjHandler_Tank_31_Pickup_Gun_x4_Init; 8062
+        .addr   ObjHandler_Tank_32_Homing_Missiles_x20_Init; 8064
+        .addr   ObjHandler_Tank_33_Pick_up_Lightning_x20_Init; 8066
+        .addr   ObjHandler_Tank_34_Pickup_Warheads_x20_Init; 8068
+        .addr   ObjHandler_Common_35_PickUp_Main; 806A
         .addr   L_9EA4                          ; 806C
 ; ----------------------------------------------------------------------------
 L_806E: .byte   $00,$00                         ; 806E
@@ -117,7 +117,7 @@ L_80B0: .addr   ObjHandler_Tank_58_Gray_Bullet_B_Init; 80B0
         .addr   L_A8FB                          ; 80C6
         .addr   L_A9CB                          ; 80C8
         .addr   L_A9DE                          ; 80CA
-        .addr   L_AA5A                          ; 80CC
+        .addr   ObjHandler_Tank_66_Turret_Init  ; 80CC
         .addr   L_AA6C                          ; 80CE
         .addr   L_AB13                          ; 80D0
         .addr   L_AB24                          ; 80D2

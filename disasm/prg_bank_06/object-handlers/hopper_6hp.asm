@@ -5,7 +5,7 @@ ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:
         jmp     _ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Done; A7CB
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Update__:
+_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Body:
         lda     #$05                            ; A7CE
 ; Init the enemy from descriptor $05.
         jsr     TankEnemy_Init                  ; A7D0
@@ -49,7 +49,7 @@ ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking:
 ; Attack main logic.
 ; 
 ; Start by setting collision box dimensions
-_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Update__:
+_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Body:
         lda     #$80                            ; A7F1
         sta     $42                             ; A7F3
         lda     #$C0                            ; A7F5
@@ -191,7 +191,7 @@ ObjHandler_Tank_61_GrayHopper6HP_Patrolling:
 ; +3 body entry (normal-play)
 ; 
 ; Start by setting collision box dimensions
-_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Update__:
+_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Body:
         lda     #$80                            ; A871
         sta     $42                             ; A873
         lda     #$C0                            ; A875

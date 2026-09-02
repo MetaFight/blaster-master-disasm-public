@@ -9,20 +9,20 @@ L_8DCC: .byte   $00,$FF,$FF,$00,$01,$01,$01,$00 ; 8DCC
 .macro MAC_L_A280
 ; ----------------------------------------------------------------------------
 L_A280: clc                                     ; A280
-        lda     PlayerSlot + Obj::Health        ; A281
+        lda     L040D                           ; A281
         adc     #$10                            ; A284
         bcc     L_A28A                          ; A286
         lda     #$FF                            ; A288
-L_A28A: sta     PlayerSlot + Obj::Health        ; A28A
+L_A28A: sta     L040D                           ; A28A
         jmp     Obj_Despawn                     ; A28D
 
 ; ----------------------------------------------------------------------------
 L_A290: clc                                     ; A290
-        lda     $92                             ; A291
+        lda     L0092                           ; A291
         adc     #$10                            ; A293
         bcc     L_A299                          ; A295
         lda     #$FF                            ; A297
-L_A299: sta     $92                             ; A299
+L_A299: sta     L0092                           ; A299
         jmp     Obj_Despawn                     ; A29B
 
 .endmacro

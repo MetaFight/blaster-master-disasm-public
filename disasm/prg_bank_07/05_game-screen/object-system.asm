@@ -186,7 +186,39 @@ L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
 
 .endmacro
 
-.macro MAC_L_D2B9
+.macro MAC_L_D2AB
+; ----------------------------------------------------------------------------
+; Read LevelTileData[LoadedObj.TileIndex].
+; 
+; Input:
+;   LoadedObj.TileIndex
+; 
+; Output:
+;   A = tile data from LevelTileData
+Obj_ReadTile:
+        ldx     LoadedObj + Obj::TileIndex      ; D2AB
+        lda     LevelTileData,x                 ; D2AD
+        rts                                     ; D2B0
+
+; ----------------------------------------------------------------------------
+; Reads the tile byte at LoadedObj.TileIndex plus an offset (A).
+; 
+; Input:
+;   A = offset
+;     eg, $11 = immediately below
+;         $ff = 1 to the left
+;         $01 = 1 to the right
+; 
+; Output:
+;   A = Tile data
+Obj_ReadTile_WithOffset:
+        clc                                     ; D2B1
+; A (step offset) + $4E → cell index; A = $0500[index] = the look-ahead tile.
+        adc     LoadedObj + Obj::TileIndex      ; D2B2
+        tax                                     ; D2B4
+        lda     LevelTileData,x                 ; D2B5
+        rts                                     ; D2B8
+
 ; ----------------------------------------------------------------------------
 ; Computes the index (+TilemapBaseIndex) into the LevelTileData tile map corresponding to
 ; LoadedObj's current position.
@@ -225,9 +257,91 @@ Obj_CalcTileIndex:
         sta     LoadedObj + Obj::TileIndex      ; D2D8
         rts                                     ; D2DA
 
-.endmacro
+; ----------------------------------------------------------------------------
+; Applies Velocity_X and Velocity_Y to LoadedObj's position with carry-aware 16-bit fixed-point
+; arithmetic.
+; 
+; Notes:
+;   I'm not sure what the benefits of this variant's arithmetic are over
+;   Apply_Double_Velocity_XY's appreach.
+;   Why is the sign of the high byte dropped?  Why isn't the Lo addition done first for easy carry
+;   into the high byte?
+Apply_Velocity_XY:
+        jsr     Apply_Velocity_Y                ; D2DB
+; Applies Velocity_X to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.
+Apply_Velocity_X:
+        lda     LoadedObj + Obj::Position_X_Hi  ; D2DE
+        and     #$7F                            ; D2E0
+; Clear position hi-byte's sign (not sure why).
+        sta     LoadedObj + Obj::Position_X_Hi  ; D2E2
+        lda     LoadedObj + Obj::Position_X_Lo  ; D2E4
+        clc                                     ; D2E6
+        adc     LoadedObj + Obj::Velocity_X     ; D2E7
+; Add Velocity_X to position lo-byte and save result.
+        sta     LoadedObj + Obj::Position_X_Lo  ; D2E9
+; If the carry flag is set, we need to adjust the hi-byte and TileIndex.
+; ROR A; EOR $4C: bit 7 = 1 if carry-out and velocity sign disagree (page crossing)
+        ror     a                               ; D2EB
+; This following EOR produces a positive number if
+;   * Velocity_X is negative (bit7 on) and the shifted Carry flag is set (A's bit7 on); (is this
+;   even possible) or
+;   * Velocity_X is positive and the shifted Carry flag is not set
+        eor     LoadedObj + Obj::Velocity_X     ; D2EC
+; In either case, no additional care required.  Skip to end.
+        bpl     _Apply_Velocity_X__Done         ; D2EE
+        lda     LoadedObj + Obj::Velocity_X     ; D2F0
+; If Velocity_X is negative, DECrement the position hi-byte and TileIndex.
+        bmi     _Apply_Velocity_X__MovedLeft    ; D2F2
+; otherwise, INCrement the position hi-byte and TileIndex.
+        inc     LoadedObj + Obj::Position_X_Hi  ; D2F4
+        inc     LoadedObj + Obj::TileIndex      ; D2F6
+        rts                                     ; D2F8
 
-.macro MAC_L_D324
+; ----------------------------------------------------------------------------
+_Apply_Velocity_X__MovedLeft:
+        dec     LoadedObj + Obj::Position_X_Hi  ; D2F9
+        dec     LoadedObj + Obj::TileIndex      ; D2FB
+_Apply_Velocity_X__Done:
+        rts                                     ; D2FD
+
+; ----------------------------------------------------------------------------
+; Identical to Apply_Velocity_X apart from TileIndex adjustment logic.
+; 
+; Moving up requires subracting $11 from TileIndex and moving down requires adding $11 to id. 
+; That is the only different between the two.
+Apply_Velocity_Y:
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D2FE
+        and     #$7F                            ; D300
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D302
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D304
+        clc                                     ; D306
+        adc     LoadedObj + Obj::Velocity_Y     ; D307
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D309
+        ror     a                               ; D30B
+        eor     LoadedObj + Obj::Velocity_Y     ; D30C
+        bpl     _Apply_Velocity_Y__Done         ; D30E
+        lda     LoadedObj + Obj::Velocity_Y     ; D310
+        bmi     _Apply_Velocity_Y__MovedUp      ; D312
+; Handle moving down a tile.
+; 
+; INC position hi-byte and prep TileIndex addition of $11 (17, one row).
+        inc     LoadedObj + Obj::Position_Y_Hi  ; D314
+        lda     #$11                            ; D316
+        bne     _Apply_Velocity_Y__AdjTileIndex ; D318
+; Handle moving up a tile.
+; 
+; DEC position hi-byte and prep TileIndex addition of $EF (-17, one row).
+_Apply_Velocity_Y__MovedUp:
+        dec     LoadedObj + Obj::Position_Y_Hi  ; D31A
+        lda     #$EF                            ; D31C
+; add ±17 to TileIndex
+_Apply_Velocity_Y__AdjTileIndex:
+        clc                                     ; D31E
+        adc     LoadedObj + Obj::TileIndex      ; D31F
+        sta     LoadedObj + Obj::TileIndex      ; D321
+_Apply_Velocity_Y__Done:
+        rts                                     ; D323
+
 ; ----------------------------------------------------------------------------
 ; Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point
 ; arithmetic.
@@ -264,6 +378,627 @@ _Apply_Double_Velocity_X__OnSignExtensionByteChosen:
         and     #$7F                            ; D344
         sta     LoadedObj + Obj::Position_X_Hi  ; D346
         rts                                     ; D348
+
+; ----------------------------------------------------------------------------
+; Apply DOUBLE the LoadedObject's Y velocity to its position, adjusting tilemap index $4E by
+; 16×row (row stride $11) and keeping $4B in 0-$7F. Dispatch $C042; Y half of
+; Apply_Double_Velocity_XY.
+Apply_Double_Velocity_Y:
+        lda     #$00                            ; D349
+        ldx     LoadedObj + Obj::Velocity_Y     ; D34B
+        bpl     _Apply_Double_Velocity_Y__PushSign; D34D
+        lda     #$FF                            ; D34F
+; PHA the sign-extension byte ($00 or $FF) then add 2×YVel
+_Apply_Double_Velocity_Y__PushSign:
+        pha                                     ; D351
+        txa                                     ; D352
+        asl     a                               ; D353
+        clc                                     ; D354
+        adc     LoadedObj + Obj::Position_Y_Lo  ; D355
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D357
+        pla                                     ; D359
+        adc     LoadedObj + Obj::Position_Y_Hi  ; D35A
+        pha                                     ; D35C
+        sec                                     ; D35D
+        sbc     LoadedObj + Obj::Position_Y_Hi  ; D35E
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D360
+        asl     a                               ; D362
+        asl     a                               ; D363
+        asl     a                               ; D364
+        asl     a                               ; D365
+        clc                                     ; D366
+        adc     LoadedObj + Obj::Position_Y_Hi  ; D367
+        clc                                     ; D369
+        adc     LoadedObj + Obj::TileIndex      ; D36A
+        sta     LoadedObj + Obj::TileIndex      ; D36C
+        pla                                     ; D36E
+        and     #$7F                            ; D36F
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D371
+        rts                                     ; D373
+
+; ----------------------------------------------------------------------------
+L_D374: jsr     V_Collision_Check               ; D374
+        jmp     H_Collision_Check               ; D377
+
+; ----------------------------------------------------------------------------
+L_D37A: jsr     Apply_Velocity_X                ; D37A
+; X-axis terrain collision check and overlap pushback.
+; 
+; Mirror of V_Collision_Check.
+; 
+; Input:
+;   Collision box (half extents)
+;     LoadedObj_CollisionBox_HalfHeight
+;     LoadedObj_CollisionBox_HalfWidth
+;   Object sub-tile position
+;     LoadedObj_Position_Y_Lo
+;     LoadedObj_Position_X_Lo
+;  LoadedObj_TileIndex
+; 
+; Output:
+;   on terrain overlap,
+;     Z = 0
+;     LoadedObj_Position_X_Lo: pushed back to the tile boundary to undo overlap
+;   otherwise,
+;     Z = 1
+H_Collision_Check:
+        jsr     _H_Collision_Check__TileLeft    ; D37D
+; If there is no overlap to the left (Z = 0) we branch to check for overlap to the right.
+        beq     _H_Collision_Check__CheckRight  ; D380
+; otherwise, handle overlap to the left by snapping the object's left-edge to the right-edge of
+; the overlapping tile.
+        lda     $42                             ; D382
+        sta     LoadedObj + Obj::Position_X_Lo  ; D384
+        rts                                     ; D386
+
+; ----------------------------------------------------------------------------
+; Check for overlap with solid tile to the right and apply push-back on overlap.
+_H_Collision_Check__CheckRight:
+        jsr     _H_Collision_Check__TileRight   ; D387
+; If there is no overlap (A = 0) there's nothing left to do.  Exit.
+        beq     _H_Collision_Check__Exit        ; D38A
+; otherwise, handle overlap to the right by snapping the object's right-edge to the left-edge of
+; the overlapping tile.
+        lda     #$00                            ; D38C
+        sec                                     ; D38E
+        sbc     $42                             ; D38F
+        sta     LoadedObj + Obj::Position_X_Lo  ; D391
+; Overlap detected.  Return Z = 0.
+_H_Collision_Check__Exit:
+        rts                                     ; D393
+
+; ----------------------------------------------------------------------------
+; compute tile index for the right-edge of the collision box.
+_H_Collision_Check__TileRight:
+        ldx     LoadedObj + Obj::TileIndex      ; D394
+        lda     LoadedObj + Obj::Position_X_Lo  ; D396
+        clc                                     ; D398
+        adc     $42                             ; D399
+; if flush with, or not-overlapping, tile to the right, skip to tile read.
+        beq     _H_Collision_Check__ReadTile    ; D39B
+        bcc     _H_Collision_Check__ReadTile    ; D39D
+; Otherwise, adjust X right one col before tile read.
+        inx                                     ; D39F
+        jmp     _H_Collision_Check__ReadTile    ; D3A0
+
+; ----------------------------------------------------------------------------
+; compute tile index for the left-edge of the collision box.
+_H_Collision_Check__TileLeft:
+        ldx     LoadedObj + Obj::TileIndex      ; D3A3
+        lda     LoadedObj + Obj::Position_X_Lo  ; D3A5
+        cmp     $42                             ; D3A7
+; if Position_X_Lo >= HalfWidth (no overlap), skip to tile read.
+        bcs     _H_Collision_Check__ReadTile    ; D3A9
+; Otherwise, adjust X left on col before tile read.
+        dex                                     ; D3AB
+; Use TileIndex (X) to load the target tile's flags.
+; bit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.
+; Otherwise, check top/bottom Y edge tiles
+_H_Collision_Check__ReadTile:
+        lda     LevelTileData,x                 ; D3AC
+        bmi     _H_Collision_Check__Exit        ; D3AF
+; BOTTOM-edge Y cross-check:
+; If (Position_Y_Lo + the half-height) > $FF the bottom edge has spilled into the next row, so
+; test that tile too (but only once the spill reaches $20 (2px) to allow objects to smoothly round
+; corners)
+_H_Collision_Check__CheckBottom:
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D3B1
+        clc                                     ; D3B3
+        adc     $43                             ; D3B4
+        bcc     _H_Collision_Check__CheckTop    ; D3B6
+        cmp     #$20                            ; D3B8
+        bcc     _H_Collision_Check__CheckTop    ; D3BA
+        txa                                     ; D3BC
+        clc                                     ; D3BD
+        adc     #$11                            ; D3BE
+        tay                                     ; D3C0
+        lda     LevelTileData,y                 ; D3C1
+        bmi     _H_Collision_Check__Exit        ; D3C4
+; TOP-edge Y cross-check:
+; Same as bottom-edge check, but with subtraction.
+_H_Collision_Check__CheckTop:
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D3C6
+        sec                                     ; D3C8
+        sbc     $43                             ; D3C9
+        bcs     _H_Collision_Check__NoCollide   ; D3CB
+        cmp     #$E0                            ; D3CD
+        bcs     _H_Collision_Check__NoCollide   ; D3CF
+        txa                                     ; D3D1
+        sec                                     ; D3D2
+        sbc     #$11                            ; D3D3
+        tay                                     ; D3D5
+        lda     LevelTileData,y                 ; D3D6
+        bmi     _H_Collision_Check__Exit        ; D3D9
+; No overlap detected.  Return Z = 1.
+_H_Collision_Check__NoCollide:
+        lda     #$00                            ; D3DB
+        rts                                     ; D3DD
+
+; ----------------------------------------------------------------------------
+L_D3DE: jsr     Apply_Velocity_Y                ; D3DE
+; Y-axis terrain collision check and overlap pushback.
+; 
+; Input:
+;   Collision box (half extents)
+;     LoadedObj_CollisionBox_HalfHeight
+;     LoadedObj_CollisionBox_HalfWidth
+;   Object sub-tile position
+;     LoadedObj_Position_Y_Lo
+;     LoadedObj_Position_X_Lo
+;   LoadedObj_TileIndex
+; 
+; Output:
+;   on terrain overlap,
+;     Z = 0
+;     LoadedObj_Position_Y_Lo: pushed back to the tile boundary to undo overlap
+;   otherwise,
+;     Z = 1
+V_Collision_Check:
+        jsr     _V_Collision_Check__TileAbove   ; D3E1
+; If there is no overlap above (Z = 0) we branch to check for overlap below.
+        beq     _V_Collision_Check__CheckBelow  ; D3E4
+; otherwise, handle overlap above by snapping the object's top-edge to the bottom-edge of the tile
+; above.
+        lda     $43                             ; D3E6
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D3E8
+        rts                                     ; D3EA
+
+; ----------------------------------------------------------------------------
+; Check for overlap with solid tile below and apply push-back on overlap.
+_V_Collision_Check__CheckBelow:
+        jsr     _V_Collision_Check__TileBelow   ; D3EB
+; If there is no overlap below (A = 0) there's nothing left to do.  Exit.
+        beq     _V_Collision_Check__Exit        ; D3EE
+; otherwise, handle overlap above by snapping the object's bottom-edge to the top-edge of the tile
+; below.
+        lda     #$00                            ; D3F0
+        sec                                     ; D3F2
+        sbc     $43                             ; D3F3
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D3F5
+        rts                                     ; D3F7
+
+; ----------------------------------------------------------------------------
+; compute tile index for the bottom-edge of the collision box.
+_V_Collision_Check__TileBelow:
+        ldx     LoadedObj + Obj::TileIndex      ; D3F8
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D3FA
+        clc                                     ; D3FC
+        adc     $43                             ; D3FD
+; Branch if A is 0
+        beq     _V_Collision_Check__ReadTile    ; D3FF
+; Branch if Y_Lo and HalfHeight didn't overflow
+        bcc     _V_Collision_Check__ReadTile    ; D401
+; otherwise, adjust X down one row before tile read.
+        txa                                     ; D403
+        clc                                     ; D404
+        adc     #$11                            ; D405
+        tax                                     ; D407
+        jmp     _V_Collision_Check__ReadTile    ; D408
+
+; ----------------------------------------------------------------------------
+; compute tile index for the top-edge of the collision box.
+_V_Collision_Check__TileAbove:
+        ldx     LoadedObj + Obj::TileIndex      ; D40B
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D40D
+        cmp     $43                             ; D40F
+; if Position_Y_Lo >= HalfHeight (no overlap), skip to tile read.
+        bcs     _V_Collision_Check__ReadTile    ; D411
+; Otherwise, adjust X up one row before tile read.
+        txa                                     ; D413
+        sec                                     ; D414
+        sbc     #$11                            ; D415
+        tax                                     ; D417
+; Use TileIndex (X) to load the target tile's flags.
+; bit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.
+; Otherwise, check left/right X edge tiles
+_V_Collision_Check__ReadTile:
+        lda     LevelTileData,x                 ; D418
+        bmi     _V_Collision_Check__Exit        ; D41B
+; RIGHT-edge X cross-check:
+; If (Position_X_Lo + the half-width) > $FF the right edge has spilled into the next column, so
+; test that tile too (but only once the spill reaches $20 (2px) to allow objects to smoothly round
+; corners)'
+_V_Collision_Check__CheckRight:
+        lda     LoadedObj + Obj::Position_X_Lo  ; D41D
+        clc                                     ; D41F
+        adc     $42                             ; D420
+        bcc     _V_Collision_Check__CheckLeft   ; D422
+        cmp     #$20                            ; D424
+        bcc     _V_Collision_Check__CheckLeft   ; D426
+        inx                                     ; D428
+        lda     LevelTileData,x                 ; D429
+        bmi     _V_Collision_Check__Exit        ; D42C
+        dex                                     ; D42E
+; LEFT-edge X cross-check:
+; Same as right-edge check, but with subtraction.
+_V_Collision_Check__CheckLeft:
+        lda     LoadedObj + Obj::Position_X_Lo  ; D42F
+        sec                                     ; D431
+        sbc     $42                             ; D432
+        bcs     _V_Collision_Check__NoCollide   ; D434
+        cmp     #$E0                            ; D436
+        bcs     _V_Collision_Check__NoCollide   ; D438
+        dex                                     ; D43A
+        lda     LevelTileData,x                 ; D43B
+        bmi     _V_Collision_Check__Exit        ; D43E
+; No overlap detected.  Return Z = 1.
+_V_Collision_Check__NoCollide:
+        lda     #$00                            ; D440
+; Overlap detected.  Return Z = 0 (guranteed by BMI branch here on tile overlap).
+_V_Collision_Check__Exit:
+        rts                                     ; D442
+
+; ----------------------------------------------------------------------------
+L_D443: jsr     L_D467                          ; D443
+        beq     L_D44E                          ; D446
+        jsr     L_D452                          ; D448
+        lda     #$FF                            ; D44B
+        rts                                     ; D44D
+
+; ----------------------------------------------------------------------------
+L_D44E: jsr     L_D452                          ; D44E
+        rts                                     ; D451
+
+; ----------------------------------------------------------------------------
+L_D452: jsr     L_D47C                          ; D452
+        lda     LoadedObj + Obj::Velocity_X     ; D455
+        beq     L_D48C                          ; D457
+        bmi     L_D461                          ; D459
+        jsr     L_D48F                          ; D45B
+        jmp     L_D48C                          ; D45E
+
+; ----------------------------------------------------------------------------
+L_D461: jsr     L_D4BC                          ; D461
+        jmp     L_D48C                          ; D464
+
+; ----------------------------------------------------------------------------
+L_D467: jsr     L_D47C                          ; D467
+        lda     LoadedObj + Obj::Velocity_Y     ; D46A
+        beq     L_D48C                          ; D46C
+        bmi     L_D476                          ; D46E
+        jsr     L_D4E6                          ; D470
+        jmp     L_D48C                          ; D473
+
+; ----------------------------------------------------------------------------
+L_D476: jsr     L_D510                          ; D476
+        jmp     L_D48C                          ; D479
+
+; ----------------------------------------------------------------------------
+L_D47C: lda     #$00                            ; D47C
+        sta     $0F                             ; D47E
+        jsr     L_D5F9                          ; D480
+        lda     LoadedObj + Obj::Position_X_Hi  ; D483
+        sta     $08                             ; D485
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D487
+        sta     $09                             ; D489
+        rts                                     ; D48B
+
+; ----------------------------------------------------------------------------
+L_D48C: lda     $0F                             ; D48C
+        rts                                     ; D48E
+
+; ----------------------------------------------------------------------------
+L_D48F: lda     LoadedObj + Obj::Position_X_Hi  ; D48F
+        pha                                     ; D491
+        lda     LoadedObj + Obj::Position_X_Lo  ; D492
+        pha                                     ; D494
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D495
+        pha                                     ; D497
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D498
+        pha                                     ; D49A
+        jsr     L_D5B8                          ; D49B
+        jsr     L_D574                          ; D49E
+        bne     L_D4A6                          ; D4A1
+        jmp     L_D53A                          ; D4A3
+
+; ----------------------------------------------------------------------------
+L_D4A6: pla                                     ; D4A6
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D4A7
+        pla                                     ; D4A9
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D4AA
+        pla                                     ; D4AC
+        sta     LoadedObj + Obj::Position_X_Lo  ; D4AD
+        pla                                     ; D4AF
+        sta     LoadedObj + Obj::Position_X_Hi  ; D4B0
+        lda     $0A                             ; D4B2
+        eor     #$FF                            ; D4B4
+        clc                                     ; D4B6
+        adc     #$01                            ; D4B7
+        sta     LoadedObj + Obj::Position_X_Lo  ; D4B9
+        rts                                     ; D4BB
+
+; ----------------------------------------------------------------------------
+L_D4BC: lda     LoadedObj + Obj::Position_X_Hi  ; D4BC
+        pha                                     ; D4BE
+        lda     LoadedObj + Obj::Position_X_Lo  ; D4BF
+        pha                                     ; D4C1
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D4C2
+        pha                                     ; D4C4
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D4C5
+        pha                                     ; D4C7
+        jsr     L_D5AA                          ; D4C8
+        jsr     L_D574                          ; D4CB
+        beq     L_D53A                          ; D4CE
+        pla                                     ; D4D0
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D4D1
+        pla                                     ; D4D3
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D4D4
+        pla                                     ; D4D6
+        sta     LoadedObj + Obj::Position_X_Lo  ; D4D7
+        pla                                     ; D4D9
+        sta     LoadedObj + Obj::Position_X_Hi  ; D4DA
+        lda     $0A                             ; D4DC
+        sta     LoadedObj + Obj::Position_X_Lo  ; D4DE
+        bne     L_D4E5                          ; D4E0
+        jsr     L_D679                          ; D4E2
+L_D4E5: rts                                     ; D4E5
+
+; ----------------------------------------------------------------------------
+L_D4E6: lda     LoadedObj + Obj::Position_X_Hi  ; D4E6
+        pha                                     ; D4E8
+        lda     LoadedObj + Obj::Position_X_Lo  ; D4E9
+        pha                                     ; D4EB
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D4EC
+        pha                                     ; D4EE
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D4EF
+        pha                                     ; D4F1
+        jsr     L_D5DA                          ; D4F2
+        jsr     L_D547                          ; D4F5
+        beq     L_D53A                          ; D4F8
+        pla                                     ; D4FA
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D4FB
+        pla                                     ; D4FD
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D4FE
+        pla                                     ; D500
+        sta     LoadedObj + Obj::Position_X_Lo  ; D501
+        pla                                     ; D503
+        sta     LoadedObj + Obj::Position_X_Hi  ; D504
+        lda     $0C                             ; D506
+        eor     #$FF                            ; D508
+        clc                                     ; D50A
+        adc     #$01                            ; D50B
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D50D
+        rts                                     ; D50F
+
+; ----------------------------------------------------------------------------
+L_D510: lda     LoadedObj + Obj::Position_X_Hi  ; D510
+        pha                                     ; D512
+        lda     LoadedObj + Obj::Position_X_Lo  ; D513
+        pha                                     ; D515
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D516
+        pha                                     ; D518
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D519
+        pha                                     ; D51B
+        jsr     L_D5CC                          ; D51C
+        jsr     L_D547                          ; D51F
+        beq     L_D53A                          ; D522
+        pla                                     ; D524
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D525
+        pla                                     ; D527
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D528
+        pla                                     ; D52A
+        sta     LoadedObj + Obj::Position_X_Lo  ; D52B
+        pla                                     ; D52D
+        sta     LoadedObj + Obj::Position_X_Hi  ; D52E
+        lda     $0C                             ; D530
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D532
+        bne     L_D539                          ; D534
+        jsr     L_D683                          ; D536
+L_D539: rts                                     ; D539
+
+; ----------------------------------------------------------------------------
+L_D53A: pla                                     ; D53A
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D53B
+        pla                                     ; D53D
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D53E
+        pla                                     ; D540
+        sta     LoadedObj + Obj::Position_X_Lo  ; D541
+        pla                                     ; D543
+        sta     LoadedObj + Obj::Position_X_Hi  ; D544
+        rts                                     ; D546
+
+; ----------------------------------------------------------------------------
+L_D547: lda     LoadedObj + Obj::Position_X_Hi  ; D547
+        pha                                     ; D549
+        lda     LoadedObj + Obj::Position_X_Lo  ; D54A
+        pha                                     ; D54C
+        jsr     L_D5B8                          ; D54D
+        lda     LoadedObj + Obj::Position_X_Hi  ; D550
+        sta     $0E                             ; D552
+        pla                                     ; D554
+        sta     LoadedObj + Obj::Position_X_Lo  ; D555
+        pla                                     ; D557
+        sta     LoadedObj + Obj::Position_X_Hi  ; D558
+        jsr     L_D5AA                          ; D55A
+        jsr     L_D5EE                          ; D55D
+L_D560: lda     LevelTileData,x                 ; D560
+        bmi     L_D5A5                          ; D563
+        inx                                     ; D565
+        lda     LoadedObj + Obj::Position_X_Hi  ; D566
+        cmp     $0E                             ; D568
+        beq     L_D571                          ; D56A
+        inc     LoadedObj + Obj::Position_X_Hi  ; D56C
+        jmp     L_D560                          ; D56E
+
+; ----------------------------------------------------------------------------
+L_D571: lda     #$00                            ; D571
+        rts                                     ; D573
+
+; ----------------------------------------------------------------------------
+L_D574: lda     LoadedObj + Obj::Position_Y_Hi  ; D574
+        pha                                     ; D576
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D577
+        pha                                     ; D579
+        jsr     L_D5DA                          ; D57A
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D57D
+        sta     $0E                             ; D57F
+        pla                                     ; D581
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D582
+        pla                                     ; D584
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D585
+        jsr     L_D5CC                          ; D587
+        jsr     L_D5EE                          ; D58A
+L_D58D: lda     LevelTileData,x                 ; D58D
+        bmi     L_D5A5                          ; D590
+        txa                                     ; D592
+        clc                                     ; D593
+        adc     #$11                            ; D594
+        tax                                     ; D596
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D597
+        cmp     $0E                             ; D599
+        beq     L_D5A2                          ; D59B
+        inc     LoadedObj + Obj::Position_Y_Hi  ; D59D
+        jmp     L_D58D                          ; D59F
+
+; ----------------------------------------------------------------------------
+L_D5A2: lda     #$00                            ; D5A2
+        rts                                     ; D5A4
+
+; ----------------------------------------------------------------------------
+L_D5A5: lda     #$FF                            ; D5A5
+        sta     $0F                             ; D5A7
+        rts                                     ; D5A9
+
+; ----------------------------------------------------------------------------
+L_D5AA: lda     LoadedObj + Obj::Position_X_Lo  ; D5AA
+        sec                                     ; D5AC
+        sbc     $0A                             ; D5AD
+        sta     LoadedObj + Obj::Position_X_Lo  ; D5AF
+        lda     LoadedObj + Obj::Position_X_Hi  ; D5B1
+        sbc     $0B                             ; D5B3
+        sta     LoadedObj + Obj::Position_X_Hi  ; D5B5
+        rts                                     ; D5B7
+
+; ----------------------------------------------------------------------------
+L_D5B8: lda     LoadedObj + Obj::Position_X_Lo  ; D5B8
+        clc                                     ; D5BA
+        adc     $0A                             ; D5BB
+        sta     LoadedObj + Obj::Position_X_Lo  ; D5BD
+        lda     LoadedObj + Obj::Position_X_Hi  ; D5BF
+        adc     $0B                             ; D5C1
+        sta     LoadedObj + Obj::Position_X_Hi  ; D5C3
+        lda     LoadedObj + Obj::Position_X_Lo  ; D5C5
+        bne     L_D5CB                          ; D5C7
+        dec     LoadedObj + Obj::Position_X_Hi  ; D5C9
+L_D5CB: rts                                     ; D5CB
+
+; ----------------------------------------------------------------------------
+L_D5CC: lda     LoadedObj + Obj::Position_Y_Lo  ; D5CC
+        sec                                     ; D5CE
+        sbc     $0C                             ; D5CF
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D5D1
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D5D3
+        sbc     $0D                             ; D5D5
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D5D7
+        rts                                     ; D5D9
+
+; ----------------------------------------------------------------------------
+L_D5DA: lda     LoadedObj + Obj::Position_Y_Lo  ; D5DA
+        clc                                     ; D5DC
+        adc     $0C                             ; D5DD
+        sta     LoadedObj + Obj::Position_Y_Lo  ; D5DF
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D5E1
+        adc     $0D                             ; D5E3
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D5E5
+        lda     LoadedObj + Obj::Position_Y_Lo  ; D5E7
+        bne     L_D5ED                          ; D5E9
+        dec     LoadedObj + Obj::Position_Y_Hi  ; D5EB
+L_D5ED: rts                                     ; D5ED
+
+; ----------------------------------------------------------------------------
+L_D5EE: lda     LoadedObj + Obj::TileIndex      ; D5EE
+        pha                                     ; D5F0
+        jsr     Obj_CalcTileIndex               ; D5F1
+        tax                                     ; D5F4
+        pla                                     ; D5F5
+        sta     LoadedObj + Obj::TileIndex      ; D5F6
+        rts                                     ; D5F8
+
+; ----------------------------------------------------------------------------
+L_D5F9: txa                                     ; D5F9
+        lsr     a                               ; D5FA
+        ror     $0A                             ; D5FB
+        lsr     a                               ; D5FD
+        ror     $0A                             ; D5FE
+        and     #$3F                            ; D600
+        sta     $0B                             ; D602
+        lda     $0A                             ; D604
+        and     #$C0                            ; D606
+        sta     $0A                             ; D608
+        tya                                     ; D60A
+        lsr     a                               ; D60B
+        ror     $0C                             ; D60C
+        lsr     a                               ; D60E
+        ror     $0C                             ; D60F
+        and     #$3F                            ; D611
+        sta     $0D                             ; D613
+        lda     $0C                             ; D615
+        and     #$C0                            ; D617
+        sta     $0C                             ; D619
+        rts                                     ; D61B
+
+; ----------------------------------------------------------------------------
+L_D61C: jsr     L_D635                          ; D61C
+        beq     L_D627                          ; D61F
+        jsr     L_D627                          ; D621
+        lda     #$FF                            ; D624
+        rts                                     ; D626
+
+; ----------------------------------------------------------------------------
+L_D627: jsr     L_D37A                          ; D627
+        beq     L_D634                          ; D62A
+        lda     #$00                            ; D62C
+        sec                                     ; D62E
+        sec                                     ; D62F
+        sbc     LoadedObj + Obj::Velocity_X     ; D630
+        sta     LoadedObj + Obj::Velocity_X     ; D632
+L_D634: rts                                     ; D634
+
+; ----------------------------------------------------------------------------
+L_D635: jsr     L_D3DE                          ; D635
+        beq     L_D642                          ; D638
+        lda     #$00                            ; D63A
+        sec                                     ; D63C
+        sec                                     ; D63D
+        sbc     LoadedObj + Obj::Velocity_Y     ; D63E
+        sta     LoadedObj + Obj::Velocity_Y     ; D640
+L_D642: rts                                     ; D642
+
+; ----------------------------------------------------------------------------
+L_D643: ldx     LoadedObj + Obj::Facing         ; D643
+        lda     LoadedObj + Obj::Position_X_Hi  ; D645
+        clc                                     ; D647
+        adc     L_D65E,x                        ; D648
+        sta     LoadedObj + Obj::Position_X_Hi  ; D64B
+        lda     LoadedObj + Obj::Position_Y_Hi  ; D64D
+        clc                                     ; D64F
+        adc     L_D667,x                        ; D650
+        sta     LoadedObj + Obj::Position_Y_Hi  ; D653
+        lda     LoadedObj + Obj::TileIndex      ; D655
+        clc                                     ; D657
+        adc     L_D670,x                        ; D658
+        sta     LoadedObj + Obj::TileIndex      ; D65B
+        rts                                     ; D65D
 
 .endmacro
 
@@ -802,9 +1537,9 @@ _Obj_FallAndLand__NotLanded:
 ;   LoadedObj.Scratch1 = an edge cooldown timer.  Edge checks only happen when it is 0.
 ; 
 ; # when the turn cooldown LoadedObj.Scratch1 is idle, probe the tile below via
-; TileRead_WithOffset arg $11 (the feet probe the ice check also uses); if it is not solid (bit7
-; clear - a dropoff) reverse XVel $4C and arm a $20-frame cooldown. Walker motion that turns back
-; at platform edges. Dispatch slot $C033 - no callers in USA ROM.'
+; Obj_ReadTile_WithOffset arg $11 (the feet probe the ice check also uses); if it is not solid
+; (bit7 clear - a dropoff) reverse XVel $4C and arm a $20-frame cooldown. Walker motion that turns
+; back at platform edges. Dispatch slot $C033 - no callers in USA ROM.'
 Obj_MoveBounce_TurnAtLedge:
         jsr     Obj_MoveBounce                  ; E02F
         lda     LoadedObj + Obj::Scratch1       ; E032
@@ -819,7 +1554,7 @@ Obj_MoveBounce_TurnAtLedge:
 _Obj_MoveBounce_TurnAtLedge__Probe:
         lda     #$11                            ; E03B
 ; Read the tile directly below ($11).
-        jsr     TileRead_WithOffset             ; E03D
+        jsr     Obj_ReadTile_WithOffset         ; E03D
 ; if bit 7 is set, then it's solid.  Nothing else to do, so exit early.
         bmi     _Obj_MoveBounce_TurnAtLedge__Return; E040
 ; Otherwise, negate Velocity X,

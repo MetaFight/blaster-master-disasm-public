@@ -16,7 +16,7 @@ L_C816: lda     #$00                            ; C816
         sta     $3E                             ; C833
         lda     #$80                            ; C835
         sta     $3F                             ; C837
-        lda     $C3                             ; C839
+        lda     Player_GunLevel                 ; C839
         jsr     L_C841                          ; C83B
         jmp     L_EC73                          ; C83E
 

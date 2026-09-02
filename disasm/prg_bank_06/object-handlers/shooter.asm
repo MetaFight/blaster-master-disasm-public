@@ -14,7 +14,7 @@ ObjHandler_Tank_76_Shooter_Init:
 ; Normal-play body — pick a random heading and launch  [+3 body entry]
 ; enemy descriptor $10: HP 16, and a $80/256 (50%) chance of a Health-x1 ($2C) drop.
 ; TankEnemy_Init also does INC $46, so the next frame runs ObjType $77
-_ObjHandler_Tank_76_Shooter_Init__Update__:
+_ObjHandler_Tank_76_Shooter_Init__Body:
         lda     #$10                            ; AFFF
         jsr     TankEnemy_Init                  ; B001
 ; $47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG
@@ -48,7 +48,7 @@ ObjHandler_Tank_77_Shooter_Main:
 ; ----------------------------------------------------------------------------
 ; Normal-play body — drift, then decide whether to fire  [+3 body entry]
 ; $42/$43 = $80: terrain-collision half-extents for the move below
-_ObjHandler_Tank_77_Shooter_Main__Update__:
+_ObjHandler_Tank_77_Shooter_Main__Body:
         lda     #$80                            ; B016
         sta     $42                             ; B018
         lda     #$80                            ; B01A

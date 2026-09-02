@@ -29,7 +29,7 @@ L_C334: lda     #$00                            ; C334
         sta     $C5                             ; C336
         sta     $15                             ; C338
         sta     $B7                             ; C33A
-        sta     $C3                             ; C33C
+        sta     Player_GunLevel                 ; C33C
         sta     $90                             ; C33E
         sta     LoadedObj + Obj::Velocity_X     ; C340
         sta     LoadedObj + Obj::Velocity_Y     ; C342

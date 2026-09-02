@@ -96,7 +96,7 @@ L_81F4: lda     LoadedObj + Obj::Scratch0       ; 81F4
         sta     LoadedObj + Obj::Scratch0       ; 8203
         lda     #$3B                            ; 8205
         jsr     Enqueue_Sound_Command           ; 8207
-L_820A: jsr     LD2AB                           ; 820A
+L_820A: jsr     Obj_ReadTile                           ; 820A
         and     #$40                            ; 820D
         beq     L_8215                          ; 820F
         lda     #$08                            ; 8211
@@ -114,7 +114,7 @@ L_8217: ldx     #$4C                            ; 8217
         bit     LoadedObj + Obj::Velocity_X     ; 822B
         bpl     L_8231                          ; 822D
         lda     #$FF                            ; 822F
-L_8231: jsr     TileRead_WithOffset                           ; 8231
+L_8231: jsr     Obj_ReadTile_WithOffset                           ; 8231
         jsr     LD238                           ; 8234
         bne     L_823F                          ; 8237
         jsr     L_86EE                          ; 8239
@@ -153,7 +153,7 @@ L_826F: inc     LoadedObj + Obj::Velocity_Y     ; 826F
         jsr     Speed_Limit_Sub                 ; 8277
         jsr     LD3DE                           ; 827A
         bne     L_82A1                          ; 827D
-        jsr     LD2AB                           ; 827F
+        jsr     Obj_ReadTile                    ; 827F
         and     #$40                            ; 8282
         bne     L_828A                          ; 8284
         lda     #$01                            ; 8286
@@ -162,7 +162,7 @@ L_828A: lda     #$04                            ; 828A
 L_828C: sta     LoadedObj + Obj::Scratch0       ; 828C
         lda     $F3                             ; 828E
         bpl     L_829E                          ; 8290
-        jsr     LD2AB                           ; 8292
+        jsr     Obj_ReadTile                    ; 8292
         jsr     LD283                           ; 8295
         bne     L_829E                          ; 8298
         lda     #$03                            ; 829A
@@ -242,7 +242,7 @@ L_831B: lda     $F3                             ; 831B
         and     #$08                            ; 831D
         beq     L_8347                          ; 831F
         lda     #$EF                            ; 8321
-        jsr     TileRead_WithOffset             ; 8323
+        jsr     Obj_ReadTile_WithOffset         ; 8323
         jsr     LD283                           ; 8326
         bne     L_8332                          ; 8329
         lda     #$03                            ; 832B
@@ -250,7 +250,7 @@ L_831B: lda     $F3                             ; 831B
         jmp     L_834A                          ; 832F
 
 ; ----------------------------------------------------------------------------
-L_8332: jsr     LD2AB                           ; 8332
+L_8332: jsr     Obj_ReadTile                           ; 8332
         and     #$40                            ; 8335
         bne     L_833C                          ; 8337
         jmp     L_834A                          ; 8339
@@ -271,7 +271,7 @@ L_834D: lda     #$80                            ; 834D
         sta     LoadedObj + Obj::Position_X_Lo  ; 834F
         lda     #$00                            ; 8351
         sta     LoadedObj + Obj::Velocity_X     ; 8353
-        jsr     LD2AB                           ; 8355
+        jsr     Obj_ReadTile                    ; 8355
         jsr     LD283                           ; 8358
         beq     L_8363                          ; 835B
         lda     #$01                            ; 835D
@@ -293,7 +293,7 @@ L_8373: stx     LoadedObj + Obj::Velocity_Y     ; 8373
         lda     LoadedObj + Obj::Position_Y_Lo  ; 837E
         bpl     L_83AE                          ; 8380
         lda     #$11                            ; 8382
-        jsr     TileRead_WithOffset             ; 8384
+        jsr     Obj_ReadTile_WithOffset         ; 8384
         bpl     L_83AE                          ; 8387
         jsr     LD283                           ; 8389
         beq     L_83AE                          ; 838C
@@ -303,7 +303,7 @@ L_8390: lda     LoadedObj + Obj::Position_Y_Lo  ; 8390
         cmp     #$90                            ; 8394
         bcs     L_83AE                          ; 8396
         lda     #$11                            ; 8398
-        jsr     TileRead_WithOffset             ; 839A
+        jsr     Obj_ReadTile_WithOffset         ; 839A
         bpl     L_83AE                          ; 839D
         jsr     LD283                           ; 839F
         bne     L_83AE                          ; 83A2
@@ -352,7 +352,7 @@ L_83DF: lda     #$10                            ; 83DF
         bit     LoadedObj + Obj::Velocity_X     ; 83F3
         bpl     L_83F9                          ; 83F5
         lda     #$EE                            ; 83F7
-L_83F9: jsr     TileRead_WithOffset                           ; 83F9
+L_83F9: jsr     Obj_ReadTile_WithOffset                           ; 83F9
         and     #$C0                            ; 83FC
         bne     L_841B                          ; 83FE
         lda     #$00                            ; 8400
@@ -411,7 +411,7 @@ L_8465: lda     LoadedObj + Obj::Position_Y_Lo  ; 8465
         cmp     #$40                            ; 8467
         bcs     L_847C                          ; 8469
         lda     #$EF                            ; 846B
-        jsr     TileRead_WithOffset             ; 846D
+        jsr     Obj_ReadTile_WithOffset         ; 846D
         and     #$40                            ; 8470
         bne     L_847C                          ; 8472
         lda     #$40                            ; 8474
@@ -420,7 +420,7 @@ L_8465: lda     LoadedObj + Obj::Position_Y_Lo  ; 8465
         sta     LoadedObj + Obj::Velocity_Y     ; 847A
 L_847C: lda     $F3                             ; 847C
         bpl     L_848C                          ; 847E
-        jsr     LD2AB                           ; 8480
+        jsr     Obj_ReadTile                    ; 8480
         jsr     LD283                           ; 8483
         bne     L_848C                          ; 8486
         lda     #$03                            ; 8488
@@ -597,7 +597,7 @@ L_85E2: lda     $4F                             ; 85E2
         lda     #$7F                            ; 85EA
         jsr     LD7A0                           ; 85EC
         bmi     L_85FB                          ; 85EF
-        jsr     LD2AB                           ; 85F1
+        jsr     Obj_ReadTile                    ; 85F1
         jsr     LD256                           ; 85F4
         bne     L_8620                          ; 85F7
         lda     #$40                            ; 85F9
@@ -946,7 +946,7 @@ L_8853: lda     #$80                            ; 8853
         lda     #$80                            ; 8857
         sta     $43                             ; 8859
         jsr     Apply_Velocity_X                ; 885B
-        jsr     LD2AB                           ; 885E
+        jsr     Obj_ReadTile                    ; 885E
         bmi     L_8886                          ; 8861
         dec     LoadedObj + Obj::Scratch1       ; 8863
         beq     L_8886                          ; 8865

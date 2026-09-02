@@ -61,7 +61,7 @@ L_A442: sta     LoadedObj + Obj::Velocity_X     ; A442
         adc     #$18                            ; A44A
         sta     LoadedObj + Obj::Scratch2       ; A44C
 L_A44E: lda     #$11                            ; A44E
-        jsr     TileRead_WithOffset             ; A450
+        jsr     Obj_ReadTile_WithOffset         ; A450
         bpl     L_A480                          ; A453
         jsr     Obj_MoveAndCollide              ; A455
         and     #$80                            ; A458

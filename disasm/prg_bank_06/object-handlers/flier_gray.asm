@@ -5,7 +5,7 @@ ObjHandler_Tank_50_Gray_Flier_Spawner_Init:
         jmp     _ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Done; B29B
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Update__:
+_ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Body:
         lda     #$14                            ; B29E
         jsr     TankEnemy_Init                  ; B2A0
 ; TankEnemy_Init has already INC'd LoadedObj.ObjType from $50 to $51, so the following lines are
@@ -26,7 +26,7 @@ ObjHandler_Tank_51_Gray_Flier_Spawner_Main:
 ; Spawns a Gray Flier, on average, every 128 frames (~2s).
 ; 
 ; Start by setting the collision box dimensions...
-_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Update__:
+_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Body:
         lda     #$80                            ; B2AB
         sta     $42                             ; B2AD
         lda     #$80                            ; B2AF
@@ -89,7 +89,7 @@ ObjHandler_Tank_7D_Gray_Flier_Main:
 
 ; ----------------------------------------------------------------------------
 ; Start by setting collision box.
-_ObjHandler_Tank_7D_Gray_Flier_Main__Update__:
+_ObjHandler_Tank_7D_Gray_Flier_Main__Body:
         lda     #$80                            ; B2EF
         sta     $42                             ; B2F1
         lda     #$80                            ; B2F3

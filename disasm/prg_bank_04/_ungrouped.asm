@@ -753,9 +753,9 @@ L_8DFE: lda     $4F                             ; 8DFE
         sta     $4F                             ; 8E09
         lda     $4F                             ; 8E0B
         beq     L_8E15                          ; 8E0D
-        lda     $C3                             ; 8E0F
+        lda     Player_GunLevel                 ; 8E0F
         beq     L_8E15                          ; 8E11
-        dec     $C3                             ; 8E13
+        dec     Player_GunLevel                 ; 8E13
 L_8E15: ldx     #$00                            ; 8E15
         lda     LoadedObj + Obj::Facing         ; 8E17
         and     #$03                            ; 8E19
@@ -801,7 +801,7 @@ L_8E57: .byte   $00,$01,$00,$02                 ; 8E57
 L_8E5B: lda     $F3                             ; 8E5B
         and     #$C0                            ; 8E5D
         beq     L_8E94                          ; 8E5F
-        lda     $C3                             ; 8E61
+        lda     Player_GunLevel                 ; 8E61
         asl     a                               ; 8E63
         rol     a                               ; 8E64
         rol     a                               ; 8E65
@@ -1177,7 +1177,7 @@ L_90EE: jsr     L_8E95                          ; 90EE
         lda     #$03                            ; 90FD
         sta     LoadedObj + Obj::Scratch1       ; 90FF
         inc     LoadedObj + Obj::Type           ; 9101
-        lda     $C3                             ; 9103
+        lda     Player_GunLevel                 ; 9103
         cmp     #$07                            ; 9105
         beq     L_910F                          ; 9107
         lda     #$1C                            ; 9109

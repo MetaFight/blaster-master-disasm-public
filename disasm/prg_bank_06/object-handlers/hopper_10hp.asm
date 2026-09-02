@@ -5,7 +5,7 @@ ObjHandler_Tank_7A_Gray_Hopper_10HP_Init:
         jmp     _ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Done; B16E
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Update__:
+_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Body:
         lda     #$12                            ; B171
 ; Init the enemy from descriptor $12.
         jsr     TankEnemy_Init                  ; B173
@@ -43,7 +43,7 @@ ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling:
 ; +3 body entry (normal play)
 ; 
 ; Start by setting collision box dimensions.
-_ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling__Update__:
+_ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling__Body:
         lda     #$80                            ; B192
         sta     $42                             ; B194
         lda     #$C0                            ; B196
@@ -127,7 +127,7 @@ GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame:
 _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__EdgeHop:
         lda     #$11                            ; B1DE
 ; Test tile below ($11)
-        jsr     TileRead_WithOffset             ; B1E0
+        jsr     Obj_ReadTile_WithOffset         ; B1E0
 ; If bit 7 is set then the tile is solid.  Nothing to do.  Exit early.
         bmi     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__WalkReturn; B1E3
 ; Otherwise, roll the dice to see if a hop is warranted.

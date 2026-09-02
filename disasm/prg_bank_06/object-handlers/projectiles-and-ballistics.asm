@@ -30,7 +30,7 @@ L_978B: lda     #$80                            ; 978B
 
 ; ----------------------------------------------------------------------------
 L_979F: jsr     Apply_Double_Velocity_XY                           ; 979F
-L_97A2: jsr     LD2AB                           ; 97A2
+L_97A2: jsr     Obj_ReadTile                           ; 97A2
         bpl     L_97C6                          ; 97A5
         asl     a                               ; 97A7
         bpl     L_97C0                          ; 97A8
@@ -513,7 +513,7 @@ ObjHandler_Tank_39_Big_Gray_Main:
 ; Normal-play body.
 ; 
 ; Starts by setting collision box.
-_ObjHandler_Tank_39_Big_Gray_Main__Update__:
+_ObjHandler_Tank_39_Big_Gray_Main__Body:
         lda     #$80                            ; 9EE3
         sta     $42                             ; 9EE5
         lda     #$80                            ; 9EE7
