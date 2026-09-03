@@ -70,7 +70,7 @@ L_AE59: lda     #$0D                            ; AE59
 
 ; ----------------------------------------------------------------------------
 L_AE63: lda     #$01                            ; AE63
-        jsr     Obj_SetAttrFlipX                ; AE65
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; AE65
         lda     Global_FrameCounter             ; AE68
         ldx     #$02                            ; AE6A
         jsr     LE060                           ; AE6C

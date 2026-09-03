@@ -166,7 +166,7 @@ projectiles-ballistics.md).
   internals `Trig_CosByAngle` `$E1D2` / `Trig_SinByAngle` `$E1D5` / `ScaleBySignedFrac` `$E196` /
   `ScaleByUnsignedFrac` `$E182` over `Trig_QuarterSineTable` `$E202`), `$DF68` = `Obj_MoveBounce` (move +
   reflect velocity on wall collision, via `Obj_MoveAndCollide` `$E083`), `$DF36` =
-  `Obj_SpawnChild_A0_Throttled` (rate-limited child spawn), `$E04E` = `Obj_SetAttrFlipX`
+  `Obj_SpawnChild_A0_Throttled` (rate-limited child spawn), `$E04E` = `Obj_SetOAMAttr_FlipX_and_Palette`
   (OAM attr / h-flip by X-velocity sign).
 - The fire-timing analysis in "Can the player predict the shot?" was verified byte-for-byte:
   handler `$B013` decoded directly, and the `$DF36` throttle (`$11 & $4C == 0` frame-gate + fresh

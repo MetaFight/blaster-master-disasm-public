@@ -95,7 +95,7 @@ L_AFE1: lda     #$0F                            ; AFE1
 
 ; ----------------------------------------------------------------------------
 L_AFEB: lda     #$00                            ; AFEB
-        jsr     Obj_SetAttrFlipX                ; AFED
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; AFED
         ldx     #$2F                            ; AFF0
         lda     LoadedObj + Obj::Scratch0       ; AFF2
         beq     L_AFF7                          ; AFF4

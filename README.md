@@ -13,7 +13,7 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 104 / 851 (12%) |
+| **M4** — Verified subroutines (public, clean) | 108 / 851 (13%) |
 | **M6** — Verified docs (public, clean) | 2 / 117 (2%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -24,7 +24,7 @@ verified and have since been modified.
 #### Area 1
 
 <details open>
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛ 61.4% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜▫️⬛⬛⬛⬛⬛ 70.5% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -41,7 +41,7 @@ verified and have since been modified.
 | <details><summary>✅ Gray Flier Spawner</summary>✅ <code>ObjHandler_Tank_50_Gray_Flier_Spawner_Init</code><br/>✅ <code>ObjHandler_Tank_51_Gray_Flier_Spawner_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Gray Hopper; 10HP</summary>✅ <code>ObjHandler_Tank_7A_Gray_Hopper_10HP_Init</code><br/>✅ <code>ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling</code></details> | 2 / 2 |
 | <details><summary>✅ Gray Hopper; 6HP</summary>✅ <code>ObjHandler_Tank_5F_Gray_Hopper_6HP_Init</code><br/>✅ <code>ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking</code><br/>✅ <code>ObjHandler_Tank_61_GrayHopper6HP_Patrolling</code></details> | 3 / 3 |
-| <details><summary>⬜ Hulk</summary>⬜ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>⬜ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Hulk</summary>✅ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>✅ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Jellyfish</summary>⬜ <code>ObjHandler_Tank_80_Jellyfish_Init</code><br/>⬜ <code>ObjHandler_Tank_81_Jellyfish_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Mine</summary>⬜ <code>ObjHandler_Tank_64_Mine_Init</code><br/>⬜ <code>ObjHandler_Tank_65_Mine_Main</code></details> | 0 / 2 |
 | <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Common_35_PickUp_Main</code></details> | 1 / 1 |
@@ -49,7 +49,7 @@ verified and have since been modified.
 | <details><summary>✅ Pick-up: Homing Missile; x20</summary>✅ <code>ObjHandler_Tank_32_Homing_Missiles_x20_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Hover; x4</summary>✅ <code>ObjHandler_Tank_2F_Pick_up_Hover_x4_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Pow; x4</summary>✅ <code>ObjHandler_Tank_2D_Pick_up_Pow_x4_Init</code></details> | 1 / 1 |
-| <details><summary>⬜ Projectile: Medium Red; Various</summary>⬜ <code>ObjHandler_Tank_48_Various_Init</code><br/>⬜ <code>ObjHandler_Tank_49_Various_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Projectile: Medium Red; Various</summary>✅ <code>ObjHandler_Tank_48_Medium_Red_Projectile_Init</code><br/>✅ <code>ObjHandler_Tank_49_Medium_Red_Projectile_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Projectile: Small Red</summary>⬜ <code>ObjHandler_Tank_3C_Small_Red_Init</code><br/>⬜ <code>ObjHandler_Tank_3D_Small_Red_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Shooter</summary>⬜ <code>ObjHandler_Tank_76_Shooter_Init</code><br/>⬜ <code>ObjHandler_Tank_77_Shooter_Main</code></details> | 0 / 2 |
 | <details><summary>✅ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>✅ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 2 / 2 |
@@ -158,7 +158,7 @@ verified and have since been modified.
 #### Area 4
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 40.0% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛ 53.3% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -172,10 +172,10 @@ verified and have since been modified.
 | <details><summary>✅ Flier; Gray</summary>✅ <code>ObjHandler_Tank_7D_Gray_Flier_Main</code></details> | 1 / 1 |
 | <details><summary>✅ Gray Flier Spawner</summary>✅ <code>ObjHandler_Tank_50_Gray_Flier_Spawner_Init</code><br/>✅ <code>ObjHandler_Tank_51_Gray_Flier_Spawner_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Gray Hopper; 10HP</summary>✅ <code>ObjHandler_Tank_7A_Gray_Hopper_10HP_Init</code><br/>✅ <code>ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling</code></details> | 2 / 2 |
-| <details><summary>⬜ Hulk</summary>⬜ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>⬜ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Hulk</summary>✅ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>✅ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Mine</summary>⬜ <code>ObjHandler_Tank_64_Mine_Init</code><br/>⬜ <code>ObjHandler_Tank_65_Mine_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Orb</summary>⬜ <code>ObjHandler_Tank_72_Orb_Init</code><br/>⬜ <code>ObjHandler_Tank_73_Orb_Main</code></details> | 0 / 2 |
-| <details><summary>⬜ Projectile: Medium Red; Various</summary>⬜ <code>ObjHandler_Tank_48_Various_Init</code><br/>⬜ <code>ObjHandler_Tank_49_Various_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Projectile: Medium Red; Various</summary>✅ <code>ObjHandler_Tank_48_Medium_Red_Projectile_Init</code><br/>✅ <code>ObjHandler_Tank_49_Medium_Red_Projectile_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Projectile: Small Red</summary>⬜ <code>ObjHandler_Tank_3C_Small_Red_Init</code><br/>⬜ <code>ObjHandler_Tank_3D_Small_Red_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Shooter</summary>⬜ <code>ObjHandler_Tank_76_Shooter_Init</code><br/>⬜ <code>ObjHandler_Tank_77_Shooter_Main</code></details> | 0 / 2 |
 | <details><summary>✅ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>✅ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 2 / 2 |
@@ -264,7 +264,7 @@ verified and have since been modified.
 #### Area 7
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛ 53.8% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜◽⬛⬛⬛⬛⬛⬛⬛ 64.1% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -277,7 +277,7 @@ verified and have since been modified.
 | <details><summary>⬜ Flier; Red</summary>⬜ <code>ObjHandler_Tank_7C_Red_Flier</code></details> | 0 / 1 |
 | <details><summary>✅ Flying Bomber</summary>✅ <code>ObjHandler_Tank_6C_Flying_Bomber_Init</code><br/>✅ <code>ObjHandler_Tank_6D_Flying_Bomber_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Gray Hopper; 10HP</summary>✅ <code>ObjHandler_Tank_7A_Gray_Hopper_10HP_Init</code><br/>✅ <code>ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling</code></details> | 2 / 2 |
-| <details><summary>⬜ Hulk</summary>⬜ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>⬜ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Hulk</summary>✅ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>✅ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Mine</summary>⬜ <code>ObjHandler_Tank_64_Mine_Init</code><br/>⬜ <code>ObjHandler_Tank_65_Mine_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Orb</summary>⬜ <code>ObjHandler_Tank_72_Orb_Init</code><br/>⬜ <code>ObjHandler_Tank_73_Orb_Main</code></details> | 0 / 2 |
 | <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Common_35_PickUp_Main</code></details> | 1 / 1 |
@@ -288,7 +288,7 @@ verified and have since been modified.
 | <details><summary>✅ Pick-up: Multi-Warhead; x20</summary>✅ <code>ObjHandler_Tank_34_Pickup_Warheads_x20_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Pow; x4</summary>✅ <code>ObjHandler_Tank_2D_Pick_up_Pow_x4_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up; Pow x1</summary>✅ <code>ObjHandler_Tank_2C_Pick_up_Pow_x1_Init</code></details> | 1 / 1 |
-| <details><summary>⬜ Projectile: Medium Red; Various</summary>⬜ <code>ObjHandler_Tank_48_Various_Init</code><br/>⬜ <code>ObjHandler_Tank_49_Various_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Projectile: Medium Red; Various</summary>✅ <code>ObjHandler_Tank_48_Medium_Red_Projectile_Init</code><br/>✅ <code>ObjHandler_Tank_49_Medium_Red_Projectile_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Projectile: Small Red</summary>⬜ <code>ObjHandler_Tank_3C_Small_Red_Init</code><br/>⬜ <code>ObjHandler_Tank_3D_Small_Red_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Red Flier Spawner</summary>⬜ <code>ObjHandler_Tank_4E_Red_Flier_Spawner_Init</code><br/>⬜ <code>ObjHandler_Tank_4F_Red_Flier_Spawner_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Shooter</summary>⬜ <code>ObjHandler_Tank_76_Shooter_Init</code><br/>⬜ <code>ObjHandler_Tank_77_Shooter_Main</code></details> | 0 / 2 |
@@ -364,16 +364,18 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ✅✅✅✅ | 06 / `object-handlers/flying-bomber` |  |
 | ✅✅✅✅ | 06 / `object-handlers/hopper_10hp` |  |
 | ✅✅✅✅ | 06 / `object-handlers/hopper_6hp` |  |
+| ✅✅✅✅ | 06 / `object-handlers/hopper_hulk_common` |  |
 | ✅✅✅✅ | 06 / `object-handlers/turret` |  |
 | ✅✅✅✅ | 07 / `rng` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 05 / `(ungrouped — no .groups file)` |  |
 | ⬜⬜⬜◽<br/>`97.1%` | 06 / `object-handlers/pickups` | `ObjHandler_Common_35_PickUp_Main` depends on unverified routines `OAM_Stage_Sprite_Shape5_Quad2x2` and `BankDispatch_Index`. |
+| ⬜⬜⬜◽<br/>`92.9%` | 06 / `object-handlers/hulk` | `ObjHandler_Tank_5E_Hulk_Main` depends on unverified routine `Obj_SpawnChild_A0_Throttled`. |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/_common` |  |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_gray` | `ObjHandler_Tank_59_Gray_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_red` | `ObjHandler_Tank_8E_Red_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
-| ◽⬛⬛⬛<br/>`13.1%` | 06 / `object-handlers/projectiles-and-ballistics` | `ObjHandler_Tank_47_Turret_Shot_Main` depends on unverified routines `HitboxScan_LockOn` and `SpawnMidExplosion`. |
+| ◽⬛⬛⬛<br/>`18.1%` | 06 / `object-handlers/projectiles-and-ballistics` | `ObjHandler_Tank_47_Turret_Shot_Main` and `ObjHandler_Tank_49_Medium_Red_Projectile_Main` depend on unverified routines `HitboxScan_LockOn` and `SpawnMidExplosion`. |
 | ◽⬛⬛⬛<br/>`12.7%` | 06 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
@@ -391,7 +393,6 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flier_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-bomber_caterpillar_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-ship` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hulk` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jason-small` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jellyfish` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/mine` |  |
@@ -436,7 +437,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **6** pages, of which **4** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-09-02 12:20 UTC_
+_Generated: 2026-09-03 02:19 UTC_
 
 ## Pages
 

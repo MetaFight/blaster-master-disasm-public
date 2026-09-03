@@ -1570,16 +1570,14 @@ _Obj_MoveBounce_TurnAtLedge__Return:
         rts                                     ; E04D
 
 ; ----------------------------------------------------------------------------
-; Sets the sprite OAM attribute ($44) to A, adding the horizontal-flip bit when the object faces
-; right (X velocity $4C non-negative). One call sets both palette and facing — e.g. the Fliers
-; pass their palette index (Red $7C = pal 0, Gray $7D = pal 1).
-Obj_SetAttrFlipX:
+; Sets the sprite OAM attribute FlipX based on Obj.Velocity_X, and OAM attribute Paletted to Ar.
+Obj_SetOAMAttr_FlipX_and_Palette:
         ldx     LoadedObj + Obj::Velocity_X     ; E04E
-        bmi     _Obj_SetAttrFlipX__Store        ; E050
+        bmi     _Obj_SetOAMAttr_FlipX_and_Palette__Store; E050
 ; If XVel $4C ≥ 0, XOR the horizontal-flip bit ($40) into attr A; store to $44.
         eor     #$40                            ; E052
 ; Store OAM attribute $44.
-_Obj_SetAttrFlipX__Store:
+_Obj_SetOAMAttr_FlipX_and_Palette__Store:
         sta     $44                             ; E054
         rts                                     ; E056
 

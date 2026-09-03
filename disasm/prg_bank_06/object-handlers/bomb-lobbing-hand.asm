@@ -84,7 +84,7 @@ L_B3BF: lda     #$15                            ; B3BF
 
 ; ----------------------------------------------------------------------------
 L_B3C9: lda     #$01                            ; B3C9
-        jsr     Obj_SetAttrFlipX                ; B3CB
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B3CB
         lda     LoadedObj + Obj::Scratch0       ; B3CE
         beq     L_B3DD                          ; B3D0
         lda     LoadedObj + Obj::Scratch1       ; B3D2

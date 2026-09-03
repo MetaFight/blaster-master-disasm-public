@@ -1031,5 +1031,74 @@ _ObjHandler_Tank_47_Turret_Shot_Main__Explode:
 _ObjHandler_Tank_47_Turret_Shot_Main__Despawn:
         jmp     Obj_Despawn                     ; A234
 
+; ----------------------------------------------------------------------------
+; ObjType $48: Medium Red Projectile - Init.
+; 
+; Heading (Param_ProjectSpawn_Heading) and Speed (Param_ProjectSpawn_Speed) provided by spawn
+; parent.
+; Note: This can lead to race conditions when multiple parents uses the parameter variables on the
+; same frame.
+ObjHandler_Tank_48_Medium_Red_Projectile_Init:
+        jmp     _ObjHandler_Tank_48_Medium_Red_Projectile_Init__Done; A237
+
+; ----------------------------------------------------------------------------
+_ObjHandler_Tank_48_Medium_Red_Projectile_Init__Body:
+        lda     $9D                             ; A23A
+; Set LoadedObj.Facing = Param_ProjectSpawn_Heading
+        sta     LoadedObj + Obj::Facing         ; A23C
+        lda     $9E                             ; A23E
+        tay                                     ; A240
+; Set LoadedObj.Velocity_X/Y based on Facing heading and scalar Y
+        jsr     Obj_FacingToVelocity            ; A241
+; Set LoadedObj.TileIndex.
+        jsr     Obj_CalcTileIndex               ; A244
+; Increment LoadedObj.Type to Main state.
+        inc     LoadedObj + Obj::Type           ; A247
+; Play launch SFX.
+        jsr     PlaySound_23                    ; A249
+_ObjHandler_Tank_48_Medium_Red_Projectile_Init__Done:
+        rts                                     ; A24C
+
+; ----------------------------------------------------------------------------
+; ObjType $49: Medium Red Projectile - Main.
+ObjHandler_Tank_49_Medium_Red_Projectile_Main:
+        jmp     _ObjHandler_Tank_49_Medium_Red_Projectile_Main__Render__; A24D
+
+; ----------------------------------------------------------------------------
+; Start by setting collision box.
+_ObjHandler_Tank_49_Medium_Red_Projectile_Main__Body:
+        lda     #$40                            ; A250
+        sta     $42                             ; A252
+        lda     #$40                            ; A254
+        sta     $43                             ; A256
+; Apply movement and collisions.
+        jsr     Obj_MoveAndCollide              ; A258
+; On a collision, skip to HitExplode.
+        bne     _ObjHandler_Tank_49_Medium_Red_Projectile_Main__HitExplode; A25B
+_ObjHandler_Tank_49_Medium_Red_Projectile_Main__Render__:
+        lda     #$08                            ; A25D
+        sta     $40                             ; A25F
+        lda     #$08                            ; A261
+        sta     $41                             ; A263
+; Run on-screen test.
+        jsr     ScreenPos_Compute               ; A265
+; If off-screen, skip to Despawn.
+        bne     _ObjHandler_Tank_49_Medium_Red_Projectile_Main__Despawn; A268
+        lda     #$20                            ; A26A
+; Otherwise, handle collisions with Player.
+        jsr     LD711                           ; A26C
+        lda     #$00                            ; A26F
+        sta     $44                             ; A271
+        lda     #$54                            ; A273
+        sta     $45                             ; A275
+; Draw pattern #$54 with palette OAM attributes #$00 (no flips, palette 0).
+        jmp     OAM_Stage_Pattern               ; A277
+
+; ----------------------------------------------------------------------------
+_ObjHandler_Tank_49_Medium_Red_Projectile_Main__HitExplode:
+        jsr     L_9B81                          ; A27A
+_ObjHandler_Tank_49_Medium_Red_Projectile_Main__Despawn:
+        jmp     Obj_Despawn                     ; A27D
+
 .endmacro
 

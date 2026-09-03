@@ -155,11 +155,11 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage:
 
 ; ----------------------------------------------------------------------------
 ; still alive: $44 = sprite palette 1, plus the horizontal-flip bit when the X velocity $4C is
-; non-negative (Obj_SetAttrFlipX derives the flip from $4C, NOT from the heading $47). Then pick
-; the pose from the wind-up timer.
+; non-negative (Obj_SetOAMAttr_FlipX_and_Palette derives the flip from $4C, NOT from the heading
+; $47). Then pick the pose from the wind-up timer.
 _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:
         lda     #$01                            ; A85A
-        jsr     Obj_SetAttrFlipX                ; A85C
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; A85C
         lda     LoadedObj + Obj::Scratch1       ; A85F
         beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle; A861
 ; $51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
@@ -258,9 +258,9 @@ _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage:
 ; Prep A as with the OAM Attribute byte value,
 _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render:
         lda     #$01                            ; A8B9
-; Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to
+; Obj_SetOAMAttr_FlipX_and_Palette sets the H-flip bit to A and saves a copy to
 ; OAM_Attribute__or__Outgoing_Contact_Damage
-        jsr     Obj_SetAttrFlipX                ; A8BB
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; A8BB
         lda     Global_FrameCounter             ; A8BE
         lsr     a                               ; A8C0
         lsr     a                               ; A8C1

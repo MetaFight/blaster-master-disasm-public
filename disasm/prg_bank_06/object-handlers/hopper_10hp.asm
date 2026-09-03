@@ -62,7 +62,7 @@ _ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling__Body:
 _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__GroundedPhysics:
         jsr     Obj_MoveBounce                  ; B1A5
 ; Handle edge-hop.
-        jsr     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__EdgeHop; B1A8
+        jsr     _ObjHandler_Hopper_Hulk_Common__EdgeHop; B1A8
 ; The post-physics tail every other path falls into
 _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__AfterPhysics:
         lda     #$10                            ; B1AB
@@ -92,9 +92,9 @@ _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Damage:
 ; Prep A as with the OAM Attribute byte value,
 _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Render:
         lda     #$01                            ; B1C5
-; Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to
+; Obj_SetOAMAttr_FlipX_and_Palette sets the H-flip bit to A and saves a copy to
 ; OAM_Attribute__or__Outgoing_Contact_Damage
-        jsr     Obj_SetAttrFlipX                ; B1C7
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B1C7
         lda     Global_FrameCounter             ; B1CA
         lsr     a                               ; B1CC
         lsr     a                               ; B1CD
@@ -120,39 +120,5 @@ DEAD_TankGrayHopper_OrphanRTS:
 ; Table of 4 metasprite ids used to animate the patrolling state.
 GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame:
         .byte   $02,$03,$02,$04                 ; B1DA
-; ----------------------------------------------------------------------------
-; Handler that has a chance of making the Hopper hop when at a platform edges.
-; (well, more accurately, when the tile directly below its center is not solid.  This assumes the
-; hopper walked there from a neighboring solid tile.)
-_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__EdgeHop:
-        lda     #$11                            ; B1DE
-; Test tile below ($11)
-        jsr     Obj_ReadTile_WithOffset         ; B1E0
-; If bit 7 is set then the tile is solid.  Nothing to do.  Exit early.
-        bmi     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__WalkReturn; B1E3
-; Otherwise, roll the dice to see if a hop is warranted.
-        jsr     Step_RNG                        ; B1E5
-        and     #$0F                            ; B1E8
-; If the lower nibble is zero, perform a jump.
-        beq     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__WalkJump; B1EA
-        lda     #$00                            ; B1EC
-        sec                                     ; B1EE
-        sbc     LoadedObj + Obj::Velocity_X     ; B1EF
-; otherwise, flip Velocity_X (bounce off edge).
-        sta     LoadedObj + Obj::Velocity_X     ; B1F1
-        jmp     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__WalkReturn; B1F3
-
-; ----------------------------------------------------------------------------
-; Initiate jump by setting Velocity_Y to -2.
-_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__WalkJump:
-        lda     #$E0                            ; B1F6
-        sta     LoadedObj + Obj::Velocity_Y     ; B1F8
-        lda     #$00                            ; B1FA
-; Set Grounded = 0
-        sta     LoadedObj + Obj::Scratch0       ; B1FC
-; shared exit.
-_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__WalkReturn:
-        rts                                     ; B1FE
-
 .endmacro
 

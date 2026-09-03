@@ -92,7 +92,7 @@ L_B6C8: lda     #$19                            ; B6C8
 
 ; ----------------------------------------------------------------------------
 L_B6D2: lda     #$01                            ; B6D2
-        jsr     Obj_SetAttrFlipX                ; B6D4
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B6D4
         lda     Global_FrameCounter             ; B6D7
         lsr     a                               ; B6D9
         lsr     a                               ; B6DA

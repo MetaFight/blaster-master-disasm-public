@@ -107,7 +107,7 @@ L_B7A8: jmp     L_B7E3                          ; B7A8
 L_B7AB: lda     $3F                             ; B7AB
         pha                                     ; B7AD
         lda     #$01                            ; B7AE
-        jsr     Obj_SetAttrFlipX                ; B7B0
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B7B0
         jsr     LD77D                           ; B7B3
         clc                                     ; B7B6
         lda     $3F                             ; B7B7

@@ -34,6 +34,7 @@ Movement speed of `1.0` px/frame.
 3. **Attacking (`$5A`).** Pauses briefly to buzz and then launches itself.
 
 ## Fields
+
 | Name | State | Description | Format |
 | --- | --- | --- | --- |
 | `Facing`   | | Heading | 8-bit heading |

@@ -132,7 +132,7 @@ _ObjHandler_Tank_7D_Gray_Flier_Main__Damage:
 ; animation metasprite id, then calls shared renderer.
 _ObjHandler_Tank_7D_Gray_Flier_Main__Render:
         lda     #$01                            ; B322
-        jsr     Obj_SetAttrFlipX                ; B324
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B324
         lda     Global_FrameCounter             ; B327
         lsr     a                               ; B329
         and     #$03                            ; B32A

@@ -116,7 +116,7 @@ _ObjHandler_Tank_77_Shooter_Main__Damage:
 ; OAM attr = sprite sub-palette 1, H-flipped by the sign of $4C
 _ObjHandler_Tank_77_Shooter_Main__Render:
         lda     #$01                            ; B065
-        jsr     Obj_SetAttrFlipX                ; B067
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B067
 ; pose select: $50 non-zero (searching) keeps metasprite $6C…
         ldx     #$6C                            ; B06A
         lda     LoadedObj + Obj::Scratch0       ; B06C

@@ -77,7 +77,7 @@ L_B27C: lda     #$13                            ; B27C
 
 ; ----------------------------------------------------------------------------
 L_B286: lda     #$00                            ; B286
-        jsr     Obj_SetAttrFlipX                ; B288
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B288
         lda     Global_FrameCounter             ; B28B
         lsr     a                               ; B28D
         and     #$03                            ; B28E

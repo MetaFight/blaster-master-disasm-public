@@ -81,7 +81,7 @@ L_B518: lda     #$17                            ; B518
         lda     #$00                            ; B525
         sta     LoadedObj + Obj::Velocity_Y     ; B527
 L_B529: lda     #$01                            ; B529
-        jsr     Obj_SetAttrFlipX                ; B52B
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B52B
         lda     Global_FrameCounter             ; B52E
         lsr     a                               ; B530
         lsr     a                               ; B531
@@ -121,7 +121,7 @@ L_B567: lda     LoadedObj + Obj::Scratch1       ; B567
 
 ; ----------------------------------------------------------------------------
 L_B56E: lda     #$01                            ; B56E
-        jsr     Obj_SetAttrFlipX                ; B570
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B570
         lda     #$A1                            ; B573
         jmp     MetaSprite_Render               ; B575
 

@@ -52,7 +52,7 @@ L_AC20: lda     #$0A                            ; AC20
 
 ; ----------------------------------------------------------------------------
 L_AC2A: lda     #$01                            ; AC2A
-        jsr     Obj_SetAttrFlipX                ; AC2C
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; AC2C
         ldx     #$78                            ; AC2F
         lda     Global_FrameCounter             ; AC31
         and     #$10                            ; AC33

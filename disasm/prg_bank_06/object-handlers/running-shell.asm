@@ -92,7 +92,7 @@ L_B60B: lda     #$18                            ; B60B
 
 ; ----------------------------------------------------------------------------
 L_B615: lda     #$01                            ; B615
-        jsr     Obj_SetAttrFlipX                ; B617
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B617
         lda     LoadedObj + Obj::Scratch0       ; B61A
         bne     L_B623                          ; B61C
         lda     #$A2                            ; B61E

@@ -126,7 +126,7 @@ L_B906: lda     #$1B                            ; B906
 
 ; ----------------------------------------------------------------------------
 L_B910: lda     #$01                            ; B910
-        jsr     Obj_SetAttrFlipX                ; B912
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B912
         lda     LoadedObj + Obj::Scratch1       ; B915
         jmp     MetaSprite_Render               ; B917
 

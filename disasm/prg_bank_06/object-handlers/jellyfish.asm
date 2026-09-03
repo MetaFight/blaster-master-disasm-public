@@ -79,7 +79,7 @@ L_B467: lda     #$16                            ; B467
 
 ; ----------------------------------------------------------------------------
 L_B471: lda     #$01                            ; B471
-        jsr     Obj_SetAttrFlipX                ; B473
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B473
         lda     LoadedObj + Obj::Scratch1       ; B476
         bne     L_B47F                          ; B478
         lda     #$9E                            ; B47A

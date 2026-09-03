@@ -2195,14 +2195,25 @@ NesPrgRom:1A223::Otherwise, handle collisions with other objects.
 NesPrgRom:1A22E::Draw as single 8x8 pattern #$54 with Sprite Palette #$00.
 NesPrgRom:1A231:_ObjHandler_Tank_47_Turret_Shot_Main__Explode
 NesPrgRom:1A234:_ObjHandler_Tank_47_Turret_Shot_Main__Despawn
-NesPrgRom:1A237:L_A237
-NesPrgRom:1A23A:L_A23A
-NesPrgRom:1A24C:L_A24C
-NesPrgRom:1A24D:L_A24D
-NesPrgRom:1A250:L_A250
-NesPrgRom:1A25D:L_A25D
-NesPrgRom:1A27A:L_A27A
-NesPrgRom:1A27D:L_A27D
+NesPrgRom:1A237:ObjHandler_Tank_48_Medium_Red_Projectile_Init:ObjType $48: Medium Red Projectile - Init.\n\nHeading (Param_ProjectSpawn_Heading) and Speed (Param_ProjectSpawn_Speed) provided by spawn parent.\nNote: This can lead to race conditions when multiple parents uses the parameter variables on the same frame.
+NesPrgRom:1A23A:_ObjHandler_Tank_48_Medium_Red_Projectile_Init__Body
+NesPrgRom:1A23C::Set LoadedObj.Facing = Param_ProjectSpawn_Heading
+NesPrgRom:1A241::Set LoadedObj.Velocity_X/Y based on Facing heading and scalar Y
+NesPrgRom:1A244::Set LoadedObj.TileIndex.
+NesPrgRom:1A247::Increment LoadedObj.Type to Main state.
+NesPrgRom:1A249::Play launch SFX.
+NesPrgRom:1A24C:_ObjHandler_Tank_48_Medium_Red_Projectile_Init__Done
+NesPrgRom:1A24D:ObjHandler_Tank_49_Medium_Red_Projectile_Main:ObjType $49: Medium Red Projectile - Main.
+NesPrgRom:1A250:_ObjHandler_Tank_49_Medium_Red_Projectile_Main__Body:Start by setting collision box.
+NesPrgRom:1A258::Apply movement and collisions.
+NesPrgRom:1A25B::On a collision, skip to HitExplode.
+NesPrgRom:1A25D:_ObjHandler_Tank_49_Medium_Red_Projectile_Main__Render__
+NesPrgRom:1A265::Run on-screen test.
+NesPrgRom:1A268::If off-screen, skip to Despawn.
+NesPrgRom:1A26C::Otherwise, handle collisions with Player.
+NesPrgRom:1A277::Draw pattern #$54 with palette OAM attributes #$00 (no flips, palette 0).
+NesPrgRom:1A27A:_ObjHandler_Tank_49_Medium_Red_Projectile_Main__HitExplode
+NesPrgRom:1A27D:_ObjHandler_Tank_49_Medium_Red_Projectile_Main__Despawn
 NesPrgRom:1A280:L_A280
 NesPrgRom:1A28A:L_A28A
 NesPrgRom:1A290:L_A290
@@ -2383,19 +2394,30 @@ NesPrgRom:1A739:L_A739
 NesPrgRom:1A745:L_A745
 NesPrgRom:1A747:L_A747
 NesPrgRom:1A74A:L_A74A
-NesPrgRom:1A74B:L_A74B
-NesPrgRom:1A74E:L_A74E
-NesPrgRom:1A75D:L_A75D
-NesPrgRom:1A75F:L_A75F
-NesPrgRom:1A769:L_A769
-NesPrgRom:1A76A:L_A76A
-NesPrgRom:1A76D:L_A76D
-NesPrgRom:1A780:L_A780
-NesPrgRom:1A79B:L_A79B
-NesPrgRom:1A79E:L_A79E
-NesPrgRom:1A7AE:L_A7AE
-NesPrgRom:1A7B8:L_A7B8
-NesPrgRom:1A7C6:L_A7C6
+NesPrgRom:1A74B:ObjHandler_Tank_5D_Hulk_Init:ObjType $5D: Hulk - Init.
+NesPrgRom:1A74E:_ObjHandler_Tank_5D_Hulk_Init__Body
+NesPrgRom:1A750::Use shared TankEnemy_Init with enemy descriptor #$04 to do baseline init.
+NesPrgRom:1A756::Pick initial Velocity_X based on the low bit of the spawn position's X coordinate.
+NesPrgRom:1A758::-0.75
+NesPrgRom:1A75D:_ObjHandler_Tank_5D_Hulk_Init__VelRight:+0.75
+NesPrgRom:1A75F:_ObjHandler_Tank_5D_Hulk_Init__StoreVel:Store Velocity_X and zero out Velocity_Y, Scratch0 and Scratch1
+NesPrgRom:1A769:_ObjHandler_Tank_5D_Hulk_Init__Done
+NesPrgRom:1A76A:ObjHandler_Tank_5E_Hulk_Main:ObjType $5E: Hulk - Main.
+NesPrgRom:1A76D:_ObjHandler_Tank_5E_Hulk_Main__Body:Start by setting the collision box.
+NesPrgRom:1A775::If IsGrounded != 0 (Scratch0), skip to Walking physics.
+NesPrgRom:1A779::Otherwise, handle falling physics.
+NesPrgRom:1A77C::If still in air, skip to OnScreenCheck.
+NesPrgRom:1A780:_ObjHandler_Tank_5E_Hulk_Main__WhenGrounded:When grounded, advance and bounce off walls.
+NesPrgRom:1A788::Only fire when walking towards player.
+NesPrgRom:1A78C::Set a couple of parameters to be read by the projectile Init on the next frame:\n  Param_ProjectSpawn_Heading = Facing sign bit (bit7)\n  Param_ProjectSpawn_Speed = Speed (#$20)\n  Note: There is a race condition with these when multiple Hulks on screen fire at the same time.
+NesPrgRom:1A798::Spawn a projectile by calling Obj_SpawnChild_A0_Throttled with:\n  WR_Context_Dependent_A0 = Child ObjType (#$48, Medium Red Projectile)
+NesPrgRom:1A79B:_ObjHandler_Tank_5E_Hulk_Main__Walk
+NesPrgRom:1A79E:_ObjHandler_Tank_5E_Hulk_Main__OnScreenCheck:run on-screen test.  If on-screen, do DamageCheck, otherwise, tombstone.
+NesPrgRom:1A7AE:_ObjHandler_Tank_5E_Hulk_Main__DamageCheck:Use the shared DamageCheck handler TankEnemy_DamageCheck with enemy descriptor #$04.\nIf still alive, skip to Alive handler, otherwise jump to shared TankEnemy_DefeatTrackedEnemy handler.
+NesPrgRom:1A7B8:_ObjHandler_Tank_5E_Hulk_Main__Render
+NesPrgRom:1A7BA::Set OAM FlipX and Palette attributes.
+NesPrgRom:1A7C3::Based on bit4 of Global_FrameCounter, use either #$7E or #$7F as MetaSprite Id.
+NesPrgRom:1A7C6:_ObjHandler_Tank_5E_Hulk_Main__RenderMetaSprite
 NesPrgRom:1A7CA:L_A7CA
 NesPrgRom:1A7CB:ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:ObjType $5F: Gray Hopper (6 HP) - Init.
 NesPrgRom:1A7CE:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Body
@@ -2431,7 +2453,7 @@ NesPrgRom:1A848::Load Hitbox dimensions in LoadedObj_Width/Height and call Scree
 NesPrgRom:1A84B::If still on-screen, run damage logic,
 NesPrgRom:1A84D::otherwise, prep for despawn by tombstoning.
 NesPrgRom:1A850:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage:on-screen: run the shared damage check against descriptor $05. A non-zero return means this hit killed it — tail-call TankEnemy_DefeatTrackedEnemy, which does the per-slot bookkeeping and falls into the drop spawner.
-NesPrgRom:1A85A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:still alive: $44 = sprite palette 1, plus the horizontal-flip bit when the X velocity $4C is non-negative (Obj_SetAttrFlipX derives the flip from $4C, NOT from the heading $47). Then pick the pose from the wind-up timer.
+NesPrgRom:1A85A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__Render:still alive: $44 = sprite palette 1, plus the horizontal-flip bit when the X velocity $4C is non-negative (Obj_SetOAMAttr_FlipX_and_Palette derives the flip from $4C, NOT from the heading $47). Then pick the pose from the wind-up timer.
 NesPrgRom:1A863::$51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
 NesPrgRom:1A868:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__TileIdle:$51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose
 NesPrgRom:1A86A:_ObjHandler_Tank_60_GrayHopper6HP_Attacking__SetTile:tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
@@ -2456,7 +2478,7 @@ NesPrgRom:1A8AF:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage:Run shared 
 NesPrgRom:1A8B4::if non-fatal, skip to render tail,
 NesPrgRom:1A8B6::otherwise, call the shared death handler.
 NesPrgRom:1A8B9:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render:Render logic.\n\nPrep A as with the OAM Attribute byte value,
-NesPrgRom:1A8BB::Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to OAM_Attribute__or__Outgoing_Contact_Damage
+NesPrgRom:1A8BB::Obj_SetOAMAttr_FlipX_and_Palette sets the H-flip bit to A and saves a copy to OAM_Attribute__or__Outgoing_Contact_Damage
 NesPrgRom:1A8C6::Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation frame index.\n\nThis means all patrolling hoppers walk in lock-step, updating their animation frames every 16 game frames.
 NesPrgRom:1A8C7::Load the animation frame Metasprite id and call the renderer sub.
 NesPrgRom:1A8CD:DEAD_ObjHandler_Tank_61_GrayHopper6HP_Patrolling_OrphanRTS:Single unreachable $60 (RTS)
@@ -2747,20 +2769,20 @@ NesPrgRom:1B1BB:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Damage:Run s
 NesPrgRom:1B1C0::If non-fatal, skip to render tail,
 NesPrgRom:1B1C2::otherwise, call the shared death handler.
 NesPrgRom:1B1C5:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Render:Render logic.\n\nPrep A as with the OAM Attribute byte value,
-NesPrgRom:1B1C7::Obj_SetAttrFlipX sets the H-flip bit to A and saves a copy to OAM_Attribute__or__Outgoing_Contact_Damage
+NesPrgRom:1B1C7::Obj_SetOAMAttr_FlipX_and_Palette sets the H-flip bit to A and saves a copy to OAM_Attribute__or__Outgoing_Contact_Damage
 NesPrgRom:1B1D2::Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation frame index.\n\nThis means all patrolling hoppers walk in lock-step, updating their animation frames every 16 game frames.
 NesPrgRom:1B1D3::Load the animation frame Metasprite id and call the renderer sub.
 NesPrgRom:1B1D9:DEAD_TankGrayHopper_OrphanRTS:Single unreachable $60 (RTS)
 NesPrgRom:1B1DA:GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame:Table of 4 metasprite ids used to animate the patrolling state.
-NesPrgRom:1B1DE:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__EdgeHop:Handler that has a chance of making the Hopper hop when at a platform edges.\n(well, more accurately, when the tile directly below its center is not solid.  This assumes the hopper walked there from a neighboring solid tile.)
+NesPrgRom:1B1DE:_ObjHandler_Hopper_Hulk_Common__EdgeHop:Handler that has a chance of making the Hopper/Hulk hop when at a platform edges.\n(well, more accurately, when the tile directly below its center is not solid.  This assumes the hopper/hulk walked there from a neighboring solid tile.)
 NesPrgRom:1B1E0::Test tile below ($11)
 NesPrgRom:1B1E3::If bit 7 is set then the tile is solid.  Nothing to do.  Exit early.
 NesPrgRom:1B1E5::Otherwise, roll the dice to see if a hop is warranted.
 NesPrgRom:1B1EA::If the lower nibble is zero, perform a jump.
 NesPrgRom:1B1F1::otherwise, flip Velocity_X (bounce off edge).
-NesPrgRom:1B1F6:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__WalkJump:Initiate jump by setting Velocity_Y to -2.
+NesPrgRom:1B1F6:_ObjHandler_Hopper_Hulk_Common__WalkJump:Initiate jump by setting Velocity_Y to -2.
 NesPrgRom:1B1FC::Set Grounded = 0
-NesPrgRom:1B1FE:_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling__WalkReturn:shared exit.
+NesPrgRom:1B1FE:_ObjHandler_Hopper_Hulk_Common__Return:shared exit.
 NesPrgRom:1B1FF:L_B1FF
 NesPrgRom:1B202:L_B202
 NesPrgRom:1B20B:L_B20B
@@ -3836,9 +3858,9 @@ NesPrgRom:1E040::if bit 7 is set, then it's solid.  Nothing else to do, so exit 
 NesPrgRom:1E042::Otherwise, negate Velocity X,
 NesPrgRom:1E04B::and set the probe cooldown to 32 frames.
 NesPrgRom:1E04D:_Obj_MoveBounce_TurnAtLedge__Return:RTS.
-NesPrgRom:1E04E:Obj_SetAttrFlipX:Sets the sprite OAM attribute ($44) to A, adding the horizontal-flip bit when the object faces right (X velocity $4C non-negative). One call sets both palette and facing — e.g. the Fliers pass their palette index (Red $7C = pal 0, Gray $7D = pal 1).
+NesPrgRom:1E04E:Obj_SetOAMAttr_FlipX_and_Palette:Sets the sprite OAM attribute FlipX based on Obj.Velocity_X, and OAM attribute Paletted to Ar.
 NesPrgRom:1E052::If XVel $4C ≥ 0, XOR the horizontal-flip bit ($40) into attr A; store to $44.
-NesPrgRom:1E054:_Obj_SetAttrFlipX__Store:Store OAM attribute $44.
+NesPrgRom:1E054:_Obj_SetOAMAttr_FlipX_and_Palette__Store:Store OAM attribute $44.
 NesPrgRom:1E057:L_E057
 NesPrgRom:1E05D:L_E05D
 NesPrgRom:1E060:L_E060

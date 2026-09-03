@@ -167,7 +167,7 @@ _ObjHandler_Tank_6D_FlyingBomber_Main__Damage:
 _ObjHandler_Tank_6D_FlyingBomber_Main__Render:
         lda     #$01                            ; ACEA
 ; Update OAM FlipX bit.
-        jsr     Obj_SetAttrFlipX                ; ACEC
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; ACEC
         ldx     #$2F                            ; ACEF
         lda     LoadedObj + Obj::Scratch0       ; ACF1
 ; Select metasprite id to draw (affected by HasFired flag).

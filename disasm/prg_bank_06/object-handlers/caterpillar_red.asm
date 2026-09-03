@@ -119,7 +119,7 @@ L_A9A4: lda     #$06                            ; A9A4
 
 ; ----------------------------------------------------------------------------
 L_A9AE: lda     #$00                            ; A9AE
-        jsr     Obj_SetAttrFlipX                ; A9B0
+        jsr     Obj_SetOAMAttr_FlipX_and_Palette ; A9B0
         dec     LoadedObj + Obj::Scratch1       ; A9B3
         bpl     L_A9C3                          ; A9B5
         lda     #$0C                            ; A9B7
