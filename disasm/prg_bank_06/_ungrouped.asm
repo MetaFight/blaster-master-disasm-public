@@ -303,8 +303,12 @@ L_9784: .byte   $C0,$00,$40,$00                 ; 9784
 
 .macro MAC_L_9B81
 ; ----------------------------------------------------------------------------
-L_9B81: lda     #$28                            ; 9B81
+; Enqueue explosion SFX $28 then call Obj_SpawnChild ObjType argument #$4A to spawn a Mid
+; Explosion.
+SpawnMidExplosion:
+        lda     #$28                            ; 9B81
         jsr     Enqueue_Sound_Command           ; 9B83
+; A=$4A (Mid Explosion ObjType); JMP $D851 Obj_SpawnChild at this position.
         lda     #$4A                            ; 9B86
         jmp     Obj_SpawnChild                  ; 9B88
 

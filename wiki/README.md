@@ -10,7 +10,7 @@ either they have not completed it yet, or they were verified and have since been
 
 - [Gray Bullet](docs/us/entities/tank/55-56,58-59_gray-bullet.md)
 - [Flying Bomber](docs/us/entities/tank/6c-6d_flying-bomber.md)
-- [Shooter](docs/us/entities/tank/76-77_shooter.md) — ⚠️ alpha
+- [Shooter](docs/us/entities/tank/76-77_shooter.md)
 
 ### Misc
 

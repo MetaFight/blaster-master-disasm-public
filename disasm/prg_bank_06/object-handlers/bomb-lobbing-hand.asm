@@ -58,7 +58,7 @@ L_B395: lda     #$90                            ; B395
 L_B397: sta     $9D                             ; B397
         lda     #$36                            ; B399
         sta     $A0                             ; B39B
-        jsr     LDF36                           ; B39D
+        jsr     Obj_TrySpawnChild_A0_Throttled  ; B39D
         beq     L_B3AF                          ; B3A0
         lda     #$09                            ; B3A2
         sta     LoadedObj + Obj::Scratch1       ; B3A4

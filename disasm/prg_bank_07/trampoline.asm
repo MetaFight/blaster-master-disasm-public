@@ -503,7 +503,7 @@ L_C1F2: jmp     L_D18D                          ; C1F2
 L_C1F5: jmp     Obj_SpawnChild                  ; C1F5
 
 ; ----------------------------------------------------------------------------
-L_C1F8: jmp     L_DF36                          ; C1F8
+L_C1F8: jmp     Obj_TrySpawnChild_A0_Throttled  ; C1F8
 
 ; ----------------------------------------------------------------------------
 L_C1FB: jmp     Obj_SpawnChild_A0               ; C1FB

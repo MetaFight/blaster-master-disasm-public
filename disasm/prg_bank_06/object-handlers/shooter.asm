@@ -1,129 +1,105 @@
 .macro MAC_L_AFFC
 ; ----------------------------------------------------------------------------
-; (alpha: not fully human-verified / pending re-verification) ObjType $76 — Shooter (Thing $10,
-; 'Gray Shooter'), init. Launches the Shooter on a random straight line: a heading drawn from the
-; RNG and a fixed speed, with its gun already loaded. Every Shooter therefore starts drifting in a
-; different direction, and it is the Main handler's terrain bouncing that turns that into the
-; circling patrol the player sees. TankEnemy_Init advances it to ObjType $77, so this runs for
-; exactly one frame. Dual-entry: the +0 (fade/freeze) entry lands on the body's own RTS — this
-; Init draws nothing. See docs/us/entities/tank/76-77_shooter.md
+; ObjType $76: Shooter - Init.
 ObjHandler_Tank_76_Shooter_Init:
         jmp     _ObjHandler_Tank_76_Shooter_Init__Done; AFFC
 
 ; ----------------------------------------------------------------------------
-; Normal-play body — pick a random heading and launch  [+3 body entry]
-; enemy descriptor $10: HP 16, and a $80/256 (50%) chance of a Health-x1 ($2C) drop.
-; TankEnemy_Init also does INC $46, so the next frame runs ObjType $77
+; Init with shared TankEnemy_Init using Enemy Descriptor #$10.
 _ObjHandler_Tank_76_Shooter_Init__Body:
         lda     #$10                            ; AFFF
         jsr     TankEnemy_Init                  ; B001
-; $47 is the heading angle (0–255 = full circle), not a state byte — seed it straight from the RNG
         jsr     Step_RNG                        ; B004
+; Set a random initial heading (Facing)
         sta     LoadedObj + Obj::Facing         ; B007
-; speed $14, converted with the heading into the velocity pair $4C/$4D. This is the only place the
-; Shooter's velocity is set; nothing steers it afterwards
         ldy     #$14                            ; B009
+; Call Obj_FacingToVelocity to put enemy in motion at their Facing heading with speed 1.5 px/f.
         jsr     Obj_FacingToVelocity            ; B00B
-; gun ready — no recoil to work off
         lda     #$00                            ; B00E
+; Reset ShotCooldown (Scratch2).
         sta     LoadedObj + Obj::Scratch2       ; B010
 ; Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
 _ObjHandler_Tank_76_Shooter_Init__Done:
         rts                                     ; B012
 
 ; ----------------------------------------------------------------------------
-; (alpha: not fully human-verified / pending re-verification) ObjType $77 — Shooter (Thing $10),
-; active. A free-drifting enemy that bounces off terrain and shoots Small Red shots at the player,
-; but only while its drift already carries it toward them and only at a player level with or below
-; it — so it never fires backwards or upwards, and spends its time circling until the geometry
-; lines up. Each shot costs a 16-frame recoil during which it holds a distinct pose and cannot
-; fire again. HP 16; on death it explodes and may drop a Health-x1 pickup. Dual-entry: in normal
-; play ($15 == 0) the object loop enters at +3 and runs the whole body; while a fade or freeze is
-; up ($15 != 0) it enters at +0, which skips straight to the hit/render tail. See
-; docs/us/entities/tank/76-77_shooter.md
-; +0 (fade/freeze) entry: skip all logic, straight to the shared hit/render tail
+; ObjType $77: Shooter - Main
 ObjHandler_Tank_77_Shooter_Main:
-        jmp     _ObjHandler_Tank_77_Shooter_Main__Render__; B013
+        jmp     _ObjHandler_Tank_77_Shooter_Main__ScreenTest; B013
 
 ; ----------------------------------------------------------------------------
-; Normal-play body — drift, then decide whether to fire  [+3 body entry]
-; $42/$43 = $80: terrain-collision half-extents for the move below
+; Start by setting collision box.
 _ObjHandler_Tank_77_Shooter_Main__Body:
         lda     #$80                            ; B016
         sta     $42                             ; B018
         lda     #$80                            ; B01A
         sta     $43                             ; B01C
-; advance by velocity and bounce off walls (reflects $4C on a horizontal wall, $4D on a vertical
-; one)
+; Apply motion and collision.  Collisions are handled by negating the velocity component involved.
         jsr     Obj_MoveBounce                  ; B01E
-; fire cooldown $52 — zero means free to fire
         lda     LoadedObj + Obj::Scratch2       ; B021
-        beq     _ObjHandler_Tank_77_Shooter_Main__FireCheck; B023
-; still cooling down: tick it and hold the recoil pose ($50 = 0)
+; If ShotCooldown (Scratch2) == 0, skip to TryShoot.
+        beq     _ObjHandler_Tank_77_Shooter_Main__TryShoot; B023
+; Otherwise, decrement ShotCooldown (Scratch2), set PoseIndex (Scratch0) to 0, and skip to
+; ScreenTest
         dec     LoadedObj + Obj::Scratch2       ; B025
         lda     #$00                            ; B027
         sta     LoadedObj + Obj::Scratch0       ; B029
-        jmp     _ObjHandler_Tank_77_Shooter_Main__Render__; B02B
+        jmp     _ObjHandler_Tank_77_Shooter_Main__ScreenTest; B02B
 
 ; ----------------------------------------------------------------------------
-; Fire gate — both aim conditions must hold, else fall through unfired
-; signed X-distance to player EOR X-velocity sign: negative = drifting AWAY, so hold fire
-_ObjHandler_Tank_77_Shooter_Main__FireCheck:
+_ObjHandler_Tank_77_Shooter_Main__TryShoot:
         jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B02E
         eor     LoadedObj + Obj::Velocity_X     ; B031
-        bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B033
-; signed Y-distance: negative = player is above, so hold fire (it only shoots level or downward)
+; If the signs of Velocity X and the X delta to the Player don't match, then skip to
+; SetAttackPose.
+        bmi     _ObjHandler_Tank_77_Shooter_Main__SetAttackPose; B033
+; If the Player is above us, skip to SetAttackPose.
         jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B035
-        bmi     _ObjHandler_Tank_77_Shooter_Main__SetActive; B038
-; child to spawn = ObjType $3C (Small Red shot)
+        bmi     _ObjHandler_Tank_77_Shooter_Main__SetAttackPose; B038
         lda     #$3C                            ; B03A
         sta     $A0                             ; B03C
-; rate-limited spawn — throttles internally on the frame counter and RNG; Z = no shot this frame
-        jsr     LDF36                           ; B03E
-        beq     _ObjHandler_Tank_77_Shooter_Main__SetActive; B041
-; shot away: start the 16-frame recoil cooldown
+; If neither early-exit condition were met, try to spawn a shot projectile (ObjType $3C).
+        jsr     Obj_TrySpawnChild_A0_Throttled  ; B03E
+; on failure, skip to SetAttackPose.
+        beq     _ObjHandler_Tank_77_Shooter_Main__SetAttackPose; B041
         lda     #$10                            ; B043
+; on success, start the 16-frame ShotCooldown.
         sta     LoadedObj + Obj::Scratch2       ; B045
-; Searching pose ($50 = 1) — reached whether or not a shot went out
-_ObjHandler_Tank_77_Shooter_Main__SetActive:
+_ObjHandler_Tank_77_Shooter_Main__SetAttackPose:
         lda     #$01                            ; B047
         sta     LoadedObj + Obj::Scratch0       ; B049
-; Shared hit/render tail — also the +0 (fade/freeze) entry
-; $40/$41 = $10: 16×16 hitbox
-_ObjHandler_Tank_77_Shooter_Main__Render__:
+; Start by setting the bounding box.
+_ObjHandler_Tank_77_Shooter_Main__ScreenTest:
         lda     #$10                            ; B04B
         sta     $40                             ; B04D
         lda     #$10                            ; B04F
         sta     $41                             ; B051
-; screen position + overlap against the player's shots
         jsr     ScreenPos_Compute               ; B053
+; If on-screen, skip to Damage handler.
         beq     _ObjHandler_Tank_77_Shooter_Main__Damage; B056
-; off-screen: despawn
+; otherwise, tombstone.
         jmp     Obj_TombstoneSlot               ; B058
 
 ; ----------------------------------------------------------------------------
-; Apply any hit, and die if it emptied the HP
-; enemy descriptor $10 (HP 16)
 _ObjHandler_Tank_77_Shooter_Main__Damage:
         lda     #$10                            ; B05B
+; Call shared TankEnemy_DamageCheck with enemy descriptor #$10
         jsr     TankEnemy_DamageCheck           ; B05D
+; if non-fatal, skip to Render.
         beq     _ObjHandler_Tank_77_Shooter_Main__Render; B060
-; killed: explosion, and maybe a Health-x1 drop
+; otherwise, die by calling shared TankEnemy_DefeatTrackedEnemy.
         jmp     TankEnemy_DefeatTrackedEnemy    ; B062
 
 ; ----------------------------------------------------------------------------
-; Draw the sprite — pose follows the cooldown, facing follows the drift
-; OAM attr = sprite sub-palette 1, H-flipped by the sign of $4C
+; Sat Xflip and Palette (#$01) OAM attributes
 _ObjHandler_Tank_77_Shooter_Main__Render:
         lda     #$01                            ; B065
         jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B067
-; pose select: $50 non-zero (searching) keeps metasprite $6C…
         ldx     #$6C                            ; B06A
         lda     LoadedObj + Obj::Scratch0       ; B06C
         bne     _ObjHandler_Tank_77_Shooter_Main__TileBase; B06E
-; …$50 == 0 (recoiling) bumps it to $6D
         inx                                     ; B070
-; Tail-call the metasprite renderer with the chosen id
+; Select pose MetaSprite: Base #$6C if PoseIndex == 0, otherwise #$6D.
 _ObjHandler_Tank_77_Shooter_Main__TileBase:
         txa                                     ; B071
         jmp     MetaSprite_Render               ; B072

@@ -667,10 +667,15 @@ L_9FD1: lda     #$00                            ; 9FD1
         rts                                     ; 9FD9
 
 ; ----------------------------------------------------------------------------
-L_9FDA: jmp     L_9FF8                          ; 9FDA
+; ObjType $3C: Small Red shot
+ObjHandler_Tank_3C_Small_Red_Init:
+        jmp     _ObjHandler_Tank_3C_Small_Red_Init__Done; 9FDA
 
 ; ----------------------------------------------------------------------------
-L_9FDD: inc     LoadedObj + Obj::Type           ; 9FDD
+; Start by bumping LoadedObj.Type to the Main ObjType.
+_ObjHandler_Tank_3C_Small_Red_Init__Body:
+        inc     LoadedObj + Obj::Type           ; 9FDD
+; Call ScreenPos_Compute (despite not preparing any of its input... this has to be a bug, right?).
         jsr     ScreenPos_Compute               ; 9FDF
         lda     $3E                             ; 9FE2
         sta     $00                             ; 9FE4
@@ -680,41 +685,63 @@ L_9FDD: inc     LoadedObj + Obj::Type           ; 9FDD
         sta     $02                             ; 9FEC
         lda     $7D                             ; 9FEE
         sta     $03                             ; 9FF0
+; Set the Velocities by calling Obj_AimVelocityFromDelta with parameters:
+;   WR_Context_Dependent_00 = Starting_X
+;   WR_Context_Dependent_01 = Starting_Y
+;   WR_Context_Dependent_02 = Player_X
+;   WR_Context_Dependent_03 = Player_Y
         jmp     LD02D                           ; 9FF2
 
 ; ----------------------------------------------------------------------------
-L_9FF5: jsr     PlaySound_23                    ; 9FF5
-L_9FF8: rts                                     ; 9FF8
+; Cut spawn-sound trigger for the Small Red projectile.
+DEAD__ObjHandler_Tank_3C_Small_Red_Init__PlaySFX:
+        jsr     PlaySound_23                    ; 9FF5
+_ObjHandler_Tank_3C_Small_Red_Init__Done:
+        rts                                     ; 9FF8
 
 ; ----------------------------------------------------------------------------
-L_9FF9: jmp     L_A009                          ; 9FF9
+; ObjType $3D: Small Red shot - Main
+ObjHandler_Tank_3D_Small_Red_Main:
+        jmp     _ObjHandler_Tank_3D_Proj_SmallRed_Main__ScreenTest; 9FF9
 
 ; ----------------------------------------------------------------------------
-L_9FFC: lda     #$40                            ; 9FFC
+; Start by setting collision box.
+_ObjHandler_Tank_3D_Small_Red_Main__Body:
+        lda     #$40                            ; 9FFC
         sta     $42                             ; 9FFE
         lda     #$40                            ; A000
         sta     $43                             ; A002
+; Apply motion and collisions.
         jsr     Obj_MoveAndCollide              ; A004
-        bne     L_A029                          ; A007
-L_A009: lda     #$08                            ; A009
+; If terrain collision occurred, skip to Explode.
+        bne     _ObjHandler_Tank_3D_Proj_SmallRed_Main__Explode; A007
+_ObjHandler_Tank_3D_Proj_SmallRed_Main__ScreenTest:
+        lda     #$08                            ; A009
         sta     $40                             ; A00B
         lda     #$08                            ; A00D
         sta     $41                             ; A00F
         jsr     ScreenPos_Compute               ; A011
-        beq     L_A019                          ; A014
+; If on screen, skip to Damage.
+        beq     _ObjHandler_Tank_3D_Proj_SmallRed_Main__Damage; A014
+; Otherwise, despawn.
         jmp     Obj_Despawn                     ; A016
 
 ; ----------------------------------------------------------------------------
-L_A019: lda     #$0C                            ; A019
+_ObjHandler_Tank_3D_Proj_SmallRed_Main__Damage:
+        lda     #$0C                            ; A019
+; Test for contact with Player dealing #$0C damage on contact.
         jsr     Obj_TryDamagePlayer             ; A01B
         lda     #$00                            ; A01E
         sta     $44                             ; A020
         lda     #$25                            ; A022
         sta     $45                             ; A024
+; Draw shot as single CHR pattern #$25 using OAM attributes no x-flip and sprite palette 0.
         jmp     OAM_Stage_Pattern               ; A026
 
 ; ----------------------------------------------------------------------------
-L_A029: jsr     L_9B81                          ; A029
+; Burst into a Mid Explosion, then despawn
+_ObjHandler_Tank_3D_Proj_SmallRed_Main__Explode:
+        jsr     SpawnMidExplosion               ; A029
         jmp     Obj_Despawn                     ; A02C
 
 ; ----------------------------------------------------------------------------
@@ -766,7 +793,7 @@ L_A073: lda     #$08                            ; A073
         jmp     OAM_Stage_Pattern               ; A080
 
 ; ----------------------------------------------------------------------------
-L_A083: jsr     L_9B81                          ; A083
+L_A083: jsr     SpawnMidExplosion               ; A083
         jmp     Obj_Despawn                     ; A086
 
 ; ----------------------------------------------------------------------------
@@ -821,7 +848,7 @@ L_A0C8: lda     #$0C                            ; A0C8
         jmp     OAM_Stage_Pattern               ; A0E2
 
 ; ----------------------------------------------------------------------------
-L_A0E5: jsr     L_9B81                          ; A0E5
+L_A0E5: jsr     SpawnMidExplosion               ; A0E5
 L_A0E8: jmp     Obj_Despawn                           ; A0E8
 
 ; ----------------------------------------------------------------------------
@@ -965,7 +992,7 @@ L_A1CC: lda     #$10                            ; A1CC
         jmp     OAM_Stage_Pattern               ; A1E8
 
 ; ----------------------------------------------------------------------------
-L_A1EB: jsr     L_9B81                          ; A1EB
+L_A1EB: jsr     SpawnMidExplosion               ; A1EB
 L_A1EE: jmp     Obj_Despawn                           ; A1EE
 
 ; ----------------------------------------------------------------------------
@@ -1027,7 +1054,7 @@ _ObjHandler_Tank_47_Turret_Shot_Main__AfterPhysics:
 
 ; ----------------------------------------------------------------------------
 _ObjHandler_Tank_47_Turret_Shot_Main__Explode:
-        jsr     L_9B81                          ; A231
+        jsr     SpawnMidExplosion               ; A231
 _ObjHandler_Tank_47_Turret_Shot_Main__Despawn:
         jmp     Obj_Despawn                     ; A234
 
@@ -1096,7 +1123,7 @@ _ObjHandler_Tank_49_Medium_Red_Projectile_Main__Render__:
 
 ; ----------------------------------------------------------------------------
 _ObjHandler_Tank_49_Medium_Red_Projectile_Main__HitExplode:
-        jsr     L_9B81                          ; A27A
+        jsr     SpawnMidExplosion               ; A27A
 _ObjHandler_Tank_49_Medium_Red_Projectile_Main__Despawn:
         jmp     Obj_Despawn                     ; A27D
 

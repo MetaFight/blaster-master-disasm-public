@@ -73,8 +73,8 @@ L_8070: .addr   ObjHandler_Tank_38_Big_Gray_Init; 8070
         .addr   ObjHandler_Tank_39_Big_Gray_Main; 8072
         .addr   L_9F39                          ; 8074
         .addr   L_9F5A                          ; 8076
-        .addr   L_9FDA                          ; 8078
-        .addr   L_9FF9                          ; 807A
+        .addr   ObjHandler_Tank_3C_Small_Red_Init; 8078
+        .addr   ObjHandler_Tank_3D_Small_Red_Main; 807A
         .addr   L_A02F                          ; 807C
         .addr   L_A047                          ; 807E
         .addr   L_A089                          ; 8080

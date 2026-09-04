@@ -70,9 +70,9 @@ _ObjHandler_Tank_5E_Hulk_Main__WhenGrounded:
         sta     $9E                             ; A792
         lda     #$48                            ; A794
         sta     $A0                             ; A796
-; Spawn a projectile by calling Obj_SpawnChild_A0_Throttled with:
+; Spawn a projectile by calling Obj_TrySpawnChild_A0_Throttled with:
 ;   WR_Context_Dependent_A0 = Child ObjType (#$48, Medium Red Projectile)
-        jsr     LDF36                           ; A798
+        jsr     Obj_TrySpawnChild_A0_Throttled  ; A798
 _ObjHandler_Tank_5E_Hulk_Main__Walk:
         jsr     _ObjHandler_Hopper_Hulk_Common__EdgeHop; A79B
 ; run on-screen test.  If on-screen, do DamageCheck, otherwise, tombstone.

@@ -48,7 +48,7 @@ L_B4DD: ldx     #$4C                            ; B4DD
         bne     L_B4EE                          ; B4E5
         lda     #$3C                            ; B4E7
         sta     $A0                             ; B4E9
-        jsr     LDF36                           ; B4EB
+        jsr     Obj_TrySpawnChild_A0_Throttled  ; B4EB
 L_B4EE: lda     Global_FrameCounter             ; B4EE
         asl     a                               ; B4F0
         asl     a                               ; B4F1

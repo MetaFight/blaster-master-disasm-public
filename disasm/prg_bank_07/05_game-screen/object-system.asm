@@ -1273,13 +1273,28 @@ _Obj_TryCloneIntoEmptySlot__CopyLoop:
         rts                                     ; DF35
 
 ; ----------------------------------------------------------------------------
-L_DF36: lda     Global_FrameCounter             ; DF36
+; Rate-limited wrapper over Obj_SpawnChild_A0.
+; 
+; Only spawns when (Global_FrameCounter & #$4C == 0) AND (Step_RNG() & #$03 == 0).
+; 
+; Output:
+;   on success,
+;     A = #$FF
+; 
+;   on failure,
+;     A = #$00
+Obj_TrySpawnChild_A0_Throttled:
+        lda     Global_FrameCounter             ; DF36
         and     #$4C                            ; DF38
-        bne     L_DF43                          ; DF3A
+; If (Global_FrameCounter & #$4C) != 0, skip to NoSpawn.
+        bne     _Obj_TrySpawnChild_A0_Throttled__NoSpawn; DF3A
         jsr     Step_RNG                        ; DF3C
         and     #$03                            ; DF3F
+; If (Step_RNG() & #$03) == 0, spawn child.
         beq     Obj_SpawnChild_A0               ; DF41
-L_DF43: lda     #$00                            ; DF43
+; Otherwise, return failure code.
+_Obj_TrySpawnChild_A0_Throttled__NoSpawn:
+        lda     #$00                            ; DF43
         rts                                     ; DF45
 
 ; ----------------------------------------------------------------------------
