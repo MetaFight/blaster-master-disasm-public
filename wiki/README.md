@@ -9,6 +9,7 @@ either they have not completed it yet, or they were verified and have since been
 ### Entities — Tank
 
 - [Gray Bullet](docs/us/entities/tank/55-56,58-59_gray-bullet.md)
+- [Mine](docs/us/entities/tank/64-65_mine.md)
 - [Flying Bomber](docs/us/entities/tank/6c-6d_flying-bomber.md)
 - [Shooter](docs/us/entities/tank/76-77_shooter.md)
 

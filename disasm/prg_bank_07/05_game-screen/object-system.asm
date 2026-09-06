@@ -266,10 +266,10 @@ Obj_CalcTileIndex:
 ;   Apply_Double_Velocity_XY's appreach.
 ;   Why is the sign of the high byte dropped?  Why isn't the Lo addition done first for easy carry
 ;   into the high byte?
-Apply_Velocity_XY:
-        jsr     Apply_Velocity_Y                ; D2DB
+Obj_Apply_Velocity_XY:
+        jsr     Obj_Apply_Velocity_Y            ; D2DB
 ; Applies Velocity_X to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.
-Apply_Velocity_X:
+Obj_Apply_Velocity_X:
         lda     LoadedObj + Obj::Position_X_Hi  ; D2DE
         and     #$7F                            ; D2E0
 ; Clear position hi-byte's sign (not sure why).
@@ -288,28 +288,28 @@ Apply_Velocity_X:
 ;   * Velocity_X is positive and the shifted Carry flag is not set
         eor     LoadedObj + Obj::Velocity_X     ; D2EC
 ; In either case, no additional care required.  Skip to end.
-        bpl     _Apply_Velocity_X__Done         ; D2EE
+        bpl     _Obj_Apply_Velocity_X__Done     ; D2EE
         lda     LoadedObj + Obj::Velocity_X     ; D2F0
 ; If Velocity_X is negative, DECrement the position hi-byte and TileIndex.
-        bmi     _Apply_Velocity_X__MovedLeft    ; D2F2
+        bmi     _Obj_Apply_Velocity_X__MovedLeft; D2F2
 ; otherwise, INCrement the position hi-byte and TileIndex.
         inc     LoadedObj + Obj::Position_X_Hi  ; D2F4
         inc     LoadedObj + Obj::TileIndex      ; D2F6
         rts                                     ; D2F8
 
 ; ----------------------------------------------------------------------------
-_Apply_Velocity_X__MovedLeft:
+_Obj_Apply_Velocity_X__MovedLeft:
         dec     LoadedObj + Obj::Position_X_Hi  ; D2F9
         dec     LoadedObj + Obj::TileIndex      ; D2FB
-_Apply_Velocity_X__Done:
+_Obj_Apply_Velocity_X__Done:
         rts                                     ; D2FD
 
 ; ----------------------------------------------------------------------------
-; Identical to Apply_Velocity_X apart from TileIndex adjustment logic.
+; Identical to Obj_Apply_Velocity_X apart from TileIndex adjustment logic.
 ; 
 ; Moving up requires subracting $11 from TileIndex and moving down requires adding $11 to id. 
 ; That is the only different between the two.
-Apply_Velocity_Y:
+Obj_Apply_Velocity_Y:
         lda     LoadedObj + Obj::Position_Y_Hi  ; D2FE
         and     #$7F                            ; D300
         sta     LoadedObj + Obj::Position_Y_Hi  ; D302
@@ -319,27 +319,27 @@ Apply_Velocity_Y:
         sta     LoadedObj + Obj::Position_Y_Lo  ; D309
         ror     a                               ; D30B
         eor     LoadedObj + Obj::Velocity_Y     ; D30C
-        bpl     _Apply_Velocity_Y__Done         ; D30E
+        bpl     _Obj_Apply_Velocity_Y__Done     ; D30E
         lda     LoadedObj + Obj::Velocity_Y     ; D310
-        bmi     _Apply_Velocity_Y__MovedUp      ; D312
+        bmi     _Obj_Apply_Velocity_Y__MovedUp  ; D312
 ; Handle moving down a tile.
 ; 
 ; INC position hi-byte and prep TileIndex addition of $11 (17, one row).
         inc     LoadedObj + Obj::Position_Y_Hi  ; D314
         lda     #$11                            ; D316
-        bne     _Apply_Velocity_Y__AdjTileIndex ; D318
+        bne     _Obj_Apply_Velocity_Y__AdjTileIndex; D318
 ; Handle moving up a tile.
 ; 
 ; DEC position hi-byte and prep TileIndex addition of $EF (-17, one row).
-_Apply_Velocity_Y__MovedUp:
+_Obj_Apply_Velocity_Y__MovedUp:
         dec     LoadedObj + Obj::Position_Y_Hi  ; D31A
         lda     #$EF                            ; D31C
 ; add ±17 to TileIndex
-_Apply_Velocity_Y__AdjTileIndex:
+_Obj_Apply_Velocity_Y__AdjTileIndex:
         clc                                     ; D31E
         adc     LoadedObj + Obj::TileIndex      ; D31F
         sta     LoadedObj + Obj::TileIndex      ; D321
-_Apply_Velocity_Y__Done:
+_Obj_Apply_Velocity_Y__Done:
         rts                                     ; D323
 
 ; ----------------------------------------------------------------------------
@@ -421,7 +421,7 @@ L_D374: jsr     V_Collision_Check               ; D374
         jmp     H_Collision_Check               ; D377
 
 ; ----------------------------------------------------------------------------
-L_D37A: jsr     Apply_Velocity_X                ; D37A
+L_D37A: jsr     Obj_Apply_Velocity_X            ; D37A
 ; X-axis terrain collision check and overlap pushback.
 ; 
 ; Mirror of V_Collision_Check.
@@ -535,7 +535,7 @@ _H_Collision_Check__NoCollide:
         rts                                     ; D3DD
 
 ; ----------------------------------------------------------------------------
-L_D3DE: jsr     Apply_Velocity_Y                ; D3DE
+L_D3DE: jsr     Obj_Apply_Velocity_Y            ; D3DE
 ; Y-axis terrain collision check and overlap pushback.
 ; 
 ; Input:
@@ -1480,7 +1480,13 @@ _Obj_GravityMoveBounce_Double__ClampSpeed:
         rts                                     ; DFD0
 
 ; ----------------------------------------------------------------------------
-L_DFD1: clc                                     ; DFD1
+; Applies the given acceleration to LoadedObj.Velocity_X/Y.
+; 
+; Input:
+;   A = Y Acceleration
+;   X = X Acceleration
+Obj_Apply_Acceleration:
+        clc                                     ; DFD1
         adc     LoadedObj + Obj::Velocity_Y     ; DFD2
         sta     LoadedObj + Obj::Velocity_Y     ; DFD4
         txa                                     ; DFD6
@@ -1647,9 +1653,9 @@ Obj_TurnHeading:
 ;     bit7 ($80) = side wall hit,
 ;     bit6 ($40) = floor/ceiling hit.
 Obj_MoveAndCollide:
-        jsr     Apply_Velocity_X                ; E083
+        jsr     Obj_Apply_Velocity_X            ; E083
         jsr     H_Collision_Check               ; E086
-; Apply_Velocity_X then H_Collision_Check.
+; Obj_Apply_Velocity_X then H_Collision_Check.
 ; Z = 1 means no collision happend.  Skip ahead.
         beq     _Obj_MoveAndCollide__NoWallX    ; E089
 ; Otherwise, prepare TerrainCollisionFlags value with side-wall flag (bit7) set.
@@ -1663,9 +1669,9 @@ _Obj_MoveAndCollide__NoWallX:
 ; store side-wall flag (bit7).
 _Obj_MoveAndCollide__StoreX:
         sta     TerrainCollisionFlags           ; E092
-        jsr     Apply_Velocity_Y                ; E094
+        jsr     Obj_Apply_Velocity_Y            ; E094
         jsr     V_Collision_Check               ; E097
-; Apply_Velocity_Y then V_Collision_Check.
+; Obj_Apply_Velocity_Y then V_Collision_Check.
 ; Z = 1 means no collision happend.  Skip ahead.
         beq     _Obj_MoveAndCollide__Return     ; E09A
 ; Otherwise, set the ceiling-floor flag (bit6) on in TerrainCollisionFlags.

@@ -60,7 +60,7 @@ L_B253: lda     #$80                            ; B253
         jsr     Trig_SinByAngle                 ; B261
         jsr     ScaleBySignedFrac               ; B264
         sta     LoadedObj + Obj::Velocity_Y     ; B267
-        jsr     Apply_Velocity_XY               ; B269
+        jsr     Obj_Apply_Velocity_XY           ; B269
 L_B26C: lda     #$10                            ; B26C
         sta     $40                             ; B26E
         lda     #$10                            ; B270

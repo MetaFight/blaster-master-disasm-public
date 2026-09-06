@@ -91,7 +91,7 @@ L_A480: inc     LoadedObj + Obj::Scratch0       ; A480
 ; ----------------------------------------------------------------------------
 L_A485: lda     #$02                            ; A485
         ldx     #$00                            ; A487
-        jsr     LDFD1                           ; A489
+        jsr     Obj_Apply_Acceleration          ; A489
         lda     #$30                            ; A48C
         ldx     #$4D                            ; A48E
         jsr     Speed_Limit_Sub                 ; A490

@@ -26,7 +26,7 @@ L_AE98: lda     #$80                            ; AE98
         sta     $43                             ; AE9E
         lda     LoadedObj + Obj::Scratch0       ; AEA0
         bne     L_AEDC                          ; AEA2
-        jsr     Apply_Velocity_X                ; AEA4
+        jsr     Obj_Apply_Velocity_X            ; AEA4
         jsr     H_Collision_Check               ; AEA7
         beq     L_AEB3                          ; AEAA
         lda     #$02                            ; AEAC
@@ -58,7 +58,7 @@ L_AED5: lda     #$01                            ; AED5
 ; ----------------------------------------------------------------------------
 L_AEDC: cmp     #$01                            ; AEDC
         bne     L_AEE6                          ; AEDE
-        jsr     Apply_Velocity_Y                ; AEE0
+        jsr     Obj_Apply_Velocity_Y            ; AEE0
         jsr     V_Collision_Check               ; AEE3
 L_AEE6: jsr     Obj_TurnHeading                           ; AEE6
         and     #$7F                            ; AEE9

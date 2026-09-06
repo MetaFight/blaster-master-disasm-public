@@ -105,7 +105,8 @@ _ObjHandler_Tank_77_Shooter_Main__TileBase:
         jmp     MetaSprite_Render               ; B072
 
 ; ----------------------------------------------------------------------------
-L_B075: rts                                     ; B075
+DEAD__ObjHandler_Tank_77_Shooter_Main__OrphanRTS:
+        rts                                     ; B075
 
 .endmacro
 

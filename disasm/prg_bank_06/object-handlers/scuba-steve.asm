@@ -104,7 +104,7 @@ L_B53D: lda     #$80                            ; B53D
         bne     L_B557                          ; B54B
         lda     #$01                            ; B54D
         ldx     #$00                            ; B54F
-        jsr     LDFD1                           ; B551
+        jsr     Obj_Apply_Acceleration          ; B551
         jsr     Obj_MoveAndCollide              ; B554
 L_B557: lda     #$10                            ; B557
         sta     $40                             ; B559

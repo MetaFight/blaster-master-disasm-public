@@ -34,9 +34,9 @@ L_B098: lda     #$80                            ; B098
         jsr     SpawnBigExplosion_NoSound       ; B0AD
 L_B0B0: lda     LoadedObj + Obj::Scratch0       ; B0B0
         bne     L_B0ED                          ; B0B2
-        jsr     Apply_Velocity_Y                ; B0B4
+        jsr     Obj_Apply_Velocity_Y            ; B0B4
         jsr     V_Collision_Check               ; B0B7
-        jsr     Apply_Velocity_X                ; B0BA
+        jsr     Obj_Apply_Velocity_X            ; B0BA
         jsr     H_Collision_Check               ; B0BD
         beq     L_B0C9                          ; B0C0
         lda     #$00                            ; B0C2

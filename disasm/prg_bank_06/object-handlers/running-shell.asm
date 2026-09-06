@@ -60,7 +60,7 @@ L_B5CE: lda     LoadedObj + Obj::Velocity_X     ; B5CE
 ; ----------------------------------------------------------------------------
 L_B5D7: lda     #$01                            ; B5D7
         ldx     #$00                            ; B5D9
-        jsr     LDFD1                           ; B5DB
+        jsr     Obj_Apply_Acceleration          ; B5DB
         lda     #$20                            ; B5DE
         ldx     #$4D                            ; B5E0
         jsr     Speed_Limit_Sub                 ; B5E2

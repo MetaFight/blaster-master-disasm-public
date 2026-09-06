@@ -25,7 +25,7 @@ L_978B: lda     #$80                            ; 978B
         lda     $B9                             ; 9793
         cmp     #$03                            ; 9795
         bcs     L_979F                          ; 9797
-        jsr     Apply_Velocity_XY               ; 9799
+        jsr     Obj_Apply_Velocity_XY           ; 9799
         jmp     L_97A2                          ; 979C
 
 ; ----------------------------------------------------------------------------
@@ -186,7 +186,7 @@ L_990A: sta     LoadedObj + Obj::Velocity_Y     ; 990A
 L_990F: lda     #$10                            ; 990F
         ldx     #$4D                            ; 9911
         jsr     Speed_Limit_Sub                 ; 9913
-L_9916: jsr     Apply_Velocity_XY                           ; 9916
+L_9916: jsr     Obj_Apply_Velocity_XY                           ; 9916
 L_9919: lda     #$18                            ; 9919
         sta     $40                             ; 991B
         lda     #$18                            ; 991D
@@ -942,58 +942,84 @@ L_A188: lda     #$00                            ; A188
         rts                                     ; A190
 
 ; ----------------------------------------------------------------------------
-L_A191: jmp     L_A1AC                          ; A191
+; ObjType $44: Mine Shrapnel (Medium Red ballistic) - Init.
+ObjHandler_Tank_44_Mine_Shrapnel_Init:
+        jmp     _ObjHandler_Tank_44_Mine_Shrapnel_Init__Done; A191
 
 ; ----------------------------------------------------------------------------
-L_A194: jsr     Step_RNG                           ; A194
+_ObjHandler_Tank_44_Mine_Shrapnel_Init__Body:
+        jsr     Step_RNG                        ; A194
         and     #$1F                            ; A197
         clc                                     ; A199
         adc     #$B0                            ; A19A
+; Pick a random heading (Facing).
         sta     LoadedObj + Obj::Facing         ; A19C
+; Set TTL (Scratch1) to #$40.
         lda     #$40                            ; A19E
         sta     LoadedObj + Obj::Scratch1       ; A1A0
+; Set Velocity according to heading (Facing) and scalar #$20.
         ldy     #$20                            ; A1A2
         jsr     Obj_FacingToVelocity            ; A1A4
         jsr     Obj_CalcTileIndex               ; A1A7
+; Calculate TileIndex and bump LoadedObj.Type to #$45, the Main state.
         inc     LoadedObj + Obj::Type           ; A1AA
-L_A1AC: rts                                     ; A1AC
+_ObjHandler_Tank_44_Mine_Shrapnel_Init__Done:
+        rts                                     ; A1AC
 
 ; ----------------------------------------------------------------------------
-L_A1AD: jmp     L_A1CC                          ; A1AD
+; ObjType $45: Mine Shrapnel (Medium Red ballistic) - Main.
+ObjHandler_Tank_45_Mine_Shrapnel_Main:
+        jmp     _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__OnScreenTest; A1AD
 
 ; ----------------------------------------------------------------------------
-L_A1B0: lda     #$80                            ; A1B0
+; Start by setting the collision box.
+_ObjHandler_Tank_45_Mine_Shrapnel_Main__Body:
+        lda     #$80                            ; A1B0
         sta     $42                             ; A1B2
         lda     #$80                            ; A1B4
         sta     $43                             ; A1B6
+; Decrement the lifetime timer (Scratch1).
         dec     LoadedObj + Obj::Scratch1       ; A1B8
-        bne     L_A1BF                          ; A1BA
+; If still alive, skip to Physics.
+        bne     _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Physics; A1BA
+; Otherwise, despawn.
         jmp     Obj_Despawn                     ; A1BC
 
 ; ----------------------------------------------------------------------------
-L_A1BF: lda     #$02                            ; A1BF
+_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Physics:
+        lda     #$02                            ; A1BF
         ldx     #$00                            ; A1C1
-        jsr     LDFD1                           ; A1C3
-        jsr     Apply_Velocity_X                ; A1C6
-        jsr     Apply_Velocity_Y                ; A1C9
-L_A1CC: lda     #$10                            ; A1CC
+; Update the Velocity under a gravity of 2px/f^2.
+        jsr     Obj_Apply_Acceleration          ; A1C3
+; Update the Position by applying Velocity_X/Y
+        jsr     Obj_Apply_Velocity_X            ; A1C6
+        jsr     Obj_Apply_Velocity_Y            ; A1C9
+_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__OnScreenTest:
+        lda     #$10                            ; A1CC
         sta     $40                             ; A1CE
         lda     #$10                            ; A1D0
         sta     $41                             ; A1D2
+; Set bounding box and do on-screen test.
         jsr     ScreenPos_Compute               ; A1D4
-        bne     L_A1EE                          ; A1D7
+; If off-screen, skip to Despawn.
+        bne     _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Despawn; A1D7
         lda     #$10                            ; A1D9
+; Otherwise, do damage check using shared Obj_TryDamagePlayer with enemy descriptor #$10.
         jsr     Obj_TryDamagePlayer             ; A1DB
-        beq     L_A1EB                          ; A1DE
+; On contact, skip to Defeat.
+        beq     _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Defeat; A1DE
         lda     #$00                            ; A1E0
         sta     $44                             ; A1E2
         lda     #$54                            ; A1E4
         sta     $45                             ; A1E6
+; Otherwise, draw CHR pattern #$54.
         jmp     OAM_Stage_Pattern               ; A1E8
 
 ; ----------------------------------------------------------------------------
-L_A1EB: jsr     SpawnMidExplosion               ; A1EB
-L_A1EE: jmp     Obj_Despawn                           ; A1EE
+_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Defeat:
+        jsr     SpawnMidExplosion               ; A1EB
+_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Despawn:
+        jmp     Obj_Despawn                     ; A1EE
 
 ; ----------------------------------------------------------------------------
 ; ObjType $46: Turret Shot (Medium Red ballistic) - Init.

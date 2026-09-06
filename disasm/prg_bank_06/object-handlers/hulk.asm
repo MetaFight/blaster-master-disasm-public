@@ -111,7 +111,13 @@ _ObjHandler_Tank_5E_Hulk_Main__RenderMetaSprite:
         jmp     MetaSprite_Render               ; A7C7
 
 ; ----------------------------------------------------------------------------
-L_A7CA: rts                                     ; A7CA
+; Single unreachable $60 (RTS) after the Hulk ($5E) sprite-emit tail (tail-calls JMP $F011 at
+; $A7C7). The preceding routine's tail call was peephole-optimised into a direct jump without
+; removing the trailing return, so this byte is never executed. Seeded as code so it decodes
+; correctly. 20 instances found 2026-07-12, joining the 4 already documented in
+; docs/us/misc/dead-code.md.
+DEAD__ObjHandler_Tank_5E_Hulk_Main__OrphanRTS:
+        rts                                     ; A7CA
 
 .endmacro
 

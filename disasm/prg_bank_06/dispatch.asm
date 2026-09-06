@@ -81,8 +81,8 @@ L_8070: .addr   ObjHandler_Tank_38_Big_Gray_Init; 8070
         .addr   L_A0B6                          ; 8082
         .addr   L_A0F6                          ; 8084
         .addr   L_A122                          ; 8086
-        .addr   L_A191                          ; 8088
-        .addr   L_A1AD                          ; 808A
+        .addr   ObjHandler_Tank_44_Mine_Shrapnel_Init; 8088
+        .addr   ObjHandler_Tank_45_Mine_Shrapnel_Main; 808A
         .addr   ObjHandler_Tank_46_Turret_Shot_Init; 808C
         .addr   ObjHandler_Tank_47_Turret_Shot_Main; 808E
         .addr   ObjHandler_Tank_48_Medium_Red_Projectile_Init; 8090
@@ -115,8 +115,8 @@ L_80B0: .addr   ObjHandler_Tank_58_Gray_Bullet_B_Init; 80B0
         .addr   ObjHandler_Tank_61_GrayHopper6HP_Patrolling; 80C2
         .addr   L_A8D2                          ; 80C4
         .addr   L_A8FB                          ; 80C6
-        .addr   L_A9CB                          ; 80C8
-        .addr   L_A9DE                          ; 80CA
+        .addr   ObjHandler_Tank_64_Mine_Init    ; 80C8
+        .addr   ObjHandler_Tank_65_Mine_Main    ; 80CA
         .addr   ObjHandler_Tank_66_Turret_Init  ; 80CC
         .addr   ObjHandler_Tank_67_Turret_Main  ; 80CE
         .addr   L_AB13                          ; 80D0

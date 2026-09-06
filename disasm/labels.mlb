@@ -2177,15 +2177,29 @@ NesPrgRom:1A13D:L_A13D
 NesPrgRom:1A14D:L_A14D
 NesPrgRom:1A15F:L_A15F
 NesPrgRom:1A188:L_A188
-NesPrgRom:1A191:L_A191
-NesPrgRom:1A194:L_A194
-NesPrgRom:1A1AC:L_A1AC
-NesPrgRom:1A1AD:L_A1AD
-NesPrgRom:1A1B0:L_A1B0
-NesPrgRom:1A1BF:L_A1BF
-NesPrgRom:1A1CC:L_A1CC
-NesPrgRom:1A1EB:L_A1EB
-NesPrgRom:1A1EE:L_A1EE
+NesPrgRom:1A191:ObjHandler_Tank_44_Mine_Shrapnel_Init:ObjType $44: Mine Shrapnel (Medium Red ballistic) - Init.
+NesPrgRom:1A194:_ObjHandler_Tank_44_Mine_Shrapnel_Init__Body
+NesPrgRom:1A19C::Pick a random heading (Facing).
+NesPrgRom:1A19E::Set TTL (Scratch1) to #$40.
+NesPrgRom:1A1A2::Set Velocity according to heading (Facing) and scalar #$20.
+NesPrgRom:1A1AA::Calculate TileIndex and bump LoadedObj.Type to #$45, the Main state.
+NesPrgRom:1A1AC:_ObjHandler_Tank_44_Mine_Shrapnel_Init__Done
+NesPrgRom:1A1AD:ObjHandler_Tank_45_Mine_Shrapnel_Main:ObjType $45: Mine Shrapnel (Medium Red ballistic) - Main.
+NesPrgRom:1A1B0:_ObjHandler_Tank_45_Mine_Shrapnel_Main__Body:Start by setting the collision box.
+NesPrgRom:1A1B8::Decrement the lifetime timer (Scratch1).
+NesPrgRom:1A1BA::If still alive, skip to Physics.
+NesPrgRom:1A1BC::Otherwise, despawn.
+NesPrgRom:1A1BF:_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Physics
+NesPrgRom:1A1C3::Update the Velocity under a gravity of 2px/f^2.
+NesPrgRom:1A1C6::Update the Position by applying Velocity_X/Y
+NesPrgRom:1A1CC:_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__OnScreenTest
+NesPrgRom:1A1D4::Set bounding box and do on-screen test.
+NesPrgRom:1A1D7::If off-screen, skip to Despawn.
+NesPrgRom:1A1DB::Otherwise, do damage check using shared Obj_TryDamagePlayer with enemy descriptor #$10.
+NesPrgRom:1A1DE::On contact, skip to Defeat.
+NesPrgRom:1A1E8::Otherwise, draw CHR pattern #$54.
+NesPrgRom:1A1EB:_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Defeat
+NesPrgRom:1A1EE:_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Despawn
 NesPrgRom:1A1F1:ObjHandler_Tank_46_Turret_Shot_Init:ObjType $46: Turret Shot (Medium Red ballistic) - Init.
 NesPrgRom:1A1F4:_ObjHandler_Tank_46_Turret_Shot_Init__Body
 NesPrgRom:1A1F6::Update Velocities according to LoadedObj.Facing and LoadedObj.Scratch1 (passed in from parent) as the scalar.
@@ -2427,7 +2441,7 @@ NesPrgRom:1A7B8:_ObjHandler_Tank_5E_Hulk_Main__Render
 NesPrgRom:1A7BA::Set OAM FlipX and Palette attributes.
 NesPrgRom:1A7C3::Based on bit4 of Global_FrameCounter, use either #$7E or #$7F as MetaSprite Id.
 NesPrgRom:1A7C6:_ObjHandler_Tank_5E_Hulk_Main__RenderMetaSprite
-NesPrgRom:1A7CA:L_A7CA
+NesPrgRom:1A7CA:DEAD__ObjHandler_Tank_5E_Hulk_Main__OrphanRTS:Single unreachable $60 (RTS) after the Hulk ($5E) sprite-emit tail (tail-calls JMP $F011 at $A7C7). The preceding routine's tail call was peephole-optimised into a direct jump without removing the trailing return, so this byte is never executed. Seeded as code so it decodes correctly. 20 instances found 2026-07-12, joining the 4 already documented in docs/us/misc/dead-code.md.
 NesPrgRom:1A7CB:ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:ObjType $5F: Gray Hopper (6 HP) - Init.
 NesPrgRom:1A7CE:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Body
 NesPrgRom:1A7D0::Init the enemy from descriptor $05.
@@ -2509,21 +2523,37 @@ NesPrgRom:1A994:L_A994
 NesPrgRom:1A9A4:L_A9A4
 NesPrgRom:1A9AE:L_A9AE
 NesPrgRom:1A9C3:L_A9C3
-NesPrgRom:1A9CB:L_A9CB
-NesPrgRom:1A9CE:L_A9CE
-NesPrgRom:1A9DD:L_A9DD
-NesPrgRom:1A9DE:L_A9DE
-NesPrgRom:1A9E1:L_A9E1
-NesPrgRom:1A9F8:L_A9F8
-NesPrgRom:1A9FA:L_A9FA
-NesPrgRom:1AA03:L_AA03
-NesPrgRom:1AA13:L_AA13
-NesPrgRom:1AA2D:L_AA2D
-NesPrgRom:1AA3B:L_AA3B
-NesPrgRom:1AA50:L_AA50
-NesPrgRom:1AA54:L_AA54
-NesPrgRom:1AA56:L_AA56
-NesPrgRom:1AA59:L_AA59
+NesPrgRom:1A9CB:ObjHandler_Tank_64_Mine_Init:ObjType $64: Mine - Init.
+NesPrgRom:1A9CE:_ObjHandler_Tank_64_Mine_Init__Body
+NesPrgRom:1A9D0::Call shared TankEnemy_Init with enemy descriptor #$07
+NesPrgRom:1A9D5::Zero velocity.
+NesPrgRom:1A9DB::Set BuggedCounter to 1.
+NesPrgRom:1A9DD:_ObjHandler_Tank_64_Mine_Init__Done
+NesPrgRom:1A9DE:ObjHandler_Tank_65_Mine_Main:ObjType $65: Mine - Main
+NesPrgRom:1A9E1:_ObjHandler_Tank_65_Mine_Main__Body:Start by setting collision box.
+NesPrgRom:1A9EB::If BuggedCounter == 0, skip to CheckTerrain.
+NesPrgRom:1A9ED::Apply motion, do collision checks, and update Velocity_Y accordingly.
+NesPrgRom:1A9F0::If not grounded, skip to HandleFalling.
+NesPrgRom:1A9F6::Otherwise, zero Velocity_X (again) and skip to ScreenTest.
+NesPrgRom:1A9F8:_ObjHandler_Tank_65_Mine_Main__HandleFalling:Incrememnt BuggedCounter (Scratch0).
+NesPrgRom:1A9FA:_ObjHandler_Tank_65_Mine_Main__CheckTerrain
+NesPrgRom:1A9FC::Check tile below.
+NesPrgRom:1A9FF::If solid, skip to ScreenTest.
+NesPrgRom:1AA01::Otherwise, decrement BuggedCounter (Scratch0).
+NesPrgRom:1AA03:_ObjHandler_Tank_65_Mine_Main__ScreenTest:Set bounding box, perform on-screen test, if on-screen skip to DamageCheck, if off-screen tombstone.
+NesPrgRom:1AA13:_ObjHandler_Tank_65_Mine_Main__Damage
+NesPrgRom:1AA18::Nudge collison box down 4px.
+NesPrgRom:1AA1C::Run shared TankEnemy_DamageCheck with enemy description #$07.
+NesPrgRom:1AA21::If no contact, skip to RenderAndSound tail.
+NesPrgRom:1AA23::Otherwise: Call shared defeat handler.
+NesPrgRom:1AA28::Backup WR_Context_Dependent_00.
+NesPrgRom:1AA2D:_ObjHandler_Tank_65_Mine_Main__ExplodeLoop:Spawn (up to) 6 shrapnel framents in a loop.
+NesPrgRom:1AA39::Restore WR_Context_Dependent_00.
+NesPrgRom:1AA3B:_ObjHandler_Tank_65_Mine_Main__RenderAndSound:Set OAM Attributes (h-flip, sprite palette 1),\nAlternate between MetaSprite Id #$88 and #$89 every 32 frames,\nBeep (SFX #$20) every 64 frames.
+NesPrgRom:1AA50:_ObjHandler_Tank_65_Mine_Main__TileAlt
+NesPrgRom:1AA54:_ObjHandler_Tank_65_Mine_Main__TileBase
+NesPrgRom:1AA56:_ObjHandler_Tank_65_Mine_Main__SetTile:Render selected MetaSprite Id.
+NesPrgRom:1AA59:DEAD__ObjHandler_Tank_65_Mine_Main__OrphanRTS
 NesPrgRom:1AA5A:ObjHandler_Tank_66_Turret_Init:ObjType $66: Ceiling Turret - Init.
 NesPrgRom:1AA5D:_ObjHandler_Tank_66_Turret_Init__Body
 NesPrgRom:1AA5F::Init via TankEnemy_Init with descriptor #$08.
@@ -2733,7 +2763,7 @@ NesPrgRom:1B060::if non-fatal, skip to Render.
 NesPrgRom:1B062::otherwise, die by calling shared TankEnemy_DefeatTrackedEnemy.
 NesPrgRom:1B065:_ObjHandler_Tank_77_Shooter_Main__Render:Sat Xflip and Palette (#$01) OAM attributes
 NesPrgRom:1B071:_ObjHandler_Tank_77_Shooter_Main__TileBase:Select pose MetaSprite: Base #$6C if PoseIndex == 0, otherwise #$6D.
-NesPrgRom:1B075:L_B075
+NesPrgRom:1B075:DEAD__ObjHandler_Tank_77_Shooter_Main__OrphanRTS
 NesPrgRom:1B076:L_B076
 NesPrgRom:1B079:L_B079
 NesPrgRom:1B094:L_B094
@@ -3526,8 +3556,8 @@ NesPrgRom:1D2C0::At this point, TileIndex holds a temp value corresponding to th
 NesPrgRom:1D2C9::Here, we convert TileIndex (currently a row offset) into an actual *Index*.\nBecause a row is 17-wide, we do this by multiplying by 17.\n\nThe multiplication by 17 is implemented as\nTileIndex = TileIndex + (16 * TileIndex)
 NesPrgRom:1D2D3::This adds the X component (how far ito the row) to TileIndex\n\nTileIndex = (Obj.X - Camera.X) + TileIndex
 NesPrgRom:1D2D8::Finally, we add in TilemapBaseIndex
-NesPrgRom:1D2DB:Apply_Velocity_XY:Applies Velocity_X and Velocity_Y to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.\n\nNotes:\n  I'm not sure what the benefits of this variant's arithmetic are over Apply_Double_Velocity_XY's appreach.\n  Why is the sign of the high byte dropped?  Why isn't the Lo addition done first for easy carry into the high byte?
-NesPrgRom:1D2DE:Apply_Velocity_X:Applies Velocity_X to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.
+NesPrgRom:1D2DB:Obj_Apply_Velocity_XY:Applies Velocity_X and Velocity_Y to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.\n\nNotes:\n  I'm not sure what the benefits of this variant's arithmetic are over Apply_Double_Velocity_XY's appreach.\n  Why is the sign of the high byte dropped?  Why isn't the Lo addition done first for easy carry into the high byte?
+NesPrgRom:1D2DE:Obj_Apply_Velocity_X:Applies Velocity_X to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.
 NesPrgRom:1D2E2::Clear position hi-byte's sign (not sure why).
 NesPrgRom:1D2E9::Add Velocity_X to position lo-byte and save result.
 NesPrgRom:1D2EB::If the carry flag is set, we need to adjust the hi-byte and TileIndex.\nROR A; EOR $4C: bit 7 = 1 if carry-out and velocity sign disagree (page crossing)
@@ -3535,13 +3565,13 @@ NesPrgRom:1D2EC::This following EOR produces a positive number if\n  * Velocity_
 NesPrgRom:1D2EE::In either case, no additional care required.  Skip to end.
 NesPrgRom:1D2F2::If Velocity_X is negative, DECrement the position hi-byte and TileIndex.
 NesPrgRom:1D2F4::otherwise, INCrement the position hi-byte and TileIndex.
-NesPrgRom:1D2F9:_Apply_Velocity_X__MovedLeft
-NesPrgRom:1D2FD:_Apply_Velocity_X__Done
-NesPrgRom:1D2FE:Apply_Velocity_Y:Identical to Apply_Velocity_X apart from TileIndex adjustment logic.\n\nMoving up requires subracting $11 from TileIndex and moving down requires adding $11 to id.  That is the only different between the two.
+NesPrgRom:1D2F9:_Obj_Apply_Velocity_X__MovedLeft
+NesPrgRom:1D2FD:_Obj_Apply_Velocity_X__Done
+NesPrgRom:1D2FE:Obj_Apply_Velocity_Y:Identical to Obj_Apply_Velocity_X apart from TileIndex adjustment logic.\n\nMoving up requires subracting $11 from TileIndex and moving down requires adding $11 to id.  That is the only different between the two.
 NesPrgRom:1D314::Handle moving down a tile.\n\nINC position hi-byte and prep TileIndex addition of $11 (17, one row).
-NesPrgRom:1D31A:_Apply_Velocity_Y__MovedUp:Handle moving up a tile.\n\nDEC position hi-byte and prep TileIndex addition of $EF (-17, one row).
-NesPrgRom:1D31E:_Apply_Velocity_Y__AdjTileIndex:add ±17 to TileIndex
-NesPrgRom:1D323:_Apply_Velocity_Y__Done
+NesPrgRom:1D31A:_Obj_Apply_Velocity_Y__MovedUp:Handle moving up a tile.\n\nDEC position hi-byte and prep TileIndex addition of $EF (-17, one row).
+NesPrgRom:1D31E:_Obj_Apply_Velocity_Y__AdjTileIndex:add ±17 to TileIndex
+NesPrgRom:1D323:_Obj_Apply_Velocity_Y__Done
 NesPrgRom:1D324:Apply_Double_Velocity_XY:Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point arithmetic.\nAlso keeps track of TileIndex correctly.
 NesPrgRom:1D327:Apply_Double_Velocity_X:Apply DOUBLE the LoadedObject's X velocity to its position, adjusting tilemap column $4E and keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Double_Velocity_XY.
 NesPrgRom:1D32B::If Velocity_X is positive, use sign-extension byte $00, otherwise use $FF
@@ -3848,7 +3878,7 @@ NesPrgRom:1DFC0:_Obj_GravityMoveBounce_Double__ClampSpeed:Clamp LoadedObj's velo
 NesPrgRom:1DFC4::The previous two lines prepare a call into Speed_Limit_Sub.\n\nA = Clamp value ($28)\nX = Value to be clamped.  In this case, LoadedObj's Velocity_Y ($4D)\n\nonce prepped, call the sub.
 NesPrgRom:1DFCB::Repeat for LoadedObj's Velocity_X ($4C)
 NesPrgRom:1DFCE::Return TerrainCollisionFlags in A
-NesPrgRom:1DFD1:L_DFD1
+NesPrgRom:1DFD1:Obj_Apply_Acceleration:Applies the given acceleration to LoadedObj.Velocity_X/Y.\n\nInput:\n  A = Y Acceleration\n  X = X Acceleration
 NesPrgRom:1DFDD:L_DFDD
 NesPrgRom:1DFE7:L_DFE7
 NesPrgRom:1DFF2:L_DFF2
@@ -3881,11 +3911,11 @@ NesPrgRom:1E06A:L_E06A
 NesPrgRom:1E071:L_E071
 NesPrgRom:1E07B:Obj_TurnHeading:Updates the LoadedObj.Facing heading by adding an angle delta.\n\nInput:\n  LoadedObj.Scratch2 = the angle delta\n\nOutput:\n  LoadedObj.Facing = the updated heading\n  A = the updated heading
 NesPrgRom:1E083:Obj_MoveAndCollide:Advance an object by its velocity and resolve the terrain collision, on both axes.\n\nInput:\n  Collision box (half extents)\n    LoadedObj_CollisionBox_HalfHeight\n    LoadedObj_CollisionBox_HalfWidth\n  Object sub-tile position\n    LoadedObj_Position_Y_Lo\n    LoadedObj_Position_X_Lo\nLoadedObj_TileIndex\n\nOutput:\n  A = the wall flags (also stored TerrainCollisionFlags)\n    bit7 ($80) = side wall hit,\n    bit6 ($40) = floor/ceiling hit.
-NesPrgRom:1E089::Apply_Velocity_X then H_Collision_Check.\nZ = 1 means no collision happend.  Skip ahead.
+NesPrgRom:1E089::Obj_Apply_Velocity_X then H_Collision_Check.\nZ = 1 means no collision happend.  Skip ahead.
 NesPrgRom:1E08B::Otherwise, prepare TerrainCollisionFlags value with side-wall flag (bit7) set.
 NesPrgRom:1E090:_Obj_MoveAndCollide__NoWallX:No horizontal collisions, so result side-wall flag is off.
 NesPrgRom:1E092:_Obj_MoveAndCollide__StoreX:store side-wall flag (bit7).
-NesPrgRom:1E09A::Apply_Velocity_Y then V_Collision_Check.\nZ = 1 means no collision happend.  Skip ahead.
+NesPrgRom:1E09A::Obj_Apply_Velocity_Y then V_Collision_Check.\nZ = 1 means no collision happend.  Skip ahead.
 NesPrgRom:1E09C::Otherwise, set the ceiling-floor flag (bit6) on in TerrainCollisionFlags.
 NesPrgRom:1E0A2:_Obj_MoveAndCollide__Return:Copy result (TerrainCollisionFlags) into A and return
 NesPrgRom:1E0A5:Obj_MoveAndCollide_Double:Double-speed Obj_MoveAndCollide: Apply_Double_Velocity_X + H_Collision_Check → $9A bit7 (side wall); Apply_Double_Velocity_Y + V_Collision_Check → bit6 (floor/ceiling); returns $9A. Dispatch slot $C030; used by the overhead projectile handlers (Slider Laser $53, Spitter Shot $55, Th2C Shot $57) and in-bank by Obj_MoveBounce_Double ($DF84).

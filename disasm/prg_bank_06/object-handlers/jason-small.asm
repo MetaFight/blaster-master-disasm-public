@@ -286,7 +286,7 @@ L_8363: ldx     #$00                            ; 8363
         beq     L_8373                          ; 836F
         ldx     #$F8                            ; 8371
 L_8373: stx     LoadedObj + Obj::Velocity_Y     ; 8373
-        jsr     Apply_Velocity_Y                ; 8375
+        jsr     Obj_Apply_Velocity_Y            ; 8375
         lda     LoadedObj + Obj::Velocity_Y     ; 8378
         beq     L_83AE                          ; 837A
         bmi     L_8390                          ; 837C
@@ -945,7 +945,7 @@ L_8853: lda     #$80                            ; 8853
         sta     $42                             ; 8855
         lda     #$80                            ; 8857
         sta     $43                             ; 8859
-        jsr     Apply_Velocity_X                ; 885B
+        jsr     Obj_Apply_Velocity_X            ; 885B
         jsr     Obj_ReadTile                    ; 885E
         bmi     L_8886                          ; 8861
         dec     LoadedObj + Obj::Scratch1       ; 8863

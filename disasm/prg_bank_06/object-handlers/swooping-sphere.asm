@@ -88,9 +88,9 @@ L_AD8C: lda     #$FC                            ; AD8C
 L_AD8E: clc                                     ; AD8E
         adc     LoadedObj + Obj::Velocity_X     ; AD8F
         sta     LoadedObj + Obj::Velocity_X     ; AD91
-        jsr     Apply_Velocity_X                ; AD93
+        jsr     Obj_Apply_Velocity_X            ; AD93
         jsr     H_Collision_Check               ; AD96
-        jsr     Apply_Velocity_Y                ; AD99
+        jsr     Obj_Apply_Velocity_Y            ; AD99
         jsr     V_Collision_Check               ; AD9C
         beq     L_ADA9                          ; AD9F
         lda     LoadedObj + Obj::Velocity_Y     ; ADA1

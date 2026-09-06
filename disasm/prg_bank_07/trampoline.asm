@@ -29,7 +29,7 @@ L_C018: jmp     V_Collision_Check               ; C018
 L_C01B: jmp     L_E704                          ; C01B
 
 ; ----------------------------------------------------------------------------
-L_C01E: jmp     Apply_Velocity_XY               ; C01E
+L_C01E: jmp     Obj_Apply_Velocity_XY           ; C01E
 
 ; ----------------------------------------------------------------------------
 L_C021: jmp     L_D643                          ; C021
@@ -38,7 +38,7 @@ L_C021: jmp     L_D643                          ; C021
 L_C024: jmp     Apply_Double_Velocity_XY        ; C024
 
 ; ----------------------------------------------------------------------------
-L_C027: jmp     Apply_Velocity_X                ; C027
+L_C027: jmp     Obj_Apply_Velocity_X            ; C027
 
 ; ----------------------------------------------------------------------------
 L_C02A: jmp     Apply_Double_Velocity_X         ; C02A
@@ -62,7 +62,7 @@ L_C039: jmp     Obj_MoveBounce                  ; C039
 L_C03C: jmp     Obj_MoveBounce_Double           ; C03C
 
 ; ----------------------------------------------------------------------------
-L_C03F: jmp     Apply_Velocity_Y                ; C03F
+L_C03F: jmp     Obj_Apply_Velocity_Y            ; C03F
 
 ; ----------------------------------------------------------------------------
 L_C042: jmp     Apply_Double_Velocity_Y         ; C042
@@ -560,7 +560,7 @@ L_C22B: jmp     L_E953                          ; C22B
 L_C22E: jmp     L_E9B8                          ; C22E
 
 ; ----------------------------------------------------------------------------
-L_C231: jmp     L_DFD1                          ; C231
+L_C231: jmp     Obj_Apply_Acceleration          ; C231
 
 ; ----------------------------------------------------------------------------
 L_C234: jmp     PPU_SetAddressIncrementTo_1     ; C234

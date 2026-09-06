@@ -106,7 +106,7 @@ _ObjHandler_Tank_7D_Gray_Flier_Main__Body:
         jsr     ScaleBySignedFrac               ; B300
         sta     LoadedObj + Obj::Velocity_Y     ; B303
 ; apply velocities (without terrain collision)
-        jsr     Apply_Velocity_XY               ; B305
+        jsr     Obj_Apply_Velocity_XY           ; B305
 _ObjHandler_Tank_7D_Gray_Flier_Main__AfterPhysics:
         lda     #$10                            ; B308
         sta     $40                             ; B30A

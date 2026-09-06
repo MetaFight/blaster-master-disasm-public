@@ -52,7 +52,7 @@ L_B420: dec     LoadedObj + Obj::Scratch1       ; B420
 ; ----------------------------------------------------------------------------
 L_B43A: lda     #$01                            ; B43A
         ldx     #$00                            ; B43C
-        jsr     LDFD1                           ; B43E
+        jsr     Obj_Apply_Acceleration          ; B43E
         jsr     Obj_MoveAndCollide              ; B441
         jsr     L_A2D4                          ; B444
         lda     LoadedObj + Obj::Velocity_Y     ; B447

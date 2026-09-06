@@ -91,7 +91,7 @@ L_A970: inc     LoadedObj + Obj::Scratch0       ; A970
 ; ----------------------------------------------------------------------------
 L_A975: lda     #$02                            ; A975
         ldx     #$00                            ; A977
-        jsr     LDFD1                           ; A979
+        jsr     Obj_Apply_Acceleration          ; A979
         lda     #$30                            ; A97C
         ldx     #$4D                            ; A97E
         jsr     Speed_Limit_Sub                 ; A980
