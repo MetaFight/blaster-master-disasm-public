@@ -83,7 +83,7 @@ _ObjHandler_Tank_5E_Hulk_Main__OnScreenCheck:
         sta     $41                             ; A7A4
         jsr     ScreenPos_Compute               ; A7A6
         beq     _ObjHandler_Tank_5E_Hulk_Main__DamageCheck; A7A9
-        jmp     Obj_TombstoneSlot               ; A7AB
+        jmp     Obj_Tombstone                   ; A7AB
 
 ; ----------------------------------------------------------------------------
 ; Use the shared DamageCheck handler TankEnemy_DamageCheck with enemy descriptor #$04.

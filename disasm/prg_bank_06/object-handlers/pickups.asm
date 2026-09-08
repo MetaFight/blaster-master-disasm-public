@@ -163,7 +163,7 @@ _ObjHandler_Common_35_PickUp_Main__AfterAging:
 ; If still on-screen, proceed to player collision check.
         beq     _ObjHandler_Common_35_PickUp_Main__OnScreen; 9C8D
 ; Otherwise, tombstone.
-        jmp     Obj_TombstoneSlot               ; 9C8F
+        jmp     Obj_Tombstone                   ; 9C8F
 
 ; ----------------------------------------------------------------------------
 _ObjHandler_Common_35_PickUp_Main__OnScreen:

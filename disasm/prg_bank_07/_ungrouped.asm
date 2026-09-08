@@ -582,7 +582,7 @@ L_CAFF: stx     ObjectSlot_Offset               ; CAFF
 
 ; ----------------------------------------------------------------------------
 L_CB11: lda     L_CB7C,x                        ; CB11
-L_CB14: sta     DormantSlot_SavedType,y         ; CB14
+L_CB14: sta     Tombtoned_ObjTypes,y            ; CB14
         ldx     ObjectSlot_Offset               ; CB17
         lda     #$01                            ; CB19
         sta     ObjectTable + Obj::Type,x       ; CB1B

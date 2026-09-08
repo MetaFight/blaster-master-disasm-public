@@ -62,7 +62,7 @@ L_B4EE: lda     Global_FrameCounter             ; B4EE
         adc     LoadedObj + Obj::Velocity_Y     ; B4FE
         sta     LoadedObj + Obj::Velocity_Y     ; B500
         jsr     Obj_MoveBounce                  ; B502
-        jsr     L_A2D4                          ; B505
+        jsr     Enemy_TileSnapY                 ; B505
 L_B508: lda     #$10                            ; B508
         sta     $40                             ; B50A
         lda     #$08                            ; B50C

@@ -109,7 +109,7 @@ L_A4A4: lda     #$10                            ; A4A4
         sta     $41                             ; A4AA
         jsr     ScreenPos_Compute               ; A4AC
         beq     L_A4B4                          ; A4AF
-        jmp     Obj_TombstoneSlot               ; A4B1
+        jmp     Obj_Tombstone                   ; A4B1
 
 ; ----------------------------------------------------------------------------
 L_A4B4: lda     #$00                            ; A4B4

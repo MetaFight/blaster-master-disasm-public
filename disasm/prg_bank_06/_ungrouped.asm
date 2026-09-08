@@ -398,16 +398,20 @@ _Obj_TryCloneAtScreenEdge__NoSlot:
         rts                                     ; A2D3
 
 ; ----------------------------------------------------------------------------
-L_A2D4: lda     #$00                            ; A2D4
+; If the occupied tile has attribute bit6 ($40, Water) clear, snap LoadedObj.Position_Y down to
+; the next tile row and update the LoadedObj.TileIndex.
+Enemy_TileSnapY:
+        lda     #$00                            ; A2D4
         jsr     Obj_ReadTile_WithOffset         ; A2D6
         and     #$C0                            ; A2D9
         cmp     #$40                            ; A2DB
-        beq     L_A2E8                          ; A2DD
+        beq     _Enemy_TileSnapY__Done          ; A2DD
         lda     #$00                            ; A2DF
         sta     LoadedObj + Obj::Position_Y_Lo  ; A2E1
         inc     LoadedObj + Obj::Position_Y_Hi  ; A2E3
         jsr     Obj_CalcTileIndex               ; A2E5
-L_A2E8: rts                                     ; A2E8
+_Enemy_TileSnapY__Done:
+        rts                                     ; A2E8
 
 .endmacro
 

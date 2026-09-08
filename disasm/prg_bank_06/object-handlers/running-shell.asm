@@ -82,7 +82,7 @@ L_B5FB: lda     #$10                            ; B5FB
         sta     $41                             ; B601
         jsr     ScreenPos_Compute               ; B603
         beq     L_B60B                          ; B606
-        jmp     Obj_TombstoneSlot               ; B608
+        jmp     Obj_Tombstone                   ; B608
 
 ; ----------------------------------------------------------------------------
 L_B60B: lda     #$18                            ; B60B

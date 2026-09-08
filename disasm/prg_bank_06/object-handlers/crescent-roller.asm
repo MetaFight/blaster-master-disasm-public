@@ -89,7 +89,7 @@ L_B787: lda     #$18                            ; B787
         sta     $41                             ; B78D
         jsr     ScreenPos_Compute               ; B78F
         beq     L_B797                          ; B792
-        jmp     Obj_TombstoneSlot               ; B794
+        jmp     Obj_Tombstone                   ; B794
 
 ; ----------------------------------------------------------------------------
 L_B797: lda     #$1A                            ; B797

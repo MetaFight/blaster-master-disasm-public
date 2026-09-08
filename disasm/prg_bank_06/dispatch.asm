@@ -143,8 +143,8 @@ L_80B0: .addr   ObjHandler_Tank_58_Gray_Bullet_B_Init; 80B0
         .addr   ObjHandler_Tank_7D_Gray_Flier_Main; 80FA
         .addr   L_B337                          ; 80FC
         .addr   L_B34F                          ; 80FE
-        .addr   L_B3E3                          ; 8100
-        .addr   L_B3FE                          ; 8102
+        .addr   ObjHandler_Tank_80_Jellyfish_Init; 8100
+        .addr   ObjHandler_Tank_81_Jellyfish_Main; 8102
         .addr   L_B494                          ; 8104
         .addr   L_B4A3                          ; 8106
         .addr   L_B53A                          ; 8108

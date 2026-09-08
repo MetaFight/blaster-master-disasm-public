@@ -74,7 +74,7 @@ _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__TombstoneTail:
         jsr     ScreenPos_Compute               ; B2E3
         beq     _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Return; B2E6
 ; otherwise, tombstone.
-        jmp     Obj_TombstoneSlot               ; B2E8
+        jmp     Obj_Tombstone                   ; B2E8
 
 ; ----------------------------------------------------------------------------
 _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Return:

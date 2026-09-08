@@ -139,7 +139,7 @@ _ObjHandler_Tank_6D_FlyingBomber_Main__ApplyPhysics:
 ; if A is positive, no horizontal collision happened, so skip ahead.
         bpl     _ObjHandler_Tank_6D_FlyingBomber_Main__AfterPhysics; ACC6
 ; otherwise, handle reflecting off a side wall.
-        jsr     _Obj_ReflectHeading__SideWall   ; ACC8
+        jsr     _Obj_ReflectHeading__HandleWall ; ACC8
         ldy     #$28                            ; ACCB
 ; and update velocities based on Facing heading and scalar Y
         jsr     Obj_FacingToVelocity            ; ACCD

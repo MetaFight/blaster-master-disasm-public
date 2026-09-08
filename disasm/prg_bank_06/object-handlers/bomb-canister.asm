@@ -116,7 +116,7 @@ L_B8EF: lda     #$10                            ; B8EF
         sec                                     ; B8FE
         sbc     LoadedObj + Obj::Velocity_X     ; B8FF
         sta     LoadedObj + Obj::Velocity_X     ; B901
-        jmp     Obj_TombstoneSlot               ; B903
+        jmp     Obj_Tombstone                   ; B903
 
 ; ----------------------------------------------------------------------------
 L_B906: lda     #$1B                            ; B906

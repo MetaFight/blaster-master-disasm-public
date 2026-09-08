@@ -1108,16 +1108,16 @@ _Obj_TryDamagePlayer__Miss:
 
 .macro MAC_L_D7F8
 ; ----------------------------------------------------------------------------
-; Saves the current LoadedObj's ObjType into DormantSlot_SavedType.
+; Saves the current LoadedObj's ObjType into Tombtoned_ObjTypes.
 ; Then, changes the ObjType to $02 (Tombstoned).
 ; 
 ; This is first stage of unloading an already-active object that has scrolled off-screen.
 ; If the Camera scrolls this object back on-screen, the $02 Object Handler will take care of
 ; restoring the slot to its original state.
-Obj_TombstoneSlot:
+Obj_Tombstone:
         ldx     ObjectSlot_Index                ; D7F8
         lda     LoadedObj + Obj::Type           ; D7FA
-        sta     DormantSlot_SavedType,x         ; D7FC
+        sta     Tombtoned_ObjTypes,x            ; D7FC
         lda     #$02                            ; D7FF
         sta     LoadedObj + Obj::Type           ; D801
         rts                                     ; D803
@@ -1737,14 +1737,14 @@ Obj_ScaleVelY:
 ;   bit6 (floor/ceiling) -> Mirror about horizontal (Facing = -Facing)
 Obj_ReflectHeading:
         lda     TerrainCollisionFlags           ; E0D0
-        bmi     _Obj_ReflectHeading__SideWall   ; E0D2
+        bmi     _Obj_ReflectHeading__HandleWall ; E0D2
         asl     a                               ; E0D4
         bmi     _Obj_ReflectHeading__FloorCeiling; E0D5
         rts                                     ; E0D7
 
 ; ----------------------------------------------------------------------------
 ; LoadedObj.Facing = $80 - LoadedObj.Facing.
-_Obj_ReflectHeading__SideWall:
+_Obj_ReflectHeading__HandleWall:
         lda     LoadedObj + Obj::Facing         ; E0D8
         sec                                     ; E0DA
         sbc     #$40                            ; E0DB

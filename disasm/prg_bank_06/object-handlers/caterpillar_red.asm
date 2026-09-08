@@ -109,7 +109,7 @@ L_A994: lda     #$10                            ; A994
         sta     $41                             ; A99A
         jsr     ScreenPos_Compute               ; A99C
         beq     L_A9A4                          ; A99F
-        jmp     Obj_TombstoneSlot               ; A9A1
+        jmp     Obj_Tombstone                   ; A9A1
 
 ; ----------------------------------------------------------------------------
 L_A9A4: lda     #$06                            ; A9A4

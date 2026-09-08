@@ -76,7 +76,7 @@ L_AFBC: lda     #$40                            ; AFBC
         sta     LoadedObj + Obj::Scratch0       ; AFC2
 L_AFC4: jsr     Obj_MoveAndCollide                           ; AFC4
         bpl     L_AFD1                          ; AFC7
-        jsr     _Obj_ReflectHeading__SideWall   ; AFC9
+        jsr     _Obj_ReflectHeading__HandleWall ; AFC9
         ldy     #$28                            ; AFCC
         jsr     Obj_FacingToVelocity            ; AFCE
 L_AFD1: lda     #$10                            ; AFD1
@@ -85,7 +85,7 @@ L_AFD1: lda     #$10                            ; AFD1
         sta     $41                             ; AFD7
         jsr     ScreenPos_Compute               ; AFD9
         beq     L_AFE1                          ; AFDC
-        jmp     Obj_TombstoneSlot               ; AFDE
+        jmp     Obj_Tombstone                   ; AFDE
 
 ; ----------------------------------------------------------------------------
 L_AFE1: lda     #$0F                            ; AFE1

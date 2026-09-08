@@ -140,7 +140,7 @@ _ObjHandler_Tank_59_Gray_Bullet_Main__AfterPhysics:
 ; if on-screen, jump to DamageCheck.
         beq     _ObjHandler_Tank_59_Gray_Bullet_Main__DamageCheck; A58B
 ; Otherwise, tombstone.
-        jmp     Obj_TombstoneSlot               ; A58D
+        jmp     Obj_Tombstone                   ; A58D
 
 ; ----------------------------------------------------------------------------
 ; Call shared DamageCheck routine with descriptor #$01.
@@ -258,7 +258,7 @@ _ObjHandler_Tank_5A_GrayBullet_Attacking__AfterPhysics:
         sta     $41                             ; A60B
         jsr     ScreenPos_Compute               ; A60D
         beq     _ObjHandler_Tank_5A_Gray_Bullet_Attacking__OnScreen; A610
-        jmp     Obj_TombstoneSlot               ; A612
+        jmp     Obj_Tombstone                   ; A612
 
 ; ----------------------------------------------------------------------------
 ; On-screen — TankEnemy_DamageCheck (descriptor $02); a kill takes JMP

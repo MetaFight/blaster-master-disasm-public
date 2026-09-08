@@ -103,7 +103,7 @@ L_ADA9: lda     #$10                            ; ADA9
         sta     $41                             ; ADAF
         jsr     ScreenPos_Compute               ; ADB1
         beq     L_ADB9                          ; ADB4
-        jmp     Obj_TombstoneSlot               ; ADB6
+        jmp     Obj_Tombstone                   ; ADB6
 
 ; ----------------------------------------------------------------------------
 L_ADB9: lda     #$0C                            ; ADB9

@@ -62,7 +62,7 @@ _ObjHandler_Tank_65_Mine_Main__ScreenTest:
         sta     $41                             ; AA09
         jsr     ScreenPos_Compute               ; AA0B
         beq     _ObjHandler_Tank_65_Mine_Main__Damage; AA0E
-        jmp     Obj_TombstoneSlot               ; AA10
+        jmp     Obj_Tombstone                   ; AA10
 
 ; ----------------------------------------------------------------------------
 _ObjHandler_Tank_65_Mine_Main__Damage:

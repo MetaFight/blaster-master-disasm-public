@@ -624,7 +624,7 @@ L_9F7F: lda     #$10                            ; 9F7F
         sta     $41                             ; 9F85
 L_9F87: jsr     ScreenPos_Compute                           ; 9F87
         beq     L_9F8F                          ; 9F8A
-        jmp     Obj_TombstoneSlot               ; 9F8C
+        jmp     Obj_Tombstone                   ; 9F8C
 
 ; ----------------------------------------------------------------------------
 L_9F8F: clc                                     ; 9F8F
@@ -815,7 +815,7 @@ L_A097: cmp     #$10                            ; A097
         sta     LoadedObj + Obj::Facing         ; A0A3
         tya                                     ; A0A5
         bpl     L_A0AB                          ; A0A6
-        jsr     _Obj_ReflectHeading__SideWall   ; A0A8
+        jsr     _Obj_ReflectHeading__HandleWall ; A0A8
 L_A0AB: ldy     #$30                            ; A0AB
         jsr     Obj_FacingToVelocity            ; A0AD
         inc     LoadedObj + Obj::Type           ; A0B0

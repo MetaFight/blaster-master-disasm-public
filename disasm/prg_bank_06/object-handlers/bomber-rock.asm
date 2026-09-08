@@ -87,7 +87,7 @@ L_ABA4: lda     #$10                            ; ABA4
         sta     $41                             ; ABAA
         jsr     ScreenPos_Compute               ; ABAC
         beq     L_ABB4                          ; ABAF
-        jmp     Obj_TombstoneSlot               ; ABB1
+        jmp     Obj_Tombstone                   ; ABB1
 
 ; ----------------------------------------------------------------------------
 L_ABB4: lda     #$09                            ; ABB4

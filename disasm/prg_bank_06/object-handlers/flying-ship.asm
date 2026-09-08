@@ -42,7 +42,7 @@ L_AC10: lda     #$10                            ; AC10
         sta     $41                             ; AC16
         jsr     ScreenPos_Compute               ; AC18
         beq     L_AC20                          ; AC1B
-        jmp     Obj_TombstoneSlot               ; AC1D
+        jmp     Obj_Tombstone                   ; AC1D
 
 ; ----------------------------------------------------------------------------
 L_AC20: lda     #$0A                            ; AC20

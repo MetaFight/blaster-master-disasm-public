@@ -78,7 +78,7 @@ _ObjHandler_Tank_77_Shooter_Main__ScreenTest:
 ; If on-screen, skip to Damage handler.
         beq     _ObjHandler_Tank_77_Shooter_Main__Damage; B056
 ; otherwise, tombstone.
-        jmp     Obj_TombstoneSlot               ; B058
+        jmp     Obj_Tombstone                   ; B058
 
 ; ----------------------------------------------------------------------------
 _ObjHandler_Tank_77_Shooter_Main__Damage:

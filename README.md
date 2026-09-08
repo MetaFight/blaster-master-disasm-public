@@ -13,7 +13,7 @@ verified and have since been modified.
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 123 / 851 (14%) |
+| **M4** — Verified subroutines (public, clean) | 126 / 851 (15%) |
 | **M6** — Verified docs (public, clean) | 4 / 117 (3%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -24,7 +24,7 @@ verified and have since been modified.
 #### Area 1
 
 <details open>
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜◽⬛⬛ 88.6% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜◽⬛ 93.2% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -42,7 +42,7 @@ verified and have since been modified.
 | <details><summary>✅ Gray Hopper; 10HP</summary>✅ <code>ObjHandler_Tank_7A_Gray_Hopper_10HP_Init</code><br/>✅ <code>ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling</code></details> | 2 / 2 |
 | <details><summary>✅ Gray Hopper; 6HP</summary>✅ <code>ObjHandler_Tank_5F_Gray_Hopper_6HP_Init</code><br/>✅ <code>ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking</code><br/>✅ <code>ObjHandler_Tank_61_GrayHopper6HP_Patrolling</code></details> | 3 / 3 |
 | <details><summary>✅ Hulk</summary>✅ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>✅ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 2 / 2 |
-| <details><summary>⬜ Jellyfish</summary>⬜ <code>ObjHandler_Tank_80_Jellyfish_Init</code><br/>⬜ <code>ObjHandler_Tank_81_Jellyfish_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Jellyfish</summary>✅ <code>ObjHandler_Tank_80_Jellyfish_Init</code><br/>✅ <code>ObjHandler_Tank_81_Jellyfish_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Mine</summary>✅ <code>ObjHandler_Tank_64_Mine_Init</code><br/>✅ <code>ObjHandler_Tank_65_Mine_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Common_35_PickUp_Main</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Gun; x4</summary>✅ <code>ObjHandler_Tank_31_Pickup_Gun_x4_Init</code></details> | 1 / 1 |
@@ -366,6 +366,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ✅✅✅✅ | 06 / `object-handlers/hopper_6hp` |  |
 | ✅✅✅✅ | 06 / `object-handlers/hopper_hulk_common` |  |
 | ✅✅✅✅ | 06 / `object-handlers/hulk` |  |
+| ✅✅✅✅ | 06 / `object-handlers/jellyfish` |  |
 | ✅✅✅✅ | 06 / `object-handlers/mine` |  |
 | ✅✅✅✅ | 06 / `object-handlers/shooter` |  |
 | ✅✅✅✅ | 06 / `object-handlers/turret` |  |
@@ -378,7 +379,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_gray` | `ObjHandler_Tank_59_Gray_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_red` | `ObjHandler_Tank_8E_Red_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ⬜▫️⬛⬛<br/>`31.2%` | 06 / `object-handlers/projectiles-and-ballistics` | `ObjHandler_Tank_3C_Small_Red_Init`, `ObjHandler_Tank_47_Turret_Shot_Main`, and `ObjHandler_Tank_49_Medium_Red_Projectile_Main` depend on unverified routines `Obj_AimVelocityFromDelta` and `HitboxScan_LockOn`. |
-| ◽⬛⬛⬛<br/>`14.5%` | 06 / `_ungrouped` |  |
+| ◽⬛⬛⬛<br/>`18.2%` | 06 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/auto-gates_and_locks` |  |
@@ -396,7 +397,6 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-bomber_caterpillar_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-ship` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jason-small` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jellyfish` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/orb` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/orb_kamikaze` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/running-shell` |  |
@@ -437,7 +437,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **7** pages, of which **3** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-09-06 05:09 UTC_
+_Generated: 2026-09-08 01:55 UTC_
 
 ## Pages
 

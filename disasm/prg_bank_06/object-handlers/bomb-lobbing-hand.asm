@@ -74,7 +74,7 @@ L_B3AF: lda     #$10                            ; B3AF
         sta     $41                             ; B3B5
         jsr     ScreenPos_Compute               ; B3B7
         beq     L_B3BF                          ; B3BA
-        jmp     Obj_TombstoneSlot               ; B3BC
+        jmp     Obj_Tombstone                   ; B3BC
 
 ; ----------------------------------------------------------------------------
 L_B3BF: lda     #$15                            ; B3BF

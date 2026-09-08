@@ -48,7 +48,7 @@ L_A71F: lda     #$10                            ; A71F
         sta     $41                             ; A725
         jsr     ScreenPos_Compute               ; A727
         beq     L_A72F                          ; A72A
-        jmp     Obj_TombstoneSlot               ; A72C
+        jmp     Obj_Tombstone                   ; A72C
 
 ; ----------------------------------------------------------------------------
 L_A72F: lda     #$03                            ; A72F

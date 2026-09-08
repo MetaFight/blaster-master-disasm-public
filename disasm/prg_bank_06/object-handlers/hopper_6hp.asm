@@ -141,7 +141,7 @@ _ObjHandler_Tank_60_GrayHopper6HP_Attacking__OnScreenCheck:
 ; If still on-screen, run damage logic,
         beq     _ObjHandler_Tank_60_GrayHopper6HP_Attacking__Damage; A84B
 ; otherwise, prep for despawn by tombstoning.
-        jmp     Obj_TombstoneSlot               ; A84D
+        jmp     Obj_Tombstone                   ; A84D
 
 ; ----------------------------------------------------------------------------
 ; on-screen: run the shared damage check against descriptor $05. A non-zero return means this hit
@@ -240,7 +240,7 @@ _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__AfterPhysics:
 ; If still on-screen, progress to the Damage handler code,
         beq     _ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Damage; A8AA
 ; otherwise, start the despawn process by tombstoning.
-        jmp     Obj_TombstoneSlot               ; A8AC
+        jmp     Obj_Tombstone                   ; A8AC
 
 ; ----------------------------------------------------------------------------
 ; Run shared damage check routine with enemy descriptor $05.

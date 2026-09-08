@@ -2255,8 +2255,8 @@ NesPrgRom:1A2C1::Set the child's Position_X to the Camera's + the selected offse
 NesPrgRom:1A2CB::Save Velocity_X to spawned child
 NesPrgRom:1A2CE::Return A = 1 for sucess
 NesPrgRom:1A2D1:_Obj_TryCloneAtScreenEdge__NoSlot:Return A = 0 for failure (no free slot).
-NesPrgRom:1A2D4:L_A2D4
-NesPrgRom:1A2E8:L_A2E8
+NesPrgRom:1A2D4:Enemy_TileSnapY:If the occupied tile has attribute bit6 ($40, Water) clear, snap LoadedObj.Position_Y down to the next tile row and update the LoadedObj.TileIndex.
+NesPrgRom:1A2E8:_Enemy_TileSnapY__Done
 NesPrgRom:1A2E9:TankEnemy_Init:(alpha: not fully human-verified / pending re-verification) Shared initialisation routine for every damageable tank enemy, called by each enemy's Init handler.\nOverhead parallel: OvhdEnemy_Init ($B2B4). See docs/us/entities/tank/_shared-enemy-system.md.\n\nInput:\n   A = descriptor index (aka Thing ID).\n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the\n    damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them\n  LoadedObj's Health is set from EnemyDesc::Health\n  LoadedObj's IFrameCounter is set to 0\n  LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's\n    own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field\n  ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler\n    need not advance $46 itself
 NesPrgRom:1A2EC::Load desc[0] (EnemyDesc::Health, starting HP) via ($A1),Y → $53; clear anim state $4F.
 NesPrgRom:1A2F4::JSR $D2B9 init tile position; INC $46 → advance to the enemy's main handler.
@@ -2885,20 +2885,48 @@ NesPrgRom:1B3BF:L_B3BF
 NesPrgRom:1B3C9:L_B3C9
 NesPrgRom:1B3DD:L_B3DD
 NesPrgRom:1B3DF:L_B3DF
-NesPrgRom:1B3E3:L_B3E3
-NesPrgRom:1B3E6:L_B3E6
-NesPrgRom:1B3FD:L_B3FD
-NesPrgRom:1B3FE:L_B3FE
-NesPrgRom:1B401:L_B401
-NesPrgRom:1B418:L_B418
-NesPrgRom:1B420:L_B420
-NesPrgRom:1B43A:L_B43A
-NesPrgRom:1B457:L_B457
-NesPrgRom:1B467:L_B467
-NesPrgRom:1B471:L_B471
-NesPrgRom:1B47F:L_B47F
-NesPrgRom:1B488:L_B488
-NesPrgRom:1B491:L_B491
+NesPrgRom:1B3E3:ObjHandler_Tank_80_Jellyfish_Init:ObjType $80: Jellyfish - init.
+NesPrgRom:1B3E6:_ObjHandler_Tank_80_Jellyfish_Init__Body
+NesPrgRom:1B3E8::Standard enemy init using shared TankEnemy_Init with enemy descriptor #$16.
+NesPrgRom:1B3EF::Set initial heading (Facing) to up and slightly left ($B8).
+NesPrgRom:1B3F5::Set initial Velocity_Y to a slow #$08 (0.5px/f) sink and zero out Velocity_X and Scratch0.
+NesPrgRom:1B3FB::Set SwimCooldown (Scratch1) to #$40.
+NesPrgRom:1B3FD:_ObjHandler_Tank_80_Jellyfish_Init__Done
+NesPrgRom:1B3FE:ObjHandler_Tank_81_Jellyfish_Main:ObjType $81: Jellyfish - Main.
+NesPrgRom:1B401:_ObjHandler_Tank_81_Jellyfish_Main__Body:Start by setting collision box.
+NesPrgRom:1B40B::If swimming, skip to Coasting.
+NesPrgRom:1B40D::Otherwise, apply motion and collision.
+NesPrgRom:1B410::If no horizontal collision detected (A bit7), skip to Groundcheck.
+NesPrgRom:1B412::Otherwise, call HandleWall and then kip to TimerTick.
+NesPrgRom:1B418:_ObjHandler_Tank_81_Jellyfish_Main__GroundCheck
+NesPrgRom:1B41A::If no vertical collisions detected (A bit6 clear), skip to TimerTick.
+NesPrgRom:1B41E::Set Velocity_Y to #$04 (0.5px/f), a slow drift down.
+NesPrgRom:1B420:_ObjHandler_Tank_81_Jellyfish_Main__TimerTick:Decrement SwimCooldown.
+NesPrgRom:1B422::If still cooling down, skip to ScreenTest.
+NesPrgRom:1B426::Otherwise, play swimming SFX,
+NesPrgRom:1B429::set State (Scratch0) to 1 (swimming),
+NesPrgRom:1B431::pick a random speed between #$20 and #$27,
+NesPrgRom:1B434::and use that and the Heading (Facing) to set the swim Velocity.
+NesPrgRom:1B43A:_ObjHandler_Tank_81_Jellyfish_Main__Coasting:Coasting on the swim burst.  Affected by gravity.
+NesPrgRom:1B43E::Apply Acceleration (x:0, y:0.0625) to Velocity.
+NesPrgRom:1B441::Apply motion and collisions.
+NesPrgRom:1B444::Snap to water surface if jutting out.
+NesPrgRom:1B44B::if (unsigned)Velocity_Y >= 0.5 (#$04) skip to ScreenTest
+NesPrgRom:1B44F::Otherwise,\n  clamp Velocity_Y to 0.5 (#$04) - a slow downward drift, \n  switch State 'sinking' (Scratch0 = 0), \n  and set SwimCooldown to #$70.
+NesPrgRom:1B457:_ObjHandler_Tank_81_Jellyfish_Main__ScreenTest
+NesPrgRom:1B45F::Set bounding box and do screen test.
+NesPrgRom:1B462::if on-screen, skip to Damage.
+NesPrgRom:1B464::if off-screen, tombstone.
+NesPrgRom:1B467:_ObjHandler_Tank_81_Jellyfish_Main__Damage:Use shared TankEnemy_DamageCheck with #$16.\nIf non-fatal, skip to render.\nOtherwise, called shared TankEnemy_DefeatTrackedEnemy.
+NesPrgRom:1B471:_ObjHandler_Tank_81_Jellyfish_Main__Render
+NesPrgRom:1B473::Set OAM Attribute (sprite 1)
+NesPrgRom:1B478::If SwimCooldown != 0, Skip to CooldownDraw.
+NesPrgRom:1B47C::Otherwise, select MetaSprite #$9E and skip to RenderSelectedMetaSprite.
+NesPrgRom:1B47F:_ObjHandler_Tank_81_Jellyfish_Main__CooldownDraw
+NesPrgRom:1B481::If SwimCooldown (Scratch1) >= #$20, skip to FlutterAnimation
+NesPrgRom:1B485::Otherwise, select MetaSprite #$9E and skip to RenderSelectedMetaSprite.
+NesPrgRom:1B488:_ObjHandler_Tank_81_Jellyfish_Main__FlutterAnimation:Alternate between selected MetaSprite Id $9D and $9E every 4 frames.
+NesPrgRom:1B491:_ObjHandler_Tank_81_Jellyfish_Main__RenderSelectedMetaSprite
 NesPrgRom:1B494:L_B494
 NesPrgRom:1B497:L_B497
 NesPrgRom:1B4A2:L_B4A2
@@ -3725,7 +3753,7 @@ NesPrgRom:1D7E3:L_D7E3
 NesPrgRom:1D7E7:L_D7E7
 NesPrgRom:1D7EE:L_D7EE
 NesPrgRom:1D7F2:L_D7F2
-NesPrgRom:1D7F8:Obj_TombstoneSlot:Saves the current LoadedObj's ObjType into DormantSlot_SavedType.\nThen, changes the ObjType to $02 (Tombstoned).\n\nThis is first stage of unloading an already-active object that has scrolled off-screen.\nIf the Camera scrolls this object back on-screen, the $02 Object Handler will take care of restoring the slot to its original state.
+NesPrgRom:1D7F8:Obj_Tombstone:Saves the current LoadedObj's ObjType into Tombtoned_ObjTypes.\nThen, changes the ObjType to $02 (Tombstoned).\n\nThis is first stage of unloading an already-active object that has scrolled off-screen.\nIf the Camera scrolls this object back on-screen, the $02 Object Handler will take care of restoring the slot to its original state.
 NesPrgRom:1D804:Obj_DespawnAndLog:Despawn, logging the kill for slots ≥ 8.\n\nSlot 0 is always the player.\nNot yet confirmed:\n  Slots 1-5 are for Player weapons.
 NesPrgRom:1D80A::if slot ObjectSlot_Index ≥ 8, then advance ring index ThingIndex_DespawnRing_WriteIndex (modulo 64).
 NesPrgRom:1D811::Read the slot's saved Thing index before logging it\n  effectively ObjectSlot_ThingIndex,y ($100,y) not Pad2Raw,y ($00F8,y) despite the $00F8 base.  This is because ObjectIndex (Y) is always >= 8 here.
@@ -3924,7 +3952,7 @@ NesPrgRom:1E0B4:_Obj_MoveAndCollide_Double__StoreX:$9A = side-wall flag (bit7).
 NesPrgRom:1E0C4:_Obj_MoveAndCollide_Double__Return:Copy result (TerrainCollisionFlags) into A and return
 NesPrgRom:1E0C7:Obj_ScaleVelY:Scale LoadedObj's Velocity_Y by the fraction in A.\n\nInput:\n  A = fraction, unsigned byte, in any fixed-point format.\n  LoadedObj's Velocity_Y = signed\n\nOutput:\n  A = LoadedObj's Velocity_Y scaled by A\n  LoadedObj's Velocity_Y = same as A
 NesPrgRom:1E0D0:Obj_ReflectHeading:Bounce the heading angle LoadedObj.Facing according to the boundary flags in TerrainCollisionFlags:\n  bit7 (side wall) -> Mirror about vertical (Facing = $80 - Facing) \n  bit6 (floor/ceiling) -> Mirror about horizontal (Facing = -Facing)
-NesPrgRom:1E0D8:_Obj_ReflectHeading__SideWall:LoadedObj.Facing = $80 - LoadedObj.Facing.
+NesPrgRom:1E0D8:_Obj_ReflectHeading__HandleWall:LoadedObj.Facing = $80 - LoadedObj.Facing.
 NesPrgRom:1E0E5:_Obj_ReflectHeading__FloorCeiling:LoadedObj.Facing = -LoadedObj.Facing.
 NesPrgRom:1E0ED:Obj_Get_DeltaToPlayer_X_q12_4:Calculates signed X-distance from this object to the player.\n  Returns:\n    A = Hi byte (signed)\n    X = Lo byte (unsigned)
 NesPrgRom:1E0FA:Obj_Get_DeltaToPlayer_Y_q12_4:Calculates signed Y-distance from this object to the player.\n  Returns:\n    A = Hi byte (signed)\n    X = Lo byte (unsigned)
@@ -4543,7 +4571,7 @@ NesInternalRam:0094:Sophia_LookUpAnimation_Counter:Counter for Sophia's "look up
 NesInternalRam:009A:TerrainCollisionFlags:Set by Obj_MoveAndCollide and Obj_MoveAndCollide_Double.\n\nbit 7 set means a collision happened to the left or right.\nbit 6 set means a collision happened above or below.\n\nThe value of LoadedObj's velocity is used to disambiguate the collision side.
 NesInternalRam:00C3:Player_GunLevel:Overhead Jason's persistent gun level.
 NesInternalRam:00D3:SavedPrgBank:PRG bank number to restore via BankSave_Switch ($E619) once a temporary bank switch is done.
-NesInternalRam:0150-0161:DormantSlot_SavedType:18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's\nreal ObjType when it is made Dormant (ObjType $02).\nThe Dormant ObjType handler then reads from this table to restore the tombstoned Object.
+NesInternalRam:0150-0161:Tombtoned_ObjTypes:18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's\nreal ObjType when it is made Dormant (ObjType $02).\nThe Dormant ObjType handler then reads from this table to restore the tombstoned Object.
 NesInternalRam:0400:PlayerSlot__Type:Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
 NesInternalRam:0401:PlayerSlot__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
 NesInternalRam:0402:PlayerSlot__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.

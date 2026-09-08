@@ -10,7 +10,7 @@ L_8127: lda     #$20                            ; 8127
         jsr     ScreenPos_Compute               ; 812F
         bne     L_813C                          ; 8132
         ldx     ObjectSlot_Index                ; 8134
-        lda     DormantSlot_SavedType,x         ; 8136
+        lda     Tombtoned_ObjTypes,x            ; 8136
         sta     LoadedObj + Obj::Type           ; 8139
         rts                                     ; 813B
 

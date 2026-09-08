@@ -40,7 +40,7 @@ L_B66F: lda     #$10                            ; B66F
         sta     $41                             ; B675
         jsr     ScreenPos_Compute               ; B677
         beq     L_B67F                          ; B67A
-        jmp     Obj_TombstoneSlot               ; B67C
+        jmp     Obj_Tombstone                   ; B67C
 
 ; ----------------------------------------------------------------------------
 L_B67F: rts                                     ; B67F

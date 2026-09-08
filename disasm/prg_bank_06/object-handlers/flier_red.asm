@@ -40,7 +40,7 @@ L_B23F: lda     #$10                            ; B23F
         sta     $41                             ; B245
         jsr     ScreenPos_Compute               ; B247
         beq     L_B24F                          ; B24A
-        jmp     Obj_TombstoneSlot               ; B24C
+        jmp     Obj_Tombstone                   ; B24C
 
 ; ----------------------------------------------------------------------------
 L_B24F: rts                                     ; B24F

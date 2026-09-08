@@ -293,7 +293,7 @@ L_C120: jmp     Obj_GravityMoveBounce_Double    ; C120
 L_C123: jmp     ScreenFade_Step                 ; C123
 
 ; ----------------------------------------------------------------------------
-L_C126: jmp     _Obj_ReflectHeading__SideWall   ; C126
+L_C126: jmp     _Obj_ReflectHeading__HandleWall ; C126
 
 ; ----------------------------------------------------------------------------
 L_C129: jmp     _Obj_ReflectHeading__FloorCeiling; C129
@@ -377,7 +377,7 @@ L_C174: jmp     ScaleByUnsignedFrac             ; C174
 L_C177: jmp     L_E9CF                          ; C177
 
 ; ----------------------------------------------------------------------------
-L_C17A: jmp     Obj_TombstoneSlot               ; C17A
+L_C17A: jmp     Obj_Tombstone                   ; C17A
 
 ; ----------------------------------------------------------------------------
 L_C17D: jmp     L_EF91                          ; C17D

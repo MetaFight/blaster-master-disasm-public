@@ -74,7 +74,7 @@ _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__AfterPhysics:
 ; If still on-screen, progress to the Damage handler code,
         beq     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Damage; B1B6
 ; otherwise, start the despawn process by tombstoning.
-        jmp     Obj_TombstoneSlot               ; B1B8
+        jmp     Obj_Tombstone                   ; B1B8
 
 ; ----------------------------------------------------------------------------
 ; Run shared damage check routine with enemy descriptor $12.

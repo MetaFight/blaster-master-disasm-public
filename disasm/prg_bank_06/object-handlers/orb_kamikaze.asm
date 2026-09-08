@@ -108,7 +108,7 @@ L_B13B: lda     #$20                            ; B13B
         sta     $41                             ; B141
         jsr     ScreenPos_Compute               ; B143
         beq     L_B14B                          ; B146
-        jmp     Obj_TombstoneSlot               ; B148
+        jmp     Obj_Tombstone                   ; B148
 
 ; ----------------------------------------------------------------------------
 L_B14B: lda     #$11                            ; B14B

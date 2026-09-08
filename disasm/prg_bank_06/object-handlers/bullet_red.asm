@@ -124,7 +124,7 @@ _ObjHandler_Tank_8E_Red_Bullet_Main__AfterPhysics:
         sta     $41                             ; B9C6
         jsr     ScreenPos_Compute               ; B9C8
         beq     _ObjHandler_Tank_8E_Red_Bullet_Main__DamageCheck; B9CB
-        jmp     Obj_TombstoneSlot               ; B9CD
+        jmp     Obj_Tombstone                   ; B9CD
 
 ; ----------------------------------------------------------------------------
 _ObjHandler_Tank_8E_Red_Bullet_Main__DamageCheck:
@@ -220,7 +220,7 @@ _ObjHandler_Tank_8F_Red_Bullet_Attacking__AfterPhysics:
         sta     $41                             ; BA49
         jsr     ScreenPos_Compute               ; BA4B
         beq     _ObjHandler_Tank_8F_Red_Bullet_Attacking__OnScreen; BA4E
-        jmp     Obj_TombstoneSlot               ; BA50
+        jmp     Obj_Tombstone                   ; BA50
 
 ; ----------------------------------------------------------------------------
 _ObjHandler_Tank_8F_Red_Bullet_Attacking__OnScreen:

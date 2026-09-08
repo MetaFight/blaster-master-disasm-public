@@ -104,7 +104,7 @@ _ObjHandler_Tank_67_Turret_Main__Bookkeeping:
         sta     $41                             ; AADA
         jsr     ScreenPos_Compute               ; AADC
         beq     _ObjHandler_Tank_67_Turret_Main__Damage; AADF
-        jmp     Obj_TombstoneSlot               ; AAE1
+        jmp     Obj_Tombstone                   ; AAE1
 
 ; ----------------------------------------------------------------------------
 ; Used shared damage handler with descriptor #$08.  If non-fatal, skip to renderer, otherwise skip

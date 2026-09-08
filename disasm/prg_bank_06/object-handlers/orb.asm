@@ -79,7 +79,7 @@ L_AF03: lda     #$10                            ; AF03
         sta     $41                             ; AF09
         jsr     ScreenPos_Compute               ; AF0B
         beq     L_AF13                          ; AF0E
-        jmp     Obj_TombstoneSlot               ; AF10
+        jmp     Obj_Tombstone                   ; AF10
 
 ; ----------------------------------------------------------------------------
 L_AF13: lda     #$0E                            ; AF13
