@@ -347,7 +347,7 @@ L_8AF4: lda     #$20                            ; 8AF4
         jsr     LC0FF                           ; 8AFC
         bne     L_8B09                          ; 8AFF
         ldx     ObjectSlot_Index                ; 8B01
-        lda     Tombtoned_ObjTypes,x            ; 8B03
+        lda     Tombstoned_ObjTypes,x           ; 8B03
         sta     LoadedObj + Obj::Type           ; 8B06
         rts                                     ; 8B08
 

@@ -169,7 +169,7 @@ SavedPrgBank                   := $00D3
 ; 18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's
 ; real ObjType when it is made Dormant (ObjType $02).
 ; The Dormant ObjType handler then reads from this table to restore the tombstoned Object.
-Tombtoned_ObjTypes             := $0150
+Tombstoned_ObjTypes            := $0150
 ; A 17x15 (+1? TBD) table of level tile attributes for the tiles currently on screen.
 ; This is used for detecting player and object terrain collision.
 ; It's probably also used for spike and water tile interactions, but that is TBC.

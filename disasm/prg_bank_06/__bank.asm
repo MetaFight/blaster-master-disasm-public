@@ -108,6 +108,7 @@ LF029           := $F029
 .include "object-handlers/bomb-canister.asm"
 .include "object-handlers/bomb-lobbing-hand.asm"
 .include "object-handlers/bomber-rock.asm"
+.include "object-handlers/bosses.asm"
 .include "object-handlers/bullet_common.asm"
 .include "object-handlers/bullet_gray.asm"
 .include "object-handlers/bullet_red.asm"
@@ -207,4 +208,5 @@ LF029           := $F029
         MAC_L_B832
         MAC_L_B91A
         MAC_L_BA88
+        MAC_L_BBA7
         MAC_L_BC21

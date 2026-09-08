@@ -387,6 +387,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomb-canister` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomb-lobbing-hand` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomber-rock` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bosses` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bullet_common` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/caterpillar_gray` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/caterpillar_red` |  |
@@ -437,7 +438,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **7** pages, of which **3** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
 
-_Generated: 2026-09-08 01:55 UTC_
+_Generated: 2026-09-08 17:35 UTC_
 
 ## Pages
 

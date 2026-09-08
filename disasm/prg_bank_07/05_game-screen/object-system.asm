@@ -1108,7 +1108,7 @@ _Obj_TryDamagePlayer__Miss:
 
 .macro MAC_L_D7F8
 ; ----------------------------------------------------------------------------
-; Saves the current LoadedObj's ObjType into Tombtoned_ObjTypes.
+; Saves the current LoadedObj's ObjType into Tombstoned_ObjTypes.
 ; Then, changes the ObjType to $02 (Tombstoned).
 ; 
 ; This is first stage of unloading an already-active object that has scrolled off-screen.
@@ -1117,7 +1117,7 @@ _Obj_TryDamagePlayer__Miss:
 Obj_Tombstone:
         ldx     ObjectSlot_Index                ; D7F8
         lda     LoadedObj + Obj::Type           ; D7FA
-        sta     Tombtoned_ObjTypes,x            ; D7FC
+        sta     Tombstoned_ObjTypes,x           ; D7FC
         lda     #$02                            ; D7FF
         sta     LoadedObj + Obj::Type           ; D801
         rts                                     ; D803
