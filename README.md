@@ -1,10 +1,20 @@
 # Blaster Master (NES) — Disassembly
 
-A static disassembly of the NES game *Blaster Master (USA)*, done with Claude Code assistance.
-This is the **public** export of [MetaFight/blaster-master-disasm](https://github.com/MetaFight/blaster-master-disasm) —
-every page below has been reviewed BY A HUMAN. Pages marked ⚠️ alpha are published for early
-access but still need human verification — either they have not completed it yet, or they were
-verified and have since been modified.
+A disassembly of the NES game *Blaster Master (US)*, done with limited Claude Code assistance.
+This is the **public** export of [MetaFight/blaster-master-disasm](https://github.com/MetaFight/blaster-master-disasm).  
+
+Every ASM subroutine, label, and comment, has been written or reviewed BY A HUMAN.
+
+Every page below has been edited and reviewed BY A HUMAN.
+
+Items marked `⚠️ alpha` are published for early access but still need human verification.
+Either they have not completed it yet, or they were verified and have since been modified by an automated process.
+
+Claude Code has been used to create bespoke tools to wrap `ca65` and `da65`, to help with tracing, and to help with data export.
+It has also been used to do some surface analysis of most of the found subroutines.
+
+Basically none of Claude's analysis is taken verbatim as it is often incomplete or incorrect.
+However, Claude's semantic analysis of subroutines is usually good enough to provide useful context for when I manually analyse and review them.
 
 - [`disasm/`](disasm/) — the annotated PRG-ROM disassembly (ca65-compatible listings + MLB labels for emulators)
 - [`wiki/`](wiki/) — the knowledge base (per-entity and per-system writeups)
@@ -24,7 +34,7 @@ verified and have since been modified.
 #### Area 1
 
 <details open>
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜◽⬛ 93.2% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜▫️ 93.2% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -57,7 +67,7 @@ verified and have since been modified.
 </details>
 
 <details >
-<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
+<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -76,7 +86,7 @@ verified and have since been modified.
 #### Area 2
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛ 65.8% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜◽⬛⬛⬛ 65.8% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -105,7 +115,7 @@ verified and have since been modified.
 </details>
 
 <details >
-<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
+<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -120,7 +130,7 @@ verified and have since been modified.
 #### Area 3
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜◽⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 38.5% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜◽⬛⬛⬛⬛⬛⬛ 38.5% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -142,7 +152,7 @@ verified and have since been modified.
 </details>
 
 <details >
-<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
+<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -158,7 +168,7 @@ verified and have since been modified.
 #### Area 4
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬛⬛⬛⬛ 80.0% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬛⬛ 80.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -182,7 +192,7 @@ verified and have since been modified.
 </details>
 
 <details >
-<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
+<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -194,7 +204,7 @@ verified and have since been modified.
 #### Area 5
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 25.0% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜◽⬛⬛⬛⬛⬛⬛⬛ 25.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -209,7 +219,7 @@ verified and have since been modified.
 </details>
 
 <details >
-<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
+<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -224,7 +234,7 @@ verified and have since been modified.
 #### Area 6
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛ 61.5% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜▫️⬛⬛⬛ 61.5% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -248,7 +258,7 @@ verified and have since been modified.
 </details>
 
 <details >
-<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
+<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -264,7 +274,7 @@ verified and have since been modified.
 #### Area 7
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜◽⬛⬛⬛ 84.6% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜▫️⬛ 84.6% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -296,7 +306,7 @@ verified and have since been modified.
 </details>
 
 <details >
-<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
+<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -308,7 +318,7 @@ verified and have since been modified.
 #### Area 8
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜▫️⬛⬛⬛⬛⬛⬛⬛⬛⬛ 51.4% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜▫️⬛⬛⬛⬛ 51.4% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -337,7 +347,7 @@ verified and have since been modified.
 </details>
 
 <details >
-<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
+<summary><b><code>Overhead:</code> ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ 0.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -436,9 +446,9 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `input` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `level-rendering` |  |
 
-This export publishes **7** pages, of which **3** are alpha — reviewed and published for early access, but not yet fully verified. Alpha pages carry a warning banner and are marked ⚠️ below.
+This export publishes **7** pages, of which **3** are alpha.
 
-_Generated: 2026-09-08 17:35 UTC_
+_Generated: 2026-09-09 16:32 UTC_
 
 ## Pages
 
