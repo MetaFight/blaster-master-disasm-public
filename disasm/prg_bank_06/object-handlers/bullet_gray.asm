@@ -174,7 +174,7 @@ _ObjHandler_Tank_59_Gray_Bullet_Main__Render:
         lda     GrayBullet_Walking_RenderParamLookup,x; A5AD
 ; OR with 1 to specity Sprite palette 1,
         ora     #$01                            ; A5B0
-; and store in OAM_Attribute__or__Outgoing_Contact_Damage.
+; and store in WR_44__OAM_Attribute__or__Outgoing_Contact_Damage.
         sta     $44                             ; A5B2
         lda     Global_FrameCounter             ; A5B4
         lsr     a                               ; A5B6

@@ -72,15 +72,15 @@ Nmi_SignalFlags                := $0012
 LoadedObject := $0046   ; Obj[] base — indexed access (any element)
 LoadedObj    := $0046   ; element 0 — direct access
 Background_Palettes := $0058   ; BgPalette[] base — indexed access (any element)
-Palette_BG_0        := $0058   ; element 0 — direct access
-Palette_BG_1        := $005C   ; element 1
-Palette_BG_2        := $0060   ; element 2
-Palette_BG_3        := $0064   ; element 3
+BG_Palette_0        := $0058   ; element 0 — direct access
+BG_Palette_1        := $005C   ; element 1
+BG_Palette_2        := $0060   ; element 2
+BG_Palette_3        := $0064   ; element 3
 Sprite_Palettes  := $0068   ; SpritePalette[] base — indexed access (any element)
-Palette_Sprite_0 := $0068   ; element 0 — direct access
-Palette_Sprite_1 := $006C   ; element 1
-Palette_Sprite_2 := $0070   ; element 2
-Palette_Sprite_3 := $0074   ; element 3
+Sprite_Palette_0 := $0068   ; element 0 — direct access
+Sprite_Palette_1 := $006C   ; element 1
+Sprite_Palette_2 := $0070   ; element 2
+Sprite_Palette_3 := $0074   ; element 3
 ; The contact table: 6 Contact records (3 bytes each) packed at $7C-$8D, one per object slot
 ; 0-5 -- slot 0 is the player, 1-5 are his shots/sub-weapons. NOT three separate tables: the
 ; three columns are interleaved, so indexed access (X = ObjectSlot_Index $57 x 3, via

@@ -7,7 +7,7 @@
 ;   Local_Sprite_Screen_X   = OAM entry x coordinate
 ;   Local_Sprite_Screen_Y   = OAM entry y coordinate
 ;   WR_Context_Dependent_45 = pattern index
-;   OAM_Attribute__or__Outgoing_Contact_Damage = OAM attributes
+;   WR_44__OAM_Attribute__or__Outgoing_Contact_Damage = OAM attributes
 OAM_Stage_Pattern:
         ldx     $3C                             ; ECB4
         lda     $3E                             ; ECB6

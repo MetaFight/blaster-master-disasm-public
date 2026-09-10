@@ -29,7 +29,7 @@ TankBoss_TableEntryPtr:
 L_BBC7: jsr     TankBoss_TableEntryPtr          ; BBC7
         ldy     #$01                            ; BBCA
         lda     ($A6),y                         ; BBCC
-        jsr     Enemy_Damage_Check_Sub          ; BBCE
+        jsr     LD697                           ; BBCE
         sta     $45                             ; BBD1
         bne     L_BBE2                          ; BBD3
         lda     LoadedObj + Obj::Health         ; BBD5
@@ -47,7 +47,7 @@ L_BBE2: lda     #$00                            ; BBE2
 L_BBE5: jsr     TankBoss_TableEntryPtr          ; BBE5
         ldy     #$01                            ; BBE8
         lda     ($A6),y                         ; BBEA
-        jsr     Enemy_Damage_Check_Sub          ; BBEC
+        jsr     LD697                           ; BBEC
         bne     L_BBF4                          ; BBEF
         jsr     L_BBF8                          ; BBF1
 L_BBF4: rts                                     ; BBF4

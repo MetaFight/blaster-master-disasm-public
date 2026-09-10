@@ -1025,7 +1025,8 @@ L_D643: ldx     LoadedObj + Obj::Facing         ; D643
 ;   Unlike Collision_Detection_Sub this tests only record 0 and returns normally, so its caller
 ;   must branch on Z. Reached via dispatch slot $6D ($C147). See the Contact struct.
 ; 
-; Start by stashing A (contact damage to deal) into OAM_Attribute__or__Outgoing_Contact_Damage.
+; Start by stashing A (contact damage to deal) into
+; WR_44__OAM_Attribute__or__Outgoing_Contact_Damage.
 Obj_TryDamagePlayer:
         sta     $44                             ; D71F
         lda     $40                             ; D721
@@ -1106,7 +1107,84 @@ _Obj_TryDamagePlayer__Miss:
 
 .endmacro
 
-.macro MAC_L_D7F8
+.macro MAC_L_D7C0
+; ----------------------------------------------------------------------------
+; Copies fields 1-13 (all except ObjType) from LoadedObj into another Object in the Object table.
+; 
+; Input:
+;   X = Object Table slot Offset
+Obj_CopyFieldsToSlot:
+        ldy     #$01                            ; D7C0
+; INX; copy $46,y → $0400,x; INY until Y=$0E
+_Obj_CopyFieldsToSlot__Loop:
+        inx                                     ; D7C2
+; Copy parent fields 1-13 ($47-$53) → child slot $0401,X-$040D,X (field 0 ObjType is preset by the
+; caller).
+        lda     LoadedObject + Obj::Type,y      ; D7C3
+        sta     ObjectTable + Obj::Type,x       ; D7C6
+        iny                                     ; D7C9
+        cpy     #$0E                            ; D7CA
+        bne     _Obj_CopyFieldsToSlot__Loop     ; D7CC
+        rts                                     ; D7CE
+
+; ----------------------------------------------------------------------------
+; Scan the ObjectTable (stride $0E) for a slot with ObjType  $00; 
+; 
+; Input:
+;   X = table search start offset
+;   WR_Context_Dependent_00 = table search end offset
+; 
+; Output:
+;   on success,
+;     A = $FF
+;     Z = 0
+;     X = slot offset
+; 
+;   on failure,
+;     Z = 1
+FindEmptyObjectSlot:
+        lda     ObjectTable + Obj::Type,x       ; D7CF
+; if ObjType == $00, skip to Found handler,
+        beq     _FindEmptyObjectSlot__FoundEmpty; D7D2
+; otherwise, compare current offset X with search-limit.
+        cpx     L0000                           ; D7D4
+; if we've hit the end/limit, branch to NotFound tail.
+        beq     _FindEmptyObjectSlot__NotFound  ; D7D6
+; Otherwise, advance search index (X) by the table entry stried ($0E),
+        txa                                     ; D7D8
+        clc                                     ; D7D9
+        adc     #$0E                            ; D7DA
+        tax                                     ; D7DC
+; And loop back to resume search.
+        jmp     FindEmptyObjectSlot             ; D7DD
+
+; ----------------------------------------------------------------------------
+; empty slot found: A=$FF; X=slot byte-offset; RTS
+_FindEmptyObjectSlot__FoundEmpty:
+        lda     #$FF                            ; D7E0
+; search limit reached without finding empty slot; RTS
+_FindEmptyObjectSlot__NotFound:
+        rts                                     ; D7E2
+
+; ----------------------------------------------------------------------------
+; Clear all the ObjectTable slots.
+ClearEnemySlots:
+        lda     #$00                            ; D7E3
+        ldx     #$0E                            ; D7E5
+_ClearEnemySlots__Loop:
+        sta     ObjectTable + Obj::Type,x       ; D7E7
+        inx                                     ; D7EA
+        bne     _ClearEnemySlots__Loop          ; D7EB
+        rts                                     ; D7ED
+
+; ----------------------------------------------------------------------------
+L_D7EE: lda     #$00                            ; D7EE
+        ldx     #$0D                            ; D7F0
+L_D7F2: sta     LoadedObject + Obj::Type,x      ; D7F2
+        dex                                     ; D7F4
+        bne     L_D7F2                          ; D7F5
+        rts                                     ; D7F7
+
 ; ----------------------------------------------------------------------------
 ; Saves the current LoadedObj's ObjType into Tombstoned_ObjTypes.
 ; Then, changes the ObjType to $02 (Tombstoned).
@@ -1132,17 +1210,17 @@ Obj_DespawnAndLog:
         ldy     ObjectSlot_Index                ; D804
         cpy     #$08                            ; D806
         bcc     Obj_Despawn                     ; D808
-; if slot ObjectSlot_Index ≥ 8, then advance ring index ThingIndex_DespawnRing_WriteIndex (modulo
-; 64).
+; if slot ObjectSlot_Index ≥ 8, then advance ring index Section_DefeatedThing_IndexRing_WriteIndex
+; (modulo 64).
         inc     $C6                             ; D80A
         lda     $C6                             ; D80C
         and     #$3F                            ; D80E
         tax                                     ; D810
 ; Read the slot's saved Thing index before logging it
-;   effectively ObjectSlot_ThingIndex,y ($100,y) not Pad2Raw,y ($00F8,y) despite the $00F8 base. 
-;   This is because ObjectIndex (Y) is always >= 8 here.
+;   effectively Section_ThingIndex_By_EnemySlot_Index,y ($100,y) not Pad2Raw,y ($00F8,y) despite
+;   the $00F8 base.  This is because ObjectIndex (Y) is always >= 8 here.
         lda     $F8,y                           ; D811
-; Save the Thing index into ThingIndex_DespawnRing
+; Save the Thing index into Section_DefeatedThing_IndexRing
         sta     $010A,x                         ; D814
         lda     #$FF                            ; D817
 ; Clear the slot's saved Thing index back to the $FF sentinel.

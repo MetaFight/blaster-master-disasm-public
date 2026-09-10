@@ -93,7 +93,7 @@ _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Damage:
 _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Render:
         lda     #$01                            ; B1C5
 ; Obj_SetOAMAttr_FlipX_and_Palette sets the H-flip bit to A and saves a copy to
-; OAM_Attribute__or__Outgoing_Contact_Damage
+; WR_44__OAM_Attribute__or__Outgoing_Contact_Damage
         jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B1C7
         lda     Global_FrameCounter             ; B1CA
         lsr     a                               ; B1CC

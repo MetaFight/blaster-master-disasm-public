@@ -97,7 +97,7 @@ L_F56D: dec     $01                             ; F56D
 
 ; ----------------------------------------------------------------------------
 L_F579: lda     #$12                            ; F579
-L_F57B: sta     Palette_BG_0 + BgPalette::Colour3 ; F57B
+L_F57B: sta     BG_Palette_0 + BgPalette::Colour3 ; F57B
         lda     $01                             ; F57D
         ora     $02                             ; F57F
         bne     L_F55E                          ; F581

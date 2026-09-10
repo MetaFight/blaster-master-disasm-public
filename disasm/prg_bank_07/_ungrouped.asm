@@ -122,7 +122,7 @@ L_C4EF: sta     LoadedObj + Obj::Type           ; C4EF
 
 ; ----------------------------------------------------------------------------
 L_C502: jsr     ClearEnemySlots                 ; C502
-        jsr     L_CBA9                          ; C505
+        jsr     Clear_ThingSpawnHistory         ; C505
         lda     $14                             ; C508
         cmp     #$08                            ; C50A
         bcc     L_C522                          ; C50C
@@ -207,9 +207,9 @@ L_C642: lda     $10                             ; C642
         and     #$07                            ; C644
         tax                                     ; C646
         lda     L_C651,x                        ; C647
-        sta     Palette_Sprite_3 + SpritePalette::Colour1 ; C64A
-        sta     Palette_Sprite_3 + SpritePalette::Colour2 ; C64C
-        sta     Palette_Sprite_3 + SpritePalette::Colour3 ; C64E
+        sta     Sprite_Palette_3 + SpritePalette::Colour1 ; C64A
+        sta     Sprite_Palette_3 + SpritePalette::Colour2 ; C64C
+        sta     Sprite_Palette_3 + SpritePalette::Colour3 ; C64E
         rts                                     ; C650
 
 ; ----------------------------------------------------------------------------
@@ -621,11 +621,15 @@ L_CB7C: .byte   $54,$56,$58,$5B,$5D,$5F,$62,$64 ; CB7C
         .byte   $90,$2C,$2D,$30,$31,$2E,$2F,$32 ; CB9C
         .byte   $33,$34,$24,$26,$28             ; CBA4
 ; ----------------------------------------------------------------------------
-L_CBA9: ldx     #$49                            ; CBA9
+; Clears both Section_ThingIndex_By_EnemySlot_Index and Section_DefeatedThing_IndexRing by filling
+; them with #$FF.
+Clear_ThingSpawnHistory:
+        ldx     #$49                            ; CBA9
         lda     #$FF                            ; CBAB
-L_CBAD: sta     $0100,x                         ; CBAD
+_Clear_ThingSpawnHistory__Loop:
+        sta     $0100,x                         ; CBAD
         dex                                     ; CBB0
-        bpl     L_CBAD                          ; CBB1
+        bpl     _Clear_ThingSpawnHistory__Loop  ; CBB1
         rts                                     ; CBB3
 
 .endmacro
@@ -1058,82 +1062,35 @@ L_D68D: dec     LoadedObj + Obj::Position_Y_Hi  ; D68D
         rts                                     ; D696
 
 ; ----------------------------------------------------------------------------
-; (alpha: not fully human-verified / pending re-verification) Shared hit-resolution routine behind
-; TankEnemy_DamageCheck / _Drop and
-; TankBoss_CheckDefeat. Tests our hitbox against every other object slot
-; (Collision_Detection_Sub) and, on a connecting hit, both applies whatever damage the other
-; side dealt to our own Health and stamps our own outgoing ContactDamage into the slot we hit.
-; 
-; Input:
-;   A = our outgoing ContactDamage (bits 0-6; parked in $44 for Collision_Detection_Sub to
-;   post into the target's Contact record).
-; 
-; Output:
-;   On a MISS, control never returns here at all — Collision_Detection_Sub's own
-;   'no collision found' exit discards this routine's pending return address and jumps
-;   straight back to whichever routine called Enemy_Damage_Check_Sub, with A=$FF. So callers
-;   see A=$FF for a miss and A=$00 for a connecting hit (this routine's own RTS), regardless
-;   of whether that hit was lethal — Health is the only signal of a kill.
-;   On a connecting hit: Health ($53) is reduced by the incoming damage
-;   (WR_Context_Dependent_45) and clamped at 0 (the $7F sentinel means 'harmless' and skips
-;   the Health change entirely); $4F (hit-response state) is set to $08; a hit SFX ($36), or
-;   if Health just reached 0 a death SFX ($1D), is enqueued.
-; 
-; Start by calling Collision_Detection_Sub.
-Enemy_Damage_Check_Sub:
-        jsr     L_D6CD                          ; D697
-; Only reached on a hit (see Output above): save the winning contact-record index (X, from
-; Collision_Detection_Sub) across the calls below.
+L_D697: jsr     L_D6CD                          ; D697
         txa                                     ; D69A
         pha                                     ; D69B
         lda     $45                             ; D69C
         cmp     #$7F                            ; D69E
-; Check the value of WR_Context_Dependent_45 (the contact record's magnitude
-; Collision_Detection_Sub just copied in)
-;   if it's $7F (the harmless sentinel) then skip straight to StampContact, leaving Health
-;   untouched.
-        beq     _Enemy_Damage_Check_Sub__StampContact; D6A0
-; Otherwise subtract the damage from Health.
+        beq     L_D6C0                          ; D6A0
         lda     LoadedObj + Obj::Health         ; D6A2
         sec                                     ; D6A4
         sbc     $45                             ; D6A5
-        bcs     _Enemy_Damage_Check_Sub__SaveHealth; D6A7
-; clamp at 0 if it would go negative.
+        bcs     L_D6AB                          ; D6A7
         lda     #$00                            ; D6A9
-_Enemy_Damage_Check_Sub__SaveHealth:
-        sta     LoadedObj + Obj::Health         ; D6AB
-; If health is 0, skip to the kill handler.
-        bcc     _Enemy_Damage_Check_Sub__Kill   ; D6AD
-; Otherwise, enqueue hit SFX $36, then join SetHitState.
+L_D6AB: sta     LoadedObj + Obj::Health         ; D6AB
+        bcc     L_D6B7                          ; D6AD
         lda     #$36                            ; D6AF
         jsr     Enqueue_Sound_Command           ; D6B1
-        jmp     _Enemy_Damage_Check_Sub__SetIFrames; D6B4
+        jmp     L_D6BC                          ; D6B4
 
 ; ----------------------------------------------------------------------------
-; Health reached 0 this frame: enqueue death SFX $1D, then fall into SetHitState.
-_Enemy_Damage_Check_Sub__Kill:
-        lda     #$1D                            ; D6B7
+L_D6B7: lda     #$1D                            ; D6B7
         jsr     Enqueue_Sound_Command           ; D6B9
-; Shared hit-response tail (alive or dead)
-_Enemy_Damage_Check_Sub__SetIFrames:
-        lda     #$08                            ; D6BC
-; Set object's invincibility frames.
+L_D6BC: lda     #$08                            ; D6BC
         sta     $4F                             ; D6BE
-; Shared tail for every non-miss outcome (also reached directly from the $7F-sentinel skip above):
-; restore X (the winning contact-record index from Collision_Detection_Sub); if our own outgoing
-; ContactDamage ($44) is nonzero, OR in the hit flag (bit 7) and post it to that slot's Contact
-; record ($7E,X), so its owner sees it as $45 next frame.
-_Enemy_Damage_Check_Sub__StampContact:
-        pla                                     ; D6C0
+L_D6C0: pla                                     ; D6C0
         tax                                     ; D6C1
         lda     $44                             ; D6C2
-        beq     _Enemy_Damage_Check_Sub__Return ; D6C4
+        beq     L_D6CA                          ; D6C4
         ora     #$80                            ; D6C6
         sta     $7E,x                           ; D6C8
-; Return $00 — reached only on a connecting hit (see Output above); a miss already returned from
-; inside Collision_Detection_Sub and never runs this code.
-_Enemy_Damage_Check_Sub__Return:
-        lda     #$00                            ; D6CA
+L_D6CA: lda     #$00                            ; D6CA
         rts                                     ; D6CC
 
 ; ----------------------------------------------------------------------------
@@ -1191,7 +1148,7 @@ L_D71E: rts                                     ; D71E
 
 .macro MAC_L_D763
 ; ----------------------------------------------------------------------------
-L_D763: jsr     Enemy_Damage_Check_Sub          ; D763
+L_D763: jsr     L_D697                          ; D763
         bne     L_D76F                          ; D766
         lda     #$0C                            ; D768
         jsr     Enqueue_Sound_Command           ; D76A
@@ -1254,83 +1211,6 @@ L_D7BA: sta     $7C,x                           ; D7BA
         dex                                     ; D7BC
         bpl     L_D7BA                          ; D7BD
         rts                                     ; D7BF
-
-; ----------------------------------------------------------------------------
-; Copies fields 1-13 (all except ObjType) from LoadedObj into another Object in the Object table.
-; 
-; Input:
-;   X = Object Table slot Offset
-Obj_CopyFieldsToSlot:
-        ldy     #$01                            ; D7C0
-; INX; copy $46,y → $0400,x; INY until Y=$0E
-_Obj_CopyFieldsToSlot__Loop:
-        inx                                     ; D7C2
-; Copy parent fields 1-13 ($47-$53) → child slot $0401,X-$040D,X (field 0 ObjType is preset by the
-; caller).
-        lda     LoadedObject + Obj::Type,y      ; D7C3
-        sta     ObjectTable + Obj::Type,x       ; D7C6
-        iny                                     ; D7C9
-        cpy     #$0E                            ; D7CA
-        bne     _Obj_CopyFieldsToSlot__Loop     ; D7CC
-        rts                                     ; D7CE
-
-; ----------------------------------------------------------------------------
-; Scan the ObjectTable (stride $0E) for a slot with ObjType  $00; 
-; 
-; Input:
-;   X = table search start offset
-;   WR_Context_Dependent_00 = table search end offset
-; 
-; Output:
-;   on success,
-;     A = $FF
-;     Z = 0
-;     X = slot offset
-; 
-;   on failure,
-;     Z = 1
-FindEmptyObjectSlot:
-        lda     ObjectTable + Obj::Type,x       ; D7CF
-; if ObjType == $00, skip to Found handler,
-        beq     _FindEmptyObjectSlot__FoundEmpty; D7D2
-; otherwise, compare current offset X with search-limit.
-        cpx     L0000                           ; D7D4
-; if we've hit the end/limit, branch to NotFound tail.
-        beq     _FindEmptyObjectSlot__NotFound  ; D7D6
-; Otherwise, advance search index (X) by the table entry stried ($0E),
-        txa                                     ; D7D8
-        clc                                     ; D7D9
-        adc     #$0E                            ; D7DA
-        tax                                     ; D7DC
-; And loop back to resume search.
-        jmp     FindEmptyObjectSlot             ; D7DD
-
-; ----------------------------------------------------------------------------
-; empty slot found: A=$FF; X=slot byte-offset; RTS
-_FindEmptyObjectSlot__FoundEmpty:
-        lda     #$FF                            ; D7E0
-; search limit reached without finding empty slot; RTS
-_FindEmptyObjectSlot__NotFound:
-        rts                                     ; D7E2
-
-; ----------------------------------------------------------------------------
-; Clear all the ObjectTable slots.
-ClearEnemySlots:
-        lda     #$00                            ; D7E3
-        ldx     #$0E                            ; D7E5
-_ClearEnemySlots__Loop:
-        sta     ObjectTable + Obj::Type,x       ; D7E7
-        inx                                     ; D7EA
-        bne     _ClearEnemySlots__Loop          ; D7EB
-        rts                                     ; D7ED
-
-; ----------------------------------------------------------------------------
-L_D7EE: lda     #$00                            ; D7EE
-        ldx     #$0D                            ; D7F0
-L_D7F2: sta     LoadedObject + Obj::Type,x      ; D7F2
-        dex                                     ; D7F4
-        bne     L_D7F2                          ; D7F5
-        rts                                     ; D7F7
 
 .endmacro
 

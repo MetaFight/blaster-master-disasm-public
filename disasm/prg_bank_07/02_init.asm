@@ -42,7 +42,7 @@ L_C334: lda     #$00                            ; C334
         sta     LoadedObj + Obj::Health         ; C350
         sta     $03FF                           ; C352
         jsr     ClearEnemySlots                 ; C355
-        jsr     L_CBA9                          ; C358
+        jsr     Clear_ThingSpawnHistory         ; C358
         jsr     L_E243                          ; C35B
 L_C35E: lda     #$00                            ; C35E
         sta     $03D6                           ; C360

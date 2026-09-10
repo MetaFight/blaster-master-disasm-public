@@ -1146,32 +1146,32 @@ Bk03_Cat11:
 ; ----------------------------------------------------------------------------
 ; Thing/enemy spawn-list pointer table.
 Bk03_ThingData:
-        .addr   OvhdLvl1_ThingPtrs              ; A174
-        .addr   OvhdLvl2_ThingPtrs              ; A176
-        .addr   OvhdLvl3_ThingPtrs              ; A178
-        .addr   OvhdLvl4_ThingPtrs              ; A17A
-        .addr   OvhdLvl5_ThingPtrs              ; A17C
-        .addr   OvhdLvl6_ThingPtrs              ; A17E
-        .addr   OvhdLvl7_ThingPtrs              ; A180
-        .addr   OvhdLvl8_ThingPtrs              ; A182
-        .addr   TankLvl1_ThingPtrs              ; A184
-        .addr   TankLvl2_ThingPtrs              ; A186
-        .addr   TankLvl3_ThingPtrs              ; A188
-        .addr   TankLvl4_ThingPtrs              ; A18A
-        .addr   TankLvl5_ThingPtrs              ; A18C
-        .addr   TankLvl6_ThingPtrs              ; A18E
-        .addr   TankLvl7_ThingPtrs              ; A190
-        .addr   TankLvl8_ThingPtrs              ; A192
+        .addr   Area1_Ovhd_ThingPtrs            ; A174
+        .addr   Area2_Ovhd_ThingPtrs            ; A176
+        .addr   Area3_Ovhd_ThingPtrs            ; A178
+        .addr   Area4_Ovhd_ThingPtrs            ; A17A
+        .addr   Area5_Ovhd_ThingPtrs            ; A17C
+        .addr   Area6_Ovhd_ThingPtrs            ; A17E
+        .addr   Area7_Ovhd_ThingPtrs            ; A180
+        .addr   Area8_Ovhd_ThingPtrs            ; A182
+        .addr   Area1_Tank_ThingPtrs            ; A184
+        .addr   Area2_Tank_ThingPtrs            ; A186
+        .addr   Area3_Tank_ThingPtrs            ; A188
+        .addr   Area4_Tank_ThingPtrs            ; A18A
+        .addr   Area5_Tank_ThingPtrs            ; A18C
+        .addr   Area6_Tank_ThingPtrs            ; A18E
+        .addr   Area7_Tank_ThingPtrs            ; A190
+        .addr   Area8_Tank_ThingPtrs            ; A192
 ; ----------------------------------------------------------------------------
 L_A194: .byte   $9A,$A1,$00,$00,$00,$00,$FF     ; A194
 ; ----------------------------------------------------------------------------
-OvhdLvl1_ThingPtrs:
-        .addr   OvhdLvl1_ThingTypeList          ; A19B
-        .addr   OvhdLvl1_ThingXList             ; A19D
-        .addr   OvhdLvl1_ThingYList             ; A19F
+Area1_Ovhd_ThingPtrs:
+        .addr   Area1_Ovhd_ThingType_Table      ; A19B
+        .addr   Area1_Ovhd_ThingX_Table         ; A19D
+        .addr   Area1_Ovhd_ThingY_Table         ; A19F
 ; ----------------------------------------------------------------------------
 ; 133 Thing Type sprite indices; $FF-terminated
-OvhdLvl1_ThingTypeList:
+Area1_Ovhd_ThingType_Table:
         .byte   $25,$21,$25,$23,$21,$23,$08,$23 ; A1A1
         .byte   $0A,$22,$21,$05,$0B,$0B,$0B,$23 ; A1A9
         .byte   $23,$05,$05,$05,$05,$05,$05,$05 ; A1B1
@@ -1190,7 +1190,7 @@ OvhdLvl1_ThingTypeList:
         .byte   $26,$21,$25,$25,$25,$28,$28,$23 ; A219
         .byte   $27,$29,$29,$29,$29,$FF         ; A221
 ; 133 X spawn coordinates
-OvhdLvl1_ThingXList:
+Area1_Ovhd_ThingX_Table:
         .byte   $11,$11,$11,$0F,$05,$0D,$29,$16 ; A227
         .byte   $2F,$58,$1A,$27,$26,$28,$26,$2E ; A22F
         .byte   $58,$0C,$06,$0A,$0A,$12,$14,$14 ; A237
@@ -1209,7 +1209,7 @@ OvhdLvl1_ThingXList:
         .byte   $28,$5E,$08,$18,$28,$2F,$1E,$0B ; A29F
         .byte   $06,$11,$11,$16,$0A             ; A2A7
 ; 133 Y spawn coordinates
-OvhdLvl1_ThingYList:
+Area1_Ovhd_ThingY_Table:
         .byte   $5A,$59,$4A,$5C,$3D,$4E,$28,$3D ; A2AC
         .byte   $37,$54,$49,$56,$50,$4E,$4C,$25 ; A2B4
         .byte   $55,$43,$3B,$37,$4C,$4C,$52,$59 ; A2BC
@@ -1228,13 +1228,13 @@ OvhdLvl1_ThingYList:
         .byte   $11,$1E,$06,$10,$10,$24,$16,$16 ; A324
         .byte   $36,$51,$49,$44,$42             ; A32C
 ; ----------------------------------------------------------------------------
-OvhdLvl2_ThingPtrs:
-        .addr   OvhdLvl2_ThingTypeList          ; A331
-        .addr   OvhdLvl2_ThingXList             ; A333
-        .addr   OvhdLvl2_ThingYList             ; A335
+Area2_Ovhd_ThingPtrs:
+        .addr   Area2_Ovhd_ThingType_Table      ; A331
+        .addr   Area2_Ovhd_ThingX_Table         ; A333
+        .addr   Area2_Ovhd_ThingY_Table         ; A335
 ; ----------------------------------------------------------------------------
 ; 129 Thing Type sprite indices; $FF-terminated
-OvhdLvl2_ThingTypeList:
+Area2_Ovhd_ThingType_Table:
         .byte   $21,$21,$02,$21,$01,$02,$02,$09 ; A337
         .byte   $09,$23,$02,$02,$21,$02,$01,$01 ; A33F
         .byte   $21,$01,$24,$01,$09,$02,$01,$02 ; A347
@@ -1253,7 +1253,7 @@ OvhdLvl2_ThingTypeList:
         .byte   $24,$27,$02,$26,$21,$20,$22,$26 ; A3AF
         .byte   $29,$FF                         ; A3B7
 ; 129 X spawn coordinates
-OvhdLvl2_ThingXList:
+Area2_Ovhd_ThingX_Table:
         .byte   $11,$3E,$17,$0B,$27,$4D,$36,$1A ; A3B9
         .byte   $5C,$3D,$19,$29,$5A,$46,$19,$19 ; A3C1
         .byte   $25,$49,$28,$1D,$25,$1D,$45,$0A ; A3C9
@@ -1272,7 +1272,7 @@ OvhdLvl2_ThingXList:
         .byte   $0A,$58,$1B,$59,$3C,$39,$2C,$58 ; A431
         .byte   $39                             ; A439
 ; 129 Y spawn coordinates
-OvhdLvl2_ThingYList:
+Area2_Ovhd_ThingY_Table:
         .byte   $1D,$79,$46,$27,$5B,$76,$78,$59 ; A43A
         .byte   $5A,$64,$6B,$78,$79,$76,$75,$7D ; A442
         .byte   $76,$5C,$26,$39,$68,$46,$3C,$69 ; A44A
@@ -1291,13 +1291,13 @@ OvhdLvl2_ThingYList:
         .byte   $56,$35,$4B,$59,$64,$26,$27,$34 ; A4B2
         .byte   $19                             ; A4BA
 ; ----------------------------------------------------------------------------
-OvhdLvl3_ThingPtrs:
-        .addr   OvhdLvl3_ThingTypeList          ; A4BB
-        .addr   OvhdLvl3_ThingXList             ; A4BD
-        .addr   OvhdLvl3_ThingYList             ; A4BF
+Area3_Ovhd_ThingPtrs:
+        .addr   Area3_Ovhd_ThingType_Table      ; A4BB
+        .addr   Area3_Ovhd_ThingX_Table         ; A4BD
+        .addr   Area3_Ovhd_ThingY_Table         ; A4BF
 ; ----------------------------------------------------------------------------
 ; 205 Thing Type sprite indices; $FF-terminated
-OvhdLvl3_ThingTypeList:
+Area3_Ovhd_ThingType_Table:
         .byte   $0A,$21,$0F,$0A,$0A,$05,$0C,$0F ; A4C1
         .byte   $0A,$05,$0F,$05,$0C,$0F,$05,$0F ; A4C9
         .byte   $05,$0C,$0F,$05,$0F,$05,$0F,$05 ; A4D1
@@ -1325,7 +1325,7 @@ OvhdLvl3_ThingTypeList:
         .byte   $24,$25,$26,$25,$0B,$05,$27,$0F ; A581
         .byte   $0F,$0F,$22,$21,$05,$FF         ; A589
 ; 205 X spawn coordinates
-OvhdLvl3_ThingXList:
+Area3_Ovhd_ThingX_Table:
         .byte   $27,$14,$16,$30,$34,$1D,$14,$23 ; A58F
         .byte   $3B,$42,$45,$4A,$14,$20,$2C,$31 ; A597
         .byte   $38,$1F,$58,$16,$05,$0E,$06,$0E ; A59F
@@ -1353,7 +1353,7 @@ OvhdLvl3_ThingXList:
         .byte   $3A,$41,$49,$30,$1F,$1E,$1D,$09 ; A64F
         .byte   $05,$0B,$24,$3D,$39             ; A657
 ; 205 Y spawn coordinates
-OvhdLvl3_ThingYList:
+Area3_Ovhd_ThingY_Table:
         .byte   $0D,$5A,$1E,$04,$0D,$2A,$74,$0B ; A65C
         .byte   $04,$06,$0B,$06,$35,$06,$07,$0A ; A664
         .byte   $0C,$75,$0C,$26,$14,$17,$1D,$25 ; A66C
@@ -1381,13 +1381,13 @@ OvhdLvl3_ThingYList:
         .byte   $48,$16,$15,$1A,$5D,$6C,$66,$5C ; A71C
         .byte   $5A,$58,$34,$3D,$5C             ; A724
 ; ----------------------------------------------------------------------------
-OvhdLvl4_ThingPtrs:
-        .addr   OvhdLvl4_ThingTypeList          ; A729
-        .addr   OvhdLvl4_ThingXList             ; A72B
-        .addr   OvhdLvl4_ThingYList             ; A72D
+Area4_Ovhd_ThingPtrs:
+        .addr   Area4_Ovhd_ThingType_Table      ; A729
+        .addr   Area4_Ovhd_ThingX_Table         ; A72B
+        .addr   Area4_Ovhd_ThingY_Table         ; A72D
 ; ----------------------------------------------------------------------------
 ; 157 Thing Type sprite indices; $FF-terminated
-OvhdLvl4_ThingTypeList:
+Area4_Ovhd_ThingType_Table:
         .byte   $00,$00,$00,$20,$00,$00,$00,$00 ; A72F
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; A737
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; A73F
@@ -1409,7 +1409,7 @@ OvhdLvl4_ThingTypeList:
         .byte   $27,$22,$21,$23,$21,$21,$23,$26 ; A7BF
         .byte   $27,$28,$29,$22,$25,$FF         ; A7C7
 ; 157 X spawn coordinates
-OvhdLvl4_ThingXList:
+Area4_Ovhd_ThingX_Table:
         .byte   $0F,$16,$1D,$2A,$2D,$2A,$37,$3E ; A7CD
         .byte   $37,$56,$15,$15,$1D,$2D,$76,$2E ; A7D5
         .byte   $41,$3C,$4B,$49,$2A,$62,$20,$1D ; A7DD
@@ -1431,7 +1431,7 @@ OvhdLvl4_ThingXList:
         .byte   $79,$56,$44,$45,$4B,$6F,$6E,$39 ; A85D
         .byte   $39,$3B,$7B,$18,$48             ; A865
 ; 157 Y spawn coordinates
-OvhdLvl4_ThingYList:
+Area4_Ovhd_ThingY_Table:
         .byte   $0E,$14,$0C,$75,$10,$1A,$08,$0A ; A86A
         .byte   $0F,$2C,$2D,$24,$2D,$25,$3D,$35 ; A872
         .byte   $3F,$36,$3D,$34,$3D,$35,$3D,$35 ; A87A
@@ -1453,13 +1453,13 @@ OvhdLvl4_ThingYList:
         .byte   $39,$3D,$24,$24,$18,$14,$14,$17 ; A8FA
         .byte   $16,$15,$3A,$63,$64             ; A902
 ; ----------------------------------------------------------------------------
-OvhdLvl5_ThingPtrs:
-        .addr   OvhdLvl5_ThingTypeList          ; A907
-        .addr   OvhdLvl5_ThingXList             ; A909
-        .addr   OvhdLvl5_ThingYList             ; A90B
+Area5_Ovhd_ThingPtrs:
+        .addr   Area5_Ovhd_ThingType_Table      ; A907
+        .addr   Area5_Ovhd_ThingX_Table         ; A909
+        .addr   Area5_Ovhd_ThingY_Table         ; A90B
 ; ----------------------------------------------------------------------------
 ; 238 Thing Type sprite indices; $FF-terminated
-OvhdLvl5_ThingTypeList:
+Area5_Ovhd_ThingType_Table:
         .byte   $0F,$0F,$0F,$0B,$0B,$0B,$0F,$0F ; A90D
         .byte   $0F,$0F,$0B,$0B,$0B,$0F,$0F,$0F ; A915
         .byte   $0F,$0A,$0A,$0F,$0F,$0F,$0F,$0F ; A91D
@@ -1489,7 +1489,7 @@ OvhdLvl5_ThingTypeList:
         .byte   $29,$29,$28,$28,$28,$28,$28,$28 ; A9DD
         .byte   $26,$26,$0C,$27,$26,$22,$FF     ; A9E5
 ; 238 X spawn coordinates
-OvhdLvl5_ThingXList:
+Area5_Ovhd_ThingX_Table:
         .byte   $07,$0D,$06,$0F,$05,$0F,$0C,$07 ; A9EC
         .byte   $0B,$0E,$0F,$0F,$04,$07,$05,$07 ; A9F4
         .byte   $05,$0E,$0C,$08,$08,$07,$0D,$17 ; A9FC
@@ -1519,7 +1519,7 @@ OvhdLvl5_ThingXList:
         .byte   $1B,$1B,$1A,$59,$5B,$2A,$2A,$28 ; AABC
         .byte   $2A,$29,$6C,$51,$29,$27         ; AAC4
 ; 238 Y spawn coordinates
-OvhdLvl5_ThingYList:
+Area5_Ovhd_ThingY_Table:
         .byte   $0C,$12,$16,$1B,$1F,$23,$28,$2B ; AACA
         .byte   $31,$36,$42,$3D,$38,$3E,$46,$4D ; AAD2
         .byte   $54,$5E,$5E,$59,$63,$6B,$6B,$66 ; AADA
@@ -1549,13 +1549,13 @@ OvhdLvl5_ThingYList:
         .byte   $06,$05,$07,$6B,$6B,$4B,$4D,$4B ; AB9A
         .byte   $4C,$4C,$21,$35,$4A,$41         ; ABA2
 ; ----------------------------------------------------------------------------
-OvhdLvl6_ThingPtrs:
-        .addr   OvhdLvl6_ThingTypeList          ; ABA8
-        .addr   OvhdLvl6_ThingXList             ; ABAA
-        .addr   OvhdLvl6_ThingYList             ; ABAC
+Area6_Ovhd_ThingPtrs:
+        .addr   Area6_Ovhd_ThingType_Table      ; ABA8
+        .addr   Area6_Ovhd_ThingX_Table         ; ABAA
+        .addr   Area6_Ovhd_ThingY_Table         ; ABAC
 ; ----------------------------------------------------------------------------
 ; 133 Thing Type sprite indices; $FF-terminated
-OvhdLvl6_ThingTypeList:
+Area6_Ovhd_ThingType_Table:
         .byte   $03,$24,$01,$01,$01,$09,$02,$03 ; ABAE
         .byte   $09,$09,$01,$01,$01,$01,$09,$09 ; ABB6
         .byte   $01,$01,$09,$20,$02,$02,$02,$02 ; ABBE
@@ -1574,7 +1574,7 @@ OvhdLvl6_ThingTypeList:
         .byte   $23,$28,$22,$23,$27,$24,$28,$26 ; AC26
         .byte   $29,$28,$28,$29,$23,$FF         ; AC2E
 ; 133 X spawn coordinates
-OvhdLvl6_ThingXList:
+Area6_Ovhd_ThingX_Table:
         .byte   $38,$5A,$49,$53,$45,$37,$2B,$2A ; AC34
         .byte   $6D,$1B,$2A,$70,$4D,$70,$61,$6D ; AC3C
         .byte   $60,$4A,$79,$5A,$08,$0D,$15,$18 ; AC44
@@ -1593,7 +1593,7 @@ OvhdLvl6_ThingXList:
         .byte   $57,$4B,$60,$7E,$7F,$39,$56,$7D ; ACAC
         .byte   $7F,$27,$25,$26,$25             ; ACB4
 ; 133 Y spawn coordinates
-OvhdLvl6_ThingYList:
+Area6_Ovhd_ThingY_Table:
         .byte   $50,$45,$77,$59,$59,$44,$0D,$50 ; ACB9
         .byte   $5A,$4B,$3B,$68,$68,$59,$66,$6A ; ACC1
         .byte   $68,$6F,$56,$75,$23,$28,$23,$2A ; ACC9
@@ -1612,13 +1612,13 @@ OvhdLvl6_ThingYList:
         .byte   $49,$06,$46,$45,$45,$09,$47,$49 ; AD31
         .byte   $47,$39,$3A,$38,$38             ; AD39
 ; ----------------------------------------------------------------------------
-OvhdLvl7_ThingPtrs:
-        .addr   OvhdLvl7_ThingTypeList          ; AD3E
-        .addr   OvhdLvl7_ThingXList             ; AD40
-        .addr   OvhdLvl7_ThingYList             ; AD42
+Area7_Ovhd_ThingPtrs:
+        .addr   Area7_Ovhd_ThingType_Table      ; AD3E
+        .addr   Area7_Ovhd_ThingX_Table         ; AD40
+        .addr   Area7_Ovhd_ThingY_Table         ; AD42
 ; ----------------------------------------------------------------------------
 ; 156 Thing Type sprite indices; $FF-terminated
-OvhdLvl7_ThingTypeList:
+Area7_Ovhd_ThingType_Table:
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; AD44
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; AD4C
         .byte   $00,$00,$00,$00,$00,$00,$21,$00 ; AD54
@@ -1640,7 +1640,7 @@ OvhdLvl7_ThingTypeList:
         .byte   $21,$22,$28,$28,$29,$27,$27,$27 ; ADD4
         .byte   $26,$26,$24,$24,$FF             ; ADDC
 ; 156 X spawn coordinates
-OvhdLvl7_ThingXList:
+Area7_Ovhd_ThingX_Table:
         .byte   $2D,$1C,$28,$0D,$14,$20,$2C,$1C ; ADE1
         .byte   $19,$14,$0C,$08,$13,$1A,$07,$56 ; ADE9
         .byte   $5A,$7D,$66,$6E,$7A,$72,$79,$67 ; ADF1
@@ -1662,7 +1662,7 @@ OvhdLvl7_ThingXList:
         .byte   $79,$68,$6A,$6A,$5A,$7B,$78,$79 ; AE71
         .byte   $69,$7A,$62,$3F                 ; AE79
 ; 156 Y spawn coordinates
-OvhdLvl7_ThingYList:
+Area7_Ovhd_ThingY_Table:
         .byte   $15,$19,$19,$19,$15,$15,$1D,$1E ; AE7D
         .byte   $25,$1E,$24,$2C,$29,$2B,$23,$3D ; AE85
         .byte   $35,$50,$39,$35,$37,$3D,$2A,$3D ; AE8D
@@ -1684,13 +1684,13 @@ OvhdLvl7_ThingYList:
         .byte   $49,$1A,$1A,$19,$1A,$29,$2A,$4A ; AF0D
         .byte   $19,$4B,$41,$41                 ; AF15
 ; ----------------------------------------------------------------------------
-OvhdLvl8_ThingPtrs:
-        .addr   OvhdLvl8_ThingTypeList          ; AF19
-        .addr   OvhdLvl8_ThingXList             ; AF1B
-        .addr   OvhdLvl8_ThingYList             ; AF1D
+Area8_Ovhd_ThingPtrs:
+        .addr   Area8_Ovhd_ThingType_Table      ; AF19
+        .addr   Area8_Ovhd_ThingX_Table         ; AF1B
+        .addr   Area8_Ovhd_ThingY_Table         ; AF1D
 ; ----------------------------------------------------------------------------
 ; 168 Thing Type sprite indices; $FF-terminated
-OvhdLvl8_ThingTypeList:
+Area8_Ovhd_ThingType_Table:
         .byte   $0F,$0F,$0F,$0E,$0E,$0E,$0E,$0F ; AF1F
         .byte   $0A,$0A,$0B,$0B,$0F,$04,$04,$0D ; AF27
         .byte   $0D,$04,$0F,$0F,$08,$0D,$0F,$0F ; AF2F
@@ -1714,7 +1714,7 @@ OvhdLvl8_ThingTypeList:
         .byte   $0F,$0E,$0E,$0E,$0E,$08,$0F,$0F ; AFBF
         .byte   $FF                             ; AFC7
 ; 168 X spawn coordinates
-OvhdLvl8_ThingXList:
+Area8_Ovhd_ThingX_Table:
         .byte   $1B,$18,$1D,$2B,$26,$2B,$26,$0B ; AFC8
         .byte   $07,$0C,$0F,$0F,$06,$19,$1A,$26 ; AFD0
         .byte   $2D,$2A,$26,$2C,$1A,$05,$0D,$0A ; AFD8
@@ -1737,7 +1737,7 @@ OvhdLvl8_ThingXList:
         .byte   $4B,$4B,$59,$59,$5A,$1E,$1D,$37 ; B060
         .byte   $3B,$25,$3E,$43,$42,$7A,$7C,$7C ; B068
 ; 168 Y spawn coordinates
-OvhdLvl8_ThingYList:
+Area8_Ovhd_ThingY_Table:
         .byte   $4C,$44,$46,$48,$43,$3D,$37,$28 ; B070
         .byte   $33,$2F,$33,$2B,$27,$36,$26,$25 ; B078
         .byte   $1D,$29,$16,$17,$18,$13,$06,$10 ; B080
@@ -1760,13 +1760,13 @@ OvhdLvl8_ThingYList:
         .byte   $79,$7A,$78,$79,$79,$5A,$5A,$19 ; B108
         .byte   $17,$7B,$7B,$72,$67,$19,$16,$1C ; B110
 ; ----------------------------------------------------------------------------
-TankLvl1_ThingPtrs:
-        .addr   TankLvl1_ThingTypeList          ; B118
-        .addr   TankLvl1_ThingXList             ; B11A
-        .addr   TankLvl1_ThingYList             ; B11C
+Area1_Tank_ThingPtrs:
+        .addr   Area1_Tank_ThingType_Table      ; B118
+        .addr   Area1_Tank_ThingX_Table         ; B11A
+        .addr   Area1_Tank_ThingY_Table         ; B11C
 ; ----------------------------------------------------------------------------
 ; 129 Thing Type sprite indices; $FF-terminated
-TankLvl1_ThingTypeList:
+Area1_Tank_ThingType_Table:
         .byte   $10,$16,$16,$05,$02,$10,$10,$02 ; B11E
         .byte   $02,$05,$08,$02,$10,$05,$05,$16 ; B126
         .byte   $05,$12,$0B,$0B,$14,$0B,$05,$05 ; B12E
@@ -1785,7 +1785,7 @@ TankLvl1_ThingTypeList:
         .byte   $16,$10,$05,$05,$05,$10,$10,$26 ; B196
         .byte   $26,$FF                         ; B19E
 ; 129 X spawn coordinates
-TankLvl1_ThingXList:
+Area1_Tank_ThingX_Table:
         .byte   $4B,$6A,$63,$17,$75,$2C,$32,$0E ; B1A0
         .byte   $05,$51,$09,$05,$08,$5D,$6E,$62 ; B1A8
         .byte   $7A,$40,$4B,$49,$5A,$48,$17,$17 ; B1B0
@@ -1804,7 +1804,7 @@ TankLvl1_ThingXList:
         .byte   $73,$06,$24,$2D,$3A,$35,$26,$15 ; B218
         .byte   $15                             ; B220
 ; 129 Y spawn coordinates
-TankLvl1_ThingYList:
+Area1_Tank_ThingY_Table:
         .byte   $62,$7D,$6E,$33,$3B,$67,$5C,$41 ; B221
         .byte   $41,$3F,$3A,$36,$69,$3F,$3F,$74 ; B229
         .byte   $3F,$3C,$38,$38,$3A,$38,$23,$2B ; B231
@@ -1823,13 +1823,13 @@ TankLvl1_ThingYList:
         .byte   $71,$73,$3C,$3C,$3A,$61,$54,$33 ; B299
         .byte   $2B                             ; B2A1
 ; ----------------------------------------------------------------------------
-TankLvl2_ThingPtrs:
-        .addr   TankLvl2_ThingTypeList          ; B2A2
-        .addr   TankLvl2_ThingXList             ; B2A4
-        .addr   TankLvl2_ThingYList             ; B2A6
+Area2_Tank_ThingPtrs:
+        .addr   Area2_Tank_ThingType_Table      ; B2A2
+        .addr   Area2_Tank_ThingX_Table         ; B2A4
+        .addr   Area2_Tank_ThingY_Table         ; B2A6
 ; ----------------------------------------------------------------------------
 ; 119 Thing Type sprite indices; $FF-terminated
-TankLvl2_ThingTypeList:
+Area2_Tank_ThingType_Table:
         .byte   $00,$00,$00,$00,$22,$28,$05,$05 ; B2A8
         .byte   $00,$10,$10,$10,$11,$01,$01,$02 ; B2B0
         .byte   $10,$10,$10,$02,$02,$10,$02,$0E ; B2B8
@@ -1846,7 +1846,7 @@ TankLvl2_ThingTypeList:
         .byte   $07,$07,$0E,$0E,$0E,$0D,$0D,$0D ; B310
         .byte   $0D,$0D,$0D,$0D,$0D,$11,$29,$FF ; B318
 ; 119 X spawn coordinates
-TankLvl2_ThingXList:
+Area2_Tank_ThingX_Table:
         .byte   $4B,$5F,$4F,$7C,$78,$79,$16,$05 ; B320
         .byte   $78,$0A,$0A,$08,$53,$1A,$54,$10 ; B328
         .byte   $76,$7C,$68,$1D,$1C,$25,$14,$79 ; B330
@@ -1863,7 +1863,7 @@ TankLvl2_ThingXList:
         .byte   $3A,$31,$7E,$7E,$7E,$37,$33,$3A ; B388
         .byte   $32,$37,$1A,$18,$17,$55,$00     ; B390
 ; 119 Y spawn coordinates
-TankLvl2_ThingYList:
+Area2_Tank_ThingY_Table:
         .byte   $44,$44,$44,$45,$2F,$2F,$43,$3F ; B397
         .byte   $44,$46,$4B,$48,$15,$66,$44,$07 ; B39F
         .byte   $47,$47,$46,$47,$4B,$51,$4B,$5F ; B3A7
@@ -1880,13 +1880,13 @@ TankLvl2_ThingYList:
         .byte   $47,$47,$17,$1B,$1F,$2A,$4C,$54 ; B3FF
         .byte   $5D,$65,$20,$27,$30,$16,$6F     ; B407
 ; ----------------------------------------------------------------------------
-TankLvl3_ThingPtrs:
-        .addr   TankLvl3_ThingTypeList          ; B40E
-        .addr   TankLvl3_ThingXList             ; B410
-        .addr   TankLvl3_ThingYList             ; B412
+Area3_Tank_ThingPtrs:
+        .addr   Area3_Tank_ThingType_Table      ; B40E
+        .addr   Area3_Tank_ThingX_Table         ; B410
+        .addr   Area3_Tank_ThingY_Table         ; B412
 ; ----------------------------------------------------------------------------
 ; 115 Thing Type sprite indices; $FF-terminated
-TankLvl3_ThingTypeList:
+Area3_Tank_ThingType_Table:
         .byte   $1B,$1B,$1B,$1B,$1B,$1B,$1B,$00 ; B414
         .byte   $00,$00,$08,$08,$08,$08,$14,$14 ; B41C
         .byte   $14,$03,$03,$03,$00,$00,$00,$03 ; B424
@@ -1903,7 +1903,7 @@ TankLvl3_ThingTypeList:
         .byte   $1B,$1B,$0C,$0C,$0C,$0C,$0C,$0C ; B47C
         .byte   $00,$00,$00,$FF                 ; B484
 ; 115 X spawn coordinates
-TankLvl3_ThingXList:
+Area3_Tank_ThingX_Table:
         .byte   $5F,$69,$6F,$74,$0D,$60,$0A,$06 ; B488
         .byte   $0A,$0B,$6D,$6F,$7B,$19,$76,$73 ; B490
         .byte   $6A,$12,$17,$0C,$11,$1A,$07,$0C ; B498
@@ -1920,7 +1920,7 @@ TankLvl3_ThingXList:
         .byte   $78,$78,$64,$6A,$72,$78,$5D,$73 ; B4F0
         .byte   $74,$5C,$0D                     ; B4F8
 ; 115 Y spawn coordinates
-TankLvl3_ThingYList:
+Area3_Tank_ThingY_Table:
         .byte   $0B,$0F,$0B,$2B,$0F,$0F,$1F,$0F ; B4FB
         .byte   $07,$17,$15,$1D,$1D,$72,$24,$1E ; B503
         .byte   $19,$28,$24,$24,$2F,$2F,$2F,$3E ; B50B
@@ -1937,13 +1937,13 @@ TankLvl3_ThingYList:
         .byte   $07,$0F,$30,$34,$38,$34,$30,$38 ; B563
         .byte   $7D,$7D,$2B                     ; B56B
 ; ----------------------------------------------------------------------------
-TankLvl4_ThingPtrs:
-        .addr   TankLvl4_ThingTypeList          ; B56E
-        .addr   TankLvl4_ThingXList             ; B570
-        .addr   TankLvl4_ThingYList             ; B572
+Area4_Tank_ThingPtrs:
+        .addr   Area4_Tank_ThingType_Table      ; B56E
+        .addr   Area4_Tank_ThingX_Table         ; B570
+        .addr   Area4_Tank_ThingY_Table         ; B572
 ; ----------------------------------------------------------------------------
 ; 95 Thing Type sprite indices; $FF-terminated
-TankLvl4_ThingTypeList:
+Area4_Tank_ThingType_Table:
         .byte   $02,$02,$14,$0E,$01,$02,$2C,$02 ; B574
         .byte   $08,$02,$02,$02,$12,$14,$14,$14 ; B57C
         .byte   $0E,$0E,$0E,$0E,$0E,$02,$10,$0E ; B584
@@ -1957,7 +1957,7 @@ TankLvl4_ThingTypeList:
         .byte   $07,$07,$07,$07,$07,$07,$0E,$0E ; B5C4
         .byte   $14,$0E,$2B,$0E,$04,$04,$01,$FF ; B5CC
 ; 95 X spawn coordinates
-TankLvl4_ThingXList:
+Area4_Tank_ThingX_Table:
         .byte   $59,$55,$2A,$48,$54,$55,$6E,$59 ; B5D4
         .byte   $74,$52,$28,$1C,$39,$6D,$55,$5A ; B5DC
         .byte   $61,$3A,$44,$63,$6A,$4A,$1C,$76 ; B5E4
@@ -1971,7 +1971,7 @@ TankLvl4_ThingXList:
         .byte   $1B,$1B,$1B,$1B,$1B,$1B,$19,$17 ; B624
         .byte   $2B,$66,$69,$69,$23,$35,$2D     ; B62C
 ; 95 Y spawn coordinates
-TankLvl4_ThingYList:
+Area4_Tank_ThingY_Table:
         .byte   $13,$17,$59,$4F,$11,$07,$1B,$0B ; B633
         .byte   $07,$0B,$2C,$27,$1B,$7A,$72,$59 ; B63B
         .byte   $7B,$5A,$5A,$59,$63,$14,$7A,$7B ; B643
@@ -1985,13 +1985,13 @@ TankLvl4_ThingYList:
         .byte   $60,$38,$58,$48,$50,$40,$40,$48 ; B683
         .byte   $59,$1A,$1B,$6E,$7B,$7B,$24     ; B68B
 ; ----------------------------------------------------------------------------
-TankLvl5_ThingPtrs:
-        .addr   TankLvl5_ThingTypeList          ; B692
-        .addr   TankLvl5_ThingXList             ; B694
-        .addr   TankLvl5_ThingYList             ; B696
+Area5_Tank_ThingPtrs:
+        .addr   Area5_Tank_ThingType_Table      ; B692
+        .addr   Area5_Tank_ThingX_Table         ; B694
+        .addr   Area5_Tank_ThingY_Table         ; B696
 ; ----------------------------------------------------------------------------
 ; 145 Thing Type sprite indices; $FF-terminated
-TankLvl5_ThingTypeList:
+Area5_Tank_ThingType_Table:
         .byte   $0C,$0C,$0C,$0C,$17,$17,$17,$17 ; B698
         .byte   $17,$18,$18,$18,$18,$18,$18,$18 ; B6A0
         .byte   $18,$18,$18,$18,$18,$18,$18,$18 ; B6A8
@@ -2012,7 +2012,7 @@ TankLvl5_ThingTypeList:
         .byte   $09,$17,$17,$17,$17,$17,$17,$17 ; B720
         .byte   $17,$09,$09,$09,$09,$FF         ; B728
 ; 145 X spawn coordinates
-TankLvl5_ThingXList:
+Area5_Tank_ThingX_Table:
         .byte   $02,$16,$79,$0E,$39,$47,$41,$3E ; B72E
         .byte   $65,$49,$36,$2C,$2A,$1A,$0A,$68 ; B736
         .byte   $71,$06,$04,$7A,$13,$1A,$13,$0F ; B73E
@@ -2033,7 +2033,7 @@ TankLvl5_ThingXList:
         .byte   $39,$28,$2C,$27,$2A,$2C,$28,$52 ; B7B6
         .byte   $4A,$2D,$24,$17,$6A             ; B7BE
 ; 145 Y spawn coordinates
-TankLvl5_ThingYList:
+Area5_Tank_ThingY_Table:
         .byte   $45,$45,$45,$45,$10,$12,$10,$14 ; B7C3
         .byte   $1C,$1C,$1C,$1C,$1C,$1C,$1C,$2C ; B7CB
         .byte   $4D,$4D,$4D,$4D,$4D,$5D,$5D,$58 ; B7D3
@@ -2054,13 +2054,13 @@ TankLvl5_ThingYList:
         .byte   $7F,$30,$33,$37,$3B,$3F,$43,$7C ; B84B
         .byte   $6F,$74,$79,$08,$0B             ; B853
 ; ----------------------------------------------------------------------------
-TankLvl6_ThingPtrs:
-        .addr   TankLvl6_ThingTypeList          ; B858
-        .addr   TankLvl6_ThingXList             ; B85A
-        .addr   TankLvl6_ThingYList             ; B85C
+Area6_Tank_ThingPtrs:
+        .addr   Area6_Tank_ThingType_Table      ; B858
+        .addr   Area6_Tank_ThingX_Table         ; B85A
+        .addr   Area6_Tank_ThingY_Table         ; B85C
 ; ----------------------------------------------------------------------------
 ; 97 Thing Type sprite indices; $FF-terminated
-TankLvl6_ThingTypeList:
+Area6_Tank_ThingType_Table:
         .byte   $00,$00,$15,$0D,$0A,$0A,$15,$0A ; B85E
         .byte   $00,$00,$00,$00,$07,$07,$15,$15 ; B866
         .byte   $15,$10,$15,$15,$15,$15,$0A,$0A ; B86E
@@ -2075,7 +2075,7 @@ TankLvl6_ThingTypeList:
         .byte   $10,$00,$07,$07,$00,$00,$0D,$0D ; B8B6
         .byte   $0D,$FF                         ; B8BE
 ; 97 X spawn coordinates
-TankLvl6_ThingXList:
+Area6_Tank_ThingX_Table:
         .byte   $1A,$24,$64,$56,$64,$71,$68,$56 ; B8C0
         .byte   $26,$1E,$16,$0E,$16,$13,$72,$5C ; B8C8
         .byte   $6A,$7E,$7C,$72,$78,$5C,$78,$0E ; B8D0
@@ -2090,7 +2090,7 @@ TankLvl6_ThingXList:
         .byte   $7E,$1C,$46,$4A,$29,$1D,$39,$27 ; B918
         .byte   $1E                             ; B920
 ; 97 Y spawn coordinates
-TankLvl6_ThingYList:
+Area6_Tank_ThingY_Table:
         .byte   $05,$05,$61,$77,$44,$44,$65,$44 ; B921
         .byte   $2B,$2B,$2B,$2B,$7B,$7B,$5D,$5D ; B929
         .byte   $59,$1D,$61,$59,$5D,$65,$44,$44 ; B931
@@ -2105,13 +2105,13 @@ TankLvl6_ThingYList:
         .byte   $15,$79,$75,$71,$5F,$54,$17,$15 ; B979
         .byte   $1C                             ; B981
 ; ----------------------------------------------------------------------------
-TankLvl7_ThingPtrs:
-        .addr   TankLvl7_ThingTypeList          ; B982
-        .addr   TankLvl7_ThingXList             ; B984
-        .addr   TankLvl7_ThingYList             ; B986
+Area7_Tank_ThingPtrs:
+        .addr   Area7_Tank_ThingType_Table      ; B982
+        .addr   Area7_Tank_ThingX_Table         ; B984
+        .addr   Area7_Tank_ThingY_Table         ; B986
 ; ----------------------------------------------------------------------------
 ; 124 Thing Type sprite indices; $FF-terminated
-TankLvl7_ThingTypeList:
+Area7_Tank_ThingType_Table:
         .byte   $13,$13,$13,$13,$13,$13,$13,$13 ; B988
         .byte   $13,$13,$13,$13,$23,$13,$10,$10 ; B990
         .byte   $10,$10,$10,$10,$10,$10,$10,$10 ; B998
@@ -2129,7 +2129,7 @@ TankLvl7_ThingTypeList:
         .byte   $21,$21,$23,$23,$22,$21,$21,$13 ; B9F8
         .byte   $0B,$0B,$0E,$12,$FF             ; BA00
 ; 124 X spawn coordinates
-TankLvl7_ThingXList:
+Area7_Tank_ThingX_Table:
         .byte   $21,$19,$28,$0E,$0F,$11,$07,$70 ; BA05
         .byte   $3F,$43,$28,$1C,$43,$0F,$5E,$76 ; BA0D
         .byte   $6E,$6E,$68,$65,$63,$0F,$0F,$1A ; BA15
@@ -2147,7 +2147,7 @@ TankLvl7_ThingXList:
         .byte   $67,$5D,$63,$5A,$6E,$37,$41,$17 ; BA75
         .byte   $22,$17,$57,$10                 ; BA7D
 ; 124 Y spawn coordinates
-TankLvl7_ThingYList:
+Area7_Tank_ThingY_Table:
         .byte   $44,$40,$3D,$45,$48,$39,$41,$27 ; BA81
         .byte   $4A,$45,$18,$17,$37,$17,$6A,$73 ; BA89
         .byte   $70,$7B,$7F,$76,$6E,$79,$77,$7C ; BA91
@@ -2165,13 +2165,13 @@ TankLvl7_ThingYList:
         .byte   $49,$4A,$3A,$34,$49,$36,$3A,$18 ; BAF1
         .byte   $14,$14,$66,$04                 ; BAF9
 ; ----------------------------------------------------------------------------
-TankLvl8_ThingPtrs:
-        .addr   TankLvl8_ThingTypeList          ; BAFD
-        .addr   TankLvl8_ThingXList             ; BAFF
-        .addr   TankLvl8_ThingYList             ; BB01
+Area8_Tank_ThingPtrs:
+        .addr   Area8_Tank_ThingType_Table      ; BAFD
+        .addr   Area8_Tank_ThingX_Table         ; BAFF
+        .addr   Area8_Tank_ThingY_Table         ; BB01
 ; ----------------------------------------------------------------------------
 ; 139 Thing Type sprite indices; $FF-terminated
-TankLvl8_ThingTypeList:
+Area8_Tank_ThingType_Table:
         .byte   $06,$00,$06,$00,$06,$00,$02,$10 ; BB03
         .byte   $10,$0A,$01,$0A,$0F,$06,$0A,$0A ; BB0B
         .byte   $0A,$0D,$06,$0D,$0D,$0D,$0D,$0D ; BB13
@@ -2191,7 +2191,7 @@ TankLvl8_ThingTypeList:
         .byte   $01,$01,$06,$0F,$0F,$27,$22,$22 ; BB83
         .byte   $27,$27,$22,$FF                 ; BB8B
 ; 139 X spawn coordinates
-TankLvl8_ThingXList:
+Area8_Tank_ThingX_Table:
         .byte   $3B,$3A,$3C,$39,$3A,$38,$27,$41 ; BB8F
         .byte   $3E,$11,$16,$1B,$4E,$5F,$1A,$11 ; BB97
         .byte   $0F,$2D,$6F,$28,$2E,$34,$39,$3F ; BB9F
@@ -2211,7 +2211,7 @@ TankLvl8_ThingXList:
         .byte   $54,$5C,$67,$3F,$5F,$75,$0A,$7E ; BC0F
         .byte   $7C,$0A,$7A                     ; BC17
 ; 139 Y spawn coordinates
-TankLvl8_ThingYList:
+Area8_Tank_ThingY_Table:
         .byte   $0B,$0F,$13,$17,$1B,$1F,$2B,$3F ; BC1A
         .byte   $39,$54,$04,$54,$77,$36,$4A,$4A ; BC22
         .byte   $40,$6D,$34,$77,$7B,$7B,$79,$7A ; BC2A

@@ -163,7 +163,7 @@ L_E47B: .byte   $76,$00,$00,$4B,$4C,$4D,$49,$00 ; E47B
         .byte   $AC,$00,$60                     ; E4A3
 ; ----------------------------------------------------------------------------
 L_E4A6: jsr     Step_RNG                        ; E4A6
-        sta     Palette_BG_0 + BgPalette::Backdrop ; E4A9
+        sta     BG_Palette_0 + BgPalette::Backdrop ; E4A9
 L_E4AB: jsr     WaitNMI                         ; E4AB
         jsr     L_E4FD                          ; E4AE
         lda     $DE                             ; E4B1

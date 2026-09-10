@@ -73,9 +73,9 @@ TankEnemy_DamageCheck:
         ldy     #$01                            ; A30D
 ; Y=1 selects EnemyDesc field [1] = ContactDamage
         lda     ($A1),y                         ; A30F
-; Pass A (the attacker's ContactDamage) into Enemy_Damage_Check_Sub
-        jsr     Enemy_Damage_Check_Sub          ; A311
-; Store Enemy_Damage_Check_Sub's return code into WR_Context_Dependent_45.
+; Pass A (the attacker's ContactDamage) into Enemy_DamageCheck
+        jsr     LD697                           ; A311
+; Store Enemy_DamageCheck's return code into WR_Context_Dependent_45.
 ;   $00 on a connecting hit,
 ;   $FF on a miss
         sta     $45                             ; A314
@@ -84,7 +84,7 @@ TankEnemy_DamageCheck:
         bne     _TankEnemy_DamageCheck__NotKilled; A316
 ; Otherwise handle the hit.
 ; 
-; Re-read Health (already decremented by Enemy_Damage_Check_Sub).
+; Re-read Health (already decremented by Enemy_DamageCheck).
         lda     LoadedObj + Obj::Health         ; A318
 ; If it's still > 0, then skill to the no-kill handler.
         bne     _TankEnemy_DamageCheck__NotKilled; A31A
@@ -104,7 +104,7 @@ _TankEnemy_DamageCheck__NotKilled:
 L_A327: jsr     TankEnemy_Load_EnemyDescPtr     ; A327
         ldy     #$01                            ; A32A
         lda     ($A1),y                         ; A32C
-        jsr     Enemy_Damage_Check_Sub          ; A32E
+        jsr     LD697                           ; A32E
         sta     $45                             ; A331
         bne     L_A344                          ; A333
         lda     LoadedObj + Obj::Health         ; A335

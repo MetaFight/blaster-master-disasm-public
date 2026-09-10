@@ -88,14 +88,14 @@ L_EB9F: lda     #$00                            ; EB9F
         jmp     L_EC34                          ; EBAD
 
 ; ----------------------------------------------------------------------------
-L_EBB0: lda     Palette_BG_0 + BgPalette::Backdrop ; EBB0
-        sta     Palette_BG_1 + BgPalette::Backdrop ; EBB2
-        sta     Palette_BG_2 + BgPalette::Backdrop ; EBB4
-        sta     Palette_BG_3 + BgPalette::Backdrop ; EBB6
-        sta     Palette_Sprite_0 + SpritePalette::Transparency ; EBB8
-        sta     Palette_Sprite_1 + SpritePalette::Transparency ; EBBA
-        sta     Palette_Sprite_2 + SpritePalette::Transparency ; EBBC
-        sta     Palette_Sprite_3 + SpritePalette::Transparency ; EBBE
+L_EBB0: lda     BG_Palette_0 + BgPalette::Backdrop ; EBB0
+        sta     BG_Palette_1 + BgPalette::Backdrop ; EBB2
+        sta     BG_Palette_2 + BgPalette::Backdrop ; EBB4
+        sta     BG_Palette_3 + BgPalette::Backdrop ; EBB6
+        sta     Sprite_Palette_0 + SpritePalette::Transparency ; EBB8
+        sta     Sprite_Palette_1 + SpritePalette::Transparency ; EBBA
+        sta     Sprite_Palette_2 + SpritePalette::Transparency ; EBBC
+        sta     Sprite_Palette_3 + SpritePalette::Transparency ; EBBE
         jsr     PPU_SetAddressIncrementTo_1     ; EBC0
         lda     $2002                           ; EBC3
         lda     #$3F                            ; EBC6
