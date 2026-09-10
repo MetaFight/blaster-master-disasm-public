@@ -121,7 +121,7 @@ L_C4EF: sta     LoadedObj + Obj::Type           ; C4EF
         jmp     L_C527                          ; C4FF
 
 ; ----------------------------------------------------------------------------
-L_C502: jsr     L_D7E3                          ; C502
+L_C502: jsr     ClearEnemySlots                 ; C502
         jsr     L_CBA9                          ; C505
         lda     $14                             ; C508
         cmp     #$08                            ; C50A
@@ -173,7 +173,7 @@ L_C55A: jmp     L_C29E                          ; C55A
 L_C56D: jsr     L_DEC2                          ; C56D
         lda     #$00                            ; C570
         sta     $03FB                           ; C572
-        jsr     L_D7E3                          ; C575
+        jsr     ClearEnemySlots                 ; C575
         lda     #$00                            ; C578
         jsr     BankSave_Switch                 ; C57A
         jsr     L_F273                          ; C57D
@@ -1314,11 +1314,14 @@ _FindEmptyObjectSlot__NotFound:
         rts                                     ; D7E2
 
 ; ----------------------------------------------------------------------------
-L_D7E3: lda     #$00                            ; D7E3
+; Clear all the ObjectTable slots.
+ClearEnemySlots:
+        lda     #$00                            ; D7E3
         ldx     #$0E                            ; D7E5
-L_D7E7: sta     ObjectTable + Obj::Type,x       ; D7E7
+_ClearEnemySlots__Loop:
+        sta     ObjectTable + Obj::Type,x       ; D7E7
         inx                                     ; D7EA
-        bne     L_D7E7                          ; D7EB
+        bne     _ClearEnemySlots__Loop          ; D7EB
         rts                                     ; D7ED
 
 ; ----------------------------------------------------------------------------

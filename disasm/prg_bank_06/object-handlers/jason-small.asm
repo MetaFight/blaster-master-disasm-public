@@ -545,7 +545,7 @@ L_8562: lda     #$80                            ; 8562
         sta     $43                             ; 8568
         lda     LoadedObj + Obj::Scratch1       ; 856A
         bne     L_8580                          ; 856C
-        jsr     LD7E3                           ; 856E
+        jsr     ClearEnemySlots                 ; 856E
         lda     #$06                            ; 8571
         sta     $D4                             ; 8573
         lda     $C5                             ; 8575

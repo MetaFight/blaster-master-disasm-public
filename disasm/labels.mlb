@@ -3050,10 +3050,14 @@ NesPrgRom:1BA53:_ObjHandler_Tank_8F_Red_Bullet_Attacking__OnScreen
 NesPrgRom:1BA5D:_ObjHandler_Tank_8F_Red_Bullet_Attacking__Render
 NesPrgRom:1BA70:RedBullet_Walking_RenderParamLookup:Red Bullet, walking phase, rendering parameters per-orientation.
 NesPrgRom:1BA80:RedBullet_Attacking_RenderParamLookup:Red Bullet, attacking phase, rendering parameters per-orientation.
-NesPrgRom:1BA88:L_BA88
-NesPrgRom:1BA8B:L_BA8B
-NesPrgRom:1BA95:L_BA95
-NesPrgRom:1BAA3:L_BAA3
+NesPrgRom:1BA88:ObjHandler_Tank_90_Wall_Guardian_Init:ObjType $90: Wall Guardian - Init.
+NesPrgRom:1BA8B:_ObjHandler_Tank_90_Wall_Guardian_Init__Body
+NesPrgRom:1BA90::If IsDefeated flag is not set, skip to Spawn.
+NesPrgRom:1BA92::Otherwise, despawn.
+NesPrgRom:1BA95:_ObjHandler_Tank_90_Wall_Guardian_Init__Spawn:Start by despawning all other enemies.\nThis is so we can switch the graphics bank without affecting enemy graphics.
+NesPrgRom:1BA9C::Enable object spawning.
+NesPrgRom:1BAA0::Initialise tank section boss with descriptor #$00.
+NesPrgRom:1BAA3:_ObjHandler_Tank_90_Wall_Guardian_Init__Done
 NesPrgRom:1BAA4:L_BAA4
 NesPrgRom:1BAA7:L_BAA7
 NesPrgRom:1BACF:L_BACF
@@ -3075,8 +3079,10 @@ NesPrgRom:1BB8A:L_BB8A
 NesPrgRom:1BB8D:L_BB8D
 NesPrgRom:1BB92:L_BB92
 NesPrgRom:1BB9F:L_BB9F
-NesPrgRom:1BBA7:L_BBA7
-NesPrgRom:1BBB8:L_BBB8
+NesPrgRom:1BBA7:TankBoss_InitFromTableEntry:Initialise boss from tank section boss table.
+NesPrgRom:1BBAE::Load table record and copy HP (record[0])
+NesPrgRom:1BBB0::Clear IFrameCounter, Calculate TileIndex, increment ObjType, and return.
+NesPrgRom:1BBB8:TankBoss_TableEntryPtr:Updated TankBoss_TableEntryPtrLo/Hi to point to the tank section boss table entry indexed by A.
 NesPrgRom:1BBC7:L_BBC7
 NesPrgRom:1BBE2:L_BBE2
 NesPrgRom:1BBE5:L_BBE5
@@ -3749,8 +3755,8 @@ NesPrgRom:1D7D8::Otherwise, advance search index (X) by the table entry stried (
 NesPrgRom:1D7DD::And loop back to resume search.
 NesPrgRom:1D7E0:_FindEmptyObjectSlot__FoundEmpty:empty slot found: A=$FF; X=slot byte-offset; RTS
 NesPrgRom:1D7E2:_FindEmptyObjectSlot__NotFound:search limit reached without finding empty slot; RTS
-NesPrgRom:1D7E3:L_D7E3
-NesPrgRom:1D7E7:L_D7E7
+NesPrgRom:1D7E3:ClearEnemySlots:Clear all the ObjectTable slots.
+NesPrgRom:1D7E7:_ClearEnemySlots__Loop
 NesPrgRom:1D7EE:L_D7EE
 NesPrgRom:1D7F2:L_D7F2
 NesPrgRom:1D7F8:Obj_Tombstone:Saves the current LoadedObj's ObjType into Tombstoned_ObjTypes.\nThen, changes the ObjType to $02 (Tombstoned).\n\nThis is first stage of unloading an already-active object that has scrolled off-screen.\nIf the Camera scrolls this object back on-screen, the $02 Object Handler will take care of restoring the slot to its original state.

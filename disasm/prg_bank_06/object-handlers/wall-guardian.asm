@@ -1,21 +1,32 @@
 .macro MAC_L_BA88
 ; ----------------------------------------------------------------------------
-L_BA88: jmp     L_BAA3                          ; BA88
+; ObjType $90: Wall Guardian - Init.
+ObjHandler_Tank_90_Wall_Guardian_Init:
+        jmp     _ObjHandler_Tank_90_Wall_Guardian_Init__Done; BA88
 
 ; ----------------------------------------------------------------------------
-L_BA8B: lda     $03FE                           ; BA8B
+_ObjHandler_Tank_90_Wall_Guardian_Init__Body:
+        lda     $03FE                           ; BA8B
         and     #$01                            ; BA8E
-        beq     L_BA95                          ; BA90
+; If IsDefeated flag is not set, skip to Spawn.
+        beq     _ObjHandler_Tank_90_Wall_Guardian_Init__Spawn; BA90
+; Otherwise, despawn.
         jmp     Obj_DespawnAndLog               ; BA92
 
 ; ----------------------------------------------------------------------------
-L_BA95: jsr     LD7E3                           ; BA95
+; Start by despawning all other enemies.
+; This is so we can switch the graphics bank without affecting enemy graphics.
+_ObjHandler_Tank_90_Wall_Guardian_Init__Spawn:
+        jsr     ClearEnemySlots                 ; BA95
         lda     $C5                             ; BA98
         ora     #$04                            ; BA9A
+; Enable object spawning.
         sta     $C5                             ; BA9C
         lda     #$00                            ; BA9E
-        jsr     L_BBA7                          ; BAA0
-L_BAA3: rts                                     ; BAA3
+; Initialise tank section boss with descriptor #$00.
+        jsr     TankBoss_InitFromTableEntry     ; BAA0
+_ObjHandler_Tank_90_Wall_Guardian_Init__Done:
+        rts                                     ; BAA3
 
 ; ----------------------------------------------------------------------------
 L_BAA4: jmp     L_BACF                          ; BAA4

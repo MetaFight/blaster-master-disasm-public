@@ -109,7 +109,7 @@ L_894E: lda     $4F                             ; 894E
         beq     L_8964                          ; 895E
 L_8960: inc     $4F                             ; 8960
         bne     L_89BB                          ; 8962
-L_8964: jsr     LD7E3                           ; 8964
+L_8964: jsr     ClearEnemySlots                           ; 8964
         lda     #$04                            ; 8967
         sta     LoadedObj + Obj::Type           ; 8969
         lda     $C5                             ; 896B

@@ -3,12 +3,12 @@
 A disassembly of the NES game *Blaster Master (US)*, done with limited Claude Code assistance.
 This is the **public** export of [MetaFight/blaster-master-disasm](https://github.com/MetaFight/blaster-master-disasm).  
 
-Every ASM subroutine, label, and comment, has been written or reviewed BY A HUMAN.
+Every PRG label, RAM label, and comment has been written or reviewed BY A HUMAN.
 
 Every page below has been edited and reviewed BY A HUMAN.
 
 Items marked `⚠️ alpha` are published for early access but still need human verification.
-Either they have not completed it yet, or they were verified and have since been modified by an automated process.
+Either verification hasn't been completed yet, or they were verified and have since been modified by an automated process.
 
 Claude Code has been used to create bespoke tools to wrap `ca65` and `da65`, to help with tracing, and to help with data export.
 It has also been used to do some surface analysis of most of the found subroutines.
@@ -23,7 +23,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 126 / 851 (15%) |
+| **M4** — Verified subroutines (public, clean) | 130 / 851 (15%) |
 | **M6** — Verified docs (public, clean) | 4 / 117 (3%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -34,7 +34,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 #### Area 1
 
 <details open>
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜▫️ 93.2% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜◽ 95.5% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
@@ -63,7 +63,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 | <details><summary>✅ Projectile: Small Red</summary>✅ <code>ObjHandler_Tank_3C_Small_Red_Init</code><br/>✅ <code>ObjHandler_Tank_3D_Small_Red_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Shooter</summary>✅ <code>ObjHandler_Tank_76_Shooter_Init</code><br/>✅ <code>ObjHandler_Tank_77_Shooter_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Turret</summary>✅ <code>ObjHandler_Tank_66_Turret_Init</code><br/>✅ <code>ObjHandler_Tank_67_Turret_Main</code></details> | 2 / 2 |
-| <details><summary>⬜ Wall Guardian</summary>⬜ <code>ObjHandler_Tank_90_Wall_Guardian_Init</code><br/>⬜ <code>ObjHandler_Tank_91_Wall_Guardian_Main</code></details> | 0 / 2 |
+| <details><summary>⏳ Wall Guardian</summary>✅ <code>ObjHandler_Tank_90_Wall_Guardian_Init</code><br/>⬜ <code>ObjHandler_Tank_91_Wall_Guardian_Main</code></details> | 1 / 2 |
 </details>
 
 <details >
@@ -389,7 +389,9 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_gray` | `ObjHandler_Tank_59_Gray_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_red` | `ObjHandler_Tank_8E_Red_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ⬜▫️⬛⬛<br/>`31.2%` | 06 / `object-handlers/projectiles-and-ballistics` | `ObjHandler_Tank_3C_Small_Red_Init`, `ObjHandler_Tank_47_Turret_Shot_Main`, and `ObjHandler_Tank_49_Medium_Red_Projectile_Main` depend on unverified routines `Obj_AimVelocityFromDelta` and `HitboxScan_LockOn`. |
+| ◽⬛⬛⬛<br/>`20.0%` | 06 / `object-handlers/bosses` |  |
 | ◽⬛⬛⬛<br/>`18.2%` | 06 / `_ungrouped` |  |
+| ◽⬛⬛⬛<br/>`16.7%` | 06 / `object-handlers/wall-guardian` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/auto-gates_and_locks` |  |
@@ -397,7 +399,6 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomb-canister` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomb-lobbing-hand` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomber-rock` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bosses` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bullet_common` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/caterpillar_gray` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/caterpillar_red` |  |
@@ -415,7 +416,6 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/sophia` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/submersible` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/swooping-sphere` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/wall-guardian` |  |
 | ⬜⬜▫️⬛<br/>`59.4%` | 07 / `05_game-screen/object-system` |  |
 | ⬜⬜▫️⬛<br/>`57.1%` | 07 / `screen-fade` |  |
 | ⬜⬜⬛⬛<br/>`50.0%` | 07 / `sound` |  |
@@ -424,7 +424,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬜▫️⬛⬛<br/>`30.2%` | 07 / `math` |  |
 | ▫️⬛⬛⬛<br/>`9.6%` | 07 / `hardware` |  |
 | ▫️⬛⬛⬛<br/>`7.4%` | 07 / `drawing-metasprites` | `MetaSprite_Render` depends on unverified routine `MetaSprite_RenderNoBank`. |
-| ▫️⬛⬛⬛<br/>`5.4%` | 07 / `_ungrouped` |  |
+| ▫️⬛⬛⬛<br/>`6.3%` | 07 / `_ungrouped` |  |
 | ▫️⬛⬛⬛<br/>`4.2%` | 07 / `drawing-sprites` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `00_title-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `01a_story-sequence` |  |
@@ -448,7 +448,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **7** pages, of which **3** are alpha.
 
-_Generated: 2026-09-09 16:32 UTC_
+_Generated: 2026-09-10 01:45 UTC_
 
 ## Pages
 

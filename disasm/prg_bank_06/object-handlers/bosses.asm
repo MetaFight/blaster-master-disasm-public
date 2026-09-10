@@ -1,16 +1,22 @@
 .macro MAC_L_BBA7
 ; ----------------------------------------------------------------------------
-L_BBA7: jsr     L_BBB8                          ; BBA7
+; Initialise boss from tank section boss table.
+TankBoss_InitFromTableEntry:
+        jsr     TankBoss_TableEntryPtr          ; BBA7
         ldy     #$00                            ; BBAA
         lda     ($A6),y                         ; BBAC
+; Load table record and copy HP (record[0])
         sta     LoadedObj + Obj::Health         ; BBAE
+; Clear IFrameCounter, Calculate TileIndex, increment ObjType, and return.
         sty     $4F                             ; BBB0
         jsr     Obj_CalcTileIndex               ; BBB2
         inc     LoadedObj + Obj::Type           ; BBB5
         rts                                     ; BBB7
 
 ; ----------------------------------------------------------------------------
-L_BBB8: asl     a                               ; BBB8
+; Updated TankBoss_TableEntryPtrLo/Hi to point to the tank section boss table entry indexed by A.
+TankBoss_TableEntryPtr:
+        asl     a                               ; BBB8
         clc                                     ; BBB9
         adc     L_BC1D                          ; BBBA
         sta     $A6                             ; BBBD
@@ -20,7 +26,7 @@ L_BBB8: asl     a                               ; BBB8
         rts                                     ; BBC6
 
 ; ----------------------------------------------------------------------------
-L_BBC7: jsr     L_BBB8                          ; BBC7
+L_BBC7: jsr     TankBoss_TableEntryPtr          ; BBC7
         ldy     #$01                            ; BBCA
         lda     ($A6),y                         ; BBCC
         jsr     Enemy_Damage_Check_Sub          ; BBCE
@@ -38,7 +44,7 @@ L_BBE2: lda     #$00                            ; BBE2
         rts                                     ; BBE4
 
 ; ----------------------------------------------------------------------------
-L_BBE5: jsr     L_BBB8                          ; BBE5
+L_BBE5: jsr     TankBoss_TableEntryPtr          ; BBE5
         ldy     #$01                            ; BBE8
         lda     ($A6),y                         ; BBEA
         jsr     Enemy_Damage_Check_Sub          ; BBEC
