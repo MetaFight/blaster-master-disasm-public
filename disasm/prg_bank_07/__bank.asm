@@ -33,6 +33,7 @@ MMC1_PrgBank_FFFF  := $FFFF
 .include "05_game-screen/game-loop.asm"
 .include "05_game-screen/hud.asm"
 .include "05_game-screen/object-system.asm"
+.include "05_game-screen/object-system_terrain.asm"
 .include "06_pause-screen.asm"
 .include "_ungrouped.asm"
 .include "bank-tail.asm"
@@ -78,6 +79,7 @@ MMC1_PrgBank_FFFF  := $FFFF
         MAC_L_CDD0
         MAC_L_CE4A
         MAC_L_CE55
+        MAC_L_CEC6
         MAC_L_CF10
         MAC_L_D02D
         MAC_L_D18D

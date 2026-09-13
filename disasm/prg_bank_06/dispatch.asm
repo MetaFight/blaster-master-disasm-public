@@ -47,11 +47,11 @@ ObjDispatch_Table_Bk06:
         .addr   L_875E                          ; 8042
         .addr   L_8788                          ; 8044
         .addr   L_8798                          ; 8046
-        .addr   L_9D3B                          ; 8048
-        .addr   L_9D4C                          ; 804A
-        .addr   L_9D3B                          ; 804C
+        .addr   ObjHandler_Tank_24_26_28_Auto_Gate_Init; 8048
+        .addr   ObjHandler_Tank_25_WallGuardianGate_Main; 804A
+        .addr   ObjHandler_Tank_24_26_28_Auto_Gate_Init; 804C
         .addr   L_9D5F                          ; 804E
-        .addr   L_9D3B                          ; 8050
+        .addr   ObjHandler_Tank_24_26_28_Auto_Gate_Init; 8050
         .addr   L_9D72                          ; 8052
         .addr   L_882A                          ; 8054
         .addr   L_8850                          ; 8056

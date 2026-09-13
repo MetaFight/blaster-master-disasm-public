@@ -1,37 +1,51 @@
 .macro MAC_L_9D3B
 ; ----------------------------------------------------------------------------
-L_9D3B: nop                                     ; 9D3B
+; ObjTypes $24, $26, and $28: Auto Gate - Init.
+; +0 entrypoint is just 3 NOPs, so both entrypoints do the same things.
+ObjHandler_Tank_24_26_28_Auto_Gate_Init:
+        nop                                     ; 9D3B
         nop                                     ; 9D3C
         nop                                     ; 9D3D
-L_9D3E: lda     #$00                            ; 9D3E
+_ObjHandler_Tank_24_26_28_Auto_Gate_Init__Body:
+        lda     #$00                            ; 9D3E
+; Set StateTransitionCounter (Scratch1) to 0 (closed).
         sta     LoadedObj + Obj::Scratch1       ; 9D40
         lda     #$01                            ; 9D42
+; Set State (Scratch0) to 1 (closed).
         sta     LoadedObj + Obj::Scratch0       ; 9D44
+; Set TileIndex.
         jsr     Obj_CalcTileIndex               ; 9D46
+; Advance ObjType to Main handler ($24->$25, $26->$27, $28->$29)
         inc     LoadedObj + Obj::Type           ; 9D49
         rts                                     ; 9D4B
 
 ; ----------------------------------------------------------------------------
-L_9D4C: rts                                     ; 9D4C
+; ObjType $25: Wall Guardian Gate - Main.
+ObjHandler_Tank_25_WallGuardianGate_Main:
+        rts                                     ; 9D4C
 
 ; ----------------------------------------------------------------------------
-L_9D4D: .byte   $EA,$EA                         ; 9D4D
-; ----------------------------------------------------------------------------
-L_9D4F: lda     L_9E90                          ; 9D4F
+; 2 byte NOP padding.
+        nop                                     ; 9D4D
+        nop                                     ; 9D4E
+; Point IndirectPtr to the appropriate pattern data for the 'Closed' gate tiles.
+_ObjHandler_Tank_25_WallGuardianGate_Main__Body:
+        lda     Area1_Tank_GateCloseTileDrawInstructionPtr; 9D4F
         sta     IndirectPtrLo                   ; 9D52
-        lda     L_9E90+1                        ; 9D54
+        lda     Area1_Tank_GateCloseTileDrawInstructionPtr+1; 9D54
         sta     IndirectPtrHi                   ; 9D57
         lda     #$01                            ; 9D59
         ldx     #$00                            ; 9D5B
+; Skip to shared GateHandler, passing in A = #$01 and X = 0.
         beq     L_9D83                          ; 9D5D
 L_9D5F: rts                                     ; 9D5F
 
 ; ----------------------------------------------------------------------------
 L_9D60: .byte   $EA,$EA                         ; 9D60
 ; ----------------------------------------------------------------------------
-L_9D62: lda     L_9E97                          ; 9D62
+L_9D62: lda     Area4_Tank_GateCloseTileDrawInstructionPtr; 9D62
         sta     IndirectPtrLo                   ; 9D65
-        lda     L_9E97+1                        ; 9D67
+        lda     Area4_Tank_GateCloseTileDrawInstructionPtr+1; 9D67
         sta     IndirectPtrHi                   ; 9D6A
         lda     #$02                            ; 9D6C
         ldx     #$F0                            ; 9D6E
@@ -41,9 +55,9 @@ L_9D72: rts                                     ; 9D72
 ; ----------------------------------------------------------------------------
 L_9D73: .byte   $EA,$EA                         ; 9D73
 ; ----------------------------------------------------------------------------
-L_9D75: lda     L_9E97                          ; 9D75
+L_9D75: lda     Area4_Tank_GateCloseTileDrawInstructionPtr; 9D75
         sta     IndirectPtrLo                   ; 9D78
-        lda     L_9E97+1                        ; 9D7A
+        lda     Area4_Tank_GateCloseTileDrawInstructionPtr+1; 9D7A
         sta     IndirectPtrHi                   ; 9D7D
         lda     #$04                            ; 9D7F
         ldx     #$10                            ; 9D81
@@ -117,8 +131,8 @@ L_9DDD: lda     LoadedObj + Obj::Position_Y_Hi  ; 9DDD
         cmp     #$40                            ; 9DF3
         beq     L_9E16                          ; 9DF5
         bne     L_9E1A                          ; 9DF7
-L_9DF9: jsr     LD68D                           ; 9DF9
-L_9DFC: jsr     LD68D                           ; 9DFC
+L_9DF9: jsr     Obj_MoveUpOneRow                           ; 9DF9
+L_9DFC: jsr     Obj_MoveUpOneRow                           ; 9DFC
 L_9DFF: lda     L_9E21                          ; 9DFF
         sta     IndirectPtrLo                   ; 9E02
         lda     L_9E21+1                        ; 9E04
@@ -141,8 +155,7 @@ L_9E1A: pla                                     ; 9E1A
 ; ----------------------------------------------------------------------------
 L_9E21: .addr   L_9E23                          ; 9E21
 ; ----------------------------------------------------------------------------
-L_9E23: .byte   $22                             ; 9E23
-L_9E24: .byte   $00,$00,$00,$00                 ; 9E24
+L_9E23: .byte   $22,$00,$00,$00,$00             ; 9E23
 ; ----------------------------------------------------------------------------
 L_9E28: lda     LoadedObj + Obj::Position_Y_Hi  ; 9E28
         pha                                     ; 9E2A
@@ -158,8 +171,8 @@ L_9E28: lda     LoadedObj + Obj::Position_Y_Hi  ; 9E28
         cmp     #$30                            ; 9E3C
         beq     L_9E42                          ; 9E3E
         bne     L_9E59                          ; 9E40
-L_9E42: jsr     LD68D                           ; 9E42
-L_9E45: jsr     LD68D                           ; 9E45
+L_9E42: jsr     Obj_MoveUpOneRow                           ; 9E42
+L_9E45: jsr     Obj_MoveUpOneRow                           ; 9E45
 L_9E48: lda     #$80                            ; 9E48
         jsr     LCEC6                           ; 9E4A
         lda     #$41                            ; 9E4D
@@ -202,14 +215,22 @@ L_9E85: lda     #$01                            ; 9E85
         jmp     LEDF5                           ; 9E8D
 
 ; ----------------------------------------------------------------------------
-L_9E90: .addr   L_9E92                          ; 9E90
+; Pointer to Area1_Tank_GateCloseTileDrawInstruction.
+Area1_Tank_GateCloseTileDrawInstructionPtr:
+        .addr   Area1_Tank_GateCloseTileDrawInstruction; 9E90
 ; ----------------------------------------------------------------------------
-L_9E92: .byte   $22                             ; 9E92
-L_9E93: .byte   $C6,$C7,$D6,$D7                 ; 9E93
+; Instruction to draw a 2x2 pattern tile.
+; TBC: The instruction format.
+Area1_Tank_GateCloseTileDrawInstruction:
+        .byte   $22,$C6,$C7,$D6,$D7             ; 9E92
 ; ----------------------------------------------------------------------------
-L_9E97: .addr   L_9E99                          ; 9E97
+; Pointer to Area4_Tank_GateCloseTileDrawInstruction.
+Area4_Tank_GateCloseTileDrawInstructionPtr:
+        .addr   Area4_Tank_GateCloseTileDrawInstruction; 9E97
 ; ----------------------------------------------------------------------------
-L_9E99: .byte   $22                             ; 9E99
-L_9E9A: .byte   $6A,$6B,$7A,$7B                 ; 9E9A
+; Instruction to draw a 2x2 pattern tile.
+; TBC: The instruction format.
+Area4_Tank_GateCloseTileDrawInstruction:
+        .byte   $22,$6A,$6B,$7A,$7B             ; 9E99
 .endmacro
 

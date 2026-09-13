@@ -2049,11 +2049,16 @@ NesPrgRom:19D15:PickUp_PaletteMode_LookUp:9 palette mode entries. One of two opt
 NesPrgRom:19D1E:PickUp_TargetAddress_LookUpPtr:Pointer to PickUp_TargetAddress_LookUp
 NesPrgRom:19D20:PickUp_TargetAddress_LookUp:9 pointers: HP, HP, Gun, Gun, Hover, Hover, Homing, Lightning, MultiWarhead.
 NesPrgRom:19D32:PickUp_TargetAmount_LookUp:9 amounts: Px1=$20; Px4=$80; Gunx1=$20; Gunx4=$80; Hx1=$20; Hx4=$80; Homing/Thunder/Multi-Warhead=$14 (20 units).
-NesPrgRom:19D3B:L_9D3B
-NesPrgRom:19D3E:L_9D3E
-NesPrgRom:19D4C:L_9D4C
-NesPrgRom:19D4D:L_9D4D
-NesPrgRom:19D4F:L_9D4F
+NesPrgRom:19D3B:ObjHandler_Tank_24_26_28_Auto_Gate_Init:ObjTypes $24, $26, and $28: Auto Gate - Init.\n+0 entrypoint is just 3 NOPs, so both entrypoints do the same things.
+NesPrgRom:19D3E:_ObjHandler_Tank_24_26_28_Auto_Gate_Init__Body
+NesPrgRom:19D40::Set StateTransitionCounter (Scratch1) to 0 (closed).
+NesPrgRom:19D44::Set State (Scratch0) to 1 (closed).
+NesPrgRom:19D46::Set TileIndex.
+NesPrgRom:19D49::Advance ObjType to Main handler ($24->$25, $26->$27, $28->$29)
+NesPrgRom:19D4C:ObjHandler_Tank_25_WallGuardianGate_Main:ObjType $25: Wall Guardian Gate - Main.
+NesPrgRom:19D4D::2 byte NOP padding.
+NesPrgRom:19D4F:_ObjHandler_Tank_25_WallGuardianGate_Main__Body:Point IndirectPtr to the appropriate pattern data for the 'Closed' gate tiles.
+NesPrgRom:19D5D::Skip to shared GateHandler, passing in A = #$01 and X = 0.
 NesPrgRom:19D5F:L_9D5F
 NesPrgRom:19D60:L_9D60
 NesPrgRom:19D62:L_9D62
@@ -2076,7 +2081,6 @@ NesPrgRom:19E16:L_9E16
 NesPrgRom:19E1A:L_9E1A
 NesPrgRom:19E21:L_9E21
 NesPrgRom:19E23:L_9E23
-NesPrgRom:19E24:L_9E24
 NesPrgRom:19E28:L_9E28
 NesPrgRom:19E42:L_9E42
 NesPrgRom:19E45:L_9E45
@@ -2086,12 +2090,10 @@ NesPrgRom:19E59:L_9E59
 NesPrgRom:19E60:L_9E60
 NesPrgRom:19E84:L_9E84
 NesPrgRom:19E85:L_9E85
-NesPrgRom:19E90:L_9E90
-NesPrgRom:19E92:L_9E92
-NesPrgRom:19E93:L_9E93
-NesPrgRom:19E97:L_9E97
-NesPrgRom:19E99:L_9E99
-NesPrgRom:19E9A:L_9E9A
+NesPrgRom:19E90:Area1_Tank_GateCloseTileDrawInstructionPtr:Pointer to Area1_Tank_GateCloseTileDrawInstruction.
+NesPrgRom:19E92:Area1_Tank_GateCloseTileDrawInstruction:Instruction to draw a 2x2 pattern tile.\nTBC: The instruction format.
+NesPrgRom:19E97:Area4_Tank_GateCloseTileDrawInstructionPtr:Pointer to Area4_Tank_GateCloseTileDrawInstruction.
+NesPrgRom:19E99:Area4_Tank_GateCloseTileDrawInstruction:Instruction to draw a 2x2 pattern tile.\nTBC: The instruction format.
 NesPrgRom:19E9E:PlaySound_23:Helper sub to enqueue sfx #$23.
 NesPrgRom:19EA4:L_9EA4
 NesPrgRom:19EA7:L_9EA7
@@ -3731,7 +3733,7 @@ NesPrgRom:1D670:L_D670
 NesPrgRom:1D679:L_D679
 NesPrgRom:1D67E:L_D67E
 NesPrgRom:1D683:L_D683
-NesPrgRom:1D68D:L_D68D
+NesPrgRom:1D68D:Obj_MoveUpOneRow:Move the object up one row and adjust TileIndex accordingly.
 NesPrgRom:1D697:L_D697
 NesPrgRom:1D6AB:L_D6AB
 NesPrgRom:1D6B7:L_D6B7

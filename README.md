@@ -23,7 +23,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 136 / 851 (16%) |
+| **M4** — Verified subroutines (public, clean) | 139 / 851 (16%) |
 | **M6** — Verified docs (public, clean) | 4 / 117 (3%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -33,12 +33,12 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 
 #### Area 1
 
-<details open>
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬜◽ 95.5% </b></summary>
+<details >
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ✅✅✅✅✅✅✅✅✅✅ 100.0% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
-| <details><summary>⬜ Auto Gate</summary>⬜ <code>ObjHandler_Tank_24_26_28_Auto_Gate_Init</code><br/>⬜ <code>ObjHandler_Tank_25_Auto_Gate_Main</code></details> | 0 / 2 |
+| <details><summary>✅ Auto Gate</summary>✅ <code>ObjHandler_Tank_24_26_28_Auto_Gate_Init</code><br/>✅ <code>ObjHandler_Tank_25_WallGuardianGate_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Ballistic: Big; Gray</summary>✅ <code>ObjHandler_Tank_38_Big_Gray_Init</code><br/>✅ <code>ObjHandler_Tank_39_Big_Gray_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Ballistic: Medium Red; Mine Shrapnel</summary>✅ <code>ObjHandler_Tank_44_Mine_Shrapnel_Init</code><br/>✅ <code>ObjHandler_Tank_45_Mine_Shrapnel_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Ballistic: Medium Red; Turret Shot</summary>✅ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>✅ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 2 / 2 |
@@ -85,7 +85,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 
 #### Area 2
 
-<details >
+<details open>
 <summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜◽⬛⬛⬛ 65.8% </b></summary>
 
 | Entity Variant | Handlers |
@@ -168,12 +168,12 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 #### Area 4
 
 <details >
-<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜⬛⬛ 80.0% </b></summary>
+<summary><b><code>&nbsp;&nbsp;&nbsp;&nbsp;Tank:</code> ⬜⬜⬜⬜⬜⬜⬜⬜▫️⬛ 83.3% </b></summary>
 
 | Entity Variant | Handlers |
 |---|---|
-| <details><summary>⬜ Area 4 Lock; Left</summary>⬜ <code>ObjHandler_Tank_24_26_28_Auto_Gate_Init</code><br/>⬜ <code>ObjHandler_Tank_27_Area_4_Left_Lock_Main</code></details> | 0 / 2 |
-| <details><summary>⬜ Area 4 Lock; Right</summary>⬜ <code>ObjHandler_Tank_24_26_28_Auto_Gate_Init</code><br/>⬜ <code>ObjHandler_Tank_29_Area_4_Right_Lock_Main</code></details> | 0 / 2 |
+| <details><summary>⏳ Area 4 Lock; Left</summary>✅ <code>ObjHandler_Tank_24_26_28_Auto_Gate_Init</code><br/>⬜ <code>ObjHandler_Tank_27_Area_4_Left_Lock_Main</code></details> | 1 / 2 |
+| <details><summary>⏳ Area 4 Lock; Right</summary>✅ <code>ObjHandler_Tank_24_26_28_Auto_Gate_Init</code><br/>⬜ <code>ObjHandler_Tank_29_Area_4_Right_Lock_Main</code></details> | 1 / 2 |
 | <details><summary>✅ Ballistic: Medium Red; Mine Shrapnel</summary>✅ <code>ObjHandler_Tank_44_Mine_Shrapnel_Init</code><br/>✅ <code>ObjHandler_Tank_45_Mine_Shrapnel_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Ballistic: Medium Red; Turret Shot</summary>✅ <code>ObjHandler_Tank_46_Turret_Shot_Init</code><br/>✅ <code>ObjHandler_Tank_47_Turret_Shot_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Bullet; Gray</summary>✅ <code>ObjHandler_Tank_59_Gray_Bullet_Main</code><br/>✅ <code>ObjHandler_Tank_5A_Gray_Bullet_Attacking</code></details> | 2 / 2 |
@@ -392,9 +392,9 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬜▫️⬛⬛<br/>`31.2%` | 06 / `object-handlers/projectiles-and-ballistics` | `ObjHandler_Tank_3C_Small_Red_Init`, `ObjHandler_Tank_47_Turret_Shot_Main`, and `ObjHandler_Tank_49_Medium_Red_Projectile_Main` depend on unverified routines `Obj_AimVelocityFromDelta` and `HitboxScan_LockOn`. |
 | ◽⬛⬛⬛<br/>`20.0%` | 06 / `object-handlers/bosses` |  |
 | ◽⬛⬛⬛<br/>`18.2%` | 06 / `_ungrouped` |  |
+| ◽⬛⬛⬛<br/>`12.9%` | 06 / `object-handlers/auto-gates_and_locks` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/auto-gates_and_locks` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bee` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomb-canister` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomb-lobbing-hand` |  |
@@ -424,7 +424,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬜▫️⬛⬛<br/>`30.2%` | 07 / `math` |  |
 | ▫️⬛⬛⬛<br/>`9.6%` | 07 / `hardware` |  |
 | ▫️⬛⬛⬛<br/>`7.4%` | 07 / `drawing-metasprites` | `MetaSprite_Render` depends on unverified routine `MetaSprite_RenderNoBank`. |
-| ▫️⬛⬛⬛<br/>`4.2%` | 07 / `_ungrouped` |  |
+| ▫️⬛⬛⬛<br/>`4.8%` | 07 / `_ungrouped` |  |
 | ▫️⬛⬛⬛<br/>`4.2%` | 07 / `drawing-sprites` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `00_title-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `01a_story-sequence` |  |
@@ -436,6 +436,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/camera` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/game-loop` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/hud` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/object-system_terrain` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `06_pause-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `bank-tail` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `camera` |  |
@@ -448,7 +449,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **7** pages, of which **3** are alpha.
 
-_Generated: 2026-09-10 20:27 UTC_
+_Generated: 2026-09-13 14:30 UTC_
 
 ## Pages
 
