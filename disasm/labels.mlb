@@ -1161,9 +1161,11 @@ NesPrgRom:136B2:L_B6B2
 NesPrgRom:136E0:L_B6E0
 NesPrgRom:136F0:L_B6F0
 NesPrgRom:13708:L_B708
-NesPrgRom:1370C:L_B70C
-NesPrgRom:1370F:L_B70F
-NesPrgRom:13718:L_B718
+NesPrgRom:1370C:ObjHandler_Ovhd_3B_Vertical_Camera_Init:ObjType $3B: Vertical Camera - Init.
+NesPrgRom:1370F:_ObjHandler_Ovhd_3B_Vertical_Camera_Init__Body:LDA #$0A = descriptor index A; JSR OvhdEnemy_Init (INC ObjType $3B→$3C); $50=0 (idle)  [+3 body entry]
+NesPrgRom:13711::Init using shared OvhdEnemy_Init with enemy descriptor #$0A.
+NesPrgRom:13716::Reset AttackCounter (Scratch0) to Idle (0).
+NesPrgRom:13718:_ObjHandler_Ovhd_3B_Vertical_Camera_Init__Done
 NesPrgRom:13719:L_B719
 NesPrgRom:1371C:L_B71C
 NesPrgRom:1373C:L_B73C

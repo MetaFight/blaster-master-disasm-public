@@ -109,12 +109,51 @@ LC222           := $C222
 .include "bank-tail.asm"
 .include "dead.asm"
 .include "dispatch.asm"
+.include "object-handlers/_ungrouped.asm"
+.include "object-handlers/bosses.asm"
+.include "object-handlers/camera.asm"
+.include "object-handlers/charging-robot.asm"
+.include "object-handlers/cross-shooter.asm"
+.include "object-handlers/explosions.asm"
+.include "object-handlers/eye.asm"
+.include "object-handlers/flier.asm"
+.include "object-handlers/gumdrop_gray.asm"
+.include "object-handlers/gumdrop_red.asm"
+.include "object-handlers/jason.asm"
+.include "object-handlers/pickups.asm"
+.include "object-handlers/projectiles-and-ballistics.asm"
+.include "object-handlers/robed-skeleton.asm"
+.include "object-handlers/robot.asm"
+.include "object-handlers/slider.asm"
+.include "object-handlers/spinner.asm"
+.include "object-handlers/spitter.asm"
+.include "object-handlers/zombie-head.asm"
 
 ; Emit every group's code in address order (see GroupSplitter).
         MAC_L_8000
         MAC_L_8112
         MAC_L_87F9
         MAC_L_8907
+        MAC_L_8A69
+        MAC_L_8AF1
+        MAC_L_8B29
+        MAC_L_8B7A
+        MAC_L_8C3B
+        MAC_L_8F54
+        MAC_L_8F7B
+        MAC_L_8F97
+        MAC_L_8F9A
+        MAC_L_8F9F
+        MAC_L_8FF3
+        MAC_L_9011
+        MAC_L_91F2
+        MAC_L_920B
+        MAC_L_9237
+        MAC_L_923C
+        MAC_L_92AC
+        MAC_L_93BD
+        MAC_L_95CF
+        MAC_L_96F1
         MAC_L_A73F
         MAC_L_A74E
         MAC_L_AC4F
@@ -123,8 +162,36 @@ LC222           := $C222
         MAC_L_ADA2
         MAC_L_AE42
         MAC_L_AE5A
+        MAC_L_AF45
+        MAC_L_B16B
+        MAC_L_B1F9
         MAC_L_B285
         MAC_L_B2B4
+        MAC_L_B366
+        MAC_L_B446
+        MAC_L_B4E1
+        MAC_L_B5A5
+        MAC_L_B5A7
+        MAC_L_B64D
+        MAC_L_B6A6
+        MAC_L_B70C
+        MAC_L_B7E5
+        MAC_L_B855
+        MAC_L_B922
+        MAC_L_B9B0
+        MAC_L_B9B5
+        MAC_L_B9EE
+        MAC_L_BAD9
+        MAC_L_BAE7
+        MAC_L_BAF0
+        MAC_L_BB71
+        MAC_L_BB75
+        MAC_L_BBA9
+        MAC_L_BBC2
         MAC_L_BC28
         MAC_L_BC65
+        MAC_L_BD5C
+        MAC_L_BE54
+        MAC_L_BEEF
+        MAC_L_BF8A
         MAC_L_BF92

@@ -73,7 +73,7 @@ ObjDispatch_Table_Bk04:
         .addr   L_B65B                          ; 8074
         .addr   L_B6A6                          ; 8076
         .addr   L_B6AF                          ; 8078
-        .addr   L_B70C                          ; 807A
+        .addr   ObjHandler_Ovhd_3B_Vertical_Camera_Init; 807A
         .addr   L_B719                          ; 807C
         .addr   L_B782                          ; 807E
         .addr   L_B78F                          ; 8080
