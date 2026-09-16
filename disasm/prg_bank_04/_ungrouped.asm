@@ -1,4 +1,4 @@
-.macro MAC_L_8112
+.macro MAC__ungrouped_1_of_16
 ; ----------------------------------------------------------------------------
 L_8112: .byte   $F4,$E4,$0C,$A5,$04,$00,$08,$0C ; 8112
         .byte   $A6,$04,$00,$08,$0C,$A7,$04,$00 ; 811A
@@ -223,7 +223,7 @@ L_8112: .byte   $F4,$E4,$0C,$A5,$04,$00,$08,$0C ; 8112
         .byte   $C8,$02,$00,$08,$9C,$C7,$02     ; 87F2
 .endmacro
 
-.macro MAC_L_8907
+.macro MAC__ungrouped_2_of_16
 L_8907: .byte   $12,$81,$44,$81,$85,$87,$94,$87 ; 8907
         .byte   $A3,$87,$B2,$87,$BC,$87,$C9,$87 ; 890F
         .byte   $D6,$87,$E0,$87,$EA,$87,$EF,$87 ; 8917
@@ -271,7 +271,7 @@ L_8907: .byte   $12,$81,$44,$81,$85,$87,$94,$87 ; 8907
         .byte   $E3,$88                         ; 8A67
 .endmacro
 
-.macro MAC_L_8B29
+.macro MAC__ungrouped_3_of_16
 ; ----------------------------------------------------------------------------
 L_8B29: jsr     LC1CE                           ; 8B29
         ldx     LoadedObj + Obj::Facing         ; 8B2C
@@ -315,7 +315,7 @@ L_8B33: lda     L8B92,x                         ; 8B33
 
 .endmacro
 
-.macro MAC_L_8C3B
+.macro MAC__ungrouped_4_of_16
 ; ----------------------------------------------------------------------------
 L_8C3B: lda     #$C0                            ; 8C3B
         sta     $42                             ; 8C3D
@@ -724,13 +724,13 @@ L_8F4C: .byte   $01,$41,$81,$01                 ; 8F4C
 L_8F50: .byte   $4A,$3A,$4A,$3A                 ; 8F50
 .endmacro
 
-.macro MAC_L_8F9A
+.macro MAC__ungrouped_5_of_16
 ; ----------------------------------------------------------------------------
 L_8F9A: .byte   $D0                             ; 8F9A
 L8F9B:  .byte   $00,$30,$00,$D0                 ; 8F9B
 .endmacro
 
-.macro MAC_L_8FF3
+.macro MAC__ungrouped_6_of_16
 ; ----------------------------------------------------------------------------
 L_8FF3: jsr     LC138                           ; 8FF3
         bpl     L_9006                          ; 8FF6
@@ -751,7 +751,7 @@ L_9010: rts                                     ; 9010
 
 .endmacro
 
-.macro MAC_L_91F2
+.macro MAC__ungrouped_7_of_16
 ; ----------------------------------------------------------------------------
 L_91F2: bpl     L_91F8                          ; 91F2
         ldx     #$FF                            ; 91F4
@@ -771,13 +771,13 @@ L_91FA: stx     $45                             ; 91FA
 
 .endmacro
 
-.macro MAC_L_9237
+.macro MAC__ungrouped_8_of_16
 ; ----------------------------------------------------------------------------
 L_9237: .byte   $E0                             ; 9237
 L9238:  .byte   $00,$20,$00,$E0                 ; 9238
 .endmacro
 
-.macro MAC_L_93BD
+.macro MAC__ungrouped_9_of_16
 ; ----------------------------------------------------------------------------
 L_93BD: lda     $C5                             ; 93BD
         and     #$02                            ; 93BF
@@ -1093,7 +1093,7 @@ L_95B9: .byte   $04,$08,$04,$C3,$95,$F0,$10,$14 ; 95B9
         .byte   $20,$20,$08,$00,$30,$20         ; 95C9
 .endmacro
 
-.macro MAC_L_B1F9
+.macro MAC__ungrouped_10_of_16
 ; ----------------------------------------------------------------------------
 L_B1F9: sta     $00                             ; B1F9
         asl     a                               ; B1FB
@@ -1196,7 +1196,7 @@ L_B27E: pla                                     ; B27E
 
 .endmacro
 
-.macro MAC_L_B2B4
+.macro MAC__ungrouped_11_of_16
 ; ----------------------------------------------------------------------------
 L_B2B4: jsr     L_B314                          ; B2B4
         ldy     #$00                            ; B2B7
@@ -1287,18 +1287,18 @@ L_B326: .byte   $04,$10,$1A,$90 ; B326  Health=$04 DropType=$1A DropChance=$90
         .byte   $04,$20,$1A,$A0 ; B362  Health=$04 DropType=$1A DropChance=$A0
 .endmacro
 
-.macro MAC_L_B5A5
+.macro MAC__ungrouped_12_of_16
 ; ----------------------------------------------------------------------------
 L_B5A5: .byte   $42,$43                         ; B5A5
 .endmacro
 
-.macro MAC_L_B9B0
+.macro MAC__ungrouped_13_of_16
 ; ----------------------------------------------------------------------------
 L_B9B0: .byte   $E0                             ; B9B0
 LB9B1:  .byte   $00,$20,$00,$E0                 ; B9B1
 .endmacro
 
-.macro MAC_L_BAD9
+.macro MAC__ungrouped_14_of_16
 ; ----------------------------------------------------------------------------
 L_BAD9: .byte   $FE                             ; BAD9
 LBADA:  .byte   $00,$02,$00,$FE                 ; BADA
@@ -1307,12 +1307,12 @@ LBAE2:  .byte   $20                             ; BAE2
 LBAE3:  .byte   $00,$E0,$00,$20                 ; BAE3
 .endmacro
 
-.macro MAC_L_BB71
+.macro MAC__ungrouped_15_of_16
 ; ----------------------------------------------------------------------------
 L_BB71: .byte   $C0,$00,$40,$80                 ; BB71
 .endmacro
 
-.macro MAC_L_BBA9
+.macro MAC__ungrouped_16_of_16
 ; ----------------------------------------------------------------------------
 L_BBA9: ldx     #$A8                            ; BBA9
         lda     #$D2                            ; BBAB

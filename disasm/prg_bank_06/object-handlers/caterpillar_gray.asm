@@ -1,4 +1,4 @@
-.macro MAC_L_A3E2
+.macro MAC_object_handlers__caterpillar_gray
 ; ----------------------------------------------------------------------------
 L_A3E2: jmp     L_A40A                          ; A3E2
 

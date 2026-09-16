@@ -1,4 +1,4 @@
-.macro MAC_L_976D
+.macro MAC_object_handlers__projectiles_and_ballistics_1_of_7
 ; ----------------------------------------------------------------------------
 L_976D: jmp     L_977F                          ; 976D
 
@@ -13,7 +13,7 @@ L_977F: rts                                     ; 977F
 
 .endmacro
 
-.macro MAC_L_9788
+.macro MAC_object_handlers__projectiles_and_ballistics_2_of_7
 ; ----------------------------------------------------------------------------
 L_9788: jmp     L_97C6                          ; 9788
 
@@ -98,7 +98,7 @@ L_981D: .byte   $00,$00,$00,$4B,$08,$00,$00,$4C ; 981D
 L_9835: .byte   $04,$06,$08                     ; 9835
 .endmacro
 
-.macro MAC_L_9882
+.macro MAC_object_handlers__projectiles_and_ballistics_3_of_7
 ; ----------------------------------------------------------------------------
 L_9882: nop                                     ; 9882
         nop                                     ; 9883
@@ -253,7 +253,7 @@ L99A8:  .byte   $00,$00,$91,$7F                 ; 99A8
 L99AC:  .byte   $00,$00,$11,$6F                 ; 99AC
 .endmacro
 
-.macro MAC_L_99CC
+.macro MAC_object_handlers__projectiles_and_ballistics_4_of_7
 ; ----------------------------------------------------------------------------
 L_99CC: nop                                     ; 99CC
         nop                                     ; 99CD
@@ -370,7 +370,7 @@ L_9AB0: .byte   $03,$03,$03,$03,$43,$43,$03,$03 ; 9AB0
         .byte   $43,$03,$03,$03,$03,$03,$43,$03 ; 9AC0
 .endmacro
 
-.macro MAC_L_9AEB
+.macro MAC_object_handlers__projectiles_and_ballistics_5_of_7
 ; ----------------------------------------------------------------------------
 L_9AEB: nop                                     ; 9AEB
         nop                                     ; 9AEC
@@ -411,7 +411,7 @@ L_9B2A: .byte   $F8                             ; 9B2A
 L9B2B:  .byte   $00,$08,$00,$F8                 ; 9B2B
 .endmacro
 
-.macro MAC_L_9B32
+.macro MAC_object_handlers__projectiles_and_ballistics_6_of_7
 ; ----------------------------------------------------------------------------
 L_9B32: jsr     Apply_Double_Velocity_XY                           ; 9B32
         ldx     LoadedObj + Obj::Facing         ; 9B35
@@ -455,7 +455,7 @@ L_9B7C: .byte   $FF                             ; 9B7C
 L9B7D:  .byte   $00,$01,$00,$FF                 ; 9B7D
 .endmacro
 
-.macro MAC_L_9EA4
+.macro MAC_object_handlers__projectiles_and_ballistics_7_of_7
 ; ----------------------------------------------------------------------------
 L_9EA4: jmp     L_9EBE                          ; 9EA4
 

@@ -1,4 +1,4 @@
-.macro MAC_L_FEC0
+.macro MAC_data
 L_FEC0: .byte   $00,$00,$19,$BD,$FE,$7E,$33,$9B ; FEC0
         .byte   $9D,$CF,$1C,$33,$98,$98,$DF,$0F ; FEC8
         .byte   $60,$CC,$18,$C7,$1C,$33,$CE,$98 ; FED0

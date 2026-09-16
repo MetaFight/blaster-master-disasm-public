@@ -1,4 +1,4 @@
-.macro MAC_L_A74B
+.macro MAC_object_handlers__hulk
 ; ----------------------------------------------------------------------------
 ; ObjType $5D: Hulk - Init.
 ObjHandler_Tank_5D_Hulk_Init:

@@ -1,4 +1,4 @@
-.macro MAC_L_A8D2
+.macro MAC_object_handlers__caterpillar_red
 ; ----------------------------------------------------------------------------
 L_A8D2: jmp     L_A8FA                          ; A8D2
 

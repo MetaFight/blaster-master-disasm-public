@@ -1,4 +1,4 @@
-.macro MAC_L_A2E9
+.macro MAC_object_handlers___common
 ; ----------------------------------------------------------------------------
 ; (alpha: not fully human-verified / pending re-verification) Shared initialisation routine for
 ; every damageable tank enemy, called by each enemy's Init handler.

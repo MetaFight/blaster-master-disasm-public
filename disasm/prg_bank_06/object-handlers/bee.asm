@@ -1,4 +1,4 @@
-.macro MAC_L_ADE4
+.macro MAC_object_handlers__bee
 ; ----------------------------------------------------------------------------
 L_ADE4: jmp     L_ADFE                          ; ADE4
 

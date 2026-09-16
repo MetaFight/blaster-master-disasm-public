@@ -1,4 +1,4 @@
-.macro MAC_L_AB13
+.macro MAC_object_handlers__bomber_rock
 ; ----------------------------------------------------------------------------
 L_AB13: jmp     L_AB23                          ; AB13
 

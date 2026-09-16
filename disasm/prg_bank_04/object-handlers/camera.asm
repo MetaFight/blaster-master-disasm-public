@@ -1,4 +1,4 @@
-.macro MAC_L_B366
+.macro MAC_object_handlers__camera_1_of_2
 ; ----------------------------------------------------------------------------
 L_B366: jmp     L_B392                          ; B366
 
@@ -117,67 +117,95 @@ L_B445: rts                                     ; B445
 
 .endmacro
 
-.macro MAC_L_B70C
+.macro MAC_object_handlers__camera_2_of_2
 ; ----------------------------------------------------------------------------
 ; ObjType $3B: Vertical Camera - Init.
 ObjHandler_Ovhd_3B_Vertical_Camera_Init:
         jmp     _ObjHandler_Ovhd_3B_Vertical_Camera_Init__Done; B70C
 
 ; ----------------------------------------------------------------------------
-; LDA #$0A = descriptor index A; JSR OvhdEnemy_Init (INC ObjType $3B→$3C); $50=0 (idle)  [+3 body
-; entry]
 _ObjHandler_Ovhd_3B_Vertical_Camera_Init__Body:
         lda     #$0A                            ; B70F
 ; Init using shared OvhdEnemy_Init with enemy descriptor #$0A.
         jsr     L_B2B4                          ; B711
         lda     #$00                            ; B714
-; Reset AttackCounter (Scratch0) to Idle (0).
+; Reset IsAttacking (Scratch0) to Idle (0).
         sta     LoadedObj + Obj::Scratch0       ; B716
 _ObjHandler_Ovhd_3B_Vertical_Camera_Init__Done:
         rts                                     ; B718
 
 ; ----------------------------------------------------------------------------
-L_B719: jmp     L_B747                          ; B719
+; ObjType $3C: Vertical Camera - Main
+ObjHandler_Ovhd_3C_Vertical_Camera_Main:
+        jmp     _ObjHandler_Ovhd_3C_Vertical_Camera_Main__ScreenTest; B719
 
 ; ----------------------------------------------------------------------------
-L_B71C: lda     #$80                            ; B71C
+; Start by setting collision box.
+_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Body:
+        lda     #$80                            ; B71C
         sta     $42                             ; B71E
         lda     #$80                            ; B720
         sta     $43                             ; B722
         lda     LoadedObj + Obj::Scratch0       ; B724
-        bne     L_B740                          ; B726
+; If already attacking, skip to Move.
+        bne     _ObjHandler_Ovhd_3C_Vertical_Camera_Main__Move; B726
+; Otherwise, calculate X Delta to the Player.
         jsr     LC045                           ; B728
-        bne     L_B747                          ; B72B
+; If not 0, skip to ScreenTest.
+        bne     _ObjHandler_Ovhd_3C_Vertical_Camera_Main__ScreenTest; B72B
+; Otherwise, start attack by setting IsAttacking (Scratch0) to 1 (true) and clearing Velocity_X.
         inc     LoadedObj + Obj::Scratch0       ; B72D
         lda     #$00                            ; B72F
         sta     LoadedObj + Obj::Velocity_X     ; B731
         jsr     LC04E                           ; B733
-        bmi     L_B73C                          ; B736
+; Next, pick Velocity_Y based on sign of Y Delta to Player.
+        bmi     _ObjHandler_Ovhd_3C_Vertical_Camera_Main__DirUp; B736
+; Velocity_Y = +3.5 px/f (down).
         lda     #$38                            ; B738
-        bne     L_B73E                          ; B73A
-L_B73C: lda     #$C8                            ; B73C
-L_B73E: sta     LoadedObj + Obj::Velocity_Y     ; B73E
-L_B740: jsr     LC02D                           ; B740
-        beq     L_B747                          ; B743
+        bne     _ObjHandler_Ovhd_3C_Vertical_Camera_Main__SetVel; B73A
+; Velocity_Y = -3.5 px/f (up).
+_ObjHandler_Ovhd_3C_Vertical_Camera_Main__DirUp:
+        lda     #$C8                            ; B73C
+; Commit chosen attack direction.
+_ObjHandler_Ovhd_3C_Vertical_Camera_Main__SetVel:
+        sta     LoadedObj + Obj::Velocity_Y     ; B73E
+; Apply movement and collisions.
+_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Move:
+        jsr     LC02D                           ; B740
+; If no collisions, skip to ScreenTest.
+        beq     _ObjHandler_Ovhd_3C_Vertical_Camera_Main__ScreenTest; B743
+; On collision, unset IsAttacking (Scratch0) and fall through to ScreenTest.
         dec     LoadedObj + Obj::Scratch0       ; B745
-L_B747: lda     #$10                            ; B747
+_ObjHandler_Ovhd_3C_Vertical_Camera_Main__ScreenTest:
+        lda     #$10                            ; B747
         sta     $40                             ; B749
         lda     #$10                            ; B74B
         sta     $41                             ; B74D
+; Set object bounds and do the screen test.
         jsr     LC0FF                           ; B74F
-        beq     L_B757                          ; B752
+; if off-screen then tombstone, otherwise skip to OnScreen.
+        beq     _ObjHandler_Ovhd_3C_Vertical_Camera_Main__OnScreen; B752
         jmp     LC17A                           ; B754
 
 ; ----------------------------------------------------------------------------
-L_B757: lda     #$0A                            ; B757
+; Handle incoming damage (using enemy descriptor #$0A), then
+; Draw animated sprite (unless occluded by foreground tile, in which case only draw every 4th
+; frame to create a flicker).
+_ObjHandler_Ovhd_3C_Vertical_Camera_Main__OnScreen:
+        lda     #$0A                            ; B757
         jsr     L_B2C5                          ; B759
         jsr     LC138                           ; B75C
         jsr     LC0A2                           ; B75F
-        bne     L_B76A                          ; B762
+        bne     _ObjHandler_Ovhd_3C_Vertical_Camera_Main__Draw; B762
         lda     Global_FrameCounter             ; B764
         and     #$03                            ; B766
-        bne     L_B77D                          ; B768
-L_B76A: lda     #$01                            ; B76A
+        bne     _ObjHandler_Ovhd_3C_Vertical_Camera_Main__Ret; B768
+; Set OAM Attributes to sprite palette 1,
+; Pick animation MetaSprite Id based on Global_FrameCounter (each animation frame last 16 draw
+; frames),
+; Render selected MetaSprite.
+_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Draw:
+        lda     #$01                            ; B76A
         sta     $44                             ; B76C
         lda     Global_FrameCounter             ; B76E
         lsr     a                               ; B770
@@ -186,14 +214,17 @@ L_B76A: lda     #$01                            ; B76A
         lsr     a                               ; B773
         and     #$03                            ; B774
         tax                                     ; B776
-        lda     L_B77E,x                        ; B777
+        lda     Camera_MetaSpriteId_ByFrame,x   ; B777
         jmp     LC063                           ; B77A
 
 ; ----------------------------------------------------------------------------
-L_B77D: rts                                     ; B77D
+_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Ret:
+        rts                                     ; B77D
 
 ; ----------------------------------------------------------------------------
-L_B77E: .byte   $2A,$2B,$2C,$2D                 ; B77E
+; Table of 4 MetaSprite Ids used to animate both Vertical and Horizontal Cameras.
+Camera_MetaSpriteId_ByFrame:
+        .byte   $2A,$2B,$2C,$2D                 ; B77E
 ; ----------------------------------------------------------------------------
 L_B782: jmp     L_B78E                          ; B782
 
@@ -248,7 +279,7 @@ L_B7CD: lda     #$0B                            ; B7CD
         lsr     a                               ; B7DB
         and     #$03                            ; B7DC
         tax                                     ; B7DE
-        lda     L_B77E,x                        ; B7DF
+        lda     Camera_MetaSpriteId_ByFrame,x   ; B7DF
         jmp     LC063                           ; B7E2
 
 .endmacro

@@ -1,4 +1,4 @@
-.macro MAC_L_B337
+.macro MAC_object_handlers__bomb_lobbing_hand
 ; ----------------------------------------------------------------------------
 L_B337: jmp     L_B34E                          ; B337
 

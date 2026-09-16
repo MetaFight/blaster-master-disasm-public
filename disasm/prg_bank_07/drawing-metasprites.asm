@@ -1,4 +1,4 @@
-.macro MAC_L_F011
+.macro MAC_drawing_metasprites
 ; ----------------------------------------------------------------------------
 ; Renders a metasprite selecting the correct metasprite pointer table by sprite size.
 ; 

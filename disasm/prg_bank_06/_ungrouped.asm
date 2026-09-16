@@ -1,4 +1,4 @@
-.macro MAC_L_888C
+.macro MAC__ungrouped_1_of_9
 ; ----------------------------------------------------------------------------
 L_888C: lda     $F3                             ; 888C
         and     #$20                            ; 888E
@@ -158,7 +158,7 @@ L_89BB: jmp     LD790                           ; 89BB
 
 .endmacro
 
-.macro MAC_L_8C4D
+.macro MAC__ungrouped_2_of_9
 ; ----------------------------------------------------------------------------
 L_8C4D: pha                                     ; 8C4D
         jsr     LCBDF                           ; 8C4E
@@ -176,7 +176,7 @@ L_8C4D: pha                                     ; 8C4D
 
 .endmacro
 
-.macro MAC_L_8E32
+.macro MAC__ungrouped_3_of_9
 ; ----------------------------------------------------------------------------
 L_8E32: lda     LoadedObj + Obj::Health         ; 8E32
         beq     L_8E62                          ; 8E34
@@ -237,7 +237,7 @@ L_8E94: jmp     Speed_Limit_Sub                           ; 8E94
 
 .endmacro
 
-.macro MAC_L_9707
+.macro MAC__ungrouped_4_of_9
 ; ----------------------------------------------------------------------------
 L_9707: ldx     #$00                            ; 9707
         stx     $4F                             ; 9709
@@ -295,13 +295,13 @@ L_976C: rts                                     ; 976C
 
 .endmacro
 
-.macro MAC_L_9780
+.macro MAC__ungrouped_5_of_9
 ; ----------------------------------------------------------------------------
 L_9780: .byte   $00,$40,$00,$C0                 ; 9780
 L_9784: .byte   $C0,$00,$40,$00                 ; 9784
 .endmacro
 
-.macro MAC_L_9B81
+.macro MAC__ungrouped_6_of_9
 ; ----------------------------------------------------------------------------
 ; Enqueue explosion SFX $28 then call Obj_SpawnChild ObjType argument #$4A to spawn a Mid
 ; Explosion.
@@ -326,7 +326,7 @@ SpawnBigExplosion_NoSound:
 
 .endmacro
 
-.macro MAC_L_9E9E
+.macro MAC__ungrouped_7_of_9
 ; ----------------------------------------------------------------------------
 ; Helper sub to enqueue sfx #$23.
 PlaySound_23:
@@ -336,7 +336,7 @@ PlaySound_23:
 
 .endmacro
 
-.macro MAC_L_A29E
+.macro MAC__ungrouped_8_of_9
 ; ----------------------------------------------------------------------------
 ; Spawn a child object at either the left or right screen edge (chosen randomly).
 ; 
@@ -415,7 +415,7 @@ _Enemy_TileSnapY__Done:
 
 .endmacro
 
-.macro MAC_L_A634
+.macro MAC__ungrouped_9_of_9
 ; ----------------------------------------------------------------------------
 L_A634: lda     $00                             ; A634
         pha                                     ; A636

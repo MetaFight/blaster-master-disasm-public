@@ -1,4 +1,4 @@
-.macro MAC_L_87F9
+.macro MAC_dead_1_of_9
 L_87F9: .byte   $FC,$FC,$0C,$CC,$02,$0C,$00,$00 ; 87F9
         .byte   $CE,$F4,$08,$0C,$CD,$02,$04,$08 ; 8801
         .byte   $10,$DE                         ; 8809
@@ -36,7 +36,7 @@ L_880B: .byte   $FC,$FC,$0C,$CC,$02,$0C,$00,$00 ; 880B
         .byte   $00,$1C,$86,$05                 ; 8903
 .endmacro
 
-.macro MAC_L_8F7B
+.macro MAC_dead_2_of_9
 ; ----------------------------------------------------------------------------
 L_8F7B: lda     $BB                             ; 8F7B
         cmp     #$03                            ; 8F7D
@@ -56,7 +56,7 @@ L_8F96: rts                                     ; 8F96
 
 .endmacro
 
-.macro MAC_L_A73F
+.macro MAC_dead_3_of_9
 ; ----------------------------------------------------------------------------
 L_A73F: jsr     LC1B3                           ; A73F
         and     #$38                            ; A742
@@ -69,7 +69,7 @@ L_A73F: jsr     LC1B3                           ; A73F
 
 .endmacro
 
-.macro MAC_L_AC4F
+.macro MAC_dead_4_of_9
 ; ----------------------------------------------------------------------------
 L_AC4F: lda     #$14                            ; AC4F
         sta     LoadedObj + Obj::Type           ; AC51
@@ -77,7 +77,7 @@ L_AC4F: lda     #$14                            ; AC4F
 
 .endmacro
 
-.macro MAC_L_AD99
+.macro MAC_dead_5_of_9
 ; ----------------------------------------------------------------------------
 L_AD99: lda     #$04                            ; AD99
         sta     LoadedObj + Obj::Scratch0       ; AD9B
@@ -87,7 +87,7 @@ L_AD99: lda     #$04                            ; AD99
 
 .endmacro
 
-.macro MAC_L_AE42
+.macro MAC_dead_6_of_9
 ; ----------------------------------------------------------------------------
 L_AE42: lda     LoadedObj + Obj::Scratch1       ; AE42
         cmp     #$30                            ; AE44
@@ -104,7 +104,7 @@ L_AE56: sta     $0670                           ; AE56
 
 .endmacro
 
-.macro MAC_L_B16B
+.macro MAC_dead_7_of_9
 ; ----------------------------------------------------------------------------
 L_B16B: jmp     L_B172                          ; B16B
 
@@ -199,7 +199,7 @@ L_B1F4: sta     $92                             ; B1F4
 
 .endmacro
 
-.macro MAC_L_B285
+.macro MAC_dead_8_of_9
 ; ----------------------------------------------------------------------------
 L_B285: jsr     L_B29E                          ; B285
         clc                                     ; B288
@@ -237,7 +237,7 @@ L_B2B3: rts                                     ; B2B3
 
 .endmacro
 
-.macro MAC_L_BC28
+.macro MAC_dead_9_of_9
 ; ----------------------------------------------------------------------------
 L_BC28: jsr     LC105                           ; BC28
         lda     L_BC61,x                        ; BC2B

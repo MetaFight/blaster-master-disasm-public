@@ -1,4 +1,4 @@
-.macro MAC_L_B578
+.macro MAC_object_handlers__running_shell
 ; ----------------------------------------------------------------------------
 L_B578: jmp     L_B58A                          ; B578
 

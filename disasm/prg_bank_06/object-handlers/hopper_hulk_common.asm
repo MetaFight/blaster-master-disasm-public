@@ -1,4 +1,4 @@
-.macro MAC_L_B1DE
+.macro MAC_object_handlers__hopper_hulk_common
 ; ----------------------------------------------------------------------------
 ; Handler that has a chance of making the Hopper/Hulk hop when at a platform edges.
 ; (well, more accurately, when the tile directly below its center is not solid.  This assumes the

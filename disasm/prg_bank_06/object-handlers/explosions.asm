@@ -1,4 +1,4 @@
-.macro MAC_L_9B95
+.macro MAC_object_handlers__explosions
 ; ----------------------------------------------------------------------------
 L_9B95: nop                                     ; 9B95
         nop                                     ; 9B96

@@ -1,4 +1,4 @@
-.macro MAC_L_C7BE
+.macro MAC_dead_1_of_9
 ; ----------------------------------------------------------------------------
 L_C7BE: inc     $01                             ; C7BE
         inc     $03                             ; C7C0
@@ -7,7 +7,7 @@ L_C7BE: inc     $01                             ; C7BE
 
 .endmacro
 
-.macro MAC_L_E01B
+.macro MAC_dead_2_of_9
 ; ----------------------------------------------------------------------------
 L_E01B: lda     LoadedObj + Obj::Facing         ; E01B
         lsr     a                               ; E01D
@@ -23,7 +23,7 @@ L_E01B: lda     LoadedObj + Obj::Facing         ; E01B
 L_E027: .byte   $01,$41,$40,$3F,$FF,$EE,$EF,$F0 ; E027
 .endmacro
 
-.macro MAC_L_E287
+.macro MAC_dead_3_of_9
 ; ----------------------------------------------------------------------------
 L_E287: lda     $06F3                           ; E287
         cmp     #$02                            ; E28A
@@ -61,7 +61,7 @@ L_E2C0: rts                                     ; E2C0
 
 .endmacro
 
-.macro MAC_L_EA56
+.macro MAC_dead_4_of_9
 ; ----------------------------------------------------------------------------
 L_EA56: tya                                     ; EA56
         clc                                     ; EA57
@@ -73,7 +73,7 @@ L_EA60: jmp     (IndirectPtrLo)                 ; EA60
 
 .endmacro
 
-.macro MAC_L_EA6F
+.macro MAC_dead_5_of_9
 ; ----------------------------------------------------------------------------
 L_EA6F: ldx     #$09                            ; EA6F
         lda     #$00                            ; EA71
@@ -151,7 +151,7 @@ L_EACB: lda     $01                             ; EACB
 
 .endmacro
 
-.macro MAC_L_EB64
+.macro MAC_dead_6_of_9
 ; ----------------------------------------------------------------------------
 L_EB64: pha                                     ; EB64
         lda     #$31                            ; EB65
@@ -162,7 +162,7 @@ L_EB64: pha                                     ; EB64
 
 .endmacro
 
-.macro MAC_L_F14E
+.macro MAC_dead_7_of_9
 ; ----------------------------------------------------------------------------
 L_F14E: pha                                     ; F14E
         lsr     a                               ; F14F
@@ -211,7 +211,7 @@ L_F191: rts                                     ; F191
 
 .endmacro
 
-.macro MAC_L_F465
+.macro MAC_dead_8_of_9
 ; ----------------------------------------------------------------------------
 L_F465: lda     #$00                            ; F465
         sta     $01                             ; F467
@@ -323,7 +323,7 @@ L_F53B: .byte   "PRESS START"                   ; F53B
         .byte   $00                             ; F546
 .endmacro
 
-.macro MAC_L_F5AE
+.macro MAC_dead_9_of_9
 ; ----------------------------------------------------------------------------
 L_F5AE: lda     L_F5CF                          ; F5AE
         sta     IndirectPtrLo                   ; F5B1

@@ -1,4 +1,4 @@
-.macro MAC_L_CE4A
+.macro MAC_timing_1_of_4
 ; ----------------------------------------------------------------------------
 L_CE4A: pha                                     ; CE4A
         jsr     WaitNMI                         ; CE4B
@@ -10,7 +10,7 @@ L_CE4A: pha                                     ; CE4A
 
 .endmacro
 
-.macro MAC_L_E936
+.macro MAC_timing_2_of_4
 ; ----------------------------------------------------------------------------
 ; Sets Nmi_SignalFlags bit 7 then spin-waits until NMI handler clears it.  This is the mechanism
 ; that paces the game loop at 60Hz.
@@ -37,7 +37,7 @@ L_E949: lda     $FF                             ; E949
 
 .endmacro
 
-.macro MAC_L_EB7E
+.macro MAC_timing_3_of_4
 ; ----------------------------------------------------------------------------
 ; Hardware NMI (VBlank) handler.
 ; 
@@ -120,7 +120,7 @@ L_EBD2: lda     Background_Palettes + BgPalette::Backdrop,x ; EBD2
         beq     L_EC34                          ; EBF2
 .endmacro
 
-.macro MAC_L_EC34
+.macro MAC_timing_4_of_4
 ; ----------------------------------------------------------------------------
 L_EC34: jsr     L_F1CA                          ; EC34
         jsr     L_E6BF                          ; EC37

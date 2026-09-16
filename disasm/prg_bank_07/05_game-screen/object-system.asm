@@ -1,4 +1,4 @@
-.macro MAC_L_C5B2
+.macro MAC_05_game_screen__object_system_1_of_10
 ; ----------------------------------------------------------------------------
 L_C5B2: lda     LoadedObj + Obj::Position_X_Lo  ; C5B2
         sta     $03F5                           ; C5B4
@@ -59,7 +59,7 @@ L_C5FA: lda     $03F5                           ; C5FA
 
 .endmacro
 
-.macro MAC_L_C8DF
+.macro MAC_05_game_screen__object_system_2_of_10
 ; ----------------------------------------------------------------------------
 ; Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*.
 Obj_LoadFromSlot:
@@ -186,7 +186,7 @@ L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
 
 .endmacro
 
-.macro MAC_L_D2AB
+.macro MAC_05_game_screen__object_system_3_of_10
 ; ----------------------------------------------------------------------------
 ; Read LevelTileData[LoadedObj.TileIndex].
 ; 
@@ -1002,7 +1002,7 @@ L_D643: ldx     LoadedObj + Obj::Facing         ; D643
 
 .endmacro
 
-.macro MAC_L_D71F
+.macro MAC_05_game_screen__object_system_4_of_10
 ; ----------------------------------------------------------------------------
 ; Deal contact damage to the PLAYER specifically -- the single-record twin of HitboxScan_LockOn.
 ; 
@@ -1107,7 +1107,7 @@ _Obj_TryDamagePlayer__Miss:
 
 .endmacro
 
-.macro MAC_L_D7C0
+.macro MAC_05_game_screen__object_system_5_of_10
 ; ----------------------------------------------------------------------------
 ; Copies fields 1-13 (all except ObjType) from LoadedObj into another Object in the Object table.
 ; 
@@ -1303,7 +1303,7 @@ L_D86D: ldx     #$4C                            ; D86D
 
 .endmacro
 
-.macro MAC_L_DF0F
+.macro MAC_05_game_screen__object_system_6_of_10
 ; ----------------------------------------------------------------------------
 ; Tries to clone the current LoadedObject into an empty ObjectTable slot.
 ; 
@@ -1628,7 +1628,7 @@ _Obj_FallAndLand__NotLanded:
 
 .endmacro
 
-.macro MAC_L_E02F
+.macro MAC_05_game_screen__object_system_7_of_10
 ; ----------------------------------------------------------------------------
 ; Obj_MoveBounce plus terrain checks to turn at walls and ledge edges.
 ; 
@@ -1689,7 +1689,7 @@ L_E05D: sta     $44                             ; E05D
 
 .endmacro
 
-.macro MAC_L_E071
+.macro MAC_05_game_screen__object_system_8_of_10
 ; ----------------------------------------------------------------------------
 L_E071: lda     LoadedObj + Obj::Scratch2       ; E071
         eor     #$FF                            ; E073
@@ -1965,7 +1965,7 @@ L_E152: lda     L0000                           ; E152
 
 .endmacro
 
-.macro MAC_L_E1BD
+.macro MAC_05_game_screen__object_system_9_of_10
 ; ----------------------------------------------------------------------------
 ; Convert LoadedObj's Facing (heading) to a scaled Velocity vector
 ; 
@@ -1995,7 +1995,7 @@ Obj_FacingToVelocity:
 
 .endmacro
 
-.macro MAC_L_EB14
+.macro MAC_05_game_screen__object_system_10_of_10
 ; ----------------------------------------------------------------------------
 ; Clamps the signed velocity ZP[$00+X] into [-A, +A]
 ; 

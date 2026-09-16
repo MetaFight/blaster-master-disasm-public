@@ -1,4 +1,4 @@
-.macro MAC_L_AA5A
+.macro MAC_object_handlers__turret
 ; ----------------------------------------------------------------------------
 ; ObjType $66: Ceiling Turret - Init.
 ObjHandler_Tank_66_Turret_Init:
@@ -126,7 +126,7 @@ _ObjHandler_Tank_67_Turret_Main__Render:
 ; Convert the heading to a lookup table index,
         and     #$0E                            ; AAF5
         tax                                     ; AAF7
-        lda     LAB04,x                         ; AAF8
+        lda     TankTurret_SpriteByAngle+1,x    ; AAF8
 ; set the OAM attributes,
         sta     $44                             ; AAFB
         lda     TankTurret_SpriteByAngle,x      ; AAFD
@@ -134,10 +134,15 @@ _ObjHandler_Tank_67_Turret_Main__Render:
         jmp     MetaSprite_Render               ; AB00
 
 ; ----------------------------------------------------------------------------
-; Turret render table.  8 interleaved [metaspriteId, attr] pairs.
+; Turret render table.  8 [metaspriteId, attr] pairs.
 TankTurret_SpriteByAngle:
-        .byte   $72                             ; AB03
-LAB04:  .byte   $81,$72,$81,$72,$81,$72,$81,$73 ; AB04
-        .byte   $81,$73,$81,$73,$81,$73,$81     ; AB0C
+        .byte   $72,$81 ; AB03  MetaSpriteId=$72 OamAttributes=$81
+        .byte   $72,$81 ; AB05  MetaSpriteId=$72 OamAttributes=$81
+        .byte   $72,$81 ; AB07  MetaSpriteId=$72 OamAttributes=$81
+        .byte   $72,$81 ; AB09  MetaSpriteId=$72 OamAttributes=$81
+        .byte   $73,$81 ; AB0B  MetaSpriteId=$73 OamAttributes=$81
+        .byte   $73,$81 ; AB0D  MetaSpriteId=$73 OamAttributes=$81
+        .byte   $73,$81 ; AB0F  MetaSpriteId=$73 OamAttributes=$81
+        .byte   $73,$81 ; AB11  MetaSpriteId=$73 OamAttributes=$81
 .endmacro
 

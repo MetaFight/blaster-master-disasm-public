@@ -1,4 +1,4 @@
-.macro MAC_L_B64D
+.macro MAC_object_handlers__spinner
 ; ----------------------------------------------------------------------------
 L_B64D: jmp     L_B65A                          ; B64D
 

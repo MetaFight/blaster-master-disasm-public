@@ -1,4 +1,4 @@
-.macro MAC_L_AFFC
+.macro MAC_object_handlers__shooter
 ; ----------------------------------------------------------------------------
 ; ObjType $76: Shooter - Init.
 ObjHandler_Tank_76_Shooter_Init:

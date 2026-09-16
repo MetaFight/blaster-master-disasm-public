@@ -1,4 +1,4 @@
-.macro MAC_L_B4E1
+.macro MAC_object_handlers__flier
 ; ----------------------------------------------------------------------------
 L_B4E1: jmp     L_B4ED                          ; B4E1
 

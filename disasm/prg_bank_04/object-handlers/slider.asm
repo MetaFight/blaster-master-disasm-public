@@ -1,4 +1,4 @@
-.macro MAC_L_B7E5
+.macro MAC_object_handlers__slider
 ; ----------------------------------------------------------------------------
 L_B7E5: jmp     L_B7F5                          ; B7E5
 

@@ -23,7 +23,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 140 / 851 (16%) |
+| **M4** — Verified subroutines (public, clean) | 141 / 851 (17%) |
 | **M6** — Verified docs (public, clean) | 4 / 117 (3%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -73,7 +73,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 |---|---|
 | <details><summary>⬜ Boss Room</summary>⬜ <code>ObjHandler_Ovhd_5A_Boss_Room_Delay</code><br/>⬜ <code>ObjHandler_Ovhd_5B_Boss_Room_Palette_Animation</code></details> | 0 / 2 |
 | <details><summary>⬜ Camera; Horizontal</summary>⬜ <code>ObjHandler_Ovhd_3D_Horizontal_Camera_Init</code><br/>⬜ <code>ObjHandler_Ovhd_3E_Horizontal_Camera_Main</code></details> | 0 / 2 |
-| <details><summary>⏳ Camera; Vertical</summary>✅ <code>ObjHandler_Ovhd_3B_Vertical_Camera_Init</code><br/>⬜ <code>ObjHandler_Ovhd_3C_Vertical_Camera_Main</code></details> | 1 / 2 |
+| <details><summary>✅ Camera; Vertical</summary>✅ <code>ObjHandler_Ovhd_3B_Vertical_Camera_Init</code><br/>✅ <code>ObjHandler_Ovhd_3C_Vertical_Camera_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Flier</summary>⬜ <code>ObjHandler_Ovhd_34_Flier_Main</code></details> | 0 / 1 |
 | <details><summary>⬜ Flier Spawner</summary>⬜ <code>ObjHandler_Ovhd_32_Flier_Spawner_Init</code><br/>⬜ <code>ObjHandler_Ovhd_33_Flier_Spawner_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Gumdrop; Gray</summary>⬜ <code>ObjHandler_Ovhd_30_Gray_Gumdrop_Init</code><br/>⬜ <code>ObjHandler_Ovhd_31_Gray_Gumdrop_Main</code></details> | 0 / 2 |
@@ -158,7 +158,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 |---|---|
 | <details><summary>⬜ Boss Room</summary>⬜ <code>ObjHandler_Ovhd_5A_Boss_Room_Delay</code><br/>⬜ <code>ObjHandler_Ovhd_5B_Boss_Room_Palette_Animation</code></details> | 0 / 2 |
 | <details><summary>⬜ Camera; Horizontal</summary>⬜ <code>ObjHandler_Ovhd_3D_Horizontal_Camera_Init</code><br/>⬜ <code>ObjHandler_Ovhd_3E_Horizontal_Camera_Main</code></details> | 0 / 2 |
-| <details><summary>⏳ Camera; Vertical</summary>✅ <code>ObjHandler_Ovhd_3B_Vertical_Camera_Init</code><br/>⬜ <code>ObjHandler_Ovhd_3C_Vertical_Camera_Main</code></details> | 1 / 2 |
+| <details><summary>✅ Camera; Vertical</summary>✅ <code>ObjHandler_Ovhd_3B_Vertical_Camera_Init</code><br/>✅ <code>ObjHandler_Ovhd_3C_Vertical_Camera_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Gumdrop; Gray</summary>⬜ <code>ObjHandler_Ovhd_30_Gray_Gumdrop_Init</code><br/>⬜ <code>ObjHandler_Ovhd_31_Gray_Gumdrop_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Gumdrop; Red</summary>⬜ <code>ObjHandler_Ovhd_46_Red_Gumdrop_Init</code><br/>⬜ <code>ObjHandler_Ovhd_47_Red_Gumdrop_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Pick-up</summary>⬜ <code>ObjHandler_Ovhd_1A_Pick_up_Pow_x1_Init</code><br/>⬜ <code>ObjHandler_Ovhd_1B_Pick_up_Pow_x4_Init</code><br/>⬜ <code>ObjHandler_Ovhd_1C_Pick_up_Gun_x1_Init</code><br/>⬜ <code>ObjHandler_Ovhd_1D_Pick_up_Gun_x4_Init</code><br/>⬜ <code>ObjHandler_Ovhd_1E_Pick_up_Hover_x1_Init</code><br/>⬜ <code>ObjHandler_Ovhd_1F_Pick_up_Hover_x4_Init</code><br/>⬜ <code>ObjHandler_Ovhd_20_Pick_up_Homing_x20_Init</code><br/>⬜ <code>ObjHandler_Ovhd_21_Pick_up_Lightning_x20_Init</code><br/>⬜ <code>ObjHandler_Ovhd_22_Pick_up_Warheads_x20_Init</code><br/>⬜ <code>ObjHandler_Ovhd_23_Pickup_Main</code></details> | 0 / 10 |
@@ -225,7 +225,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 |---|---|
 | <details><summary>⬜ Boss Room</summary>⬜ <code>ObjHandler_Ovhd_5A_Boss_Room_Delay</code><br/>⬜ <code>ObjHandler_Ovhd_5B_Boss_Room_Palette_Animation</code></details> | 0 / 2 |
 | <details><summary>⬜ Camera; Horizontal</summary>⬜ <code>ObjHandler_Ovhd_3D_Horizontal_Camera_Init</code><br/>⬜ <code>ObjHandler_Ovhd_3E_Horizontal_Camera_Main</code></details> | 0 / 2 |
-| <details><summary>⏳ Camera; Vertical</summary>✅ <code>ObjHandler_Ovhd_3B_Vertical_Camera_Init</code><br/>⬜ <code>ObjHandler_Ovhd_3C_Vertical_Camera_Main</code></details> | 1 / 2 |
+| <details><summary>✅ Camera; Vertical</summary>✅ <code>ObjHandler_Ovhd_3B_Vertical_Camera_Init</code><br/>✅ <code>ObjHandler_Ovhd_3C_Vertical_Camera_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Gumdrop; Red</summary>⬜ <code>ObjHandler_Ovhd_46_Red_Gumdrop_Init</code><br/>⬜ <code>ObjHandler_Ovhd_47_Red_Gumdrop_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Pick-up</summary>⬜ <code>ObjHandler_Ovhd_1A_Pick_up_Pow_x1_Init</code><br/>⬜ <code>ObjHandler_Ovhd_1B_Pick_up_Pow_x4_Init</code><br/>⬜ <code>ObjHandler_Ovhd_1C_Pick_up_Gun_x1_Init</code><br/>⬜ <code>ObjHandler_Ovhd_1D_Pick_up_Gun_x4_Init</code><br/>⬜ <code>ObjHandler_Ovhd_1E_Pick_up_Hover_x1_Init</code><br/>⬜ <code>ObjHandler_Ovhd_1F_Pick_up_Hover_x4_Init</code><br/>⬜ <code>ObjHandler_Ovhd_20_Pick_up_Homing_x20_Init</code><br/>⬜ <code>ObjHandler_Ovhd_21_Pick_up_Lightning_x20_Init</code><br/>⬜ <code>ObjHandler_Ovhd_22_Pick_up_Warheads_x20_Init</code><br/>⬜ <code>ObjHandler_Ovhd_23_Pickup_Main</code></details> | 0 / 10 |
 | <details><summary>⬜ Slider</summary>⬜ <code>ObjHandler_Ovhd_3F_Slider_Init</code><br/>⬜ <code>ObjHandler_Ovhd_40_Slider_Main</code></details> | 0 / 2 |
@@ -354,7 +354,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 | <details><summary>⬜ Boss Room</summary>⬜ <code>ObjHandler_Ovhd_5A_Boss_Room_Delay</code><br/>⬜ <code>ObjHandler_Ovhd_5B_Boss_Room_Palette_Animation</code></details> | 0 / 2 |
 | <details><summary>⬜ Camera; Horizontal</summary>⬜ <code>ObjHandler_Ovhd_3D_Horizontal_Camera_Init</code><br/>⬜ <code>ObjHandler_Ovhd_3E_Horizontal_Camera_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Camera; Rotating</summary>⬜ <code>ObjHandler_Ovhd_2E_Rotating_Camera_Init</code><br/>⬜ <code>ObjHandler_Ovhd_2F_Rotating_Camera_Main</code></details> | 0 / 2 |
-| <details><summary>⏳ Camera; Vertical</summary>✅ <code>ObjHandler_Ovhd_3B_Vertical_Camera_Init</code><br/>⬜ <code>ObjHandler_Ovhd_3C_Vertical_Camera_Main</code></details> | 1 / 2 |
+| <details><summary>✅ Camera; Vertical</summary>✅ <code>ObjHandler_Ovhd_3B_Vertical_Camera_Init</code><br/>✅ <code>ObjHandler_Ovhd_3C_Vertical_Camera_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Flier</summary>⬜ <code>ObjHandler_Ovhd_34_Flier_Main</code></details> | 0 / 1 |
 | <details><summary>⬜ Flier Spawner</summary>⬜ <code>ObjHandler_Ovhd_32_Flier_Spawner_Init</code><br/>⬜ <code>ObjHandler_Ovhd_33_Flier_Spawner_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Gumdrop; Red</summary>⬜ <code>ObjHandler_Ovhd_46_Red_Gumdrop_Init</code><br/>⬜ <code>ObjHandler_Ovhd_47_Red_Gumdrop_Main</code></details> | 0 / 2 |
@@ -382,7 +382,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ✅✅✅✅ | 06 / `object-handlers/turret` |  |
 | ✅✅✅✅ | 06 / `object-handlers/wall-guardian` | `ObjHandler_Tank_91_Wall_Guardian_Main` depends on unverified routines `TankBoss_DamageCheck`, `HitboxScan_LockOn` and 3 more. |
 | ✅✅✅✅ | 07 / `rng` |  |
-| ▫️⬛⬛⬛<br/>`9.4%` | 04 / `object-handlers/camera` | `ObjHandler_Ovhd_3B_Vertical_Camera_Init` depends on unverified routine `OvhdEnemy_Init`. |
+| ⬜◽⬛⬛<br/>`37.5%` | 04 / `object-handlers/camera` | `ObjHandler_Ovhd_3B_Vertical_Camera_Init` and `ObjHandler_Ovhd_3C_Vertical_Camera_Main` depend on unverified routines `OvhdEnemy_Init` and `OvhdEnemy_HandleIncomingDamage`. |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `object-handlers/_ungrouped` |  |
@@ -468,7 +468,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **7** pages, of which **3** are alpha.
 
-_Generated: 2026-09-14 01:59 UTC_
+_Generated: 2026-09-16 13:55 UTC_
 
 ## Pages
 

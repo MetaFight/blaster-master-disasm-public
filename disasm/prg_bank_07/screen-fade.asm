@@ -1,4 +1,4 @@
-.macro MAC_L_CDD0
+.macro MAC_screen_fade
 ; ----------------------------------------------------------------------------
 ; Per-frame palette-wipe animator;
 ; 

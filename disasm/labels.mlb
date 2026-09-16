@@ -1162,20 +1162,30 @@ NesPrgRom:136E0:L_B6E0
 NesPrgRom:136F0:L_B6F0
 NesPrgRom:13708:L_B708
 NesPrgRom:1370C:ObjHandler_Ovhd_3B_Vertical_Camera_Init:ObjType $3B: Vertical Camera - Init.
-NesPrgRom:1370F:_ObjHandler_Ovhd_3B_Vertical_Camera_Init__Body:LDA #$0A = descriptor index A; JSR OvhdEnemy_Init (INC ObjType $3B→$3C); $50=0 (idle)  [+3 body entry]
+NesPrgRom:1370F:_ObjHandler_Ovhd_3B_Vertical_Camera_Init__Body
 NesPrgRom:13711::Init using shared OvhdEnemy_Init with enemy descriptor #$0A.
-NesPrgRom:13716::Reset AttackCounter (Scratch0) to Idle (0).
+NesPrgRom:13716::Reset IsAttacking (Scratch0) to Idle (0).
 NesPrgRom:13718:_ObjHandler_Ovhd_3B_Vertical_Camera_Init__Done
-NesPrgRom:13719:L_B719
-NesPrgRom:1371C:L_B71C
-NesPrgRom:1373C:L_B73C
-NesPrgRom:1373E:L_B73E
-NesPrgRom:13740:L_B740
-NesPrgRom:13747:L_B747
-NesPrgRom:13757:L_B757
-NesPrgRom:1376A:L_B76A
-NesPrgRom:1377D:L_B77D
-NesPrgRom:1377E:L_B77E
+NesPrgRom:13719:ObjHandler_Ovhd_3C_Vertical_Camera_Main:ObjType $3C: Vertical Camera - Main
+NesPrgRom:1371C:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Body:Start by setting collision box.
+NesPrgRom:13726::If already attacking, skip to Move.
+NesPrgRom:13728::Otherwise, calculate X Delta to the Player.
+NesPrgRom:1372B::If not 0, skip to ScreenTest.
+NesPrgRom:1372D::Otherwise, start attack by setting IsAttacking (Scratch0) to 1 (true) and clearing Velocity_X.
+NesPrgRom:13736::Next, pick Velocity_Y based on sign of Y Delta to Player.
+NesPrgRom:13738::Velocity_Y = +3.5 px/f (down).
+NesPrgRom:1373C:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__DirUp:Velocity_Y = -3.5 px/f (up).
+NesPrgRom:1373E:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__SetVel:Commit chosen attack direction.
+NesPrgRom:13740:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Move:Apply movement and collisions.
+NesPrgRom:13743::If no collisions, skip to ScreenTest.
+NesPrgRom:13745::On collision, unset IsAttacking (Scratch0) and fall through to ScreenTest.
+NesPrgRom:13747:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__ScreenTest
+NesPrgRom:1374F::Set object bounds and do the screen test.
+NesPrgRom:13752::if off-screen then tombstone, otherwise skip to OnScreen.
+NesPrgRom:13757:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__OnScreen:Handle incoming damage (using enemy descriptor #$0A), then\nDraw animated sprite (unless occluded by foreground tile, in which case only draw every 4th frame to create a flicker).
+NesPrgRom:1376A:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Draw:Set OAM Attributes to sprite palette 1,\nPick animation MetaSprite Id based on Global_FrameCounter (each animation frame last 16 draw frames),\nRender selected MetaSprite.
+NesPrgRom:1377D:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Ret
+NesPrgRom:1377E:Camera_MetaSpriteId_ByFrame:Table of 4 MetaSprite Ids used to animate both Vertical and Horizontal Cameras.
 NesPrgRom:13782:L_B782
 NesPrgRom:13785:L_B785
 NesPrgRom:1378E:L_B78E
@@ -2587,7 +2597,7 @@ NesPrgRom:1AAEE:_ObjHandler_Tank_67_Turret_Main__Render:Update Facing based on S
 NesPrgRom:1AAF5::Convert the heading to a lookup table index,
 NesPrgRom:1AAFB::set the OAM attributes,
 NesPrgRom:1AB00::and fetch the MetaSprite Id before calling the shared MetaSprite_Render.
-NesPrgRom:1AB03:TankTurret_SpriteByAngle:Turret render table.  8 interleaved [metaspriteId, attr] pairs.
+NesPrgRom:1AB03:TankTurret_SpriteByAngle:Turret render table.  8 [metaspriteId, attr] pairs.
 NesPrgRom:1AB13:L_AB13
 NesPrgRom:1AB16:L_AB16
 NesPrgRom:1AB23:L_AB23

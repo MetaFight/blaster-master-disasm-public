@@ -1,4 +1,4 @@
-.macro MAC_L_BA88
+.macro MAC_object_handlers__wall_guardian
 ; ----------------------------------------------------------------------------
 ; ObjType $90: Wall Guardian - Init.
 ObjHandler_Tank_90_Wall_Guardian_Init:

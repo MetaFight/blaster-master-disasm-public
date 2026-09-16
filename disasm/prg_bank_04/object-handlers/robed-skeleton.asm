@@ -1,4 +1,4 @@
-.macro MAC_L_B9EE
+.macro MAC_object_handlers__robed_skeleton_1_of_2
 ; ----------------------------------------------------------------------------
 L_B9EE: jmp     L_BA00                          ; B9EE
 
@@ -133,7 +133,7 @@ L_BAD3: jsr     L_93BD                          ; BAD3
 
 .endmacro
 
-.macro MAC_L_BAE7
+.macro MAC_object_handlers__robed_skeleton_2_of_2
 ; ----------------------------------------------------------------------------
 L_BAE7: lda     #$02                            ; BAE7
         sta     $44                             ; BAE9

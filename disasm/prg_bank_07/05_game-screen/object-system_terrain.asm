@@ -1,4 +1,4 @@
-.macro MAC_L_CEC6
+.macro MAC_05_game_screen__object_system_terrain
 ; ----------------------------------------------------------------------------
 L_CEC6: ldx     LoadedObj + Obj::TileIndex      ; CEC6
         sta     LevelTileData,x                 ; CEC8

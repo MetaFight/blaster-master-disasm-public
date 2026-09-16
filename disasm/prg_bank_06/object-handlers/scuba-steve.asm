@@ -1,4 +1,4 @@
-.macro MAC_L_B494
+.macro MAC_object_handlers__scuba_steve
 ; ----------------------------------------------------------------------------
 L_B494: jmp     L_B4A2                          ; B494
 

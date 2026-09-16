@@ -1,4 +1,4 @@
-.macro MAC_L_BE54
+.macro MAC_object_handlers__zombie_head
 ; ----------------------------------------------------------------------------
 L_BE54: jmp     L_BE60                          ; BE54
 

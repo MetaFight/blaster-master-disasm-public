@@ -1,4 +1,4 @@
-.macro MAC_L_CDBA
+.macro MAC_sound_1_of_2
 ; ----------------------------------------------------------------------------
 L_CDBA: jsr     L_DEC2                          ; CDBA
         lda     $14                             ; CDBD
@@ -11,7 +11,7 @@ L_CDBA: jsr     L_DEC2                          ; CDBA
 L_CDC8: .byte   $06,$04,$02,$13,$07,$05,$37,$2B ; CDC8
 .endmacro
 
-.macro MAC_L_DEC2
+.macro MAC_sound_2_of_2
 ; ----------------------------------------------------------------------------
 L_DEC2: jsr     L_DF05                          ; DEC2
         jsr     LBFE5                           ; DEC5

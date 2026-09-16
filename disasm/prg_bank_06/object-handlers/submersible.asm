@@ -1,4 +1,4 @@
-.macro MAC_L_B62F
+.macro MAC_object_handlers__submersible
 ; ----------------------------------------------------------------------------
 L_B62F: jmp     L_B63B                          ; B62F
 

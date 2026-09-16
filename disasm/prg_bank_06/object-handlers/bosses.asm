@@ -1,4 +1,4 @@
-.macro MAC_L_BBA7
+.macro MAC_object_handlers__bosses
 ; ----------------------------------------------------------------------------
 ; Initialise boss from tank section boss table.
 TankBoss_InitFromTableEntry:

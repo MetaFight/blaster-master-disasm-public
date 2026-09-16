@@ -1,4 +1,4 @@
-.macro MAC_L_B91A
+.macro MAC_object_handlers__bullet_red
 ; ----------------------------------------------------------------------------
 L_B91A: jmp     L_B949                          ; B91A
 
@@ -155,7 +155,7 @@ _ObjHandler_Tank_8E_Red_Bullet_Main__Render:
         lsr     a                               ; B9F5
         lsr     a                               ; B9F6
         and     #$01                            ; B9F7
-        ora     LBA71,x                         ; B9F9
+        ora     RedBullet_Walking_RenderParamLookup+1,x; B9F9
         jmp     MetaSprite_Render               ; B9FC
 
 ; ----------------------------------------------------------------------------
@@ -240,7 +240,7 @@ _ObjHandler_Tank_8F_Red_Bullet_Attacking__Render:
         tax                                     ; BA64
         lda     RedBullet_Attacking_RenderParamLookup,x; BA65
         sta     $44                             ; BA68
-        lda     LBA81,x                         ; BA6A
+        lda     RedBullet_Attacking_RenderParamLookup+1,x; BA6A
         jmp     MetaSprite_Render               ; BA6D
 
 ; ----------------------------------------------------------------------------

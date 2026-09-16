@@ -1,4 +1,4 @@
-.macro MAC_L_A4DE
+.macro MAC_object_handlers__bullet_gray_1_of_2
 ; ----------------------------------------------------------------------------
 L_A4DE: jmp     L_A50D                          ; A4DE
 
@@ -184,7 +184,7 @@ _ObjHandler_Tank_59_Gray_Bullet_Main__Render:
         and     #$01                            ; A5B9
 ; Look up the current orientation's base Metasprite Id and OR it with the frame index, then call
 ; MetaSprite_Render.
-        ora     LA6C0,x                         ; A5BB
+        ora     GrayBullet_Walking_RenderParamLookup+1,x; A5BB
         jmp     MetaSprite_Render               ; A5BE
 
 ; ----------------------------------------------------------------------------
@@ -283,12 +283,12 @@ _ObjHandler_Tank_5A_Gray_Bullet_Attacking__Render:
         lda     GrayBullet_Attacking_RenderParamLookup,x; A627
         ora     #$01                            ; A62A
         sta     $44                             ; A62C
-        lda     LA6D0,x                         ; A62E
+        lda     GrayBullet_Attacking_RenderParamLookup+1,x; A62E
         jmp     MetaSprite_Render               ; A631
 
 .endmacro
 
-.macro MAC_L_A6BF
+.macro MAC_object_handlers__bullet_gray_2_of_2
 ; ----------------------------------------------------------------------------
 ; Gray Bullet, walking phase, rendering parameters per-orientation.
 GrayBullet_Walking_RenderParamLookup:

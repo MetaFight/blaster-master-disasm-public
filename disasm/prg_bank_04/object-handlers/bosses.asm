@@ -1,4 +1,4 @@
-.macro MAC_L_96F1
+.macro MAC_object_handlers__bosses_1_of_6
 ; ----------------------------------------------------------------------------
 L_96F1: nop                                     ; 96F1
         nop                                     ; 96F2
@@ -2266,7 +2266,7 @@ L_A730: jsr     LC1B3                           ; A730
 
 .endmacro
 
-.macro MAC_L_A74E
+.macro MAC_object_handlers__bosses_2_of_6
 ; ----------------------------------------------------------------------------
 L_A74E: lda     LoadedObj + Obj::Scratch1       ; A74E
         bne     L_A760                          ; A750
@@ -2965,7 +2965,7 @@ L_AC3D: lda     #$02                            ; AC3D
 
 .endmacro
 
-.macro MAC_L_AC54
+.macro MAC_object_handlers__bosses_3_of_6
 ; ----------------------------------------------------------------------------
 L_AC54: .byte   $5A,$5B,$5C,$5D                 ; AC54
 ; ----------------------------------------------------------------------------
@@ -3164,7 +3164,7 @@ L_AD90: lda     #$03                            ; AD90
 
 .endmacro
 
-.macro MAC_L_ADA2
+.macro MAC_object_handlers__bosses_4_of_6
 ; ----------------------------------------------------------------------------
 L_ADA2: lda     #$30                            ; ADA2
         sta     $40                             ; ADA4
@@ -3253,7 +3253,7 @@ L_AE3A: clc                                     ; AE3A
 
 .endmacro
 
-.macro MAC_L_AE5A
+.macro MAC_object_handlers__bosses_5_of_6
 ; ----------------------------------------------------------------------------
 L_AE5A: lda     $0671                           ; AE5A
         asl     a                               ; AE5D
@@ -3385,6 +3385,6 @@ L_AF43: pla                                     ; AF43
 
 .endmacro
 
-.macro MAC_L_BF8A
+.macro MAC_object_handlers__bosses_6_of_6
 .endmacro
 

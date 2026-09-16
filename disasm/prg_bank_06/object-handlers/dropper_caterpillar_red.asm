@@ -1,4 +1,4 @@
-.macro MAC_L_A6D7
+.macro MAC_object_handlers__dropper_caterpillar_red
 ; ----------------------------------------------------------------------------
 L_A6D7: jmp     L_A6E3                          ; A6D7
 

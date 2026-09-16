@@ -1,4 +1,4 @@
-.macro MAC_L_BC21
+.macro MAC_bank_tail
 ; ----------------------------------------------------------------------------
 L_BC1F: .byte   $B0,$40                         ; BC1F
 L_BC21: .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BC21

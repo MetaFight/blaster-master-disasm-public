@@ -1,4 +1,4 @@
-.macro MAC_L_8F54
+.macro MAC_object_handlers__projectiles_and_ballistics_1_of_9
 ; ----------------------------------------------------------------------------
 L_8F54: jmp     L_8F96                          ; 8F54
 
@@ -22,13 +22,13 @@ L_8F69: jsr     L_8E95                          ; 8F69
 
 .endmacro
 
-.macro MAC_L_8F97
+.macro MAC_object_handlers__projectiles_and_ballistics_2_of_9
 ; ----------------------------------------------------------------------------
 L_8F97: jmp     LC114                           ; 8F97
 
 .endmacro
 
-.macro MAC_L_8F9F
+.macro MAC_object_handlers__projectiles_and_ballistics_3_of_9
 ; ----------------------------------------------------------------------------
 L_8F9F: jmp     L_8FB8                          ; 8F9F
 
@@ -77,7 +77,7 @@ L_8FF0: jmp     LC117                           ; 8FF0
 
 .endmacro
 
-.macro MAC_L_9011
+.macro MAC_object_handlers__projectiles_and_ballistics_4_of_9
 ; ----------------------------------------------------------------------------
 L_9011: jmp     L_903A                          ; 9011
 
@@ -368,7 +368,7 @@ L_91EF: jmp     LC117                           ; 91EF
 
 .endmacro
 
-.macro MAC_L_920B
+.macro MAC_object_handlers__projectiles_and_ballistics_5_of_9
 ; ----------------------------------------------------------------------------
 L_920B: jmp     L_9236                          ; 920B
 
@@ -396,7 +396,7 @@ L_9236: rts                                     ; 9236
 
 .endmacro
 
-.macro MAC_L_923C
+.macro MAC_object_handlers__projectiles_and_ballistics_6_of_9
 ; ----------------------------------------------------------------------------
 L_923C: jmp     L_926E                          ; 923C
 
@@ -461,7 +461,7 @@ L_92A3: lda     #$11                            ; 92A3
 
 .endmacro
 
-.macro MAC_L_AF45
+.macro MAC_object_handlers__projectiles_and_ballistics_7_of_9
 ; ----------------------------------------------------------------------------
 L_AF45: jmp     L_AF66                          ; AF45
 
@@ -784,7 +784,7 @@ L_B15B: lda     #$08                            ; B15B
 
 .endmacro
 
-.macro MAC_L_BBC2
+.macro MAC_object_handlers__projectiles_and_ballistics_8_of_9
 ; ----------------------------------------------------------------------------
 L_BBC2: jmp     L_BBE2                          ; BBC2
 
@@ -851,7 +851,7 @@ L_BC27: rts                                     ; BC27
 
 .endmacro
 
-.macro MAC_L_BC65
+.macro MAC_object_handlers__projectiles_and_ballistics_9_of_9
 ; ----------------------------------------------------------------------------
 L_BC65: jmp     L_BC83                          ; BC65
 

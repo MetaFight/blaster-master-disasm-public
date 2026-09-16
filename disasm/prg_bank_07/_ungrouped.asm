@@ -1,4 +1,4 @@
-.macro MAC_L_C438
+.macro MAC__ungrouped_1_of_23
 ; ----------------------------------------------------------------------------
 L_C438: lda     $F4                             ; C438
         and     #$80                            ; C43A
@@ -23,7 +23,7 @@ L_C458: lda     #$FF                            ; C458
 
 .endmacro
 
-.macro MAC_L_C465
+.macro MAC__ungrouped_2_of_23
 ; ----------------------------------------------------------------------------
 L_C465: lda     #$00                            ; C465
         sta     ObjectSlot_Offset               ; C467
@@ -168,7 +168,7 @@ L_C55A: jmp     L_C29E                          ; C55A
 
 .endmacro
 
-.macro MAC_L_C56D
+.macro MAC__ungrouped_3_of_23
 ; ----------------------------------------------------------------------------
 L_C56D: jsr     L_DEC2                          ; C56D
         lda     #$00                            ; C570
@@ -201,7 +201,7 @@ LC5A3:  .byte   $5A,$09,$75,$0E,$06,$37,$5D,$18 ; C5A3
         .byte   $1B,$59,$09,$4A,$40,$59,$2A     ; C5AB
 .endmacro
 
-.macro MAC_L_C642
+.macro MAC__ungrouped_4_of_23
 ; ----------------------------------------------------------------------------
 L_C642: lda     $10                             ; C642
         and     #$07                            ; C644
@@ -377,7 +377,7 @@ L_C7BA: iny                                     ; C7BA
 
 .endmacro
 
-.macro MAC_L_C7C7
+.macro MAC__ungrouped_5_of_23
 ; ----------------------------------------------------------------------------
 L_C7C7: tya                                     ; C7C7
         eor     #$01                            ; C7C8
@@ -418,7 +418,7 @@ LC806:  .byte   $10,$80,$01,$5C,$00,$08,$01,$5D ; C806
         .byte   $00,$38,$00,$5E,$00,$08,$10,$5F ; C80E
 .endmacro
 
-.macro MAC_L_C9D6
+.macro MAC__ungrouped_6_of_23
 ; ----------------------------------------------------------------------------
 L_C9D6: lda     #$00                            ; C9D6
         sta     ObjectSlot_Offset               ; C9D8
@@ -634,7 +634,7 @@ _Clear_ThingSpawnHistory__Loop:
 
 .endmacro
 
-.macro MAC_L_CE55
+.macro MAC__ungrouped_7_of_23
 ; ----------------------------------------------------------------------------
 L_CE55: lda     $45                             ; CE55
         pha                                     ; CE57
@@ -705,7 +705,7 @@ L_CEB4: inx                                     ; CEB4
 
 .endmacro
 
-.macro MAC_L_D02D
+.macro MAC__ungrouped_8_of_23
 ; ----------------------------------------------------------------------------
 L_D02D: lda     #$00                            ; D02D
         sta     $04                             ; D02F
@@ -857,7 +857,7 @@ L_D184: sta     Background_Palettes + BgPalette::Backdrop,x ; D184
 
 .endmacro
 
-.macro MAC_L_D1EF
+.macro MAC__ungrouped_9_of_23
 ; ----------------------------------------------------------------------------
 L_D1EF: sta     $B7                             ; D1EF
         lda     $15                             ; D1F1
@@ -988,7 +988,7 @@ L_D2A8: lda     #$00                            ; D2A8
 
 .endmacro
 
-.macro MAC_L_D65E
+.macro MAC__ungrouped_10_of_23
 ; ----------------------------------------------------------------------------
 L_D65E: .byte   $00,$00,$01,$01,$01,$00,$FF,$FF ; D65E
         .byte   $FF                             ; D666
@@ -1109,7 +1109,7 @@ L_D71E: rts                                     ; D71E
 
 .endmacro
 
-.macro MAC_L_D763
+.macro MAC__ungrouped_11_of_23
 ; ----------------------------------------------------------------------------
 L_D763: jsr     L_D697                          ; D763
         bne     L_D76F                          ; D766
@@ -1177,7 +1177,7 @@ L_D7BA: sta     $7C,x                           ; D7BA
 
 .endmacro
 
-.macro MAC_L_D883
+.macro MAC__ungrouped_12_of_23
 ; ----------------------------------------------------------------------------
 L_D883: lda     #$00                            ; D883
         sta     $93                             ; D885
@@ -1255,7 +1255,7 @@ L_D907: rts                                     ; D907
 
 .endmacro
 
-.macro MAC_L_DCFC
+.macro MAC__ungrouped_13_of_23
 ; ----------------------------------------------------------------------------
 L_DCFC: lda     #$01                            ; DCFC
         sta     $39                             ; DCFE
@@ -1372,7 +1372,7 @@ LDE56:  .byte   $7D,$4B,$2D,$0B,$5D,$07,$6D,$39 ; DE56
         .byte   $6B,$69,$77,$29                 ; DEBE
 .endmacro
 
-.macro MAC_L_DF05
+.macro MAC__ungrouped_14_of_23
 ; ----------------------------------------------------------------------------
 L_DF05: lda     #$05                            ; DF05
         jmp     BankSave_Switch                 ; DF07
@@ -1383,7 +1383,7 @@ L_DF0A: lda     SavedPrgBank                    ; DF0A
 
 .endmacro
 
-.macro MAC_L_E060
+.macro MAC__ungrouped_15_of_23
 ; ----------------------------------------------------------------------------
 L_E060: lsr     a                               ; E060
         dex                                     ; E061
@@ -1405,7 +1405,7 @@ L_E06A: cmp     #$80                            ; E06A
 
 .endmacro
 
-.macro MAC_L_E6BE
+.macro MAC__ungrouped_16_of_23
 ; ----------------------------------------------------------------------------
 ; Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by
 ; OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA OAM_Flag__HARDCODED_00 /
@@ -1417,7 +1417,7 @@ OAM_Flag__HARDCODED_00:
         .byte   $00                             ; E6BE
 .endmacro
 
-.macro MAC_L_E6DE
+.macro MAC__ungrouped_17_of_23
 ; ----------------------------------------------------------------------------
 L_E6DE: jmp     L_E6DE                          ; E6DE
 
@@ -1429,7 +1429,7 @@ LE6E5:  .byte   $10                             ; E6E5
 LE6E6:  .byte   $20,$40,$80                     ; E6E6
 .endmacro
 
-.macro MAC_L_E6FA
+.macro MAC__ungrouped_18_of_23
 ; ----------------------------------------------------------------------------
 L_E6FA: lda     #$0F                            ; E6FA
         ldx     #$1F                            ; E6FC
@@ -1535,7 +1535,7 @@ L_E796: rts                                     ; E796
 
 .endmacro
 
-.macro MAC_L_EA3A
+.macro MAC__ungrouped_19_of_23
 ; ----------------------------------------------------------------------------
 ; Helper routine to switch PRG banks.  This variant hardcodes X (IndirectPtrLo) to #$7A.
 ; 
@@ -1580,7 +1580,7 @@ BankDispatch_Switch_NoX:
 
 .endmacro
 
-.macro MAC_L_EA63
+.macro MAC__ungrouped_20_of_23
 ; ----------------------------------------------------------------------------
 L_EA63: lda     (IndirectPtrLo),y               ; EA63
         pha                                     ; EA65
@@ -1593,7 +1593,7 @@ L_EA63: lda     (IndirectPtrLo),y               ; EA63
 
 .endmacro
 
-.macro MAC_L_EB44
+.macro MAC__ungrouped_21_of_23
 ; ----------------------------------------------------------------------------
 L_EB44: tya                                     ; EB44
         clc                                     ; EB45
@@ -1620,7 +1620,7 @@ L_EB57: lda     (IndirectPtrLo),y               ; EB57
 
 .endmacro
 
-.macro MAC_L_EBF4
+.macro MAC__ungrouped_22_of_23
 L_EBF4: .byte   $00,$01,$02,$03,$04,$05,$06,$07 ; EBF4
         .byte   $08,$09,$0A,$0B,$0C,$0F,$0F,$0F ; EBFC
         .byte   $10,$11,$12,$13,$14,$15,$16,$17 ; EC04
@@ -1631,7 +1631,7 @@ L_EBF4: .byte   $00,$01,$02,$03,$04,$05,$06,$07 ; EBF4
         .byte   $38,$39,$3A,$3B,$3C,$3D,$3E,$0F ; EC2C
 .endmacro
 
-.macro MAC_L_EF2B
+.macro MAC__ungrouped_23_of_23
 ; ----------------------------------------------------------------------------
 ; Computes the object's on-screen visibility and offsets the provided X/Y screen coordinates to
 ; the top-left corner of their OAM object (See ScreenPos_Adjust).

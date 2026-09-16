@@ -1,4 +1,4 @@
-.macro MAC_L_9D3B
+.macro MAC_object_handlers__auto_gates_and_locks
 ; ----------------------------------------------------------------------------
 ; ObjTypes $24, $26, and $28: Auto Gate - Init.
 ; +0 entrypoint is just 3 NOPs, so both entrypoints do the same things.

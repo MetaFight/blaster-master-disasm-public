@@ -1,4 +1,4 @@
-.macro MAC_L_ABCF
+.macro MAC_object_handlers__flying_ship
 ; ----------------------------------------------------------------------------
 L_ABCF: jmp     L_ABEB                          ; ABCF
 

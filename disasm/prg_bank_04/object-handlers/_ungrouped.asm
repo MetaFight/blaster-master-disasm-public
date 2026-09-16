@@ -1,4 +1,4 @@
-.macro MAC_L_8AF1
+.macro MAC_object_handlers___ungrouped
 ; ----------------------------------------------------------------------------
 L_8AF1: jmp     L_8B28                          ; 8AF1
 

@@ -1,4 +1,4 @@
-.macro MAC_L_A7CB
+.macro MAC_object_handlers__hopper_6hp
 ; ----------------------------------------------------------------------------
 ; ObjType $5F: Gray Hopper (6 HP) - Init.
 ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:

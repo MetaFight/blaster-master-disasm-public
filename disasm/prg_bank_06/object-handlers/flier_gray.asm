@@ -1,4 +1,4 @@
-.macro MAC_L_B29B
+.macro MAC_object_handlers__flier_gray
 ; ----------------------------------------------------------------------------
 ; ObjType $50: Gray Flier Spawner - Init
 ObjHandler_Tank_50_Gray_Flier_Spawner_Init:

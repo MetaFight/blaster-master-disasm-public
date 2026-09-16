@@ -1,4 +1,4 @@
-.macro MAC_L_C24F
+.macro MAC_00_title_screen_1_of_3
 ; ----------------------------------------------------------------------------
 L_C24F: lda     #$00                            ; C24F
         sta     SavedPrgBank                    ; C251
@@ -61,7 +61,7 @@ L_C2BC: lda     #$08                            ; C2BC
 
 .endmacro
 
-.macro MAC_L_F45D
+.macro MAC_00_title_screen_2_of_3
 ; ----------------------------------------------------------------------------
 L_F45D: jsr     L_F547                          ; F45D
         bne     L_F464                          ; F460
@@ -70,7 +70,7 @@ L_F464: rts                                     ; F464
 
 .endmacro
 
-.macro MAC_L_F547
+.macro MAC_00_title_screen_3_of_3
 ; ----------------------------------------------------------------------------
 L_F547: lda     #$80                            ; F547
         sta     $01                             ; F549

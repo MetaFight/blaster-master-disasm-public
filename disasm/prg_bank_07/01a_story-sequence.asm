@@ -1,4 +1,4 @@
-.macro MAC_L_E309
+.macro MAC_01a_story_sequence
 ; ----------------------------------------------------------------------------
 L_E309: lda     #$54                            ; E309
         jsr     Enqueue_Sound_Command           ; E30B

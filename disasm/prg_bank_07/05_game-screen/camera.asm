@@ -1,4 +1,4 @@
-.macro MAC_L_CBB4
+.macro MAC_05_game_screen__camera
 ; ----------------------------------------------------------------------------
 L_CBB4: lda     $1D                             ; CBB4
         sta     L0000                           ; CBB6

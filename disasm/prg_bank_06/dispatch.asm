@@ -1,4 +1,4 @@
-.macro MAC_L_8000
+.macro MAC_dispatch
 ; Bank-06 (tank) top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 +
 ; nibble×2) to seed IndirectPtr ($7A/$7B). 1 LE16 entry: [0]=$8002 ObjDispatch_Table_Bk06. Only
 ; nibble 0 is ever used in this bank, and the word points at the immediately following byte, so

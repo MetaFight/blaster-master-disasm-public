@@ -1,4 +1,4 @@
-.macro MAC_L_95CF
+.macro MAC_object_handlers__pickups
 ; ----------------------------------------------------------------------------
 L_95CF: nop                                     ; 95CF
         nop                                     ; 95D0

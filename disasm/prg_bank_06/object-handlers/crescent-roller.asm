@@ -1,4 +1,4 @@
-.macro MAC_L_B6E4
+.macro MAC_object_handlers__crescent_roller
 ; ----------------------------------------------------------------------------
 L_B6E4: jmp     L_B6F3                          ; B6E4
 

@@ -1,4 +1,4 @@
-.macro MAC_L_B16E
+.macro MAC_object_handlers__hopper_10hp
 ; ----------------------------------------------------------------------------
 ; ObjType $7A: Gray Hopper (10 HP) - Init.
 ObjHandler_Tank_7A_Gray_Hopper_10HP_Init:

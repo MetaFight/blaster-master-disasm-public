@@ -1,4 +1,4 @@
-.macro MAC_L_C3D5
+.macro MAC_05_game_screen__game_loop_1_of_2
 ; ----------------------------------------------------------------------------
 L_C3D5: jsr     WaitNMI                         ; C3D5
         jsr     L_C971                          ; C3D8
@@ -46,7 +46,7 @@ L_C430: bit     LFFF3                           ; C430
 
 .endmacro
 
-.macro MAC_L_C45F
+.macro MAC_05_game_screen__game_loop_2_of_2
 ; ----------------------------------------------------------------------------
 L_C45F: jsr     L_D1EF                          ; C45F
         jmp     L_C3D5                          ; C462

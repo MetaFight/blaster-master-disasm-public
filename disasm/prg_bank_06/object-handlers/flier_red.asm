@@ -1,4 +1,4 @@
-.macro MAC_L_B1FF
+.macro MAC_object_handlers__flier_red
 ; ----------------------------------------------------------------------------
 L_B1FF: jmp     L_B20B                          ; B1FF
 

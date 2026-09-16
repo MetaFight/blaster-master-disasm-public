@@ -1,4 +1,4 @@
-.macro MAC_L_B076
+.macro MAC_object_handlers__orb_kamikaze
 ; ----------------------------------------------------------------------------
 L_B076: jmp     L_B094                          ; B076
 

@@ -1,4 +1,4 @@
-.macro MAC_L_AF3A
+.macro MAC_object_handlers__flying_bomber_caterpillar_red
 ; ----------------------------------------------------------------------------
 L_AF3A: jmp     L_AF60                          ; AF3A
 

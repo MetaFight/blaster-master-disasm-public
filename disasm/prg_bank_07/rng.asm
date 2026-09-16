@@ -1,4 +1,4 @@
-.macro MAC_L_EB71
+.macro MAC_rng
 ; ----------------------------------------------------------------------------
 ; Steps the pseudo-random number generator state RNG_State ($13) by one 8-bit LCG step and returns
 ; the new byte in A ($13 := $13×5 − 1). Full period 256, so the returned byte's individual bits

@@ -1,4 +1,4 @@
-.macro MAC_L_A670
+.macro MAC_object_handlers__bullet_common
 ; ----------------------------------------------------------------------------
 ; (alpha: not fully human-verified / pending re-verification) Applies movement and collision. 
 ; Then uses collision flags to see if an edge-wrap is required.

@@ -1,4 +1,4 @@
-.macro MAC_L_B5A7
+.macro MAC_object_handlers__charging_robot
 ; ----------------------------------------------------------------------------
 L_B5A7: jmp     L_B5EF                          ; B5A7
 

@@ -1,4 +1,4 @@
-.macro MAC_L_B832
+.macro MAC_object_handlers__bomb_canister
 ; ----------------------------------------------------------------------------
 L_B832: jmp     L_B842                          ; B832
 

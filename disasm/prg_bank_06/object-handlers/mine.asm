@@ -1,4 +1,4 @@
-.macro MAC_L_A9CB
+.macro MAC_object_handlers__mine
 ; ----------------------------------------------------------------------------
 ; ObjType $64: Mine - Init.
 ObjHandler_Tank_64_Mine_Init:

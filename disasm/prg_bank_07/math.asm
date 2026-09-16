@@ -1,4 +1,4 @@
-.macro MAC_L_CF10
+.macro MAC_math_1_of_5
 ; ----------------------------------------------------------------------------
 L_CF10: clc                                     ; CF10
         adc     #$40                            ; CF11
@@ -97,7 +97,7 @@ L_CFEC: .byte   $00,$02,$04,$06,$08,$0A,$0C,$0E ; CFEC
         .byte   $50                             ; D02C
 .endmacro
 
-.macro MAC_L_E16B
+.macro MAC_math_2_of_5
 ; ----------------------------------------------------------------------------
 L_E16B: ldx     #$08                            ; E16B
         lda     #$00                            ; E16D
@@ -201,7 +201,7 @@ L_E1B7: jsr     Trig_SinByAngle                 ; E1B7
 
 .endmacro
 
-.macro MAC_L_E1D2
+.macro MAC_math_3_of_5
 ; ----------------------------------------------------------------------------
 ; Cosine of the angle in A.
 ; Implemented as the sine of (A + $40)
@@ -301,7 +301,7 @@ L_E202: .byte   $00,$03,$06,$09,$0C,$10,$13,$16 ; E202
         .byte   $7F                             ; E242
 .endmacro
 
-.macro MAC_L_EAE9
+.macro MAC_math_4_of_5
 ; ----------------------------------------------------------------------------
 L_EAE9: sta     $45                             ; EAE9
         cmp     #$63                            ; EAEB
@@ -338,7 +338,7 @@ L_EB13: rts                                     ; EB13
 
 .endmacro
 
-.macro MAC_L_EB2B
+.macro MAC_math_5_of_5
 ; ----------------------------------------------------------------------------
 L_EB2B: beq     L_EB36                          ; EB2B
         bpl     L_EB33                          ; EB2D

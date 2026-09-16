@@ -1,4 +1,4 @@
-.macro MAC_L_ACFB
+.macro MAC_object_handlers__swooping_sphere
 ; ----------------------------------------------------------------------------
 L_ACFB: jmp     L_AD07                          ; ACFB
 

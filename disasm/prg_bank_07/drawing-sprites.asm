@@ -1,4 +1,4 @@
-.macro MAC_L_ECB4
+.macro MAC_drawing_sprites
 ; ----------------------------------------------------------------------------
 ; Stages one sprite into the OAM staging buffer (OAM_Staging_Buffer) at the current offset
 ; (OAM_Staging_Buffer_TailPos), advancing the offset by 4.

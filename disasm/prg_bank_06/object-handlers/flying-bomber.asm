@@ -1,4 +1,4 @@
-.macro MAC_L_AC3C
+.macro MAC_object_handlers__flying_bomber
 ; ----------------------------------------------------------------------------
 ; ObjType $6C: Flying Bomber - Init.
 ObjHandler_Tank_6C_Flying_Bomber_Init:

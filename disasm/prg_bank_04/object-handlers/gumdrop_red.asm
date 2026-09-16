@@ -1,4 +1,4 @@
-.macro MAC_L_BEEF
+.macro MAC_object_handlers__gumdrop_red
 ; ----------------------------------------------------------------------------
 L_BEEF: jmp     L_BEF7                          ; BEEF
 

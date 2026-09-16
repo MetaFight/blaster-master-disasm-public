@@ -1,4 +1,4 @@
-.macro MAC_L_B446
+.macro MAC_object_handlers__gumdrop_gray
 ; ----------------------------------------------------------------------------
 L_B446: jmp     L_B44E                          ; B446
 

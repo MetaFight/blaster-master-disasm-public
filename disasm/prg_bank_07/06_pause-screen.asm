@@ -1,4 +1,4 @@
-.macro MAC_L_C55D
+.macro MAC_06_pause_screen_1_of_2
 ; ----------------------------------------------------------------------------
 L_C55D: lda     #$00                            ; C55D
         jsr     BankSave_Switch                 ; C55F
@@ -9,7 +9,7 @@ L_C55D: lda     #$00                            ; C55D
 
 .endmacro
 
-.macro MAC_L_F833
+.macro MAC_06_pause_screen_2_of_2
 ; ----------------------------------------------------------------------------
 L_F833: lda     #$10                            ; F833
         sta     $D4                             ; F835

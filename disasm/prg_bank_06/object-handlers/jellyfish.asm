@@ -1,4 +1,4 @@
-.macro MAC_L_B3E3
+.macro MAC_object_handlers__jellyfish
 ; ----------------------------------------------------------------------------
 ; ObjType $80: Jellyfish - init.
 ObjHandler_Tank_80_Jellyfish_Init:

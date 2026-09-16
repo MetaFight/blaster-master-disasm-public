@@ -1,4 +1,4 @@
-.macro MAC_L_E697
+.macro MAC_hardware_1_of_7
 ; ----------------------------------------------------------------------------
 ; Uploads the $0200 sprite page to PPU OAM. 
 ; If the mode flag OAM_Flag__HARDCODED_00 is 0, triggers a full 256-byte sprite DMA via $4014
@@ -36,7 +36,7 @@ _DEAD_OAM_Copy_To_PPU__ManualLoop:
 
 .endmacro
 
-.macro MAC_L_E6BF
+.macro MAC_hardware_2_of_7
 ; ----------------------------------------------------------------------------
 L_E6BF: lda     $FF                             ; E6BF
         and     #$FE                            ; E6C1
@@ -55,7 +55,7 @@ L_E6BF: lda     $FF                             ; E6BF
 
 .endmacro
 
-.macro MAC_L_E6E9
+.macro MAC_hardware_3_of_7
 ; ----------------------------------------------------------------------------
 L_E6E9: lda     $FE                             ; E6E9
         ora     #$1E                            ; E6EB
@@ -71,7 +71,7 @@ L_E6F0: lda     $FE                             ; E6F0
 
 .endmacro
 
-.macro MAC_L_E797
+.macro MAC_hardware_4_of_7
 ; ----------------------------------------------------------------------------
 L_E797: lda     $01                             ; E797
         pha                                     ; E799
@@ -245,7 +245,7 @@ PPU_SetAddressIncrementTo_32:
 
 .endmacro
 
-.macro MAC_L_EA03
+.macro MAC_hardware_5_of_7
 ; ----------------------------------------------------------------------------
 L_EA03: jsr     L_E6FA                          ; EA03
         jsr     L_E6F0                          ; EA06
@@ -276,7 +276,7 @@ L_EA30: sta     $2007                           ; EA30
 
 .endmacro
 
-.macro MAC_L_EC61
+.macro MAC_hardware_6_of_7
 ; ----------------------------------------------------------------------------
 L_EC61: lda     #$F0                            ; EC61
         ldx     #$00                            ; EC63
@@ -332,7 +332,7 @@ L_ECB3: rts                                     ; ECB3
 
 .endmacro
 
-.macro MAC_L_F192
+.macro MAC_hardware_7_of_7
 ; ----------------------------------------------------------------------------
 L_F192: ldx     $19                             ; F192
         sta     $0300,x                         ; F194

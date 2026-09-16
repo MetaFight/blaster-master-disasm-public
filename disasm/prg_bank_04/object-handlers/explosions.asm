@@ -1,4 +1,4 @@
-.macro MAC_L_92AC
+.macro MAC_object_handlers__explosions
 ; ----------------------------------------------------------------------------
 L_92AC: jmp     L_92B6                          ; 92AC
 

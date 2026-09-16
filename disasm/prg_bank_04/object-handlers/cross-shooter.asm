@@ -1,4 +1,4 @@
-.macro MAC_L_B6A6
+.macro MAC_object_handlers__cross_shooter
 ; ----------------------------------------------------------------------------
 L_B6A6: jmp     L_B6AE                          ; B6A6
 

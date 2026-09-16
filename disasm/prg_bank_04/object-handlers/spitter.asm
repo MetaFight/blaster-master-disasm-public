@@ -1,4 +1,4 @@
-.macro MAC_L_BD5C
+.macro MAC_object_handlers__spitter
 ; ----------------------------------------------------------------------------
 L_BD5C: jmp     L_BD68                          ; BD5C
 

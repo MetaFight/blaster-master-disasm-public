@@ -1,4 +1,4 @@
-.macro MAC_L_C2DB
+.macro MAC_01b_demo_screen_1_of_3
 ; ----------------------------------------------------------------------------
 L_C2DB: jsr     L_DEC2                          ; C2DB
         inc     $06F4                           ; C2DE
@@ -16,7 +16,7 @@ L_C2DB: jsr     L_DEC2                          ; C2DB
 L_C2F7: .byte   $08,$01,$0A,$03                 ; C2F7
 .endmacro
 
-.macro MAC_L_E243
+.macro MAC_01b_demo_screen_2_of_3
 ; ----------------------------------------------------------------------------
 L_E243: lda     $06F3                           ; E243
         and     #$7F                            ; E246
@@ -54,7 +54,7 @@ L_E286: rts                                     ; E286
 
 .endmacro
 
-.macro MAC_L_E2C1
+.macro MAC_01b_demo_screen_3_of_3
 ; ----------------------------------------------------------------------------
 L_E2C1: lda     #$02                            ; E2C1
         jsr     BankSave_Switch                 ; E2C3

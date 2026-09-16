@@ -1,4 +1,4 @@
-.macro MAC_L_8000
+.macro MAC_dispatch
 ; Bank-04 top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 + nibble×2) to
 ; seed IndirectPtr ($7A/$7B). 3 LE16 sub-table pointers: [0]=$8006 ObjDispatch_Table_Bk04 (the
 ; overhead AI handler table — nibble 0, the RunObjectHandler path), [1]=$8907
@@ -74,7 +74,7 @@ ObjDispatch_Table_Bk04:
         .addr   L_B6A6                          ; 8076
         .addr   L_B6AF                          ; 8078
         .addr   ObjHandler_Ovhd_3B_Vertical_Camera_Init; 807A
-        .addr   L_B719                          ; 807C
+        .addr   ObjHandler_Ovhd_3C_Vertical_Camera_Main; 807C
         .addr   L_B782                          ; 807E
         .addr   L_B78F                          ; 8080
         .addr   L_B7E5                          ; 8082

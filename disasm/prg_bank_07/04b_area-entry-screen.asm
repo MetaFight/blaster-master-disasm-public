@@ -1,4 +1,4 @@
-.macro MAC_L_F6A7
+.macro MAC_04b_area_entry_screen
 ; ----------------------------------------------------------------------------
 L_F6A7: jsr     L_EA03                          ; F6A7
         lda     #$07                            ; F6AA

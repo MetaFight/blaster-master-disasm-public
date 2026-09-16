@@ -1,4 +1,4 @@
-.macro MAC_L_F273
+.macro MAC_ending_1_of_2
 ; ----------------------------------------------------------------------------
 L_F273: lda     #$08                            ; F273
         jsr     L_E9A6                          ; F275
@@ -237,7 +237,7 @@ L_F457: jmp     L_EC73                          ; F457
 L_F45A: .byte   $E0,$E2,$E4                     ; F45A
 .endmacro
 
-.macro MAC_L_F9D5
+.macro MAC_ending_2_of_2
 ; ----------------------------------------------------------------------------
 L_F9D5: lda     #$01                            ; F9D5
         sta     LoadedObj + Obj::Scratch2       ; F9D7
