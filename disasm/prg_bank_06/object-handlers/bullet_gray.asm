@@ -32,31 +32,31 @@ L_A50D: rts                                     ; A50D
 ; ObjType $58: Gray Bullet (spawn variant B) - Init.
 ; 
 ; This variant attempts to latch *downward* initially.
-ObjHandler_Tank_58_Gray_Bullet_B_Init:
-        jmp     _ObjHandler_Tank_58_Gray_Bullet_B_Init__Done; A50E
+.proc ObjHandler_Tank_58_Gray_Bullet_B_Init
+        jmp     _Done                           ; A50E
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_58_Gray_Bullet_B_Init__Body:
+_Body:
         lda     LoadedObj + Obj::Position_X_Hi  ; A511
         lsr     a                               ; A513
 ; if bit0 of Position_X_Hi is set, skip to down-left spawn.
-        bcc     _ObjHandler_Tank_58_Gray_Bullet_B_Init__LeftSide; A514
+        bcc     _LeftSide                       ; A514
 ; otherwise, spawn with Orientation (Scratch0) = #$A0 (up-left) and Facing = #$20 (down-right)
         lda     #$A0                            ; A516
         sta     LoadedObj + Obj::Scratch0       ; A518
         lda     #$20                            ; A51A
         sta     LoadedObj + Obj::Facing         ; A51C
-        jmp     _ObjHandler_Tank_58_Gray_Bullet_B_Init__SetProps; A51E
+        jmp     _SetProps                       ; A51E
 
 ; ----------------------------------------------------------------------------
 ; spawn with Orientation (Scratch0) = #$60 (down-left) and Facing = #$60 (down-left)
-_ObjHandler_Tank_58_Gray_Bullet_B_Init__LeftSide:
+_LeftSide:
         lda     #$60                            ; A521
         sta     LoadedObj + Obj::Scratch0       ; A523
         lda     #$60                            ; A525
         sta     LoadedObj + Obj::Facing         ; A527
 ; Convert the chosen heading to Velocity_X/Y scaled by 1.0 (Y), then go live as the tracking Main
-_ObjHandler_Tank_58_Gray_Bullet_B_Init__SetProps:
+_SetProps:
         ldy     #$10                            ; A529
         jsr     Obj_FacingToVelocity            ; A52B
 ; Clear the orient timer (Scratch1) and Scratch2
@@ -66,17 +66,18 @@ _ObjHandler_Tank_58_Gray_Bullet_B_Init__SetProps:
 ; Call standard enemy init routine with descriptor $02.  This bumps ObjType to $59.
         lda     #$02                            ; A534
         jsr     TankEnemy_Init                  ; A536
-_ObjHandler_Tank_58_Gray_Bullet_B_Init__Done:
+_Done:
         rts                                     ; A539
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $59: Gray Bullet - Cling-walking.
-ObjHandler_Tank_59_Gray_Bullet_Main:
-        jmp     _ObjHandler_Tank_59_Gray_Bullet_Main__AfterPhysics; A53A
+.proc ObjHandler_Tank_59_Gray_Bullet_Main
+        jmp     _AfterPhysics                   ; A53A
 
 ; ----------------------------------------------------------------------------
-; Start by setting collision box.
-_ObjHandler_Tank_59_Gray_Bullet_Main__Body:
+_Body:
+; Set collision box.
         lda     #$80                            ; A53D
         sta     $42                             ; A53F
         lda     #$80                            ; A541
@@ -87,25 +88,25 @@ _ObjHandler_Tank_59_Gray_Bullet_Main__Body:
         jsr     Obj_Get_DeltaToPlayer_X         ; A54A
         and     #$FC                            ; A54D
 ; if (deltaX & #$FC) != 0, player is not in x-band, so skip to AltCheck.
-        bne     _ObjHandler_Tank_59_Gray_Bullet_Main__YBandCheck; A54F
-_ObjHandler_Tank_59_Gray_Bullet_Main__XBandHandler:
+        bne     _YBandCheck                     ; A54F
+_XBandHandler:
         jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; A551
 ; Otherwise, if A=0 (Y distance is 0 tiles), skip to post-physics tail.
-        beq     _ObjHandler_Tank_59_Gray_Bullet_Main__AfterPhysics; A554
+        beq     _AfterPhysics                   ; A554
 ; Otherwise, skip to LockOn handler.
-        bne     _ObjHandler_Tank_59_Gray_Bullet_Main__TryAttack; A556
-_ObjHandler_Tank_59_Gray_Bullet_Main__YBandCheck:
+        bne     _TryAttack                      ; A556
+_YBandCheck:
         jsr     Obj_Get_DeltaToPlayer_Y         ; A558
         and     #$FC                            ; A55B
 ; if (deltaY & #$FC) != 0, player is not in y-band either.  Skip to post-physics tail.
-        bne     _ObjHandler_Tank_59_Gray_Bullet_Main__AfterPhysics; A55D
+        bne     _AfterPhysics                   ; A55D
         jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; A55F
 ; Otherwise, if A=0 (X distance is 0 tiles), skip to post-physics tail.
-        beq     _ObjHandler_Tank_59_Gray_Bullet_Main__AfterPhysics; A562
+        beq     _AfterPhysics                   ; A562
 ; LDA Scratch0 (the arc offset, added to Facing here — a continuous angle, not a state) CLC ADC
 ; $47→$01; JSR $A634; CPX $01 BNE $A580: X-alignment lock-on; STX $47; LDY #$40→$E1BD; $51=$10;
 ; INC $46→$5A
-_ObjHandler_Tank_59_Gray_Bullet_Main__TryAttack:
+_TryAttack:
         lda     LoadedObj + Obj::Scratch0       ; A564
         clc                                     ; A566
         adc     LoadedObj + Obj::Facing         ; A567
@@ -114,7 +115,7 @@ _ObjHandler_Tank_59_Gray_Bullet_Main__TryAttack:
         jsr     L_A634                          ; A56B
         cpx     $01                             ; A56E
 ; if heading to player and scan/attack heading don't match, skip to post-physics tail.
-        bne     _ObjHandler_Tank_59_Gray_Bullet_Main__AfterPhysics; A570
+        bne     _AfterPhysics                   ; A570
 ; Otherwise, begin the transition to the Attack state!
 ; 
 ; Set LoadedObj.Facing to the confirmed attack heading,
@@ -131,29 +132,29 @@ _ObjHandler_Tank_59_Gray_Bullet_Main__TryAttack:
 
 ; ----------------------------------------------------------------------------
 ; Set 16×16 bounding box and test if on-screen.
-_ObjHandler_Tank_59_Gray_Bullet_Main__AfterPhysics:
+_AfterPhysics:
         lda     #$10                            ; A580
         sta     $40                             ; A582
         lda     #$10                            ; A584
         sta     $41                             ; A586
         jsr     ScreenPos_Compute               ; A588
 ; if on-screen, jump to DamageCheck.
-        beq     _ObjHandler_Tank_59_Gray_Bullet_Main__DamageCheck; A58B
+        beq     _DamageCheck                    ; A58B
 ; Otherwise, tombstone.
         jmp     Obj_Tombstone                   ; A58D
 
 ; ----------------------------------------------------------------------------
 ; Call shared DamageCheck routine with descriptor #$01.
-_ObjHandler_Tank_59_Gray_Bullet_Main__DamageCheck:
+_DamageCheck:
         lda     #$01                            ; A590
         jsr     TankEnemy_DamageCheck           ; A592
 ; If not fatal, skip to Render.
-        beq     _ObjHandler_Tank_59_Gray_Bullet_Main__Render; A595
+        beq     _Render                         ; A595
 ; Otherwise, call shared Tracked Enemy defeat handler.
         jmp     TankEnemy_DefeatTrackedEnemy    ; A597
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_59_Gray_Bullet_Main__Render:
+_Render:
         lda     LoadedObj + Obj::Scratch0       ; A59A
         and     #$80                            ; A59C
 ; Save Orientation (Scratch0)'s sign bit into WR_Context_Dependent_00
@@ -171,7 +172,7 @@ _ObjHandler_Tank_59_Gray_Bullet_Main__Render:
 ; X = (((Facing - #$20) >> 1) | WR_Context_Dependent_00) >> 4
         tax                                     ; A5AC
 ; Look up the current orientation's OAM Attributes,
-        lda     GrayBullet_Walking_RenderParamLookup,x; A5AD
+        lda     GrayBullet_Walking_RenderParamLookup + BulletRenderParams::OamAttributes,x ; A5AD
 ; OR with 1 to specity Sprite palette 1,
         ora     #$01                            ; A5B0
 ; and store in WR_44__OAM_Attribute__or__Outgoing_Contact_Damage.
@@ -184,54 +185,56 @@ _ObjHandler_Tank_59_Gray_Bullet_Main__Render:
         and     #$01                            ; A5B9
 ; Look up the current orientation's base Metasprite Id and OR it with the frame index, then call
 ; MetaSprite_Render.
-        ora     GrayBullet_Walking_RenderParamLookup+1,x; A5BB
+        ora     GrayBullet_Walking_RenderParamLookup + BulletRenderParams::BaseMetaSpriteId,x ; A5BB
         jmp     MetaSprite_Render               ; A5BE
 
 ; ----------------------------------------------------------------------------
-L_A5C1: rts                                     ; A5C1
+_DEAD_OrphanRTS:
+        rts                                     ; A5C1
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $5A: Gray Bullet - Attacking.
-ObjHandler_Tank_5A_Gray_Bullet_Attacking:
-        jmp     _ObjHandler_Tank_5A_GrayBullet_Attacking__AfterPhysics; A5C2
+.proc ObjHandler_Tank_5A_Gray_Bullet_Attacking
+        jmp     _AfterPhysics                   ; A5C2
 
 ; ----------------------------------------------------------------------------
-; Start by setting collision box.
-_ObjHandler_Tank_5A_Gray_Bullet_Attacking__Body:
+_Body:
+; Set collision box.
         lda     #$80                            ; A5C5
         sta     $42                             ; A5C7
         lda     #$80                            ; A5C9
         sta     $43                             ; A5CB
         lda     LoadedObj + Obj::Scratch1       ; A5CD
 ; If AttackWindUpCounter (Scratch1) is 0, skip to Launch handler.
-        beq     _ObjHandler_Tank_5A_GrayBullet_Attacking__Movement; A5CF
+        beq     _Movement                       ; A5CF
 ; Otherwise, telegraph the attack by making a buzzing sound (restart sound each frame).
         lda     #$43                            ; A5D1
         jsr     Enqueue_Sound_Command           ; A5D3
         dec     LoadedObj + Obj::Scratch1       ; A5D6
 ; Decrement counter and skip to post-physics tail.
-        jmp     _ObjHandler_Tank_5A_GrayBullet_Attacking__AfterPhysics; A5D8
+        jmp     _AfterPhysics                   ; A5D8
 
 ; ----------------------------------------------------------------------------
 ; Run movement and collision logic.
-_ObjHandler_Tank_5A_GrayBullet_Attacking__Movement:
+_Movement:
         jsr     Obj_MoveAndCollide              ; A5DB
 ; if no collisions, skip to post-physics tail.
-        beq     _ObjHandler_Tank_5A_GrayBullet_Attacking__AfterPhysics; A5DE
+        beq     _AfterPhysics                   ; A5DE
         jsr     Step_RNG                        ; A5E0
         and     #$40                            ; A5E3
 ; otherwise, — 50/50 chance to turn heading one direction or another.
-        beq     _ObjHandler_Tank_5A_GrayBullet_Attacking__TurnA; A5E5
+        beq     _TurnA                          ; A5E5
 ; TurnB
         lda     #$60                            ; A5E7
         ldx     #$60                            ; A5E9
-        jmp     _ObjHandler_Tank_5A_GrayBullet_Attacking__TranstionToWalking; A5EB
+        jmp     _TranstionToWalking             ; A5EB
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_5A_GrayBullet_Attacking__TurnA:
+_TurnA:
         lda     #$A0                            ; A5EE
         ldx     #$A0                            ; A5F0
-_ObjHandler_Tank_5A_GrayBullet_Attacking__TranstionToWalking:
+_TranstionToWalking:
         clc                                     ; A5F2
         adc     LoadedObj + Obj::Facing         ; A5F3
 ; Update Facing,
@@ -251,28 +254,28 @@ _ObjHandler_Tank_5A_GrayBullet_Attacking__TranstionToWalking:
 ; ----------------------------------------------------------------------------
 ; 16×16 hitbox; JSR ScreenPos_Compute ($EF2B); JSR $A30A with enemy descriptor 2 HP=$08;
 ; defeat→$A34D→ObjType $2C item
-_ObjHandler_Tank_5A_GrayBullet_Attacking__AfterPhysics:
+_AfterPhysics:
         lda     #$10                            ; A605
         sta     $40                             ; A607
         lda     #$10                            ; A609
         sta     $41                             ; A60B
         jsr     ScreenPos_Compute               ; A60D
-        beq     _ObjHandler_Tank_5A_Gray_Bullet_Attacking__OnScreen; A610
+        beq     _OnScreen                       ; A610
         jmp     Obj_Tombstone                   ; A612
 
 ; ----------------------------------------------------------------------------
 ; On-screen — TankEnemy_DamageCheck (descriptor $02); a kill takes JMP
 ; TankEnemy_DefeatTrackedEnemy ($A34D), else fall into render.
-_ObjHandler_Tank_5A_Gray_Bullet_Attacking__OnScreen:
+_OnScreen:
         lda     #$02                            ; A615
         jsr     TankEnemy_DamageCheck           ; A617
-        beq     _ObjHandler_Tank_5A_Gray_Bullet_Attacking__Render; A61A
+        beq     _Render                         ; A61A
         jmp     TankEnemy_DefeatTrackedEnemy    ; A61C
 
 ; ----------------------------------------------------------------------------
 ; Alive — facing $47>>5 indexes the (attr,tile) table at $A6CF; set OAM attr $44, JMP
 ; MetaSprite_Render ($F011).
-_ObjHandler_Tank_5A_Gray_Bullet_Attacking__Render:
+_Render:
         lda     LoadedObj + Obj::Facing         ; A61F
         lsr     a                               ; A621
         lsr     a                               ; A622
@@ -280,11 +283,12 @@ _ObjHandler_Tank_5A_Gray_Bullet_Attacking__Render:
         lsr     a                               ; A624
         lsr     a                               ; A625
         tax                                     ; A626
-        lda     GrayBullet_Attacking_RenderParamLookup,x; A627
+        lda     GrayBullet_Attacking_RenderParamLookup + BulletRenderParams::OamAttributes,x ; A627
         ora     #$01                            ; A62A
         sta     $44                             ; A62C
-        lda     GrayBullet_Attacking_RenderParamLookup+1,x; A62E
+        lda     GrayBullet_Attacking_RenderParamLookup + BulletRenderParams::BaseMetaSpriteId,x ; A62E
         jmp     MetaSprite_Render               ; A631
+.endproc
 
 .endmacro
 

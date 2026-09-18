@@ -13,7 +13,7 @@
 ; 
 ; Post-condition:
 ;   X and Y are preserved
-BankSave_Switch:
+.proc BankSave_Switch
         sta     $DB                             ; E61B
 ; backup X onto stack
         txa                                     ; E61D
@@ -32,10 +32,10 @@ BankSave_Switch:
         lda     Nmi_SignalFlags                 ; E62A
         and     #$20                            ; E62C
 ; if bit 5 is not set then NMI did not occur.  Carry on with cleanup.
-        beq     _BankSave_Switch__Cleanup       ; E62E
+        beq     _Cleanup                        ; E62E
 ; Otherwise, do the deferred NMI work here.
         jsr     L_EB98                          ; E630
-_BankSave_Switch__Cleanup:
+_Cleanup:
         lda     #$00                            ; E633
 ; Clear Nmi_SignalFlags
         sta     Nmi_SignalFlags                 ; E635
@@ -46,6 +46,7 @@ _BankSave_Switch__Cleanup:
         pla                                     ; E639
         tax                                     ; E63A
         rts                                     ; E63B
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; MMC1 5-bit serial write to $FFFF

@@ -64,7 +64,7 @@ ObjDispatch_Table_Bk06:
         .addr   ObjHandler_Tank_32_Homing_Missiles_x20_Init; 8064
         .addr   ObjHandler_Tank_33_Pick_up_Lightning_x20_Init; 8066
         .addr   ObjHandler_Tank_34_Pickup_Warheads_x20_Init; 8068
-        .addr   ObjHandler_Common_35_PickUp_Main; 806A
+        .addr   ObjHandler_Tank_35_PickUp_Main  ; 806A
         .addr   L_9EA4                          ; 806C
 ; ----------------------------------------------------------------------------
 L_806E: .byte   $00,$00                         ; 806E

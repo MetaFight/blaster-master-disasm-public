@@ -1,32 +1,32 @@
 .macro MAC_object_handlers__flier_gray
 ; ----------------------------------------------------------------------------
 ; ObjType $50: Gray Flier Spawner - Init
-ObjHandler_Tank_50_Gray_Flier_Spawner_Init:
-        jmp     _ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Done; B29B
+.proc ObjHandler_Tank_50_Gray_Flier_Spawner_Init
+        jmp     _Done                           ; B29B
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Body:
+_Body:
         lda     #$14                            ; B29E
         jsr     TankEnemy_Init                  ; B2A0
 ; TankEnemy_Init has already INC'd LoadedObj.ObjType from $50 to $51, so the following lines are
 ; redundant.
         lda     #$51                            ; B2A3
         sta     LoadedObj + Obj::Type           ; B2A5
-_ObjHandler_Tank_50_Gray_Flier_Spawner_Init__Done:
+_Done:
         rts                                     ; B2A7
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $51: Gray Flier Spawner - Main
-ObjHandler_Tank_51_Gray_Flier_Spawner_Main:
-        jmp     _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__TombstoneTail; B2A8
+.proc ObjHandler_Tank_51_Gray_Flier_Spawner_Main
+        jmp     _TombstoneTail                  ; B2A8
 
 ; ----------------------------------------------------------------------------
 ; Normal-play entry points.
 ; 
 ; Spawns a Gray Flier, on average, every 128 frames (~2s).
-; 
-; Start by setting the collision box dimensions...
-_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Body:
+_Body:
+; Set the collision box dimensions.
         lda     #$80                            ; B2AB
         sta     $42                             ; B2AD
         lda     #$80                            ; B2AF
@@ -41,21 +41,21 @@ _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Body:
 ; 
 ; Spawning a child will only happen if the following 3 checks pass:
 ; Check 1: the spawner must be on-screen.
-        bne     _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__TombstoneTail; B2B6
+        bne     _TombstoneTail                  ; B2B6
         lda     Global_FrameCounter             ; B2B8
         and     #$1F                            ; B2BA
 ; Check 2: Global_FrameCounter's lower 5 bits must be 0 (every 32nd tick)
-        bne     _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__TombstoneTail; B2BC
+        bne     _TombstoneTail                  ; B2BC
         jsr     Step_RNG                        ; B2BE
         and     #$60                            ; B2C1
 ; Check 3: A 1-in-4 roll (bits 6 and 5 must both be clear)
-        bne     _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__TombstoneTail; B2C3
+        bne     _TombstoneTail                  ; B2C3
         lda     #$28                            ; B2C5
 ; call Obj_TryCloneAtScreenEdge with arg A = $28 (Velocity_X 2.5) to spawn a clone at either side
 ; of screen (chosen randomly).  The child's Velocity_X will be set to point to into the screen.
         jsr     Obj_TryCloneAtScreenEdge        ; B2C7
 ; On failure, skip to tombstone tail.
-        beq     _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__TombstoneTail; B2CA
+        beq     _TombstoneTail                  ; B2CA
 ; overwrite the two inherited fields that must not carry over: ObjType ($7D: Gray Flier), and
 ; Velocity_Y.
         lda     #$7D                            ; B2CC
@@ -65,31 +65,32 @@ _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Body:
 ; spawn SFX $24
         lda     #$24                            ; B2D6
         jsr     Enqueue_Sound_Command           ; B2D8
-_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__TombstoneTail:
+_TombstoneTail:
         lda     #$10                            ; B2DB
         sta     $40                             ; B2DD
         lda     #$10                            ; B2DF
         sta     $41                             ; B2E1
 ; Test if still on screen.  If so, skip to end.
         jsr     ScreenPos_Compute               ; B2E3
-        beq     _ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Return; B2E6
+        beq     _Return                         ; B2E6
 ; otherwise, tombstone.
         jmp     Obj_Tombstone                   ; B2E8
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_51_Gray_Flier_Spawner_Main__Return:
+_Return:
         rts                                     ; B2EB
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $7D: Gray Flier - Main
 ; 
 ; Enemy follows a sine wave path across the screen.
-ObjHandler_Tank_7D_Gray_Flier_Main:
-        jmp     _ObjHandler_Tank_7D_Gray_Flier_Main__AfterPhysics; B2EC
+.proc ObjHandler_Tank_7D_Gray_Flier_Main
+        jmp     _AfterPhysics                   ; B2EC
 
 ; ----------------------------------------------------------------------------
-; Start by setting collision box.
-_ObjHandler_Tank_7D_Gray_Flier_Main__Body:
+_Body:
+; Set collision box.
         lda     #$80                            ; B2EF
         sta     $42                             ; B2F1
         lda     #$80                            ; B2F3
@@ -107,30 +108,30 @@ _ObjHandler_Tank_7D_Gray_Flier_Main__Body:
         sta     LoadedObj + Obj::Velocity_Y     ; B303
 ; apply velocities (without terrain collision)
         jsr     Obj_Apply_Velocity_XY           ; B305
-_ObjHandler_Tank_7D_Gray_Flier_Main__AfterPhysics:
+_AfterPhysics:
         lda     #$10                            ; B308
         sta     $40                             ; B30A
         lda     #$10                            ; B30C
         sta     $41                             ; B30E
 ; do on-screen test.  If on-screen, jump to Damage handler, otherwise, despawn.
         jsr     ScreenPos_Compute               ; B310
-        beq     _ObjHandler_Tank_7D_Gray_Flier_Main__Damage; B313
+        beq     _Damage                         ; B313
         jmp     Obj_Despawn                     ; B315
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_7D_Gray_Flier_Main__Damage:
+_Damage:
         lda     #$14                            ; B318
 ; Called shared damage check routine TankEnemy_DamageCheck with enemy descriptor $14.
         jsr     TankEnemy_DamageCheck           ; B31A
 ; if still alive, skip to render tail.
-        beq     _ObjHandler_Tank_7D_Gray_Flier_Main__Render; B31D
+        beq     _Render                         ; B31D
 ; otherwise, call shared defeat handler.
         jmp     TankEnemy_DefeatUntrackedEnemy  ; B31F
 
 ; ----------------------------------------------------------------------------
 ; Typical render tail.  Sets OAM X-flip attribute, then uses Global_FrameCounter to select current
 ; animation metasprite id, then calls shared renderer.
-_ObjHandler_Tank_7D_Gray_Flier_Main__Render:
+_Render:
         lda     #$01                            ; B322
         jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B324
         lda     Global_FrameCounter             ; B327
@@ -139,6 +140,7 @@ _ObjHandler_Tank_7D_Gray_Flier_Main__Render:
         tax                                     ; B32C
         lda     TankGrayFlier_MetaSpriteId_ByFrame,x; B32D
         jmp     MetaSprite_Render               ; B330
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Gray Flier ($7D) metasprite id table.

@@ -5,6 +5,7 @@
 
         .setcpu "6502"
 
+        .include "../structs.inc"
         .include "../ram.inc"
 
 ; ----------------------------------------------------------------------------
@@ -107,7 +108,6 @@ LC222           := $C222
 
 .include "_ungrouped.asm"
 .include "bank-tail.asm"
-.include "dead.asm"
 .include "dispatch.asm"
 .include "object-handlers/_ungrouped.asm"
 .include "object-handlers/bosses.asm"
@@ -131,67 +131,48 @@ LC222           := $C222
 
 ; Emit every group's code in address order (see GroupSplitter).
         MAC_dispatch
-        MAC__ungrouped_1_of_16
-        MAC_dead_1_of_9
-        MAC__ungrouped_2_of_16
+        MAC__ungrouped_1_of_12
         MAC_object_handlers__jason_1_of_2
         MAC_object_handlers___ungrouped
-        MAC__ungrouped_3_of_16
         MAC_object_handlers__jason_2_of_2
-        MAC__ungrouped_4_of_16
-        MAC_object_handlers__projectiles_and_ballistics_1_of_9
-        MAC_dead_2_of_9
-        MAC_object_handlers__projectiles_and_ballistics_2_of_9
-        MAC__ungrouped_5_of_16
-        MAC_object_handlers__projectiles_and_ballistics_3_of_9
-        MAC__ungrouped_6_of_16
-        MAC_object_handlers__projectiles_and_ballistics_4_of_9
-        MAC__ungrouped_7_of_16
-        MAC_object_handlers__projectiles_and_ballistics_5_of_9
-        MAC__ungrouped_8_of_16
-        MAC_object_handlers__projectiles_and_ballistics_6_of_9
+        MAC__ungrouped_2_of_12
+        MAC_object_handlers__projectiles_and_ballistics_1_of_7
+        MAC__ungrouped_3_of_12
+        MAC_object_handlers__projectiles_and_ballistics_2_of_7
+        MAC__ungrouped_4_of_12
+        MAC_object_handlers__projectiles_and_ballistics_3_of_7
+        MAC__ungrouped_5_of_12
+        MAC_object_handlers__projectiles_and_ballistics_4_of_7
+        MAC__ungrouped_6_of_12
+        MAC_object_handlers__projectiles_and_ballistics_5_of_7
         MAC_object_handlers__explosions
-        MAC__ungrouped_9_of_16
-        MAC_object_handlers__pickups
-        MAC_object_handlers__bosses_1_of_6
-        MAC_dead_3_of_9
-        MAC_object_handlers__bosses_2_of_6
-        MAC_dead_4_of_9
-        MAC_object_handlers__bosses_3_of_6
-        MAC_dead_5_of_9
-        MAC_object_handlers__bosses_4_of_6
-        MAC_dead_6_of_9
-        MAC_object_handlers__bosses_5_of_6
-        MAC_object_handlers__projectiles_and_ballistics_7_of_9
-        MAC_dead_7_of_9
-        MAC__ungrouped_10_of_16
-        MAC_dead_8_of_9
-        MAC__ungrouped_11_of_16
+        MAC__ungrouped_7_of_12
+        MAC_object_handlers__pickups_1_of_2
+        MAC_object_handlers__bosses_1_of_2
+        MAC_object_handlers__projectiles_and_ballistics_6_of_7
+        MAC_object_handlers__pickups_2_of_2
+        MAC__ungrouped_8_of_12
         MAC_object_handlers__camera_1_of_2
         MAC_object_handlers__gumdrop_gray
         MAC_object_handlers__flier
-        MAC__ungrouped_12_of_16
+        MAC__ungrouped_9_of_12
         MAC_object_handlers__charging_robot
         MAC_object_handlers__spinner
         MAC_object_handlers__cross_shooter
         MAC_object_handlers__camera_2_of_2
         MAC_object_handlers__slider
         MAC_object_handlers__robot
-        MAC_object_handlers__eye_1_of_4
-        MAC__ungrouped_13_of_16
-        MAC_object_handlers__eye_2_of_4
+        MAC_object_handlers__eye_1_of_3
         MAC_object_handlers__robed_skeleton_1_of_2
-        MAC__ungrouped_14_of_16
+        MAC__ungrouped_10_of_12
         MAC_object_handlers__robed_skeleton_2_of_2
-        MAC_object_handlers__eye_3_of_4
-        MAC__ungrouped_15_of_16
-        MAC_object_handlers__eye_4_of_4
-        MAC__ungrouped_16_of_16
-        MAC_object_handlers__projectiles_and_ballistics_8_of_9
-        MAC_dead_9_of_9
-        MAC_object_handlers__projectiles_and_ballistics_9_of_9
+        MAC_object_handlers__eye_2_of_3
+        MAC__ungrouped_11_of_12
+        MAC_object_handlers__eye_3_of_3
+        MAC__ungrouped_12_of_12
+        MAC_object_handlers__projectiles_and_ballistics_7_of_7
         MAC_object_handlers__spitter
         MAC_object_handlers__zombie_head
         MAC_object_handlers__gumdrop_red
-        MAC_object_handlers__bosses_6_of_6
+        MAC_object_handlers__bosses_2_of_2
         MAC_bank_tail

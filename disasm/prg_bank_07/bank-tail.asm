@@ -1,5 +1,4 @@
 .macro MAC_bank_tail
-L_FFD1: .byte   $81,$0F,$80,$9F,$C7,$1F,$00     ; FFD1
 L_FFD8: .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; FFD8
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; FFE0
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; FFE8

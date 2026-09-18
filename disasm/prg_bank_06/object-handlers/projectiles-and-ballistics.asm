@@ -1,4 +1,4 @@
-.macro MAC_object_handlers__projectiles_and_ballistics_1_of_7
+.macro MAC_object_handlers__projectiles_and_ballistics_1_of_6
 ; ----------------------------------------------------------------------------
 L_976D: jmp     L_977F                          ; 976D
 
@@ -13,7 +13,7 @@ L_977F: rts                                     ; 977F
 
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_2_of_7
+.macro MAC_object_handlers__projectiles_and_ballistics_2_of_6
 ; ----------------------------------------------------------------------------
 L_9788: jmp     L_97C6                          ; 9788
 
@@ -98,7 +98,7 @@ L_981D: .byte   $00,$00,$00,$4B,$08,$00,$00,$4C ; 981D
 L_9835: .byte   $04,$06,$08                     ; 9835
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_3_of_7
+.macro MAC_object_handlers__projectiles_and_ballistics_3_of_6
 ; ----------------------------------------------------------------------------
 L_9882: nop                                     ; 9882
         nop                                     ; 9883
@@ -253,7 +253,7 @@ L99A8:  .byte   $00,$00,$91,$7F                 ; 99A8
 L99AC:  .byte   $00,$00,$11,$6F                 ; 99AC
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_4_of_7
+.macro MAC_object_handlers__projectiles_and_ballistics_4_of_6
 ; ----------------------------------------------------------------------------
 L_99CC: nop                                     ; 99CC
         nop                                     ; 99CD
@@ -370,7 +370,7 @@ L_9AB0: .byte   $03,$03,$03,$03,$43,$43,$03,$03 ; 9AB0
         .byte   $43,$03,$03,$03,$03,$03,$43,$03 ; 9AC0
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_5_of_7
+.macro MAC_object_handlers__projectiles_and_ballistics_5_of_6
 ; ----------------------------------------------------------------------------
 L_9AEB: nop                                     ; 9AEB
         nop                                     ; 9AEC
@@ -409,9 +409,9 @@ L_9B29: rts                                     ; 9B29
 ; ----------------------------------------------------------------------------
 L_9B2A: .byte   $F8                             ; 9B2A
 L9B2B:  .byte   $00,$08,$00,$F8                 ; 9B2B
-.endmacro
+; ----------------------------------------------------------------------------
+L_9B2F: jmp     L_9B47                          ; 9B2F
 
-.macro MAC_object_handlers__projectiles_and_ballistics_6_of_7
 ; ----------------------------------------------------------------------------
 L_9B32: jsr     Apply_Double_Velocity_XY                           ; 9B32
         ldx     LoadedObj + Obj::Facing         ; 9B35
@@ -455,7 +455,7 @@ L_9B7C: .byte   $FF                             ; 9B7C
 L9B7D:  .byte   $00,$01,$00,$FF                 ; 9B7D
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_7_of_7
+.macro MAC_object_handlers__projectiles_and_ballistics_6_of_6
 ; ----------------------------------------------------------------------------
 L_9EA4: jmp     L_9EBE                          ; 9EA4
 
@@ -474,11 +474,11 @@ L_9EBE: rts                                     ; 9EBE
 
 ; ----------------------------------------------------------------------------
 ; ObjType $38: Big Gray Ballistic Ball - Init
-ObjHandler_Tank_38_Big_Gray_Init:
-        jmp     _ObjHandler_Tank_38_Big_Gray_Init__Done; 9EBF
+.proc ObjHandler_Tank_38_Big_Gray_Init
+        jmp     _Done                           ; 9EBF
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_38_Big_Gray_Init__Body:
+_Body:
         jsr     Step_RNG                        ; 9EC2
         and     #$1F                            ; 9EC5
         clc                                     ; 9EC7
@@ -498,22 +498,22 @@ _ObjHandler_Tank_38_Big_Gray_Init__Body:
         lda     #$25                            ; 9EDA
 ; Play launch sound.
         jsr     Enqueue_Sound_Command           ; 9EDC
-_ObjHandler_Tank_38_Big_Gray_Init__Done:
+_Done:
         rts                                     ; 9EDF
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $39: Big Gray Ballistic Ball - Main.
 ; 
 ; Affected by gravity.  Bounces off walls and the ground.  Also rolls on the ground.
 ; Explodes when its lifetime timer (Scratch1) runs out.
-ObjHandler_Tank_39_Big_Gray_Main:
-        jmp     _ObjHandler_Tank_39_Ballistic_BigGray_Main__AfterPhysics; 9EE0
+.proc ObjHandler_Tank_39_Big_Gray_Main
+        jmp     _AfterPhysics                   ; 9EE0
 
 ; ----------------------------------------------------------------------------
 ; Normal-play body.
-; 
-; Starts by setting collision box.
-_ObjHandler_Tank_39_Big_Gray_Main__Body:
+_Body:
+; Set collision box.
         lda     #$80                            ; 9EE3
         sta     $42                             ; 9EE5
         lda     #$80                            ; 9EE7
@@ -525,11 +525,11 @@ _ObjHandler_Tank_39_Big_Gray_Main__Body:
 ; tick the lifetime timer.
         dec     LoadedObj + Obj::Scratch1       ; 9EF0
 ; At zero, skip to explosion logic.
-        beq     _ObjHandler_Tank_39_Ballistic_BigGray_Main__Explode; 9EF2
+        beq     _Explode                        ; 9EF2
         lda     LoadedObj + Obj::Scratch1       ; 9EF4
         cmp     #$01                            ; 9EF6
 ; Otherwise, at NOT one, skip to post-physics tail.
-        bne     _ObjHandler_Tank_39_Ballistic_BigGray_Main__AfterPhysics; 9EF8
+        bne     _AfterPhysics                   ; 9EF8
         lda     #$80                            ; 9EFA
         sta     $42                             ; 9EFC
         lda     #$80                            ; 9EFE
@@ -537,32 +537,32 @@ _ObjHandler_Tank_39_Big_Gray_Main__Body:
 ; Otherwise (at 1), set the collision box again (not sure why) and skip the code that sets the
 ; object dimensions for the on-screen test to go straight to the on-screen test.  This looks like
 ; a bug.
-        jmp     _ObjHandler_Tank_39_Ballistic_BigGray_Main__ScreenCheck; 9F02
+        jmp     _ScreenCheck                    ; 9F02
 
 ; ----------------------------------------------------------------------------
 ; set object dimensions and fall through into on-screen test.
-_ObjHandler_Tank_39_Ballistic_BigGray_Main__AfterPhysics:
+_AfterPhysics:
         lda     #$10                            ; 9F05
         sta     $40                             ; 9F07
         lda     #$10                            ; 9F09
         sta     $41                             ; 9F0B
-_ObjHandler_Tank_39_Ballistic_BigGray_Main__ScreenCheck:
+_ScreenCheck:
         jsr     ScreenPos_Compute               ; 9F0D
 ; if on-screen, jump to render code.
-        beq     _ObjHandler_Tank_39_Ballistic_BigGray_Main__Render; 9F10
+        beq     _Render                         ; 9F10
 ; otherwise, despawn immediately.  No tombstoning.
         jmp     Obj_Despawn                     ; 9F12
 
 ; ----------------------------------------------------------------------------
 ; Nudge the draw position, test player contact, and draw tile $6D
-_ObjHandler_Tank_39_Ballistic_BigGray_Main__Render:
+_Render:
         clc                                     ; 9F15
         lda     $3F                             ; 9F16
         adc     #$03                            ; 9F18
         sta     $3F                             ; 9F1A
         lda     #$40                            ; 9F1C
         jsr     Obj_TryDamagePlayer             ; 9F1E
-        beq     _ObjHandler_Tank_39_Ballistic_BigGray_Main__Explode; 9F21
+        beq     _Explode                        ; 9F21
         lda     #$01                            ; 9F23
         sta     $44                             ; 9F25
         lda     #$6D                            ; 9F27
@@ -571,11 +571,12 @@ _ObjHandler_Tank_39_Ballistic_BigGray_Main__Render:
 
 ; ----------------------------------------------------------------------------
 ; lifetime expired: Spawn explosion, enqueue sfx, and despawn.
-_ObjHandler_Tank_39_Ballistic_BigGray_Main__Explode:
+_Explode:
         jsr     SpawnBigExplosion_NoSound       ; 9F2E
         lda     #$27                            ; 9F31
         jsr     Enqueue_Sound_Command           ; 9F33
         jmp     Obj_Despawn                     ; 9F36
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_9F39: jmp     L_9F59                          ; 9F39
@@ -668,12 +669,12 @@ L_9FD1: lda     #$00                            ; 9FD1
 
 ; ----------------------------------------------------------------------------
 ; ObjType $3C: Small Red shot
-ObjHandler_Tank_3C_Small_Red_Init:
-        jmp     _ObjHandler_Tank_3C_Small_Red_Init__Done; 9FDA
+.proc ObjHandler_Tank_3C_Small_Red_Init
+        jmp     _Done                           ; 9FDA
 
 ; ----------------------------------------------------------------------------
-; Start by bumping LoadedObj.Type to the Main ObjType.
-_ObjHandler_Tank_3C_Small_Red_Init__Body:
+_Body:
+; Bump LoadedObj.Type to the Main ObjType.
         inc     LoadedObj + Obj::Type           ; 9FDD
 ; Call ScreenPos_Compute (despite not preparing any of its input... this has to be a bug, right?).
         jsr     ScreenPos_Compute               ; 9FDF
@@ -694,19 +695,20 @@ _ObjHandler_Tank_3C_Small_Red_Init__Body:
 
 ; ----------------------------------------------------------------------------
 ; Cut spawn-sound trigger for the Small Red projectile.
-DEAD__ObjHandler_Tank_3C_Small_Red_Init__PlaySFX:
+_DEAD_PlaySFX:
         jsr     PlaySound_23                    ; 9FF5
-_ObjHandler_Tank_3C_Small_Red_Init__Done:
+_Done:
         rts                                     ; 9FF8
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $3D: Small Red shot - Main
-ObjHandler_Tank_3D_Small_Red_Main:
-        jmp     _ObjHandler_Tank_3D_Proj_SmallRed_Main__ScreenTest; 9FF9
+.proc ObjHandler_Tank_3D_Small_Red_Main
+        jmp     _ScreenTest                     ; 9FF9
 
 ; ----------------------------------------------------------------------------
-; Start by setting collision box.
-_ObjHandler_Tank_3D_Small_Red_Main__Body:
+_Body:
+; Set collision box.
         lda     #$40                            ; 9FFC
         sta     $42                             ; 9FFE
         lda     #$40                            ; A000
@@ -714,20 +716,20 @@ _ObjHandler_Tank_3D_Small_Red_Main__Body:
 ; Apply motion and collisions.
         jsr     Obj_MoveAndCollide              ; A004
 ; If terrain collision occurred, skip to Explode.
-        bne     _ObjHandler_Tank_3D_Proj_SmallRed_Main__Explode; A007
-_ObjHandler_Tank_3D_Proj_SmallRed_Main__ScreenTest:
+        bne     _Explode                        ; A007
+_ScreenTest:
         lda     #$08                            ; A009
         sta     $40                             ; A00B
         lda     #$08                            ; A00D
         sta     $41                             ; A00F
         jsr     ScreenPos_Compute               ; A011
 ; If on screen, skip to Damage.
-        beq     _ObjHandler_Tank_3D_Proj_SmallRed_Main__Damage; A014
+        beq     _Damage                         ; A014
 ; Otherwise, despawn.
         jmp     Obj_Despawn                     ; A016
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_3D_Proj_SmallRed_Main__Damage:
+_Damage:
         lda     #$0C                            ; A019
 ; Test for contact with Player dealing #$0C damage on contact.
         jsr     Obj_TryDamagePlayer             ; A01B
@@ -740,9 +742,10 @@ _ObjHandler_Tank_3D_Proj_SmallRed_Main__Damage:
 
 ; ----------------------------------------------------------------------------
 ; Burst into a Mid Explosion, then despawn
-_ObjHandler_Tank_3D_Proj_SmallRed_Main__Explode:
+_Explode:
         jsr     SpawnMidExplosion               ; A029
         jmp     Obj_Despawn                     ; A02C
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_A02F: jmp     L_A046                          ; A02F
@@ -943,11 +946,11 @@ L_A188: lda     #$00                            ; A188
 
 ; ----------------------------------------------------------------------------
 ; ObjType $44: Mine Shrapnel (Medium Red ballistic) - Init.
-ObjHandler_Tank_44_Mine_Shrapnel_Init:
-        jmp     _ObjHandler_Tank_44_Mine_Shrapnel_Init__Done; A191
+.proc ObjHandler_Tank_44_Mine_Shrapnel_Init
+        jmp     _Done                           ; A191
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_44_Mine_Shrapnel_Init__Body:
+_Body:
         jsr     Step_RNG                        ; A194
         and     #$1F                            ; A197
         clc                                     ; A199
@@ -963,17 +966,18 @@ _ObjHandler_Tank_44_Mine_Shrapnel_Init__Body:
         jsr     Obj_CalcTileIndex               ; A1A7
 ; Calculate TileIndex and bump LoadedObj.Type to #$45, the Main state.
         inc     LoadedObj + Obj::Type           ; A1AA
-_ObjHandler_Tank_44_Mine_Shrapnel_Init__Done:
+_Done:
         rts                                     ; A1AC
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $45: Mine Shrapnel (Medium Red ballistic) - Main.
-ObjHandler_Tank_45_Mine_Shrapnel_Main:
-        jmp     _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__OnScreenTest; A1AD
+.proc ObjHandler_Tank_45_Mine_Shrapnel_Main
+        jmp     _OnScreenTest                   ; A1AD
 
 ; ----------------------------------------------------------------------------
-; Start by setting the collision box.
-_ObjHandler_Tank_45_Mine_Shrapnel_Main__Body:
+_Body:
+; Set the collision box.
         lda     #$80                            ; A1B0
         sta     $42                             ; A1B2
         lda     #$80                            ; A1B4
@@ -981,12 +985,12 @@ _ObjHandler_Tank_45_Mine_Shrapnel_Main__Body:
 ; Decrement the lifetime timer (Scratch1).
         dec     LoadedObj + Obj::Scratch1       ; A1B8
 ; If still alive, skip to Physics.
-        bne     _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Physics; A1BA
+        bne     _Physics                        ; A1BA
 ; Otherwise, despawn.
         jmp     Obj_Despawn                     ; A1BC
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Physics:
+_Physics:
         lda     #$02                            ; A1BF
         ldx     #$00                            ; A1C1
 ; Update the Velocity under a gravity of 2px/f^2.
@@ -994,7 +998,7 @@ _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Physics:
 ; Update the Position by applying Velocity_X/Y
         jsr     Obj_Apply_Velocity_X            ; A1C6
         jsr     Obj_Apply_Velocity_Y            ; A1C9
-_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__OnScreenTest:
+_OnScreenTest:
         lda     #$10                            ; A1CC
         sta     $40                             ; A1CE
         lda     #$10                            ; A1D0
@@ -1002,12 +1006,12 @@ _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__OnScreenTest:
 ; Set bounding box and do on-screen test.
         jsr     ScreenPos_Compute               ; A1D4
 ; If off-screen, skip to Despawn.
-        bne     _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Despawn; A1D7
+        bne     _Despawn                        ; A1D7
         lda     #$10                            ; A1D9
 ; Otherwise, do damage check using shared Obj_TryDamagePlayer with enemy descriptor #$10.
         jsr     Obj_TryDamagePlayer             ; A1DB
 ; On contact, skip to Defeat.
-        beq     _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Defeat; A1DE
+        beq     _Defeat                         ; A1DE
         lda     #$00                            ; A1E0
         sta     $44                             ; A1E2
         lda     #$54                            ; A1E4
@@ -1016,18 +1020,19 @@ _ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__OnScreenTest:
         jmp     OAM_Stage_Pattern               ; A1E8
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Defeat:
+_Defeat:
         jsr     SpawnMidExplosion               ; A1EB
-_ObjHandler_Tank_45_Ballistic_MineShrapnel_Main__Despawn:
+_Despawn:
         jmp     Obj_Despawn                     ; A1EE
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $46: Turret Shot (Medium Red ballistic) - Init.
-ObjHandler_Tank_46_Turret_Shot_Init:
-        jmp     _ObjHandler_Tank_46_Turret_Shot_Init__Done; A1F1
+.proc ObjHandler_Tank_46_Turret_Shot_Init
+        jmp     _Done                           ; A1F1
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_46_Turret_Shot_Init__Body:
+_Body:
         ldy     LoadedObj + Obj::Scratch1       ; A1F4
 ; Update Velocities according to LoadedObj.Facing and LoadedObj.Scratch1 (passed in from parent)
 ; as the scalar.
@@ -1039,17 +1044,18 @@ _ObjHandler_Tank_46_Turret_Shot_Init__Body:
 ; Play firing SFX.
         jsr     PlaySound_23                    ; A1FE
 ; Init body terminal RTS; the +0 (render) entry JMPs here — this Init draws nothing.
-_ObjHandler_Tank_46_Turret_Shot_Init__Done:
+_Done:
         rts                                     ; A201
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $47: Turret Shot (Medium Red ballistic) - Main.
-ObjHandler_Tank_47_Turret_Shot_Main:
-        jmp     _ObjHandler_Tank_47_Turret_Shot_Main__AfterPhysics; A202
+.proc ObjHandler_Tank_47_Turret_Shot_Main
+        jmp     _AfterPhysics                   ; A202
 
 ; ----------------------------------------------------------------------------
-; Start by setting collision box.
-_ObjHandler_Tank_47_Turret_Shot_Main__Body:
+_Body:
+; Set collision box.
         lda     #$40                            ; A205
         sta     $42                             ; A207
         lda     #$40                            ; A209
@@ -1058,8 +1064,8 @@ _ObjHandler_Tank_47_Turret_Shot_Main__Body:
         lda     #$02                            ; A20D
         jsr     Obj_GravityMoveBounce_Double    ; A20F
 ; On terrain hit, skip to Explode tail.
-        bne     _ObjHandler_Tank_47_Turret_Shot_Main__Explode; A212
-_ObjHandler_Tank_47_Turret_Shot_Main__AfterPhysics:
+        bne     _Explode                        ; A212
+_AfterPhysics:
         lda     #$08                            ; A214
         sta     $40                             ; A216
         lda     #$08                            ; A218
@@ -1067,7 +1073,7 @@ _ObjHandler_Tank_47_Turret_Shot_Main__AfterPhysics:
 ; Do on-screen test.
         jsr     ScreenPos_Compute               ; A21C
 ; If off-screen, skip to Despawn.
-        bne     _ObjHandler_Tank_47_Turret_Shot_Main__Despawn; A21F
+        bne     _Despawn                        ; A21F
         lda     #$08                            ; A221
 ; Otherwise, handle collisions with other objects.
         jsr     LD711                           ; A223
@@ -1079,10 +1085,11 @@ _ObjHandler_Tank_47_Turret_Shot_Main__AfterPhysics:
         jmp     OAM_Stage_Pattern               ; A22E
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_47_Turret_Shot_Main__Explode:
+_Explode:
         jsr     SpawnMidExplosion               ; A231
-_ObjHandler_Tank_47_Turret_Shot_Main__Despawn:
+_Despawn:
         jmp     Obj_Despawn                     ; A234
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $48: Medium Red Projectile - Init.
@@ -1091,11 +1098,11 @@ _ObjHandler_Tank_47_Turret_Shot_Main__Despawn:
 ; parent.
 ; Note: This can lead to race conditions when multiple parents uses the parameter variables on the
 ; same frame.
-ObjHandler_Tank_48_Medium_Red_Projectile_Init:
-        jmp     _ObjHandler_Tank_48_Medium_Red_Projectile_Init__Done; A237
+.proc ObjHandler_Tank_48_Medium_Red_Projectile_Init
+        jmp     _Done                           ; A237
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_48_Medium_Red_Projectile_Init__Body:
+_Body:
         lda     $9D                             ; A23A
 ; Set LoadedObj.Facing = Param_ProjectSpawn_Heading
         sta     LoadedObj + Obj::Facing         ; A23C
@@ -1109,17 +1116,18 @@ _ObjHandler_Tank_48_Medium_Red_Projectile_Init__Body:
         inc     LoadedObj + Obj::Type           ; A247
 ; Play launch SFX.
         jsr     PlaySound_23                    ; A249
-_ObjHandler_Tank_48_Medium_Red_Projectile_Init__Done:
+_Done:
         rts                                     ; A24C
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $49: Medium Red Projectile - Main.
-ObjHandler_Tank_49_Medium_Red_Projectile_Main:
-        jmp     _ObjHandler_Tank_49_Medium_Red_Projectile_Main__Render__; A24D
+.proc ObjHandler_Tank_49_Medium_Red_Projectile_Main
+        jmp     _ScreenTest                     ; A24D
 
 ; ----------------------------------------------------------------------------
-; Start by setting collision box.
-_ObjHandler_Tank_49_Medium_Red_Projectile_Main__Body:
+_Body:
+; Set collision box.
         lda     #$40                            ; A250
         sta     $42                             ; A252
         lda     #$40                            ; A254
@@ -1127,8 +1135,8 @@ _ObjHandler_Tank_49_Medium_Red_Projectile_Main__Body:
 ; Apply movement and collisions.
         jsr     Obj_MoveAndCollide              ; A258
 ; On a collision, skip to HitExplode.
-        bne     _ObjHandler_Tank_49_Medium_Red_Projectile_Main__HitExplode; A25B
-_ObjHandler_Tank_49_Medium_Red_Projectile_Main__Render__:
+        bne     _HitExplode                     ; A25B
+_ScreenTest:
         lda     #$08                            ; A25D
         sta     $40                             ; A25F
         lda     #$08                            ; A261
@@ -1136,7 +1144,7 @@ _ObjHandler_Tank_49_Medium_Red_Projectile_Main__Render__:
 ; Run on-screen test.
         jsr     ScreenPos_Compute               ; A265
 ; If off-screen, skip to Despawn.
-        bne     _ObjHandler_Tank_49_Medium_Red_Projectile_Main__Despawn; A268
+        bne     _Despawn                        ; A268
         lda     #$20                            ; A26A
 ; Otherwise, handle collisions with Player.
         jsr     LD711                           ; A26C
@@ -1148,10 +1156,29 @@ _ObjHandler_Tank_49_Medium_Red_Projectile_Main__Render__:
         jmp     OAM_Stage_Pattern               ; A277
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_49_Medium_Red_Projectile_Main__HitExplode:
+_HitExplode:
         jsr     SpawnMidExplosion               ; A27A
-_ObjHandler_Tank_49_Medium_Red_Projectile_Main__Despawn:
+_Despawn:
         jmp     Obj_Despawn                     ; A27D
+.endproc
+
+; ----------------------------------------------------------------------------
+L_A280: clc                                     ; A280
+        lda     L040D                           ; A281
+        adc     #$10                            ; A284
+        bcc     L_A28A                          ; A286
+        lda     #$FF                            ; A288
+L_A28A: sta     L040D                           ; A28A
+        jmp     Obj_Despawn                     ; A28D
+
+; ----------------------------------------------------------------------------
+L_A290: clc                                     ; A290
+        lda     L0092                           ; A291
+        adc     #$10                            ; A293
+        bcc     L_A299                          ; A295
+        lda     #$FF                            ; A297
+L_A299: sta     L0092                           ; A299
+        jmp     Obj_Despawn                     ; A29B
 
 .endmacro
 

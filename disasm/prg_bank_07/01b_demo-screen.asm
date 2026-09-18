@@ -1,4 +1,4 @@
-.macro MAC_01b_demo_screen_1_of_3
+.macro MAC_01b_demo_screen_1_of_2
 ; ----------------------------------------------------------------------------
 L_C2DB: jsr     L_DEC2                          ; C2DB
         inc     $06F4                           ; C2DE
@@ -16,7 +16,7 @@ L_C2DB: jsr     L_DEC2                          ; C2DB
 L_C2F7: .byte   $08,$01,$0A,$03                 ; C2F7
 .endmacro
 
-.macro MAC_01b_demo_screen_2_of_3
+.macro MAC_01b_demo_screen_2_of_2
 ; ----------------------------------------------------------------------------
 L_E243: lda     $06F3                           ; E243
         and     #$7F                            ; E246
@@ -52,9 +52,41 @@ L_E26C: lda     #$00                            ; E26C
 L_E284: inc     $D0                             ; E284
 L_E286: rts                                     ; E286
 
-.endmacro
+; ----------------------------------------------------------------------------
+L_E287: lda     $06F3                           ; E287
+        cmp     #$02                            ; E28A
+        bne     L_E2C0                          ; E28C
+        lda     $F7                             ; E28E
+        cmp     $D1                             ; E290
+        beq     L_E2A0                          ; E292
+        jsr     L_E2AB                          ; E294
+        lda     $F7                             ; E297
+        sta     $D1                             ; E299
+        lda     #$01                            ; E29B
+        sta     $D0                             ; E29D
+        rts                                     ; E29F
 
-.macro MAC_01b_demo_screen_3_of_3
+; ----------------------------------------------------------------------------
+L_E2A0: inc     $D0                             ; E2A0
+        bne     L_E2A7                          ; E2A2
+        jsr     L_E2AB                          ; E2A4
+L_E2A7: jsr     L_E308                          ; E2A7
+        rts                                     ; E2AA
+
+; ----------------------------------------------------------------------------
+L_E2AB: ldy     $CD                             ; E2AB
+        lda     $D1                             ; E2AD
+        sta     ($CE),y                         ; E2AF
+        iny                                     ; E2B1
+        lda     $D0                             ; E2B2
+        sta     ($CE),y                         ; E2B4
+        iny                                     ; E2B6
+        bne     L_E2BE                          ; E2B7
+        lda     #$FF                            ; E2B9
+        sta     $06F3                           ; E2BB
+L_E2BE: sty     $CD                             ; E2BE
+L_E2C0: rts                                     ; E2C0
+
 ; ----------------------------------------------------------------------------
 L_E2C1: lda     #$02                            ; E2C1
         jsr     BankSave_Switch                 ; E2C3

@@ -1,4 +1,4 @@
-.macro MAC__ungrouped_1_of_23
+.macro MAC__ungrouped_1_of_20
 ; ----------------------------------------------------------------------------
 L_C438: lda     $F4                             ; C438
         and     #$80                            ; C43A
@@ -23,7 +23,7 @@ L_C458: lda     #$FF                            ; C458
 
 .endmacro
 
-.macro MAC__ungrouped_2_of_23
+.macro MAC__ungrouped_2_of_20
 ; ----------------------------------------------------------------------------
 L_C465: lda     #$00                            ; C465
         sta     ObjectSlot_Offset               ; C467
@@ -168,7 +168,7 @@ L_C55A: jmp     L_C29E                          ; C55A
 
 .endmacro
 
-.macro MAC__ungrouped_3_of_23
+.macro MAC__ungrouped_3_of_20
 ; ----------------------------------------------------------------------------
 L_C56D: jsr     L_DEC2                          ; C56D
         lda     #$00                            ; C570
@@ -201,7 +201,7 @@ LC5A3:  .byte   $5A,$09,$75,$0E,$06,$37,$5D,$18 ; C5A3
         .byte   $1B,$59,$09,$4A,$40,$59,$2A     ; C5AB
 .endmacro
 
-.macro MAC__ungrouped_4_of_23
+.macro MAC__ungrouped_4_of_20
 ; ----------------------------------------------------------------------------
 L_C642: lda     $10                             ; C642
         and     #$07                            ; C644
@@ -375,9 +375,12 @@ L_C7BA: iny                                     ; C7BA
         bne     L_C7A8                          ; C7BB
         rts                                     ; C7BD
 
-.endmacro
+; ----------------------------------------------------------------------------
+L_C7BE: inc     $01                             ; C7BE
+        inc     $03                             ; C7C0
+        inc     $05                             ; C7C2
+        jmp     L_C7A8                          ; C7C4
 
-.macro MAC__ungrouped_5_of_23
 ; ----------------------------------------------------------------------------
 L_C7C7: tya                                     ; C7C7
         eor     #$01                            ; C7C8
@@ -390,35 +393,9 @@ L_C7C7: tya                                     ; C7C7
         sta     LoadedObj + Obj::Position_Y_Hi  ; C7D5
         rts                                     ; C7D7
 
-; ----------------------------------------------------------------------------
-L_C7D8: lda     L_C7F8                          ; C7D8
-        sta     IndirectPtrLo                   ; C7DB
-        lda     L_C7F8+1                        ; C7DD
-        sta     IndirectPtrHi                   ; C7E0
-        ldy     #$00                            ; C7E2
-        lda     #$00                            ; C7E4
-        sta     $3E                             ; C7E6
-        sta     $3F                             ; C7E8
-        sta     $44                             ; C7EA
-        lda     $FF                             ; C7EC
-        and     #$20                            ; C7EE
-        bne     L_C7F5                          ; C7F0
-        jmp     L_C880                          ; C7F2
-
-; ----------------------------------------------------------------------------
-L_C7F5: jmp     L_C816                          ; C7F5
-
-; ----------------------------------------------------------------------------
-L_C7F8: .addr   L_C7FA                          ; C7F8
-L_C7FA: .addr   L_C7FE                          ; C7FA
-        .addr   LC806                           ; C7FC
-; ----------------------------------------------------------------------------
-L_C7FE: .byte   $10,$80,$01,$74,$00,$40,$10,$5E ; C7FE
-LC806:  .byte   $10,$80,$01,$5C,$00,$08,$01,$5D ; C806
-        .byte   $00,$38,$00,$5E,$00,$08,$10,$5F ; C80E
 .endmacro
 
-.macro MAC__ungrouped_6_of_23
+.macro MAC__ungrouped_5_of_20
 ; ----------------------------------------------------------------------------
 L_C9D6: lda     #$00                            ; C9D6
         sta     ObjectSlot_Offset               ; C9D8
@@ -623,18 +600,19 @@ L_CB7C: .byte   $54,$56,$58,$5B,$5D,$5F,$62,$64 ; CB7C
 ; ----------------------------------------------------------------------------
 ; Clears both Section_ThingIndex_By_EnemySlot_Index and Section_DefeatedThing_IndexRing by filling
 ; them with #$FF.
-Clear_ThingSpawnHistory:
+.proc Clear_ThingSpawnHistory
         ldx     #$49                            ; CBA9
         lda     #$FF                            ; CBAB
-_Clear_ThingSpawnHistory__Loop:
+_Loop:
         sta     $0100,x                         ; CBAD
         dex                                     ; CBB0
-        bpl     _Clear_ThingSpawnHistory__Loop  ; CBB1
+        bpl     _Loop                           ; CBB1
         rts                                     ; CBB3
+.endproc
 
 .endmacro
 
-.macro MAC__ungrouped_7_of_23
+.macro MAC__ungrouped_6_of_20
 ; ----------------------------------------------------------------------------
 L_CE55: lda     $45                             ; CE55
         pha                                     ; CE57
@@ -705,7 +683,7 @@ L_CEB4: inx                                     ; CEB4
 
 .endmacro
 
-.macro MAC__ungrouped_8_of_23
+.macro MAC__ungrouped_7_of_20
 ; ----------------------------------------------------------------------------
 L_D02D: lda     #$00                            ; D02D
         sta     $04                             ; D02F
@@ -857,7 +835,7 @@ L_D184: sta     Background_Palettes + BgPalette::Backdrop,x ; D184
 
 .endmacro
 
-.macro MAC__ungrouped_9_of_23
+.macro MAC__ungrouped_8_of_20
 ; ----------------------------------------------------------------------------
 L_D1EF: sta     $B7                             ; D1EF
         lda     $15                             ; D1F1
@@ -988,7 +966,7 @@ L_D2A8: lda     #$00                            ; D2A8
 
 .endmacro
 
-.macro MAC__ungrouped_10_of_23
+.macro MAC__ungrouped_9_of_20
 ; ----------------------------------------------------------------------------
 L_D65E: .byte   $00,$00,$01,$01,$01,$00,$FF,$FF ; D65E
         .byte   $FF                             ; D666
@@ -1109,7 +1087,7 @@ L_D71E: rts                                     ; D71E
 
 .endmacro
 
-.macro MAC__ungrouped_11_of_23
+.macro MAC__ungrouped_10_of_20
 ; ----------------------------------------------------------------------------
 L_D763: jsr     L_D697                          ; D763
         bne     L_D76F                          ; D766
@@ -1177,7 +1155,7 @@ L_D7BA: sta     $7C,x                           ; D7BA
 
 .endmacro
 
-.macro MAC__ungrouped_12_of_23
+.macro MAC__ungrouped_11_of_20
 ; ----------------------------------------------------------------------------
 L_D883: lda     #$00                            ; D883
         sta     $93                             ; D885
@@ -1255,7 +1233,7 @@ L_D907: rts                                     ; D907
 
 .endmacro
 
-.macro MAC__ungrouped_13_of_23
+.macro MAC__ungrouped_12_of_20
 ; ----------------------------------------------------------------------------
 L_DCFC: lda     #$01                            ; DCFC
         sta     $39                             ; DCFE
@@ -1372,7 +1350,7 @@ LDE56:  .byte   $7D,$4B,$2D,$0B,$5D,$07,$6D,$39 ; DE56
         .byte   $6B,$69,$77,$29                 ; DEBE
 .endmacro
 
-.macro MAC__ungrouped_14_of_23
+.macro MAC__ungrouped_13_of_20
 ; ----------------------------------------------------------------------------
 L_DF05: lda     #$05                            ; DF05
         jmp     BankSave_Switch                 ; DF07
@@ -1383,7 +1361,7 @@ L_DF0A: lda     SavedPrgBank                    ; DF0A
 
 .endmacro
 
-.macro MAC__ungrouped_15_of_23
+.macro MAC__ungrouped_14_of_20
 ; ----------------------------------------------------------------------------
 L_E060: lsr     a                               ; E060
         dex                                     ; E061
@@ -1405,7 +1383,7 @@ L_E06A: cmp     #$80                            ; E06A
 
 .endmacro
 
-.macro MAC__ungrouped_16_of_23
+.macro MAC__ungrouped_15_of_20
 ; ----------------------------------------------------------------------------
 ; Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by
 ; OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA OAM_Flag__HARDCODED_00 /
@@ -1417,7 +1395,7 @@ OAM_Flag__HARDCODED_00:
         .byte   $00                             ; E6BE
 .endmacro
 
-.macro MAC__ungrouped_17_of_23
+.macro MAC__ungrouped_16_of_20
 ; ----------------------------------------------------------------------------
 L_E6DE: jmp     L_E6DE                          ; E6DE
 
@@ -1429,7 +1407,7 @@ LE6E5:  .byte   $10                             ; E6E5
 LE6E6:  .byte   $20,$40,$80                     ; E6E6
 .endmacro
 
-.macro MAC__ungrouped_18_of_23
+.macro MAC__ungrouped_17_of_20
 ; ----------------------------------------------------------------------------
 L_E6FA: lda     #$0F                            ; E6FA
         ldx     #$1F                            ; E6FC
@@ -1535,7 +1513,7 @@ L_E796: rts                                     ; E796
 
 .endmacro
 
-.macro MAC__ungrouped_19_of_23
+.macro MAC__ungrouped_18_of_20
 ; ----------------------------------------------------------------------------
 ; Helper routine to switch PRG banks.  This variant hardcodes X (IndirectPtrLo) to #$7A.
 ; 
@@ -1578,9 +1556,15 @@ BankDispatch_Switch_NoX:
         ldy     #$00                            ; EA53
         rts                                     ; EA55
 
-.endmacro
+; ----------------------------------------------------------------------------
+L_EA56: tya                                     ; EA56
+        clc                                     ; EA57
+        adc     IndirectPtrLo                   ; EA58
+        sta     IndirectPtrLo                   ; EA5A
+        bcc     L_EA60                          ; EA5C
+        inc     IndirectPtrHi                   ; EA5E
+L_EA60: jmp     (IndirectPtrLo)                 ; EA60
 
-.macro MAC__ungrouped_20_of_23
 ; ----------------------------------------------------------------------------
 L_EA63: lda     (IndirectPtrLo),y               ; EA63
         pha                                     ; EA65
@@ -1593,7 +1577,7 @@ L_EA63: lda     (IndirectPtrLo),y               ; EA63
 
 .endmacro
 
-.macro MAC__ungrouped_21_of_23
+.macro MAC__ungrouped_19_of_20
 ; ----------------------------------------------------------------------------
 L_EB44: tya                                     ; EB44
         clc                                     ; EB45
@@ -1618,20 +1602,17 @@ L_EB57: lda     (IndirectPtrLo),y               ; EB57
         ldy     #$00                            ; EB61
         rts                                     ; EB63
 
+; ----------------------------------------------------------------------------
+L_EB64: pha                                     ; EB64
+        lda     #$31                            ; EB65
+        jsr     BankDispatch_Switch             ; EB67
+        pla                                     ; EB6A
+        jsr     L_EB51                          ; EB6B
+        jmp     (IndirectPtrLo)                 ; EB6E
+
 .endmacro
 
-.macro MAC__ungrouped_22_of_23
-L_EBF4: .byte   $00,$01,$02,$03,$04,$05,$06,$07 ; EBF4
-        .byte   $08,$09,$0A,$0B,$0C,$0F,$0F,$0F ; EBFC
-        .byte   $10,$11,$12,$13,$14,$15,$16,$17 ; EC04
-        .byte   $18,$19,$1A,$1B,$1C,$0F,$0F,$0F ; EC0C
-        .byte   $20,$21,$22,$23,$24,$25,$26,$27 ; EC14
-        .byte   $28,$29,$2A,$2B,$2C,$0F,$0F,$0F ; EC1C
-        .byte   $30,$31,$32,$33,$34,$35,$36,$37 ; EC24
-        .byte   $38,$39,$3A,$3B,$3C,$3D,$3E,$0F ; EC2C
-.endmacro
-
-.macro MAC__ungrouped_23_of_23
+.macro MAC__ungrouped_20_of_20
 ; ----------------------------------------------------------------------------
 ; Computes the object's on-screen visibility and offsets the provided X/Y screen coordinates to
 ; the top-left corner of their OAM object (See ScreenPos_Adjust).
@@ -1655,17 +1636,17 @@ L_EBF4: .byte   $00,$01,$02,$03,$04,$05,$06,$07 ; EBF4
 ;   from centre)
 ;   Local_Sprite_Screen_Y = object's sprite top-left Y position (screen-relative, already offset
 ;   from centre)
-ScreenPos_Compute:
+.proc ScreenPos_Compute
         lda     LoadedObj + Obj::Position_X_Lo  ; EF2B
 ; Here we start the 16-bit subtraction:
-; (Position_X_Hi:Position_X_Lo) − (Camera_X_Hi:Camera_X_Lo).
+; (Position_X_Hi:Position_X_Lo) − (Viewport_X_Hi:Viewport_X_Lo).
 ; 
 ; Both operands are 16-bit signed values in the sfixed12.4 format (SWWW WWWW:wwww.ffff).
 ; 
 ; the SEC below starts the Lo half first.  The Hi half starts at $EF32.
         sec                                     ; EF2D
         sbc     $1C                             ; EF2E
-; set Local_Sprite_Screen_X = (LoadedObj.Position_X_Lo − Camera_X_Lo)
+; set Local_Sprite_Screen_X = (LoadedObj.Position_X_Lo − Viewport_X_Lo)
 ; this corresponds (roughly) to values 0..15px in fixed4.4 (wwww.ffff)
 ; 
 ; The borrow this subtraction produced is sitting in C for the Hi half to
@@ -1673,7 +1654,7 @@ ScreenPos_Compute:
         sta     $3E                             ; EF30
 ; X Hi-byte half of the subtract:
 ; 
-; set A = (LoadedObj.Position_X_Hi − Camera_X_Hi − borrow)
+; set A = (LoadedObj.Position_X_Hi − Viewport_X_Hi − borrow)
         lda     LoadedObj + Obj::Position_X_Hi  ; EF32
         sbc     $1D                             ; EF34
 ; The full signed difference is now split across two places 
@@ -1750,7 +1731,7 @@ ScreenPos_Compute:
 ; camera on either the X or Y axis.
 ; 
 ; Branch and handle.
-        bne     _ScreenPos_Compute__OffScreen   ; EF5F
+        bne     _OffScreen                      ; EF5F
 ; otherwise, check for overlaps with the screen edges:
 ; == Left and Right edges ==
         lda     $40                             ; EF61
@@ -1786,7 +1767,7 @@ ScreenPos_Compute:
 ; 
 ;     and this case is caught by the left screen edge test.
         cmp     $40                             ; EF67
-        bcc     _ScreenPos_Compute__OffScreen   ; EF69
+        bcc     _OffScreen                      ; EF69
 ; == Top and Bottom edges ==
 ; Unlike horizontally, the accepted band is not the full 0..255.
 ; Instead: box's top edge must be >= $0C, and its bottom edge < $E4.
@@ -1803,33 +1784,34 @@ ScreenPos_Compute:
         adc     $3F                             ; EF74
 ; if this branches it means the subtraction wrapped.
 ; i.e. the top edge sits above the top of the screen.
-        bcc     _ScreenPos_Compute__OffScreen   ; EF76
+        bcc     _OffScreen                      ; EF76
 ; The top edge must also clear $0C.
         cmp     #$0C                            ; EF78
-        bcc     _ScreenPos_Compute__OffScreen   ; EF7A
+        bcc     _OffScreen                      ; EF7A
         clc                                     ; EF7C
 ; Add the HitBox full height.
         adc     $41                             ; EF7D
 ; A is now the box's Bottom edge.
 ; BCS branching means it ran past 255 and is, therefore, offscreen.
-        bcs     _ScreenPos_Compute__OffScreen   ; EF7F
+        bcs     _OffScreen                      ; EF7F
 ; The Bottom edge must be < $E4.
         cmp     #$E4                            ; EF81
 ; If this *doesn't* branches it means A >= $54 and is, therefore, out of bounds.
 ; Fall through to OffScreen handler.
-        bcc     _ScreenPos_Compute__OnScreen    ; EF83
+        bcc     _OnScreen                       ; EF83
 ; Adjust to sprite top-left (ScreenPos_Adjust) and return A=$FF (off-screen).
-_ScreenPos_Compute__OffScreen:
+_OffScreen:
         jsr     ScreenPos_Adjust                ; EF85
         lda     #$FF                            ; EF88
         rts                                     ; EF8A
 
 ; ----------------------------------------------------------------------------
 ; Adjust to sprite top-left and return A=$00 (on-screen).
-_ScreenPos_Compute__OnScreen:
+_OnScreen:
         jsr     ScreenPos_Adjust                ; EF8B
         lda     #$00                            ; EF8E
         rts                                     ; EF90
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_EF91: lda     $3F                             ; EF91
@@ -1879,14 +1861,14 @@ L_EF91: lda     $3F                             ; EF91
 ; Subtract sprite-centre offset from Local_Sprite_Screen_X/Local_Sprite_Screen_Y.
 ;   tank     sections (8×8  OAM objects): -4/-5
 ;   overhead sections (8×16 OAM objects): -4/-9
-ScreenPos_Adjust:
+.proc ScreenPos_Adjust
         lda     $3E                             ; EFD7
         sec                                     ; EFD9
         sbc     #$04                            ; EFDA
         sta     $3E                             ; EFDC
         lda     $FF                             ; EFDE
         and     #$20                            ; EFE0
-        bne     _ScreenPos_Adjust__Overhead     ; EFE2
+        bne     _Overhead                       ; EFE2
 ; otherwise, tank section case:
         lda     $3F                             ; EFE4
         sec                                     ; EFE6
@@ -1896,12 +1878,13 @@ ScreenPos_Adjust:
 
 ; ----------------------------------------------------------------------------
 ; 8x16 sprite mode (PPU_CTRL_Shadow bit5): Y -= 9.
-_ScreenPos_Adjust__Overhead:
+_Overhead:
         lda     $3F                             ; EFEC
         sec                                     ; EFEE
         sbc     #$09                            ; EFEF
         sta     $3F                             ; EFF1
         rts                                     ; EFF3
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_EFF4: lda     $3E                             ; EFF4

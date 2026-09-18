@@ -18,56 +18,6 @@ Global_FrameCounter            := $0011
 ; bit5 on: NMI happened during bank switch.
 ; Set by NMI to signal BankSave_Switch must complete the deferred NMI work.
 Nmi_SignalFlags                := $0012
-; Obj: The 14-byte record every active object occupies. 18 are packed at $0400 (the object
-; table); slot 0 is the player.
-.struct Obj
-        Type          .byte   ; +$00 (byte)  Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
-        Facing        .byte   ; +$01 (byte)  Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
-        Position_X_Lo .byte   ; +$02 (fixed44)  The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
-        Position_X_Hi .byte   ; +$03 (sbyte)  The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
-        Position_Y_Lo .byte   ; +$04 (fixed44)  The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's Y-position.
-        Position_Y_Hi .byte   ; +$05 (sbyte)  The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
-        Velocity_X    .byte   ; +$06 (sfixed44)  X velocity in px/frame (signed 4.4: swww.ffff).
-        Velocity_Y    .byte   ; +$07 (sfixed44)  Y velocity in px/frame (signed 4.4: swww.ffff).
-        TileIndex     .byte   ; +$08 (byte)  Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500). Used for collision, not rendering.
-        .res          1       ; +$09
-        Scratch0      .byte   ; +$0A (byte)  General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
-        Scratch1      .byte   ; +$0B (byte)  General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
-        Scratch2      .byte   ; +$0C (byte)  General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
-        Health        .byte   ; +$0D (byte)  HP for this entity.
-.endstruct
-; BgPalette: Background palette: 4 NES master-palette indices.
-.struct BgPalette
-        Backdrop .byte   ; +$00 (byte)  entry 0 -- always treated as the backdrop colour.
-        Colour1  .byte   ; +$01 (byte)  entry 1
-        Colour2  .byte   ; +$02 (byte)  entry 2
-        Colour3  .byte   ; +$03 (byte)  entry 3
-.endstruct
-; SpritePalette: Sprite palette: 4 NES master-palette indices.
-.struct SpritePalette
-        Transparency .byte   ; +$00 (byte)  entry 0 -- always treated as transparent.
-        Colour1      .byte   ; +$01 (byte)  entry 1
-        Colour2      .byte   ; +$02 (byte)  entry 2
-        Colour3      .byte   ; +$03 (byte)  entry 3
-.endstruct
-; Contact: The 3-byte record in the contact table at $7C-$8D -- the hit-exchange channel
-; between the player's side and the enemies. Six records, one per object slot 0-5 (slot 0 =
-; the player, 1-5 = his shots/sub-weapons; the allocators keep enemies out of this range --
-; Obj_SpawnChild $D852 searches slots 6-17, Obj_TryCloneIntoEmptySlot $DF13 searches 8-15).
-; Enemies never occupy a record, they only scan it.
-.struct Contact
-        .res 3       ; +$00..+$02
-.endstruct
-; OamEntry: One hardware sprite as the NES OAM lays it out: 4 bytes, Y / tile / attribute / X.
-; This is the PPU's own record format, not a game-defined one -- OAM_Staging_Buffer ($0600) is
-; an array of these, and OAM_BlitFromStaging ($EC73) copies whole records straight into the
-; $0200 OAM shadow, which the NMI DMAs to $2004 via $4014.
-.struct OamEntry
-        Screen_Y .byte   ; +$00 (byte)  Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
-        Tile     .byte   ; +$01 (byte)  Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
-        Attr     .byte   ; +$02 (byte)  Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
-        Screen_X .byte   ; +$03 (byte)  Screen X, left edge.
-.endstruct
 ; The 14-byte zero-page working copy of the currently active object slot
 LoadedObject := $0046   ; Obj[] base — indexed access (any element)
 LoadedObj    := $0046   ; element 0 — direct access

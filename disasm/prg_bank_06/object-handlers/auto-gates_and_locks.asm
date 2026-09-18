@@ -2,11 +2,11 @@
 ; ----------------------------------------------------------------------------
 ; ObjTypes $24, $26, and $28: Auto Gate - Init.
 ; +0 entrypoint is just 3 NOPs, so both entrypoints do the same things.
-ObjHandler_Tank_24_26_28_Auto_Gate_Init:
+.proc ObjHandler_Tank_24_26_28_Auto_Gate_Init
         nop                                     ; 9D3B
         nop                                     ; 9D3C
         nop                                     ; 9D3D
-_ObjHandler_Tank_24_26_28_Auto_Gate_Init__Body:
+_Body:
         lda     #$00                            ; 9D3E
 ; Set StateTransitionCounter (Scratch1) to 0 (closed).
         sta     LoadedObj + Obj::Scratch1       ; 9D40
@@ -18,10 +18,11 @@ _ObjHandler_Tank_24_26_28_Auto_Gate_Init__Body:
 ; Advance ObjType to Main handler ($24->$25, $26->$27, $28->$29)
         inc     LoadedObj + Obj::Type           ; 9D49
         rts                                     ; 9D4B
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $25: Wall Guardian Gate - Main.
-ObjHandler_Tank_25_WallGuardianGate_Main:
+.proc ObjHandler_Tank_25_WallGuardianGate_Main
         rts                                     ; 9D4C
 
 ; ----------------------------------------------------------------------------
@@ -29,7 +30,7 @@ ObjHandler_Tank_25_WallGuardianGate_Main:
         nop                                     ; 9D4D
         nop                                     ; 9D4E
 ; Point IndirectPtr to the appropriate pattern data for the 'Closed' gate tiles.
-_ObjHandler_Tank_25_WallGuardianGate_Main__Body:
+_Body:
         lda     Area1_Tank_GateCloseTileDrawInstructionPtr; 9D4F
         sta     IndirectPtrLo                   ; 9D52
         lda     Area1_Tank_GateCloseTileDrawInstructionPtr+1; 9D54
@@ -38,6 +39,7 @@ _ObjHandler_Tank_25_WallGuardianGate_Main__Body:
         ldx     #$00                            ; 9D5B
 ; Skip to shared GateHandler, passing in A = #$01 and X = 0.
         beq     L_9D83                          ; 9D5D
+.endproc
 L_9D5F: rts                                     ; 9D5F
 
 ; ----------------------------------------------------------------------------

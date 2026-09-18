@@ -192,7 +192,7 @@ block and the whip block and are **never produced by any _reachable_ state's for
 though each has a valid metasprite definition (`$BC5F` / `$BC6E` / `$BC78`). They are an unused
 animation: three full-body poses of the final boss, distinct from both the walk and whip frames.
 
-**The formula that produces them exists — as dead code.** `DEAD_Boss8_Phase2_AnimFrame_CutState`
+**The formula that produces them exists — as dead code.** `_DEAD_Boss8_Phase2_ComputeAnimFrame__CutState`
 (`$AE42`, tagged `[code]`; see dead-code.md) is an unreachable fourth branch of
 `Boss8_Phase2_ComputeAnimFrame`: `$0670 = 6/7/8` chosen by the attack-timer `$51`
 (`≥$30`→6, `≥$18`→7, else 8), i.e. exactly ids `$5E+6/7/8` = `$64`/`$65`/`$66`. It is a structural
@@ -241,7 +241,7 @@ ever enter:
 |---|---|---|
 | State setter (`$50=4`, timer `$51=$37`) | `$AD99` | present, **callerless** — `DEAD_Boss8_Phase2_SetState4` |
 | State tick + timer | `$AD55` | present and **dispatched** (`$ACC9`: `CMP #$04 / BEQ`) |
-| Animation frame picker | `$AE42` | present, **never branched to** — `DEAD_Boss8_Phase2_AnimFrame_CutState` |
+| Animation frame picker | `$AE42` | present, **never branched to** — `_DEAD_Boss8_Phase2_ComputeAnimFrame__CutState` |
 | 3 body poses | metasprites `$64`/`$65`/`$66` | present, unreferenced |
 | Projectile spawn hook | `$AD5C` | **gutted** (below) |
 | Projectile ObjType + handler | — | **removed from the ROM** |
@@ -303,7 +303,7 @@ banks, so there is no cross-bank misfire.
 |---|---|---|
 | `$AD47`: `$63` → `$99` | **`OPGZNILV`** | whip-state expiry jumps to `DEAD_Boss8_Phase2_SetState4` instead of `PickNextState`, so the cycle becomes movement → whip → **state 4** → re-roll |
 | `$ADFD`: `$02` → `$04` | **`GEYXSIZA`** | `ComputeAnimFrame`'s `$50`-dispatch tests state 4… |
-| `$ADFF`: `$5A` → `$42` | **`ZKYXNSZI`** | …and branches to `DEAD_Boss8_Phase2_AnimFrame_CutState` (`$AE42`) |
+| `$ADFF`: `$5A` → `$42` | **`ZKYXNSZI`** | …and branches to `_DEAD_Boss8_Phase2_ComputeAnimFrame__CutState` (`$AE42`) |
 
 Code 1 alone enters state 4, but with the *walk* animation (there is no state-4 arm in
 `ComputeAnimFrame`). Codes 2+3 add one by **reusing the state-2 arm**: state 2 then falls through

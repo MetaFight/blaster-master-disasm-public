@@ -1,49 +1,48 @@
 .macro MAC_object_handlers__hopper_10hp
 ; ----------------------------------------------------------------------------
 ; ObjType $7A: Gray Hopper (10 HP) - Init.
-ObjHandler_Tank_7A_Gray_Hopper_10HP_Init:
-        jmp     _ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Done; B16E
+.proc ObjHandler_Tank_7A_Gray_Hopper_10HP_Init
+        jmp     _Done                           ; B16E
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Body:
+_Body:
         lda     #$12                            ; B171
 ; Init the enemy from descriptor $12.
         jsr     TankEnemy_Init                  ; B173
         lda     LoadedObj + Obj::Position_X_Hi  ; B176
         lsr     a                               ; B178
 ; On even columns, set positive Velocity_X.
-        bcc     _ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__VelRight; B179
+        bcc     _VelRight                       ; B179
 ; Otherwise, set Velocity_X to -0.75
         lda     #$F4                            ; B17B
-        jmp     _ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__VelStore; B17D
+        jmp     _VelStore                       ; B17D
 
 ; ----------------------------------------------------------------------------
 ; set Velocity_X to +0.75
-_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__VelRight:
+_VelRight:
         lda     #$0C                            ; B180
 ; Commit the Velocity_X, then clear Velocity_Y, Scratch0 and Scratch1.
-_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__VelStore:
+_VelStore:
         sta     LoadedObj + Obj::Velocity_X     ; B182
         lda     #$00                            ; B184
         sta     LoadedObj + Obj::Velocity_Y     ; B186
         lda     #$00                            ; B188
         sta     LoadedObj + Obj::Scratch0       ; B18A
         sta     LoadedObj + Obj::Scratch1       ; B18C
-_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Done:
+_Done:
         rts                                     ; B18E
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $7B: Gray Hopper (10 HP) - Patrolling.
 ; It drops to the ground, then paces back and forth, reversing off walls and turning back at
 ; platform edges. At each edge there is a 1-in-16 chance it leaps out over the gap.
-ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling:
-        jmp     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__AfterPhysics; B18F
+.proc ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling
+        jmp     _AfterPhysics                   ; B18F
 
 ; ----------------------------------------------------------------------------
-; +3 body entry (normal play)
-; 
-; Start by setting collision box dimensions.
-_ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling__Body:
+_Body:
+; Set collision box dimensions.
         lda     #$80                            ; B192
         sta     $42                             ; B194
         lda     #$C0                            ; B196
@@ -51,20 +50,20 @@ _ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling__Body:
 ; Scratch0 is the Grounded flag.  0 = airborne, 1 = grounded.
         lda     LoadedObj + Obj::Scratch0       ; B19A
 ; If grounded, skip gravity physics.
-        bne     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__GroundedPhysics; B19C
+        bne     _GroundedPhysics                ; B19C
 ; Otherwise, handle falling and landing.
         jsr     Obj_FallAndLand                 ; B19E
 ; Skip to post-physics tail if landing didn't happen.
-        beq     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__AfterPhysics; B1A1
+        beq     _AfterPhysics                   ; B1A1
 ; On landing: Set Grounded = 1 and fall through to Grounded physics.
         inc     LoadedObj + Obj::Scratch0       ; B1A3
 ; Obj_MoveBounce advances the hopper and reverses Velocity_X off any side wall.
-_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__GroundedPhysics:
+_GroundedPhysics:
         jsr     Obj_MoveBounce                  ; B1A5
 ; Handle edge-hop.
-        jsr     _ObjHandler_Hopper_Hulk_Common__EdgeHop; B1A8
+        jsr     L_B1DE                          ; B1A8
 ; The post-physics tail every other path falls into
-_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__AfterPhysics:
+_AfterPhysics:
         lda     #$10                            ; B1AB
         sta     $40                             ; B1AD
         lda     #$10                            ; B1AF
@@ -72,17 +71,17 @@ _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__AfterPhysics:
 ; Load the object dimensions and do an on-screen test
         jsr     ScreenPos_Compute               ; B1B3
 ; If still on-screen, progress to the Damage handler code,
-        beq     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Damage; B1B6
+        beq     _Damage                         ; B1B6
 ; otherwise, start the despawn process by tombstoning.
         jmp     Obj_Tombstone                   ; B1B8
 
 ; ----------------------------------------------------------------------------
 ; Run shared damage check routine with enemy descriptor $12.
-_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Damage:
+_Damage:
         lda     #$12                            ; B1BB
         jsr     TankEnemy_DamageCheck           ; B1BD
 ; If non-fatal, skip to render tail,
-        beq     _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Render; B1C0
+        beq     _Render                         ; B1C0
 ; otherwise, call the shared death handler.
         jmp     TankEnemy_DefeatTrackedEnemy    ; B1C2
 
@@ -90,7 +89,7 @@ _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Damage:
 ; Render logic.
 ; 
 ; Prep A as with the OAM Attribute byte value,
-_ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Render:
+_Render:
         lda     #$01                            ; B1C5
 ; Obj_SetOAMAttr_FlipX_and_Palette sets the H-flip bit to A and saves a copy to
 ; WR_44__OAM_Attribute__or__Outgoing_Contact_Damage
@@ -110,6 +109,7 @@ _ObjHandler_Tank_7B_GrayHopper10HP_Patrolling_Main__Render:
 ; Load the animation frame Metasprite id and call the renderer sub.
         lda     GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame,x; B1D3
         jmp     MetaSprite_Render               ; B1D6
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Single unreachable $60 (RTS)

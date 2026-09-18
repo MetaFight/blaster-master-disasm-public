@@ -1,11 +1,11 @@
 .macro MAC_object_handlers__turret
 ; ----------------------------------------------------------------------------
 ; ObjType $66: Ceiling Turret - Init.
-ObjHandler_Tank_66_Turret_Init:
-        jmp     _ObjHandler_Tank_66_Turret_Init__Done; AA5A
+.proc ObjHandler_Tank_66_Turret_Init
+        jmp     _Done                           ; AA5A
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_66_Turret_Init__Body:
+_Body:
         lda     #$08                            ; AA5D
 ; Init via TankEnemy_Init with descriptor #$08.
         jsr     TankEnemy_Init                  ; AA5F
@@ -15,17 +15,18 @@ _ObjHandler_Tank_66_Turret_Init__Body:
         jsr     Step_RNG                        ; AA66
 ; Set PhaseCounter (Scratch1) to a random initial value.
         sta     LoadedObj + Obj::Scratch1       ; AA69
-_ObjHandler_Tank_66_Turret_Init__Done:
+_Done:
         rts                                     ; AA6B
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $67: Ceiling Turret - Main.
-ObjHandler_Tank_67_Turret_Main:
-        jmp     _ObjHandler_Tank_67_Turret_Main__Bookkeeping; AA6C
+.proc ObjHandler_Tank_67_Turret_Main
+        jmp     _Bookkeeping                    ; AA6C
 
 ; ----------------------------------------------------------------------------
-; Start by setting the collision box.
-_ObjHandler_Tank_67_Turret_Main__Body:
+_Body:
+; Set the collision box.
         lda     #$80                            ; AA6F
         sta     $42                             ; AA71
         lda     #$80                            ; AA73
@@ -35,50 +36,50 @@ _ObjHandler_Tank_67_Turret_Main__Body:
         lda     LoadedObj + Obj::Scratch1       ; AA79
         and     #$01                            ; AA7B
 ; On odd frames, skip straight to bookkeeping tail.
-        bne     _ObjHandler_Tank_67_Turret_Main__Bookkeeping; AA7D
+        bne     _Bookkeeping                    ; AA7D
         lda     LoadedObj + Obj::Scratch1       ; AA7F
 ; If bit7 of PhaseCounter (Scratch1) is not set, skip to the SpinUp handler.
-        bpl     _ObjHandler_Tank_67_Turret_Main__SpinUp; AA81
+        bpl     _SpinUp                         ; AA81
 ; If SpinSpeed (Scratch2) <= #$01, skip to bookkeeping.
 ; otherwise, decrement and skip to FireCheck.
-_ObjHandler_Tank_67_Turret_Main__SpinDown:
+_SpinDown:
         ldx     LoadedObj + Obj::Scratch2       ; AA83
         cpx     #$02                            ; AA85
-        bcc     _ObjHandler_Tank_67_Turret_Main__Bookkeeping; AA87
+        bcc     _Bookkeeping                    ; AA87
         dec     LoadedObj + Obj::Scratch2       ; AA89
-        jmp     _ObjHandler_Tank_67_Turret_Main__FireCheck; AA8B
+        jmp     _FireCheck                      ; AA8B
 
 ; ----------------------------------------------------------------------------
 ; If SpinSpeed (Scratch2) >= #$20, skip to bookkeeping.
 ; otherwise, increment and fall through to FireCheck.
-_ObjHandler_Tank_67_Turret_Main__SpinUp:
+_SpinUp:
         ldx     LoadedObj + Obj::Scratch2       ; AA8E
         cpx     #$20                            ; AA90
-        bcs     _ObjHandler_Tank_67_Turret_Main__Bookkeeping; AA92
+        bcs     _Bookkeeping                    ; AA92
         inc     LoadedObj + Obj::Scratch2       ; AA94
-_ObjHandler_Tank_67_Turret_Main__FireCheck:
+_FireCheck:
         lda     LoadedObj + Obj::Scratch2       ; AA96
         cmp     #$04                            ; AA98
 ; If SpinSpeed (Scratch2) <= #$04, skip to bookkeeping.
-        bcc     _ObjHandler_Tank_67_Turret_Main__Bookkeeping; AA9A
+        bcc     _Bookkeeping                    ; AA9A
         lda     LoadedObj + Obj::Scratch1       ; AA9C
         and     #$07                            ; AA9E
 ; If lower 3 bits of PhaseCounter (Scratch1) not clear, skip to bookkeeping.
-        bne     _ObjHandler_Tank_67_Turret_Main__Bookkeeping; AAA0
+        bne     _Bookkeeping                    ; AAA0
 ; Otherwise, try to spawn a ballistic projectile.
         jsr     Obj_TryCloneIntoEmptySlot       ; AAA2
 ; On failure, skip to bookkeeping.
-        beq     _ObjHandler_Tank_67_Turret_Main__Bookkeeping; AAA5
+        beq     _Bookkeeping                    ; AAA5
         jsr     Step_RNG                        ; AAA7
         and     #$40                            ; AAAA
 ; On success, (X = BallisticSlot) pick shot direction randomly.
-        bne     _ObjHandler_Tank_67_Turret_Main__DirAlt; AAAC
+        bne     _DirAlt                         ; AAAC
         lda     #$80                            ; AAAE
-        bne     _ObjHandler_Tank_67_Turret_Main__FireShot; AAB0
-_ObjHandler_Tank_67_Turret_Main__DirAlt:
+        bne     _FireShot                       ; AAB0
+_DirAlt:
         lda     #$00                            ; AAB2
 ; Store selected shot direction into BallisticSlot.Facing,
-_ObjHandler_Tank_67_Turret_Main__FireShot:
+_FireShot:
         sta     ObjectTable + Obj::Facing,x     ; AAB4
         lda     LoadedObj + Obj::Scratch2       ; AAB7
         asl     a                               ; AAB9
@@ -97,27 +98,27 @@ _ObjHandler_Tank_67_Turret_Main__FireShot:
         lda     #$46                            ; AACF
         sta     ObjectTable + Obj::Type,x       ; AAD1
 ; Do on-screen test.  If on-screen, handle damage path.  Otherwise, tombstone.
-_ObjHandler_Tank_67_Turret_Main__Bookkeeping:
+_Bookkeeping:
         lda     #$10                            ; AAD4
         sta     $40                             ; AAD6
         lda     #$10                            ; AAD8
         sta     $41                             ; AADA
         jsr     ScreenPos_Compute               ; AADC
-        beq     _ObjHandler_Tank_67_Turret_Main__Damage; AADF
+        beq     _Damage                         ; AADF
         jmp     Obj_Tombstone                   ; AAE1
 
 ; ----------------------------------------------------------------------------
 ; Used shared damage handler with descriptor #$08.  If non-fatal, skip to renderer, otherwise skip
 ; to shared defeat handler.
-_ObjHandler_Tank_67_Turret_Main__Damage:
+_Damage:
         lda     #$08                            ; AAE4
         jsr     TankEnemy_DamageCheck           ; AAE6
-        beq     _ObjHandler_Tank_67_Turret_Main__Render; AAE9
+        beq     _Render                         ; AAE9
         jmp     TankEnemy_DefeatTrackedEnemy    ; AAEB
 
 ; ----------------------------------------------------------------------------
 ; Update Facing based on SpinSpeed (Scratch2)
-_ObjHandler_Tank_67_Turret_Main__Render:
+_Render:
         jsr     Obj_TurnHeading                 ; AAEE
         lsr     a                               ; AAF1
         lsr     a                               ; AAF2
@@ -126,12 +127,13 @@ _ObjHandler_Tank_67_Turret_Main__Render:
 ; Convert the heading to a lookup table index,
         and     #$0E                            ; AAF5
         tax                                     ; AAF7
-        lda     TankTurret_SpriteByAngle+1,x    ; AAF8
+        lda     TankTurret_SpriteByAngle + TurretRenderParams::OamAttributes,x ; AAF8
 ; set the OAM attributes,
         sta     $44                             ; AAFB
-        lda     TankTurret_SpriteByAngle,x      ; AAFD
+        lda     TankTurret_SpriteByAngle + TurretRenderParams::MetaSpriteId,x ; AAFD
 ; and fetch the MetaSprite Id before calling the shared MetaSprite_Render.
         jmp     MetaSprite_Render               ; AB00
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Turret render table.  8 [metaspriteId, attr] pairs.

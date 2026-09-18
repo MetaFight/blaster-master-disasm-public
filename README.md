@@ -23,7 +23,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 141 / 851 (17%) |
+| **M4** — Verified subroutines (public, clean) | 138 / 827 (17%) |
 | **M6** — Verified docs (public, clean) | 4 / 117 (3%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -54,7 +54,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 | <details><summary>✅ Hulk</summary>✅ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>✅ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Jellyfish</summary>✅ <code>ObjHandler_Tank_80_Jellyfish_Init</code><br/>✅ <code>ObjHandler_Tank_81_Jellyfish_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Mine</summary>✅ <code>ObjHandler_Tank_64_Mine_Init</code><br/>✅ <code>ObjHandler_Tank_65_Mine_Main</code></details> | 2 / 2 |
-| <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Common_35_PickUp_Main</code></details> | 1 / 1 |
+| <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Tank_35_PickUp_Main</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Gun; x4</summary>✅ <code>ObjHandler_Tank_31_Pickup_Gun_x4_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Homing Missile; x20</summary>✅ <code>ObjHandler_Tank_32_Homing_Missiles_x20_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Hover; x4</summary>✅ <code>ObjHandler_Tank_2F_Pick_up_Hover_x4_Init</code></details> | 1 / 1 |
@@ -105,7 +105,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 | <details><summary>✅ Mine</summary>✅ <code>ObjHandler_Tank_64_Mine_Init</code><br/>✅ <code>ObjHandler_Tank_65_Mine_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Orb</summary>⬜ <code>ObjHandler_Tank_72_Orb_Init</code><br/>⬜ <code>ObjHandler_Tank_73_Orb_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Orb; Kamikaze</summary>⬜ <code>ObjHandler_Tank_78_Kamikaze_Orb_Init</code><br/>⬜ <code>ObjHandler_Tank_79_Kamikaze_Orb_Main</code></details> | 0 / 2 |
-| <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Common_35_PickUp_Main</code></details> | 1 / 1 |
+| <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Tank_35_PickUp_Main</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Homing Missile; x20</summary>✅ <code>ObjHandler_Tank_32_Homing_Missiles_x20_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Lightning; x20</summary>✅ <code>ObjHandler_Tank_33_Pick_up_Lightning_x20_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Multi-Warhead; x20</summary>✅ <code>ObjHandler_Tank_34_Pickup_Warheads_x20_Init</code></details> | 1 / 1 |
@@ -249,7 +249,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 | <details><summary>⬜ Caterpillar; Gray</summary>⬜ <code>ObjHandler_Tank_54_Gray_Caterpillar_Init</code><br/>⬜ <code>ObjHandler_Tank_55_Gray_Caterpillar_Main</code></details> | 0 / 2 |
 | <details><summary>⬜ Flying Ship</summary>⬜ <code>ObjHandler_Tank_6A_Flying_Ship_Init</code><br/>⬜ <code>ObjHandler_Tank_6B_Flying_Ship_Main</code></details> | 0 / 2 |
 | <details><summary>✅ Mine</summary>✅ <code>ObjHandler_Tank_64_Mine_Init</code><br/>✅ <code>ObjHandler_Tank_65_Mine_Main</code></details> | 2 / 2 |
-| <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Common_35_PickUp_Main</code></details> | 1 / 1 |
+| <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Tank_35_PickUp_Main</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Homing Missile; x20</summary>✅ <code>ObjHandler_Tank_32_Homing_Missiles_x20_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Lightning; x20</summary>✅ <code>ObjHandler_Tank_33_Pick_up_Lightning_x20_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Multi-Warhead; x20</summary>✅ <code>ObjHandler_Tank_34_Pickup_Warheads_x20_Init</code></details> | 1 / 1 |
@@ -290,7 +290,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 | <details><summary>✅ Hulk</summary>✅ <code>ObjHandler_Tank_5D_Hulk_Init</code><br/>✅ <code>ObjHandler_Tank_5E_Hulk_Main</code></details> | 2 / 2 |
 | <details><summary>✅ Mine</summary>✅ <code>ObjHandler_Tank_64_Mine_Init</code><br/>✅ <code>ObjHandler_Tank_65_Mine_Main</code></details> | 2 / 2 |
 | <details><summary>⬜ Orb</summary>⬜ <code>ObjHandler_Tank_72_Orb_Init</code><br/>⬜ <code>ObjHandler_Tank_73_Orb_Main</code></details> | 0 / 2 |
-| <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Common_35_PickUp_Main</code></details> | 1 / 1 |
+| <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Tank_35_PickUp_Main</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Gun; x1</summary>✅ <code>ObjHandler_Tank_30_Gun_gun_x1</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Gun; x4</summary>✅ <code>ObjHandler_Tank_31_Pickup_Gun_x4_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Homing Missile; x20</summary>✅ <code>ObjHandler_Tank_32_Homing_Missiles_x20_Init</code></details> | 1 / 1 |
@@ -339,7 +339,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 | <details><summary>⬜ Flying Bomber; Red Caterpillar</summary>⬜ <code>ObjHandler_Tank_74_Flying_Red_Caterpillar_Bomber</code><br/>⬜ <code>ObjHandler_Tank_75_Flying_Red_Caterpillar_Bomber</code></details> | 0 / 2 |
 | <details><summary>⬜ Flying Ship</summary>⬜ <code>ObjHandler_Tank_6A_Flying_Ship_Init</code><br/>⬜ <code>ObjHandler_Tank_6B_Flying_Ship_Main</code></details> | 0 / 2 |
 | <details><summary>✅ Mine</summary>✅ <code>ObjHandler_Tank_64_Mine_Init</code><br/>✅ <code>ObjHandler_Tank_65_Mine_Main</code></details> | 2 / 2 |
-| <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Common_35_PickUp_Main</code></details> | 1 / 1 |
+| <details><summary>✅ Pick-up</summary>✅ <code>ObjHandler_Tank_35_PickUp_Main</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Homing Missile; x20</summary>✅ <code>ObjHandler_Tank_32_Homing_Missiles_x20_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Pick-up: Pow; x4</summary>✅ <code>ObjHandler_Tank_2D_Pick_up_Pow_x4_Init</code></details> | 1 / 1 |
 | <details><summary>✅ Projectile: Small Red</summary>✅ <code>ObjHandler_Tank_3C_Small_Red_Init</code><br/>✅ <code>ObjHandler_Tank_3D_Small_Red_Main</code></details> | 2 / 2 |
@@ -372,19 +372,18 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 |:-:|------|---|
 | ✅✅✅✅ | 06 / `object-handlers/flier_gray` |  |
 | ✅✅✅✅ | 06 / `object-handlers/flying-bomber` |  |
-| ✅✅✅✅ | 06 / `object-handlers/hopper_10hp` |  |
+| ✅✅✅✅ | 06 / `object-handlers/hopper_10hp` | `ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling` depends on unverified routine `HopperHulk_5E_7B_SharedEdgeHop`. |
 | ✅✅✅✅ | 06 / `object-handlers/hopper_6hp` |  |
-| ✅✅✅✅ | 06 / `object-handlers/hopper_hulk_common` |  |
-| ✅✅✅✅ | 06 / `object-handlers/hulk` |  |
+| ✅✅✅✅ | 06 / `object-handlers/hulk` | `ObjHandler_Tank_5E_Hulk_Main` depends on unverified routine `HopperHulk_5E_7B_SharedEdgeHop`. |
 | ✅✅✅✅ | 06 / `object-handlers/jellyfish` |  |
 | ✅✅✅✅ | 06 / `object-handlers/mine` |  |
+| ✅✅✅✅ | 06 / `object-handlers/pickups` | `ObjHandler_Tank_35_PickUp_Main` depends on unverified routines `OAM_Stage_Sprite_Shape5_Quad2x2` and `BankDispatch_Index`. |
 | ✅✅✅✅ | 06 / `object-handlers/shooter` |  |
 | ✅✅✅✅ | 06 / `object-handlers/turret` |  |
 | ✅✅✅✅ | 06 / `object-handlers/wall-guardian` | `ObjHandler_Tank_91_Wall_Guardian_Main` depends on unverified routines `TankBoss_DamageCheck`, `HitboxScan_LockOn` and 3 more. |
 | ✅✅✅✅ | 07 / `rng` |  |
 | ⬜◽⬛⬛<br/>`37.5%` | 04 / `object-handlers/camera` | `ObjHandler_Ovhd_3B_Vertical_Camera_Init` and `ObjHandler_Ovhd_3C_Vertical_Camera_Main` depend on unverified routines `OvhdEnemy_Init` and `OvhdEnemy_HandleIncomingDamage`. |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `_ungrouped` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 04 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `object-handlers/_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `object-handlers/bosses` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `object-handlers/charging-robot` |  |
@@ -404,15 +403,13 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `object-handlers/spitter` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `object-handlers/zombie-head` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 05 / `(ungrouped — no .groups file)` |  |
-| ⬜⬜⬜◽<br/>`97.1%` | 06 / `object-handlers/pickups` | `ObjHandler_Common_35_PickUp_Main` depends on unverified routines `OAM_Stage_Sprite_Shape5_Quad2x2` and `BankDispatch_Index`. |
+| ⬜⬜⬜▫️<br/>`81.5%` | 06 / `object-handlers/bullet_gray` | `ObjHandler_Tank_59_Gray_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/_common` | `TankEnemy_DamageCheck` depends on unverified routine `Enemy_DamageCheck`. |
-| ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_gray` | `ObjHandler_Tank_59_Gray_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_red` | `ObjHandler_Tank_8E_Red_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
-| ⬜▫️⬛⬛<br/>`31.2%` | 06 / `object-handlers/projectiles-and-ballistics` | `ObjHandler_Tank_3C_Small_Red_Init`, `ObjHandler_Tank_47_Turret_Shot_Main`, and `ObjHandler_Tank_49_Medium_Red_Projectile_Main` depend on unverified routines `Obj_AimVelocityFromDelta` and `HitboxScan_LockOn`. |
+| ⬜▫️⬛⬛<br/>`30.1%` | 06 / `object-handlers/projectiles-and-ballistics` | `ObjHandler_Tank_3C_Small_Red_Init`, `ObjHandler_Tank_47_Turret_Shot_Main`, and `ObjHandler_Tank_49_Medium_Red_Projectile_Main` depend on unverified routines `Obj_AimVelocityFromDelta` and `HitboxScan_LockOn`. |
 | ◽⬛⬛⬛<br/>`20.0%` | 06 / `object-handlers/bosses` |  |
-| ◽⬛⬛⬛<br/>`18.2%` | 06 / `_ungrouped` |  |
+| ◽⬛⬛⬛<br/>`18.9%` | 06 / `_ungrouped` |  |
 | ◽⬛⬛⬛<br/>`12.9%` | 06 / `object-handlers/auto-gates_and_locks` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/_ungrouped` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bee` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/bomb-canister` |  |
@@ -427,6 +424,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flier_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-bomber_caterpillar_red` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/flying-ship` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/hopper_hulk_common` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/jason-small` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/orb` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/orb_kamikaze` |  |
@@ -435,14 +433,14 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/sophia` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/submersible` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/swooping-sphere` |  |
-| ⬜⬜▫️⬛<br/>`60.4%` | 07 / `05_game-screen/object-system` |  |
+| ⬜⬜▫️⬛<br/>`60.0%` | 07 / `05_game-screen/object-system` |  |
 | ⬜⬜▫️⬛<br/>`57.1%` | 07 / `screen-fade` |  |
 | ⬜⬜⬛⬛<br/>`50.0%` | 07 / `sound` |  |
 | ⬜◽⬛⬛<br/>`37.5%` | 07 / `mmc1` | `BankSave_Switch` depends on unverified routine `Nmi_DoWork`. |
 | ⬜▫️⬛⬛<br/>`33.3%` | 07 / `timing` | `NMI` depends on unverified routine `Nmi_DoWork`. |
-| ⬜▫️⬛⬛<br/>`30.2%` | 07 / `math` |  |
+| ◽⬛⬛⬛<br/>`24.1%` | 07 / `math` |  |
 | ▫️⬛⬛⬛<br/>`9.6%` | 07 / `hardware` |  |
-| ▫️⬛⬛⬛<br/>`7.4%` | 07 / `drawing-metasprites` | `MetaSprite_Render` depends on unverified routine `MetaSprite_RenderNoBank`. |
+| ▫️⬛⬛⬛<br/>`5.9%` | 07 / `drawing-metasprites` | `MetaSprite_Render` depends on unverified routine `MetaSprite_RenderNoBank`. |
 | ▫️⬛⬛⬛<br/>`4.8%` | 07 / `_ungrouped` |  |
 | ▫️⬛⬛⬛<br/>`4.2%` | 07 / `drawing-sprites` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `00_title-screen` |  |
@@ -452,15 +450,13 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `03_intro-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `04a_lives-left-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `04b_area-entry-screen` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/camera` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/game-loop` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/hud` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/object-system_terrain` |  |
+| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `05_game-screen/viewport` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `06_pause-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `bank-tail` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `camera` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `continue-screen` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `dead` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `drawing-background` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `ending` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `input` |  |
@@ -468,7 +464,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **7** pages, of which **3** are alpha.
 
-_Generated: 2026-09-16 13:55 UTC_
+_Generated: 2026-09-18 22:46 UTC_
 
 ## Pages
 

@@ -37,10 +37,9 @@ TankEnemy_Init:
 ; Output:
 ;   EnemyParam_Ptr[Lo/Hi] ($A1/$A2) are set to point to the enemy's 4-byte EnemyDesc entry in
 ;   TankEnemy_DescTable.
-; 
-; Start by multiplying A by 4.  EnemyDesc entries are 4-bytes in size so this converts the array
-; index into the target element's offset.
 TankEnemy_Load_EnemyDescPtr:
+; Multiply A by 4.  EnemyDesc entries are 4-bytes in size so this converts the array index into
+; the target element's offset.
         asl     a                               ; A2FA
         asl     a                               ; A2FB
         clc                                     ; A2FC
@@ -65,10 +64,9 @@ TankEnemy_Load_EnemyDescPtr:
 ; 
 ; Output:
 ;   A = $FF when Obj is killed.  $00 otherwise.
-; 
-; Start by fetching the pointer to this enemy type's Descriptor Record (set to EnemyParam_PtrLo/Hi
-; by calling TankEnemy_Load_EnemyDescPtr).
-TankEnemy_DamageCheck:
+.proc TankEnemy_DamageCheck
+; Fetch the pointer to this enemy type's Descriptor Record (set to EnemyParam_PtrLo/Hi by calling
+; TankEnemy_Load_EnemyDescPtr).
         jsr     TankEnemy_Load_EnemyDescPtr     ; A30A
         ldy     #$01                            ; A30D
 ; Y=1 selects EnemyDesc field [1] = ContactDamage
@@ -81,13 +79,13 @@ TankEnemy_DamageCheck:
         sta     $45                             ; A314
 ; If no hit occurred, then the target is necessarily still alive, so branch to the no-kill
 ; handler.
-        bne     _TankEnemy_DamageCheck__NotKilled; A316
+        bne     _NotKilled                      ; A316
 ; Otherwise handle the hit.
 ; 
 ; Re-read Health (already decremented by Enemy_DamageCheck).
         lda     LoadedObj + Obj::Health         ; A318
 ; If it's still > 0, then skill to the no-kill handler.
-        bne     _TankEnemy_DamageCheck__NotKilled; A31A
+        bne     _NotKilled                      ; A31A
 ; If Health is 0, play a sound effect and return $FF to indicate the kill.
         lda     #$1D                            ; A31C
         jsr     Enqueue_Sound_Command           ; A31E
@@ -96,9 +94,10 @@ TankEnemy_DamageCheck:
 
 ; ----------------------------------------------------------------------------
 ; Return $00 to indicate damage was not applied or it was applied but left Health > 0.
-_TankEnemy_DamageCheck__NotKilled:
+_NotKilled:
         lda     #$00                            ; A324
         rts                                     ; A326
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_A327: jsr     TankEnemy_Load_EnemyDescPtr     ; A327
@@ -138,25 +137,26 @@ TankEnemy_DefeatUntrackedEnemy:
 TankEnemy_DefeatTrackedEnemy:
         jsr     Obj_DespawnAndLog               ; A34D
 ; On enemy death, roll the RNG for a chance to drop a Pickup.
-TankEnemy_SpawnDrop:
+.proc TankEnemy_SpawnDrop
         jsr     Step_RNG                        ; A350
         ldy     #$03                            ; A353
 ; Load Enemy's DropRate to compare with RNG
         cmp     ($A1),y                         ; A355
 ; Branch to Explode tail if RNG >= DropRate (miss).
-        bcs     _TankEnemy_SpawnDrop__Explode   ; A357
+        bcs     _Explode                        ; A357
 ; Otherwise, acquire an Object Slot for the Pickup.
         jsr     Obj_TryCloneIntoEmptySlot       ; A359
 ; On failure, skip to Explode tail,
-        beq     _TankEnemy_SpawnDrop__Explode   ; A35C
+        beq     _Explode                        ; A35C
 ; On success, load Pickup ObjType from Descriptor record,
         ldy     #$02                            ; A35E
         lda     ($A1),y                         ; A360
 ; and set it in the newly allocated object slot.
         sta     ObjectTable + Obj::Type,x       ; A362
 ; Tail — JMP SpawnBigExplosion ($9B8B), always taken after the optional drop.
-_TankEnemy_SpawnDrop__Explode:
+_Explode:
         jmp     SpawnBigExplosion               ; A365
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; LE self-pointer (=$A36A) to TankEnemy_DescTable. Tank parallel of OvhdEnemy_DescTablePtr

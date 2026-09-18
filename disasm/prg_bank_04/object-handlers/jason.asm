@@ -70,6 +70,47 @@ L_8AF0: rts                                     ; 8AF0
 
 .macro MAC_object_handlers__jason_2_of_2
 ; ----------------------------------------------------------------------------
+L_8B29: jsr     LC1CE                           ; 8B29
+        ldx     LoadedObj + Obj::Facing         ; 8B2C
+        lda     L8B8E,x                         ; 8B2E
+        sta     LoadedObj + Obj::Velocity_X     ; 8B31
+L_8B33: lda     L8B92,x                         ; 8B33
+        sta     LoadedObj + Obj::Velocity_Y     ; 8B36
+        lda     LoadedObj + Obj::Position_X_Lo  ; 8B38
+        cmp     $1C                             ; 8B3A
+        lda     LoadedObj + Obj::Position_X_Hi  ; 8B3C
+        sbc     $1D                             ; 8B3E
+        and     #$7F                            ; 8B40
+        cmp     #$03                            ; 8B42
+        bcc     L_8B7E                          ; 8B44
+        cmp     #$0D                            ; 8B46
+        bcs     L_8B7E                          ; 8B48
+        lda     LoadedObj + Obj::Position_Y_Lo  ; 8B4A
+        cmp     $1E                             ; 8B4C
+        lda     LoadedObj + Obj::Position_Y_Hi  ; 8B4E
+        sbc     $1F                             ; 8B50
+        and     #$7F                            ; 8B52
+        cmp     #$03                            ; 8B54
+        bcc     L_8B7E                          ; 8B56
+        cmp     #$0D                            ; 8B58
+        bcs     L_8B7E                          ; 8B5A
+        lda     $1C                             ; 8B5C
+        clc                                     ; 8B5E
+        adc     #$20                            ; 8B5F
+        and     #$C0                            ; 8B61
+        sta     $1C                             ; 8B63
+        lda     $1E                             ; 8B65
+        clc                                     ; 8B67
+        adc     #$20                            ; 8B68
+        and     #$C0                            ; 8B6A
+        sta     $1E                             ; 8B6C
+        lda     L_8B7A,x                        ; 8B6E
+        sta     LoadedObj + Obj::Scratch1       ; 8B71
+        lda     #$86                            ; 8B73
+        sta     LoadedObj + Obj::Type           ; 8B75
+        jmp     L_8C16                          ; 8B77
+
+; ----------------------------------------------------------------------------
 L_8B7A: .byte   $50,$58,$50,$58                 ; 8B7A
 ; ----------------------------------------------------------------------------
 L_8B7E: lda     L_8B8A,x                        ; 8B7E
@@ -174,6 +215,186 @@ L_8C32: jsr     L_9522                          ; 8C32
 
 ; ----------------------------------------------------------------------------
 L_8C38: jmp     L_8D98                          ; 8C38
+
+; ----------------------------------------------------------------------------
+L_8C3B: lda     #$C0                            ; 8C3B
+        sta     $42                             ; 8C3D
+        lda     #$80                            ; 8C3F
+        sta     $43                             ; 8C41
+        jsr     LC11D                           ; 8C43
+        lda     LoadedObj + Obj::Health         ; 8C46
+        bne     L_8C67                          ; 8C48
+        lda     $4F                             ; 8C4A
+        bne     L_8C64                          ; 8C4C
+        lda     #$04                            ; 8C4E
+        sta     LoadedObj + Obj::Type           ; 8C50
+        lda     #$00                            ; 8C52
+        sta     LoadedObj + Obj::Scratch1       ; 8C54
+        lda     $C5                             ; 8C56
+        ora     #$08                            ; 8C58
+        sta     $C5                             ; 8C5A
+        jsr     LC0C0                           ; 8C5C
+        lda     #$51                            ; 8C5F
+        jsr     LC216                           ; 8C61
+L_8C64: jmp     L_8D98                          ; 8C64
+
+; ----------------------------------------------------------------------------
+L_8C67: lda     $4F                             ; 8C67
+        bne     L_8C9F                          ; 8C69
+        jsr     LC138                           ; 8C6B
+        jsr     LC09F                           ; 8C6E
+        bne     L_8C9F                          ; 8C71
+        txa                                     ; 8C73
+        bne     L_8C8B                          ; 8C74
+        lda     #$05                            ; 8C76
+        sta     LoadedObj + Obj::Type           ; 8C78
+        lda     #$00                            ; 8C7A
+        sta     LoadedObj + Obj::Scratch1       ; 8C7C
+        sta     $E0                             ; 8C7E
+        lda     #$49                            ; 8C80
+        jsr     LC216                           ; 8C82
+        jsr     LC0C0                           ; 8C85
+        jmp     L_8D98                          ; 8C88
+
+; ----------------------------------------------------------------------------
+L_8C8B: lda     #$20                            ; 8C8B
+        sta     $4F                             ; 8C8D
+        lda     #$1E                            ; 8C8F
+        jsr     LC216                           ; 8C91
+        lda     LoadedObj + Obj::Health         ; 8C94
+        sec                                     ; 8C96
+        sbc     #$20                            ; 8C97
+        bcs     L_8C9D                          ; 8C99
+        lda     #$00                            ; 8C9B
+L_8C9D: sta     LoadedObj + Obj::Health         ; 8C9D
+L_8C9F: jsr     LC138                           ; 8C9F
+        and     #$38                            ; 8CA2
+        sta     $45                             ; 8CA4
+        jsr     LC132                           ; 8CA6
+        jsr     LC138                           ; 8CA9
+        jsr     LC0A8                           ; 8CAC
+        bne     L_8CD4                          ; 8CAF
+        ldx     $79                             ; 8CB1
+L_8CB3: lda     L_8DAD,x                        ; 8CB3
+        clc                                     ; 8CB6
+        adc     LoadedObj + Obj::Velocity_X     ; 8CB7
+        sta     LoadedObj + Obj::Velocity_X     ; 8CB9
+        lda     L_8DB6,x                        ; 8CBB
+        clc                                     ; 8CBE
+        adc     LoadedObj + Obj::Velocity_Y     ; 8CBF
+        sta     LoadedObj + Obj::Velocity_Y     ; 8CC1
+        lda     #$20                            ; 8CC3
+        ldx     #$4C                            ; 8CC5
+        jsr     LC14D                           ; 8CC7
+        lda     #$20                            ; 8CCA
+        ldx     #$4D                            ; 8CCC
+        jsr     LC14D                           ; 8CCE
+        jmp     L_8CE0                          ; 8CD1
+
+; ----------------------------------------------------------------------------
+L_8CD4: ldx     $79                             ; 8CD4
+        lda     L_8D9B,x                        ; 8CD6
+        sta     LoadedObj + Obj::Velocity_X     ; 8CD9
+        lda     L_8DA4,x                        ; 8CDB
+        sta     LoadedObj + Obj::Velocity_Y     ; 8CDE
+L_8CE0: jsr     LC165                           ; 8CE0
+        beq     L_8D2B                          ; 8CE3
+        lda     $C5                             ; 8CE5
+        and     #$02                            ; 8CE7
+        bne     L_8D27                          ; 8CE9
+        lda     LoadedObj + Obj::Velocity_X     ; 8CEB
+        beq     L_8D2B                          ; 8CED
+        lda     LoadedObj + Obj::Position_Y_Hi  ; 8CEF
+        lsr     a                               ; 8CF1
+        ror     a                               ; 8CF2
+        eor     LoadedObj + Obj::Position_Y_Lo  ; 8CF3
+        bmi     L_8D27                          ; 8CF5
+        ldx     LoadedObj + Obj::TileIndex      ; 8CF7
+        lda     LoadedObj + Obj::Velocity_X     ; 8CF9
+        beq     L_8D2B                          ; 8CFB
+        bmi     L_8D01                          ; 8CFD
+        inx                                     ; 8CFF
+        inx                                     ; 8D00
+L_8D01: dex                                     ; 8D01
+        lda     LevelTileData,x                 ; 8D02
+        and     #$08                            ; 8D05
+        beq     L_8D27                          ; 8D07
+        lda     #$03                            ; 8D09
+        bit     LoadedObj + Obj::Velocity_X     ; 8D0B
+        bmi     L_8D11                          ; 8D0D
+        lda     #$01                            ; 8D0F
+L_8D11: sta     LoadedObj + Obj::Facing         ; 8D11
+        lda     LoadedObj + Obj::Position_Y_Lo  ; 8D13
+        bpl     L_8D20                          ; 8D15
+        inc     LoadedObj + Obj::Position_Y_Hi  ; 8D17
+        lda     LoadedObj + Obj::TileIndex      ; 8D19
+        clc                                     ; 8D1B
+        adc     #$11                            ; 8D1C
+        sta     LoadedObj + Obj::TileIndex      ; 8D1E
+L_8D20: lda     #$00                            ; 8D20
+        sta     LoadedObj + Obj::Position_Y_Lo  ; 8D22
+        jmp     L_8B29                          ; 8D24
+
+; ----------------------------------------------------------------------------
+L_8D27: lda     #$00                            ; 8D27
+        sta     LoadedObj + Obj::Velocity_X     ; 8D29
+L_8D2B: jsr     LC03F                           ; 8D2B
+        jsr     LC018                           ; 8D2E
+        beq     L_8D76                          ; 8D31
+        lda     $C5                             ; 8D33
+        and     #$02                            ; 8D35
+        bne     L_8D72                          ; 8D37
+        lda     LoadedObj + Obj::Position_X_Hi  ; 8D39
+        lsr     a                               ; 8D3B
+        ror     a                               ; 8D3C
+        eor     LoadedObj + Obj::Position_X_Lo  ; 8D3D
+        bmi     L_8D72                          ; 8D3F
+        lda     LoadedObj + Obj::Velocity_Y     ; 8D41
+        beq     L_8D76                          ; 8D43
+        lda     LoadedObj + Obj::TileIndex      ; 8D45
+        sec                                     ; 8D47
+        sbc     #$11                            ; 8D48
+        bit     LoadedObj + Obj::Velocity_Y     ; 8D4A
+        bmi     L_8D51                          ; 8D4C
+        clc                                     ; 8D4E
+        adc     #$22                            ; 8D4F
+L_8D51: tax                                     ; 8D51
+        lda     LevelTileData,x                 ; 8D52
+        and     #$08                            ; 8D55
+        beq     L_8D72                          ; 8D57
+        lda     #$00                            ; 8D59
+        bit     LoadedObj + Obj::Velocity_Y     ; 8D5B
+        bmi     L_8D61                          ; 8D5D
+        lda     #$02                            ; 8D5F
+L_8D61: sta     LoadedObj + Obj::Facing         ; 8D61
+        lda     LoadedObj + Obj::Position_X_Lo  ; 8D63
+        bpl     L_8D6B                          ; 8D65
+        inc     LoadedObj + Obj::Position_X_Hi  ; 8D67
+        inc     LoadedObj + Obj::TileIndex      ; 8D69
+L_8D6B: lda     #$00                            ; 8D6B
+        sta     LoadedObj + Obj::Position_X_Lo  ; 8D6D
+        jmp     L_8B29                          ; 8D6F
+
+; ----------------------------------------------------------------------------
+L_8D72: lda     #$00                            ; 8D72
+        sta     LoadedObj + Obj::Velocity_Y     ; 8D74
+L_8D76: lda     $F7                             ; 8D76
+        bmi     L_8D81                          ; 8D78
+        lda     $79                             ; 8D7A
+        lsr     a                               ; 8D7C
+        bcc     L_8D81                          ; 8D7D
+        sta     LoadedObj + Obj::Facing         ; 8D7F
+L_8D81: jsr     L_8E5B                          ; 8D81
+        lda     $45                             ; 8D84
+        cmp     #$08                            ; 8D86
+        beq     L_8D98                          ; 8D88
+        jsr     LC138                           ; 8D8A
+        and     #$38                            ; 8D8D
+        cmp     #$08                            ; 8D8F
+        bne     L_8D98                          ; 8D91
+        lda     #$01                            ; 8D93
+        jsr     LC11A                           ; 8D95
+L_8D98: jmp     L_8DBF                          ; 8D98
 
 .endmacro
 

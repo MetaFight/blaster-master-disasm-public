@@ -5,6 +5,7 @@
 
         .setcpu "6502"
 
+        .include "../structs.inc"
         .include "../ram.inc"
 
 ; ----------------------------------------------------------------------------
@@ -99,7 +100,6 @@ LF029           := $F029
 
 .include "_ungrouped.asm"
 .include "bank-tail.asm"
-.include "dead.asm"
 .include "dispatch.asm"
 .include "object-handlers/_common.asm"
 .include "object-handlers/_ungrouped.asm"
@@ -147,32 +147,27 @@ LF029           := $F029
         MAC_object_handlers___ungrouped
         MAC_object_handlers__jason_small
         MAC__ungrouped_1_of_9
-        MAC_object_handlers__sophia_1_of_8
+        MAC_object_handlers__sophia_1_of_6
         MAC__ungrouped_2_of_9
-        MAC_object_handlers__sophia_2_of_8
-        MAC_dead_1_of_2
-        MAC_object_handlers__sophia_3_of_8
+        MAC_object_handlers__sophia_2_of_6
         MAC__ungrouped_3_of_9
-        MAC_object_handlers__sophia_4_of_8
+        MAC_object_handlers__sophia_3_of_6
         MAC__ungrouped_4_of_9
-        MAC_object_handlers__projectiles_and_ballistics_1_of_7
+        MAC_object_handlers__projectiles_and_ballistics_1_of_6
         MAC__ungrouped_5_of_9
-        MAC_object_handlers__projectiles_and_ballistics_2_of_7
-        MAC_object_handlers__sophia_5_of_8
-        MAC_object_handlers__projectiles_and_ballistics_3_of_7
-        MAC_object_handlers__sophia_6_of_8
-        MAC_object_handlers__projectiles_and_ballistics_4_of_7
-        MAC_object_handlers__sophia_7_of_8
-        MAC_object_handlers__projectiles_and_ballistics_5_of_7
-        MAC_object_handlers__sophia_8_of_8
-        MAC_object_handlers__projectiles_and_ballistics_6_of_7
+        MAC_object_handlers__projectiles_and_ballistics_2_of_6
+        MAC_object_handlers__sophia_4_of_6
+        MAC_object_handlers__projectiles_and_ballistics_3_of_6
+        MAC_object_handlers__sophia_5_of_6
+        MAC_object_handlers__projectiles_and_ballistics_4_of_6
+        MAC_object_handlers__sophia_6_of_6
+        MAC_object_handlers__projectiles_and_ballistics_5_of_6
         MAC__ungrouped_6_of_9
         MAC_object_handlers__explosions
         MAC_object_handlers__pickups
         MAC_object_handlers__auto_gates_and_locks
         MAC__ungrouped_7_of_9
-        MAC_object_handlers__projectiles_and_ballistics_7_of_7
-        MAC_dead_2_of_2
+        MAC_object_handlers__projectiles_and_ballistics_6_of_6
         MAC__ungrouped_8_of_9
         MAC_object_handlers___common
         MAC_object_handlers__caterpillar_gray

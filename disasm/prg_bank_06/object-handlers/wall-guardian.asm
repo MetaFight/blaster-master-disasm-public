@@ -1,22 +1,22 @@
 .macro MAC_object_handlers__wall_guardian
 ; ----------------------------------------------------------------------------
 ; ObjType $90: Wall Guardian - Init.
-ObjHandler_Tank_90_Wall_Guardian_Init:
-        jmp     _ObjHandler_Tank_90_Wall_Guardian_Init__Done; BA88
+.proc ObjHandler_Tank_90_Wall_Guardian_Init
+        jmp     _Done                           ; BA88
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_90_Wall_Guardian_Init__Body:
+_Body:
         lda     $03FE                           ; BA8B
         and     #$01                            ; BA8E
 ; If IsDefeated flag is not set, skip to Spawn.
-        beq     _ObjHandler_Tank_90_Wall_Guardian_Init__Spawn; BA90
+        beq     _Spawn                          ; BA90
 ; Otherwise, despawn.
         jmp     Obj_DespawnAndLog               ; BA92
 
 ; ----------------------------------------------------------------------------
-; Start by despawning all other enemies.
+_Spawn:
+; Despawn all other enemies.
 ; This is so we can switch the graphics bank without affecting enemy graphics.
-_ObjHandler_Tank_90_Wall_Guardian_Init__Spawn:
         jsr     ClearEnemySlots                 ; BA95
         lda     $C5                             ; BA98
         ora     #$04                            ; BA9A
@@ -25,23 +25,24 @@ _ObjHandler_Tank_90_Wall_Guardian_Init__Spawn:
         lda     #$00                            ; BA9E
 ; Initialise tank section boss with descriptor #$00.
         jsr     TankBoss_InitFromTableEntry     ; BAA0
-_ObjHandler_Tank_90_Wall_Guardian_Init__Done:
+_Done:
         rts                                     ; BAA3
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $91: Wall Guardian - Main.
-ObjHandler_Tank_91_Wall_Guardian_Main:
-        jmp     _ObjHandler_Tank_91_Wall_Guardian_Main__ScreenTest; BAA4
+.proc ObjHandler_Tank_91_Wall_Guardian_Main
+        jmp     _ScreenTest                     ; BAA4
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_91_Wall_Guardian_Main__Body:
+_Body:
         lda     Global_FrameCounter             ; BAA7
         cmp     #$A0                            ; BAA9
 ; If Global_FrameCounter < #$A0, skip to ScreenTest.
-        bcc     _ObjHandler_Tank_91_Wall_Guardian_Main__ScreenTest; BAAB
+        bcc     _ScreenTest                     ; BAAB
         and     #$0F                            ; BAAD
 ; If Global_FrameCounter's lower 4 bits aren't clear, skip to ScreenTest.
-        bne     _ObjHandler_Tank_91_Wall_Guardian_Main__ScreenTest; BAAF
+        bne     _ScreenTest                     ; BAAF
 ; >>> Shooting a projectile:
         jsr     Step_RNG                        ; BAB1
         and     #$1F                            ; BAB4
@@ -65,7 +66,7 @@ _ObjHandler_Tank_91_Wall_Guardian_Main__Body:
         jsr     Obj_SpawnChild_A0               ; BACA
 ; Restore original LoadedObj.Position_Y_Hi.
         dec     LoadedObj + Obj::Position_Y_Hi  ; BACD
-_ObjHandler_Tank_91_Wall_Guardian_Main__ScreenTest:
+_ScreenTest:
         lda     #$1E                            ; BACF
 ; Switch CHR Bank to where the Wall Guardian graphics are.  (This is why all other visible objects
 ; needed to be removed).
@@ -78,41 +79,41 @@ _ObjHandler_Tank_91_Wall_Guardian_Main__ScreenTest:
 ; Perform screen test.
         jsr     ScreenPos_Compute               ; BADB
 ; if on-screen, skip to VulnerabilityCheck.
-        beq     _ObjHandler_Tank_91_Wall_Guardian_Main__VulnerabilityCheck; BADE
+        beq     _VulnerabilityCheck             ; BADE
 ; if off-screen, skip to CleanUp.
-        jmp     _ObjHandler_Tank_91_Wall_Guardian_Main__CleanUp; BAE0
+        jmp     _CleanUp                        ; BAE0
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_91_Wall_Guardian_Main__VulnerabilityCheck:
+_VulnerabilityCheck:
         lda     $03FC                           ; BAE3
         and     #$01                            ; BAE6
 ; If Hyper hasn't been acquired yet, skip to DeflectDamage.
-        beq     _ObjHandler_Tank_91_Wall_Guardian_Main__DeflectDamage; BAE8
+        beq     _DeflectDamage                  ; BAE8
         lda     #$00                            ; BAEA
 ; Otherwise, Wall Guardian is vulnerable, so call TankBoss_DamageCheck (with boss descriptor #$00)
 ; to process damage exchange (delegating to Enemy_DamageCheck).
         jsr     L_BBC7                          ; BAEC
 ; If non-fatal, skip to CollisionResult.
-        beq     _ObjHandler_Tank_91_Wall_Guardian_Main__ProcessDamage; BAEF
+        beq     _ProcessDamage                  ; BAEF
 ; Otherwise, skip to Death.
-        jmp     _ObjHandler_Tank_91_Wall_Guardian_Main__Death; BAF1
+        jmp     _Death                          ; BAF1
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_91_Wall_Guardian_Main__ProcessDamage:
+_ProcessDamage:
         lda     $45                             ; BAF4
 ; Pull the Enemy_DamageCheck result from WR_Context_Dependent_45
 ; On hit, skip to DamageAnimation.
-        beq     _ObjHandler_Tank_91_Wall_Guardian_Main__DamageAnimation; BAF6
-        bne     _ObjHandler_Tank_91_Wall_Guardian_Main__Render; BAF8
+        beq     _DamageAnimation                ; BAF6
+        bne     _Render                         ; BAF8
 ; Not yet defeatable: just scan for a player shot overlapping the box ($44 = $40)
-_ObjHandler_Tank_91_Wall_Guardian_Main__DeflectDamage:
+_DeflectDamage:
         lda     #$40                            ; BAFA
         jsr     LD711                           ; BAFC
-        bne     _ObjHandler_Tank_91_Wall_Guardian_Main__Render; BAFF
-_ObjHandler_Tank_91_Wall_Guardian_Main__DamageAnimation:
+        bne     _Render                         ; BAFF
+_DamageAnimation:
         lda     LoadedObj + Obj::Scratch1       ; BB01
 ; If the DamageAnimationFrameCounter (Scratch1) has already started, skip to Render tail.
-        bne     _ObjHandler_Tank_91_Wall_Guardian_Main__Render; BB03
+        bne     _Render                         ; BB03
         lda     #$20                            ; BB05
 ; Otherwise, set the DamageAnimationFrameCounter (Scratch1) to #$20 frames,
         sta     LoadedObj + Obj::Scratch1       ; BB07
@@ -122,7 +123,7 @@ _ObjHandler_Tank_91_Wall_Guardian_Main__DamageAnimation:
 ; And play SFX $31.
         jsr     Enqueue_Sound_Command           ; BB0D
 ; Draw the body as three stacked 16-px rows, top to bottom.
-_ObjHandler_Tank_91_Wall_Guardian_Main__Render:
+_Render:
         lda     #$42                            ; BB10
 ; Set the OAM attribute to #$42 (sprite palette 2, h-flip on).
         sta     $44                             ; BB12
@@ -137,16 +138,16 @@ _ObjHandler_Tank_91_Wall_Guardian_Main__Render:
 ; Decide how to draw the top-row:
 ; 
 ; If the DamageAnimationFrameCounter (Scratch1) != 0, skip to AnimateMandibles.
-        bne     _ObjHandler_Tank_91_Wall_Guardian_Main__AnimateEyes; BB20
+        bne     _AnimateEyes                    ; BB20
 ; Otherwise, use default top row tile and skip to DrawMidRow.
         jsr     WallGuardian_UseDefaultEyeTile  ; BB22
-        jmp     _ObjHandler_Tank_91_Wall_Guardian_Main__DrawMidRow; BB25
+        jmp     _DrawMidRow                     ; BB25
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_91_Wall_Guardian_Main__AnimateEyes:
+_AnimateEyes:
         jsr     WallGuardian_PlayEyeBlinkAnimation; BB28
-; Start by staging the selected top row tile.
-_ObjHandler_Tank_91_Wall_Guardian_Main__DrawMidRow:
+_DrawMidRow:
+; Stage the selected top row tile.
         jsr     LEDF5                           ; BB2B
         clc                                     ; BB2E
         lda     $3F                             ; BB2F
@@ -156,17 +157,17 @@ _ObjHandler_Tank_91_Wall_Guardian_Main__DrawMidRow:
         lda     Global_FrameCounter             ; BB35
         cmp     #$A0                            ; BB37
 ; if Global_FrameCounter < #$A0, skip to AnimateMandibles.
-        bcc     _ObjHandler_Tank_91_Wall_Guardian_Main__AnimateMandibles; BB39
+        bcc     _AnimateMandibles               ; BB39
 ; Otherwise, use default mid row tile and skip to DrawBottomRow.
         jsr     WallGuardian_UseDefaultMandibleTile; BB3B
-        jmp     _ObjHandler_Tank_91_Wall_Guardian_Main__DrawBottomRow; BB3E
+        jmp     _DrawBottomRow                  ; BB3E
 
 ; ----------------------------------------------------------------------------
 ; idle: alternate the middle-row tile on a 4-frame cycle
-_ObjHandler_Tank_91_Wall_Guardian_Main__AnimateMandibles:
+_AnimateMandibles:
         jsr     WallGuardian_PlayMandibleAnimation; BB41
 ; Stage the middle row, step the draw position down 16px again, and stage the static bottom row.
-_ObjHandler_Tank_91_Wall_Guardian_Main__DrawBottomRow:
+_DrawBottomRow:
         jsr     LEDF5                           ; BB44
         clc                                     ; BB47
         lda     $3F                             ; BB48
@@ -178,7 +179,7 @@ _ObjHandler_Tank_91_Wall_Guardian_Main__DrawBottomRow:
         rts                                     ; BB55
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_91_Wall_Guardian_Main__Death:
+_Death:
         lda     $03FE                           ; BB56
         ora     #$01                            ; BB59
 ; Record defeat to avoid respawning later.
@@ -192,13 +193,14 @@ _ObjHandler_Tank_91_Wall_Guardian_Main__Death:
 ; and trigger the death SFX ($32).
         jsr     Enqueue_Sound_Command           ; BB68
 ; Clean Up: Clear boss mode, release the CHR bank, and free the object slot.
-_ObjHandler_Tank_91_Wall_Guardian_Main__CleanUp:
+_CleanUp:
         lda     $C5                             ; BB6B
         and     #$FB                            ; BB6D
         sta     $C5                             ; BB6F
         lda     #$00                            ; BB71
         sta     $D4                             ; BB73
         jmp     LD823                           ; BB75
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Select the default mid row tile for the Wall Guardian.
@@ -209,19 +211,20 @@ WallGuardian_UseDefaultMandibleTile:
 
 ; ----------------------------------------------------------------------------
 ; Alternate between tile id #$B8 and #$BA on a 4-frame cycle.
-WallGuardian_PlayMandibleAnimation:
+.proc WallGuardian_PlayMandibleAnimation
         lda     Global_FrameCounter             ; BB7D
         and     #$04                            ; BB7F
-        beq     _WallGuardian_PlayMandibleAnimation__Use_BA; BB81
+        beq     _Use_BA                         ; BB81
         lda     #$B8                            ; BB83
-        jmp     _WallGuardian_PlayMandibleAnimation__Store; BB85
+        jmp     _Store                          ; BB85
 
 ; ----------------------------------------------------------------------------
-_WallGuardian_PlayMandibleAnimation__Use_BA:
+_Use_BA:
         lda     #$BA                            ; BB88
-_WallGuardian_PlayMandibleAnimation__Store:
+_Store:
         sta     $45                             ; BB8A
         rts                                     ; BB8C
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Select the default top row tile for the Wall Guardian.

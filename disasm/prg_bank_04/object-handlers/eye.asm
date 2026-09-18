@@ -1,4 +1,4 @@
-.macro MAC_object_handlers__eye_1_of_4
+.macro MAC_object_handlers__eye_1_of_3
 ; ----------------------------------------------------------------------------
 L_B922: jmp     L_B930                          ; B922
 
@@ -75,9 +75,9 @@ L_B9A8: lda     #$01                            ; B9A8
         jsr     L_B2C5                          ; B9AA
         jmp     L_B9B5                          ; B9AD
 
-.endmacro
-
-.macro MAC_object_handlers__eye_2_of_4
+; ----------------------------------------------------------------------------
+L_B9B0: .byte   $E0                             ; B9B0
+LB9B1:  .byte   $00,$20,$00,$E0                 ; B9B1
 ; ----------------------------------------------------------------------------
 L_B9B5: lda     #$01                            ; B9B5
         sta     $44                             ; B9B7
@@ -111,7 +111,7 @@ L_B9E9: lda     #$41                            ; B9E9
 
 .endmacro
 
-.macro MAC_object_handlers__eye_3_of_4
+.macro MAC_object_handlers__eye_2_of_3
 ; ----------------------------------------------------------------------------
 L_BAF0: jmp     L_BB03                          ; BAF0
 
@@ -186,7 +186,7 @@ L_BB70: rts                                     ; BB70
 
 .endmacro
 
-.macro MAC_object_handlers__eye_4_of_4
+.macro MAC_object_handlers__eye_3_of_3
 ; ----------------------------------------------------------------------------
 L_BB75: jmp     L_BB93                          ; BB75
 

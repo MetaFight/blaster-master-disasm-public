@@ -35,27 +35,27 @@ L_B949: rts                                     ; B949
 ; init:
 ;   * Uses a movement speed of #$18 (1.5) instead of #$10 (1.0).
 ;   * Uses Enemy Descriptor #$8E instead of #$02.
-ObjHandler_Tank_8D_Red_Bullet_B_Init:
-        jmp     _ObjHandler_Tank_8D_Red_Bullet_B_Init__Done; B94A
+.proc ObjHandler_Tank_8D_Red_Bullet_B_Init
+        jmp     _Done                           ; B94A
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8D_Red_Bullet_B_Init__Body:
+_Body:
         lda     LoadedObj + Obj::Position_X_Hi  ; B94D
         lsr     a                               ; B94F
-        bcc     _ObjHandler_Tank_8D_Red_Bullet_B_Init__LeftSide; B950
+        bcc     _LeftSide                       ; B950
         lda     #$A0                            ; B952
         sta     LoadedObj + Obj::Scratch0       ; B954
         lda     #$20                            ; B956
         sta     LoadedObj + Obj::Facing         ; B958
-        jmp     _ObjHandler_Tank_8D_Red_Bullet_B_Init__SetProps; B95A
+        jmp     _SetProps                       ; B95A
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8D_Red_Bullet_B_Init__LeftSide:
+_LeftSide:
         lda     #$60                            ; B95D
         sta     LoadedObj + Obj::Scratch0       ; B95F
         lda     #$60                            ; B961
         sta     LoadedObj + Obj::Facing         ; B963
-_ObjHandler_Tank_8D_Red_Bullet_B_Init__SetProps:
+_SetProps:
         ldy     #$18                            ; B965
         jsr     Obj_FacingToVelocity            ; B967
         lda     #$00                            ; B96A
@@ -66,8 +66,9 @@ _ObjHandler_Tank_8D_Red_Bullet_B_Init__SetProps:
         lda     #$8E                            ; B975
 ; Set ObjType to #$8E (which is redundant since TankEnemy_Init already INCed it to that value).
         sta     LoadedObj + Obj::Type           ; B977
-_ObjHandler_Tank_8D_Red_Bullet_B_Init__Done:
+_Done:
         rts                                     ; B979
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $8E: Red Bullet - Cling-walking.
@@ -76,11 +77,11 @@ _ObjHandler_Tank_8D_Red_Bullet_B_Init__Done:
 ;   * Walking speed (#$18 instead of #$10)
 ;   * Attack launching speed (#$60 instead of #$40)
 ;   * Render code doesn't override palette (defaults to red palette).
-ObjHandler_Tank_8E_Red_Bullet_Main:
-        jmp     _ObjHandler_Tank_8E_Red_Bullet_Main__AfterPhysics; B97A
+.proc ObjHandler_Tank_8E_Red_Bullet_Main
+        jmp     _AfterPhysics                   ; B97A
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8E_Red_Bullet_Main__Body:
+_Body:
         lda     #$80                            ; B97D
         sta     $42                             ; B97F
         lda     #$80                            ; B981
@@ -89,25 +90,25 @@ _ObjHandler_Tank_8E_Red_Bullet_Main__Body:
         jsr     Bullet_WalkSurface              ; B987
         jsr     Obj_Get_DeltaToPlayer_X         ; B98A
         and     #$FC                            ; B98D
-        bne     _ObjHandler_Tank_8E_Red_Bullet_Main__YBandCheck; B98F
-_ObjHandler_Tank_8E_Red_Bullet_Main__XBandCheck:
+        bne     _YBandCheck                     ; B98F
+_XBandCheck:
         jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; B991
-        beq     _ObjHandler_Tank_8E_Red_Bullet_Main__AfterPhysics; B994
-        bne     _ObjHandler_Tank_8E_Red_Bullet_Main__TryAttack; B996
-_ObjHandler_Tank_8E_Red_Bullet_Main__YBandCheck:
+        beq     _AfterPhysics                   ; B994
+        bne     _TryAttack                      ; B996
+_YBandCheck:
         jsr     Obj_Get_DeltaToPlayer_Y         ; B998
         and     #$FC                            ; B99B
-        bne     _ObjHandler_Tank_8E_Red_Bullet_Main__AfterPhysics; B99D
+        bne     _AfterPhysics                   ; B99D
         jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; B99F
-        beq     _ObjHandler_Tank_8E_Red_Bullet_Main__AfterPhysics; B9A2
-_ObjHandler_Tank_8E_Red_Bullet_Main__TryAttack:
+        beq     _AfterPhysics                   ; B9A2
+_TryAttack:
         lda     LoadedObj + Obj::Scratch0       ; B9A4
         clc                                     ; B9A6
         adc     LoadedObj + Obj::Facing         ; B9A7
         sta     $01                             ; B9A9
         jsr     L_A634                          ; B9AB
         cpx     $01                             ; B9AE
-        bne     _ObjHandler_Tank_8E_Red_Bullet_Main__AfterPhysics; B9B0
+        bne     _AfterPhysics                   ; B9B0
         stx     LoadedObj + Obj::Facing         ; B9B2
         ldy     #$60                            ; B9B4
         jsr     Obj_FacingToVelocity            ; B9B6
@@ -117,24 +118,24 @@ _ObjHandler_Tank_8E_Red_Bullet_Main__TryAttack:
         rts                                     ; B9BF
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8E_Red_Bullet_Main__AfterPhysics:
+_AfterPhysics:
         lda     #$10                            ; B9C0
         sta     $40                             ; B9C2
         lda     #$10                            ; B9C4
         sta     $41                             ; B9C6
         jsr     ScreenPos_Compute               ; B9C8
-        beq     _ObjHandler_Tank_8E_Red_Bullet_Main__DamageCheck; B9CB
+        beq     _DamageCheck                    ; B9CB
         jmp     Obj_Tombstone                   ; B9CD
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8E_Red_Bullet_Main__DamageCheck:
+_DamageCheck:
         lda     #$1C                            ; B9D0
         jsr     TankEnemy_DamageCheck           ; B9D2
-        beq     _ObjHandler_Tank_8E_Red_Bullet_Main__Render; B9D5
+        beq     _Render                         ; B9D5
         jmp     TankEnemy_DefeatTrackedEnemy    ; B9D7
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8E_Red_Bullet_Main__Render:
+_Render:
         lda     LoadedObj + Obj::Scratch0       ; B9DA
         and     #$80                            ; B9DC
         sta     $00                             ; B9DE
@@ -148,15 +149,16 @@ _ObjHandler_Tank_8E_Red_Bullet_Main__Render:
         lsr     a                               ; B9EA
         lsr     a                               ; B9EB
         tax                                     ; B9EC
-        lda     RedBullet_Walking_RenderParamLookup,x; B9ED
+        lda     RedBullet_Walking_RenderParamLookup + BulletRenderParams::OamAttributes,x ; B9ED
         sta     $44                             ; B9F0
         lda     Global_FrameCounter             ; B9F2
         lsr     a                               ; B9F4
         lsr     a                               ; B9F5
         lsr     a                               ; B9F6
         and     #$01                            ; B9F7
-        ora     RedBullet_Walking_RenderParamLookup+1,x; B9F9
+        ora     RedBullet_Walking_RenderParamLookup + BulletRenderParams::BaseMetaSpriteId,x ; B9F9
         jmp     MetaSprite_Render               ; B9FC
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_B9FF: rts                                     ; B9FF
@@ -168,39 +170,39 @@ L_B9FF: rts                                     ; B9FF
 ;   * Movement speed when returning to Walking state (#$18 instead of #$10)
 ;   * Rendering palette
 ;   * Damage Check enemy descriptor (#$1C instead of #$02)
-ObjHandler_Tank_8F_Red_Bullet_Attacking:
-        jmp     _ObjHandler_Tank_8F_Red_Bullet_Attacking__AfterPhysics; BA00
+.proc ObjHandler_Tank_8F_Red_Bullet_Attacking
+        jmp     _AfterPhysics                   ; BA00
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8F_Red_Bullet_Attacking__Body:
+_Body:
         lda     #$80                            ; BA03
         sta     $42                             ; BA05
         lda     #$80                            ; BA07
         sta     $43                             ; BA09
         lda     LoadedObj + Obj::Scratch1       ; BA0B
-        beq     _ObjHandler_Tank_8F_Red_Bullet_Attacking__Movement; BA0D
+        beq     _Movement                       ; BA0D
         lda     #$43                            ; BA0F
         jsr     Enqueue_Sound_Command           ; BA11
         dec     LoadedObj + Obj::Scratch1       ; BA14
-        jmp     _ObjHandler_Tank_8F_Red_Bullet_Attacking__AfterPhysics; BA16
+        jmp     _AfterPhysics                   ; BA16
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8F_Red_Bullet_Attacking__Movement:
+_Movement:
         jsr     Obj_MoveAndCollide              ; BA19
-        beq     _ObjHandler_Tank_8F_Red_Bullet_Attacking__AfterPhysics; BA1C
+        beq     _AfterPhysics                   ; BA1C
         jsr     Step_RNG                        ; BA1E
         and     #$40                            ; BA21
-        beq     _ObjHandler_Tank_8F_Red_Bullet_Attacking__TurnA; BA23
+        beq     _TurnA                          ; BA23
 ; TurnB
         lda     #$60                            ; BA25
         ldx     #$60                            ; BA27
-        jmp     _ObjHandler_Tank_8F_Red_Bullet_Attacking__TransitionToWalking; BA29
+        jmp     _TransitionToWalking            ; BA29
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8F_Red_Bullet_Attacking__TurnA:
+_TurnA:
         lda     #$A0                            ; BA2C
         ldx     #$A0                            ; BA2E
-_ObjHandler_Tank_8F_Red_Bullet_Attacking__TransitionToWalking:
+_TransitionToWalking:
         clc                                     ; BA30
         adc     LoadedObj + Obj::Facing         ; BA31
         sta     LoadedObj + Obj::Facing         ; BA33
@@ -213,24 +215,24 @@ _ObjHandler_Tank_8F_Red_Bullet_Attacking__TransitionToWalking:
         rts                                     ; BA42
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8F_Red_Bullet_Attacking__AfterPhysics:
+_AfterPhysics:
         lda     #$10                            ; BA43
         sta     $40                             ; BA45
         lda     #$10                            ; BA47
         sta     $41                             ; BA49
         jsr     ScreenPos_Compute               ; BA4B
-        beq     _ObjHandler_Tank_8F_Red_Bullet_Attacking__OnScreen; BA4E
+        beq     _OnScreen                       ; BA4E
         jmp     Obj_Tombstone                   ; BA50
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8F_Red_Bullet_Attacking__OnScreen:
+_OnScreen:
         lda     #$1C                            ; BA53
         jsr     TankEnemy_DamageCheck           ; BA55
-        beq     _ObjHandler_Tank_8F_Red_Bullet_Attacking__Render; BA58
+        beq     _Render                         ; BA58
         jmp     TankEnemy_DefeatTrackedEnemy    ; BA5A
 
 ; ----------------------------------------------------------------------------
-_ObjHandler_Tank_8F_Red_Bullet_Attacking__Render:
+_Render:
         lda     LoadedObj + Obj::Facing         ; BA5D
         lsr     a                               ; BA5F
         lsr     a                               ; BA60
@@ -238,10 +240,11 @@ _ObjHandler_Tank_8F_Red_Bullet_Attacking__Render:
         lsr     a                               ; BA62
         lsr     a                               ; BA63
         tax                                     ; BA64
-        lda     RedBullet_Attacking_RenderParamLookup,x; BA65
+        lda     RedBullet_Attacking_RenderParamLookup + BulletRenderParams::OamAttributes,x ; BA65
         sta     $44                             ; BA68
-        lda     RedBullet_Attacking_RenderParamLookup+1,x; BA6A
+        lda     RedBullet_Attacking_RenderParamLookup + BulletRenderParams::BaseMetaSpriteId,x ; BA6A
         jmp     MetaSprite_Render               ; BA6D
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Red Bullet, walking phase, rendering parameters per-orientation.

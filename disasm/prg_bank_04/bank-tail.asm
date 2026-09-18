@@ -1,6 +1,4 @@
 .macro MAC_bank_tail
-; ----------------------------------------------------------------------------
-L_BF8A: .byte   $01,$02,$04,$08,$10,$20,$40,$80 ; BF8A
 L_BF92: .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BF92
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BF9A
         .byte   $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; BFA2

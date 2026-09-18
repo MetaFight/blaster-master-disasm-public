@@ -6,29 +6,29 @@
 ; if bit 6 set: INC $B6 (0→9, fade-out);
 ; 
 ; each step subtracts $B6×8 from $0650–$066F palette shadow
-ScreenFade_Step:
+.proc ScreenFade_Step
         lda     $15                             ; CDD0
 ; bits 6 and 7
         and     #$C0                            ; CDD2
 ; Neither bit set, so abort.
-        beq     _ScreenFade_Step__Return        ; CDD4
+        beq     _Return                         ; CDD4
         lda     $19                             ; CDD6
-        bne     _ScreenFade_Step__Return        ; CDD8
+        bne     _Return                         ; CDD8
         lda     $15                             ; CDDA
-        bmi     _ScreenFade_Step__Fade_In       ; CDDC
+        bmi     _Fade_In                        ; CDDC
         lda     $B6                             ; CDDE
 ; is completly faded out?
         cmp     #$09                            ; CDE0
-        bcs     _ScreenFade_Step__On_Completely_Faded_Out; CDE2
-_ScreenFade_Step__Fade_Out:
+        bcs     _On_Completely_Faded_Out        ; CDE2
+_Fade_Out:
         inc     $B6                             ; CDE4
-        jmp     _ScreenFade_Step__Apply_Change  ; CDE6
+        jmp     _Apply_Change                   ; CDE6
 
 ; ----------------------------------------------------------------------------
-_ScreenFade_Step__Fade_In:
+_Fade_In:
         dec     $B6                             ; CDE9
-        beq     _ScreenFade_Step__On_Completely_Faded_Out; CDEB
-_ScreenFade_Step__Apply_Change:
+        beq     _On_Completely_Faded_Out        ; CDEB
+_Apply_Change:
         lda     $B6                             ; CDED
         asl     a                               ; CDEF
         asl     a                               ; CDF0
@@ -36,26 +36,27 @@ _ScreenFade_Step__Apply_Change:
         and     #$F0                            ; CDF2
         sta     L0000                           ; CDF4
         ldx     #$1F                            ; CDF6
-_ScreenFade_Step__Apply_To_Palette_Entry_X:
+_Apply_To_Palette_Entry_X:
         lda     $0650,x                         ; CDF8
         sec                                     ; CDFB
         sbc     L0000                           ; CDFC
-        bcs     _ScreenFade_Step__Save_Palette_Entry; CDFE
+        bcs     _Save_Palette_Entry             ; CDFE
 ; Clamp to $0F on underflow
         lda     #$0F                            ; CE00
-_ScreenFade_Step__Save_Palette_Entry:
+_Save_Palette_Entry:
         sta     Background_Palettes + BgPalette::Backdrop,x ; CE02
         dex                                     ; CE04
-        bpl     _ScreenFade_Step__Apply_To_Palette_Entry_X; CE05
+        bpl     _Apply_To_Palette_Entry_X       ; CE05
         rts                                     ; CE07
 
 ; ----------------------------------------------------------------------------
-_ScreenFade_Step__On_Completely_Faded_Out:
+_On_Completely_Faded_Out:
         lda     $15                             ; CE08
         and     #$3F                            ; CE0A
         sta     $15                             ; CE0C
-_ScreenFade_Step__Return:
+_Return:
         rts                                     ; CE0E
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_CE0F: lda     $15                             ; CE0F

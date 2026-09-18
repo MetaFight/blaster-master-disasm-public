@@ -21,34 +21,35 @@ L_DEC2: jsr     L_DF05                          ; DEC2
 ; ----------------------------------------------------------------------------
 ; Insert value (A) into first empty or matching slot of Sound_Command_Queue ($0370-$0377); 8-slot
 ; scan from slot 7 down
-Enqueue_Sound_Command:
+.proc Enqueue_Sound_Command
         sta     $E1                             ; DECC
         txa                                     ; DECE
 ; Save X to stack
         pha                                     ; DECF
         ldx     #$07                            ; DED0
-_Enqueue_Sound_Command__Find_Empty_Slot_Loop:
+_Find_Empty_Slot_Loop:
         lda     $0370,x                         ; DED2
-        beq     _Enqueue_Sound_Command__On_Empty_Slot_Found; DED5
+        beq     _On_Empty_Slot_Found            ; DED5
         cmp     $E1                             ; DED7
-        bne     _Enqueue_Sound_Command__On_Empty_Slot_Not_Found; DED9
-        beq     _Enqueue_Sound_Command__On_Success; DEDB
-_Enqueue_Sound_Command__On_Empty_Slot_Found:
+        bne     _On_Empty_Slot_Not_Found        ; DED9
+        beq     _On_Success                     ; DEDB
+_On_Empty_Slot_Found:
         lda     $E1                             ; DEDD
 ; Write sound command Id to empty slot
         sta     $0370,x                         ; DEDF
-        jmp     _Enqueue_Sound_Command__On_Success; DEE2
+        jmp     _On_Success                     ; DEE2
 
 ; ----------------------------------------------------------------------------
 ; Decrement X and try again
-_Enqueue_Sound_Command__On_Empty_Slot_Not_Found:
+_On_Empty_Slot_Not_Found:
         dex                                     ; DEE5
-        bpl     _Enqueue_Sound_Command__Find_Empty_Slot_Loop; DEE6
-_Enqueue_Sound_Command__On_Success:
+        bpl     _Find_Empty_Slot_Loop           ; DEE6
+_On_Success:
         pla                                     ; DEE8
 ; Restore X from stack
         tax                                     ; DEE9
         rts                                     ; DEEA
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_DEEB: lda     #$07                            ; DEEB

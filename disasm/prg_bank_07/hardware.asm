@@ -5,9 +5,9 @@
 ; (OAMADDR reset to 0); 
 ; otherwise copies 64 bytes/frame manually through OAMDATA ($2004), advancing the quarter index
 ; $F0 ($00/$40/$80/$C0) so the page uploads over four frames.
-OAM_Copy_To_PPU:
+.proc OAM_Copy_To_PPU
         lda     OAM_Flag__HARDCODED_00          ; E697
-        bne     _DEAD_OAM_Copy_To_PPU__Manually ; E69A
+        bne     _DEAD_Manually                  ; E69A
         lda     #$00                            ; E69C
         sta     $2003                           ; E69E
         lda     #$02                            ; E6A1
@@ -18,21 +18,22 @@ OAM_Copy_To_PPU:
 ; Dead in the shipped US ROM — the alternate manual OAM upload path (stream $0200 → OAM data port
 ; $2004), reached only when OAM_Flag__HARDCODED_00 ($E6BE) ≠ 0, which it never is; the $4014
 ; sprite-DMA fall-through above is what actually runs.
-_DEAD_OAM_Copy_To_PPU__Manually:
+_DEAD_Manually:
         lda     $F0                             ; E6A7
         and     #$C0                            ; E6A9
         sta     $2003                           ; E6AB
         tax                                     ; E6AE
         ldy     #$40                            ; E6AF
 ; Copy 64 bytes $0200+X → OAM data port ($2004).
-_DEAD_OAM_Copy_To_PPU__ManualLoop:
+_DEAD_ManualLoop:
         lda     $0200,x                         ; E6B1
         sta     $2004                           ; E6B4
         inx                                     ; E6B7
         dey                                     ; E6B8
-        bne     _DEAD_OAM_Copy_To_PPU__ManualLoop; E6B9
+        bne     _DEAD_ManualLoop                ; E6B9
         stx     $F0                             ; E6BB
         rts                                     ; E6BD
+.endproc
 
 .endmacro
 

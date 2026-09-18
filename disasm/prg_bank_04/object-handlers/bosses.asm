@@ -1,4 +1,4 @@
-.macro MAC_object_handlers__bosses_1_of_6
+.macro MAC_object_handlers__bosses_1_of_2
 ; ----------------------------------------------------------------------------
 L_96F1: nop                                     ; 96F1
         nop                                     ; 96F2
@@ -2264,9 +2264,16 @@ L_A730: jsr     LC1B3                           ; A730
         sta     LoadedObj + Obj::Scratch0       ; A73C
         rts                                     ; A73E
 
-.endmacro
+; ----------------------------------------------------------------------------
+L_A73F: jsr     LC1B3                           ; A73F
+        and     #$38                            ; A742
+        clc                                     ; A744
+        adc     #$10                            ; A745
+        sta     LoadedObj + Obj::Scratch1       ; A747
+        lda     #$04                            ; A749
+        sta     LoadedObj + Obj::Scratch0       ; A74B
+        rts                                     ; A74D
 
-.macro MAC_object_handlers__bosses_2_of_6
 ; ----------------------------------------------------------------------------
 L_A74E: lda     LoadedObj + Obj::Scratch1       ; A74E
         bne     L_A760                          ; A750
@@ -2963,9 +2970,11 @@ L_AC3D: lda     #$02                            ; AC3D
         jsr     LC063                           ; AC4B
         rts                                     ; AC4E
 
-.endmacro
+; ----------------------------------------------------------------------------
+L_AC4F: lda     #$14                            ; AC4F
+        sta     LoadedObj + Obj::Type           ; AC51
+        rts                                     ; AC53
 
-.macro MAC_object_handlers__bosses_3_of_6
 ; ----------------------------------------------------------------------------
 L_AC54: .byte   $5A,$5B,$5C,$5D                 ; AC54
 ; ----------------------------------------------------------------------------
@@ -3162,9 +3171,13 @@ L_AD90: lda     #$03                            ; AD90
         sta     LoadedObj + Obj::Scratch1       ; AD96
         rts                                     ; AD98
 
-.endmacro
+; ----------------------------------------------------------------------------
+L_AD99: lda     #$04                            ; AD99
+        sta     LoadedObj + Obj::Scratch0       ; AD9B
+        lda     #$37                            ; AD9D
+        sta     LoadedObj + Obj::Scratch1       ; AD9F
+        rts                                     ; ADA1
 
-.macro MAC_object_handlers__bosses_4_of_6
 ; ----------------------------------------------------------------------------
 L_ADA2: lda     #$30                            ; ADA2
         sta     $40                             ; ADA4
@@ -3251,9 +3264,20 @@ L_AE3A: clc                                     ; AE3A
         sta     $0670                           ; AE3E
         rts                                     ; AE41
 
-.endmacro
+; ----------------------------------------------------------------------------
+L_AE42: lda     LoadedObj + Obj::Scratch1       ; AE42
+        cmp     #$30                            ; AE44
+        bcs     L_AE54                          ; AE46
+        cmp     #$18                            ; AE48
+        bcs     L_AE50                          ; AE4A
+        lda     #$08                            ; AE4C
+        bne     L_AE56                          ; AE4E
+L_AE50: lda     #$07                            ; AE50
+        bne     L_AE56                          ; AE52
+L_AE54: lda     #$06                            ; AE54
+L_AE56: sta     $0670                           ; AE56
+        rts                                     ; AE59
 
-.macro MAC_object_handlers__bosses_5_of_6
 ; ----------------------------------------------------------------------------
 L_AE5A: lda     $0671                           ; AE5A
         asl     a                               ; AE5D
@@ -3385,6 +3409,8 @@ L_AF43: pla                                     ; AF43
 
 .endmacro
 
-.macro MAC_object_handlers__bosses_6_of_6
+.macro MAC_object_handlers__bosses_2_of_2
+; ----------------------------------------------------------------------------
+L_BF8A: .byte   $01,$02,$04,$08,$10,$20,$40,$80 ; BF8A
 .endmacro
 

@@ -124,26 +124,27 @@ L_E178: rol     $9B                             ; E178
 ; Output:
 ;   A          = MulDiv_Op1 x MulDiv_Op2, in Op1's own format
 ;   MulDiv_Op1 = the same value (the result is written back over the input)
-ScaleByUnsignedFrac:
+.proc ScaleByUnsignedFrac
         ldx     #$08                            ; E182
 ; A is the running total; the X above counts the 8 shift/add steps, one per bit of MulDiv_Op1.
         lda     #$00                            ; E184
 ; Shift the next multiplier bit out of MulDiv_Op1; when set, add the (progressively halved)
 ; multiplicand MulDiv_Op2.
-_ScaleByUnsignedFrac__Loop:
+_Loop:
         asl     $9B                             ; E186
-        bcc     _ScaleByUnsignedFrac__Next      ; E188
+        bcc     _Next                           ; E188
         clc                                     ; E18A
         adc     $9C                             ; E18B
 ; Halve MulDiv_Op2 — halving the multiplicand each step is what makes the routine lossy, and what
 ; leaves the final LSR to supply the last division by 2.
-_ScaleByUnsignedFrac__Next:
+_Next:
         lsr     $9C                             ; E18D
         dex                                     ; E18F
-        bne     _ScaleByUnsignedFrac__Loop      ; E190
+        bne     _Loop                           ; E190
         lsr     a                               ; E192
         sta     $9B                             ; E193
         rts                                     ; E195
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Signed fractional scale — A = A x Y / 128, with A's sign preserved.
@@ -156,7 +157,7 @@ _ScaleByUnsignedFrac__Next:
 ;   A = A x Y / 128, A's sign preserved. Approximate and never over-estimated — the magnitude
 ;   comes from ScaleByUnsignedFrac ($E182), which is low by 0..3. |result| must be < $80, that
 ;   routine's precondition.
-ScaleBySignedFrac:
+.proc ScaleBySignedFrac
         sty     $9B                             ; E196
 ; ASL A does double duty:
 ; 
@@ -168,7 +169,7 @@ ScaleBySignedFrac:
 ; even has bit 7 set); the fixed08 magnitude only appears after the negate below.
         asl     a                               ; E198
 ; For non-negative A values, jump to positive handler.
-        bcc     _ScaleBySignedFrac__Positive    ; E199
+        bcc     _Positive                       ; E199
 ; For negative A values,
 ; 
 ; negate the doubled value,
@@ -186,10 +187,11 @@ ScaleBySignedFrac:
 
 ; ----------------------------------------------------------------------------
 ; A >= 0: the doubled value needs no sign fixup — multiply and return.
-_ScaleBySignedFrac__Positive:
+_Positive:
         sta     $9C                             ; E1AB
         jsr     ScaleByUnsignedFrac             ; E1AD
         rts                                     ; E1B0
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_E1B1: jsr     Trig_CosByAngle                 ; E1B1
@@ -235,17 +237,17 @@ Trig_CosByAngle:
 ;   | $80–$BF | Q3 (180–270°) | second | A' = A - $80  | negated |
 ;   | $C0–$FF | Q4 (270–360°) | second | A' = -A       | negated |
 ;   +---------+---------------+--------+---------------+---------+
-Trig_SinByAngle:
+.proc Trig_SinByAngle
         cmp     #$40                            ; E1D5
 ; if A < $40, then handle as Quandrant 1
-        bcc     _Trig_SinByAngle__Quandrant_1   ; E1D7
+        bcc     _Quandrant_1                    ; E1D7
         cmp     #$80                            ; E1D9
 ; if A >= $80, then handle as Half 2 (negative)
-        bcs     _Trig_SinByAngle__Half_2        ; E1DB
+        bcs     _Half_2                         ; E1DB
 ; if $40 <= A < $80, then handle as Quandrant 2 by
 ; 1. converting A to Q1 equivalent (A = $80 - A), and
 ; 2. falling into Q1 handler.
-_Trig_SinByAngle__Quandrant_2:
+_Quandrant_2:
         eor     #$FF                            ; E1DD
         clc                                     ; E1DF
         adc     #$01                            ; E1E0
@@ -254,40 +256,41 @@ _Trig_SinByAngle__Quandrant_2:
 ; 
 ; A used as-is.
 ; Look-up used as-is.
-_Trig_SinByAngle__Quandrant_1:
+_Quandrant_1:
         tax                                     ; E1E4
         lda     L_E202,x                        ; E1E5
         rts                                     ; E1E8
 
 ; ----------------------------------------------------------------------------
-_Trig_SinByAngle__Half_2:
+_Half_2:
         cmp     #$C0                            ; E1E9
 ; if A >= $C0, then handle as Quandrant 4
-        bcs     _Trig_SinByAngle__Quandrant_4   ; E1EB
+        bcs     _Quandrant_4                    ; E1EB
 ; if $80 <= A < $C0, then handle as Quandrant 3 by
 ; 1. setting A = A - $80, and
 ; 2. Doing the table look-up and negating the result
-_Trig_SinByAngle__Quandrant_3:
+_Quandrant_3:
         sec                                     ; E1ED
         sbc     #$80                            ; E1EE
-        jmp     _Trig_SinByAngle__LookupNeg     ; E1F0
+        jmp     _LookupNeg                      ; E1F0
 
 ; ----------------------------------------------------------------------------
 ; if A >= $C0, then handle as Quandrant 4 by
 ; 1. negating A, and
 ; 2. Doing the table look-up and negating the result
-_Trig_SinByAngle__Quandrant_4:
+_Quandrant_4:
         eor     #$FF                            ; E1F3
         clc                                     ; E1F5
         adc     #$01                            ; E1F6
 ; Get Look-up value and return it negated.
-_Trig_SinByAngle__LookupNeg:
+_LookupNeg:
         tax                                     ; E1F8
         lda     L_E202,x                        ; E1F9
         eor     #$FF                            ; E1FC
         clc                                     ; E1FE
         adc     #$01                            ; E1FF
         rts                                     ; E201
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_E202: .byte   $00,$03,$06,$09,$0C,$10,$13,$16 ; E202
@@ -302,6 +305,81 @@ L_E202: .byte   $00,$03,$06,$09,$0C,$10,$13,$16 ; E202
 .endmacro
 
 .macro MAC_math_4_of_5
+; ----------------------------------------------------------------------------
+L_EA6F: ldx     #$09                            ; EA6F
+        lda     #$00                            ; EA71
+L_EA73: sta     $02,x                           ; EA73
+        dex                                     ; EA75
+        bpl     L_EA73                          ; EA76
+        inc     $07                             ; EA78
+        lda     #$10                            ; EA7A
+        sta     $0C                             ; EA7C
+L_EA7E: lsr     $01                             ; EA7E
+        ror     L0000                           ; EA80
+        bcc     L_EA8B                          ; EA82
+        ldx     #$02                            ; EA84
+        ldy     #$07                            ; EA86
+        jsr     L_EA97                          ; EA88
+L_EA8B: ldx     #$07                            ; EA8B
+        ldy     #$07                            ; EA8D
+        jsr     L_EA97                          ; EA8F
+        dec     $0C                             ; EA92
+        bne     L_EA7E                          ; EA94
+        rts                                     ; EA96
+
+; ----------------------------------------------------------------------------
+L_EA97: clc                                     ; EA97
+        lda     #$05                            ; EA98
+        sta     $0D                             ; EA9A
+L_EA9C: lda     L0000,x                         ; EA9C
+        adc     L0000,y                         ; EA9E
+        cmp     #$0A                            ; EAA1
+        bcc     L_EAA8                          ; EAA3
+        sec                                     ; EAA5
+        sbc     #$0A                            ; EAA6
+L_EAA8: sta     L0000,x                         ; EAA8
+        inx                                     ; EAAA
+        iny                                     ; EAAB
+        dec     $0D                             ; EAAC
+        bne     L_EA9C                          ; EAAE
+        rts                                     ; EAB0
+
+; ----------------------------------------------------------------------------
+L_EAB1: ldx     #$04                            ; EAB1
+L_EAB3: lda     #$00                            ; EAB3
+        sta     $03,x                           ; EAB5
+        lda     L0000                           ; EAB7
+L_EAB9: sec                                     ; EAB9
+        sbc     #$10                            ; EABA
+        tay                                     ; EABC
+        lda     $01                             ; EABD
+        sbc     #$27                            ; EABF
+        bcc     L_EACB                          ; EAC1
+        sta     $01                             ; EAC3
+        tya                                     ; EAC5
+        inc     $03,x                           ; EAC6
+        jmp     L_EAB9                          ; EAC8
+
+; ----------------------------------------------------------------------------
+L_EACB: lda     $01                             ; EACB
+        sta     $02                             ; EACD
+        lda     L0000                           ; EACF
+        asl     a                               ; EAD1
+        rol     $01                             ; EAD2
+        asl     a                               ; EAD4
+        rol     $01                             ; EAD5
+        clc                                     ; EAD7
+        adc     L0000                           ; EAD8
+        sta     L0000                           ; EADA
+        lda     $01                             ; EADC
+        adc     $02                             ; EADE
+        asl     L0000                           ; EAE0
+        rol     a                               ; EAE2
+        sta     $01                             ; EAE3
+        dex                                     ; EAE5
+        bpl     L_EAB3                          ; EAE6
+        rts                                     ; EAE8
+
 ; ----------------------------------------------------------------------------
 L_EAE9: sta     $45                             ; EAE9
         cmp     #$63                            ; EAEB

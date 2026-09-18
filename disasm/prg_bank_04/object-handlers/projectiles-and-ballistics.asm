@@ -1,4 +1,4 @@
-.macro MAC_object_handlers__projectiles_and_ballistics_1_of_9
+.macro MAC_object_handlers__projectiles_and_ballistics_1_of_7
 ; ----------------------------------------------------------------------------
 L_8F54: jmp     L_8F96                          ; 8F54
 
@@ -20,15 +20,29 @@ L_8F69: jsr     L_8E95                          ; 8F69
         sta     LoadedObj + Obj::Velocity_Y     ; 8F76
         jmp     L_8F8B                          ; 8F78
 
-.endmacro
+; ----------------------------------------------------------------------------
+L_8F7B: lda     $BB                             ; 8F7B
+        cmp     #$03                            ; 8F7D
+        bcc     L_8F8B                          ; 8F7F
+        lda     LoadedObj + Obj::Velocity_X     ; 8F81
+        asl     a                               ; 8F83
+        sta     LoadedObj + Obj::Velocity_X     ; 8F84
+        lda     LoadedObj + Obj::Velocity_Y     ; 8F86
+        asl     a                               ; 8F88
+        sta     LoadedObj + Obj::Velocity_Y     ; 8F89
+L_8F8B: lda     #$03                            ; 8F8B
+        sta     LoadedObj + Obj::Scratch1       ; 8F8D
+        inc     LoadedObj + Obj::Type           ; 8F8F
+        lda     #$1A                            ; 8F91
+        jsr     LC216                           ; 8F93
+L_8F96: rts                                     ; 8F96
 
-.macro MAC_object_handlers__projectiles_and_ballistics_2_of_9
 ; ----------------------------------------------------------------------------
 L_8F97: jmp     LC114                           ; 8F97
 
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_3_of_9
+.macro MAC_object_handlers__projectiles_and_ballistics_2_of_7
 ; ----------------------------------------------------------------------------
 L_8F9F: jmp     L_8FB8                          ; 8F9F
 
@@ -77,7 +91,7 @@ L_8FF0: jmp     LC117                           ; 8FF0
 
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_4_of_9
+.macro MAC_object_handlers__projectiles_and_ballistics_3_of_7
 ; ----------------------------------------------------------------------------
 L_9011: jmp     L_903A                          ; 9011
 
@@ -368,7 +382,7 @@ L_91EF: jmp     LC117                           ; 91EF
 
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_5_of_9
+.macro MAC_object_handlers__projectiles_and_ballistics_4_of_7
 ; ----------------------------------------------------------------------------
 L_920B: jmp     L_9236                          ; 920B
 
@@ -396,7 +410,7 @@ L_9236: rts                                     ; 9236
 
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_6_of_9
+.macro MAC_object_handlers__projectiles_and_ballistics_5_of_7
 ; ----------------------------------------------------------------------------
 L_923C: jmp     L_926E                          ; 923C
 
@@ -461,7 +475,7 @@ L_92A3: lda     #$11                            ; 92A3
 
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_7_of_9
+.macro MAC_object_handlers__projectiles_and_ballistics_6_of_7
 ; ----------------------------------------------------------------------------
 L_AF45: jmp     L_AF66                          ; AF45
 
@@ -784,7 +798,7 @@ L_B15B: lda     #$08                            ; B15B
 
 .endmacro
 
-.macro MAC_object_handlers__projectiles_and_ballistics_8_of_9
+.macro MAC_object_handlers__projectiles_and_ballistics_7_of_7
 ; ----------------------------------------------------------------------------
 L_BBC2: jmp     L_BBE2                          ; BBC2
 
@@ -849,9 +863,46 @@ L_BC1C: lda     #$00                            ; BC1C
 ; ----------------------------------------------------------------------------
 L_BC27: rts                                     ; BC27
 
-.endmacro
+; ----------------------------------------------------------------------------
+L_BC28: jsr     LC105                           ; BC28
+        lda     L_BC61,x                        ; BC2B
+        sta     $04                             ; BC2E
+        lda     #$04                            ; BC30
+L_BC32: pha                                     ; BC32
+        ldx     #$8C                            ; BC33
+        lda     #$D2                            ; BC35
+        sta     $00                             ; BC37
+        jsr     LC1D7                           ; BC39
+        beq     L_BC5F                          ; BC3C
+        txa                                     ; BC3E
+        pha                                     ; BC3F
+        lda     #$4A                            ; BC40
+        sta     ObjectTable + Obj::Type,x       ; BC42
+        jsr     LC0D8                           ; BC45
+        pla                                     ; BC48
+        tax                                     ; BC49
+        pla                                     ; BC4A
+        pha                                     ; BC4B
+        asl     a                               ; BC4C
+        asl     a                               ; BC4D
+        asl     a                               ; BC4E
+        sec                                     ; BC4F
+        sbc     #$10                            ; BC50
+        clc                                     ; BC52
+        adc     $04                             ; BC53
+        sta     ObjectTable + Obj::Facing,x     ; BC55
+        pla                                     ; BC58
+        sec                                     ; BC59
+        sbc     #$01                            ; BC5A
+        bpl     L_BC32                          ; BC5C
+        rts                                     ; BC5E
 
-.macro MAC_object_handlers__projectiles_and_ballistics_9_of_9
+; ----------------------------------------------------------------------------
+L_BC5F: pla                                     ; BC5F
+        rts                                     ; BC60
+
+; ----------------------------------------------------------------------------
+L_BC61: .byte   $C0,$00,$40,$80                 ; BC61
 ; ----------------------------------------------------------------------------
 L_BC65: jmp     L_BC83                          ; BC65
 

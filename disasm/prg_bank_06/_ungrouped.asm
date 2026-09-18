@@ -248,7 +248,7 @@ L_9711: clc                                     ; 9711
         adc     LoadedObj + Obj::Position_X_Lo  ; 9712
         sta     LoadedObj + Obj::Position_X_Lo  ; 9714
         txa                                     ; 9716
-L_9717: adc     LoadedObj + Obj::Position_X_Hi  ; 9717
+        adc     LoadedObj + Obj::Position_X_Hi  ; 9717
         sta     LoadedObj + Obj::Position_X_Hi  ; 9719
         ldx     #$00                            ; 971B
         lda     $BD                             ; 971D
@@ -275,7 +275,7 @@ L_9738: ldx     #$0E                            ; 9738
         beq     L_976C                          ; 9741
         lda     #$13                            ; 9743
         sta     ObjectTable + Obj::Type,x       ; 9745
-L_9748: jsr     Obj_CopyFieldsToSlot                           ; 9748
+        jsr     Obj_CopyFieldsToSlot            ; 9748
         lda     $03FC                           ; 974B
         bit     $E6E2                           ; 974E
         bne     L_9763                          ; 9751
@@ -349,25 +349,24 @@ PlaySound_23:
 ;     X = slot spawned into
 ;   on failure (no empty slot)
 ;     A = 0
-; 
-; Start by storing a copy of Velocity_X into WR_Context_Dependent_06
-Obj_TryCloneAtScreenEdge:
+.proc Obj_TryCloneAtScreenEdge
+; Store a copy of Velocity_X into WR_Context_Dependent_06.
         sta     $06                             ; A29E
 ; Try to clone using Obj_TryCloneIntoEmptySlot.
         jsr     Obj_TryCloneIntoEmptySlot       ; A2A0
-        beq     _Obj_TryCloneAtScreenEdge__NoSlot; A2A3
+        beq     _NoSlot                         ; A2A3
 ; Store X (slot allocated to) for later retrieval
         stx     $05                             ; A2A5
 ; Roll the dice, 1 out of 2 times, flip Velocity_X.
         jsr     Step_RNG                        ; A2A7
         and     #$40                            ; A2AA
-        bne     _Obj_TryCloneAtScreenEdge__NegDir; A2AC
+        bne     _NegDir                         ; A2AC
         lda     #$01                            ; A2AE
 ; Otherwise, select x-offset of +1 (tiles) and skip to edge-spawn logic
-        jmp     _Obj_TryCloneAtScreenEdge__Write; A2B0
+        jmp     _Write                          ; A2B0
 
 ; ----------------------------------------------------------------------------
-_Obj_TryCloneAtScreenEdge__NegDir:
+_NegDir:
         lda     #$00                            ; A2B3
         sec                                     ; A2B5
         sbc     $06                             ; A2B6
@@ -375,7 +374,7 @@ _Obj_TryCloneAtScreenEdge__NegDir:
         sta     $06                             ; A2B8
 ; select x-offset +15 (tiles)
         lda     #$0F                            ; A2BA
-_Obj_TryCloneAtScreenEdge__Write:
+_Write:
         clc                                     ; A2BC
         adc     $1D                             ; A2BD
 ; Restore the slot allocated to into X (though it should still be there, no??)
@@ -393,25 +392,27 @@ _Obj_TryCloneAtScreenEdge__Write:
 
 ; ----------------------------------------------------------------------------
 ; Return A = 0 for failure (no free slot).
-_Obj_TryCloneAtScreenEdge__NoSlot:
+_NoSlot:
         lda     #$00                            ; A2D1
         rts                                     ; A2D3
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; If the occupied tile has attribute bit6 ($40, Water) clear, snap LoadedObj.Position_Y down to
 ; the next tile row and update the LoadedObj.TileIndex.
-Enemy_TileSnapY:
+.proc Enemy_TileSnapY
         lda     #$00                            ; A2D4
         jsr     Obj_ReadTile_WithOffset         ; A2D6
         and     #$C0                            ; A2D9
         cmp     #$40                            ; A2DB
-        beq     _Enemy_TileSnapY__Done          ; A2DD
+        beq     _Done                           ; A2DD
         lda     #$00                            ; A2DF
         sta     LoadedObj + Obj::Position_Y_Lo  ; A2E1
         inc     LoadedObj + Obj::Position_Y_Hi  ; A2E3
         jsr     Obj_CalcTileIndex               ; A2E5
-_Enemy_TileSnapY__Done:
+_Done:
         rts                                     ; A2E8
+.endproc
 
 .endmacro
 

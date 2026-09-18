@@ -11,24 +11,25 @@
 ; 
 ; Post-condition:
 ;   Restores the previous bank
-MetaSprite_Render:
+.proc MetaSprite_Render
         pha                                     ; F011
         ldx     #$1A                            ; F012
         lda     $FF                             ; F014
         and     #$20                            ; F016
 ; Select the metasprite CHR bank ($1A or $41) by testing bit-5 of PPU_CTRL_Shadow.
-        bne     _MetaSprite_Render__SelectTable ; F018
+        bne     _SelectTable                    ; F018
         ldx     #$41                            ; F01A
 ; X = packed bank|entry for BankDispatch_Switch: $1A (bank 1 entry $0A = the 8x16 overhead
 ; metasprite table $BEA1) when PPU_CTRL_Shadow bit5 set, else $41 (bank 4 entry $01 = the 8x8 tank
 ; table $8907).
-_MetaSprite_Render__SelectTable:
+_SelectTable:
         txa                                     ; F01C
         jsr     BankDispatch_Switch             ; F01D
         pla                                     ; F020
         jsr     L_F029                          ; F021
         lda     SavedPrgBank                    ; F024
         jmp     BankSave_Switch                 ; F026
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_F029: asl     a                               ; F029
@@ -213,6 +214,52 @@ L_F138: pla                                     ; F138
 
 ; ----------------------------------------------------------------------------
 L_F14D: rts                                     ; F14D
+
+; ----------------------------------------------------------------------------
+L_F14E: pha                                     ; F14E
+        lsr     a                               ; F14F
+        lsr     a                               ; F150
+        lsr     a                               ; F151
+        lsr     a                               ; F152
+        jsr     L_F157                          ; F153
+        pla                                     ; F156
+L_F157: and     #$0F                            ; F157
+        clc                                     ; F159
+        adc     #$30                            ; F15A
+        cmp     #$3A                            ; F15C
+        bcc     L_F163                          ; F15E
+        clc                                     ; F160
+        adc     #$07                            ; F161
+L_F163: sta     $45                             ; F163
+        jsr     OAM_Stage_Pattern               ; F165
+        lda     $3E                             ; F168
+        clc                                     ; F16A
+        adc     #$08                            ; F16B
+        sta     $3E                             ; F16D
+        rts                                     ; F16F
+
+; ----------------------------------------------------------------------------
+L_F170: ldy     #$00                            ; F170
+L_F172: lda     (IndirectPtrLo),y               ; F172
+        beq     L_F186                          ; F174
+        sta     $45                             ; F176
+        jsr     OAM_Stage_Pattern               ; F178
+        lda     $3E                             ; F17B
+        clc                                     ; F17D
+        adc     #$08                            ; F17E
+        sta     $3E                             ; F180
+        iny                                     ; F182
+        jmp     L_F172                          ; F183
+
+; ----------------------------------------------------------------------------
+L_F186: iny                                     ; F186
+        tya                                     ; F187
+        clc                                     ; F188
+        adc     IndirectPtrLo                   ; F189
+        sta     IndirectPtrLo                   ; F18B
+        bcc     L_F191                          ; F18D
+        inc     IndirectPtrHi                   ; F18F
+L_F191: rts                                     ; F191
 
 .endmacro
 

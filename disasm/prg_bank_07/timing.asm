@@ -1,4 +1,4 @@
-.macro MAC_timing_1_of_4
+.macro MAC_timing_1_of_3
 ; ----------------------------------------------------------------------------
 L_CE4A: pha                                     ; CE4A
         jsr     WaitNMI                         ; CE4B
@@ -10,16 +10,18 @@ L_CE4A: pha                                     ; CE4A
 
 .endmacro
 
-.macro MAC_timing_2_of_4
+.macro MAC_timing_2_of_3
 ; ----------------------------------------------------------------------------
 ; Sets Nmi_SignalFlags bit 7 then spin-waits until NMI handler clears it.  This is the mechanism
 ; that paces the game loop at 60Hz.
-WaitNMI:lda     #$80                            ; E936
+.proc WaitNMI
+        lda     #$80                            ; E936
         sta     Nmi_SignalFlags                 ; E938
-_WaitNMI__Loop:
+_Loop:
         bit     Nmi_SignalFlags                 ; E93A
-        bmi     _WaitNMI__Loop                  ; E93C
+        bmi     _Loop                           ; E93C
         rts                                     ; E93E
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_E93F: lda     $FF                             ; E93F
@@ -37,7 +39,7 @@ L_E949: lda     $FF                             ; E949
 
 .endmacro
 
-.macro MAC_timing_3_of_4
+.macro MAC_timing_3_of_3
 ; ----------------------------------------------------------------------------
 ; Hardware NMI (VBlank) handler.
 ; 
@@ -45,30 +47,32 @@ L_E949: lda     $FF                             ; E949
 ; If a bank switch is in progress (Nmi_SignalFlags bit 6) records a deferred NMI and returns.
 ; Otherwise, runs the frame-update work (Nmi_DoWork).
 ; Restores the registers before returning.
-NMI:    pha                                     ; EB7E
+.proc NMI
+        pha                                     ; EB7E
         txa                                     ; EB7F
         pha                                     ; EB80
         tya                                     ; EB81
         pha                                     ; EB82
         bit     Nmi_SignalFlags                 ; EB83
-        bvs     _NMI__Deferred                  ; EB85
+        bvs     _Deferred                       ; EB85
         jsr     L_EB98                          ; EB87
-        jmp     _NMI__Restore                   ; EB8A
+        jmp     _Restore                        ; EB8A
 
 ; ----------------------------------------------------------------------------
 ; Nmi_SignalFlags bit 6 was set (busy during bank switch); record deferred NMI by writing $20 (bit
 ; 5) to Nmi_SignalFlags and RTI.  This signals BankSave_Switch to call Nmi_DoWork on return
-_NMI__Deferred:
+_Deferred:
         lda     #$20                            ; EB8D
         sta     Nmi_SignalFlags                 ; EB8F
 ; Pop Y/X/A; RTI
-_NMI__Restore:
+_Restore:
         pla                                     ; EB91
         tay                                     ; EB92
         pla                                     ; EB93
         tax                                     ; EB94
         pla                                     ; EB95
         rti                                     ; EB96
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_EB97: rti                                     ; EB97
@@ -118,9 +122,14 @@ L_EBD2: lda     Background_Palettes + BgPalette::Backdrop,x ; EBD2
         sta     $2006                           ; EBEC
         sta     $2006                           ; EBEF
         beq     L_EC34                          ; EBF2
-.endmacro
-
-.macro MAC_timing_4_of_4
+L_EBF4: .byte   $00,$01,$02,$03,$04,$05,$06,$07 ; EBF4
+        .byte   $08,$09,$0A,$0B,$0C,$0F,$0F,$0F ; EBFC
+        .byte   $10,$11,$12,$13,$14,$15,$16,$17 ; EC04
+        .byte   $18,$19,$1A,$1B,$1C,$0F,$0F,$0F ; EC0C
+        .byte   $20,$21,$22,$23,$24,$25,$26,$27 ; EC14
+        .byte   $28,$29,$2A,$2B,$2C,$0F,$0F,$0F ; EC1C
+        .byte   $30,$31,$32,$33,$34,$35,$36,$37 ; EC24
+        .byte   $38,$39,$3A,$3B,$3C,$3D,$3E,$0F ; EC2C
 ; ----------------------------------------------------------------------------
 L_EC34: jsr     L_F1CA                          ; EC34
         jsr     L_E6BF                          ; EC37

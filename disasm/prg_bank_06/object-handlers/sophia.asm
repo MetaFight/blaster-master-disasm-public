@@ -1,4 +1,4 @@
-.macro MAC_object_handlers__sophia_1_of_8
+.macro MAC_object_handlers__sophia_1_of_6
 ; ----------------------------------------------------------------------------
 L_89BE: lda     $1C                             ; 89BE
         clc                                     ; 89C0
@@ -355,7 +355,7 @@ L_8C4C: rts                                     ; 8C4C
 
 .endmacro
 
-.macro MAC_object_handlers__sophia_2_of_8
+.macro MAC_object_handlers__sophia_2_of_6
 ; ----------------------------------------------------------------------------
 L_8C64: jmp     L_8C8B                          ; 8C64
 
@@ -537,9 +537,11 @@ L_8DB3: stx     $BE                             ; 8DB3
         jsr     L_96EB                          ; 8DBD
 L_8DC0: jmp     L_8DD5                          ; 8DC0
 
-.endmacro
-
-.macro MAC_object_handlers__sophia_3_of_8
+; ----------------------------------------------------------------------------
+L_8DC3: .byte   $00,$00,$01,$01,$01,$00,$FF,$FF ; 8DC3
+        .byte   $FF                             ; 8DCB
+L_8DCC: .byte   $00,$FF,$FF,$00,$01,$01,$01,$00 ; 8DCC
+        .byte   $FF                             ; 8DD4
 ; ----------------------------------------------------------------------------
 L_8DD5: lda     #$18                            ; 8DD5
         sta     $40                             ; 8DD7
@@ -594,7 +596,7 @@ L_8E11: txa                                     ; 8E11
 
 .endmacro
 
-.macro MAC_object_handlers__sophia_4_of_8
+.macro MAC_object_handlers__sophia_3_of_6
 ; ----------------------------------------------------------------------------
 L_8E97: jmp     L_8F64                          ; 8E97
 
@@ -1813,7 +1815,7 @@ L_9706: rts                                     ; 9706
 
 .endmacro
 
-.macro MAC_object_handlers__sophia_5_of_8
+.macro MAC_object_handlers__sophia_4_of_6
 ; ----------------------------------------------------------------------------
 L_9838: lda     #$54                            ; 9838
         sta     $02                             ; 983A
@@ -1859,7 +1861,7 @@ L_9881: rts                                     ; 9881
 
 .endmacro
 
-.macro MAC_object_handlers__sophia_6_of_8
+.macro MAC_object_handlers__sophia_5_of_6
 ; ----------------------------------------------------------------------------
 L_99B0: ldx     #$46                            ; 99B0
         lda     #$46                            ; 99B2
@@ -1878,7 +1880,7 @@ L_99CB: rts                                     ; 99CB
 
 .endmacro
 
-.macro MAC_object_handlers__sophia_7_of_8
+.macro MAC_object_handlers__sophia_6_of_6
 ; ----------------------------------------------------------------------------
 L_9AC8: ldx     #$2A                            ; 9AC8
 L_9ACA: lda     L06F2                           ; 9ACA
@@ -1898,12 +1900,6 @@ L_9AE1: pla                                     ; 9AE1
         cmp     #$54                            ; 9AE6
         bne     L_9ACA                          ; 9AE8
 L_9AEA: rts                                     ; 9AEA
-
-.endmacro
-
-.macro MAC_object_handlers__sophia_8_of_8
-; ----------------------------------------------------------------------------
-L_9B2F: jmp     L_9B47                          ; 9B2F
 
 .endmacro
 
