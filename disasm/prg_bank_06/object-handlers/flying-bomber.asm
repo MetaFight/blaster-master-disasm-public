@@ -176,12 +176,11 @@ _Render:
 _TileActive:
         txa                                     ; ACF6
         jmp     MetaSprite_Render               ; ACF7
-.endproc
 
 ; ----------------------------------------------------------------------------
-; Single unreachable $60 (RTS).
-DEAD_TankFlyingBomber_OrphanRTS:
+; Unreachable RTS (dead).
         rts                                     ; ACFA
+.endproc
 
 .endmacro
 

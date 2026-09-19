@@ -355,6 +355,9 @@ L_8C4C: rts                                     ; 8C4C
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_2_of_9
+
 .macro MAC_object_handlers__sophia_2_of_6
 ; ----------------------------------------------------------------------------
 L_8C64: jmp     L_8C8B                          ; 8C64
@@ -596,6 +599,9 @@ L_8E11: txa                                     ; 8E11
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_3_of_9
+
 .macro MAC_object_handlers__sophia_3_of_6
 ; ----------------------------------------------------------------------------
 L_8E97: jmp     L_8F64                          ; 8E97
@@ -804,7 +810,7 @@ L_8FF8: lda     #$C0                            ; 8FF8
 L_9005: jmp     MetaSprite_Render                           ; 9005
 
 ; ----------------------------------------------------------------------------
-L_9008: rts                                     ; 9008
+        rts                                     ; 9008
 
 ; ----------------------------------------------------------------------------
 L_9009: jmp     L_90C9                          ; 9009
@@ -1004,7 +1010,7 @@ L_915D: lda     #$00                            ; 915D
 L_916A: jmp     MetaSprite_Render                           ; 916A
 
 ; ----------------------------------------------------------------------------
-L_916D: rts                                     ; 916D
+        rts                                     ; 916D
 
 ; ----------------------------------------------------------------------------
 L_916E: jmp     L_9234                          ; 916E
@@ -1209,7 +1215,7 @@ L_92CA: lda     #$C0                            ; 92CA
 L_92D7: jmp     MetaSprite_Render                           ; 92D7
 
 ; ----------------------------------------------------------------------------
-L_92DA: rts                                     ; 92DA
+        rts                                     ; 92DA
 
 ; ----------------------------------------------------------------------------
 L_92DB: jmp     L_94FC                          ; 92DB
@@ -1688,7 +1694,7 @@ L_962F: lda     #$00                            ; 962F
 L_963C: jmp     MetaSprite_Render                           ; 963C
 
 ; ----------------------------------------------------------------------------
-L_963F: rts                                     ; 963F
+        rts                                     ; 963F
 
 ; ----------------------------------------------------------------------------
 L_9640: .byte   $04                             ; 9640
@@ -1815,6 +1821,12 @@ L_9706: rts                                     ; 9706
 
 .endmacro
 
+; Interrupted by 4 macros:
+;   MAC__ungrouped_4_of_9
+;   MAC_object_handlers__projectiles_and_ballistics_1_of_6
+;   MAC__ungrouped_5_of_9
+;   MAC_object_handlers__projectiles_and_ballistics_2_of_6
+
 .macro MAC_object_handlers__sophia_4_of_6
 ; ----------------------------------------------------------------------------
 L_9838: lda     #$54                            ; 9838
@@ -1861,6 +1873,9 @@ L_9881: rts                                     ; 9881
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_object_handlers__projectiles_and_ballistics_3_of_6
+
 .macro MAC_object_handlers__sophia_5_of_6
 ; ----------------------------------------------------------------------------
 L_99B0: ldx     #$46                            ; 99B0
@@ -1879,6 +1894,9 @@ L_99B0: ldx     #$46                            ; 99B0
 L_99CB: rts                                     ; 99CB
 
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_object_handlers__projectiles_and_ballistics_4_of_6
 
 .macro MAC_object_handlers__sophia_6_of_6
 ; ----------------------------------------------------------------------------

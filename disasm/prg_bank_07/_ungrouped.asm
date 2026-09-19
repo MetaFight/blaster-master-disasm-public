@@ -23,6 +23,9 @@ L_C458: lda     #$FF                            ; C458
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_05_game_screen__game_loop_2_of_2
+
 .macro MAC__ungrouped_2_of_20
 ; ----------------------------------------------------------------------------
 L_C465: lda     #$00                            ; C465
@@ -168,6 +171,9 @@ L_C55A: jmp     L_C29E                          ; C55A
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_06_pause_screen_1_of_2
+
 .macro MAC__ungrouped_3_of_20
 ; ----------------------------------------------------------------------------
 L_C56D: jsr     L_DEC2                          ; C56D
@@ -200,6 +206,9 @@ L_C5A2: .byte   $3D                             ; C5A2
 LC5A3:  .byte   $5A,$09,$75,$0E,$06,$37,$5D,$18 ; C5A3
         .byte   $1B,$59,$09,$4A,$40,$59,$2A     ; C5AB
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_05_game_screen__object_system_1_of_9
 
 .macro MAC__ungrouped_4_of_20
 ; ----------------------------------------------------------------------------
@@ -394,6 +403,10 @@ L_C7C7: tya                                     ; C7C7
         rts                                     ; C7D7
 
 .endmacro
+
+; Interrupted by 2 macros:
+;   MAC_05_game_screen__hud
+;   MAC_05_game_screen__object_system_2_of_9
 
 .macro MAC__ungrouped_5_of_20
 ; ----------------------------------------------------------------------------
@@ -612,6 +625,12 @@ _Loop:
 
 .endmacro
 
+; Interrupted by 4 macros:
+;   MAC_05_game_screen__viewport_1_of_2
+;   MAC_sound_1_of_2
+;   MAC_screen_fade
+;   MAC_timing_1_of_3
+
 .macro MAC__ungrouped_6_of_20
 ; ----------------------------------------------------------------------------
 L_CE55: lda     $45                             ; CE55
@@ -682,6 +701,10 @@ L_CEB4: inx                                     ; CEB4
         rts                                     ; CEC5
 
 .endmacro
+
+; Interrupted by 2 macros:
+;   MAC_05_game_screen__object_system_terrain
+;   MAC_math_1_of_5
 
 .macro MAC__ungrouped_7_of_20
 ; ----------------------------------------------------------------------------
@@ -835,6 +858,9 @@ L_D184: sta     Background_Palettes + BgPalette::Backdrop,x ; D184
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_05_game_screen__viewport_2_of_2
+
 .macro MAC__ungrouped_8_of_20
 ; ----------------------------------------------------------------------------
 L_D1EF: sta     $B7                             ; D1EF
@@ -966,6 +992,9 @@ L_D2A8: lda     #$00                            ; D2A8
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_05_game_screen__object_system_3_of_9
+
 .macro MAC__ungrouped_9_of_20
 ; ----------------------------------------------------------------------------
 L_D65E: .byte   $00,$00,$01,$01,$01,$00,$FF,$FF ; D65E
@@ -994,13 +1023,14 @@ L_D683: inc     LoadedObj + Obj::Position_Y_Hi  ; D683
 
 ; ----------------------------------------------------------------------------
 ; Move the object up one row and adjust TileIndex accordingly.
-Obj_MoveUpOneRow:
+.proc Obj_MoveUpOneRow
         dec     LoadedObj + Obj::Position_Y_Hi  ; D68D
         lda     LoadedObj + Obj::TileIndex      ; D68F
         sec                                     ; D691
         sbc     #$11                            ; D692
         sta     LoadedObj + Obj::TileIndex      ; D694
         rts                                     ; D696
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_D697: jsr     L_D6CD                          ; D697
@@ -1087,6 +1117,9 @@ L_D71E: rts                                     ; D71E
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_05_game_screen__object_system_4_of_9
+
 .macro MAC__ungrouped_10_of_20
 ; ----------------------------------------------------------------------------
 L_D763: jsr     L_D697                          ; D763
@@ -1154,6 +1187,9 @@ L_D7BA: sta     $7C,x                           ; D7BA
         rts                                     ; D7BF
 
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_05_game_screen__object_system_5_of_9
 
 .macro MAC__ungrouped_11_of_20
 ; ----------------------------------------------------------------------------
@@ -1232,6 +1268,9 @@ L_D8FE: jsr     L_D908                          ; D8FE
 L_D907: rts                                     ; D907
 
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_level_rendering
 
 .macro MAC__ungrouped_12_of_20
 ; ----------------------------------------------------------------------------
@@ -1350,6 +1389,9 @@ LDE56:  .byte   $7D,$4B,$2D,$0B,$5D,$07,$6D,$39 ; DE56
         .byte   $6B,$69,$77,$29                 ; DEBE
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_sound_2_of_2
+
 .macro MAC__ungrouped_13_of_20
 ; ----------------------------------------------------------------------------
 L_DF05: lda     #$05                            ; DF05
@@ -1360,6 +1402,9 @@ L_DF0A: lda     SavedPrgBank                    ; DF0A
         jmp     BankSave_Switch                 ; DF0C
 
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_05_game_screen__object_system_6_of_9
 
 .macro MAC__ungrouped_14_of_20
 ; ----------------------------------------------------------------------------
@@ -1383,6 +1428,16 @@ L_E06A: cmp     #$80                            ; E06A
 
 .endmacro
 
+; Interrupted by 8 macros:
+;   MAC_05_game_screen__object_system_7_of_9
+;   MAC_math_2_of_5
+;   MAC_05_game_screen__object_system_8_of_9
+;   MAC_math_3_of_5
+;   MAC_01b_demo_screen_2_of_2
+;   MAC_01a_story_sequence
+;   MAC_mmc1
+;   MAC_hardware_1_of_7
+
 .macro MAC__ungrouped_15_of_20
 ; ----------------------------------------------------------------------------
 ; Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by
@@ -1395,6 +1450,9 @@ OAM_Flag__HARDCODED_00:
         .byte   $00                             ; E6BE
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_hardware_2_of_7
+
 .macro MAC__ungrouped_16_of_20
 ; ----------------------------------------------------------------------------
 L_E6DE: jmp     L_E6DE                          ; E6DE
@@ -1406,6 +1464,9 @@ LE6E4:  .byte   $08                             ; E6E4
 LE6E5:  .byte   $10                             ; E6E5
 LE6E6:  .byte   $20,$40,$80                     ; E6E6
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_hardware_3_of_7
 
 .macro MAC__ungrouped_17_of_20
 ; ----------------------------------------------------------------------------
@@ -1513,6 +1574,13 @@ L_E796: rts                                     ; E796
 
 .endmacro
 
+; Interrupted by 5 macros:
+;   MAC_hardware_4_of_7
+;   MAC_input
+;   MAC_timing_2_of_3
+;   MAC_drawing_background
+;   MAC_hardware_5_of_7
+
 .macro MAC__ungrouped_18_of_20
 ; ----------------------------------------------------------------------------
 ; Helper routine to switch PRG banks.  This variant hardcodes X (IndirectPtrLo) to #$7A.
@@ -1522,15 +1590,16 @@ L_E796: rts                                     ; E796
 ;   A (lower nibble) = entry index into the target bank's top dispatch table
 ;                      bank 6: BankDispatch_TopTable_Bk06 $8000
 ;                      bank 4: BankDispatch_TopTable_Bk04 $8000
-BankDispatch_Switch:
+.proc BankDispatch_Switch
         ldx     #$7A                            ; EA3A
+.endproc
 ; Helper routine to switch PRG banks.
 ; 
 ; Input:
 ;   A (upper nibble) = Target bank
 ;   A (lower nibble) = Entry Index of target bank's BankDispatch_TopTable
 ;   X = Dispatch Pointer Address
-BankDispatch_Switch_NoX:
+.proc BankDispatch_Switch_NoX
         tay                                     ; EA3C
 ; Save a copy of the input to Y,
 ; then >> 4 so that A = Target bank.'
@@ -1555,6 +1624,7 @@ BankDispatch_Switch_NoX:
 ; then clears Y and exits
         ldy     #$00                            ; EA53
         rts                                     ; EA55
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_EA56: tya                                     ; EA56
@@ -1576,6 +1646,11 @@ L_EA63: lda     (IndirectPtrLo),y               ; EA63
         rts                                     ; EA6E
 
 .endmacro
+
+; Interrupted by 3 macros:
+;   MAC_math_4_of_5
+;   MAC_05_game_screen__object_system_9_of_9
+;   MAC_math_5_of_5
 
 .macro MAC__ungrouped_19_of_20
 ; ----------------------------------------------------------------------------
@@ -1611,6 +1686,12 @@ L_EB64: pha                                     ; EB64
         jmp     (IndirectPtrLo)                 ; EB6E
 
 .endmacro
+
+; Interrupted by 4 macros:
+;   MAC_rng
+;   MAC_timing_3_of_3
+;   MAC_hardware_6_of_7
+;   MAC_drawing_sprites
 
 .macro MAC__ungrouped_20_of_20
 ; ----------------------------------------------------------------------------

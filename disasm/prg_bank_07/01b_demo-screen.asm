@@ -16,6 +16,46 @@ L_C2DB: jsr     L_DEC2                          ; C2DB
 L_C2F7: .byte   $08,$01,$0A,$03                 ; C2F7
 .endmacro
 
+; Interrupted by 38 macros:
+;   MAC_02_init
+;   MAC_05_game_screen__game_loop_1_of_2
+;   MAC__ungrouped_1_of_20
+;   MAC_05_game_screen__game_loop_2_of_2
+;   MAC__ungrouped_2_of_20
+;   MAC_06_pause_screen_1_of_2
+;   MAC__ungrouped_3_of_20
+;   MAC_05_game_screen__object_system_1_of_9
+;   MAC__ungrouped_4_of_20
+;   MAC_05_game_screen__hud
+;   MAC_05_game_screen__object_system_2_of_9
+;   MAC__ungrouped_5_of_20
+;   MAC_05_game_screen__viewport_1_of_2
+;   MAC_sound_1_of_2
+;   MAC_screen_fade
+;   MAC_timing_1_of_3
+;   MAC__ungrouped_6_of_20
+;   MAC_05_game_screen__object_system_terrain
+;   MAC_math_1_of_5
+;   MAC__ungrouped_7_of_20
+;   MAC_05_game_screen__viewport_2_of_2
+;   MAC__ungrouped_8_of_20
+;   MAC_05_game_screen__object_system_3_of_9
+;   MAC__ungrouped_9_of_20
+;   MAC_05_game_screen__object_system_4_of_9
+;   MAC__ungrouped_10_of_20
+;   MAC_05_game_screen__object_system_5_of_9
+;   MAC__ungrouped_11_of_20
+;   MAC_level_rendering
+;   MAC__ungrouped_12_of_20
+;   MAC_sound_2_of_2
+;   MAC__ungrouped_13_of_20
+;   MAC_05_game_screen__object_system_6_of_9
+;   MAC__ungrouped_14_of_20
+;   MAC_05_game_screen__object_system_7_of_9
+;   MAC_math_2_of_5
+;   MAC_05_game_screen__object_system_8_of_9
+;   MAC_math_3_of_5
+
 .macro MAC_01b_demo_screen_2_of_2
 ; ----------------------------------------------------------------------------
 L_E243: lda     $06F3                           ; E243

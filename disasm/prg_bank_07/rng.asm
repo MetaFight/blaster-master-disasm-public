@@ -7,7 +7,7 @@
 ; per 256 calls — so a caller that branches on BCC/BCS right after JSR Step_RNG is not flipping a
 ; coin, it is gating on a ~1-in-256 event. A caller must use the returned byte, not the carry, to
 ; get an even chance.
-Step_RNG:
+.proc Step_RNG
         lda     $13                             ; EB71
 ; Advance the PRNG: $13 = $13×5 − 1 (returns the new $13).
         asl     a                               ; EB73
@@ -18,6 +18,7 @@ Step_RNG:
         sbc     #$01                            ; EB79
         sta     $13                             ; EB7B
         rts                                     ; EB7D
+.endproc
 
 .endmacro
 

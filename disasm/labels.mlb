@@ -361,7 +361,6 @@ NesPrgRom:10E15:L_8E15
 NesPrgRom:10E21:L_8E21
 NesPrgRom:10E2D:L_8E2D
 NesPrgRom:10E51:L_8E51
-NesPrgRom:10E56:L_8E56
 NesPrgRom:10E57:L_8E57
 NesPrgRom:10E5B:L_8E5B
 NesPrgRom:10E7E:L_8E7E
@@ -1219,7 +1218,6 @@ NesPrgRom:138CC:L_B8CC
 NesPrgRom:138DC:L_B8DC
 NesPrgRom:138F0:L_B8F0
 NesPrgRom:138FC:L_B8FC
-NesPrgRom:13918:L_B918
 NesPrgRom:13919:L_B919
 NesPrgRom:1391E:L_B91E
 NesPrgRom:13922:L_B922
@@ -1284,7 +1282,6 @@ NesPrgRom:13BFA:L_BBFA
 NesPrgRom:13C02:L_BC02
 NesPrgRom:13C12:L_BC12
 NesPrgRom:13C1C:L_BC1C
-NesPrgRom:13C27:L_BC27
 NesPrgRom:13C28:L_BC28
 NesPrgRom:13C32:L_BC32
 NesPrgRom:13C5F:L_BC5F
@@ -1298,7 +1295,6 @@ NesPrgRom:13C97:L_BC97
 NesPrgRom:13C9F:L_BC9F
 NesPrgRom:13CAF:L_BCAF
 NesPrgRom:13CB9:L_BCB9
-NesPrgRom:13CC4:L_BCC4
 NesPrgRom:13CC5:L_BCC5
 NesPrgRom:13CD8:L_BCD8
 NesPrgRom:13CD9:L_BCD9
@@ -1310,7 +1306,6 @@ NesPrgRom:13D1C:L_BD1C
 NesPrgRom:13D24:L_BD24
 NesPrgRom:13D34:L_BD34
 NesPrgRom:13D3E:L_BD3E
-NesPrgRom:13D49:L_BD49
 NesPrgRom:13D4A:L_BD4A
 NesPrgRom:13D5C:L_BD5C
 NesPrgRom:13D5F:L_BD5F
@@ -1746,7 +1741,6 @@ NesPrgRom:18FE6:L_8FE6
 NesPrgRom:18FF4:L_8FF4
 NesPrgRom:18FF8:L_8FF8
 NesPrgRom:19005:L_9005
-NesPrgRom:19008:L_9008
 NesPrgRom:19009:L_9009
 NesPrgRom:1900C:L_900C
 NesPrgRom:19049:L_9049
@@ -1765,7 +1759,6 @@ NesPrgRom:1914B:L_914B
 NesPrgRom:19159:L_9159
 NesPrgRom:1915D:L_915D
 NesPrgRom:1916A:L_916A
-NesPrgRom:1916D:L_916D
 NesPrgRom:1916E:L_916E
 NesPrgRom:19171:L_9171
 NesPrgRom:191B4:L_91B4
@@ -1784,7 +1777,6 @@ NesPrgRom:192B8:L_92B8
 NesPrgRom:192C6:L_92C6
 NesPrgRom:192CA:L_92CA
 NesPrgRom:192D7:L_92D7
-NesPrgRom:192DA:L_92DA
 NesPrgRom:192DB:L_92DB
 NesPrgRom:192DE:L_92DE
 NesPrgRom:19311:L_9311
@@ -1849,7 +1841,6 @@ NesPrgRom:1961B:L_961B
 NesPrgRom:1961F:L_961F
 NesPrgRom:1962F:L_962F
 NesPrgRom:1963C:L_963C
-NesPrgRom:1963F:L_963F
 NesPrgRom:19640:L_9640
 NesPrgRom:19641:L_9641
 NesPrgRom:19650:L_9650
@@ -2362,7 +2353,7 @@ NesPrgRom:1A5B0::OR with 1 to specity Sprite palette 1,
 NesPrgRom:1A5B2::and store in WR_44__OAM_Attribute__or__Outgoing_Contact_Damage.
 NesPrgRom:1A5B9::Animation frame index = bit 3 of Global_FrameCounter.
 NesPrgRom:1A5BB::Look up the current orientation's base Metasprite Id and OR it with the frame index, then call MetaSprite_Render.
-NesPrgRom:1A5C1:_DEAD_ObjHandler_Tank_59_Gray_Bullet_Main__OrphanRTS
+NesPrgRom:1A5C1::Unreachable RTS (dead).
 NesPrgRom:1A5C2:ObjHandler_Tank_5A_Gray_Bullet_Attacking:ObjType $5A: Gray Bullet - Attacking.
 NesPrgRom:1A5C5:_ObjHandler_Tank_5A_Gray_Bullet_Attacking__Body
 NesPrgRom:1A5CF::If AttackWindUpCounter (Scratch1) is 0, skip to Launch handler.
@@ -2428,7 +2419,6 @@ NesPrgRom:1A72F:L_A72F
 NesPrgRom:1A739:L_A739
 NesPrgRom:1A745:L_A745
 NesPrgRom:1A747:L_A747
-NesPrgRom:1A74A:L_A74A
 NesPrgRom:1A74B:ObjHandler_Tank_5D_Hulk_Init:ObjType $5D: Hulk - Init.
 NesPrgRom:1A74E:_ObjHandler_Tank_5D_Hulk_Init__Body
 NesPrgRom:1A750::Use shared TankEnemy_Init with enemy descriptor #$04 to do baseline init.
@@ -2453,7 +2443,7 @@ NesPrgRom:1A7B8:_ObjHandler_Tank_5E_Hulk_Main__Render
 NesPrgRom:1A7BA::Set OAM FlipX and Palette attributes.
 NesPrgRom:1A7C3::Based on bit4 of Global_FrameCounter, use either #$7E or #$7F as MetaSprite Id.
 NesPrgRom:1A7C6:_ObjHandler_Tank_5E_Hulk_Main__RenderMetaSprite
-NesPrgRom:1A7CA:_DEAD_ObjHandler_Tank_5E_Hulk_Main__OrphanRTS:Single unreachable $60 (RTS) after the Hulk ($5E) sprite-emit tail (tail-calls JMP $F011 at $A7C7). The preceding routine's tail call was peephole-optimised into a direct jump without removing the trailing return, so this byte is never executed. Seeded as code so it decodes correctly. 20 instances found 2026-07-12, joining the 4 already documented in docs/us/misc/dead-code.md.
+NesPrgRom:1A7CA::Unreachable RTS (dead).
 NesPrgRom:1A7CB:ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:ObjType $5F: Gray Hopper (6 HP) - Init.
 NesPrgRom:1A7CE:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Body
 NesPrgRom:1A7D0::Init the enemy from descriptor $05.
@@ -2492,7 +2482,7 @@ NesPrgRom:1A85A:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Render:still aliv
 NesPrgRom:1A863::$51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
 NesPrgRom:1A868:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__TileIdle:$51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose
 NesPrgRom:1A86A:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__SetTile:tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
-NesPrgRom:1A86D:DEAD_ObjHandler_Tank_60_GrayHopper6HP_Attacking_OrphanRTS:Single unreachable $60 (RTS) after the Gray Hopper 6HP ($60) tile tail (tail-calls JMP $F011 at $A86A).
+NesPrgRom:1A86D::Unreachable RTS (dead).
 NesPrgRom:1A86E:ObjHandler_Tank_61_GrayHopper6HP_Patrolling:ObjType $61 — Gray Hopper 6HP "Patrolling" state.\n\nIn this state, the Hopper paces horizontally, reversing at walls and platform edges.
 NesPrgRom:1A871:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Body
 NesPrgRom:1A879::and zeroing Velocity_Y.
@@ -2516,7 +2506,7 @@ NesPrgRom:1A8B9:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Render:Render logi
 NesPrgRom:1A8BB::Obj_SetOAMAttr_FlipX_and_Palette sets the H-flip bit to A and saves a copy to WR_44__OAM_Attribute__or__Outgoing_Contact_Damage
 NesPrgRom:1A8C6::Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation frame index.\n\nThis means all patrolling hoppers walk in lock-step, updating their animation frames every 16 game frames.
 NesPrgRom:1A8C7::Load the animation frame Metasprite id and call the renderer sub.
-NesPrgRom:1A8CD:DEAD_ObjHandler_Tank_61_GrayHopper6HP_Patrolling_OrphanRTS:Single unreachable $60 (RTS)
+NesPrgRom:1A8CD::Unreachable RTS (dead).
 NesPrgRom:1A8CE:L_A8CE
 NesPrgRom:1A8D2:L_A8D2
 NesPrgRom:1A8D5:L_A8D5
@@ -2565,7 +2555,7 @@ NesPrgRom:1AA3B:_ObjHandler_Tank_65_Mine_Main__RenderAndSound:Set OAM Attributes
 NesPrgRom:1AA50:_ObjHandler_Tank_65_Mine_Main__TileAlt
 NesPrgRom:1AA54:_ObjHandler_Tank_65_Mine_Main__TileBase
 NesPrgRom:1AA56:_ObjHandler_Tank_65_Mine_Main__SetTile:Render selected MetaSprite Id.
-NesPrgRom:1AA59:_DEAD_ObjHandler_Tank_65_Mine_Main__OrphanRTS
+NesPrgRom:1AA59::Unreachable RTS (dead).
 NesPrgRom:1AA5A:ObjHandler_Tank_66_Turret_Init:ObjType $66: Ceiling Turret - Init.
 NesPrgRom:1AA5D:_ObjHandler_Tank_66_Turret_Init__Body
 NesPrgRom:1AA5F::Init via TankEnemy_Init with descriptor #$08.
@@ -2676,7 +2666,7 @@ NesPrgRom:1ACEA:_ObjHandler_Tank_6D_Flying_Bomber_Main__Render
 NesPrgRom:1ACEC::Update OAM FlipX bit.
 NesPrgRom:1ACF3::Select metasprite id to draw (affected by HasFired flag).
 NesPrgRom:1ACF6:_ObjHandler_Tank_6D_Flying_Bomber_Main__TileActive:draw metasprite.
-NesPrgRom:1ACFA:DEAD_TankFlyingBomber_OrphanRTS:Single unreachable $60 (RTS).
+NesPrgRom:1ACFA::Unreachable RTS (dead).
 NesPrgRom:1ACFB:L_ACFB
 NesPrgRom:1ACFE:L_ACFE
 NesPrgRom:1AD07:L_AD07
@@ -2699,7 +2689,6 @@ NesPrgRom:1ADB9:L_ADB9
 NesPrgRom:1ADC3:L_ADC3
 NesPrgRom:1ADCD:L_ADCD
 NesPrgRom:1ADCF:L_ADCF
-NesPrgRom:1ADDF:L_ADDF
 NesPrgRom:1ADE0:L_ADE0
 NesPrgRom:1ADE4:L_ADE4
 NesPrgRom:1ADE7:L_ADE7
@@ -2713,7 +2702,6 @@ NesPrgRom:1AE39:L_AE39
 NesPrgRom:1AE49:L_AE49
 NesPrgRom:1AE59:L_AE59
 NesPrgRom:1AE63:L_AE63
-NesPrgRom:1AE77:L_AE77
 NesPrgRom:1AE78:L_AE78
 NesPrgRom:1AE7B:L_AE7B
 NesPrgRom:1AE94:L_AE94
@@ -2727,7 +2715,6 @@ NesPrgRom:1AEFA:L_AEFA
 NesPrgRom:1AF03:L_AF03
 NesPrgRom:1AF13:L_AF13
 NesPrgRom:1AF1D:L_AF1D
-NesPrgRom:1AF31:L_AF31
 NesPrgRom:1AF32:L_AF32
 NesPrgRom:1AF3A:L_AF3A
 NesPrgRom:1AF3D:L_AF3D
@@ -2747,7 +2734,6 @@ NesPrgRom:1AFD1:L_AFD1
 NesPrgRom:1AFE1:L_AFE1
 NesPrgRom:1AFEB:L_AFEB
 NesPrgRom:1AFF7:L_AFF7
-NesPrgRom:1AFFB:L_AFFB
 NesPrgRom:1AFFC:ObjHandler_Tank_76_Shooter_Init:ObjType $76: Shooter - Init.
 NesPrgRom:1AFFF:_ObjHandler_Tank_76_Shooter_Init__Body:Init with shared TankEnemy_Init using Enemy Descriptor #$10.
 NesPrgRom:1B007::Set a random initial heading (Facing)
@@ -2775,7 +2761,7 @@ NesPrgRom:1B060::if non-fatal, skip to Render.
 NesPrgRom:1B062::otherwise, die by calling shared TankEnemy_DefeatTrackedEnemy.
 NesPrgRom:1B065:_ObjHandler_Tank_77_Shooter_Main__Render:Sat Xflip and Palette (#$01) OAM attributes
 NesPrgRom:1B071:_ObjHandler_Tank_77_Shooter_Main__TileBase:Select pose MetaSprite: Base #$6C if PoseIndex == 0, otherwise #$6D.
-NesPrgRom:1B075:_DEAD_ObjHandler_Tank_77_Shooter_Main__OrphanRTS
+NesPrgRom:1B075::Unreachable RTS (dead).
 NesPrgRom:1B076:L_B076
 NesPrgRom:1B079:L_B079
 NesPrgRom:1B094:L_B094
@@ -2794,7 +2780,6 @@ NesPrgRom:1B139:L_B139
 NesPrgRom:1B13B:L_B13B
 NesPrgRom:1B14B:L_B14B
 NesPrgRom:1B155:L_B155
-NesPrgRom:1B165:L_B165
 NesPrgRom:1B166:L_B166
 NesPrgRom:1B16E:ObjHandler_Tank_7A_Gray_Hopper_10HP_Init:ObjType $7A: Gray Hopper (10 HP) - Init.
 NesPrgRom:1B171:_ObjHandler_Tank_7A_Gray_Hopper_10HP_Init__Body
@@ -2824,7 +2809,7 @@ NesPrgRom:1B1C5:_ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling__Render:Render l
 NesPrgRom:1B1C7::Obj_SetOAMAttr_FlipX_and_Palette sets the H-flip bit to A and saves a copy to WR_44__OAM_Attribute__or__Outgoing_Contact_Damage
 NesPrgRom:1B1D2::Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation frame index.\n\nThis means all patrolling hoppers walk in lock-step, updating their animation frames every 16 game frames.
 NesPrgRom:1B1D3::Load the animation frame Metasprite id and call the renderer sub.
-NesPrgRom:1B1D9:DEAD_TankGrayHopper_OrphanRTS:Single unreachable $60 (RTS)
+NesPrgRom:1B1D9::Unreachable RTS (dead).
 NesPrgRom:1B1DA:GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame:Table of 4 metasprite ids used to animate the patrolling state.
 NesPrgRom:1B1DE:L_B1DE
 NesPrgRom:1B1F6:L_B1F6
@@ -3044,7 +3029,7 @@ NesPrgRom:1B9A4:_ObjHandler_Tank_8E_Red_Bullet_Main__TryAttack
 NesPrgRom:1B9C0:_ObjHandler_Tank_8E_Red_Bullet_Main__AfterPhysics
 NesPrgRom:1B9D0:_ObjHandler_Tank_8E_Red_Bullet_Main__DamageCheck
 NesPrgRom:1B9DA:_ObjHandler_Tank_8E_Red_Bullet_Main__Render
-NesPrgRom:1B9FF:L_B9FF
+NesPrgRom:1B9FF::Unreachable RTS (dead).
 NesPrgRom:1BA00:ObjHandler_Tank_8F_Red_Bullet_Attacking:ObjType $8F: Red Bullet - Attacking.\n\nIdentitcal to ObjHandler_Tank_5A_Gray_Bullet_Attacking apart from:\n  * Movement speed when returning to Walking state (#$18 instead of #$10)\n  * Rendering palette\n  * Damage Check enemy descriptor (#$1C instead of #$02)
 NesPrgRom:1BA03:_ObjHandler_Tank_8F_Red_Bullet_Attacking__Body
 NesPrgRom:1BA19:_ObjHandler_Tank_8F_Red_Bullet_Attacking__Movement
@@ -4334,7 +4319,6 @@ NesPrgRom:1F108:L_F108
 NesPrgRom:1F11B:L_F11B
 NesPrgRom:1F11E:L_F11E
 NesPrgRom:1F138:L_F138
-NesPrgRom:1F14D:L_F14D
 NesPrgRom:1F14E:L_F14E
 NesPrgRom:1F157:L_F157
 NesPrgRom:1F163:L_F163
@@ -4388,32 +4372,39 @@ NesPrgRom:1F42B:L_F42B
 NesPrgRom:1F435:L_F435
 NesPrgRom:1F457:L_F457
 NesPrgRom:1F45A:L_F45A
-NesPrgRom:1F45D:L_F45D
-NesPrgRom:1F464:L_F464
-NesPrgRom:1F465:L_F465
-NesPrgRom:1F4AD:L_F4AD
-NesPrgRom:1F4BC:L_F4BC
-NesPrgRom:1F4C5:L_F4C5
-NesPrgRom:1F4EA:L_F4EA
-NesPrgRom:1F4F7:L_F4F7
-NesPrgRom:1F503:L_F503
-NesPrgRom:1F509:L_F509
-NesPrgRom:1F50A:L_F50A
-NesPrgRom:1F512:L_F512
-NesPrgRom:1F51F:L_F51F
-NesPrgRom:1F523:L_F523
-NesPrgRom:1F525:L_F525
-NesPrgRom:1F537:L_F537
-NesPrgRom:1F53B:L_F53B
-NesPrgRom:1F547:L_F547
-NesPrgRom:1F55E:L_F55E
-NesPrgRom:1F56D:L_F56D
-NesPrgRom:1F579:L_F579
-NesPrgRom:1F57B:L_F57B
-NesPrgRom:1F589:L_F589
-NesPrgRom:1F58F:L_F58F
-NesPrgRom:1F594:L_F594
-NesPrgRom:1F59E:L_F59E
+NesPrgRom:1F45D:TitleScreen_Wrapper:Wraps the TitleScreen_GameLoop and simply relays its return value.\n\nOn the surface, this seems like a complete waste of code, but, given that the (dead) Stage Select screen code sits immediately below, it's reasonable to assume that, at one point, this routine didn't simply return after calling TitleScreen_GameLoop.\n\nOriginally, it would have displayed the Stage Select screen after the Title Screen timed out (or the player pressed start).\n\nIt looks like the devs cut out the stage select functionality by adding a single RTS instruction (presumably once debugging and demo builds were no longer needed).\n\nReturns:\n  A = $00 if START was pressed.\n  A = $FF if the Title Screen timed out.
+NesPrgRom:1F464:_TitleScreen_Wrapper__Return
+NesPrgRom:1F465:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop:DEAD CODE — the full stage-select main loop: renders the "SELECT START AREA / AND / PRESS START" strings, does D-pad navigation, and sets CurrentArea. Enabled only by Game Genie XTVYGGAV, which patches the guarding return at $F464 into a no-op.
+NesPrgRom:1F4AD:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__GameLoop:Per-frame wait+input loop: WaitNMI ($E936), $CDD0, HandleInput ($F4C5); loop while the frame/animation counter $B6 < 9.
+NesPrgRom:1F4BC:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__SetArea:DEAD CODE — ($01 EOR $08) AND $0F → CurrentArea ($14); fallthrough from dead input loop
+NesPrgRom:1F4C5:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__HandleInput:DEAD CODE — draw stage-number sprite at (X=$70,Y=$97); D-pad UP/DOWN change $01 [0–$10]; START fires $CE27
+NesPrgRom:1F4EA:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__ReadDpad:After the START check: BIT the held-input bits ($F5) — D-pad DOWN → IncArea, UP → DecArea, neither → RTS.
+NesPrgRom:1F4F7:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__IncArea:D-pad DOWN: stage-select index $01 += 1, clamped below $10 (16 areas).
+NesPrgRom:1F503:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__DecArea:D-pad UP: stage-select index $01 −= 1, floored at 0.
+NesPrgRom:1F509:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__Done:RTS — no D-pad change this frame.
+NesPrgRom:1F50A:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__InitPalette:DEAD CODE — screen off via $E6FA; blank $0650 via $F9CA; load 4-color palette from $F51F to $0650 and $0660
+NesPrgRom:1F512:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__InitPalette__CopyLoop:Copy the 4-byte stage-select palette $F51F → BG $0650 and sprite $0660 (X=$03..0).
+NesPrgRom:1F51F:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__Resource_BgPalette:DEAD DATA — 4-byte BG palette {$0F,$30,$0F,$0F} for stage-select screen
+NesPrgRom:1F523:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__Resource_String_SelectStartAreaPtr:DEAD DATA — LE pointer {$25,$F5} = $F525; read by DEAD_StageSelectScreen_GameLoop to prime IndirectPtr
+NesPrgRom:1F525:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__Resource_String_SelectStartArea:DEAD DATA — "SELECT START AREA\0" (18 bytes ASCII); rendered by $E823 via IndirectPtr
+NesPrgRom:1F537:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__Resource_String_And:DEAD DATA — "AND\0" (4 bytes ASCII)
+NesPrgRom:1F53B:_DEAD_TitleScreen_Wrapper__StageSelectScreen_GameLoop__Resource_String_PressStart:DEAD DATA — "PRESS START\0" (12 bytes ASCII)
+NesPrgRom:1F547:_TitleScreen_Wrapper__TitleScreen_GameLoop:Draws the Title Screen and implements a basic game loop to handle player input.\nExits when the player presses START or after a timeout.\n\nHas two phases:\n  First, display title graphics with an animated palette,\n  then, display tile graphics with a static palette.\n\nReturns:\n  A = $00 if START was pressed.\n  A = $FF if the Title Screen timed out.\n\nLocal variables:\n  PhaseTimeout = Frames remaining in current Phase.\n  Phase = 1 (Flashing title)\n  Phase = 0 (Static title)
+NesPrgRom:1F549::Set PhaseTimeout to #$80 frames.
+NesPrgRom:1F54D::Set Phase to #$01 (Flashing title).
+NesPrgRom:1F553::Switch the CHR Bank and draw the title screen
+NesPrgRom:1F55E:_TitleScreen_Wrapper__TitleScreen_GameLoop__GameLoop
+NesPrgRom:1F565::If START was pressed, skip to HandleStartPress.
+NesPrgRom:1F569::If PhaseTimeout != 0, skip to AdvancePhase.
+NesPrgRom:1F56D:_TitleScreen_Wrapper__TitleScreen_GameLoop__AdvancePhase:Decrements the current phase's PhaseTimeout, then picks either an animated bg palette or a static one depending on the current phase.
+NesPrgRom:1F579:_TitleScreen_Wrapper__TitleScreen_GameLoop__SelectFixedPaletteColor
+NesPrgRom:1F57B:_TitleScreen_Wrapper__TitleScreen_GameLoop__UpdatePalette
+NesPrgRom:1F581::If both either PhaseTimeout or Phase != 0, do another iteration of GameLoop.
+NesPrgRom:1F583::Otherwise, do a synchronous FadeOut and return #$FF (timed out) when it's done.
+NesPrgRom:1F589:_TitleScreen_Wrapper__TitleScreen_GameLoop__HandleStartPress:Do a synchronous FadeOut and return #$00 (pressed START).
+NesPrgRom:1F58F:_TitleScreen_Wrapper__TitleScreen_GameLoop__SetBackgroundPalettes:Load the BG palettes from TitleScreen_Palette.
+NesPrgRom:1F594:_TitleScreen_Wrapper__TitleScreen_GameLoop__SetBackgroundPalettes__CopyLoop:then copy the four 4-byte background palettes.
+NesPrgRom:1F59E:_TitleScreen_Wrapper__TitleScreen_GameLoop__SetBackgroundPalettes__TitleScreen_Palette:16-byte palette for the title screen.
 NesPrgRom:1F5AE:L_F5AE
 NesPrgRom:1F5CF:L_F5CF
 NesPrgRom:1F5D1:L_F5D1
@@ -4484,8 +4475,8 @@ NesPrgRom:1F9A0:L_F9A0
 NesPrgRom:1F9A4:L_F9A4
 NesPrgRom:1F9A5:L_F9A5
 NesPrgRom:1F9AF:L_F9AF
-NesPrgRom:1F9CA:L_F9CA
-NesPrgRom:1F9CE:L_F9CE
+NesPrgRom:1F9CA:Background_BlackoutPalettes:Fill the Palette_Shadow buffer (32 bytes) with $0F (black).
+NesPrgRom:1F9CE:_Background_BlackoutPalettes__Loop
 NesPrgRom:1F9D5:L_F9D5
 NesPrgRom:1FA07:L_FA07
 NesPrgRom:1FA09:L_FA09

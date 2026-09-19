@@ -303,6 +303,11 @@ L_8907: .byte   $12,$81,$44,$81,$85,$87,$94,$87 ; 8907
         .byte   $E3,$88                         ; 8A67
 .endmacro
 
+; Interrupted by 3 macros:
+;   MAC_object_handlers__jason_1_of_2
+;   MAC_object_handlers___ungrouped
+;   MAC_object_handlers__jason_2_of_2
+
 .macro MAC__ungrouped_2_of_12
 ; ----------------------------------------------------------------------------
 L_8D9B: .byte   $00,$00,$18,$18,$18,$00,$E8,$E8 ; 8D9B
@@ -397,7 +402,7 @@ L_8E51: lda     $45                             ; 8E51
         jmp     LC063                           ; 8E53
 
 ; ----------------------------------------------------------------------------
-L_8E56: rts                                     ; 8E56
+        rts                                     ; 8E56
 
 ; ----------------------------------------------------------------------------
 L_8E57: .byte   $00,$01,$00,$02                 ; 8E57
@@ -532,11 +537,17 @@ L_8F4C: .byte   $01,$41,$81,$01                 ; 8F4C
 L_8F50: .byte   $4A,$3A,$4A,$3A                 ; 8F50
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_object_handlers__projectiles_and_ballistics_1_of_7
+
 .macro MAC__ungrouped_3_of_12
 ; ----------------------------------------------------------------------------
 L_8F9A: .byte   $D0                             ; 8F9A
 L8F9B:  .byte   $00,$30,$00,$D0                 ; 8F9B
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_object_handlers__projectiles_and_ballistics_2_of_7
 
 .macro MAC__ungrouped_4_of_12
 ; ----------------------------------------------------------------------------
@@ -559,6 +570,9 @@ L_9010: rts                                     ; 9010
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_object_handlers__projectiles_and_ballistics_3_of_7
+
 .macro MAC__ungrouped_5_of_12
 ; ----------------------------------------------------------------------------
 L_91F2: bpl     L_91F8                          ; 91F2
@@ -579,11 +593,18 @@ L_91FA: stx     $45                             ; 91FA
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_object_handlers__projectiles_and_ballistics_4_of_7
+
 .macro MAC__ungrouped_6_of_12
 ; ----------------------------------------------------------------------------
 L_9237: .byte   $E0                             ; 9237
 L9238:  .byte   $00,$20,$00,$E0                 ; 9238
 .endmacro
+
+; Interrupted by 2 macros:
+;   MAC_object_handlers__projectiles_and_ballistics_5_of_7
+;   MAC_object_handlers__explosions
 
 .macro MAC__ungrouped_7_of_12
 ; ----------------------------------------------------------------------------
@@ -901,6 +922,12 @@ L_95B9: .byte   $04,$08,$04,$C3,$95,$F0,$10,$14 ; 95B9
         .byte   $20,$20,$08,$00,$30,$20         ; 95C9
 .endmacro
 
+; Interrupted by 4 macros:
+;   MAC_object_handlers__pickups_1_of_2
+;   MAC_object_handlers__bosses_1_of_2
+;   MAC_object_handlers__projectiles_and_ballistics_6_of_7
+;   MAC_object_handlers__pickups_2_of_2
+
 .macro MAC__ungrouped_8_of_12
 ; ----------------------------------------------------------------------------
 L_B1F9: sta     $00                             ; B1F9
@@ -1127,10 +1154,25 @@ L_B326: .byte   $04,$10,$1A,$90 ; B326  Health=$04 DropType=$1A DropChance=$90
         .byte   $04,$20,$1A,$A0 ; B362  Health=$04 DropType=$1A DropChance=$A0
 .endmacro
 
+; Interrupted by 3 macros:
+;   MAC_object_handlers__camera_1_of_2
+;   MAC_object_handlers__gumdrop_gray
+;   MAC_object_handlers__flier
+
 .macro MAC__ungrouped_9_of_12
 ; ----------------------------------------------------------------------------
 L_B5A5: .byte   $42,$43                         ; B5A5
 .endmacro
+
+; Interrupted by 8 macros:
+;   MAC_object_handlers__charging_robot
+;   MAC_object_handlers__spinner
+;   MAC_object_handlers__cross_shooter
+;   MAC_object_handlers__camera_2_of_2
+;   MAC_object_handlers__slider
+;   MAC_object_handlers__robot
+;   MAC_object_handlers__eye_1_of_3
+;   MAC_object_handlers__robed_skeleton_1_of_2
 
 .macro MAC__ungrouped_10_of_12
 ; ----------------------------------------------------------------------------
@@ -1141,10 +1183,17 @@ LBAE2:  .byte   $20                             ; BAE2
 LBAE3:  .byte   $00,$E0,$00,$20                 ; BAE3
 .endmacro
 
+; Interrupted by 2 macros:
+;   MAC_object_handlers__robed_skeleton_2_of_2
+;   MAC_object_handlers__eye_2_of_3
+
 .macro MAC__ungrouped_11_of_12
 ; ----------------------------------------------------------------------------
 L_BB71: .byte   $C0,$00,$40,$80                 ; BB71
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_object_handlers__eye_3_of_3
 
 .macro MAC__ungrouped_12_of_12
 ; ----------------------------------------------------------------------------

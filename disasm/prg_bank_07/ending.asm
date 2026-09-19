@@ -237,6 +237,15 @@ L_F457: jmp     L_EC73                          ; F457
 L_F45A: .byte   $E0,$E2,$E4                     ; F45A
 .endmacro
 
+; Interrupted by 7 macros:
+;   MAC_00_title_screen_2_of_3
+;   MAC_03_intro_screen
+;   MAC_04b_area_entry_screen
+;   MAC_continue_screen
+;   MAC_04a_lives_left_screen
+;   MAC_06_pause_screen_2_of_2
+;   MAC_00_title_screen_3_of_3
+
 .macro MAC_ending_2_of_2
 ; ----------------------------------------------------------------------------
 L_F9D5: lda     #$01                            ; F9D5

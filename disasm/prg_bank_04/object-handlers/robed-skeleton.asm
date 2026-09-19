@@ -133,6 +133,9 @@ L_BAD3: jsr     L_93BD                          ; BAD3
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_10_of_12
+
 .macro MAC_object_handlers__robed_skeleton_2_of_2
 ; ----------------------------------------------------------------------------
 L_BAE7: lda     #$02                            ; BAE7

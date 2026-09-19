@@ -158,6 +158,9 @@ L_89BB: jmp     LD790                           ; 89BB
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_object_handlers__sophia_1_of_6
+
 .macro MAC__ungrouped_2_of_9
 ; ----------------------------------------------------------------------------
 L_8C4D: pha                                     ; 8C4D
@@ -175,6 +178,9 @@ L_8C4D: pha                                     ; 8C4D
         jmp     MetaSprite_Render               ; 8C61
 
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_object_handlers__sophia_2_of_6
 
 .macro MAC__ungrouped_3_of_9
 ; ----------------------------------------------------------------------------
@@ -237,6 +243,9 @@ L_8E94: jmp     Speed_Limit_Sub                           ; 8E94
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_object_handlers__sophia_3_of_6
+
 .macro MAC__ungrouped_4_of_9
 ; ----------------------------------------------------------------------------
 L_9707: ldx     #$00                            ; 9707
@@ -295,46 +304,70 @@ L_976C: rts                                     ; 976C
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_object_handlers__projectiles_and_ballistics_1_of_6
+
 .macro MAC__ungrouped_5_of_9
 ; ----------------------------------------------------------------------------
 L_9780: .byte   $00,$40,$00,$C0                 ; 9780
 L_9784: .byte   $C0,$00,$40,$00                 ; 9784
 .endmacro
 
+; Interrupted by 7 macros:
+;   MAC_object_handlers__projectiles_and_ballistics_2_of_6
+;   MAC_object_handlers__sophia_4_of_6
+;   MAC_object_handlers__projectiles_and_ballistics_3_of_6
+;   MAC_object_handlers__sophia_5_of_6
+;   MAC_object_handlers__projectiles_and_ballistics_4_of_6
+;   MAC_object_handlers__sophia_6_of_6
+;   MAC_object_handlers__projectiles_and_ballistics_5_of_6
+
 .macro MAC__ungrouped_6_of_9
 ; ----------------------------------------------------------------------------
 ; Enqueue explosion SFX $28 then call Obj_SpawnChild ObjType argument #$4A to spawn a Mid
 ; Explosion.
-SpawnMidExplosion:
+.proc SpawnMidExplosion
         lda     #$28                            ; 9B81
         jsr     Enqueue_Sound_Command           ; 9B83
 ; A=$4A (Mid Explosion ObjType); JMP $D851 Obj_SpawnChild at this position.
         lda     #$4A                            ; 9B86
         jmp     Obj_SpawnChild                  ; 9B88
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Spawn a Big Explosion with sound effect.
-SpawnBigExplosion:
+.proc SpawnBigExplosion
         lda     #$28                            ; 9B8B
 ; Enqueue explosion SFX $28, then fall into SpawnBigExplosion_NoSound.
         jsr     Enqueue_Sound_Command           ; 9B8D
+.endproc
 ; Call Obj_SpawnChild argument with A=$4C (Big Explosion).
-SpawnBigExplosion_NoSound:
+.proc SpawnBigExplosion_NoSound
         lda     #$4C                            ; 9B90
 ; A=$4C (Big Explosion ObjType); JMP $D851 Obj_SpawnChild (no SFX).
         jmp     Obj_SpawnChild                  ; 9B92
+.endproc
 
 .endmacro
+
+; Interrupted by 3 macros:
+;   MAC_object_handlers__explosions
+;   MAC_object_handlers__pickups
+;   MAC_object_handlers__auto_gates_and_locks
 
 .macro MAC__ungrouped_7_of_9
 ; ----------------------------------------------------------------------------
 ; Helper sub to enqueue sfx #$23.
-PlaySound_23:
+.proc PlaySound_23
         lda     #$23                            ; 9E9E
         jsr     Enqueue_Sound_Command           ; 9EA0
         rts                                     ; 9EA3
+.endproc
 
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_object_handlers__projectiles_and_ballistics_6_of_6
 
 .macro MAC__ungrouped_8_of_9
 ; ----------------------------------------------------------------------------
@@ -415,6 +448,11 @@ _Done:
 .endproc
 
 .endmacro
+
+; Interrupted by 3 macros:
+;   MAC_object_handlers___common
+;   MAC_object_handlers__caterpillar_gray
+;   MAC_object_handlers__bullet_gray_1_of_2
 
 .macro MAC__ungrouped_9_of_9
 ; ----------------------------------------------------------------------------

@@ -8,7 +8,7 @@
 ;   Local_Sprite_Screen_Y   = OAM entry y coordinate
 ;   WR_Context_Dependent_45 = pattern index
 ;   WR_44__OAM_Attribute__or__Outgoing_Contact_Damage = OAM attributes
-OAM_Stage_Pattern:
+.proc OAM_Stage_Pattern
         ldx     $3C                             ; ECB4
         lda     $3E                             ; ECB6
 ; set OAM byte 3: X position
@@ -28,6 +28,7 @@ OAM_Stage_Pattern:
 ; advance OAM_Staging_Buffer_TailPos by 4.
         sta     $3C                             ; ECCE
         rts                                     ; ECD0
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_ECD1: ldx     $3C                             ; ECD1

@@ -59,10 +59,14 @@ L_C5FA: lda     $03F5                           ; C5FA
 
 .endmacro
 
+; Interrupted by 2 macros:
+;   MAC__ungrouped_4_of_20
+;   MAC_05_game_screen__hud
+
 .macro MAC_05_game_screen__object_system_2_of_9
 ; ----------------------------------------------------------------------------
 ; Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*.
-Obj_LoadFromSlot:
+.proc Obj_LoadFromSlot
         ldy     ObjectSlot_Offset               ; C8DF
         lda     ObjectTable + Obj::Type,y       ; C8E1
         sta     LoadedObj + Obj::Type           ; C8E4
@@ -93,10 +97,11 @@ Obj_LoadFromSlot:
         lda     ObjectTable + Obj::Health,y     ; C922
         sta     LoadedObj + Obj::Health         ; C925
         rts                                     ; C927
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Save LoadedObj_* back to ObjectTable.
-Obj_SaveToSlot:
+.proc Obj_SaveToSlot
         ldy     ObjectSlot_Offset               ; C928
         lda     LoadedObj + Obj::Type           ; C92A
         sta     ObjectTable + Obj::Type,y       ; C92C
@@ -127,6 +132,7 @@ Obj_SaveToSlot:
         lda     LoadedObj + Obj::Health         ; C96B
         sta     ObjectTable + Obj::Health,y     ; C96D
         rts                                     ; C970
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_C971: lda     #$00                            ; C971
@@ -186,6 +192,19 @@ L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
 
 .endmacro
 
+; Interrupted by 11 macros:
+;   MAC__ungrouped_5_of_20
+;   MAC_05_game_screen__viewport_1_of_2
+;   MAC_sound_1_of_2
+;   MAC_screen_fade
+;   MAC_timing_1_of_3
+;   MAC__ungrouped_6_of_20
+;   MAC_05_game_screen__object_system_terrain
+;   MAC_math_1_of_5
+;   MAC__ungrouped_7_of_20
+;   MAC_05_game_screen__viewport_2_of_2
+;   MAC__ungrouped_8_of_20
+
 .macro MAC_05_game_screen__object_system_3_of_9
 ; ----------------------------------------------------------------------------
 ; Read LevelTileData[LoadedObj.TileIndex].
@@ -195,10 +214,11 @@ L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
 ; 
 ; Output:
 ;   A = tile data from LevelTileData
-Obj_ReadTile:
+.proc Obj_ReadTile
         ldx     LoadedObj + Obj::TileIndex      ; D2AB
         lda     LevelTileData,x                 ; D2AD
         rts                                     ; D2B0
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Reads the tile byte at LoadedObj.TileIndex plus an offset (A).
@@ -211,18 +231,19 @@ Obj_ReadTile:
 ; 
 ; Output:
 ;   A = Tile data
-Obj_ReadTile_WithOffset:
+.proc Obj_ReadTile_WithOffset
         clc                                     ; D2B1
 ; A (step offset) + $4E → cell index; A = $0500[index] = the look-ahead tile.
         adc     LoadedObj + Obj::TileIndex      ; D2B2
         tax                                     ; D2B4
         lda     LevelTileData,x                 ; D2B5
         rts                                     ; D2B8
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Computes the index (+TilemapBaseIndex) into the LevelTileData tile map corresponding to
 ; LoadedObj's current position.
-Obj_CalcTileIndex:
+.proc Obj_CalcTileIndex
         lda     LoadedObj + Obj::Position_Y_Hi  ; D2B9
         sec                                     ; D2BB
         sbc     $1F                             ; D2BC
@@ -256,6 +277,7 @@ Obj_CalcTileIndex:
 ; Finally, we add in TilemapBaseIndex
         sta     LoadedObj + Obj::TileIndex      ; D2D8
         rts                                     ; D2DA
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Applies Velocity_X and Velocity_Y to LoadedObj's position with carry-aware 16-bit fixed-point
@@ -266,8 +288,9 @@ Obj_CalcTileIndex:
 ;   Apply_Double_Velocity_XY's appreach.
 ;   Why is the sign of the high byte dropped?  Why isn't the Lo addition done first for easy carry
 ;   into the high byte?
-Obj_Apply_Velocity_XY:
+.proc Obj_Apply_Velocity_XY
         jsr     Obj_Apply_Velocity_Y            ; D2DB
+.endproc
 ; Applies Velocity_X to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.
 .proc Obj_Apply_Velocity_X
         lda     LoadedObj + Obj::Position_X_Hi  ; D2DE
@@ -348,8 +371,9 @@ _Done:
 ; Apply DOUBLE the LoadedObject's X and Y velocities to its position following 16-bit fixed-point
 ; arithmetic.
 ; Also keeps track of TileIndex correctly.
-Apply_Double_Velocity_XY:
+.proc Apply_Double_Velocity_XY
         jsr     Apply_Double_Velocity_Y         ; D324
+.endproc
 ; Apply DOUBLE the LoadedObject's X velocity to its position, adjusting tilemap column $4E and
 ; keeping $49 in 0-$7F. Dispatch $C02A; also the fall-through tail of Apply_Double_Velocity_XY.
 .proc Apply_Double_Velocity_X
@@ -1008,6 +1032,9 @@ L_D643: ldx     LoadedObj + Obj::Facing         ; D643
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_9_of_20
+
 .macro MAC_05_game_screen__object_system_4_of_9
 ; ----------------------------------------------------------------------------
 ; Deal contact damage to the PLAYER specifically -- the single-record twin of HitboxScan_LockOn.
@@ -1112,6 +1139,9 @@ _Miss:
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_10_of_20
+
 .macro MAC_05_game_screen__object_system_5_of_9
 ; ----------------------------------------------------------------------------
 ; Copies fields 1-13 (all except ObjType) from LoadedObj into another Object in the Object table.
@@ -1200,13 +1230,14 @@ L_D7F2: sta     LoadedObject + Obj::Type,x      ; D7F2
 ; This is first stage of unloading an already-active object that has scrolled off-screen.
 ; If the Camera scrolls this object back on-screen, the $02 Object Handler will take care of
 ; restoring the slot to its original state.
-Obj_Tombstone:
+.proc Obj_Tombstone
         ldx     ObjectSlot_Index                ; D7F8
         lda     LoadedObj + Obj::Type           ; D7FA
         sta     Tombstoned_ObjTypes,x           ; D7FC
         lda     #$02                            ; D7FF
         sta     LoadedObj + Obj::Type           ; D801
         rts                                     ; D803
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Despawn, logging the kill for slots ≥ 8.
@@ -1214,7 +1245,7 @@ Obj_Tombstone:
 ; Slot 0 is always the player.
 ; Not yet confirmed:
 ;   Slots 1-5 are for Player weapons.
-Obj_DespawnAndLog:
+.proc Obj_DespawnAndLog
         ldy     ObjectSlot_Index                ; D804
         cpy     #$08                            ; D806
         bcc     Obj_Despawn                     ; D808
@@ -1233,12 +1264,14 @@ Obj_DespawnAndLog:
         lda     #$FF                            ; D817
 ; Clear the slot's saved Thing index back to the $FF sentinel.
         sta     $F8,y                           ; D819
+.endproc
 ; Despawn the current object: clear ObjType and IFrames 0.
-Obj_Despawn:
+.proc Obj_Despawn
         lda     #$00                            ; D81C
         sta     LoadedObj + Obj::Type           ; D81E
         sta     $4F                             ; D820
         rts                                     ; D822
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_D823: ldy     ObjectSlot_Index                ; D823
@@ -1311,6 +1344,13 @@ L_D86D: ldx     #$4C                            ; D86D
         rts                                     ; D882
 
 .endmacro
+
+; Interrupted by 5 macros:
+;   MAC__ungrouped_11_of_20
+;   MAC_level_rendering
+;   MAC__ungrouped_12_of_20
+;   MAC_sound_2_of_2
+;   MAC__ungrouped_13_of_20
 
 .macro MAC_05_game_screen__object_system_6_of_9
 ; ----------------------------------------------------------------------------
@@ -1579,7 +1619,7 @@ _ClampSpeed:
 ; Input:
 ;   A = Y Acceleration
 ;   X = X Acceleration
-Obj_Apply_Acceleration:
+.proc Obj_Apply_Acceleration
         clc                                     ; DFD1
         adc     LoadedObj + Obj::Velocity_Y     ; DFD2
         sta     LoadedObj + Obj::Velocity_Y     ; DFD4
@@ -1588,6 +1628,7 @@ Obj_Apply_Acceleration:
         adc     LoadedObj + Obj::Velocity_X     ; DFD8
         sta     LoadedObj + Obj::Velocity_X     ; DFDA
         rts                                     ; DFDC
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_DFDD: jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; DFDD
@@ -1722,6 +1763,9 @@ L_E05D: sta     $44                             ; E05D
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_14_of_20
+
 .macro MAC_05_game_screen__object_system_7_of_9
 ; ----------------------------------------------------------------------------
 L_E071: lda     LoadedObj + Obj::Scratch2       ; E071
@@ -1740,12 +1784,13 @@ L_E071: lda     LoadedObj + Obj::Scratch2       ; E071
 ; Output:
 ;   LoadedObj.Facing = the updated heading
 ;   A = the updated heading
-Obj_TurnHeading:
+.proc Obj_TurnHeading
         lda     LoadedObj + Obj::Facing         ; E07B
         clc                                     ; E07D
         adc     LoadedObj + Obj::Scratch2       ; E07E
         sta     LoadedObj + Obj::Facing         ; E080
         rts                                     ; E082
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Advance an object by its velocity and resolve the terrain collision, on both axes.
@@ -1836,12 +1881,13 @@ _Return:
 ; Output:
 ;   A = LoadedObj's Velocity_Y scaled by A
 ;   LoadedObj's Velocity_Y = same as A
-Obj_ScaleVelY:
+.proc Obj_ScaleVelY
         tay                                     ; E0C7
         lda     LoadedObj + Obj::Velocity_Y     ; E0C8
         jsr     ScaleBySignedFrac               ; E0CA
         sta     LoadedObj + Obj::Velocity_Y     ; E0CD
         rts                                     ; E0CF
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Bounce the heading angle LoadedObj.Facing according to the boundary flags in
@@ -1884,7 +1930,7 @@ _FloorCeiling:
 ;   Returns:
 ;     A = Hi byte (signed)
 ;     X = Lo byte (unsigned)
-Obj_Get_DeltaToPlayer_X_q12_4:
+.proc Obj_Get_DeltaToPlayer_X_q12_4
         lda     PlayerSlot + Obj::Position_X_Lo ; E0ED
         sec                                     ; E0F0
         sbc     LoadedObj + Obj::Position_X_Lo  ; E0F1
@@ -1892,13 +1938,14 @@ Obj_Get_DeltaToPlayer_X_q12_4:
         lda     PlayerSlot + Obj::Position_X_Hi ; E0F4
         sbc     LoadedObj + Obj::Position_X_Hi  ; E0F7
         rts                                     ; E0F9
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Calculates signed Y-distance from this object to the player.
 ;   Returns:
 ;     A = Hi byte (signed)
 ;     X = Lo byte (unsigned)
-Obj_Get_DeltaToPlayer_Y_q12_4:
+.proc Obj_Get_DeltaToPlayer_Y_q12_4
         lda     PlayerSlot + Obj::Position_Y_Lo ; E0FA
         sec                                     ; E0FD
         sbc     LoadedObj + Obj::Position_Y_Lo  ; E0FE
@@ -1906,13 +1953,14 @@ Obj_Get_DeltaToPlayer_Y_q12_4:
         lda     PlayerSlot + Obj::Position_Y_Hi ; E101
         sbc     LoadedObj + Obj::Position_Y_Hi  ; E104
         rts                                     ; E106
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Signed X-distance to the player as single byte.
 ; 
 ; Recombines Obj_Get_DeltaToPlayer_X_q12_4's 16-bit result A (hi-byte in q8) and X (lo-byte in
 ; q4.4) as (A<<4)|(X>>4).
-Obj_Get_DeltaToPlayer_X:
+.proc Obj_Get_DeltaToPlayer_X
         lda     L0000                           ; E107
         pha                                     ; E109
         jsr     Obj_Get_DeltaToPlayer_X_q12_4   ; E10A
@@ -1932,13 +1980,14 @@ Obj_Get_DeltaToPlayer_X:
         sta     L0000                           ; E11C
         txa                                     ; E11E
         rts                                     ; E11F
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Signed Y-distance to the player as single byte.
 ; 
 ; Recombines Obj_Get_DeltaToPlayer_Y_q12_4's 16-bit result A (hi-byte in q8) and X (lo-byte in
 ; q4.4) as (A<<4)|(X>>4).
-Obj_Get_DeltaToPlayer_Y:
+.proc Obj_Get_DeltaToPlayer_Y
         lda     L0000                           ; E120
         pha                                     ; E122
         jsr     Obj_Get_DeltaToPlayer_Y_q12_4   ; E123
@@ -1958,6 +2007,7 @@ Obj_Get_DeltaToPlayer_Y:
         sta     L0000                           ; E135
         txa                                     ; E137
         rts                                     ; E138
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_E139: lda     L0000                           ; E139
@@ -2003,6 +2053,9 @@ L_E152: lda     L0000                           ; E152
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_math_2_of_5
+
 .macro MAC_05_game_screen__object_system_8_of_9
 ; ----------------------------------------------------------------------------
 ; Convert LoadedObj's Facing (heading) to a scaled Velocity vector
@@ -2014,7 +2067,7 @@ L_E152: lda     L0000                           ; E152
 ; Output:
 ;   LoadedObj.Velocity_X = cos(LoadedObj.Facing) x scale
 ;   LoadedObj.Velocity_Y = sin(LoadedObj.Facing) x scale
-Obj_FacingToVelocity:
+.proc Obj_FacingToVelocity
         lda     LoadedObj + Obj::Facing         ; E1BD
 ; Look up cos(A)
         jsr     Trig_CosByAngle                 ; E1BF
@@ -2030,8 +2083,28 @@ Obj_FacingToVelocity:
 ; Save into LoadedObj.Velocity_Y
         sta     LoadedObj + Obj::Velocity_Y     ; E1CF
         rts                                     ; E1D1
+.endproc
 
 .endmacro
+
+; Interrupted by 17 macros:
+;   MAC_math_3_of_5
+;   MAC_01b_demo_screen_2_of_2
+;   MAC_01a_story_sequence
+;   MAC_mmc1
+;   MAC_hardware_1_of_7
+;   MAC__ungrouped_15_of_20
+;   MAC_hardware_2_of_7
+;   MAC__ungrouped_16_of_20
+;   MAC_hardware_3_of_7
+;   MAC__ungrouped_17_of_20
+;   MAC_hardware_4_of_7
+;   MAC_input
+;   MAC_timing_2_of_3
+;   MAC_drawing_background
+;   MAC_hardware_5_of_7
+;   MAC__ungrouped_18_of_20
+;   MAC_math_4_of_5
 
 .macro MAC_05_game_screen__object_system_9_of_9
 ; ----------------------------------------------------------------------------

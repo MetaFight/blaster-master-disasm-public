@@ -109,12 +109,11 @@ _Render:
 ; Load the animation frame Metasprite id and call the renderer sub.
         lda     GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame,x; B1D3
         jmp     MetaSprite_Render               ; B1D6
-.endproc
 
 ; ----------------------------------------------------------------------------
-; Single unreachable $60 (RTS)
-DEAD_TankGrayHopper_OrphanRTS:
+; Unreachable RTS (dead).
         rts                                     ; B1D9
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Table of 4 metasprite ids used to animate the patrolling state.

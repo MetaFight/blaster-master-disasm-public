@@ -189,7 +189,7 @@ _Render:
         jmp     MetaSprite_Render               ; A5BE
 
 ; ----------------------------------------------------------------------------
-_DEAD_OrphanRTS:
+; Unreachable RTS (dead).
         rts                                     ; A5C1
 .endproc
 
@@ -291,6 +291,10 @@ _Render:
 .endproc
 
 .endmacro
+
+; Interrupted by 2 macros:
+;   MAC__ungrouped_9_of_9
+;   MAC_object_handlers__bullet_common
 
 .macro MAC_object_handlers__bullet_gray_2_of_2
 ; ----------------------------------------------------------------------------

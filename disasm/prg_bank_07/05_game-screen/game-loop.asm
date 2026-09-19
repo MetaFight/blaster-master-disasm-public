@@ -46,6 +46,9 @@ L_C430: bit     LFFF3                           ; C430
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_1_of_20
+
 .macro MAC_05_game_screen__game_loop_2_of_2
 ; ----------------------------------------------------------------------------
 L_C45F: jsr     L_D1EF                          ; C45F

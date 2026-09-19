@@ -23,7 +23,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 138 / 827 (17%) |
+| **M4** — Verified subroutines (public, clean) | 136 / 800 (17%) |
 | **M6** — Verified docs (public, clean) | 4 / 117 (3%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -403,9 +403,9 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `object-handlers/spitter` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 04 / `object-handlers/zombie-head` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 05 / `(ungrouped — no .groups file)` |  |
-| ⬜⬜⬜▫️<br/>`81.5%` | 06 / `object-handlers/bullet_gray` | `ObjHandler_Tank_59_Gray_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
+| ⬜⬜⬜▫️<br/>`80.8%` | 06 / `object-handlers/bullet_gray` | `ObjHandler_Tank_59_Gray_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
+| ⬜⬜⬜▫️<br/>`80.8%` | 06 / `object-handlers/bullet_red` | `ObjHandler_Tank_8E_Red_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/_common` | `TankEnemy_DamageCheck` depends on unverified routine `Enemy_DamageCheck`. |
-| ⬜⬜⬜▫️<br/>`77.8%` | 06 / `object-handlers/bullet_red` | `ObjHandler_Tank_8E_Red_Bullet_Main` depends on unverified routine `Enemy_CardinalDirToPlayer`. |
 | ⬜▫️⬛⬛<br/>`30.1%` | 06 / `object-handlers/projectiles-and-ballistics` | `ObjHandler_Tank_3C_Small_Red_Init`, `ObjHandler_Tank_47_Turret_Shot_Main`, and `ObjHandler_Tank_49_Medium_Red_Projectile_Main` depend on unverified routines `Obj_AimVelocityFromDelta` and `HitboxScan_LockOn`. |
 | ◽⬛⬛⬛<br/>`20.0%` | 06 / `object-handlers/bosses` |  |
 | ◽⬛⬛⬛<br/>`18.9%` | 06 / `_ungrouped` |  |
@@ -433,6 +433,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/sophia` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/submersible` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/swooping-sphere` |  |
+| ⬜⬜⬜▫️<br/>`75.9%` | 07 / `00_title-screen` | `TitleScreen_Wrapper` depends on unverified routines `PPU_ClearAndReset`, `VramQueue_WriteStringAt` and 9 more. |
 | ⬜⬜▫️⬛<br/>`60.0%` | 07 / `05_game-screen/object-system` |  |
 | ⬜⬜▫️⬛<br/>`57.1%` | 07 / `screen-fade` |  |
 | ⬜⬜⬛⬛<br/>`50.0%` | 07 / `sound` |  |
@@ -440,10 +441,9 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬜▫️⬛⬛<br/>`33.3%` | 07 / `timing` | `NMI` depends on unverified routine `Nmi_DoWork`. |
 | ◽⬛⬛⬛<br/>`24.1%` | 07 / `math` |  |
 | ▫️⬛⬛⬛<br/>`9.6%` | 07 / `hardware` |  |
-| ▫️⬛⬛⬛<br/>`5.9%` | 07 / `drawing-metasprites` | `MetaSprite_Render` depends on unverified routine `MetaSprite_RenderNoBank`. |
+| ▫️⬛⬛⬛<br/>`6.1%` | 07 / `drawing-metasprites` | `MetaSprite_Render` depends on unverified routine `MetaSprite_RenderNoBank`. |
 | ▫️⬛⬛⬛<br/>`4.8%` | 07 / `_ungrouped` |  |
 | ▫️⬛⬛⬛<br/>`4.2%` | 07 / `drawing-sprites` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `00_title-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `01a_story-sequence` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `01b_demo-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `02_init` |  |
@@ -464,7 +464,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **7** pages, of which **3** are alpha.
 
-_Generated: 2026-09-18 22:46 UTC_
+_Generated: 2026-09-19 15:53 UTC_
 
 ## Pages
 

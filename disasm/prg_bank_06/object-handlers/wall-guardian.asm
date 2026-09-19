@@ -204,10 +204,11 @@ _CleanUp:
 
 ; ----------------------------------------------------------------------------
 ; Select the default mid row tile for the Wall Guardian.
-WallGuardian_UseDefaultMandibleTile:
+.proc WallGuardian_UseDefaultMandibleTile
         lda     #$B8                            ; BB78
         sta     $45                             ; BB7A
         rts                                     ; BB7C
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Alternate between tile id #$B8 and #$BA on a 4-frame cycle.
@@ -228,14 +229,15 @@ _Store:
 
 ; ----------------------------------------------------------------------------
 ; Select the default top row tile for the Wall Guardian.
-WallGuardian_UseDefaultEyeTile:
+.proc WallGuardian_UseDefaultEyeTile
         lda     #$B6                            ; BB8D
         sta     $45                             ; BB8F
         rts                                     ; BB91
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Select the top-row tile based on DamageAnimationFrameCounter (Scratch1).
-WallGuardian_PlayEyeBlinkAnimation:
+.proc WallGuardian_PlayEyeBlinkAnimation
         dec     LoadedObj + Obj::Scratch1       ; BB92
         lda     LoadedObj + Obj::Scratch1       ; BB94
         lsr     a                               ; BB96
@@ -244,6 +246,7 @@ WallGuardian_PlayEyeBlinkAnimation:
         lda     WallGuardian_EyeBlinkAnimationTiles,x; BB99
         sta     $45                             ; BB9C
         rts                                     ; BB9E
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Table of tile ids used in Wall Guardian's eye blinking animation.r

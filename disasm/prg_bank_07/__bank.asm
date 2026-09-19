@@ -57,7 +57,7 @@ MMC1_PrgBank_FFFF  := $FFFF
 
 ; Emit every group's code in address order (see GroupSplitter).
         MAC_bank_interface
-        MAC_00_title_screen_1_of_2
+        MAC_00_title_screen_1_of_3
         MAC_01b_demo_screen_1_of_2
         MAC_02_init
         MAC_05_game_screen__game_loop_1_of_2
@@ -124,12 +124,13 @@ MMC1_PrgBank_FFFF  := $FFFF
         MAC_drawing_metasprites
         MAC_hardware_7_of_7
         MAC_ending_1_of_2
-        MAC_00_title_screen_2_of_2
+        MAC_00_title_screen_2_of_3
         MAC_03_intro_screen
         MAC_04b_area_entry_screen
         MAC_continue_screen
         MAC_04a_lives_left_screen
         MAC_06_pause_screen_2_of_2
+        MAC_00_title_screen_3_of_3
         MAC_ending_2_of_2
         MAC_data
         MAC_bank_tail

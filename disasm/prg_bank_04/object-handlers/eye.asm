@@ -111,6 +111,11 @@ L_B9E9: lda     #$41                            ; B9E9
 
 .endmacro
 
+; Interrupted by 3 macros:
+;   MAC_object_handlers__robed_skeleton_1_of_2
+;   MAC__ungrouped_10_of_12
+;   MAC_object_handlers__robed_skeleton_2_of_2
+
 .macro MAC_object_handlers__eye_2_of_3
 ; ----------------------------------------------------------------------------
 L_BAF0: jmp     L_BB03                          ; BAF0
@@ -185,6 +190,9 @@ L_BB33: lda     $1D                             ; BB33
 L_BB70: rts                                     ; BB70
 
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC__ungrouped_11_of_12
 
 .macro MAC_object_handlers__eye_3_of_3
 ; ----------------------------------------------------------------------------

@@ -106,7 +106,7 @@ _TileBase:
         jmp     MetaSprite_Render               ; B072
 
 ; ----------------------------------------------------------------------------
-_DEAD_OrphanRTS:
+; Unreachable RTS (dead).
         rts                                     ; B075
 .endproc
 

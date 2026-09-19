@@ -104,7 +104,7 @@ L_AFF7: txa                                     ; AFF7
         jmp     MetaSprite_Render               ; AFF8
 
 ; ----------------------------------------------------------------------------
-L_AFFB: rts                                     ; AFFB
+        rts                                     ; AFFB
 
 .endmacro
 

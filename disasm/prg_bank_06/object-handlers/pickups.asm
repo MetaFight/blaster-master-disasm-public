@@ -123,7 +123,7 @@ _Body:
 ; 
 ; Input:
 ;   A = PickUp Type
-PickUp_Init_SharedTail:
+.proc PickUp_Init_SharedTail
 ; Save PickUp Type to Scratch0.
         sta     LoadedObj + Obj::Scratch0       ; 9C5B
 ; Bump ObjType to #$35, the Main PickUp state.
@@ -134,6 +134,7 @@ PickUp_Init_SharedTail:
         sta     LoadedObj + Obj::Scratch1       ; 9C63
 ; Calculate TileIndex
         jmp     Obj_CalcTileIndex               ; 9C65
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $35: PickUp - Main

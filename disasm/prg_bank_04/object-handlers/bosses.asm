@@ -3409,6 +3409,33 @@ L_AF43: pla                                     ; AF43
 
 .endmacro
 
+; Interrupted by 25 macros:
+;   MAC_object_handlers__projectiles_and_ballistics_6_of_7
+;   MAC_object_handlers__pickups_2_of_2
+;   MAC__ungrouped_8_of_12
+;   MAC_object_handlers__camera_1_of_2
+;   MAC_object_handlers__gumdrop_gray
+;   MAC_object_handlers__flier
+;   MAC__ungrouped_9_of_12
+;   MAC_object_handlers__charging_robot
+;   MAC_object_handlers__spinner
+;   MAC_object_handlers__cross_shooter
+;   MAC_object_handlers__camera_2_of_2
+;   MAC_object_handlers__slider
+;   MAC_object_handlers__robot
+;   MAC_object_handlers__eye_1_of_3
+;   MAC_object_handlers__robed_skeleton_1_of_2
+;   MAC__ungrouped_10_of_12
+;   MAC_object_handlers__robed_skeleton_2_of_2
+;   MAC_object_handlers__eye_2_of_3
+;   MAC__ungrouped_11_of_12
+;   MAC_object_handlers__eye_3_of_3
+;   MAC__ungrouped_12_of_12
+;   MAC_object_handlers__projectiles_and_ballistics_7_of_7
+;   MAC_object_handlers__spitter
+;   MAC_object_handlers__zombie_head
+;   MAC_object_handlers__gumdrop_red
+
 .macro MAC_object_handlers__bosses_2_of_2
 ; ----------------------------------------------------------------------------
 L_BF8A: .byte   $01,$02,$04,$08,$10,$20,$40,$80 ; BF8A

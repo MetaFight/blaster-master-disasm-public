@@ -13,6 +13,9 @@ L_977F: rts                                     ; 977F
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_5_of_9
+
 .macro MAC_object_handlers__projectiles_and_ballistics_2_of_6
 ; ----------------------------------------------------------------------------
 L_9788: jmp     L_97C6                          ; 9788
@@ -97,6 +100,9 @@ L_981D: .byte   $00,$00,$00,$4B,$08,$00,$00,$4C ; 981D
         .byte   $00,$08,$00,$49,$00,$08,$10,$4A ; 982D
 L_9835: .byte   $04,$06,$08                     ; 9835
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC_object_handlers__sophia_4_of_6
 
 .macro MAC_object_handlers__projectiles_and_ballistics_3_of_6
 ; ----------------------------------------------------------------------------
@@ -253,6 +259,9 @@ L99A8:  .byte   $00,$00,$91,$7F                 ; 99A8
 L99AC:  .byte   $00,$00,$11,$6F                 ; 99AC
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_object_handlers__sophia_5_of_6
+
 .macro MAC_object_handlers__projectiles_and_ballistics_4_of_6
 ; ----------------------------------------------------------------------------
 L_99CC: nop                                     ; 99CC
@@ -370,6 +379,9 @@ L_9AB0: .byte   $03,$03,$03,$03,$43,$43,$03,$03 ; 9AB0
         .byte   $43,$03,$03,$03,$03,$03,$43,$03 ; 9AC0
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_object_handlers__sophia_6_of_6
+
 .macro MAC_object_handlers__projectiles_and_ballistics_5_of_6
 ; ----------------------------------------------------------------------------
 L_9AEB: nop                                     ; 9AEB
@@ -454,6 +466,13 @@ L_9B79: jmp     LD82C                           ; 9B79
 L_9B7C: .byte   $FF                             ; 9B7C
 L9B7D:  .byte   $00,$01,$00,$FF                 ; 9B7D
 .endmacro
+
+; Interrupted by 5 macros:
+;   MAC__ungrouped_6_of_9
+;   MAC_object_handlers__explosions
+;   MAC_object_handlers__pickups
+;   MAC_object_handlers__auto_gates_and_locks
+;   MAC__ungrouped_7_of_9
 
 .macro MAC_object_handlers__projectiles_and_ballistics_6_of_6
 ; ----------------------------------------------------------------------------

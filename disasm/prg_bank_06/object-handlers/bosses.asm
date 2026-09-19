@@ -1,7 +1,7 @@
 .macro MAC_object_handlers__bosses
 ; ----------------------------------------------------------------------------
 ; Initialise boss from tank section boss table.
-TankBoss_InitFromTableEntry:
+.proc TankBoss_InitFromTableEntry
         jsr     TankBoss_TableEntryPtr          ; BBA7
         ldy     #$00                            ; BBAA
         lda     ($A6),y                         ; BBAC
@@ -12,10 +12,11 @@ TankBoss_InitFromTableEntry:
         jsr     Obj_CalcTileIndex               ; BBB2
         inc     LoadedObj + Obj::Type           ; BBB5
         rts                                     ; BBB7
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Updated TankBoss_TableEntryPtrLo/Hi to point to the tank section boss table entry indexed by A.
-TankBoss_TableEntryPtr:
+.proc TankBoss_TableEntryPtr
         asl     a                               ; BBB8
         clc                                     ; BBB9
         adc     L_BC1D                          ; BBBA
@@ -24,6 +25,7 @@ TankBoss_TableEntryPtr:
         adc     L_BC1D+1                        ; BBC1
         sta     $A7                             ; BBC4
         rts                                     ; BBC6
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_BBC7: jsr     TankBoss_TableEntryPtr          ; BBC7

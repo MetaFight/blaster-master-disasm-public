@@ -158,10 +158,11 @@ _Render:
         and     #$01                            ; B9F7
         ora     RedBullet_Walking_RenderParamLookup + BulletRenderParams::BaseMetaSpriteId,x ; B9F9
         jmp     MetaSprite_Render               ; B9FC
-.endproc
 
 ; ----------------------------------------------------------------------------
-L_B9FF: rts                                     ; B9FF
+; Unreachable RTS (dead).
+        rts                                     ; B9FF
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $8F: Red Bullet - Attacking.

@@ -68,6 +68,9 @@ L_8AF0: rts                                     ; 8AF0
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC_object_handlers___ungrouped
+
 .macro MAC_object_handlers__jason_2_of_2
 ; ----------------------------------------------------------------------------
 L_8B29: jsr     LC1CE                           ; 8B29

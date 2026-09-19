@@ -16,7 +16,7 @@
 ;     own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field
 ;   ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler
 ;     need not advance $46 itself
-TankEnemy_Init:
+.proc TankEnemy_Init
         jsr     TankEnemy_Load_EnemyDescPtr     ; A2E9
 ; Load desc[0] (EnemyDesc::Health, starting HP) via ($A1),Y → $53; clear anim state $4F.
         ldy     #$00                            ; A2EC
@@ -27,6 +27,7 @@ TankEnemy_Init:
         jsr     Obj_CalcTileIndex               ; A2F4
         inc     LoadedObj + Obj::Type           ; A2F7
         rts                                     ; A2F9
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Points EnemyParam_Ptr[Lo/Hi] to the given enemy's TankEnemy_DescTable entry.
@@ -37,7 +38,7 @@ TankEnemy_Init:
 ; Output:
 ;   EnemyParam_Ptr[Lo/Hi] ($A1/$A2) are set to point to the enemy's 4-byte EnemyDesc entry in
 ;   TankEnemy_DescTable.
-TankEnemy_Load_EnemyDescPtr:
+.proc TankEnemy_Load_EnemyDescPtr
 ; Multiply A by 4.  EnemyDesc entries are 4-bytes in size so this converts the array index into
 ; the target element's offset.
         asl     a                               ; A2FA
@@ -52,6 +53,7 @@ TankEnemy_Load_EnemyDescPtr:
         adc     TankEnemy_DescTablePtr+1        ; A304
         sta     $A2                             ; A307
         rts                                     ; A309
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Shared tank-enemy hit-and-kill test, called once per frame from a damageable enemy's Main
@@ -122,10 +124,11 @@ L_A344: lda     #$00                            ; A344
 ; Shared enemy DEATH tail used by untracked/spawner-spawned enemies.
 ; 
 ; Despawns object and calls pick-up spawn routine.
-TankEnemy_DefeatUntrackedEnemy:
+.proc TankEnemy_DefeatUntrackedEnemy
         jsr     Obj_Despawn                     ; A347
 ; tail-call TankEnemy_SpawnDrop: roll for a pickup drop, then morph the slot to Big Explosion
         jmp     TankEnemy_SpawnDrop             ; A34A
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Shared enemy DEATH tail.
@@ -134,8 +137,9 @@ TankEnemy_DefeatUntrackedEnemy:
 ; 
 ; First calls Obj_DespawnAndLog for object slot bookkeeping and then falls into
 ; TankEnemy_SpawnDrop.'
-TankEnemy_DefeatTrackedEnemy:
+.proc TankEnemy_DefeatTrackedEnemy
         jsr     Obj_DespawnAndLog               ; A34D
+.endproc
 ; On enemy death, roll the RNG for a chance to drop a Pickup.
 .proc TankEnemy_SpawnDrop
         jsr     Step_RNG                        ; A350

@@ -119,7 +119,7 @@ _SetTile:
         jmp     MetaSprite_Render               ; AA56
 
 ; ----------------------------------------------------------------------------
-_DEAD_OrphanRTS:
+; Unreachable RTS (dead).
         rts                                     ; AA59
 .endproc
 

@@ -37,6 +37,9 @@ _DEAD_ManualLoop:
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_15_of_20
+
 .macro MAC_hardware_2_of_7
 ; ----------------------------------------------------------------------------
 L_E6BF: lda     $FF                             ; E6BF
@@ -56,6 +59,9 @@ L_E6BF: lda     $FF                             ; E6BF
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_16_of_20
+
 .macro MAC_hardware_3_of_7
 ; ----------------------------------------------------------------------------
 L_E6E9: lda     $FE                             ; E6E9
@@ -71,6 +77,9 @@ L_E6F0: lda     $FE                             ; E6F0
         rts                                     ; E6F9
 
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC__ungrouped_17_of_20
 
 .macro MAC_hardware_4_of_7
 ; ----------------------------------------------------------------------------
@@ -227,24 +236,31 @@ L_E884: pha                                     ; E884
 ; ----------------------------------------------------------------------------
 ; Clear PPU_CTRL bit2 ($FF shadow + $2000): VRAM address increment = +1 (write across a row).
 ; Dispatch slot $C234; callers: Nametable_RLE_Decompress ($E95B), NMI palette upload ($EBC0).
-PPU_SetAddressIncrementTo_1:
+.proc PPU_SetAddressIncrementTo_1
         lda     $FF                             ; E895
         and     #$FB                            ; E897
         sta     $2000                           ; E899
         sta     $FF                             ; E89C
         rts                                     ; E89E
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; Set PPU_CTRL bit2 ($FF shadow + $2000): VRAM address increment = +32 (write down a column).
 ; Dispatch slot $C237 (no external callers).
-PPU_SetAddressIncrementTo_32:
+.proc PPU_SetAddressIncrementTo_32
         lda     $FF                             ; E89F
         ora     #$04                            ; E8A1
         sta     $2000                           ; E8A3
         sta     $FF                             ; E8A6
         rts                                     ; E8A8
+.endproc
 
 .endmacro
+
+; Interrupted by 3 macros:
+;   MAC_input
+;   MAC_timing_2_of_3
+;   MAC_drawing_background
 
 .macro MAC_hardware_5_of_7
 ; ----------------------------------------------------------------------------
@@ -276,6 +292,15 @@ L_EA30: sta     $2007                           ; EA30
         rts                                     ; EA39
 
 .endmacro
+
+; Interrupted by 7 macros:
+;   MAC__ungrouped_18_of_20
+;   MAC_math_4_of_5
+;   MAC_05_game_screen__object_system_9_of_9
+;   MAC_math_5_of_5
+;   MAC__ungrouped_19_of_20
+;   MAC_rng
+;   MAC_timing_3_of_3
 
 .macro MAC_hardware_6_of_7
 ; ----------------------------------------------------------------------------
@@ -332,6 +357,11 @@ L_EC9B: lda     OAM_Staging_Buffer + OamEntry::Screen_Y,x ; EC9B
 L_ECB3: rts                                     ; ECB3
 
 .endmacro
+
+; Interrupted by 3 macros:
+;   MAC_drawing_sprites
+;   MAC__ungrouped_20_of_20
+;   MAC_drawing_metasprites
 
 .macro MAC_hardware_7_of_7
 ; ----------------------------------------------------------------------------

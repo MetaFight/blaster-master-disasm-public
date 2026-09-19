@@ -42,6 +42,9 @@ L_8F97: jmp     LC114                           ; 8F97
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_3_of_12
+
 .macro MAC_object_handlers__projectiles_and_ballistics_2_of_7
 ; ----------------------------------------------------------------------------
 L_8F9F: jmp     L_8FB8                          ; 8F9F
@@ -90,6 +93,9 @@ L_8FD8: lda     #$10                            ; 8FD8
 L_8FF0: jmp     LC117                           ; 8FF0
 
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC__ungrouped_4_of_12
 
 .macro MAC_object_handlers__projectiles_and_ballistics_3_of_7
 ; ----------------------------------------------------------------------------
@@ -382,6 +388,9 @@ L_91EF: jmp     LC117                           ; 91EF
 
 .endmacro
 
+; Interrupted by 1 macro:
+;   MAC__ungrouped_5_of_12
+
 .macro MAC_object_handlers__projectiles_and_ballistics_4_of_7
 ; ----------------------------------------------------------------------------
 L_920B: jmp     L_9236                          ; 920B
@@ -409,6 +418,9 @@ L_920E: lda     LoadedObj + Obj::Facing         ; 920E
 L_9236: rts                                     ; 9236
 
 .endmacro
+
+; Interrupted by 1 macro:
+;   MAC__ungrouped_6_of_12
 
 .macro MAC_object_handlers__projectiles_and_ballistics_5_of_7
 ; ----------------------------------------------------------------------------
@@ -474,6 +486,12 @@ L_92A3: lda     #$11                            ; 92A3
         rts                                     ; 92AB
 
 .endmacro
+
+; Interrupted by 4 macros:
+;   MAC_object_handlers__explosions
+;   MAC__ungrouped_7_of_12
+;   MAC_object_handlers__pickups_1_of_2
+;   MAC_object_handlers__bosses_1_of_2
 
 .macro MAC_object_handlers__projectiles_and_ballistics_6_of_7
 ; ----------------------------------------------------------------------------
@@ -798,6 +816,28 @@ L_B15B: lda     #$08                            ; B15B
 
 .endmacro
 
+; Interrupted by 20 macros:
+;   MAC_object_handlers__pickups_2_of_2
+;   MAC__ungrouped_8_of_12
+;   MAC_object_handlers__camera_1_of_2
+;   MAC_object_handlers__gumdrop_gray
+;   MAC_object_handlers__flier
+;   MAC__ungrouped_9_of_12
+;   MAC_object_handlers__charging_robot
+;   MAC_object_handlers__spinner
+;   MAC_object_handlers__cross_shooter
+;   MAC_object_handlers__camera_2_of_2
+;   MAC_object_handlers__slider
+;   MAC_object_handlers__robot
+;   MAC_object_handlers__eye_1_of_3
+;   MAC_object_handlers__robed_skeleton_1_of_2
+;   MAC__ungrouped_10_of_12
+;   MAC_object_handlers__robed_skeleton_2_of_2
+;   MAC_object_handlers__eye_2_of_3
+;   MAC__ungrouped_11_of_12
+;   MAC_object_handlers__eye_3_of_3
+;   MAC__ungrouped_12_of_12
+
 .macro MAC_object_handlers__projectiles_and_ballistics_7_of_7
 ; ----------------------------------------------------------------------------
 L_BBC2: jmp     L_BBE2                          ; BBC2
@@ -861,7 +901,7 @@ L_BC1C: lda     #$00                            ; BC1C
         jmp     LC1AD                           ; BC24
 
 ; ----------------------------------------------------------------------------
-L_BC27: rts                                     ; BC27
+        rts                                     ; BC27
 
 ; ----------------------------------------------------------------------------
 L_BC28: jsr     LC105                           ; BC28
@@ -961,7 +1001,7 @@ L_BCB9: lda     #$00                            ; BCB9
         jmp     LC1AD                           ; BCC1
 
 ; ----------------------------------------------------------------------------
-L_BCC4: rts                                     ; BCC4
+        rts                                     ; BCC4
 
 ; ----------------------------------------------------------------------------
 L_BCC5: ldx     #$8C                            ; BCC5
@@ -1043,7 +1083,7 @@ L_BD3E: lda     #$00                            ; BD3E
         jmp     LC1AD                           ; BD46
 
 ; ----------------------------------------------------------------------------
-L_BD49: rts                                     ; BD49
+        rts                                     ; BD49
 
 ; ----------------------------------------------------------------------------
 L_BD4A: lda     #$10                            ; BD4A

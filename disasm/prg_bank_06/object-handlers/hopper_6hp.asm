@@ -173,13 +173,11 @@ _TileIdle:
 ; tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
 _SetTile:
         jmp     MetaSprite_Render               ; A86A
-.endproc
 
 ; ----------------------------------------------------------------------------
-; Single unreachable $60 (RTS) after the Gray Hopper 6HP ($60) tile tail (tail-calls JMP $F011 at
-; $A86A).
-DEAD_ObjHandler_Tank_60_GrayHopper6HP_Attacking_OrphanRTS:
+; Unreachable RTS (dead).
         rts                                     ; A86D
+.endproc
 
 ; ----------------------------------------------------------------------------
 ; ObjType $61 — Gray Hopper 6HP 'Patrolling' state.
@@ -275,12 +273,11 @@ _Render:
 ; Load the animation frame Metasprite id and call the renderer sub.
         lda     L_A8CE,x                        ; A8C7
         jmp     MetaSprite_Render               ; A8CA
-.endproc
 
 ; ----------------------------------------------------------------------------
-; Single unreachable $60 (RTS)
-DEAD_ObjHandler_Tank_61_GrayHopper6HP_Patrolling_OrphanRTS:
+; Unreachable RTS (dead).
         rts                                     ; A8CD
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_A8CE: .byte   $02,$03,$02,$04                 ; A8CE

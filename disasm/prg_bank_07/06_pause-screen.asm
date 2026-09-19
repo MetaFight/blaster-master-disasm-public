@@ -9,6 +9,72 @@ L_C55D: lda     #$00                            ; C55D
 
 .endmacro
 
+; Interrupted by 64 macros:
+;   MAC__ungrouped_3_of_20
+;   MAC_05_game_screen__object_system_1_of_9
+;   MAC__ungrouped_4_of_20
+;   MAC_05_game_screen__hud
+;   MAC_05_game_screen__object_system_2_of_9
+;   MAC__ungrouped_5_of_20
+;   MAC_05_game_screen__viewport_1_of_2
+;   MAC_sound_1_of_2
+;   MAC_screen_fade
+;   MAC_timing_1_of_3
+;   MAC__ungrouped_6_of_20
+;   MAC_05_game_screen__object_system_terrain
+;   MAC_math_1_of_5
+;   MAC__ungrouped_7_of_20
+;   MAC_05_game_screen__viewport_2_of_2
+;   MAC__ungrouped_8_of_20
+;   MAC_05_game_screen__object_system_3_of_9
+;   MAC__ungrouped_9_of_20
+;   MAC_05_game_screen__object_system_4_of_9
+;   MAC__ungrouped_10_of_20
+;   MAC_05_game_screen__object_system_5_of_9
+;   MAC__ungrouped_11_of_20
+;   MAC_level_rendering
+;   MAC__ungrouped_12_of_20
+;   MAC_sound_2_of_2
+;   MAC__ungrouped_13_of_20
+;   MAC_05_game_screen__object_system_6_of_9
+;   MAC__ungrouped_14_of_20
+;   MAC_05_game_screen__object_system_7_of_9
+;   MAC_math_2_of_5
+;   MAC_05_game_screen__object_system_8_of_9
+;   MAC_math_3_of_5
+;   MAC_01b_demo_screen_2_of_2
+;   MAC_01a_story_sequence
+;   MAC_mmc1
+;   MAC_hardware_1_of_7
+;   MAC__ungrouped_15_of_20
+;   MAC_hardware_2_of_7
+;   MAC__ungrouped_16_of_20
+;   MAC_hardware_3_of_7
+;   MAC__ungrouped_17_of_20
+;   MAC_hardware_4_of_7
+;   MAC_input
+;   MAC_timing_2_of_3
+;   MAC_drawing_background
+;   MAC_hardware_5_of_7
+;   MAC__ungrouped_18_of_20
+;   MAC_math_4_of_5
+;   MAC_05_game_screen__object_system_9_of_9
+;   MAC_math_5_of_5
+;   MAC__ungrouped_19_of_20
+;   MAC_rng
+;   MAC_timing_3_of_3
+;   MAC_hardware_6_of_7
+;   MAC_drawing_sprites
+;   MAC__ungrouped_20_of_20
+;   MAC_drawing_metasprites
+;   MAC_hardware_7_of_7
+;   MAC_ending_1_of_2
+;   MAC_00_title_screen_2_of_3
+;   MAC_03_intro_screen
+;   MAC_04b_area_entry_screen
+;   MAC_continue_screen
+;   MAC_04a_lives_left_screen
+
 .macro MAC_06_pause_screen_2_of_2
 ; ----------------------------------------------------------------------------
 L_F833: lda     #$10                            ; F833
@@ -208,14 +274,6 @@ L_F9AF: pha                                     ; F9AF
         cmp     #$03                            ; F9C5
         bne     L_F9AF                          ; F9C7
         rts                                     ; F9C9
-
-; ----------------------------------------------------------------------------
-L_F9CA: lda     #$0F                            ; F9CA
-        ldx     #$1F                            ; F9CC
-L_F9CE: sta     $0650,x                         ; F9CE
-        dex                                     ; F9D1
-        bpl     L_F9CE                          ; F9D2
-        rts                                     ; F9D4
 
 .endmacro
 

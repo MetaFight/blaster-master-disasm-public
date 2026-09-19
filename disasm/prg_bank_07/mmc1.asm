@@ -51,7 +51,7 @@ _Cleanup:
 ; ----------------------------------------------------------------------------
 ; MMC1 5-bit serial write to $FFFF
 ; write bit 0 of bank number to MMC1 serial shift register at $FFFF
-MMC1_WritePRG:
+.proc MMC1_WritePRG
         sta     MMC1_PrgBank_FFFF               ; E63C
         lsr     a                               ; E63F
 ; write bit 1
@@ -67,6 +67,7 @@ MMC1_WritePRG:
         sta     L_FFFA+5                        ; E64C
 ; after 5 writes MMC1 latches the 5-bit PRG bank number.  Our work is done.
         rts                                     ; E64F
+.endproc
 
 ; ----------------------------------------------------------------------------
 L_E650: sta     MMC1_ChrBank1_DFFF              ; E650

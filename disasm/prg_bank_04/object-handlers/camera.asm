@@ -117,6 +117,14 @@ L_B445: rts                                     ; B445
 
 .endmacro
 
+; Interrupted by 6 macros:
+;   MAC_object_handlers__gumdrop_gray
+;   MAC_object_handlers__flier
+;   MAC__ungrouped_9_of_12
+;   MAC_object_handlers__charging_robot
+;   MAC_object_handlers__spinner
+;   MAC_object_handlers__cross_shooter
+
 .macro MAC_object_handlers__camera_2_of_2
 ; ----------------------------------------------------------------------------
 ; ObjType $3B: Vertical Camera - Init.

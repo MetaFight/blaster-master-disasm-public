@@ -160,6 +160,10 @@ L_96E8: .byte   $20,$80,$20,$80,$20,$80,$14,$14 ; 96E8
         .byte   $14                             ; 96F0
 .endmacro
 
+; Interrupted by 2 macros:
+;   MAC_object_handlers__bosses_1_of_2
+;   MAC_object_handlers__projectiles_and_ballistics_6_of_7
+
 .macro MAC_object_handlers__pickups_2_of_2
 ; ----------------------------------------------------------------------------
 L_B16B: jmp     L_B172                          ; B16B

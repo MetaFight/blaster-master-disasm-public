@@ -10,6 +10,41 @@ L_CE4A: pha                                     ; CE4A
 
 .endmacro
 
+; Interrupted by 33 macros:
+;   MAC__ungrouped_6_of_20
+;   MAC_05_game_screen__object_system_terrain
+;   MAC_math_1_of_5
+;   MAC__ungrouped_7_of_20
+;   MAC_05_game_screen__viewport_2_of_2
+;   MAC__ungrouped_8_of_20
+;   MAC_05_game_screen__object_system_3_of_9
+;   MAC__ungrouped_9_of_20
+;   MAC_05_game_screen__object_system_4_of_9
+;   MAC__ungrouped_10_of_20
+;   MAC_05_game_screen__object_system_5_of_9
+;   MAC__ungrouped_11_of_20
+;   MAC_level_rendering
+;   MAC__ungrouped_12_of_20
+;   MAC_sound_2_of_2
+;   MAC__ungrouped_13_of_20
+;   MAC_05_game_screen__object_system_6_of_9
+;   MAC__ungrouped_14_of_20
+;   MAC_05_game_screen__object_system_7_of_9
+;   MAC_math_2_of_5
+;   MAC_05_game_screen__object_system_8_of_9
+;   MAC_math_3_of_5
+;   MAC_01b_demo_screen_2_of_2
+;   MAC_01a_story_sequence
+;   MAC_mmc1
+;   MAC_hardware_1_of_7
+;   MAC__ungrouped_15_of_20
+;   MAC_hardware_2_of_7
+;   MAC__ungrouped_16_of_20
+;   MAC_hardware_3_of_7
+;   MAC__ungrouped_17_of_20
+;   MAC_hardware_4_of_7
+;   MAC_input
+
 .macro MAC_timing_2_of_3
 ; ----------------------------------------------------------------------------
 ; Sets Nmi_SignalFlags bit 7 then spin-waits until NMI handler clears it.  This is the mechanism
@@ -38,6 +73,16 @@ L_E949: lda     $FF                             ; E949
         rts                                     ; E952
 
 .endmacro
+
+; Interrupted by 8 macros:
+;   MAC_drawing_background
+;   MAC_hardware_5_of_7
+;   MAC__ungrouped_18_of_20
+;   MAC_math_4_of_5
+;   MAC_05_game_screen__object_system_9_of_9
+;   MAC_math_5_of_5
+;   MAC__ungrouped_19_of_20
+;   MAC_rng
 
 .macro MAC_timing_3_of_3
 ; ----------------------------------------------------------------------------
