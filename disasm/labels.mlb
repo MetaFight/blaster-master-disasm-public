@@ -128,7 +128,7 @@ NesPrgRom:73C1:OvhdLvl3_MapData:32×32 chunk-index grid = 1024 bytes
 NesPrgRom:77C1:OvhdLvl3_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
 NesPrgRom:77D1:OvhdLvl3_TileAttrTable:Tile attribute table – bits: 0-1=palette 2=walk-behind 3=Tunnel(→Tank) 4=damage 7=solid  3+7=Doorway 6+7=destroyable
 NesPrgRom:782B:L_B82B
-NesPrgRom:7EA1:Metasprite_Table_Overhead:(alpha: not fully human-verified / pending re-verification) Overhead-section metasprite pointer table (8×16 sprites); 2-byte LE def pointers indexed by sprite-id×2, walked by MetaSprite_RenderNoBank ($F029) after MetaSprite_Render ($F011) maps bank 1 (via $EA3A index $1A). Defs sit below the table. See docs/us/entities/metasprite-system.md
+NesPrgRom:7EA1:Metasprite_Table_Overhead:(alpha: not fully human-verified / pending re-verification) Overhead-section metasprite pointer table (8×16 sprites); 2-byte LE def pointers indexed by sprite-id×2, walked by Metasprite_RenderNoBank ($F029) after Metasprite_Render ($F011) maps bank 1 (via $EA3A index $1A). Defs sit below the table. See docs/us/entities/metasprite-system.md
 NesPrgRom:7F81:L_BF81
 NesPrgRom:7F8E:L_BF8E
 NesPrgRom:7FE2:L_BFE2
@@ -286,7 +286,7 @@ NesPrgRom:FCA5:L_BCA5
 NesPrgRom:FEF1:L_BEF1
 NesPrgRom:FFE2:L_BFE2
 NesPrgRom:FFF4:L_BFF4
-NesPrgRom:10000:BankDispatch_TopTable_Bk04:Bank-04 top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 + nibble×2) to seed IndirectPtr ($7A/$7B). 3 LE16 sub-table pointers: [0]=$8006 ObjDispatch_Table_Bk04 (the overhead AI handler table — nibble 0, the RunObjectHandler path), [1]=$8907 Metasprite_Table_Tank (read by MetaSprite_Render $F011 with A=#$41), [2]=$8006 again (no known caller uses nibble 2). Entry [1] is the *tank* metasprite table, so this table is not AI-only. Bank-06 counterpart: BankDispatch_TopTable_Bk06 ($8000, 1 entry)
+NesPrgRom:10000:BankDispatch_TopTable_Bk04:Bank-04 top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 + nibble×2) to seed IndirectPtr ($7A/$7B). 3 LE16 sub-table pointers: [0]=$8006 ObjDispatch_Table_Bk04 (the overhead AI handler table — nibble 0, the RunObjectHandler path), [1]=$8907 Metasprite_Table_Tank (read by Metasprite_Render $F011 with A=#$41), [2]=$8006 again (no known caller uses nibble 2). Entry [1] is the *tank* metasprite table, so this table is not AI-only. Bank-06 counterpart: BankDispatch_TopTable_Bk06 ($8000, 1 entry)
 NesPrgRom:10006:ObjDispatch_Table_Bk04:Bank-04 (overhead) AI handler table: 134 × 2-byte LE handler pointers, spanning $8006–$8111, for ObjType $01–$86. Read by BankDispatch_Index ($EB51) as IndirectPtr[(ObjType−1)×2] with IndirectPtr = $8006, so ObjType N's handler pointer sits at $8004 + N×2. Entries 0/1 → null handler ($8AF1); entry 2 (ObjType=$03) → ObjHandler_Ovhd_03_Jason ($8C38, OvhdJason main). Bank-06 counterpart: ObjDispatch_Table_Bk06 ($8002)
 NesPrgRom:10112:L_8112
 NesPrgRom:10144:L_8144
@@ -1351,9 +1351,9 @@ NesPrgRom:13747:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__ScreenTest
 NesPrgRom:1374F::Set object bounds and do the screen test.
 NesPrgRom:13752::if off-screen then tombstone, otherwise skip to OnScreen.
 NesPrgRom:13757:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__OnScreen:Handle incoming damage (using enemy descriptor #$0A), then\nDraw animated sprite (unless occluded by foreground tile, in which case only draw every 4th frame to create a flicker).
-NesPrgRom:1376A:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Draw:Set OAM Attributes to sprite palette 1,\nPick animation MetaSprite Id based on Global_FrameCounter (each animation frame last 16 draw frames),\nRender selected MetaSprite.
+NesPrgRom:1376A:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Draw:Set OAM Attributes to sprite palette 1,\nPick animation Metasprite Id based on Global_FrameCounter (each animation frame last 16 draw frames),\nRender selected Metasprite.
 NesPrgRom:1377D:_ObjHandler_Ovhd_3C_Vertical_Camera_Main__Ret
-NesPrgRom:1377E:Camera_MetaSpriteId_ByFrame:Table of 4 MetaSprite Ids used to animate both Vertical and Horizontal Cameras.
+NesPrgRom:1377E:Camera_MetaspriteId_ByFrame:Table of 4 Metasprite Ids used to animate both Vertical and Horizontal Cameras.
 NesPrgRom:13782:L_B782
 NesPrgRom:13785:L_B785
 NesPrgRom:1378E:L_B78E
@@ -2214,7 +2214,7 @@ NesPrgRom:19CF4:_ObjHandler_Tank_35_PickUp_Main__x1PickUpSound:Otherwise, play x
 NesPrgRom:19CFC:_ObjHandler_Tank_35_PickUp_Main__x4PickUpSound
 NesPrgRom:19D04:_ObjHandler_Tank_35_PickUp_Main__SubWeaponPickUpSound
 NesPrgRom:19D09:_ObjHandler_Tank_35_PickUp_Main__Despawn
-NesPrgRom:19D0C:PickUp_MetaSprite_LookUp:9 MetaSprite ids. $60=health, $6A=gun, $62=hover, $64=homing, $68=thunder, $66=multi-warhead. Each is the top-left CHR tile of a 16x16 column-major quad (id, id+1, id+$10, id+$11) staged by OAM_Stage_Sprite_Shape5_Quad2x2.
+NesPrgRom:19D0C:PickUp_Metasprite_LookUp:9 Metasprite ids. $60=health, $6A=gun, $62=hover, $64=homing, $68=thunder, $66=multi-warhead. Each is the top-left CHR tile of a 16x16 column-major quad (id, id+1, id+$10, id+$11) staged by OAM_Stage_Sprite_Shape5_Quad2x2.
 NesPrgRom:19D15:PickUp_PaletteMode_LookUp:9 palette mode entries. One of two options: $01=static (doubles as palette index to use), $04=animated.
 NesPrgRom:19D1E:PickUp_TargetAddress_LookUpPtr:Pointer to PickUp_TargetAddress_LookUp
 NesPrgRom:19D20:PickUp_TargetAddress_LookUp:9 pointers: HP, HP, Gun, Gun, Hover, Hover, Homing, Lightning, MultiWarhead.
@@ -2521,7 +2521,7 @@ NesPrgRom:1A5AD::Look up the current orientation's OAM Attributes,
 NesPrgRom:1A5B0::OR with 1 to specity Sprite palette 1,
 NesPrgRom:1A5B2::and store in WR_44__OAM_Attribute__or__Outgoing_Contact_Damage.
 NesPrgRom:1A5B9::Animation frame index = bit 3 of Global_FrameCounter.
-NesPrgRom:1A5BB::Look up the current orientation's base Metasprite Id and OR it with the frame index, then call MetaSprite_Render.
+NesPrgRom:1A5BB::Look up the current orientation's base Metasprite Id and OR it with the frame index, then call Metasprite_Render.
 NesPrgRom:1A5C1::Unreachable RTS (dead).
 NesPrgRom:1A5C2:ObjHandler_Tank_5A_Gray_Bullet_Attacking:ObjType $5A: Gray Bullet - Attacking.
 NesPrgRom:1A5C5:_ObjHandler_Tank_5A_Gray_Bullet_Attacking__Body
@@ -2541,7 +2541,7 @@ NesPrgRom:1A600::reset CornerWrapCooldown (Scratch1),
 NesPrgRom:1A602::and, finally, change ObjType back to Walking ($59)
 NesPrgRom:1A605:_ObjHandler_Tank_5A_Gray_Bullet_Attacking__AfterPhysics:16×16 hitbox; JSR ScreenPos_Compute ($EF2B); JSR $A30A with enemy descriptor 2 HP=$08; defeat→$A34D→ObjType $2C item
 NesPrgRom:1A615:_ObjHandler_Tank_5A_Gray_Bullet_Attacking__OnScreen:On-screen — TankEnemy_DamageCheck (descriptor $02); a kill takes JMP TankEnemy_DefeatTrackedEnemy ($A34D), else fall into render.
-NesPrgRom:1A61F:_ObjHandler_Tank_5A_Gray_Bullet_Attacking__Render:Alive — facing $47>>5 indexes the (attr,tile) table at $A6CF; set OAM attr $44, JMP MetaSprite_Render ($F011).
+NesPrgRom:1A61F:_ObjHandler_Tank_5A_Gray_Bullet_Attacking__Render:Alive — facing $47>>5 indexes the (attr,tile) table at $A6CF; set OAM attr $44, JMP Metasprite_Render ($F011).
 NesPrgRom:1A634:L_A634
 NesPrgRom:1A641:L_A641
 NesPrgRom:1A64D:L_A64D
@@ -2610,8 +2610,8 @@ NesPrgRom:1A79E:_ObjHandler_Tank_5E_Hulk_Main__OnScreenCheck:run on-screen test.
 NesPrgRom:1A7AE:_ObjHandler_Tank_5E_Hulk_Main__DamageCheck:Use the shared DamageCheck handler TankEnemy_DamageCheck with enemy descriptor #$04.\nIf still alive, skip to Alive handler, otherwise jump to shared TankEnemy_DefeatTrackedEnemy handler.
 NesPrgRom:1A7B8:_ObjHandler_Tank_5E_Hulk_Main__Render
 NesPrgRom:1A7BA::Set OAM FlipX and Palette attributes.
-NesPrgRom:1A7C3::Based on bit4 of Global_FrameCounter, use either #$7E or #$7F as MetaSprite Id.
-NesPrgRom:1A7C6:_ObjHandler_Tank_5E_Hulk_Main__RenderMetaSprite
+NesPrgRom:1A7C3::Based on bit4 of Global_FrameCounter, use either #$7E or #$7F as Metasprite Id.
+NesPrgRom:1A7C6:_ObjHandler_Tank_5E_Hulk_Main__RenderMetasprite
 NesPrgRom:1A7CA::Unreachable RTS (dead).
 NesPrgRom:1A7CB:ObjHandler_Tank_5F_Gray_Hopper_6HP_Init:ObjType $5F: Gray Hopper (6 HP) - Init.
 NesPrgRom:1A7CE:_ObjHandler_Tank_5F_Gray_Hopper_6HP_Init__Body
@@ -2650,7 +2650,7 @@ NesPrgRom:1A850:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Damage:on-screen:
 NesPrgRom:1A85A:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__Render:still alive: $44 = sprite palette 1, plus the horizontal-flip bit when the X velocity $4C is non-negative (Obj_SetOAMAttr_FlipX_and_Palette derives the flip from $4C, NOT from the heading $47). Then pick the pose from the wind-up timer.
 NesPrgRom:1A863::$51 ≠ 0 — on the ground, winding up → metasprite $02, the crouched pose with the leg planted
 NesPrgRom:1A868:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__TileIdle:$51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose
-NesPrgRom:1A86A:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__SetTile:tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
+NesPrgRom:1A86A:_ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking__SetTile:tail-call Metasprite_Render ($F011) with the chosen metasprite id in A
 NesPrgRom:1A86D::Unreachable RTS (dead).
 NesPrgRom:1A86E:ObjHandler_Tank_61_GrayHopper6HP_Patrolling:ObjType $61 — Gray Hopper 6HP "Patrolling" state.\n\nIn this state, the Hopper paces horizontally, reversing at walls and platform edges.
 NesPrgRom:1A871:_ObjHandler_Tank_61_GrayHopper6HP_Patrolling__Body
@@ -2720,10 +2720,10 @@ NesPrgRom:1AA23::Otherwise: Call shared defeat handler.
 NesPrgRom:1AA28::Backup WR_Context_Dependent_00.
 NesPrgRom:1AA2D:_ObjHandler_Tank_65_Mine_Main__ExplodeLoop:Spawn (up to) 6 shrapnel framents in a loop.
 NesPrgRom:1AA39::Restore WR_Context_Dependent_00.
-NesPrgRom:1AA3B:_ObjHandler_Tank_65_Mine_Main__RenderAndSound:Set OAM Attributes (h-flip, sprite palette 1),\nAlternate between MetaSprite Id #$88 and #$89 every 32 frames,\nBeep (SFX #$20) every 64 frames.
+NesPrgRom:1AA3B:_ObjHandler_Tank_65_Mine_Main__RenderAndSound:Set OAM Attributes (h-flip, sprite palette 1),\nAlternate between Metasprite Id #$88 and #$89 every 32 frames,\nBeep (SFX #$20) every 64 frames.
 NesPrgRom:1AA50:_ObjHandler_Tank_65_Mine_Main__TileAlt
 NesPrgRom:1AA54:_ObjHandler_Tank_65_Mine_Main__TileBase
-NesPrgRom:1AA56:_ObjHandler_Tank_65_Mine_Main__SetTile:Render selected MetaSprite Id.
+NesPrgRom:1AA56:_ObjHandler_Tank_65_Mine_Main__SetTile:Render selected Metasprite Id.
 NesPrgRom:1AA59::Unreachable RTS (dead).
 NesPrgRom:1AA5A:ObjHandler_Tank_66_Turret_Init:ObjType $66: Ceiling Turret - Init.
 NesPrgRom:1AA5D:_ObjHandler_Tank_66_Turret_Init__Body
@@ -2753,7 +2753,7 @@ NesPrgRom:1AAE4:_ObjHandler_Tank_67_Turret_Main__Damage:Used shared damage handl
 NesPrgRom:1AAEE:_ObjHandler_Tank_67_Turret_Main__Render:Update Facing based on SpinSpeed (Scratch2)
 NesPrgRom:1AAF5::Convert the heading to a lookup table index,
 NesPrgRom:1AAFB::set the OAM attributes,
-NesPrgRom:1AB00::and fetch the MetaSprite Id before calling the shared MetaSprite_Render.
+NesPrgRom:1AB00::and fetch the Metasprite Id before calling the shared Metasprite_Render.
 NesPrgRom:1AB03:TankTurret_SpriteByAngle:Turret render table.  8 [metaspriteId, attr] pairs.
 NesPrgRom:1AB13:L_AB13
 NesPrgRom:1AB16:L_AB16
@@ -2929,7 +2929,7 @@ NesPrgRom:1B05D::Call shared TankEnemy_DamageCheck with enemy descriptor #$10
 NesPrgRom:1B060::if non-fatal, skip to Render.
 NesPrgRom:1B062::otherwise, die by calling shared TankEnemy_DefeatTrackedEnemy.
 NesPrgRom:1B065:_ObjHandler_Tank_77_Shooter_Main__Render:Sat Xflip and Palette (#$01) OAM attributes
-NesPrgRom:1B071:_ObjHandler_Tank_77_Shooter_Main__TileBase:Select pose MetaSprite: Base #$6C if PoseIndex == 0, otherwise #$6D.
+NesPrgRom:1B071:_ObjHandler_Tank_77_Shooter_Main__TileBase:Select pose Metasprite: Base #$6C if PoseIndex == 0, otherwise #$6D.
 NesPrgRom:1B075::Unreachable RTS (dead).
 NesPrgRom:1B076:L_B076
 NesPrgRom:1B079:L_B079
@@ -2979,7 +2979,7 @@ NesPrgRom:1B1C7::Obj_SetOAMAttr_FlipX_and_Palette sets the H-flip bit to A and s
 NesPrgRom:1B1D2::Use the bottom two bits of the upper nibble (00xx 0000) of Global_FrameCounter as the animation frame index.\n\nThis means all patrolling hoppers walk in lock-step, updating their animation frames every 16 game frames.
 NesPrgRom:1B1D3::Load the animation frame Metasprite id and call the renderer sub.
 NesPrgRom:1B1D9::Unreachable RTS (dead).
-NesPrgRom:1B1DA:GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame:Table of 4 metasprite ids used to animate the patrolling state.
+NesPrgRom:1B1DA:GrayHopper10HP_Patrolling_MetaspriteId_ByFrame:Table of 4 metasprite ids used to animate the patrolling state.
 NesPrgRom:1B1DE:L_B1DE
 NesPrgRom:1B1F6:L_B1F6
 NesPrgRom:1B1FE:L_B1FE
@@ -3027,7 +3027,7 @@ NesPrgRom:1B31A::Called shared damage check routine TankEnemy_DamageCheck with e
 NesPrgRom:1B31D::if still alive, skip to render tail.
 NesPrgRom:1B31F::otherwise, call shared defeat handler.
 NesPrgRom:1B322:_ObjHandler_Tank_7D_Gray_Flier_Main__Render:Typical render tail.  Sets OAM X-flip attribute, then uses Global_FrameCounter to select current animation metasprite id, then calls shared renderer.
-NesPrgRom:1B333:TankGrayFlier_MetaSpriteId_ByFrame:Gray Flier ($7D) metasprite id table.
+NesPrgRom:1B333:TankGrayFlier_MetaspriteId_ByFrame:Gray Flier ($7D) metasprite id table.
 NesPrgRom:1B337:L_B337
 NesPrgRom:1B33A:L_B33A
 NesPrgRom:1B34A:L_B34A
@@ -3081,12 +3081,12 @@ NesPrgRom:1B467:_ObjHandler_Tank_81_Jellyfish_Main__Damage:Use shared TankEnemy_
 NesPrgRom:1B471:_ObjHandler_Tank_81_Jellyfish_Main__Render
 NesPrgRom:1B473::Set OAM Attribute (sprite 1)
 NesPrgRom:1B478::If SwimCooldown != 0, Skip to CooldownDraw.
-NesPrgRom:1B47C::Otherwise, select MetaSprite #$9E and skip to RenderSelectedMetaSprite.
+NesPrgRom:1B47C::Otherwise, select Metasprite #$9E and skip to RenderSelectedMetasprite.
 NesPrgRom:1B47F:_ObjHandler_Tank_81_Jellyfish_Main__CooldownDraw
 NesPrgRom:1B481::If SwimCooldown (Scratch1) >= #$20, skip to FlutterAnimation
-NesPrgRom:1B485::Otherwise, select MetaSprite #$9E and skip to RenderSelectedMetaSprite.
-NesPrgRom:1B488:_ObjHandler_Tank_81_Jellyfish_Main__FlutterAnimation:Alternate between selected MetaSprite Id $9D and $9E every 4 frames.
-NesPrgRom:1B491:_ObjHandler_Tank_81_Jellyfish_Main__RenderSelectedMetaSprite
+NesPrgRom:1B485::Otherwise, select Metasprite #$9E and skip to RenderSelectedMetasprite.
+NesPrgRom:1B488:_ObjHandler_Tank_81_Jellyfish_Main__FlutterAnimation:Alternate between selected Metasprite Id $9D and $9E every 4 frames.
+NesPrgRom:1B491:_ObjHandler_Tank_81_Jellyfish_Main__RenderSelectedMetasprite
 NesPrgRom:1B494:L_B494
 NesPrgRom:1B497:L_B497
 NesPrgRom:1B4A2:L_B4A2
@@ -4461,9 +4461,9 @@ NesPrgRom:1EFE4::otherwise, tank section case:
 NesPrgRom:1EFEC:_ScreenPos_Adjust__Overhead:8x16 sprite mode (PPU_CTRL_Shadow bit5): Y -= 9.
 NesPrgRom:1EFF4:L_EFF4
 NesPrgRom:1F009:L_F009
-NesPrgRom:1F011:MetaSprite_Render:Renders a metasprite selecting the correct metasprite pointer table by sprite size.\n\nInput:\n  A = metasprite id\n  PPU_CTRL_Shadow = bit 5 of which contains the section-type flag.\n    this allows us to select from the appropriate metasprite table.  Either,\n      1 = table $1A, the 8×16 overhead table\n      0 = table $41, the 8×8  tank table\n\nPost-condition:\n  Restores the previous bank
+NesPrgRom:1F011:Metasprite_Render:Renders a metasprite selecting the correct metasprite pointer table by sprite size.\n\nInput:\n  A = metasprite id\n  PPU_CTRL_Shadow = bit 5 of which contains the section-type flag.\n    this allows us to select from the appropriate metasprite table.  Either,\n      1 = table $1A, the 8×16 overhead table\n      0 = table $41, the 8×8  tank table\n\nPost-condition:\n  Restores the previous bank
 NesPrgRom:1F018::Select the metasprite CHR bank ($1A or $41) by testing bit-5 of PPU_CTRL_Shadow.
-NesPrgRom:1F01C:_MetaSprite_Render__SelectTable:X = packed bank|entry for BankDispatch_Switch: $1A (bank 1 entry $0A = the 8x16 overhead metasprite table $BEA1) when PPU_CTRL_Shadow bit5 set, else $41 (bank 4 entry $01 = the 8x8 tank table $8907).
+NesPrgRom:1F01C:_Metasprite_Render__SelectTable:X = packed bank|entry for BankDispatch_Switch: $1A (bank 1 entry $0A = the 8x16 overhead metasprite table $BEA1) when PPU_CTRL_Shadow bit5 set, else $41 (bank 4 entry $01 = the 8x8 tank table $8907).
 NesPrgRom:1F029:L_F029
 NesPrgRom:1F02F:L_F02F
 NesPrgRom:1F04B:L_F04B

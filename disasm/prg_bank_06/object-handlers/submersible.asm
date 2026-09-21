@@ -100,7 +100,7 @@ L_B6D2: lda     #$01                            ; B6D2
         and     #$01                            ; B6DC
         clc                                     ; B6DE
         adc     #$A5                            ; B6DF
-        jmp     MetaSprite_Render               ; B6E1
+        jmp     Metasprite_Render               ; B6E1
 
 .endmacro
 

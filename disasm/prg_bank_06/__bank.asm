@@ -92,7 +92,7 @@ LEC73           := $EC73
 OAM_Stage_Pattern                := $ECB4
 LEDF5           := $EDF5
 ScreenPos_Compute                := $EF2B
-MetaSprite_Render                := $F011
+Metasprite_Render                := $F011
 LF029           := $F029
 ; ----------------------------------------------------------------------------
 

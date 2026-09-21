@@ -130,7 +130,7 @@ L_A4BE: lda     #$01                            ; A4BE
         sta     LoadedObj + Obj::Facing         ; A4D1
 L_A4D3: ldx     LoadedObj + Obj::Facing         ; A4D3
         lda     L_A4DB,x                        ; A4D5
-        jmp     MetaSprite_Render               ; A4D8
+        jmp     Metasprite_Render               ; A4D8
 
 ; ----------------------------------------------------------------------------
 L_A4DB: .byte   $11,$12,$13                     ; A4DB

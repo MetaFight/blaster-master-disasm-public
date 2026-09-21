@@ -105,7 +105,7 @@ L_B623: lda     Global_FrameCounter             ; B623
         and     #$01                            ; B627
         clc                                     ; B629
         adc     #$A3                            ; B62A
-L_B62C: jmp     MetaSprite_Render                           ; B62C
+L_B62C: jmp     Metasprite_Render                           ; B62C
 
 .endmacro
 

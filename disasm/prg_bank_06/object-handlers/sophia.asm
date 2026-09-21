@@ -140,7 +140,7 @@ L_8A77: lda     #$18                            ; 8A77
         lda     #$00                            ; 8A96
         sta     $44                             ; 8A98
         lda     #$31                            ; 8A9A
-        jsr     MetaSprite_Render               ; 8A9C
+        jsr     Metasprite_Render               ; 8A9C
         pla                                     ; 8A9F
         sta     LoadedObj + Obj::IFrameCounter  ; 8AA0
         pla                                     ; 8AA2
@@ -174,7 +174,7 @@ L_8AB2: lda     #$18                            ; 8AB2
         lda     #$00                            ; 8AD1
         sta     $44                             ; 8AD3
         lda     #$31                            ; 8AD5
-        jsr     MetaSprite_Render               ; 8AD7
+        jsr     Metasprite_Render               ; 8AD7
         pla                                     ; 8ADA
         sta     LoadedObj + Obj::IFrameCounter  ; 8ADB
         pla                                     ; 8ADD
@@ -394,7 +394,7 @@ L_8C8B: lda     #$18                            ; 8C8B
         bcs     L_8CAA                          ; 8CA0
         lda     L_8CAB,x                        ; 8CA2
         bmi     L_8CAA                          ; 8CA5
-        jsr     MetaSprite_Render               ; 8CA7
+        jsr     Metasprite_Render               ; 8CA7
 L_8CAA: rts                                     ; 8CAA
 
 ; ----------------------------------------------------------------------------
@@ -578,7 +578,7 @@ L_8E0C: bit     $10                             ; 8E0C
         beq     L_8E11                          ; 8E0E
         inx                                     ; 8E10
 L_8E11: txa                                     ; 8E11
-        jsr     MetaSprite_Render               ; 8E12
+        jsr     Metasprite_Render               ; 8E12
         pla                                     ; 8E15
         sta     $3E                             ; 8E16
         pla                                     ; 8E18
@@ -595,7 +595,7 @@ L_8E11: txa                                     ; 8E11
         and     #$03                            ; 8E2A
         clc                                     ; 8E2C
         adc     #$20                            ; 8E2D
-        jmp     MetaSprite_Render               ; 8E2F
+        jmp     Metasprite_Render               ; 8E2F
 
 .endmacro
 
@@ -748,7 +748,7 @@ L_8F64: jsr     LCBDF                           ; 8F64
         and     #$03                            ; 8F98
         clc                                     ; 8F9A
         adc     #$1C                            ; 8F9B
-        jsr     MetaSprite_Render               ; 8F9D
+        jsr     Metasprite_Render               ; 8F9D
         lda     Sophia_LookUpAnimation_Counter  ; 8FA0
         lsr     a                               ; 8FA2
         and     #$06                            ; 8FA3
@@ -764,7 +764,7 @@ L_8F64: jsr     LCBDF                           ; 8F64
         and     #$03                            ; 8FB3
         clc                                     ; 8FB5
         adc     #$1C                            ; 8FB6
-        jsr     MetaSprite_Render               ; 8FB8
+        jsr     Metasprite_Render               ; 8FB8
         pla                                     ; 8FBB
         sta     $3E                             ; 8FBC
         pla                                     ; 8FBE
@@ -807,7 +807,7 @@ L_8FF8: lda     #$C0                            ; 8FF8
         and     #$03                            ; 9000
         clc                                     ; 9002
         adc     #$20                            ; 9003
-L_9005: jmp     MetaSprite_Render                           ; 9005
+L_9005: jmp     Metasprite_Render                           ; 9005
 
 ; ----------------------------------------------------------------------------
         rts                                     ; 9008
@@ -948,7 +948,7 @@ L_90C9: jsr     LCBDF                           ; 90C9
         and     #$03                            ; 90FD
         clc                                     ; 90FF
         adc     #$1C                            ; 9100
-        jsr     MetaSprite_Render               ; 9102
+        jsr     Metasprite_Render               ; 9102
         lda     Sophia_LookUpAnimation_Counter  ; 9105
         lsr     a                               ; 9107
         and     #$06                            ; 9108
@@ -964,7 +964,7 @@ L_90C9: jsr     LCBDF                           ; 90C9
         and     #$03                            ; 9118
         clc                                     ; 911A
         adc     #$1C                            ; 911B
-        jsr     MetaSprite_Render               ; 911D
+        jsr     Metasprite_Render               ; 911D
         pla                                     ; 9120
         sta     $3E                             ; 9121
         pla                                     ; 9123
@@ -1007,7 +1007,7 @@ L_915D: lda     #$00                            ; 915D
         and     #$03                            ; 9165
         clc                                     ; 9167
         adc     #$26                            ; 9168
-L_916A: jmp     MetaSprite_Render                           ; 916A
+L_916A: jmp     Metasprite_Render                           ; 916A
 
 ; ----------------------------------------------------------------------------
         rts                                     ; 916D
@@ -1152,7 +1152,7 @@ L_9234: jsr     LCBDF                           ; 9234
         and     #$03                            ; 9268
         clc                                     ; 926A
         adc     #$1C                            ; 926B
-        jsr     MetaSprite_Render               ; 926D
+        jsr     Metasprite_Render               ; 926D
         lda     Sophia_LookUpAnimation_Counter  ; 9270
         lsr     a                               ; 9272
         and     #$06                            ; 9273
@@ -1168,7 +1168,7 @@ L_9234: jsr     LCBDF                           ; 9234
         and     #$03                            ; 9283
         clc                                     ; 9285
         adc     #$1C                            ; 9286
-        jsr     MetaSprite_Render               ; 9288
+        jsr     Metasprite_Render               ; 9288
         pla                                     ; 928B
         sta     $3E                             ; 928C
         pla                                     ; 928E
@@ -1212,7 +1212,7 @@ L_92CA: lda     #$C0                            ; 92CA
         and     #$03                            ; 92D2
         clc                                     ; 92D4
         adc     #$26                            ; 92D5
-L_92D7: jmp     MetaSprite_Render                           ; 92D7
+L_92D7: jmp     Metasprite_Render                           ; 92D7
 
 ; ----------------------------------------------------------------------------
         rts                                     ; 92DA
@@ -1543,7 +1543,7 @@ L_952E: dec     $3F                             ; 952E
         adc     #$7A                            ; 9536
         bne     L_953C                          ; 9538
 L_953A: lda     #$2E                            ; 953A
-L_953C: jsr     MetaSprite_Render                           ; 953C
+L_953C: jsr     Metasprite_Render                           ; 953C
         jmp     L_95C9                          ; 953F
 
 ; ----------------------------------------------------------------------------
@@ -1610,7 +1610,7 @@ L_9597: lda     Sophia_LookUpAnimation_Counter  ; 9597
         and     #$03                            ; 95A5
         clc                                     ; 95A7
         adc     #$1C                            ; 95A8
-        jsr     MetaSprite_Render               ; 95AA
+        jsr     Metasprite_Render               ; 95AA
         lda     Sophia_LookUpAnimation_Counter  ; 95AD
         lsr     a                               ; 95AF
         and     #$06                            ; 95B0
@@ -1626,7 +1626,7 @@ L_9597: lda     Sophia_LookUpAnimation_Counter  ; 9597
         and     #$03                            ; 95C1
         clc                                     ; 95C3
         adc     #$1C                            ; 95C4
-        jsr     MetaSprite_Render               ; 95C6
+        jsr     Metasprite_Render               ; 95C6
 L_95C9: pla                                     ; 95C9
         sta     $3E                             ; 95CA
         pla                                     ; 95CC
@@ -1691,7 +1691,7 @@ L_962F: lda     #$00                            ; 962F
         and     #$03                            ; 9637
         clc                                     ; 9639
         adc     #$20                            ; 963A
-L_963C: jmp     MetaSprite_Render                           ; 963C
+L_963C: jmp     Metasprite_Render                           ; 963C
 
 ; ----------------------------------------------------------------------------
         rts                                     ; 963F

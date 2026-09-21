@@ -59,7 +59,7 @@ L_AC2A: lda     #$01                            ; AC2A
         beq     L_AC38                          ; AC35
         inx                                     ; AC37
 L_AC38: txa                                     ; AC38
-        jmp     MetaSprite_Render               ; AC39
+        jmp     Metasprite_Render               ; AC39
 
 .endmacro
 

@@ -88,7 +88,7 @@ L_B529: lda     #$01                            ; B529
         and     #$01                            ; B532
         clc                                     ; B534
         adc     #$9F                            ; B535
-        jmp     MetaSprite_Render               ; B537
+        jmp     Metasprite_Render               ; B537
 
 ; ----------------------------------------------------------------------------
 L_B53A: jmp     L_B557                          ; B53A
@@ -123,7 +123,7 @@ L_B567: lda     LoadedObj + Obj::Scratch1       ; B567
 L_B56E: lda     #$01                            ; B56E
         jsr     Obj_SetOAMAttr_FlipX_and_Palette ; B570
         lda     #$A1                            ; B573
-        jmp     MetaSprite_Render               ; B575
+        jmp     Metasprite_Render               ; B575
 
 .endmacro
 

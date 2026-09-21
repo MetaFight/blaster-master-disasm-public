@@ -190,7 +190,7 @@ _OnScreen:
         bcs     _Exit                           ; 9CA2
 _Render:
         ldx     LoadedObj + Obj::Scratch0       ; 9CA4
-        lda     PickUp_MetaSprite_LookUp,x      ; 9CA6
+        lda     PickUp_Metasprite_LookUp,x      ; 9CA6
         sta     $45                             ; 9CA9
 ; Use the PickUp type (Scratch0) to retrieve the palette mode (static=1, animated=4)
         lda     PickUp_PaletteMode_LookUp,x     ; 9CAB
@@ -274,10 +274,10 @@ _Despawn:
 .endproc
 
 ; ----------------------------------------------------------------------------
-; 9 MetaSprite ids. $60=health, $6A=gun, $62=hover, $64=homing, $68=thunder, $66=multi-warhead.
+; 9 Metasprite ids. $60=health, $6A=gun, $62=hover, $64=homing, $68=thunder, $66=multi-warhead.
 ; Each is the top-left CHR tile of a 16x16 column-major quad (id, id+1, id+$10, id+$11) staged by
 ; OAM_Stage_Sprite_Shape5_Quad2x2.
-PickUp_MetaSprite_LookUp:
+PickUp_Metasprite_LookUp:
         .byte   $60,$60,$6A,$6A,$62,$62,$64,$68 ; 9D0C
         .byte   $66                             ; 9D14
 ; 9 palette mode entries. One of two options: $01=static (doubles as palette index to use),

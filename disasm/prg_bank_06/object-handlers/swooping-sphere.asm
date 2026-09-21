@@ -127,7 +127,7 @@ L_ADCF: sta     $44                             ; ADCF
         and     #$03                            ; ADD6
         tax                                     ; ADD8
         lda     L_ADE0,x                        ; ADD9
-        jmp     MetaSprite_Render               ; ADDC
+        jmp     Metasprite_Render               ; ADDC
 
 ; ----------------------------------------------------------------------------
         rts                                     ; ADDF

@@ -94,12 +94,12 @@
 ; BulletRenderParams: Render parameters for different orientations of the Gray/Red Bullets.
 .struct BulletRenderParams
         OamAttributes    .byte   ; +$00 (byte)  OAM Attributes.
-        BaseMetaSpriteId .byte   ; +$01 (byte)  Base MetaSprite Id.
+        BaseMetaspriteId .byte   ; +$01 (byte)  Base Metasprite Id.
 .endstruct
 
 ; TurretRenderParams: Render parameters for different spin phases of the Ceiling Turrets.
 .struct TurretRenderParams
-        MetaSpriteId  .byte   ; +$00 (byte)  MetaSprite Id.
+        MetaspriteId  .byte   ; +$00 (byte)  Metasprite Id.
         OamAttributes .byte   ; +$01 (byte)  OAM Attributes.
 .endstruct
 

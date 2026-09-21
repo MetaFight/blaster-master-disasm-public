@@ -130,21 +130,21 @@ _Render:
         lda     TankTurret_SpriteByAngle + TurretRenderParams::OamAttributes,x ; AAF8
 ; set the OAM attributes,
         sta     $44                             ; AAFB
-        lda     TankTurret_SpriteByAngle + TurretRenderParams::MetaSpriteId,x ; AAFD
-; and fetch the MetaSprite Id before calling the shared MetaSprite_Render.
-        jmp     MetaSprite_Render               ; AB00
+        lda     TankTurret_SpriteByAngle + TurretRenderParams::MetaspriteId,x ; AAFD
+; and fetch the Metasprite Id before calling the shared Metasprite_Render.
+        jmp     Metasprite_Render               ; AB00
 .endproc
 
 ; ----------------------------------------------------------------------------
 ; Turret render table.  8 [metaspriteId, attr] pairs.
 TankTurret_SpriteByAngle:
-        .byte   $72,$81 ; AB03  MetaSpriteId=$72 OamAttributes=$81
-        .byte   $72,$81 ; AB05  MetaSpriteId=$72 OamAttributes=$81
-        .byte   $72,$81 ; AB07  MetaSpriteId=$72 OamAttributes=$81
-        .byte   $72,$81 ; AB09  MetaSpriteId=$72 OamAttributes=$81
-        .byte   $73,$81 ; AB0B  MetaSpriteId=$73 OamAttributes=$81
-        .byte   $73,$81 ; AB0D  MetaSpriteId=$73 OamAttributes=$81
-        .byte   $73,$81 ; AB0F  MetaSpriteId=$73 OamAttributes=$81
-        .byte   $73,$81 ; AB11  MetaSpriteId=$73 OamAttributes=$81
+        .byte   $72,$81 ; AB03  MetaspriteId=$72 OamAttributes=$81
+        .byte   $72,$81 ; AB05  MetaspriteId=$72 OamAttributes=$81
+        .byte   $72,$81 ; AB07  MetaspriteId=$72 OamAttributes=$81
+        .byte   $72,$81 ; AB09  MetaspriteId=$72 OamAttributes=$81
+        .byte   $73,$81 ; AB0B  MetaspriteId=$73 OamAttributes=$81
+        .byte   $73,$81 ; AB0D  MetaspriteId=$73 OamAttributes=$81
+        .byte   $73,$81 ; AB0F  MetaspriteId=$73 OamAttributes=$81
+        .byte   $73,$81 ; AB11  MetaspriteId=$73 OamAttributes=$81
 .endmacro
 

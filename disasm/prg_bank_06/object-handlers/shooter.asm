@@ -100,10 +100,10 @@ _Render:
         lda     LoadedObj + Obj::Scratch0       ; B06C
         bne     _TileBase                       ; B06E
         inx                                     ; B070
-; Select pose MetaSprite: Base #$6C if PoseIndex == 0, otherwise #$6D.
+; Select pose Metasprite: Base #$6C if PoseIndex == 0, otherwise #$6D.
 _TileBase:
         txa                                     ; B071
-        jmp     MetaSprite_Render               ; B072
+        jmp     Metasprite_Render               ; B072
 
 ; ----------------------------------------------------------------------------
 ; Unreachable RTS (dead).

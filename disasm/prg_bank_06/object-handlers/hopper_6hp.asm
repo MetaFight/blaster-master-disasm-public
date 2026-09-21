@@ -170,9 +170,9 @@ _Render:
 ; $51 = 0 — airborne (or free-falling) → metasprite $03, the tucked pose
 _TileIdle:
         lda     #$03                            ; A868
-; tail-call MetaSprite_Render ($F011) with the chosen metasprite id in A
+; tail-call Metasprite_Render ($F011) with the chosen metasprite id in A
 _SetTile:
-        jmp     MetaSprite_Render               ; A86A
+        jmp     Metasprite_Render               ; A86A
 
 ; ----------------------------------------------------------------------------
 ; Unreachable RTS (dead).
@@ -272,7 +272,7 @@ _Render:
         tax                                     ; A8C6
 ; Load the animation frame Metasprite id and call the renderer sub.
         lda     L_A8CE,x                        ; A8C7
-        jmp     MetaSprite_Render               ; A8CA
+        jmp     Metasprite_Render               ; A8CA
 
 ; ----------------------------------------------------------------------------
 ; Unreachable RTS (dead).

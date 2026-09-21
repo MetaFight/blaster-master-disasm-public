@@ -77,7 +77,7 @@ L_AE63: lda     #$01                            ; AE63
         and     #$01                            ; AE6F
         clc                                     ; AE71
         adc     #$76                            ; AE72
-        jmp     MetaSprite_Render               ; AE74
+        jmp     Metasprite_Render               ; AE74
 
 ; ----------------------------------------------------------------------------
         rts                                     ; AE77

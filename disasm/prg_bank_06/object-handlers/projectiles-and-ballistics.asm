@@ -240,7 +240,7 @@ L_9967: clc                                     ; 9967
 
 ; ----------------------------------------------------------------------------
 L_996E: .addr   L_9970                          ; 996E
-; #region TankMissile_MetaSpriteTable — 16 bytes
+; #region TankMissile_MetaspriteTable — 16 bytes
 L_9970: .addr   L_9980                          ; 9970
         .addr   L9988                           ; 9972
         .addr   L9990                           ; 9974
@@ -356,7 +356,7 @@ L_9A47: pha                                     ; 9A47
         lda     L_9AB0,x                        ; 9A60
         sta     $44                             ; 9A63
         lda     L_9A80,x                        ; 9A65
-        jsr     MetaSprite_Render               ; 9A68
+        jsr     Metasprite_Render               ; 9A68
         pla                                     ; 9A6B
         sta     $3E                             ; 9A6C
 L_9A6E: lda     $3F                             ; 9A6E

@@ -2,7 +2,7 @@
 ; Bank-04 top dispatch table, read by BankDispatch_Switch ($EA3A) as word_at($8000 + nibble×2) to
 ; seed IndirectPtr ($7A/$7B). 3 LE16 sub-table pointers: [0]=$8006 ObjDispatch_Table_Bk04 (the
 ; overhead AI handler table — nibble 0, the RunObjectHandler path), [1]=$8907
-; Metasprite_Table_Tank (read by MetaSprite_Render $F011 with A=#$41), [2]=$8006 again (no known
+; Metasprite_Table_Tank (read by Metasprite_Render $F011 with A=#$41), [2]=$8006 again (no known
 ; caller uses nibble 2). Entry [1] is the *tank* metasprite table, so this table is not AI-only.
 ; Bank-06 counterpart: BankDispatch_TopTable_Bk06 ($8000, 1 entry)
 BankDispatch_TopTable_Bk04:

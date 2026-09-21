@@ -96,7 +96,7 @@ _ExplodeLoop:
 ; Restore WR_Context_Dependent_00.
         sta     $00                             ; AA39
 ; Set OAM Attributes (h-flip, sprite palette 1),
-; Alternate between MetaSprite Id #$88 and #$89 every 32 frames,
+; Alternate between Metasprite Id #$88 and #$89 every 32 frames,
 ; Beep (SFX #$20) every 64 frames.
 _RenderAndSound:
         lda     #$41                            ; AA3B
@@ -114,9 +114,9 @@ _TileAlt:
         bne     _SetTile                        ; AA52
 _TileBase:
         lda     #$89                            ; AA54
-; Render selected MetaSprite Id.
+; Render selected Metasprite Id.
 _SetTile:
-        jmp     MetaSprite_Render               ; AA56
+        jmp     Metasprite_Render               ; AA56
 
 ; ----------------------------------------------------------------------------
 ; Unreachable RTS (dead).

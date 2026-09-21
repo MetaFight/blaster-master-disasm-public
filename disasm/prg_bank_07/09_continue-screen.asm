@@ -71,7 +71,7 @@ L_F79E: sta     $3F                             ; F79E
         and     #$03                            ; F7AC
         clc                                     ; F7AE
         adc     #$1C                            ; F7AF
-        jsr     MetaSprite_Render               ; F7B1
+        jsr     Metasprite_Render               ; F7B1
         jsr     L_EC73                          ; F7B4
         lda     $F5                             ; F7B7
         bit     LE6E5                           ; F7B9

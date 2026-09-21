@@ -184,9 +184,9 @@ _Render:
 ; Animation frame index = bit 3 of Global_FrameCounter.
         and     #$01                            ; A5B9
 ; Look up the current orientation's base Metasprite Id and OR it with the frame index, then call
-; MetaSprite_Render.
-        ora     GrayBullet_Walking_RenderParamLookup + BulletRenderParams::BaseMetaSpriteId,x ; A5BB
-        jmp     MetaSprite_Render               ; A5BE
+; Metasprite_Render.
+        ora     GrayBullet_Walking_RenderParamLookup + BulletRenderParams::BaseMetaspriteId,x ; A5BB
+        jmp     Metasprite_Render               ; A5BE
 
 ; ----------------------------------------------------------------------------
 ; Unreachable RTS (dead).
@@ -274,7 +274,7 @@ _OnScreen:
 
 ; ----------------------------------------------------------------------------
 ; Alive — facing $47>>5 indexes the (attr,tile) table at $A6CF; set OAM attr $44, JMP
-; MetaSprite_Render ($F011).
+; Metasprite_Render ($F011).
 _Render:
         lda     LoadedObj + Obj::Facing         ; A61F
         lsr     a                               ; A621
@@ -286,8 +286,8 @@ _Render:
         lda     GrayBullet_Attacking_RenderParamLookup + BulletRenderParams::OamAttributes,x ; A627
         ora     #$01                            ; A62A
         sta     $44                             ; A62C
-        lda     GrayBullet_Attacking_RenderParamLookup + BulletRenderParams::BaseMetaSpriteId,x ; A62E
-        jmp     MetaSprite_Render               ; A631
+        lda     GrayBullet_Attacking_RenderParamLookup + BulletRenderParams::BaseMetaspriteId,x ; A62E
+        jmp     Metasprite_Render               ; A631
 .endproc
 
 .endmacro
@@ -300,19 +300,19 @@ _Render:
 ; ----------------------------------------------------------------------------
 ; Gray Bullet, walking phase, rendering parameters per-orientation.
 GrayBullet_Walking_RenderParamLookup:
-        .byte   $C0,$6A ; A6BF  OamAttributes=$C0 BaseMetaSpriteId=$6A
-        .byte   $00,$68 ; A6C1  OamAttributes=$00 BaseMetaSpriteId=$68
-        .byte   $00,$6A ; A6C3  OamAttributes=$00 BaseMetaSpriteId=$6A
-        .byte   $C0,$68 ; A6C5  OamAttributes=$C0 BaseMetaSpriteId=$68
-        .byte   $40,$68 ; A6C7  OamAttributes=$40 BaseMetaSpriteId=$68
-        .byte   $80,$6A ; A6C9  OamAttributes=$80 BaseMetaSpriteId=$6A
-        .byte   $80,$68 ; A6CB  OamAttributes=$80 BaseMetaSpriteId=$68
-        .byte   $40,$6A ; A6CD  OamAttributes=$40 BaseMetaSpriteId=$6A
+        .byte   $C0,$6A ; A6BF  OamAttributes=$C0 BaseMetaspriteId=$6A
+        .byte   $00,$68 ; A6C1  OamAttributes=$00 BaseMetaspriteId=$68
+        .byte   $00,$6A ; A6C3  OamAttributes=$00 BaseMetaspriteId=$6A
+        .byte   $C0,$68 ; A6C5  OamAttributes=$C0 BaseMetaspriteId=$68
+        .byte   $40,$68 ; A6C7  OamAttributes=$40 BaseMetaspriteId=$68
+        .byte   $80,$6A ; A6C9  OamAttributes=$80 BaseMetaspriteId=$6A
+        .byte   $80,$68 ; A6CB  OamAttributes=$80 BaseMetaspriteId=$68
+        .byte   $40,$6A ; A6CD  OamAttributes=$40 BaseMetaspriteId=$6A
 ; Gray Bullet, attacking phase, rendering parameters per-orientation.
 GrayBullet_Attacking_RenderParamLookup:
-        .byte   $00,$6A ; A6CF  OamAttributes=$00 BaseMetaSpriteId=$6A
-        .byte   $80,$68 ; A6D1  OamAttributes=$80 BaseMetaSpriteId=$68
-        .byte   $40,$6A ; A6D3  OamAttributes=$40 BaseMetaSpriteId=$6A
-        .byte   $00,$68 ; A6D5  OamAttributes=$00 BaseMetaSpriteId=$68
+        .byte   $00,$6A ; A6CF  OamAttributes=$00 BaseMetaspriteId=$6A
+        .byte   $80,$68 ; A6D1  OamAttributes=$80 BaseMetaspriteId=$68
+        .byte   $40,$6A ; A6D3  OamAttributes=$40 BaseMetaspriteId=$6A
+        .byte   $00,$68 ; A6D5  OamAttributes=$00 BaseMetaspriteId=$68
 .endmacro
 

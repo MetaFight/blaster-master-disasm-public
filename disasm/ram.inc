@@ -78,7 +78,7 @@ Object_Slot_17 := $04EE   ; element 17
 ; wholesale into the $0200 OAM shadow by OAM_BlitFromStaging ($EC73) and DMAd to the PPU from
 ; there. The write head is a BYTE offset in OAM_Staging_Buffer_TailPos ($3C), so every access
 ; is $0600,X with X a multiple of 4 -- the stagers index the array, they do not address a slot
-; by name. Extent: MetaSprite_RenderNoBank ($F04F) flushes the buffer whenever $3C reaches
+; by name. Extent: Metasprite_RenderNoBank ($F04F) flushes the buffer whenever $3C reaches
 ; $40, BEFORE staging each entry, and the largest single stager adds $10 bytes (4 sprites,
 ; $EE77/$EEE9) at offsets +$00..+$0F. $40 + $10 = $50 = 80 bytes = exactly 20 records, which
 ; lands the buffer at $0600-$064F and stops one byte short of Palette_Shadow ($0650) -- the

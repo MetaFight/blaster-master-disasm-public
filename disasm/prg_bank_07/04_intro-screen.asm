@@ -80,7 +80,7 @@ L_F668: pha                                     ; F668
         lda     #$00                            ; F671
         sta     $44                             ; F673
         pla                                     ; F675
-        jsr     MetaSprite_Render               ; F676
+        jsr     Metasprite_Render               ; F676
         jmp     L_EC73                          ; F679
 
 ; ----------------------------------------------------------------------------

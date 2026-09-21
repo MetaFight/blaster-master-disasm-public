@@ -104,12 +104,12 @@ _Render:
         ldx     #$7E                            ; A7BD
         lda     Global_FrameCounter             ; A7BF
         and     #$10                            ; A7C1
-; Based on bit4 of Global_FrameCounter, use either #$7E or #$7F as MetaSprite Id.
-        beq     _RenderMetaSprite               ; A7C3
+; Based on bit4 of Global_FrameCounter, use either #$7E or #$7F as Metasprite Id.
+        beq     _RenderMetasprite               ; A7C3
         inx                                     ; A7C5
-_RenderMetaSprite:
+_RenderMetasprite:
         txa                                     ; A7C6
-        jmp     MetaSprite_Render               ; A7C7
+        jmp     Metasprite_Render               ; A7C7
 
 ; ----------------------------------------------------------------------------
 ; Unreachable RTS (dead).

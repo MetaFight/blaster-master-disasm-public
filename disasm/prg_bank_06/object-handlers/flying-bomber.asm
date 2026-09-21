@@ -175,7 +175,7 @@ _Render:
 ; draw metasprite.
 _TileActive:
         txa                                     ; ACF6
-        jmp     MetaSprite_Render               ; ACF7
+        jmp     Metasprite_Render               ; ACF7
 
 ; ----------------------------------------------------------------------------
 ; Unreachable RTS (dead).

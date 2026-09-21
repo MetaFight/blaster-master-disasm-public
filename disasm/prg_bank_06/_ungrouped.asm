@@ -175,7 +175,7 @@ L_8C4D: pha                                     ; 8C4D
         pla                                     ; 8C5D
         clc                                     ; 8C5E
         adc     LoadedObj + Obj::Scratch1       ; 8C5F
-        jmp     MetaSprite_Render               ; 8C61
+        jmp     Metasprite_Render               ; 8C61
 
 .endmacro
 

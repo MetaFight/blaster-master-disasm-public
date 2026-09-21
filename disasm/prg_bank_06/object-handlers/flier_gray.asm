@@ -138,13 +138,13 @@ _Render:
         lsr     a                               ; B329
         and     #$03                            ; B32A
         tax                                     ; B32C
-        lda     TankGrayFlier_MetaSpriteId_ByFrame,x ; B32D
-        jmp     MetaSprite_Render               ; B330
+        lda     TankGrayFlier_MetaspriteId_ByFrame,x ; B32D
+        jmp     Metasprite_Render               ; B330
 .endproc
 
 ; ----------------------------------------------------------------------------
 ; Gray Flier ($7D) metasprite id table.
-TankGrayFlier_MetaSpriteId_ByFrame:
+TankGrayFlier_MetaspriteId_ByFrame:
         .byte   $08,$09,$0A,$0B                 ; B333
 .endmacro
 

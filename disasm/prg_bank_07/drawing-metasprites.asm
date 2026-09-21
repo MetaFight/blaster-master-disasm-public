@@ -11,7 +11,7 @@
 ; 
 ; Post-condition:
 ;   Restores the previous bank
-.proc MetaSprite_Render
+.proc Metasprite_Render
         pha                                     ; F011
         ldx     #$1A                            ; F012
         lda     $FF                             ; F014

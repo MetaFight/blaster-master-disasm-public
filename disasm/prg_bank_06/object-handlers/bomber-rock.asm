@@ -104,7 +104,7 @@ L_ABBE: lda     #$41                            ; ABBE
         beq     L_ABCB                          ; ABC8
         inx                                     ; ABCA
 L_ABCB: txa                                     ; ABCB
-        jmp     MetaSprite_Render               ; ABCC
+        jmp     Metasprite_Render               ; ABCC
 
 .endmacro
 

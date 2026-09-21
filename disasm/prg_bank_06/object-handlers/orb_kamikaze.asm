@@ -124,7 +124,7 @@ L_B155: lda     #$01                            ; B155
         and     #$07                            ; B15C
         tax                                     ; B15E
         lda     L_B166,x                        ; B15F
-        jmp     MetaSprite_Render               ; B162
+        jmp     Metasprite_Render               ; B162
 
 ; ----------------------------------------------------------------------------
         rts                                     ; B165

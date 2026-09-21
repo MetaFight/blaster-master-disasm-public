@@ -101,7 +101,7 @@ L_AFEB: lda     #$00                            ; AFEB
         beq     L_AFF7                          ; AFF4
         inx                                     ; AFF6
 L_AFF7: txa                                     ; AFF7
-        jmp     MetaSprite_Render               ; AFF8
+        jmp     Metasprite_Render               ; AFF8
 
 ; ----------------------------------------------------------------------------
         rts                                     ; AFFB

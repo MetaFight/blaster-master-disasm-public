@@ -132,7 +132,7 @@ L_B7AB: lda     $3F                             ; B7AB
         pla                                     ; B7DA
         sta     $3F                             ; B7DB
         lda     #$B0                            ; B7DD
-        jsr     MetaSprite_Render               ; B7DF
+        jsr     Metasprite_Render               ; B7DF
         rts                                     ; B7E2
 
 ; ----------------------------------------------------------------------------
@@ -164,7 +164,7 @@ L_B7F2: sta     $44                             ; B7F2
         pla                                     ; B813
         sta     $3F                             ; B814
         lda     #$B0                            ; B816
-        jsr     MetaSprite_Render               ; B818
+        jsr     Metasprite_Render               ; B818
         rts                                     ; B81B
 
 ; ----------------------------------------------------------------------------

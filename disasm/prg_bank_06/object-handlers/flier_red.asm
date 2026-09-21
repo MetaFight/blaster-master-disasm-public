@@ -83,7 +83,7 @@ L_B286: lda     #$00                            ; B286
         and     #$03                            ; B28E
         tax                                     ; B290
         lda     L_B297,x                        ; B291
-        jmp     MetaSprite_Render               ; B294
+        jmp     Metasprite_Render               ; B294
 
 ; ----------------------------------------------------------------------------
 L_B297: .byte   $08,$09,$0A,$0B                 ; B297

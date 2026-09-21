@@ -131,8 +131,8 @@ _Render:
 ; If SwimCooldown != 0, Skip to CooldownDraw.
         bne     _CooldownDraw                   ; B478
         lda     #$9E                            ; B47A
-; Otherwise, select MetaSprite #$9E and skip to RenderSelectedMetaSprite.
-        jmp     _RenderSelectedMetaSprite       ; B47C
+; Otherwise, select Metasprite #$9E and skip to RenderSelectedMetasprite.
+        jmp     _RenderSelectedMetasprite       ; B47C
 
 ; ----------------------------------------------------------------------------
 _CooldownDraw:
@@ -140,11 +140,11 @@ _CooldownDraw:
 ; If SwimCooldown (Scratch1) >= #$20, skip to FlutterAnimation
         bcs     _FlutterAnimation               ; B481
         lda     #$9D                            ; B483
-; Otherwise, select MetaSprite #$9E and skip to RenderSelectedMetaSprite.
-        jmp     _RenderSelectedMetaSprite       ; B485
+; Otherwise, select Metasprite #$9E and skip to RenderSelectedMetasprite.
+        jmp     _RenderSelectedMetasprite       ; B485
 
 ; ----------------------------------------------------------------------------
-; Alternate between selected MetaSprite Id $9D and $9E every 4 frames.
+; Alternate between selected Metasprite Id $9D and $9E every 4 frames.
 _FlutterAnimation:
         lda     Global_FrameCounter             ; B488
         lsr     a                               ; B48A
@@ -152,8 +152,8 @@ _FlutterAnimation:
         and     #$01                            ; B48C
         clc                                     ; B48E
         adc     #$9D                            ; B48F
-_RenderSelectedMetaSprite:
-        jmp     MetaSprite_Render               ; B491
+_RenderSelectedMetasprite:
+        jmp     Metasprite_Render               ; B491
 .endproc
 
 .endmacro

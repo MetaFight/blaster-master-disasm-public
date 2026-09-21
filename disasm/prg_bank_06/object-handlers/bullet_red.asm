@@ -156,8 +156,8 @@ _Render:
         lsr     a                               ; B9F5
         lsr     a                               ; B9F6
         and     #$01                            ; B9F7
-        ora     RedBullet_Walking_RenderParamLookup + BulletRenderParams::BaseMetaSpriteId,x ; B9F9
-        jmp     MetaSprite_Render               ; B9FC
+        ora     RedBullet_Walking_RenderParamLookup + BulletRenderParams::BaseMetaspriteId,x ; B9F9
+        jmp     Metasprite_Render               ; B9FC
 
 ; ----------------------------------------------------------------------------
 ; Unreachable RTS (dead).
@@ -243,26 +243,26 @@ _Render:
         tax                                     ; BA64
         lda     RedBullet_Attacking_RenderParamLookup + BulletRenderParams::OamAttributes,x ; BA65
         sta     $44                             ; BA68
-        lda     RedBullet_Attacking_RenderParamLookup + BulletRenderParams::BaseMetaSpriteId,x ; BA6A
-        jmp     MetaSprite_Render               ; BA6D
+        lda     RedBullet_Attacking_RenderParamLookup + BulletRenderParams::BaseMetaspriteId,x ; BA6A
+        jmp     Metasprite_Render               ; BA6D
 .endproc
 
 ; ----------------------------------------------------------------------------
 ; Red Bullet, walking phase, rendering parameters per-orientation.
 RedBullet_Walking_RenderParamLookup:
-        .byte   $C0,$6A ; BA70  OamAttributes=$C0 BaseMetaSpriteId=$6A
-        .byte   $00,$68 ; BA72  OamAttributes=$00 BaseMetaSpriteId=$68
-        .byte   $00,$6A ; BA74  OamAttributes=$00 BaseMetaSpriteId=$6A
-        .byte   $C0,$68 ; BA76  OamAttributes=$C0 BaseMetaSpriteId=$68
-        .byte   $40,$68 ; BA78  OamAttributes=$40 BaseMetaSpriteId=$68
-        .byte   $80,$6A ; BA7A  OamAttributes=$80 BaseMetaSpriteId=$6A
-        .byte   $80,$68 ; BA7C  OamAttributes=$80 BaseMetaSpriteId=$68
-        .byte   $40,$6A ; BA7E  OamAttributes=$40 BaseMetaSpriteId=$6A
+        .byte   $C0,$6A ; BA70  OamAttributes=$C0 BaseMetaspriteId=$6A
+        .byte   $00,$68 ; BA72  OamAttributes=$00 BaseMetaspriteId=$68
+        .byte   $00,$6A ; BA74  OamAttributes=$00 BaseMetaspriteId=$6A
+        .byte   $C0,$68 ; BA76  OamAttributes=$C0 BaseMetaspriteId=$68
+        .byte   $40,$68 ; BA78  OamAttributes=$40 BaseMetaspriteId=$68
+        .byte   $80,$6A ; BA7A  OamAttributes=$80 BaseMetaspriteId=$6A
+        .byte   $80,$68 ; BA7C  OamAttributes=$80 BaseMetaspriteId=$68
+        .byte   $40,$6A ; BA7E  OamAttributes=$40 BaseMetaspriteId=$6A
 ; Red Bullet, attacking phase, rendering parameters per-orientation.
 RedBullet_Attacking_RenderParamLookup:
-        .byte   $00,$6A ; BA80  OamAttributes=$00 BaseMetaSpriteId=$6A
-        .byte   $80,$68 ; BA82  OamAttributes=$80 BaseMetaSpriteId=$68
-        .byte   $40,$6A ; BA84  OamAttributes=$40 BaseMetaSpriteId=$6A
-        .byte   $00,$68 ; BA86  OamAttributes=$00 BaseMetaSpriteId=$68
+        .byte   $00,$6A ; BA80  OamAttributes=$00 BaseMetaspriteId=$6A
+        .byte   $80,$68 ; BA82  OamAttributes=$80 BaseMetaspriteId=$68
+        .byte   $40,$6A ; BA84  OamAttributes=$40 BaseMetaspriteId=$6A
+        .byte   $00,$68 ; BA86  OamAttributes=$00 BaseMetaspriteId=$68
 .endmacro
 

@@ -130,7 +130,7 @@ L_A9AE: lda     #$00                            ; A9AE
         sta     LoadedObj + Obj::Facing         ; A9C1
 L_A9C3: ldx     LoadedObj + Obj::Facing         ; A9C3
         lda     L_A4DB,x                        ; A9C5
-        jmp     MetaSprite_Render               ; A9C8
+        jmp     Metasprite_Render               ; A9C8
 
 .endmacro
 

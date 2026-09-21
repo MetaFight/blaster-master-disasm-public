@@ -246,7 +246,7 @@ L_E53D: .byte   $08                             ; E53D
 LE53E:  .byte   $07,$08,$07,$50,$5F,$08,$07,$60 ; E53E
         .byte   $57,$70,$57,$80,$6F,$90,$3F     ; E546
 ; ----------------------------------------------------------------------------
-; #region StorySeq_MetaSpritePtrs — 34 bytes
+; #region StorySeq_MetaspritePtrs — 34 bytes
 L_E54D: .addr   LE54F                           ; E54D
 LE54F:  .addr   L_E56F                          ; E54F
         .addr   L_E56F                          ; E551

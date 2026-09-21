@@ -441,7 +441,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬜▫️⬛⬛<br/>`33.3%` | 07 / `timing` | `NMI` depends on unverified routine `Nmi_DoWork`. |
 | ◽⬛⬛⬛<br/>`24.1%` | 07 / `math` |  |
 | ▫️⬛⬛⬛<br/>`9.6%` | 07 / `hardware` |  |
-| ▫️⬛⬛⬛<br/>`6.1%` | 07 / `drawing-metasprites` | `MetaSprite_Render` depends on unverified routine `MetaSprite_RenderNoBank`. |
+| ▫️⬛⬛⬛<br/>`6.1%` | 07 / `drawing-metasprites` | `Metasprite_Render` depends on unverified routine `Metasprite_RenderNoBank`. |
 | ▫️⬛⬛⬛<br/>`4.8%` | 07 / `_ungrouped` |  |
 | ▫️⬛⬛⬛<br/>`4.2%` | 07 / `drawing-sprites` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `00_startup` |  |
@@ -464,7 +464,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **7** pages, of which **3** are alpha.
 
-_Generated: 2026-09-21 10:13 UTC_
+_Generated: 2026-09-21 12:14 UTC_
 
 ## Pages
 

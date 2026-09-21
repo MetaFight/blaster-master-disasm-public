@@ -210,9 +210,9 @@ _OnScreen:
         and     #$03                            ; B766
         bne     _Ret                            ; B768
 ; Set OAM Attributes to sprite palette 1,
-; Pick animation MetaSprite Id based on Global_FrameCounter (each animation frame last 16 draw
+; Pick animation Metasprite Id based on Global_FrameCounter (each animation frame last 16 draw
 ; frames),
-; Render selected MetaSprite.
+; Render selected Metasprite.
 _Draw:
         lda     #$01                            ; B76A
         sta     $44                             ; B76C
@@ -223,7 +223,7 @@ _Draw:
         lsr     a                               ; B773
         and     #$03                            ; B774
         tax                                     ; B776
-        lda     Camera_MetaSpriteId_ByFrame,x   ; B777
+        lda     Camera_MetaspriteId_ByFrame,x   ; B777
         jmp     LC063                           ; B77A
 
 ; ----------------------------------------------------------------------------
@@ -232,8 +232,8 @@ _Ret:
 .endproc
 
 ; ----------------------------------------------------------------------------
-; Table of 4 MetaSprite Ids used to animate both Vertical and Horizontal Cameras.
-Camera_MetaSpriteId_ByFrame:
+; Table of 4 Metasprite Ids used to animate both Vertical and Horizontal Cameras.
+Camera_MetaspriteId_ByFrame:
         .byte   $2A,$2B,$2C,$2D                 ; B77E
 ; ----------------------------------------------------------------------------
 L_B782: jmp     L_B78E                          ; B782
@@ -289,7 +289,7 @@ L_B7CD: lda     #$0B                            ; B7CD
         lsr     a                               ; B7DB
         and     #$03                            ; B7DC
         tax                                     ; B7DE
-        lda     Camera_MetaSpriteId_ByFrame,x   ; B7DF
+        lda     Camera_MetaspriteId_ByFrame,x   ; B7DF
         jmp     LC063                           ; B7E2
 
 .endmacro

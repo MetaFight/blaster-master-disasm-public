@@ -502,7 +502,7 @@ L_8508: lda     LoadedObj + Obj::Position_X_Lo  ; 8508
         jmp     L_8515                          ; 8512
 
 ; ----------------------------------------------------------------------------
-L_8515: jsr     MetaSprite_Render                           ; 8515
+L_8515: jsr     Metasprite_Render                           ; 8515
         jmp     L_88E9                          ; 8518
 
 ; ----------------------------------------------------------------------------
@@ -723,7 +723,7 @@ L_86CC: lda     #$08                            ; 86CC
         lsr     a                               ; 86E3
         sta     $44                             ; 86E4
         lda     #$61                            ; 86E6
-        jsr     MetaSprite_Render               ; 86E8
+        jsr     Metasprite_Render               ; 86E8
         jmp     L_88E9                          ; 86EB
 
 ; ----------------------------------------------------------------------------
@@ -859,7 +859,7 @@ L_87A9: lda     #$08                            ; 87A9
         lda     #$00                            ; 87C1
         sta     $44                             ; 87C3
         lda     #$31                            ; 87C5
-        jsr     MetaSprite_Render               ; 87C7
+        jsr     Metasprite_Render               ; 87C7
         pla                                     ; 87CA
         sta     $3E                             ; 87CB
         pla                                     ; 87CD
@@ -887,7 +887,7 @@ L_87DA: lda     #$08                            ; 87DA
         lda     #$00                            ; 87F2
         sta     $44                             ; 87F4
         lda     #$31                            ; 87F6
-        jsr     MetaSprite_Render               ; 87F8
+        jsr     Metasprite_Render               ; 87F8
         pla                                     ; 87FB
         sta     $3E                             ; 87FC
         pla                                     ; 87FE

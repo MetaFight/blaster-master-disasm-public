@@ -107,8 +107,8 @@ _Render:
 ; game frames.
         tax                                     ; B1D2
 ; Load the animation frame Metasprite id and call the renderer sub.
-        lda     GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame,x ; B1D3
-        jmp     MetaSprite_Render               ; B1D6
+        lda     GrayHopper10HP_Patrolling_MetaspriteId_ByFrame,x ; B1D3
+        jmp     Metasprite_Render               ; B1D6
 
 ; ----------------------------------------------------------------------------
 ; Unreachable RTS (dead).
@@ -117,7 +117,7 @@ _Render:
 
 ; ----------------------------------------------------------------------------
 ; Table of 4 metasprite ids used to animate the patrolling state.
-GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame:
+GrayHopper10HP_Patrolling_MetaspriteId_ByFrame:
         .byte   $02,$03,$02,$04                 ; B1DA
 .endmacro
 

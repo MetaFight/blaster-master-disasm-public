@@ -95,7 +95,7 @@ L_B3C9: lda     #$01                            ; B3C9
 
 ; ----------------------------------------------------------------------------
 L_B3DD: lda     #$70                            ; B3DD
-L_B3DF: jsr     MetaSprite_Render                           ; B3DF
+L_B3DF: jsr     Metasprite_Render                           ; B3DF
         rts                                     ; B3E2
 
 .endmacro
