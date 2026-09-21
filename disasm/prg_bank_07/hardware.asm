@@ -38,7 +38,7 @@ _DEAD_ManualLoop:
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_15_of_20
+;   MAC__ungrouped_14_of_19
 
 .macro MAC_hardware_2_of_7
 ; ----------------------------------------------------------------------------
@@ -60,7 +60,7 @@ L_E6BF: lda     $FF                             ; E6BF
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_16_of_20
+;   MAC__ungrouped_15_of_19
 
 .macro MAC_hardware_3_of_7
 ; ----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ L_E6F0: lda     $FE                             ; E6F0
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_17_of_20
+;   MAC__ungrouped_16_of_19
 
 .macro MAC_hardware_4_of_7
 ; ----------------------------------------------------------------------------
@@ -270,7 +270,7 @@ L_EA03: jsr     L_E6FA                          ; EA03
         sta     $FD                             ; EA0B
         sta     $F1                             ; EA0D
         sta     $FC                             ; EA0F
-        sta     $4F                             ; EA11
+        sta     LoadedObj + Obj::IFrameCounter  ; EA11
         lda     $FF                             ; EA13
         and     #$D0                            ; EA15
         ora     #$90                            ; EA17
@@ -294,11 +294,11 @@ L_EA30: sta     $2007                           ; EA30
 .endmacro
 
 ; Interrupted by 7 macros:
-;   MAC__ungrouped_18_of_20
+;   MAC__ungrouped_17_of_19
 ;   MAC_math_4_of_5
-;   MAC_05_game_screen__object_system_9_of_9
+;   MAC_06_game_screen__object_system_9_of_9
 ;   MAC_math_5_of_5
-;   MAC__ungrouped_19_of_20
+;   MAC__ungrouped_18_of_19
 ;   MAC_rng
 ;   MAC_timing_3_of_3
 
@@ -360,7 +360,7 @@ L_ECB3: rts                                     ; ECB3
 
 ; Interrupted by 3 macros:
 ;   MAC_drawing_sprites
-;   MAC__ungrouped_20_of_20
+;   MAC__ungrouped_19_of_19
 ;   MAC_drawing_metasprites
 
 .macro MAC_hardware_7_of_7

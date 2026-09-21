@@ -1,38 +1,5 @@
-.macro MAC_00_title_screen_1_of_3
-; ----------------------------------------------------------------------------
-L_C24F: lda     #$00                            ; C24F
-        sta     SavedPrgBank                    ; C251
-        jsr     L_DEC2                          ; C253
-        lda     $03F3                           ; C256
-        cmp     #$01                            ; C259
-        bne     L_C264                          ; C25B
-        lda     $03F4                           ; C25D
-        cmp     #$23                            ; C260
-        beq     L_C29E                          ; C262
-L_C264: ldx     #$00                            ; C264
-        txa                                     ; C266
-L_C267: sta     L0000,x                         ; C267
-        sta     $0100,x                         ; C269
-        sta     $0200,x                         ; C26C
-        sta     $0300,x                         ; C26F
-        sta     ObjectTable + Obj::Type,x       ; C272
-        sta     LevelTileData,x                 ; C275
-        sta     OAM_Staging_Buffer + OamEntry::Screen_Y,x ; C278
-        sta     $0700,x                         ; C27B
-        inx                                     ; C27E
-        bne     L_C267                          ; C27F
-        lda     #$01                            ; C281
-        sta     $03F3                           ; C283
-        lda     #$23                            ; C286
-        sta     $03F4                           ; C288
-        lda     #$30                            ; C28B
-        sta     $FF                             ; C28D
-        sta     $2000                           ; C28F
-        lda     #$06                            ; C292
-        sta     $FE                             ; C294
-        sta     $2001                           ; C296
-        lda     #$FF                            ; C299
-        sta     $06F4                           ; C29B
+; Entered by falling through from the end of group "00_startup" (MAC_00_startup).
+.macro MAC_01_title_screen_1_of_3
 L_C29E: ldx     #$FF                            ; C29E
         txs                                     ; C2A0
         jsr     L_DEC2                          ; C2A1
@@ -61,75 +28,73 @@ L_C2BC: lda     #$08                            ; C2BC
 
 .endmacro
 
-; Interrupted by 66 macros:
-;   MAC_01b_demo_screen_1_of_2
-;   MAC_02_init
-;   MAC_05_game_screen__game_loop_1_of_2
-;   MAC__ungrouped_1_of_20
-;   MAC_05_game_screen__game_loop_2_of_2
-;   MAC__ungrouped_2_of_20
-;   MAC_06_pause_screen_1_of_2
-;   MAC__ungrouped_3_of_20
-;   MAC_05_game_screen__object_system_1_of_9
-;   MAC__ungrouped_4_of_20
-;   MAC_05_game_screen__hud
-;   MAC_05_game_screen__object_system_2_of_9
-;   MAC__ungrouped_5_of_20
-;   MAC_05_game_screen__viewport_1_of_2
+; Interrupted by 64 macros:
+;   MAC_03_demo_screen_1_of_2
+;   MAC_06_game_screen__game_loop
+;   MAC__ungrouped_1_of_19
+;   MAC_07_pause_screen_1_of_2
+;   MAC_10_ending_1_of_3
+;   MAC__ungrouped_2_of_19
+;   MAC_06_game_screen__object_system_1_of_9
+;   MAC__ungrouped_3_of_19
+;   MAC_06_game_screen__hud
+;   MAC_06_game_screen__object_system_2_of_9
+;   MAC__ungrouped_4_of_19
+;   MAC_06_game_screen__viewport_1_of_2
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_6_of_20
-;   MAC_05_game_screen__object_system_terrain
+;   MAC__ungrouped_5_of_19
+;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_7_of_20
-;   MAC_05_game_screen__viewport_2_of_2
-;   MAC__ungrouped_8_of_20
-;   MAC_05_game_screen__object_system_3_of_9
-;   MAC__ungrouped_9_of_20
-;   MAC_05_game_screen__object_system_4_of_9
-;   MAC__ungrouped_10_of_20
-;   MAC_05_game_screen__object_system_5_of_9
-;   MAC__ungrouped_11_of_20
+;   MAC__ungrouped_6_of_19
+;   MAC_06_game_screen__viewport_2_of_2
+;   MAC__ungrouped_7_of_19
+;   MAC_06_game_screen__object_system_3_of_9
+;   MAC__ungrouped_8_of_19
+;   MAC_06_game_screen__object_system_4_of_9
+;   MAC__ungrouped_9_of_19
+;   MAC_06_game_screen__object_system_5_of_9
+;   MAC__ungrouped_10_of_19
 ;   MAC_level_rendering
-;   MAC__ungrouped_12_of_20
+;   MAC__ungrouped_11_of_19
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_13_of_20
-;   MAC_05_game_screen__object_system_6_of_9
-;   MAC__ungrouped_14_of_20
-;   MAC_05_game_screen__object_system_7_of_9
+;   MAC__ungrouped_12_of_19
+;   MAC_06_game_screen__object_system_6_of_9
+;   MAC__ungrouped_13_of_19
+;   MAC_06_game_screen__object_system_7_of_9
 ;   MAC_math_2_of_5
-;   MAC_05_game_screen__object_system_8_of_9
+;   MAC_06_game_screen__object_system_8_of_9
 ;   MAC_math_3_of_5
-;   MAC_01b_demo_screen_2_of_2
-;   MAC_01a_story_sequence
+;   MAC_03_demo_screen_2_of_2
+;   MAC_02_story_sequence
 ;   MAC_mmc1
 ;   MAC_hardware_1_of_7
-;   MAC__ungrouped_15_of_20
+;   MAC__ungrouped_14_of_19
 ;   MAC_hardware_2_of_7
-;   MAC__ungrouped_16_of_20
+;   MAC__ungrouped_15_of_19
 ;   MAC_hardware_3_of_7
-;   MAC__ungrouped_17_of_20
+;   MAC__ungrouped_16_of_19
 ;   MAC_hardware_4_of_7
 ;   MAC_input
 ;   MAC_timing_2_of_3
 ;   MAC_drawing_background
 ;   MAC_hardware_5_of_7
-;   MAC__ungrouped_18_of_20
+;   MAC__ungrouped_17_of_19
 ;   MAC_math_4_of_5
-;   MAC_05_game_screen__object_system_9_of_9
+;   MAC_06_game_screen__object_system_9_of_9
 ;   MAC_math_5_of_5
-;   MAC__ungrouped_19_of_20
+;   MAC__ungrouped_18_of_19
 ;   MAC_rng
 ;   MAC_timing_3_of_3
 ;   MAC_hardware_6_of_7
 ;   MAC_drawing_sprites
-;   MAC__ungrouped_20_of_20
+;   MAC__ungrouped_19_of_19
 ;   MAC_drawing_metasprites
 ;   MAC_hardware_7_of_7
-;   MAC_ending_1_of_2
+;   MAC_10_ending_2_of_3
 
-.macro MAC_00_title_screen_2_of_3
+.macro MAC_01_title_screen_2_of_3
 ; ----------------------------------------------------------------------------
 ; Wraps the TitleScreen_GameLoop and simply relays its return value.
 ; 
@@ -160,7 +125,7 @@ _Return:
 .proc _DEAD_StageSelectScreen_GameLoop
         lda     #$00                            ; F465
         sta     $01                             ; F467
-        lda     LFFF3                           ; F469
+        lda     L_FFF3                          ; F469
         bpl     _SetArea                        ; F46C
         jsr     L_EA03                          ; F46E
         lda     #$07                            ; F471
@@ -381,7 +346,7 @@ _HandleStartPress:
         ldx     #$0F                            ; F592
 ; then copy the four 4-byte background palettes.
 _CopyLoop:
-        lda     _TitleScreen_Palette + BgPalette::Backdrop,x ; F594
+        lda     _TitleScreen_Palette + BgPalette::Colour0,x ; F594
         sta     $0650,x                         ; F597
         dex                                     ; F59A
         bpl     _CopyLoop                       ; F59B
@@ -390,10 +355,10 @@ _CopyLoop:
 ; ----------------------------------------------------------------------------
 ; 16-byte palette for the title screen.
 _TitleScreen_Palette:
-        .byte   $0F,$3C,$2C,$1C ; F59E  Backdrop=$0F Colour1=$3C Colour2=$2C Colour3=$1C
-        .byte   $0F,$30,$10,$00 ; F5A2  Backdrop=$0F Colour1=$30 Colour2=$10 Colour3=$00
-        .byte   $0F,$26,$27,$0F ; F5A6  Backdrop=$0F Colour1=$26 Colour2=$27 Colour3=$0F
-        .byte   $0F,$29,$10,$0F ; F5AA  Backdrop=$0F Colour1=$29 Colour2=$10 Colour3=$0F
+        .byte   $0F,$3C,$2C,$1C ; F59E  Colour0=$0F Colour1=$3C Colour2=$2C Colour3=$1C
+        .byte   $0F,$30,$10,$00 ; F5A2  Colour0=$0F Colour1=$30 Colour2=$10 Colour3=$00
+        .byte   $0F,$26,$27,$0F ; F5A6  Colour0=$0F Colour1=$26 Colour2=$27 Colour3=$0F
+        .byte   $0F,$29,$10,$0F ; F5AA  Colour0=$0F Colour1=$29 Colour2=$10 Colour3=$0F
 .endproc
 .endproc
 .endproc
@@ -421,13 +386,13 @@ L_F5D1: .byte   "CREDIT "                       ; F5D1
 .endmacro
 
 ; Interrupted by 5 macros:
-;   MAC_03_intro_screen
-;   MAC_04b_area_entry_screen
-;   MAC_continue_screen
-;   MAC_04a_lives_left_screen
-;   MAC_06_pause_screen_2_of_2
+;   MAC_04_intro_screen
+;   MAC_08_area_entry_screen
+;   MAC_09_continue_screen
+;   MAC_05_lives_left_screen
+;   MAC_07_pause_screen_2_of_2
 
-.macro MAC_00_title_screen_3_of_3
+.macro MAC_01_title_screen_3_of_3
 ; ----------------------------------------------------------------------------
 ; Fill the Palette_Shadow buffer (32 bytes) with $0F (black).
 .proc Background_BlackoutPalettes

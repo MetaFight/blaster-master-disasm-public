@@ -116,7 +116,7 @@ L_C06F: jmp     L_E712                          ; C06F
 L_C072: jmp     L_E065                          ; C072
 
 ; ----------------------------------------------------------------------------
-L_C075: jmp     Obj_SetOAMAttr_FlipX_and_Palette; C075
+L_C075: jmp     Obj_SetOAMAttr_FlipX_and_Palette ; C075
 
 ; ----------------------------------------------------------------------------
 L_C078: jmp     L_E057                          ; C078
@@ -212,7 +212,7 @@ L_C0CF: jmp     L_CFCE                          ; C0CF
 L_C0D2: jmp     L_CF6F                          ; C0D2
 
 ; ----------------------------------------------------------------------------
-L_C0D5: jmp     _Obj_TryCloneIntoEmptySlot__CopyRecord; C0D5
+L_C0D5: jmp     _Obj_TryCloneIntoEmptySlot__CopyRecord ; C0D5
 
 ; ----------------------------------------------------------------------------
 L_C0D8: jmp     Obj_CopyFieldsToSlot            ; C0D8
@@ -296,7 +296,7 @@ L_C123: jmp     ScreenFade_Step                 ; C123
 L_C126: jmp     _Obj_ReflectHeading__HandleWall ; C126
 
 ; ----------------------------------------------------------------------------
-L_C129: jmp     _Obj_ReflectHeading__FloorCeiling; C129
+L_C129: jmp     _Obj_ReflectHeading__FloorCeiling ; C129
 
 ; ----------------------------------------------------------------------------
 L_C12C: jmp     L_D77D                          ; C12C

@@ -133,16 +133,16 @@ L_8A77: lda     #$18                            ; 8A77
         sec                                     ; 8A8A
         sbc     #$30                            ; 8A8B
         sta     $3E                             ; 8A8D
-        lda     $4F                             ; 8A8F
+        lda     LoadedObj + Obj::IFrameCounter  ; 8A8F
         pha                                     ; 8A91
         lda     #$00                            ; 8A92
-        sta     $4F                             ; 8A94
+        sta     LoadedObj + Obj::IFrameCounter  ; 8A94
         lda     #$00                            ; 8A96
         sta     $44                             ; 8A98
         lda     #$31                            ; 8A9A
         jsr     MetaSprite_Render               ; 8A9C
         pla                                     ; 8A9F
-        sta     $4F                             ; 8AA0
+        sta     LoadedObj + Obj::IFrameCounter  ; 8AA0
         pla                                     ; 8AA2
         sta     $3E                             ; 8AA3
         pla                                     ; 8AA5
@@ -167,16 +167,16 @@ L_8AB2: lda     #$18                            ; 8AB2
         clc                                     ; 8AC5
         adc     #$20                            ; 8AC6
         sta     $3E                             ; 8AC8
-        lda     $4F                             ; 8ACA
+        lda     LoadedObj + Obj::IFrameCounter  ; 8ACA
         pha                                     ; 8ACC
         lda     #$00                            ; 8ACD
-        sta     $4F                             ; 8ACF
+        sta     LoadedObj + Obj::IFrameCounter  ; 8ACF
         lda     #$00                            ; 8AD1
         sta     $44                             ; 8AD3
         lda     #$31                            ; 8AD5
         jsr     MetaSprite_Render               ; 8AD7
         pla                                     ; 8ADA
-        sta     $4F                             ; 8ADB
+        sta     LoadedObj + Obj::IFrameCounter  ; 8ADB
         pla                                     ; 8ADD
         sta     $3E                             ; 8ADE
         pla                                     ; 8AE0
@@ -1233,7 +1233,7 @@ L_92DE: lda     #$C0                            ; 92DE
         beq     L_9358                          ; 92F4
         lda     $90                             ; 92F6
         beq     L_9348                          ; 92F8
-        lda     $4F                             ; 92FA
+        lda     LoadedObj + Obj::IFrameCounter  ; 92FA
         bne     L_9311                          ; 92FC
         lda     $03FC                           ; 92FE
         and     #$04                            ; 9301

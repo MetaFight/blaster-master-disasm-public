@@ -1,4 +1,4 @@
-.macro MAC_03_intro_screen
+.macro MAC_04_intro_screen
 ; ----------------------------------------------------------------------------
 L_F5D9: lda     #$1D                            ; F5D9
         sta     $D5                             ; F5DB

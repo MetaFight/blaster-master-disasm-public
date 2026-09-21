@@ -31,9 +31,9 @@ _Body:
         nop                                     ; 9D4E
 ; Point IndirectPtr to the appropriate pattern data for the 'Closed' gate tiles.
 _Body:
-        lda     Area1_Tank_GateCloseTileDrawInstructionPtr; 9D4F
+        lda     Area1_Tank_GateCloseTileDrawInstructionPtr ; 9D4F
         sta     IndirectPtrLo                   ; 9D52
-        lda     Area1_Tank_GateCloseTileDrawInstructionPtr+1; 9D54
+        lda     Area1_Tank_GateCloseTileDrawInstructionPtr+1 ; 9D54
         sta     IndirectPtrHi                   ; 9D57
         lda     #$01                            ; 9D59
         ldx     #$00                            ; 9D5B
@@ -45,9 +45,9 @@ L_9D5F: rts                                     ; 9D5F
 ; ----------------------------------------------------------------------------
 L_9D60: .byte   $EA,$EA                         ; 9D60
 ; ----------------------------------------------------------------------------
-L_9D62: lda     Area4_Tank_GateCloseTileDrawInstructionPtr; 9D62
+L_9D62: lda     Area4_Tank_GateCloseTileDrawInstructionPtr ; 9D62
         sta     IndirectPtrLo                   ; 9D65
-        lda     Area4_Tank_GateCloseTileDrawInstructionPtr+1; 9D67
+        lda     Area4_Tank_GateCloseTileDrawInstructionPtr+1 ; 9D67
         sta     IndirectPtrHi                   ; 9D6A
         lda     #$02                            ; 9D6C
         ldx     #$F0                            ; 9D6E
@@ -57,9 +57,9 @@ L_9D72: rts                                     ; 9D72
 ; ----------------------------------------------------------------------------
 L_9D73: .byte   $EA,$EA                         ; 9D73
 ; ----------------------------------------------------------------------------
-L_9D75: lda     Area4_Tank_GateCloseTileDrawInstructionPtr; 9D75
+L_9D75: lda     Area4_Tank_GateCloseTileDrawInstructionPtr ; 9D75
         sta     IndirectPtrLo                   ; 9D78
-        lda     Area4_Tank_GateCloseTileDrawInstructionPtr+1; 9D7A
+        lda     Area4_Tank_GateCloseTileDrawInstructionPtr+1 ; 9D7A
         sta     IndirectPtrHi                   ; 9D7D
         lda     #$04                            ; 9D7F
         ldx     #$10                            ; 9D81
@@ -219,7 +219,7 @@ L_9E85: lda     #$01                            ; 9E85
 ; ----------------------------------------------------------------------------
 ; Pointer to Area1_Tank_GateCloseTileDrawInstruction.
 Area1_Tank_GateCloseTileDrawInstructionPtr:
-        .addr   Area1_Tank_GateCloseTileDrawInstruction; 9E90
+        .addr   Area1_Tank_GateCloseTileDrawInstruction ; 9E90
 ; ----------------------------------------------------------------------------
 ; Instruction to draw a 2x2 pattern tile.
 ; TBC: The instruction format.
@@ -228,7 +228,7 @@ Area1_Tank_GateCloseTileDrawInstruction:
 ; ----------------------------------------------------------------------------
 ; Pointer to Area4_Tank_GateCloseTileDrawInstruction.
 Area4_Tank_GateCloseTileDrawInstructionPtr:
-        .addr   Area4_Tank_GateCloseTileDrawInstruction; 9E97
+        .addr   Area4_Tank_GateCloseTileDrawInstruction ; 9E97
 ; ----------------------------------------------------------------------------
 ; Instruction to draw a 2x2 pattern tile.
 ; TBC: The instruction format.

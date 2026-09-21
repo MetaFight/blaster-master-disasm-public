@@ -28,7 +28,7 @@ L_970F: lda     #$80                            ; 970F
         jmp     L_9899                          ; 971C
 
 ; ----------------------------------------------------------------------------
-L_971F: lda     $4F                             ; 971F
+L_971F: lda     LoadedObj + Obj::IFrameCounter  ; 971F
         cmp     #$06                            ; 9721
         bcc     L_9728                          ; 9723
         jmp     L_9899                          ; 9725
@@ -281,7 +281,7 @@ L_98E8: nop                                     ; 98E8
         lda     $45                             ; 98FF
         cmp     #$01                            ; 9901
         bne     L_9930                          ; 9903
-        lda     $4F                             ; 9905
+        lda     LoadedObj + Obj::IFrameCounter  ; 9905
         bne     L_9930                          ; 9907
         lda     #$10                            ; 9909
         sta     $40                             ; 990B
@@ -627,7 +627,7 @@ L_9B67: lda     #$80                            ; 9B67
         jmp     L_9B94                          ; 9B74
 
 ; ----------------------------------------------------------------------------
-L_9B77: lda     $4F                             ; 9B77
+L_9B77: lda     LoadedObj + Obj::IFrameCounter  ; 9B77
         cmp     #$06                            ; 9B79
         bcs     L_9B94                          ; 9B7B
         inc     LoadedObj + Obj::Scratch1       ; 9B7D
@@ -696,7 +696,7 @@ L_9BE9: lda     $03FD                           ; 9BE9
         lda     #$20                            ; 9BF6
         jsr     LC090                           ; 9BF8
         beq     L_9C19                          ; 9BFB
-        lda     $4F                             ; 9BFD
+        lda     LoadedObj + Obj::IFrameCounter  ; 9BFD
         bne     L_9C19                          ; 9BFF
         lda     #$10                            ; 9C01
         sta     $40                             ; 9C03
@@ -720,7 +720,7 @@ L_9C19: lda     LoadedObj + Obj::Scratch1       ; 9C19
 
 ; ----------------------------------------------------------------------------
 L_9C23: sta     $06                             ; 9C23
-        lda     $4F                             ; 9C25
+        lda     LoadedObj + Obj::IFrameCounter  ; 9C25
         ora     $03FD                           ; 9C27
         ora     $15                             ; 9C2A
         bne     L_9C63                          ; 9C2C
@@ -1095,7 +1095,7 @@ L_9EB3: jsr     LC10E                           ; 9EB3
         asl     a                               ; 9EBA
         asl     a                               ; 9EBB
         tay                                     ; 9EBC
-        lda     $4F                             ; 9EBD
+        lda     LoadedObj + Obj::IFrameCounter  ; 9EBD
         bne     L_9EED                          ; 9EBF
         lda     $14                             ; 9EC1
         and     #$07                            ; 9EC3
@@ -1105,7 +1105,7 @@ L_9EB3: jsr     LC10E                           ; 9EB3
         lda     #$04                            ; 9EC8
 L_9ECA: pha                                     ; 9ECA
         lda     L_9F21,x                        ; 9ECB
-        sta     Background_Palettes + BgPalette::Backdrop,y ; 9ECE
+        sta     Background_Palettes + BgPalette::Colour0,y ; 9ECE
         sta     $0650,y                         ; 9ED1
         inx                                     ; 9ED4
         iny                                     ; 9ED5
@@ -1131,7 +1131,7 @@ L_9EED: lda     $10                             ; 9EED
         lda     #$04                            ; 9EF4
 L_9EF6: pha                                     ; 9EF6
         lda     Sprite_Palettes + SpritePalette::Transparency,x ; 9EF7
-        sta     Background_Palettes + BgPalette::Backdrop,y ; 9EF9
+        sta     Background_Palettes + BgPalette::Colour0,y ; 9EF9
         inx                                     ; 9EFC
         iny                                     ; 9EFD
         pla                                     ; 9EFE
@@ -1518,7 +1518,7 @@ L_A1DC: lda     LoadedObj + Obj::Scratch1       ; A1DC
         cmp     #$1F                            ; A1DE
         bne     L_A1FD                          ; A1E0
         lda     #$00                            ; A1E2
-        sta     $4F                             ; A1E4
+        sta     LoadedObj + Obj::IFrameCounter  ; A1E4
         ldy     #$10                            ; A1E6
 L_A1E8: jsr     L_A3E3                          ; A1E8
         lda     LoadedObj + Obj::Health         ; A1EB
@@ -1819,7 +1819,7 @@ L_A415: lda     #$30                            ; A415
         jsr     L_9F41                          ; A428
 L_A42B: jsr     LC0FF                           ; A42B
         lda     $03FD                           ; A42E
-        ora     $4F                             ; A431
+        ora     LoadedObj + Obj::IFrameCounter  ; A431
         bne     L_A459                          ; A433
         lda     #$20                            ; A435
         jsr     LC144                           ; A437
@@ -1884,7 +1884,7 @@ L_A4A4: rts                                     ; A4A4
 ; ----------------------------------------------------------------------------
 L_A4A5: ldx     #$0F                            ; A4A5
 L_A4A7: lda     L_A4B3,x                        ; A4A7
-        sta     Background_Palettes + BgPalette::Backdrop,x ; A4AA
+        sta     Background_Palettes + BgPalette::Colour0,x ; A4AA
         sta     $0650,x                         ; A4AC
         dex                                     ; A4AF
         bpl     L_A4A7                          ; A4B0
@@ -2075,7 +2075,7 @@ L_A5EF: lda     #$10                            ; A5EF
         jsr     L_A65A                          ; A5FA
         lda     $03FD                           ; A5FD
         bne     L_A628                          ; A600
-        lda     $4F                             ; A602
+        lda     LoadedObj + Obj::IFrameCounter  ; A602
         cmp     #$06                            ; A604
         bcs     L_A628                          ; A606
         lda     LoadedObj + Obj::Health         ; A608
@@ -2092,7 +2092,7 @@ L_A5EF: lda     #$10                            ; A5EF
 L_A620: lda     LoadedObj + Obj::Health         ; A620
         bne     L_A628                          ; A622
         lda     #$C0                            ; A624
-        sta     $4F                             ; A626
+        sta     LoadedObj + Obj::IFrameCounter  ; A626
 L_A628: lda     $3F                             ; A628
         cmp     #$20                            ; A62A
         bcs     L_A632                          ; A62C
@@ -2442,7 +2442,7 @@ L_A865: stx     $45                             ; A865
         jsr     LC189                           ; A86E
         lda     $03FD                           ; A871
         bne     L_A895                          ; A874
-        lda     $4F                             ; A876
+        lda     LoadedObj + Obj::IFrameCounter  ; A876
         bne     L_A895                          ; A878
         lda     #$10                            ; A87A
         sta     $40                             ; A87C
@@ -2482,13 +2482,13 @@ L_A895: pla                                     ; A895
         adc     #$07                            ; A8B9
         and     #$0F                            ; A8BB
         tax                                     ; A8BD
-        lda     $4F                             ; A8BE
+        lda     LoadedObj + Obj::IFrameCounter  ; A8BE
         bne     L_A8D7                          ; A8C0
         lda     $03FD                           ; A8C2
         bne     L_A8D7                          ; A8C5
         ldy     #$03                            ; A8C7
 L_A8C9: lda     LA8F2,y                         ; A8C9
-        sta     Background_Palettes + BgPalette::Backdrop,x ; A8CC
+        sta     Background_Palettes + BgPalette::Colour0,x ; A8CC
         sta     $0650,x                         ; A8CE
         dex                                     ; A8D1
         dey                                     ; A8D2
@@ -2501,8 +2501,8 @@ L_A8D9: pha                                     ; A8D9
         sbc     #$04                            ; A8DC
         and     #$0F                            ; A8DE
         tay                                     ; A8E0
-        lda     Background_Palettes + BgPalette::Backdrop,y ; A8E1
-        sta     Background_Palettes + BgPalette::Backdrop,x ; A8E4
+        lda     Background_Palettes + BgPalette::Colour0,y ; A8E1
+        sta     Background_Palettes + BgPalette::Colour0,x ; A8E4
         dex                                     ; A8E6
         pla                                     ; A8E7
         sec                                     ; A8E8
@@ -2556,7 +2556,7 @@ L_A953: clc                                     ; A953
 L_A965: jmp     L_A991                          ; A965
 
 ; ----------------------------------------------------------------------------
-L_A968: lda     $4F                             ; A968
+L_A968: lda     LoadedObj + Obj::IFrameCounter  ; A968
         cmp     #$30                            ; A96A
         bcs     L_A974                          ; A96C
         jsr     LC024                           ; A96E
@@ -2739,7 +2739,7 @@ L_AA91: lda     LoadedObj + Obj::Health         ; AA91
         sta     $41                             ; AAA0
         lda     #$30                            ; AAA2
         jsr     LC090                           ; AAA4
-        lda     $4F                             ; AAA7
+        lda     LoadedObj + Obj::IFrameCounter  ; AAA7
         bne     L_AACB                          ; AAA9
         lda     #$10                            ; AAAB
         sta     $40                             ; AAAD
@@ -2754,10 +2754,10 @@ L_AA91: lda     LoadedObj + Obj::Health         ; AA91
         jsr     LC093                           ; AABD
         pla                                     ; AAC0
         sta     $3F                             ; AAC1
-        lda     $4F                             ; AAC3
+        lda     LoadedObj + Obj::IFrameCounter  ; AAC3
         beq     L_AACB                          ; AAC5
         lda     #$10                            ; AAC7
-        sta     $4F                             ; AAC9
+        sta     LoadedObj + Obj::IFrameCounter  ; AAC9
 L_AACB: rts                                     ; AACB
 
 ; ----------------------------------------------------------------------------
@@ -2875,7 +2875,7 @@ L_AB98: rts                                     ; AB98
 L_AB99: ldx     #$0F                            ; AB99
 L_AB9B: lda     L_ABB6,x                        ; AB9B
         sta     $0650,x                         ; AB9E
-        sta     Background_Palettes + BgPalette::Backdrop,x ; ABA1
+        sta     Background_Palettes + BgPalette::Colour0,x ; ABA1
         dex                                     ; ABA3
         bpl     L_AB9B                          ; ABA4
         ldx     #$03                            ; ABA6
@@ -3186,7 +3186,7 @@ L_ADA2: lda     #$30                            ; ADA2
         jsr     LC0FF                           ; ADAA
         jsr     L_ADE7                          ; ADAD
         lda     $03FD                           ; ADB0
-        ora     $4F                             ; ADB3
+        ora     LoadedObj + Obj::IFrameCounter  ; ADB3
         bne     L_ADD2                          ; ADB5
         lda     $3F                             ; ADB7
         pha                                     ; ADB9
@@ -3197,7 +3197,7 @@ L_ADA2: lda     #$30                            ; ADA2
         jsr     LC093                           ; ADC1
         bne     L_ADCF                          ; ADC4
         lda     #$10                            ; ADC6
-        sta     $4F                             ; ADC8
+        sta     LoadedObj + Obj::IFrameCounter  ; ADC8
         lda     #$4B                            ; ADCA
         jsr     LC216                           ; ADCC
 L_ADCF: pla                                     ; ADCF
@@ -3288,7 +3288,7 @@ L_AE5A: lda     $0671                           ; AE5A
 L_AE62: ldx     #$0F                            ; AE62
 L_AE64: lda     L_AE7F,x                        ; AE64
         sta     $0650,x                         ; AE67
-        sta     Background_Palettes + BgPalette::Backdrop,x ; AE6A
+        sta     Background_Palettes + BgPalette::Colour0,x ; AE6A
         dex                                     ; AE6C
         bpl     L_AE64                          ; AE6D
         ldx     #$03                            ; AE6F

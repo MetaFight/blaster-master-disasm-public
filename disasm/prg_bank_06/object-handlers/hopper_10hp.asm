@@ -107,7 +107,7 @@ _Render:
 ; game frames.
         tax                                     ; B1D2
 ; Load the animation frame Metasprite id and call the renderer sub.
-        lda     GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame,x; B1D3
+        lda     GrayHopper10HP_Patrolling_MetaSpriteId_ByFrame,x ; B1D3
         jmp     MetaSprite_Render               ; B1D6
 
 ; ----------------------------------------------------------------------------

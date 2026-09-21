@@ -8,7 +8,7 @@
 ; Load table record and copy HP (record[0])
         sta     LoadedObj + Obj::Health         ; BBAE
 ; Clear IFrameCounter, Calculate TileIndex, increment ObjType, and return.
-        sty     $4F                             ; BBB0
+        sty     LoadedObj + Obj::IFrameCounter  ; BBB0
         jsr     Obj_CalcTileIndex               ; BBB2
         inc     LoadedObj + Obj::Type           ; BBB5
         rts                                     ; BBB7

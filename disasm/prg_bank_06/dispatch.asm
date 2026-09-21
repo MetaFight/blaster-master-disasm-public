@@ -12,6 +12,7 @@ BankDispatch_TopTable_Bk06:
 ; $80AE ObjType $57) split the run — see _NullSlot37/_NullSlot57. Bank-04 counterpart:
 ; ObjDispatch_Table_Bk04 ($8006)
 ObjDispatch_Table_Bk06:
+; #region ObjDispatch_Table_Bk06 — 290 bytes
         .addr   L_8124                          ; 8002
         .addr   L_8124                          ; 8004
         .addr   L_92DB                          ; 8006
@@ -47,54 +48,54 @@ ObjDispatch_Table_Bk06:
         .addr   L_875E                          ; 8042
         .addr   L_8788                          ; 8044
         .addr   L_8798                          ; 8046
-        .addr   ObjHandler_Tank_24_26_28_Auto_Gate_Init; 8048
-        .addr   ObjHandler_Tank_25_WallGuardianGate_Main; 804A
-        .addr   ObjHandler_Tank_24_26_28_Auto_Gate_Init; 804C
+        .addr   ObjHandler_Tank_24_26_28_Auto_Gate_Init ; 8048
+        .addr   ObjHandler_Tank_25_WallGuardianGate_Main ; 804A
+        .addr   ObjHandler_Tank_24_26_28_Auto_Gate_Init ; 804C
         .addr   L_9D5F                          ; 804E
-        .addr   ObjHandler_Tank_24_26_28_Auto_Gate_Init; 8050
+        .addr   ObjHandler_Tank_24_26_28_Auto_Gate_Init ; 8050
         .addr   L_9D72                          ; 8052
         .addr   L_882A                          ; 8054
         .addr   L_8850                          ; 8056
-        .addr   ObjHandler_Tank_2C_Pick_up_Pow_x1_Init; 8058
-        .addr   ObjHandler_Tank_2D_Pick_up_Pow_x4_Init; 805A
-        .addr   ObjHandler_Tank_2E_Pick_up_Hover_x1_Init; 805C
-        .addr   ObjHandler_Tank_2F_Pick_up_Hover_x4_Init; 805E
+        .addr   ObjHandler_Tank_2C_Pick_up_Pow_x1_Init ; 8058
+        .addr   ObjHandler_Tank_2D_Pick_up_Pow_x4_Init ; 805A
+        .addr   ObjHandler_Tank_2E_Pick_up_Hover_x1_Init ; 805C
+        .addr   ObjHandler_Tank_2F_Pick_up_Hover_x4_Init ; 805E
         .addr   ObjHandler_Tank_30_Gun_gun_x1   ; 8060
-        .addr   ObjHandler_Tank_31_Pickup_Gun_x4_Init; 8062
-        .addr   ObjHandler_Tank_32_Homing_Missiles_x20_Init; 8064
-        .addr   ObjHandler_Tank_33_Pick_up_Lightning_x20_Init; 8066
-        .addr   ObjHandler_Tank_34_Pickup_Warheads_x20_Init; 8068
+        .addr   ObjHandler_Tank_31_Pickup_Gun_x4_Init ; 8062
+        .addr   ObjHandler_Tank_32_Homing_Missiles_x20_Init ; 8064
+        .addr   ObjHandler_Tank_33_Pick_up_Lightning_x20_Init ; 8066
+        .addr   ObjHandler_Tank_34_Pickup_Warheads_x20_Init ; 8068
         .addr   ObjHandler_Tank_35_PickUp_Main  ; 806A
         .addr   L_9EA4                          ; 806C
 ; ----------------------------------------------------------------------------
 L_806E: .byte   $00,$00                         ; 806E
 ; ----------------------------------------------------------------------------
-L_8070: .addr   ObjHandler_Tank_38_Big_Gray_Init; 8070
-        .addr   ObjHandler_Tank_39_Big_Gray_Main; 8072
+L_8070: .addr   ObjHandler_Tank_38_Big_Gray_Init ; 8070
+        .addr   ObjHandler_Tank_39_Big_Gray_Main ; 8072
         .addr   L_9F39                          ; 8074
         .addr   L_9F5A                          ; 8076
-        .addr   ObjHandler_Tank_3C_Small_Red_Init; 8078
-        .addr   ObjHandler_Tank_3D_Small_Red_Main; 807A
+        .addr   ObjHandler_Tank_3C_Small_Red_Init ; 8078
+        .addr   ObjHandler_Tank_3D_Small_Red_Main ; 807A
         .addr   L_A02F                          ; 807C
         .addr   L_A047                          ; 807E
         .addr   L_A089                          ; 8080
         .addr   L_A0B6                          ; 8082
         .addr   L_A0F6                          ; 8084
         .addr   L_A122                          ; 8086
-        .addr   ObjHandler_Tank_44_Mine_Shrapnel_Init; 8088
-        .addr   ObjHandler_Tank_45_Mine_Shrapnel_Main; 808A
-        .addr   ObjHandler_Tank_46_Turret_Shot_Init; 808C
-        .addr   ObjHandler_Tank_47_Turret_Shot_Main; 808E
-        .addr   ObjHandler_Tank_48_Medium_Red_Projectile_Init; 8090
-        .addr   ObjHandler_Tank_49_Medium_Red_Projectile_Main; 8092
+        .addr   ObjHandler_Tank_44_Mine_Shrapnel_Init ; 8088
+        .addr   ObjHandler_Tank_45_Mine_Shrapnel_Main ; 808A
+        .addr   ObjHandler_Tank_46_Turret_Shot_Init ; 808C
+        .addr   ObjHandler_Tank_47_Turret_Shot_Main ; 808E
+        .addr   ObjHandler_Tank_48_Medium_Red_Projectile_Init ; 8090
+        .addr   ObjHandler_Tank_49_Medium_Red_Projectile_Main ; 8092
         .addr   L_9B95                          ; 8094
         .addr   L_9BAA                          ; 8096
         .addr   L_9BD8                          ; 8098
         .addr   L_9BED                          ; 809A
         .addr   L_B1FF                          ; 809C
         .addr   L_B20C                          ; 809E
-        .addr   ObjHandler_Tank_50_Gray_Flier_Spawner_Init; 80A0
-        .addr   ObjHandler_Tank_51_Gray_Flier_Spawner_Main; 80A2
+        .addr   ObjHandler_Tank_50_Gray_Flier_Spawner_Init ; 80A0
+        .addr   ObjHandler_Tank_51_Gray_Flier_Spawner_Main ; 80A2
         .addr   L_B62F                          ; 80A4
         .addr   L_B63C                          ; 80A6
         .addr   L_A3E2                          ; 80A8
@@ -103,16 +104,16 @@ L_8070: .addr   ObjHandler_Tank_38_Big_Gray_Init; 8070
 ; ----------------------------------------------------------------------------
 L_80AE: .byte   $00,$00                         ; 80AE
 ; ----------------------------------------------------------------------------
-L_80B0: .addr   ObjHandler_Tank_58_Gray_Bullet_B_Init; 80B0
-        .addr   ObjHandler_Tank_59_Gray_Bullet_Main; 80B2
-        .addr   ObjHandler_Tank_5A_Gray_Bullet_Attacking; 80B4
+L_80B0: .addr   ObjHandler_Tank_58_Gray_Bullet_B_Init ; 80B0
+        .addr   ObjHandler_Tank_59_Gray_Bullet_Main ; 80B2
+        .addr   ObjHandler_Tank_5A_Gray_Bullet_Attacking ; 80B4
         .addr   L_A6D7                          ; 80B6
         .addr   L_A6E4                          ; 80B8
         .addr   ObjHandler_Tank_5D_Hulk_Init    ; 80BA
         .addr   ObjHandler_Tank_5E_Hulk_Main    ; 80BC
-        .addr   ObjHandler_Tank_5F_Gray_Hopper_6HP_Init; 80BE
-        .addr   ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking; 80C0
-        .addr   ObjHandler_Tank_61_GrayHopper6HP_Patrolling; 80C2
+        .addr   ObjHandler_Tank_5F_Gray_Hopper_6HP_Init ; 80BE
+        .addr   ObjHandler_Tank_60_Gray_Hopper_6HP_Attacking ; 80C0
+        .addr   ObjHandler_Tank_61_GrayHopper6HP_Patrolling ; 80C2
         .addr   L_A8D2                          ; 80C4
         .addr   L_A8FB                          ; 80C6
         .addr   ObjHandler_Tank_64_Mine_Init    ; 80C8
@@ -123,8 +124,8 @@ L_80B0: .addr   ObjHandler_Tank_58_Gray_Bullet_B_Init; 80B0
         .addr   L_AB24                          ; 80D2
         .addr   L_ABCF                          ; 80D4
         .addr   L_ABEC                          ; 80D6
-        .addr   ObjHandler_Tank_6C_Flying_Bomber_Init; 80D8
-        .addr   ObjHandler_Tank_6D_Flying_Bomber_Main; 80DA
+        .addr   ObjHandler_Tank_6C_Flying_Bomber_Init ; 80D8
+        .addr   ObjHandler_Tank_6D_Flying_Bomber_Main ; 80DA
         .addr   L_ACFB                          ; 80DC
         .addr   L_AD08                          ; 80DE
         .addr   L_ADE4                          ; 80E0
@@ -137,14 +138,14 @@ L_80B0: .addr   ObjHandler_Tank_58_Gray_Bullet_B_Init; 80B0
         .addr   ObjHandler_Tank_77_Shooter_Main ; 80EE
         .addr   L_B076                          ; 80F0
         .addr   L_B095                          ; 80F2
-        .addr   ObjHandler_Tank_7A_Gray_Hopper_10HP_Init; 80F4
-        .addr   ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling; 80F6
+        .addr   ObjHandler_Tank_7A_Gray_Hopper_10HP_Init ; 80F4
+        .addr   ObjHandler_Tank_7B_Gray_Hopper_10HP_Patrolling ; 80F6
         .addr   L_B250                          ; 80F8
-        .addr   ObjHandler_Tank_7D_Gray_Flier_Main; 80FA
+        .addr   ObjHandler_Tank_7D_Gray_Flier_Main ; 80FA
         .addr   L_B337                          ; 80FC
         .addr   L_B34F                          ; 80FE
-        .addr   ObjHandler_Tank_80_Jellyfish_Init; 8100
-        .addr   ObjHandler_Tank_81_Jellyfish_Main; 8102
+        .addr   ObjHandler_Tank_80_Jellyfish_Init ; 8100
+        .addr   ObjHandler_Tank_81_Jellyfish_Main ; 8102
         .addr   L_B494                          ; 8104
         .addr   L_B4A3                          ; 8106
         .addr   L_B53A                          ; 8108
@@ -156,10 +157,12 @@ L_80B0: .addr   ObjHandler_Tank_58_Gray_Bullet_B_Init; 80B0
         .addr   L_B832                          ; 8114
         .addr   L_B843                          ; 8116
         .addr   L_B91A                          ; 8118
-        .addr   ObjHandler_Tank_8D_Red_Bullet_B_Init; 811A
-        .addr   ObjHandler_Tank_8E_Red_Bullet_Main; 811C
-        .addr   ObjHandler_Tank_8F_Red_Bullet_Attacking; 811E
-        .addr   ObjHandler_Tank_90_Wall_Guardian_Init; 8120
-        .addr   ObjHandler_Tank_91_Wall_Guardian_Main; 8122
+        .addr   ObjHandler_Tank_8D_Red_Bullet_B_Init ; 811A
+        .addr   ObjHandler_Tank_8E_Red_Bullet_Main ; 811C
+        .addr   ObjHandler_Tank_8F_Red_Bullet_Attacking ; 811E
+        .addr   ObjHandler_Tank_90_Wall_Guardian_Init ; 8120
+        .addr   ObjHandler_Tank_91_Wall_Guardian_Main ; 8122
+; #endregion
+
 .endmacro
 

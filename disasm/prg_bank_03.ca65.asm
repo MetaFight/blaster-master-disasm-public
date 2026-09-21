@@ -18,6 +18,7 @@ Bk03_DispatchBootstrap:
 Bk03_ThingDataPtr:
         .addr   Bk03_ThingData                  ; 8002
 Bk03_CategoryTable:
+; #region Bk03_CategoryTable — 24 bytes
         .addr   Bk03_Cat00                      ; 8004
         .addr   Bk03_Cat01                      ; 8006
         .addr   Bk03_Cat02                      ; 8008
@@ -30,6 +31,8 @@ Bk03_CategoryTable:
         .addr   Bk03_Cat09                      ; 8016
         .addr   Bk03_Cat10                      ; 8018
         .addr   Bk03_Cat11                      ; 801A
+; #endregion
+
 ; ----------------------------------------------------------------------------
 ; Category 00 — Pause Menu screen graphics
 Bk03_Cat00:
@@ -230,6 +233,7 @@ L_85E2: .byte   "1988"                          ; 85E2
 L_85E6: .byte   $00,$61,$71,$63,$73,$65,$75,$67 ; 85E6
         .byte   $77,$69,$79,$09,$00,$9A         ; 85EE
 ; ----------------------------------------------------------------------------
+; #region Bk03_TitleCopyrightText — 67 bytes
 L_85F4: .byte   "SUN"                           ; 85F4
         .byte   $00                             ; 85F7
         .byte   "CORPORATION"                   ; 85F8
@@ -250,6 +254,8 @@ L_85F4: .byte   "SUN"                           ; 85F4
         .byte   "AMERICA"                       ; 862B
         .byte   $00                             ; 8632
         .byte   "INC;"                          ; 8633
+; #endregion
+
 ; ----------------------------------------------------------------------------
 L_8637: .byte   $7F,$00,$4A,$00,$81,$40,$1A,$00 ; 8637
         .byte   $00                             ; 863F
@@ -1147,6 +1153,7 @@ Bk03_Cat11:
 ; ----------------------------------------------------------------------------
 ; Thing/enemy spawn-list pointer table.
 Bk03_ThingData:
+; #region Bk03_ThingData — 32 bytes
         .addr   Area1_Ovhd_ThingPtrs            ; A174
         .addr   Area2_Ovhd_ThingPtrs            ; A176
         .addr   Area3_Ovhd_ThingPtrs            ; A178
@@ -1163,6 +1170,8 @@ Bk03_ThingData:
         .addr   Area6_Tank_ThingPtrs            ; A18E
         .addr   Area7_Tank_ThingPtrs            ; A190
         .addr   Area8_Tank_ThingPtrs            ; A192
+; #endregion
+
 ; ----------------------------------------------------------------------------
 L_A194: .byte   $9A,$A1,$00,$00,$00,$00,$FF     ; A194
 ; ----------------------------------------------------------------------------

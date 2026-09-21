@@ -44,7 +44,7 @@ _Apply_To_Palette_Entry_X:
 ; Clamp to $0F on underflow
         lda     #$0F                            ; CE00
 _Save_Palette_Entry:
-        sta     Background_Palettes + BgPalette::Backdrop,x ; CE02
+        sta     Background_Palettes + BgPalette::Colour0,x ; CE02
         dex                                     ; CE04
         bpl     _Apply_To_Palette_Entry_X       ; CE05
         rts                                     ; CE07

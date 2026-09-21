@@ -138,7 +138,7 @@ _Render:
         lsr     a                               ; B329
         and     #$03                            ; B32A
         tax                                     ; B32C
-        lda     TankGrayFlier_MetaSpriteId_ByFrame,x; B32D
+        lda     TankGrayFlier_MetaSpriteId_ByFrame,x ; B32D
         jmp     MetaSprite_Render               ; B330
 .endproc
 

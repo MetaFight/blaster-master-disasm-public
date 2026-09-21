@@ -227,7 +227,7 @@ L_8C3B: lda     #$C0                            ; 8C3B
         jsr     LC11D                           ; 8C43
         lda     LoadedObj + Obj::Health         ; 8C46
         bne     L_8C67                          ; 8C48
-        lda     $4F                             ; 8C4A
+        lda     LoadedObj + Obj::IFrameCounter  ; 8C4A
         bne     L_8C64                          ; 8C4C
         lda     #$04                            ; 8C4E
         sta     LoadedObj + Obj::Type           ; 8C50
@@ -242,7 +242,7 @@ L_8C3B: lda     #$C0                            ; 8C3B
 L_8C64: jmp     L_8D98                          ; 8C64
 
 ; ----------------------------------------------------------------------------
-L_8C67: lda     $4F                             ; 8C67
+L_8C67: lda     LoadedObj + Obj::IFrameCounter  ; 8C67
         bne     L_8C9F                          ; 8C69
         jsr     LC138                           ; 8C6B
         jsr     LC09F                           ; 8C6E
@@ -261,7 +261,7 @@ L_8C67: lda     $4F                             ; 8C67
 
 ; ----------------------------------------------------------------------------
 L_8C8B: lda     #$20                            ; 8C8B
-        sta     $4F                             ; 8C8D
+        sta     LoadedObj + Obj::IFrameCounter  ; 8C8D
         lda     #$1E                            ; 8C8F
         jsr     LC216                           ; 8C91
         lda     LoadedObj + Obj::Health         ; 8C94

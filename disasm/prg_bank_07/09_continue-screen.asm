@@ -1,4 +1,4 @@
-.macro MAC_continue_screen
+.macro MAC_09_continue_screen
 ; ----------------------------------------------------------------------------
 L_F71C: jsr     L_EA03                          ; F71C
         lda     #$07                            ; F71F

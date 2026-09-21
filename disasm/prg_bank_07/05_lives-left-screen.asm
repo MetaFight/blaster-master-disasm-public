@@ -1,4 +1,4 @@
-.macro MAC_04a_lives_left_screen
+.macro MAC_05_lives_left_screen
 ; ----------------------------------------------------------------------------
 L_F7D1: jsr     L_EA03                          ; F7D1
         lda     #$07                            ; F7D4

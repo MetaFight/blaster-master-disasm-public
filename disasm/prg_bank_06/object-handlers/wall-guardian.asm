@@ -145,7 +145,7 @@ _Render:
 
 ; ----------------------------------------------------------------------------
 _AnimateEyes:
-        jsr     WallGuardian_PlayEyeBlinkAnimation; BB28
+        jsr     WallGuardian_PlayEyeBlinkAnimation ; BB28
 _DrawMidRow:
 ; Stage the selected top row tile.
         jsr     LEDF5                           ; BB2B
@@ -159,13 +159,13 @@ _DrawMidRow:
 ; if Global_FrameCounter < #$A0, skip to AnimateMandibles.
         bcc     _AnimateMandibles               ; BB39
 ; Otherwise, use default mid row tile and skip to DrawBottomRow.
-        jsr     WallGuardian_UseDefaultMandibleTile; BB3B
+        jsr     WallGuardian_UseDefaultMandibleTile ; BB3B
         jmp     _DrawBottomRow                  ; BB3E
 
 ; ----------------------------------------------------------------------------
 ; idle: alternate the middle-row tile on a 4-frame cycle
 _AnimateMandibles:
-        jsr     WallGuardian_PlayMandibleAnimation; BB41
+        jsr     WallGuardian_PlayMandibleAnimation ; BB41
 ; Stage the middle row, step the draw position down 16px again, and stage the static bottom row.
 _DrawBottomRow:
         jsr     LEDF5                           ; BB44
@@ -243,7 +243,7 @@ _Store:
         lsr     a                               ; BB96
         lsr     a                               ; BB97
         tax                                     ; BB98
-        lda     WallGuardian_EyeBlinkAnimationTiles,x; BB99
+        lda     WallGuardian_EyeBlinkAnimationTiles,x ; BB99
         sta     $45                             ; BB9C
         rts                                     ; BB9E
 .endproc

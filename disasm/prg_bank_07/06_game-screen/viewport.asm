@@ -1,4 +1,4 @@
-.macro MAC_05_game_screen__viewport_1_of_2
+.macro MAC_06_game_screen__viewport_1_of_2
 ; ----------------------------------------------------------------------------
 L_CBB4: lda     $1D                             ; CBB4
         sta     L0000                           ; CBB6
@@ -321,12 +321,12 @@ L_CDB9: rts                                     ; CDB9
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_6_of_20
-;   MAC_05_game_screen__object_system_terrain
+;   MAC__ungrouped_5_of_19
+;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_7_of_20
+;   MAC__ungrouped_6_of_19
 
-.macro MAC_05_game_screen__viewport_2_of_2
+.macro MAC_06_game_screen__viewport_2_of_2
 ; ----------------------------------------------------------------------------
 L_D18D: lda     $1F                             ; D18D
         sta     L0000                           ; D18F

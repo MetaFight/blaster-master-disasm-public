@@ -40,10 +40,10 @@ TankLvl6_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 TankLvl6_BgPalette:
-        .byte   $0F,$1C,$2C,$31 ; 8022  Backdrop=$0F Colour1=$1C Colour2=$2C Colour3=$31
-        .byte   $0F,$00,$26,$36 ; 8026  Backdrop=$0F Colour1=$00 Colour2=$26 Colour3=$36
-        .byte   $0F,$0B,$1C,$2B ; 802A  Backdrop=$0F Colour1=$0B Colour2=$1C Colour3=$2B
-        .byte   $0F,$2C,$3C,$30 ; 802E  Backdrop=$0F Colour1=$2C Colour2=$3C Colour3=$30
+        .byte   $0F,$1C,$2C,$31 ; 8022  Colour0=$0F Colour1=$1C Colour2=$2C Colour3=$31
+        .byte   $0F,$00,$26,$36 ; 8026  Colour0=$0F Colour1=$00 Colour2=$26 Colour3=$36
+        .byte   $0F,$0B,$1C,$2B ; 802A  Colour0=$0F Colour1=$0B Colour2=$1C Colour3=$2B
+        .byte   $0F,$2C,$3C,$30 ; 802E  Colour0=$0F Colour1=$2C Colour2=$3C Colour3=$30
 ; 104 TileDesc records — the level's Tile definitions. Index space shared with
 ; TankLvl6_TileAttrTable, which has the matching 104 entries.
 TankLvl6_TileDescTable:
@@ -712,10 +712,10 @@ TankLvl7_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 TankLvl7_BgPalette:
-        .byte   $0F,$16,$26,$36 ; 8C82  Backdrop=$0F Colour1=$16 Colour2=$26 Colour3=$36
-        .byte   $0F,$07,$16,$26 ; 8C86  Backdrop=$0F Colour1=$07 Colour2=$16 Colour3=$26
-        .byte   $0F,$05,$15,$26 ; 8C8A  Backdrop=$0F Colour1=$05 Colour2=$15 Colour3=$26
-        .byte   $0F,$08,$0A,$1A ; 8C8E  Backdrop=$0F Colour1=$08 Colour2=$0A Colour3=$1A
+        .byte   $0F,$16,$26,$36 ; 8C82  Colour0=$0F Colour1=$16 Colour2=$26 Colour3=$36
+        .byte   $0F,$07,$16,$26 ; 8C86  Colour0=$0F Colour1=$07 Colour2=$16 Colour3=$26
+        .byte   $0F,$05,$15,$26 ; 8C8A  Colour0=$0F Colour1=$05 Colour2=$15 Colour3=$26
+        .byte   $0F,$08,$0A,$1A ; 8C8E  Colour0=$0F Colour1=$08 Colour2=$0A Colour3=$1A
 ; 122 TileDesc records — the level's Tile definitions. Index space shared with
 ; TankLvl7_TileAttrTable, which has the matching 122 entries.
 TankLvl7_TileDescTable:
@@ -1393,10 +1393,10 @@ TankLvl8_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 TankLvl8_BgPalette:
-        .byte   $0F,$05,$14,$35 ; 990C  Backdrop=$0F Colour1=$05 Colour2=$14 Colour3=$35
-        .byte   $0F,$05,$16,$36 ; 9910  Backdrop=$0F Colour1=$05 Colour2=$16 Colour3=$36
-        .byte   $0F,$02,$13,$23 ; 9914  Backdrop=$0F Colour1=$02 Colour2=$13 Colour3=$23
-        .byte   $0F,$05,$1B,$20 ; 9918  Backdrop=$0F Colour1=$05 Colour2=$1B Colour3=$20
+        .byte   $0F,$05,$14,$35 ; 990C  Colour0=$0F Colour1=$05 Colour2=$14 Colour3=$35
+        .byte   $0F,$05,$16,$36 ; 9910  Colour0=$0F Colour1=$05 Colour2=$16 Colour3=$36
+        .byte   $0F,$02,$13,$23 ; 9914  Colour0=$0F Colour1=$02 Colour2=$13 Colour3=$23
+        .byte   $0F,$05,$1B,$20 ; 9918  Colour0=$0F Colour1=$05 Colour2=$1B Colour3=$20
 ; 133 TileDesc records — the level's Tile definitions. Index space shared with
 ; TankLvl8_TileAttrTable, which has the matching 133 entries.
 TankLvl8_TileDescTable:
@@ -2106,10 +2106,10 @@ OvhdLvl1_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 OvhdLvl1_BgPalette:
-        .byte   $0F,$06,$17,$27 ; A61D  Backdrop=$0F Colour1=$06 Colour2=$17 Colour3=$27
-        .byte   $0F,$07,$19,$28 ; A621  Backdrop=$0F Colour1=$07 Colour2=$19 Colour3=$28
-        .byte   $0F,$07,$17,$19 ; A625  Backdrop=$0F Colour1=$07 Colour2=$17 Colour3=$19
-        .byte   $0F,$07,$00,$10 ; A629  Backdrop=$0F Colour1=$07 Colour2=$00 Colour3=$10
+        .byte   $0F,$06,$17,$27 ; A61D  Colour0=$0F Colour1=$06 Colour2=$17 Colour3=$27
+        .byte   $0F,$07,$19,$28 ; A621  Colour0=$0F Colour1=$07 Colour2=$19 Colour3=$28
+        .byte   $0F,$07,$17,$19 ; A625  Colour0=$0F Colour1=$07 Colour2=$17 Colour3=$19
+        .byte   $0F,$07,$00,$10 ; A629  Colour0=$0F Colour1=$07 Colour2=$00 Colour3=$10
 ; 76 TileDesc records — the level's Tile definitions. Index space shared with
 ; OvhdLvl1_TileAttrTable, which has the matching 76 entries.
 OvhdLvl1_TileDescTable:
@@ -2584,10 +2584,10 @@ OvhdLvl3_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 OvhdLvl3_BgPalette:
-        .byte   $0F,$07,$00,$10 ; AEF5  Backdrop=$0F Colour1=$07 Colour2=$00 Colour3=$10
-        .byte   $0F,$05,$14,$10 ; AEF9  Backdrop=$0F Colour1=$05 Colour2=$14 Colour3=$10
-        .byte   $0F,$0B,$1B,$2C ; AEFD  Backdrop=$0F Colour1=$0B Colour2=$1B Colour3=$2C
-        .byte   $0F,$16,$26,$36 ; AF01  Backdrop=$0F Colour1=$16 Colour2=$26 Colour3=$36
+        .byte   $0F,$07,$00,$10 ; AEF5  Colour0=$0F Colour1=$07 Colour2=$00 Colour3=$10
+        .byte   $0F,$05,$14,$10 ; AEF9  Colour0=$0F Colour1=$05 Colour2=$14 Colour3=$10
+        .byte   $0F,$0B,$1B,$2C ; AEFD  Colour0=$0F Colour1=$0B Colour2=$1B Colour3=$2C
+        .byte   $0F,$16,$26,$36 ; AF01  Colour0=$0F Colour1=$16 Colour2=$26 Colour3=$36
 ; 90 TileDesc records — the level's Tile definitions.
 OvhdLvl3_TileDescTable:
         .byte   $00,$00,$00,$00 ; AF05  TL=$00 TR=$00 BL=$00 BR=$00

@@ -1,4 +1,4 @@
-.macro MAC_06_pause_screen_1_of_2
+.macro MAC_07_pause_screen_1_of_2
 ; ----------------------------------------------------------------------------
 L_C55D: lda     #$00                            ; C55D
         jsr     BankSave_Switch                 ; C55F
@@ -9,73 +9,74 @@ L_C55D: lda     #$00                            ; C55D
 
 .endmacro
 
-; Interrupted by 64 macros:
-;   MAC__ungrouped_3_of_20
-;   MAC_05_game_screen__object_system_1_of_9
-;   MAC__ungrouped_4_of_20
-;   MAC_05_game_screen__hud
-;   MAC_05_game_screen__object_system_2_of_9
-;   MAC__ungrouped_5_of_20
-;   MAC_05_game_screen__viewport_1_of_2
+; Interrupted by 65 macros:
+;   MAC_10_ending_1_of_3
+;   MAC__ungrouped_2_of_19
+;   MAC_06_game_screen__object_system_1_of_9
+;   MAC__ungrouped_3_of_19
+;   MAC_06_game_screen__hud
+;   MAC_06_game_screen__object_system_2_of_9
+;   MAC__ungrouped_4_of_19
+;   MAC_06_game_screen__viewport_1_of_2
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_6_of_20
-;   MAC_05_game_screen__object_system_terrain
+;   MAC__ungrouped_5_of_19
+;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_7_of_20
-;   MAC_05_game_screen__viewport_2_of_2
-;   MAC__ungrouped_8_of_20
-;   MAC_05_game_screen__object_system_3_of_9
-;   MAC__ungrouped_9_of_20
-;   MAC_05_game_screen__object_system_4_of_9
-;   MAC__ungrouped_10_of_20
-;   MAC_05_game_screen__object_system_5_of_9
-;   MAC__ungrouped_11_of_20
+;   MAC__ungrouped_6_of_19
+;   MAC_06_game_screen__viewport_2_of_2
+;   MAC__ungrouped_7_of_19
+;   MAC_06_game_screen__object_system_3_of_9
+;   MAC__ungrouped_8_of_19
+;   MAC_06_game_screen__object_system_4_of_9
+;   MAC__ungrouped_9_of_19
+;   MAC_06_game_screen__object_system_5_of_9
+;   MAC__ungrouped_10_of_19
 ;   MAC_level_rendering
-;   MAC__ungrouped_12_of_20
+;   MAC__ungrouped_11_of_19
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_13_of_20
-;   MAC_05_game_screen__object_system_6_of_9
-;   MAC__ungrouped_14_of_20
-;   MAC_05_game_screen__object_system_7_of_9
+;   MAC__ungrouped_12_of_19
+;   MAC_06_game_screen__object_system_6_of_9
+;   MAC__ungrouped_13_of_19
+;   MAC_06_game_screen__object_system_7_of_9
 ;   MAC_math_2_of_5
-;   MAC_05_game_screen__object_system_8_of_9
+;   MAC_06_game_screen__object_system_8_of_9
 ;   MAC_math_3_of_5
-;   MAC_01b_demo_screen_2_of_2
-;   MAC_01a_story_sequence
+;   MAC_03_demo_screen_2_of_2
+;   MAC_02_story_sequence
 ;   MAC_mmc1
 ;   MAC_hardware_1_of_7
-;   MAC__ungrouped_15_of_20
+;   MAC__ungrouped_14_of_19
 ;   MAC_hardware_2_of_7
-;   MAC__ungrouped_16_of_20
+;   MAC__ungrouped_15_of_19
 ;   MAC_hardware_3_of_7
-;   MAC__ungrouped_17_of_20
+;   MAC__ungrouped_16_of_19
 ;   MAC_hardware_4_of_7
 ;   MAC_input
 ;   MAC_timing_2_of_3
 ;   MAC_drawing_background
 ;   MAC_hardware_5_of_7
-;   MAC__ungrouped_18_of_20
+;   MAC__ungrouped_17_of_19
 ;   MAC_math_4_of_5
-;   MAC_05_game_screen__object_system_9_of_9
+;   MAC_06_game_screen__object_system_9_of_9
 ;   MAC_math_5_of_5
-;   MAC__ungrouped_19_of_20
+;   MAC__ungrouped_18_of_19
 ;   MAC_rng
 ;   MAC_timing_3_of_3
 ;   MAC_hardware_6_of_7
 ;   MAC_drawing_sprites
-;   MAC__ungrouped_20_of_20
+;   MAC__ungrouped_19_of_19
 ;   MAC_drawing_metasprites
 ;   MAC_hardware_7_of_7
-;   MAC_ending_1_of_2
-;   MAC_00_title_screen_2_of_3
-;   MAC_03_intro_screen
-;   MAC_04b_area_entry_screen
-;   MAC_continue_screen
-;   MAC_04a_lives_left_screen
+;   MAC_10_ending_2_of_3
+;   MAC_01_title_screen_2_of_3
+;   MAC_04_intro_screen
+;   MAC_08_area_entry_screen
+;   MAC_09_continue_screen
+;   MAC_05_lives_left_screen
 
-.macro MAC_06_pause_screen_2_of_2
+.macro MAC_07_pause_screen_2_of_2
 ; ----------------------------------------------------------------------------
 L_F833: lda     #$10                            ; F833
         sta     $D4                             ; F835
@@ -235,6 +236,7 @@ L_F966: pla                                     ; F966
 
 ; ----------------------------------------------------------------------------
 L_F96F: .addr   L_F971                          ; F96F
+; #region PauseScreen_ItemSubTable — 16 bytes
 L_F971: .addr   L_F981                          ; F971
         .addr   L_F98D                          ; F973
         .addr   L_F991                          ; F975
@@ -243,6 +245,8 @@ L_F971: .addr   L_F981                          ; F971
         .addr   L_F9A4                          ; F97B
         .addr   L_F985                          ; F97D
         .addr   L_F9A0                          ; F97F
+; #endregion
+
 ; ----------------------------------------------------------------------------
 L_F981: .byte   $18,$08,$C2,$28                 ; F981
 L_F985: .byte   $0E,$04,$C2,$6A                 ; F985

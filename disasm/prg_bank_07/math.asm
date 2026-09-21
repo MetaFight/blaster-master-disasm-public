@@ -98,22 +98,22 @@ L_CFEC: .byte   $00,$02,$04,$06,$08,$0A,$0C,$0E ; CFEC
 .endmacro
 
 ; Interrupted by 16 macros:
-;   MAC__ungrouped_7_of_20
-;   MAC_05_game_screen__viewport_2_of_2
-;   MAC__ungrouped_8_of_20
-;   MAC_05_game_screen__object_system_3_of_9
-;   MAC__ungrouped_9_of_20
-;   MAC_05_game_screen__object_system_4_of_9
-;   MAC__ungrouped_10_of_20
-;   MAC_05_game_screen__object_system_5_of_9
-;   MAC__ungrouped_11_of_20
+;   MAC__ungrouped_6_of_19
+;   MAC_06_game_screen__viewport_2_of_2
+;   MAC__ungrouped_7_of_19
+;   MAC_06_game_screen__object_system_3_of_9
+;   MAC__ungrouped_8_of_19
+;   MAC_06_game_screen__object_system_4_of_9
+;   MAC__ungrouped_9_of_19
+;   MAC_06_game_screen__object_system_5_of_9
+;   MAC__ungrouped_10_of_19
 ;   MAC_level_rendering
-;   MAC__ungrouped_12_of_20
+;   MAC__ungrouped_11_of_19
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_13_of_20
-;   MAC_05_game_screen__object_system_6_of_9
-;   MAC__ungrouped_14_of_20
-;   MAC_05_game_screen__object_system_7_of_9
+;   MAC__ungrouped_12_of_19
+;   MAC_06_game_screen__object_system_6_of_9
+;   MAC__ungrouped_13_of_19
+;   MAC_06_game_screen__object_system_7_of_9
 
 .macro MAC_math_2_of_5
 ; ----------------------------------------------------------------------------
@@ -222,7 +222,7 @@ L_E1B7: jsr     Trig_SinByAngle                 ; E1B7
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC_05_game_screen__object_system_8_of_9
+;   MAC_06_game_screen__object_system_8_of_9
 
 .macro MAC_math_3_of_5
 ; ----------------------------------------------------------------------------
@@ -327,21 +327,21 @@ L_E202: .byte   $00,$03,$06,$09,$0C,$10,$13,$16 ; E202
 .endmacro
 
 ; Interrupted by 15 macros:
-;   MAC_01b_demo_screen_2_of_2
-;   MAC_01a_story_sequence
+;   MAC_03_demo_screen_2_of_2
+;   MAC_02_story_sequence
 ;   MAC_mmc1
 ;   MAC_hardware_1_of_7
-;   MAC__ungrouped_15_of_20
+;   MAC__ungrouped_14_of_19
 ;   MAC_hardware_2_of_7
-;   MAC__ungrouped_16_of_20
+;   MAC__ungrouped_15_of_19
 ;   MAC_hardware_3_of_7
-;   MAC__ungrouped_17_of_20
+;   MAC__ungrouped_16_of_19
 ;   MAC_hardware_4_of_7
 ;   MAC_input
 ;   MAC_timing_2_of_3
 ;   MAC_drawing_background
 ;   MAC_hardware_5_of_7
-;   MAC__ungrouped_18_of_20
+;   MAC__ungrouped_17_of_19
 
 .macro MAC_math_4_of_5
 ; ----------------------------------------------------------------------------
@@ -456,7 +456,7 @@ L_EB13: rts                                     ; EB13
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC_05_game_screen__object_system_9_of_9
+;   MAC_06_game_screen__object_system_9_of_9
 
 .macro MAC_math_5_of_5
 ; ----------------------------------------------------------------------------

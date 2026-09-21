@@ -5,10 +5,9 @@
 ; Types only: where each one lives (ObjectTable, PlayerSlot, …) is in ram.inc.
 ; Public tree: only `status: verified` fields are named; the rest are `.res` gaps.
 
-; Obj: The 14-byte record every active object occupies. 18 are packed at $0400 (the object
-; table); slot 0 is the player.
+; Obj: The 14-byte record every active object occupies.
 .struct Obj
-        Type          .byte   ; +$00 (byte)  Entity type / ObjType. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an AI handler.
+        Type          .byte   ; +$00 (byte)  Object Type. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an Object Handler.
         Facing        .byte   ; +$01 (byte)  Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
         Position_X_Lo .byte   ; +$02 (fixed44)  The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.
         Position_X_Hi .byte   ; +$03 (sbyte)  The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's X-position.
@@ -16,87 +15,80 @@
         Position_Y_Hi .byte   ; +$05 (sbyte)  The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
         Velocity_X    .byte   ; +$06 (sfixed44)  X velocity in px/frame (signed 4.4: swww.ffff).
         Velocity_Y    .byte   ; +$07 (sfixed44)  Y velocity in px/frame (signed 4.4: swww.ffff).
-        TileIndex     .byte   ; +$08 (byte)  Index of the tile this object currently occupies in the loaded tile-flag window LevelTileData ($0500). Used for collision, not rendering.
-        .res          1       ; +$09
-        Scratch0      .byte   ; +$0A (byte)  General-purpose per-handler byte (offset +10); meaning is entirely ObjType-defined.
-        Scratch1      .byte   ; +$0B (byte)  General-purpose per-handler byte (offset +11); meaning is entirely ObjType-defined.
-        Scratch2      .byte   ; +$0C (byte)  General-purpose per-handler byte (offset +12); meaning is entirely ObjType-defined.
-        Health        .byte   ; +$0D (byte)  HP for this entity.
+        TileIndex     .byte   ; +$08 (byte)  Index of the tile this object currently occupies in the loaded LevelTileData. Used for collision, not rendering.
+        IFrameCounter .byte   ; +$09 (byte)  Invincibility-frame counter. Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType. Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
+        Scratch0      .byte   ; +$0A (byte)  General-purpose storage. Its meaning is entirely ObjType-defined.
+        Scratch1      .byte   ; +$0B (byte)  General-purpose storage. Its meaning is entirely ObjType-defined.
+        Scratch2      .byte   ; +$0C (byte)  General-purpose storage. Its meaning is entirely ObjType-defined.
+        Health        .byte   ; +$0D (byte)  HP for this object.
 .endstruct
 
 ; OamEntry: One hardware sprite as the NES OAM lays it out: 4 bytes, Y / tile / attribute / X.
-; This is the PPU's own record format, not a game-defined one -- OAM_Staging_Buffer ($0600) is
-; an array of these, and OAM_BlitFromStaging ($EC73) copies whole records straight into the
-; $0200 OAM shadow, which the NMI DMAs to $2004 via $4014.
+; This is the PPU's own record format, not a game-defined one.
 .struct OamEntry
-        Screen_Y .byte   ; +$00 (byte)  Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value). $EF..$FF puts the sprite off-screen, which is how OAM_HideAll ($EC61) hides one.
-        Tile     .byte   ; +$01 (byte)  Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair, which is why the overhead section's CHR banks are assigned in even/odd pairs.
-        Attr     .byte   ; +$02 (byte)  Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip. Built by the metasprite renderer as ($44 & $C3) EOR ctrl, so the def's per-tile ctrl bits contribute the flips and the palette EOR.
+        Screen_Y .byte   ; +$00 (byte)  Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value).
+        Tile     .byte   ; +$01 (byte)  Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair.
+        Attr     .byte   ; +$02 (byte)  Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip.
         Screen_X .byte   ; +$03 (byte)  Screen X, left edge.
 .endstruct
 
 ; EnemyDesc: Shared 4-byte enemy descriptor record: TankEnemy_DescTable[30] ($A36A) /
 ; OvhdEnemy_DescTable[16] ($B326).
 .struct EnemyDesc
-        Health     .byte   ; +$00 (byte)  starting HP -- copied into LoadedObj_Health ($53) by *Enemy_Init.
+        Health     .byte   ; +$00 (byte)  Starting HP.
         .res       1       ; +$01
-        DropType   .byte   ; +$02 (byte)  pickup ObjType spawned on death ($2C Health-x1 / $2E Hover-Fuel-x1, etc.).
-        DropChance .byte   ; +$03 (byte)  drop occurs when Step_RNG's result < this value.
+        DropType   .byte   ; +$02 (byte)  Pickup ObjType spawned on death.
+        DropChance .byte   ; +$03 (byte)  Drop occurs when Step_RNG's result < this value.
 .endstruct
 
-; Contact: The 3-byte record in the contact table at $7C-$8D -- the hit-exchange channel
-; between the player's side and the enemies. Six records, one per object slot 0-5 (slot 0 =
-; the player, 1-5 = his shots/sub-weapons; the allocators keep enemies out of this range --
-; Obj_SpawnChild $D852 searches slots 6-17, Obj_TryCloneIntoEmptySlot $DF13 searches 8-15).
-; Enemies never occupy a record, they only scan it.
+; Contact: The 3-byte record in ContactTable. This is the hit-exchange channel between the
+; player and the enemies. Six records, one per object slot 0-5 (slot 0 = the player, 1-5 = his
+; shots/sub-weapons). Enemies never occupy a record, they only scan it.
 .struct Contact
         .res 3       ; +$00..+$02
 .endstruct
 
-; TileDesc: One Tile (USB, 16x16 px) as the 2x2 quad of 8x8 Patterns that draws it. Quadrant
-; order is ROW-MAJOR: quadrant q occupies column q&1, row q>>1, so the four bytes read TL TR
-; BL BR. (Ordering taken from the map walk that drives Trace6502 doorscan, whose tile
-; coordinates are checked against Sophia's own $49/$4B -- not from prose.) One record per
-; Tile; the record's index is also its index into the level's TileAttrTable.
+; TileDesc: One Tile (16x16 px) as the 2x2 quad of 8x8 Patterns that draws it. Quadrant order
+; is TL, TR, BL, BR.
 .struct TileDesc
-        TL   .byte   ; +$00 (byte)  top-left Pattern (CHR tile) index
-        TR   .byte   ; +$01 (byte)  top-right Pattern (CHR tile) index
-        BL   .byte   ; +$02 (byte)  bottom-left Pattern (CHR tile) index
-        BR   .byte   ; +$03 (byte)  bottom-right Pattern (CHR tile) index
+        TL   .byte   ; +$00 (byte)  top-left Pattern (CHR tile) index.
+        TR   .byte   ; +$01 (byte)  top-right Pattern (CHR tile) index.
+        BL   .byte   ; +$02 (byte)  bottom-left Pattern (CHR tile) index.
+        BR   .byte   ; +$03 (byte)  bottom-right Pattern (CHR tile) index.
 .endstruct
 
-; StructureDesc: One Structure (SB, 32x32 px) as the 2x2 quad of Tiles that draws it. Same
-; row-major TL TR BL BR ordering as TileDesc.
+; StructureDesc: One Structure (32x32 px) as the 2x2 quad of Tiles that draws it. Same TL, TR,
+; BL, BR ordering as TileDesc.
 .struct StructureDesc
-        TL   .byte   ; +$00 (byte)  top-left Tile index -- into this level's TileDescTable, and equally its TileAttrTable (one index space)
-        TR   .byte   ; +$01 (byte)  top-right Tile index (same index space)
-        BL   .byte   ; +$02 (byte)  bottom-left Tile index (same index space)
-        BR   .byte   ; +$03 (byte)  bottom-right Tile index (same index space)
+        TL   .byte   ; +$00 (byte)  top-left Tile index.
+        TR   .byte   ; +$01 (byte)  top-right Tile index.
+        BL   .byte   ; +$02 (byte)  bottom-left Tile index.
+        BR   .byte   ; +$03 (byte)  bottom-right Tile index.
 .endstruct
 
-; ChunkDesc: One Chunk (64x64 px) as the 2x2 quad of Structures that draws it. Same row-major
-; TL TR BL BR ordering as TileDesc. Chunk indices are what MapData's 32x32 grid holds.
+; ChunkDesc: One Chunk (64x64 px) as the 2x2 quad of Structures that draws it. Same TL, TR,
+; BL, BR ordering as TileDesc. Chunk indices are what MapData's 32x32 grid holds.
 .struct ChunkDesc
-        TL   .byte   ; +$00 (byte)  top-left Structure index -- into this level's StructureDescTable
-        TR   .byte   ; +$01 (byte)  top-right Structure index
-        BL   .byte   ; +$02 (byte)  bottom-left Structure index
-        BR   .byte   ; +$03 (byte)  bottom-right Structure index
+        TL   .byte   ; +$00 (byte)  top-left Structure index.
+        TR   .byte   ; +$01 (byte)  top-right Structure index.
+        BL   .byte   ; +$02 (byte)  bottom-left Structure index.
+        BR   .byte   ; +$03 (byte)  bottom-right Structure index.
 .endstruct
 
 ; BgPalette: Background palette: 4 NES master-palette indices.
 .struct BgPalette
-        Backdrop .byte   ; +$00 (byte)  entry 0 -- always treated as the backdrop colour.
-        Colour1  .byte   ; +$01 (byte)  entry 1
-        Colour2  .byte   ; +$02 (byte)  entry 2
-        Colour3  .byte   ; +$03 (byte)  entry 3
+        Colour0 .byte   ; +$00 (byte)  entry 0.
+        Colour1 .byte   ; +$01 (byte)  entry 1.
+        Colour2 .byte   ; +$02 (byte)  entry 2.
+        Colour3 .byte   ; +$03 (byte)  entry 3.
 .endstruct
 
 ; SpritePalette: Sprite palette: 4 NES master-palette indices.
 .struct SpritePalette
         Transparency .byte   ; +$00 (byte)  entry 0 -- always treated as transparent.
-        Colour1      .byte   ; +$01 (byte)  entry 1
-        Colour2      .byte   ; +$02 (byte)  entry 2
-        Colour3      .byte   ; +$03 (byte)  entry 3
+        Colour1      .byte   ; +$01 (byte)  entry 1.
+        Colour2      .byte   ; +$02 (byte)  entry 2.
+        Colour3      .byte   ; +$03 (byte)  entry 3.
 .endstruct
 
 ; BulletRenderParams: Render parameters for different orientations of the Gray/Red Bullets.

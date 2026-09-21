@@ -4,7 +4,7 @@ L_9B95: nop                                     ; 9B95
         nop                                     ; 9B96
         nop                                     ; 9B97
 L_9B98: lda     #$00                            ; 9B98
-        sta     $4F                             ; 9B9A
+        sta     LoadedObj + Obj::IFrameCounter  ; 9B9A
         lda     #$0A                            ; 9B9C
         sta     LoadedObj + Obj::Scratch1       ; 9B9E
         lda     #$4B                            ; 9BA0
@@ -47,7 +47,7 @@ L_9BD8: nop                                     ; 9BD8
         nop                                     ; 9BD9
         nop                                     ; 9BDA
 L_9BDB: lda     #$00                            ; 9BDB
-        sta     $4F                             ; 9BDD
+        sta     LoadedObj + Obj::IFrameCounter  ; 9BDD
         lda     #$0C                            ; 9BDF
         sta     LoadedObj + Obj::Scratch1       ; 9BE1
         lda     #$4D                            ; 9BE3

@@ -13,7 +13,7 @@ L_815F: lda     #$40                            ; 815F
         cmp     #$01                            ; 816D
         bne     L_8177                          ; 816F
         lda     #$04                            ; 8171
-        sta     $4F                             ; 8173
+        sta     LoadedObj + Obj::IFrameCounter  ; 8173
         bne     L_817A                          ; 8175
 L_8177: jmp     L_848F                          ; 8177
 
@@ -190,7 +190,7 @@ L_82B4: lda     LoadedObj + Obj::Velocity_Y     ; 82B4
 L_82C0: lda     #$01                            ; 82C0
         sta     LoadedObj + Obj::Scratch0       ; 82C2
         lda     #$08                            ; 82C4
-        sta     $4F                             ; 82C6
+        sta     LoadedObj + Obj::IFrameCounter  ; 82C6
         lda     LoadedObj + Obj::Velocity_Y     ; 82C8
         cmp     #$40                            ; 82CA
         bcs     L_82D5                          ; 82CC
@@ -435,7 +435,7 @@ L_848F: lda     #$08                            ; 848F
         jsr     L_85E2                          ; 849D
         lda     LoadedObj + Obj::Health         ; 84A0
         bne     L_84B6                          ; 84A2
-        lda     $4F                             ; 84A4
+        lda     LoadedObj + Obj::IFrameCounter  ; 84A4
         bne     L_84B6                          ; 84A6
 L_84A8: lda     #$1C                            ; 84A8
         sta     LoadedObj + Obj::Type           ; 84AA
@@ -590,7 +590,7 @@ L_85CA: .byte   $03,$00,$01,$02,$03,$00,$01,$02 ; 85CA
         .byte   $03,$00,$01,$02,$03,$03,$03,$03 ; 85D2
         .byte   $03,$03,$03,$04,$05,$05,$05,$05 ; 85DA
 ; ----------------------------------------------------------------------------
-L_85E2: lda     $4F                             ; 85E2
+L_85E2: lda     LoadedObj + Obj::IFrameCounter  ; 85E2
         bne     L_8621                          ; 85E4
         lda     LoadedObj + Obj::Health         ; 85E6
         beq     L_8621                          ; 85E8
@@ -618,7 +618,7 @@ L_8611: sta     LoadedObj + Obj::Health         ; 8611
         lda     #$01                            ; 8613
         sta     LoadedObj + Obj::Scratch0       ; 8615
         lda     #$20                            ; 8617
-        sta     $4F                             ; 8619
+        sta     LoadedObj + Obj::IFrameCounter  ; 8619
         lda     #$33                            ; 861B
         jsr     Enqueue_Sound_Command           ; 861D
 L_8620: rts                                     ; 8620
@@ -739,7 +739,7 @@ L_86EE: lda     $1C                             ; 86EE
         sta     $1E                             ; 86FE
         lda     #$00                            ; 8700
         sta     LoadedObj + Obj::Scratch1       ; 8702
-        sta     $4F                             ; 8704
+        sta     LoadedObj + Obj::IFrameCounter  ; 8704
         sta     $D9                             ; 8706
         lda     #$1E                            ; 8708
         ldx     LoadedObj + Obj::Facing         ; 870A

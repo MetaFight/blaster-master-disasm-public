@@ -846,7 +846,7 @@ L_BBC2: jmp     L_BBE2                          ; BBC2
 L_BBC5: lda     #$10                            ; BBC5
         sta     LoadedObj + Obj::Health         ; BBC7
         lda     #$00                            ; BBC9
-        sta     $4F                             ; BBCB
+        sta     LoadedObj + Obj::IFrameCounter  ; BBCB
         lda     #$40                            ; BBCD
         sta     LoadedObj + Obj::Scratch1       ; BBCF
         inc     LoadedObj + Obj::Type           ; BBD1
@@ -950,7 +950,7 @@ L_BC65: jmp     L_BC83                          ; BC65
 L_BC68: lda     #$10                            ; BC68
         sta     LoadedObj + Obj::Health         ; BC6A
         lda     #$00                            ; BC6C
-        sta     $4F                             ; BC6E
+        sta     LoadedObj + Obj::IFrameCounter  ; BC6E
         inc     LoadedObj + Obj::Type           ; BC70
         jsr     LC0FF                           ; BC72
         lda     LoadedObj + Obj::Facing         ; BC75
@@ -1089,7 +1089,7 @@ L_BD3E: lda     #$00                            ; BD3E
 L_BD4A: lda     #$10                            ; BD4A
         sta     LoadedObj + Obj::Health         ; BD4C
         lda     #$00                            ; BD4E
-        sta     $4F                             ; BD50
+        sta     LoadedObj + Obj::IFrameCounter  ; BD50
         sta     LoadedObj + Obj::Facing         ; BD52
         sta     LoadedObj + Obj::Scratch1       ; BD54
         jsr     LC1EC                           ; BD56

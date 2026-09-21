@@ -1,4 +1,4 @@
-.macro MAC_05_game_screen__hud
+.macro MAC_06_game_screen__hud
 ; ----------------------------------------------------------------------------
 L_C7D8: lda     L_C7F8                          ; C7D8
         sta     IndirectPtrLo                   ; C7DB

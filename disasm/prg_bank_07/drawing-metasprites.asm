@@ -42,7 +42,7 @@ L_F02F: lda     (IndirectPtrLo),y               ; F02F
         lda     (IndirectPtrLo),y               ; F033
         sta     IndirectPtrHi                   ; F035
         stx     IndirectPtrLo                   ; F037
-        lda     $4F                             ; F039
+        lda     LoadedObj + Obj::IFrameCounter  ; F039
         beq     L_F04B                          ; F03B
         lda     $44                             ; F03D
         and     #$FC                            ; F03F

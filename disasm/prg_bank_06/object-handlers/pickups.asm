@@ -214,7 +214,7 @@ _Exit:
 _AwardPayload:
         lda     PickUp_TargetAddress_LookUpPtr  ; 9CBD
         sta     IndirectPtrLo                   ; 9CC0
-        lda     PickUp_TargetAddress_LookUpPtr+1; 9CC2
+        lda     PickUp_TargetAddress_LookUpPtr+1 ; 9CC2
 ; Copy award target address into IndirectPtrLo/Hi.
         sta     IndirectPtrHi                   ; 9CC5
         lda     LoadedObj + Obj::Scratch0       ; 9CC7
@@ -291,6 +291,7 @@ PickUp_TargetAddress_LookUpPtr:
         .addr   PickUp_TargetAddress_LookUp     ; 9D1E
 ; 9 pointers: HP, HP, Gun, Gun, Hover, Hover, Homing, Lightning, MultiWarhead.
 PickUp_TargetAddress_LookUp:
+; #region PickUp_TargetAddress_LookUp — 18 bytes
         .addr   L040D                           ; 9D20
         .addr   L040D                           ; 9D22
         .addr   L00C3                           ; 9D24
@@ -300,6 +301,8 @@ PickUp_TargetAddress_LookUp:
         .addr   L06F0                           ; 9D2C
         .addr   L06F1                           ; 9D2E
         .addr   L06F2                           ; 9D30
+; #endregion
+
 ; ----------------------------------------------------------------------------
 ; 9 amounts: Px1=$20; Px4=$80; Gunx1=$20; Gunx4=$80; Hx1=$20; Hx4=$80;
 ; Homing/Thunder/Multi-Warhead=$14 (20 units).

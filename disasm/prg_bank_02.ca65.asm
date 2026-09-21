@@ -52,10 +52,10 @@ OvhdLvl5_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 OvhdLvl5_BgPalette:
-        .byte   $0F,$0A,$1A,$2A ; 802E  Backdrop=$0F Colour1=$0A Colour2=$1A Colour3=$2A
-        .byte   $0F,$02,$12,$21 ; 8032  Backdrop=$0F Colour1=$02 Colour2=$12 Colour3=$21
-        .byte   $0F,$0A,$11,$2C ; 8036  Backdrop=$0F Colour1=$0A Colour2=$11 Colour3=$2C
-        .byte   $0F,$16,$26,$36 ; 803A  Backdrop=$0F Colour1=$16 Colour2=$26 Colour3=$36
+        .byte   $0F,$0A,$1A,$2A ; 802E  Colour0=$0F Colour1=$0A Colour2=$1A Colour3=$2A
+        .byte   $0F,$02,$12,$21 ; 8032  Colour0=$0F Colour1=$02 Colour2=$12 Colour3=$21
+        .byte   $0F,$0A,$11,$2C ; 8036  Colour0=$0F Colour1=$0A Colour2=$11 Colour3=$2C
+        .byte   $0F,$16,$26,$36 ; 803A  Colour0=$0F Colour1=$16 Colour2=$26 Colour3=$36
 ; 112 TileDesc records — the level's Tile definitions. Index space shared with
 ; OvhdLvl5_TileAttrTable, which has the matching 112 entries.
 OvhdLvl5_TileDescTable:
@@ -566,10 +566,10 @@ OvhdLvl2_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 OvhdLvl2_BgPalette:
-        .byte   $0F,$0B,$00,$10 ; 89EA  Backdrop=$0F Colour1=$0B Colour2=$00 Colour3=$10
-        .byte   $0F,$07,$17,$10 ; 89EE  Backdrop=$0F Colour1=$07 Colour2=$17 Colour3=$10
-        .byte   $0F,$07,$00,$3B ; 89F2  Backdrop=$0F Colour1=$07 Colour2=$00 Colour3=$3B
-        .byte   $0F,$00,$10,$20 ; 89F6  Backdrop=$0F Colour1=$00 Colour2=$10 Colour3=$20
+        .byte   $0F,$0B,$00,$10 ; 89EA  Colour0=$0F Colour1=$0B Colour2=$00 Colour3=$10
+        .byte   $0F,$07,$17,$10 ; 89EE  Colour0=$0F Colour1=$07 Colour2=$17 Colour3=$10
+        .byte   $0F,$07,$00,$3B ; 89F2  Colour0=$0F Colour1=$07 Colour2=$00 Colour3=$3B
+        .byte   $0F,$00,$10,$20 ; 89F6  Colour0=$0F Colour1=$00 Colour2=$10 Colour3=$20
 ; 76 TileDesc records — the level's Tile definitions. NOTE: OvhdLvl2_TileAttrTable is only 75
 ; bytes, so the last 1 record(s) here have no attribute byte — either spare slots or a label
 ; boundary that needs narrowing (unresolved).
@@ -1045,10 +1045,10 @@ OvhdLvl6_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 OvhdLvl6_BgPalette:
-        .byte   $0F,$1C,$2C,$3C ; 9331  Backdrop=$0F Colour1=$1C Colour2=$2C Colour3=$3C
-        .byte   $0F,$0B,$1B,$2C ; 9335  Backdrop=$0F Colour1=$0B Colour2=$1B Colour3=$2C
-        .byte   $0F,$02,$22,$31 ; 9339  Backdrop=$0F Colour1=$02 Colour2=$22 Colour3=$31
-        .byte   $0F,$1C,$2C,$30 ; 933D  Backdrop=$0F Colour1=$1C Colour2=$2C Colour3=$30
+        .byte   $0F,$1C,$2C,$3C ; 9331  Colour0=$0F Colour1=$1C Colour2=$2C Colour3=$3C
+        .byte   $0F,$0B,$1B,$2C ; 9335  Colour0=$0F Colour1=$0B Colour2=$1B Colour3=$2C
+        .byte   $0F,$02,$22,$31 ; 9339  Colour0=$0F Colour1=$02 Colour2=$22 Colour3=$31
+        .byte   $0F,$1C,$2C,$30 ; 933D  Colour0=$0F Colour1=$1C Colour2=$2C Colour3=$30
 ; 76 TileDesc records — the level's Tile definitions. NOTE: OvhdLvl6_TileAttrTable is only 73
 ; bytes, so the last 3 record(s) here have no attribute byte — either spare slots or a label
 ; boundary that needs narrowing (unresolved).
@@ -1524,10 +1524,10 @@ OvhdLvl8_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 OvhdLvl8_BgPalette:
-        .byte   $0F,$09,$19,$04 ; 9C76  Backdrop=$0F Colour1=$09 Colour2=$19 Colour3=$04
-        .byte   $0F,$07,$17,$36 ; 9C7A  Backdrop=$0F Colour1=$07 Colour2=$17 Colour3=$36
-        .byte   $0F,$04,$19,$2A ; 9C7E  Backdrop=$0F Colour1=$04 Colour2=$19 Colour3=$2A
-        .byte   $0F,$05,$23,$14 ; 9C82  Backdrop=$0F Colour1=$05 Colour2=$23 Colour3=$14
+        .byte   $0F,$09,$19,$04 ; 9C76  Colour0=$0F Colour1=$09 Colour2=$19 Colour3=$04
+        .byte   $0F,$07,$17,$36 ; 9C7A  Colour0=$0F Colour1=$07 Colour2=$17 Colour3=$36
+        .byte   $0F,$04,$19,$2A ; 9C7E  Colour0=$0F Colour1=$04 Colour2=$19 Colour3=$2A
+        .byte   $0F,$05,$23,$14 ; 9C82  Colour0=$0F Colour1=$05 Colour2=$23 Colour3=$14
 ; 76 TileDesc records — the level's Tile definitions. NOTE: OvhdLvl8_TileAttrTable is only 75
 ; bytes, so the last 1 record(s) here have no attribute byte — either spare slots or a label
 ; boundary that needs narrowing (unresolved).
@@ -2051,10 +2051,10 @@ OvhdLvl4_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 OvhdLvl4_BgPalette:
-        .byte   $0F,$0A,$1B,$20 ; A67D  Backdrop=$0F Colour1=$0A Colour2=$1B Colour3=$20
-        .byte   $0F,$07,$17,$3A ; A681  Backdrop=$0F Colour1=$07 Colour2=$17 Colour3=$3A
-        .byte   $0F,$19,$10,$20 ; A685  Backdrop=$0F Colour1=$19 Colour2=$10 Colour3=$20
-        .byte   $0F,$0C,$1C,$31 ; A689  Backdrop=$0F Colour1=$0C Colour2=$1C Colour3=$31
+        .byte   $0F,$0A,$1B,$20 ; A67D  Colour0=$0F Colour1=$0A Colour2=$1B Colour3=$20
+        .byte   $0F,$07,$17,$3A ; A681  Colour0=$0F Colour1=$07 Colour2=$17 Colour3=$3A
+        .byte   $0F,$19,$10,$20 ; A685  Colour0=$0F Colour1=$19 Colour2=$10 Colour3=$20
+        .byte   $0F,$0C,$1C,$31 ; A689  Colour0=$0F Colour1=$0C Colour2=$1C Colour3=$31
 ; 96 TileDesc records — the level's Tile (USB) definitions. NOTE: OvhdLvl4_TileAttrTable is only
 ; 94 bytes, so the last 2 record(s) here have no attribute byte — either spare slots or a label
 ; boundary that needs narrowing (unresolved).
@@ -2560,10 +2560,10 @@ OvhdLvl7_MapPointers:
 ; ----------------------------------------------------------------------------
 ; 4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 OvhdLvl7_BgPalette:
-        .byte   $0F,$08,$1A,$2B ; B047  Backdrop=$0F Colour1=$08 Colour2=$1A Colour3=$2B
-        .byte   $0F,$03,$12,$22 ; B04B  Backdrop=$0F Colour1=$03 Colour2=$12 Colour3=$22
-        .byte   $0F,$07,$17,$10 ; B04F  Backdrop=$0F Colour1=$07 Colour2=$17 Colour3=$10
-        .byte   $0F,$05,$15,$27 ; B053  Backdrop=$0F Colour1=$05 Colour2=$15 Colour3=$27
+        .byte   $0F,$08,$1A,$2B ; B047  Colour0=$0F Colour1=$08 Colour2=$1A Colour3=$2B
+        .byte   $0F,$03,$12,$22 ; B04B  Colour0=$0F Colour1=$03 Colour2=$12 Colour3=$22
+        .byte   $0F,$07,$17,$10 ; B04F  Colour0=$0F Colour1=$07 Colour2=$17 Colour3=$10
+        .byte   $0F,$05,$15,$27 ; B053  Colour0=$0F Colour1=$05 Colour2=$15 Colour3=$27
 ; 92 TileDesc records — the level's Tile definitions. Only 91 are usable: OvhdLvl7_TileAttrTable
 ; shares this index space and is 91 bytes ($BA07-$BA61, ending where DemoInputStream_0_TankArea1
 ; begins), so the last record has no attribute byte. OvhdLvl2 and OvhdLvl8 have the same 1-record

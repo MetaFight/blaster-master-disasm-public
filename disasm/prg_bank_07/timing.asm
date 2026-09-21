@@ -11,37 +11,37 @@ L_CE4A: pha                                     ; CE4A
 .endmacro
 
 ; Interrupted by 33 macros:
-;   MAC__ungrouped_6_of_20
-;   MAC_05_game_screen__object_system_terrain
+;   MAC__ungrouped_5_of_19
+;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_7_of_20
-;   MAC_05_game_screen__viewport_2_of_2
-;   MAC__ungrouped_8_of_20
-;   MAC_05_game_screen__object_system_3_of_9
-;   MAC__ungrouped_9_of_20
-;   MAC_05_game_screen__object_system_4_of_9
-;   MAC__ungrouped_10_of_20
-;   MAC_05_game_screen__object_system_5_of_9
-;   MAC__ungrouped_11_of_20
+;   MAC__ungrouped_6_of_19
+;   MAC_06_game_screen__viewport_2_of_2
+;   MAC__ungrouped_7_of_19
+;   MAC_06_game_screen__object_system_3_of_9
+;   MAC__ungrouped_8_of_19
+;   MAC_06_game_screen__object_system_4_of_9
+;   MAC__ungrouped_9_of_19
+;   MAC_06_game_screen__object_system_5_of_9
+;   MAC__ungrouped_10_of_19
 ;   MAC_level_rendering
-;   MAC__ungrouped_12_of_20
+;   MAC__ungrouped_11_of_19
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_13_of_20
-;   MAC_05_game_screen__object_system_6_of_9
-;   MAC__ungrouped_14_of_20
-;   MAC_05_game_screen__object_system_7_of_9
+;   MAC__ungrouped_12_of_19
+;   MAC_06_game_screen__object_system_6_of_9
+;   MAC__ungrouped_13_of_19
+;   MAC_06_game_screen__object_system_7_of_9
 ;   MAC_math_2_of_5
-;   MAC_05_game_screen__object_system_8_of_9
+;   MAC_06_game_screen__object_system_8_of_9
 ;   MAC_math_3_of_5
-;   MAC_01b_demo_screen_2_of_2
-;   MAC_01a_story_sequence
+;   MAC_03_demo_screen_2_of_2
+;   MAC_02_story_sequence
 ;   MAC_mmc1
 ;   MAC_hardware_1_of_7
-;   MAC__ungrouped_15_of_20
+;   MAC__ungrouped_14_of_19
 ;   MAC_hardware_2_of_7
-;   MAC__ungrouped_16_of_20
+;   MAC__ungrouped_15_of_19
 ;   MAC_hardware_3_of_7
-;   MAC__ungrouped_17_of_20
+;   MAC__ungrouped_16_of_19
 ;   MAC_hardware_4_of_7
 ;   MAC_input
 
@@ -77,11 +77,11 @@ L_E949: lda     $FF                             ; E949
 ; Interrupted by 8 macros:
 ;   MAC_drawing_background
 ;   MAC_hardware_5_of_7
-;   MAC__ungrouped_18_of_20
+;   MAC__ungrouped_17_of_19
 ;   MAC_math_4_of_5
-;   MAC_05_game_screen__object_system_9_of_9
+;   MAC_06_game_screen__object_system_9_of_9
 ;   MAC_math_5_of_5
-;   MAC__ungrouped_19_of_20
+;   MAC__ungrouped_18_of_19
 ;   MAC_rng
 
 .macro MAC_timing_3_of_3
@@ -137,10 +137,10 @@ L_EB9F: lda     #$00                            ; EB9F
         jmp     L_EC34                          ; EBAD
 
 ; ----------------------------------------------------------------------------
-L_EBB0: lda     BG_Palette_0 + BgPalette::Backdrop ; EBB0
-        sta     BG_Palette_1 + BgPalette::Backdrop ; EBB2
-        sta     BG_Palette_2 + BgPalette::Backdrop ; EBB4
-        sta     BG_Palette_3 + BgPalette::Backdrop ; EBB6
+L_EBB0: lda     BG_Palette_0 + BgPalette::Colour0 ; EBB0
+        sta     BG_Palette_1 + BgPalette::Colour0 ; EBB2
+        sta     BG_Palette_2 + BgPalette::Colour0 ; EBB4
+        sta     BG_Palette_3 + BgPalette::Colour0 ; EBB6
         sta     Sprite_Palette_0 + SpritePalette::Transparency ; EBB8
         sta     Sprite_Palette_1 + SpritePalette::Transparency ; EBBA
         sta     Sprite_Palette_2 + SpritePalette::Transparency ; EBBC
@@ -152,7 +152,7 @@ L_EBB0: lda     BG_Palette_0 + BgPalette::Backdrop ; EBB0
         lda     #$00                            ; EBCB
         sta     $2006                           ; EBCD
         ldx     #$00                            ; EBD0
-L_EBD2: lda     Background_Palettes + BgPalette::Backdrop,x ; EBD2
+L_EBD2: lda     Background_Palettes + BgPalette::Colour0,x ; EBD2
         and     #$3F                            ; EBD4
         tay                                     ; EBD6
         lda     L_EBF4,y                        ; EBD7
@@ -167,6 +167,7 @@ L_EBD2: lda     Background_Palettes + BgPalette::Backdrop,x ; EBD2
         sta     $2006                           ; EBEC
         sta     $2006                           ; EBEF
         beq     L_EC34                          ; EBF2
+; #region _Nmi_DoWork__PaletteSanitizeTable — 64 bytes
 L_EBF4: .byte   $00,$01,$02,$03,$04,$05,$06,$07 ; EBF4
         .byte   $08,$09,$0A,$0B,$0C,$0F,$0F,$0F ; EBFC
         .byte   $10,$11,$12,$13,$14,$15,$16,$17 ; EC04
@@ -175,6 +176,8 @@ L_EBF4: .byte   $00,$01,$02,$03,$04,$05,$06,$07 ; EBF4
         .byte   $28,$29,$2A,$2B,$2C,$0F,$0F,$0F ; EC1C
         .byte   $30,$31,$32,$33,$34,$35,$36,$37 ; EC24
         .byte   $38,$39,$3A,$3B,$3C,$3D,$3E,$0F ; EC2C
+; #endregion
+
 ; ----------------------------------------------------------------------------
 L_EC34: jsr     L_F1CA                          ; EC34
         jsr     L_E6BF                          ; EC37

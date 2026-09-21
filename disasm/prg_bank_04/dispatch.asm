@@ -15,6 +15,7 @@ BankDispatch_TopTable_Bk04:
 ; handler ($8AF1); entry 2 (ObjType=$03) → ObjHandler_Ovhd_03_Jason ($8C38, OvhdJason main).
 ; Bank-06 counterpart: ObjDispatch_Table_Bk06 ($8002)
 ObjDispatch_Table_Bk04:
+; #region ObjDispatch_Table_Bk04 — 268 bytes
         .addr   L_8AF1                          ; 8006
         .addr   L_8AF1                          ; 8008
         .addr   L_8C38                          ; 800A
@@ -73,8 +74,8 @@ ObjDispatch_Table_Bk04:
         .addr   L_B65B                          ; 8074
         .addr   L_B6A6                          ; 8076
         .addr   L_B6AF                          ; 8078
-        .addr   ObjHandler_Ovhd_3B_Vertical_Camera_Init; 807A
-        .addr   ObjHandler_Ovhd_3C_Vertical_Camera_Main; 807C
+        .addr   ObjHandler_Ovhd_3B_Vertical_Camera_Init ; 807A
+        .addr   ObjHandler_Ovhd_3C_Vertical_Camera_Main ; 807C
         .addr   L_B782                          ; 807E
         .addr   L_B78F                          ; 8080
         .addr   L_B7E5                          ; 8082
@@ -149,5 +150,7 @@ ObjDispatch_Table_Bk04:
         .addr   L_8B96                          ; 810C
         .addr   L_8BE2                          ; 810E
         .addr   L_8BFD                          ; 8110
+; #endregion
+
 .endmacro
 

@@ -22,7 +22,7 @@
         ldy     #$00                            ; A2EC
         lda     ($A1),y                         ; A2EE
         sta     LoadedObj + Obj::Health         ; A2F0
-        sty     $4F                             ; A2F2
+        sty     LoadedObj + Obj::IFrameCounter  ; A2F2
 ; JSR $D2B9 init tile position; INC $46 → advance to the enemy's main handler.
         jsr     Obj_CalcTileIndex               ; A2F4
         inc     LoadedObj + Obj::Type           ; A2F7

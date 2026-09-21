@@ -62,7 +62,7 @@ L_88F1: lda     $C1                             ; 88F1
         pha                                     ; 8907
         lda     LoadedObj + Obj::Facing         ; 8908
         pha                                     ; 890A
-        lda     $4F                             ; 890B
+        lda     LoadedObj + Obj::IFrameCounter  ; 890B
         pha                                     ; 890D
         lda     $03D0                           ; 890E
         sta     LoadedObj + Obj::Position_X_Lo  ; 8911
@@ -75,7 +75,7 @@ L_88F1: lda     $C1                             ; 88F1
         lda     $03D5                           ; 8922
         sta     LoadedObj + Obj::Facing         ; 8925
         lda     #$00                            ; 8927
-        sta     $4F                             ; 8929
+        sta     LoadedObj + Obj::IFrameCounter  ; 8929
         lda     #$18                            ; 892B
         sta     $40                             ; 892D
         lda     #$10                            ; 892F
@@ -84,7 +84,7 @@ L_88F1: lda     $C1                             ; 88F1
         bne     L_893B                          ; 8936
         jsr     L_950D                          ; 8938
 L_893B: pla                                     ; 893B
-        sta     $4F                             ; 893C
+        sta     LoadedObj + Obj::IFrameCounter  ; 893C
         pla                                     ; 893E
         sta     LoadedObj + Obj::Facing         ; 893F
         pla                                     ; 8941
@@ -98,7 +98,7 @@ L_893B: pla                                     ; 893B
 L_894D: rts                                     ; 894D
 
 ; ----------------------------------------------------------------------------
-L_894E: lda     $4F                             ; 894E
+L_894E: lda     LoadedObj + Obj::IFrameCounter  ; 894E
         bne     L_89BB                          ; 8950
         lda     LoadedObj + Obj::Health         ; 8952
         bne     L_897B                          ; 8954
@@ -107,7 +107,7 @@ L_894E: lda     $4F                             ; 894E
         bne     L_8960                          ; 895A
         lda     LoadedObj + Obj::Scratch0       ; 895C
         beq     L_8964                          ; 895E
-L_8960: inc     $4F                             ; 8960
+L_8960: inc     LoadedObj + Obj::IFrameCounter  ; 8960
         bne     L_89BB                          ; 8962
 L_8964: jsr     ClearEnemySlots                           ; 8964
         lda     #$04                            ; 8967
@@ -140,7 +140,7 @@ L_8997: and     #$7F                            ; 8997
         ldx     #$02                            ; 899F
         stx     LoadedObj + Obj::Scratch0       ; 89A1
         ldx     #$20                            ; 89A3
-        stx     $4F                             ; 89A5
+        stx     LoadedObj + Obj::IFrameCounter  ; 89A5
         eor     #$FF                            ; 89A7
         clc                                     ; 89A9
         adc     #$01                            ; 89AA
@@ -249,7 +249,7 @@ L_8E94: jmp     Speed_Limit_Sub                           ; 8E94
 .macro MAC__ungrouped_4_of_9
 ; ----------------------------------------------------------------------------
 L_9707: ldx     #$00                            ; 9707
-        stx     $4F                             ; 9709
+        stx     LoadedObj + Obj::IFrameCounter  ; 9709
         lda     $BC                             ; 970B
         bpl     L_9711                          ; 970D
         ldx     #$FF                            ; 970F

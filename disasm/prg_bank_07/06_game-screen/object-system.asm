@@ -1,4 +1,4 @@
-.macro MAC_05_game_screen__object_system_1_of_9
+.macro MAC_06_game_screen__object_system_1_of_9
 ; ----------------------------------------------------------------------------
 L_C5B2: lda     LoadedObj + Obj::Position_X_Lo  ; C5B2
         sta     $03F5                           ; C5B4
@@ -60,10 +60,10 @@ L_C5FA: lda     $03F5                           ; C5FA
 .endmacro
 
 ; Interrupted by 2 macros:
-;   MAC__ungrouped_4_of_20
-;   MAC_05_game_screen__hud
+;   MAC__ungrouped_3_of_19
+;   MAC_06_game_screen__hud
 
-.macro MAC_05_game_screen__object_system_2_of_9
+.macro MAC_06_game_screen__object_system_2_of_9
 ; ----------------------------------------------------------------------------
 ; Copies an entire object slot (14 bytes) from the Object Table at $0400 into LoadedObj_*.
 .proc Obj_LoadFromSlot
@@ -86,8 +86,8 @@ L_C5FA: lda     $03F5                           ; C5FA
         sta     LoadedObj + Obj::Velocity_Y     ; C907
         lda     ObjectTable + Obj::TileIndex,y  ; C909
         sta     LoadedObj + Obj::TileIndex      ; C90C
-        lda     $0409,y                         ; C90E
-        sta     $4F                             ; C911
+        lda     ObjectTable + Obj::IFrameCounter,y ; C90E
+        sta     LoadedObj + Obj::IFrameCounter  ; C911
         lda     ObjectTable + Obj::Scratch0,y   ; C913
         sta     LoadedObj + Obj::Scratch0       ; C916
         lda     ObjectTable + Obj::Scratch1,y   ; C918
@@ -121,8 +121,8 @@ L_C5FA: lda     $03F5                           ; C5FA
         sta     ObjectTable + Obj::Velocity_Y,y ; C94F
         lda     LoadedObj + Obj::TileIndex      ; C952
         sta     ObjectTable + Obj::TileIndex,y  ; C954
-        lda     $4F                             ; C957
-        sta     $0409,y                         ; C959
+        lda     LoadedObj + Obj::IFrameCounter  ; C957
+        sta     ObjectTable + Obj::IFrameCounter,y ; C959
         lda     LoadedObj + Obj::Scratch0       ; C95C
         sta     ObjectTable + Obj::Scratch0,y   ; C95E
         lda     LoadedObj + Obj::Scratch1       ; C961
@@ -142,9 +142,9 @@ L_C977: ldx     ObjectSlot_Offset               ; C977
         lda     ObjectTable + Obj::Type,x       ; C979
         beq     L_C990                          ; C97C
         jsr     Obj_LoadFromSlot                ; C97E
-        lda     $4F                             ; C981
+        lda     LoadedObj + Obj::IFrameCounter  ; C981
         beq     L_C987                          ; C983
-        dec     $4F                             ; C985
+        dec     LoadedObj + Obj::IFrameCounter  ; C985
 L_C987: jsr     L_C9A4                          ; C987
         jsr     Obj_SaveToSlot                  ; C98A
         jsr     L_EC73                          ; C98D
@@ -157,7 +157,7 @@ L_C990: lda     ObjectSlot_Offset               ; C990
         cmp     #$12                            ; C99B
         bcc     L_C977                          ; C99D
         lda     #$00                            ; C99F
-        sta     $4F                             ; C9A1
+        sta     LoadedObj + Obj::IFrameCounter  ; C9A1
         rts                                     ; C9A3
 
 ; ----------------------------------------------------------------------------
@@ -193,19 +193,19 @@ L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
 .endmacro
 
 ; Interrupted by 11 macros:
-;   MAC__ungrouped_5_of_20
-;   MAC_05_game_screen__viewport_1_of_2
+;   MAC__ungrouped_4_of_19
+;   MAC_06_game_screen__viewport_1_of_2
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_6_of_20
-;   MAC_05_game_screen__object_system_terrain
+;   MAC__ungrouped_5_of_19
+;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_7_of_20
-;   MAC_05_game_screen__viewport_2_of_2
-;   MAC__ungrouped_8_of_20
+;   MAC__ungrouped_6_of_19
+;   MAC_06_game_screen__viewport_2_of_2
+;   MAC__ungrouped_7_of_19
 
-.macro MAC_05_game_screen__object_system_3_of_9
+.macro MAC_06_game_screen__object_system_3_of_9
 ; ----------------------------------------------------------------------------
 ; Read LevelTileData[LoadedObj.TileIndex].
 ; 
@@ -1033,9 +1033,9 @@ L_D643: ldx     LoadedObj + Obj::Facing         ; D643
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_9_of_20
+;   MAC__ungrouped_8_of_19
 
-.macro MAC_05_game_screen__object_system_4_of_9
+.macro MAC_06_game_screen__object_system_4_of_9
 ; ----------------------------------------------------------------------------
 ; Deal contact damage to the PLAYER specifically -- the single-record twin of HitboxScan_LockOn.
 ; 
@@ -1140,9 +1140,9 @@ _Miss:
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_10_of_20
+;   MAC__ungrouped_9_of_19
 
-.macro MAC_05_game_screen__object_system_5_of_9
+.macro MAC_06_game_screen__object_system_5_of_9
 ; ----------------------------------------------------------------------------
 ; Copies fields 1-13 (all except ObjType) from LoadedObj into another Object in the Object table.
 ; 
@@ -1269,7 +1269,7 @@ L_D7F2: sta     LoadedObject + Obj::Type,x      ; D7F2
 .proc Obj_Despawn
         lda     #$00                            ; D81C
         sta     LoadedObj + Obj::Type           ; D81E
-        sta     $4F                             ; D820
+        sta     LoadedObj + Obj::IFrameCounter  ; D820
         rts                                     ; D822
 .endproc
 
@@ -1346,13 +1346,13 @@ L_D86D: ldx     #$4C                            ; D86D
 .endmacro
 
 ; Interrupted by 5 macros:
-;   MAC__ungrouped_11_of_20
+;   MAC__ungrouped_10_of_19
 ;   MAC_level_rendering
-;   MAC__ungrouped_12_of_20
+;   MAC__ungrouped_11_of_19
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_13_of_20
+;   MAC__ungrouped_12_of_19
 
-.macro MAC_05_game_screen__object_system_6_of_9
+.macro MAC_06_game_screen__object_system_6_of_9
 ; ----------------------------------------------------------------------------
 ; Tries to clone the current LoadedObject into an empty ObjectTable slot.
 ; 
@@ -1764,9 +1764,9 @@ L_E05D: sta     $44                             ; E05D
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_14_of_20
+;   MAC__ungrouped_13_of_19
 
-.macro MAC_05_game_screen__object_system_7_of_9
+.macro MAC_06_game_screen__object_system_7_of_9
 ; ----------------------------------------------------------------------------
 L_E071: lda     LoadedObj + Obj::Scratch2       ; E071
         eor     #$FF                            ; E073
@@ -2056,7 +2056,7 @@ L_E152: lda     L0000                           ; E152
 ; Interrupted by 1 macro:
 ;   MAC_math_2_of_5
 
-.macro MAC_05_game_screen__object_system_8_of_9
+.macro MAC_06_game_screen__object_system_8_of_9
 ; ----------------------------------------------------------------------------
 ; Convert LoadedObj's Facing (heading) to a scaled Velocity vector
 ; 
@@ -2089,24 +2089,24 @@ L_E152: lda     L0000                           ; E152
 
 ; Interrupted by 17 macros:
 ;   MAC_math_3_of_5
-;   MAC_01b_demo_screen_2_of_2
-;   MAC_01a_story_sequence
+;   MAC_03_demo_screen_2_of_2
+;   MAC_02_story_sequence
 ;   MAC_mmc1
 ;   MAC_hardware_1_of_7
-;   MAC__ungrouped_15_of_20
+;   MAC__ungrouped_14_of_19
 ;   MAC_hardware_2_of_7
-;   MAC__ungrouped_16_of_20
+;   MAC__ungrouped_15_of_19
 ;   MAC_hardware_3_of_7
-;   MAC__ungrouped_17_of_20
+;   MAC__ungrouped_16_of_19
 ;   MAC_hardware_4_of_7
 ;   MAC_input
 ;   MAC_timing_2_of_3
 ;   MAC_drawing_background
 ;   MAC_hardware_5_of_7
-;   MAC__ungrouped_18_of_20
+;   MAC__ungrouped_17_of_19
 ;   MAC_math_4_of_5
 
-.macro MAC_05_game_screen__object_system_9_of_9
+.macro MAC_06_game_screen__object_system_9_of_9
 ; ----------------------------------------------------------------------------
 ; Clamps the signed velocity ZP[$00+X] into [-A, +A]
 ; 

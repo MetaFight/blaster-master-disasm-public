@@ -240,6 +240,7 @@ L_9967: clc                                     ; 9967
 
 ; ----------------------------------------------------------------------------
 L_996E: .addr   L_9970                          ; 996E
+; #region TankMissile_MetaSpriteTable — 16 bytes
 L_9970: .addr   L_9980                          ; 9970
         .addr   L9988                           ; 9972
         .addr   L9990                           ; 9974
@@ -248,6 +249,8 @@ L_9970: .addr   L_9980                          ; 9970
         .addr   L99A4                           ; 997A
         .addr   L99A8                           ; 997C
         .addr   L99AC                           ; 997E
+; #endregion
+
 ; ----------------------------------------------------------------------------
 L_9980: .byte   $00,$00,$01,$7F,$00,$08,$10,$56 ; 9980
 L9988:  .byte   $00,$00,$41,$6F,$F8,$00,$50,$55 ; 9988
@@ -269,7 +272,7 @@ L_99CC: nop                                     ; 99CC
         nop                                     ; 99CE
 L_99CF: lda     #$00                            ; 99CF
         sta     LoadedObj + Obj::Scratch0       ; 99D1
-        sta     $4F                             ; 99D3
+        sta     LoadedObj + Obj::IFrameCounter  ; 99D3
         lda     $10                             ; 99D5
         and     #$03                            ; 99D7
         cmp     #$03                            ; 99D9

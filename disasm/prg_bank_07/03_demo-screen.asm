@@ -1,4 +1,4 @@
-.macro MAC_01b_demo_screen_1_of_2
+.macro MAC_03_demo_screen_1_of_2
 ; ----------------------------------------------------------------------------
 L_C2DB: jsr     L_DEC2                          ; C2DB
         inc     $06F4                           ; C2DE
@@ -14,49 +14,145 @@ L_C2DB: jsr     L_DEC2                          ; C2DB
 
 ; ----------------------------------------------------------------------------
 L_C2F7: .byte   $08,$01,$0A,$03                 ; C2F7
+; ----------------------------------------------------------------------------
+L_C2FB: lda     $14                             ; C2FB
+        ora     #$08                            ; C2FD
+        sta     $14                             ; C2FF
+L_C301: lda     #$02                            ; C301
+        sta     $DD                             ; C303
+        jsr     L_CA14                          ; C305
+        lda     #$00                            ; C308
+        sta     $13                             ; C30A
+        sta     $10                             ; C30C
+        sta     Global_FrameCounter             ; C30E
+        sta     $06F0                           ; C310
+        sta     $06F1                           ; C313
+        sta     $06F2                           ; C316
+        sta     $92                             ; C319
+        lda     #$FF                            ; C31B
+        sta     $C1                             ; C31D
+        lda     #$03                            ; C31F
+        sta     LoadedObj + Obj::Type           ; C321
+        jsr     L_C5B2                          ; C323
+L_C326: lda     $06F3                           ; C326
+        asl     a                               ; C329
+        bne     L_C334                          ; C32A
+        lda     #$00                            ; C32C
+        jsr     L_E692                          ; C32E
+        jsr     L_F7D1                          ; C331
+L_C334: lda     #$00                            ; C334
+        sta     $C5                             ; C336
+        sta     $15                             ; C338
+        sta     $B7                             ; C33A
+        sta     Player_GunLevel                 ; C33C
+        sta     $90                             ; C33E
+        sta     LoadedObj + Obj::Velocity_X     ; C340
+        sta     LoadedObj + Obj::Velocity_Y     ; C342
+        sta     LoadedObj + Obj::Scratch0       ; C344
+        sta     LoadedObj + Obj::IFrameCounter  ; C346
+        sta     LoadedObj + Obj::Facing         ; C348
+        sta     Sophia_LookUpAnimation_Counter  ; C34A
+        sta     $8F                             ; C34C
+        lda     #$FF                            ; C34E
+        sta     LoadedObj + Obj::Health         ; C350
+        sta     $03FF                           ; C352
+        jsr     ClearEnemySlots                 ; C355
+        jsr     Clear_ThingSpawnHistory         ; C358
+        jsr     L_E243                          ; C35B
+L_C35E: lda     #$00                            ; C35E
+        sta     $03D6                           ; C360
+        sta     $8F                             ; C363
+        jsr     L_C6EF                          ; C365
+        jsr     L_C659                          ; C368
+        jsr     L_E6FA                          ; C36B
+        jsr     L_EA03                          ; C36E
+        lda     LoadedObj + Obj::Position_X_Lo  ; C371
+        sta     $1C                             ; C373
+        lda     LoadedObj + Obj::Position_X_Hi  ; C375
+        sta     $1D                             ; C377
+        sec                                     ; C379
+        lda     $1C                             ; C37A
+        sbc     #$00                            ; C37C
+        sta     $1C                             ; C37E
+        lda     $1D                             ; C380
+        sbc     #$08                            ; C382
+        sta     $1D                             ; C384
+        lda     LoadedObj + Obj::Position_Y_Lo  ; C386
+        sta     $1E                             ; C388
+        lda     LoadedObj + Obj::Position_Y_Hi  ; C38A
+        sta     $1F                             ; C38C
+        sec                                     ; C38E
+        lda     $1E                             ; C38F
+        sbc     #$80                            ; C391
+        sta     $1E                             ; C393
+        lda     $1F                             ; C395
+        sbc     #$07                            ; C397
+        sta     $1F                             ; C399
+        jsr     L_CC35                          ; C39B
+        jsr     L_DCFC                          ; C39E
+        lda     $C5                             ; C3A1
+        and     #$02                            ; C3A3
+        beq     L_C3AA                          ; C3A5
+        jsr     L_C742                          ; C3A7
+L_C3AA: jsr     L_C772                          ; C3AA
+        lda     #$00                            ; C3AD
+        sta     $8E                             ; C3AF
+        lda     #$00                            ; C3B1
+        sta     ObjectSlot_Offset               ; C3B3
+        jsr     Obj_SaveToSlot                  ; C3B5
+        jsr     L_C9D6                          ; C3B8
+        jsr     L_D7B6                          ; C3BB
+        jsr     L_CE0F                          ; C3BE
+        lda     $C5                             ; C3C1
+        bit     L_E6E1                          ; C3C3
+        beq     L_C3D5                          ; C3C6
+        lda     #$00                            ; C3C8
+        sta     ObjectSlot_Offset               ; C3CA
+        jsr     Obj_LoadFromSlot                ; C3CC
+        jsr     L0000                           ; C3CF
+        jmp     L_C465                          ; C3D2
+
 .endmacro
 
-; Interrupted by 38 macros:
-;   MAC_02_init
-;   MAC_05_game_screen__game_loop_1_of_2
-;   MAC__ungrouped_1_of_20
-;   MAC_05_game_screen__game_loop_2_of_2
-;   MAC__ungrouped_2_of_20
-;   MAC_06_pause_screen_1_of_2
-;   MAC__ungrouped_3_of_20
-;   MAC_05_game_screen__object_system_1_of_9
-;   MAC__ungrouped_4_of_20
-;   MAC_05_game_screen__hud
-;   MAC_05_game_screen__object_system_2_of_9
-;   MAC__ungrouped_5_of_20
-;   MAC_05_game_screen__viewport_1_of_2
+; Interrupted by 36 macros:
+;   MAC_06_game_screen__game_loop
+;   MAC__ungrouped_1_of_19
+;   MAC_07_pause_screen_1_of_2
+;   MAC_10_ending_1_of_3
+;   MAC__ungrouped_2_of_19
+;   MAC_06_game_screen__object_system_1_of_9
+;   MAC__ungrouped_3_of_19
+;   MAC_06_game_screen__hud
+;   MAC_06_game_screen__object_system_2_of_9
+;   MAC__ungrouped_4_of_19
+;   MAC_06_game_screen__viewport_1_of_2
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_6_of_20
-;   MAC_05_game_screen__object_system_terrain
+;   MAC__ungrouped_5_of_19
+;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_7_of_20
-;   MAC_05_game_screen__viewport_2_of_2
-;   MAC__ungrouped_8_of_20
-;   MAC_05_game_screen__object_system_3_of_9
-;   MAC__ungrouped_9_of_20
-;   MAC_05_game_screen__object_system_4_of_9
-;   MAC__ungrouped_10_of_20
-;   MAC_05_game_screen__object_system_5_of_9
-;   MAC__ungrouped_11_of_20
+;   MAC__ungrouped_6_of_19
+;   MAC_06_game_screen__viewport_2_of_2
+;   MAC__ungrouped_7_of_19
+;   MAC_06_game_screen__object_system_3_of_9
+;   MAC__ungrouped_8_of_19
+;   MAC_06_game_screen__object_system_4_of_9
+;   MAC__ungrouped_9_of_19
+;   MAC_06_game_screen__object_system_5_of_9
+;   MAC__ungrouped_10_of_19
 ;   MAC_level_rendering
-;   MAC__ungrouped_12_of_20
+;   MAC__ungrouped_11_of_19
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_13_of_20
-;   MAC_05_game_screen__object_system_6_of_9
-;   MAC__ungrouped_14_of_20
-;   MAC_05_game_screen__object_system_7_of_9
+;   MAC__ungrouped_12_of_19
+;   MAC_06_game_screen__object_system_6_of_9
+;   MAC__ungrouped_13_of_19
+;   MAC_06_game_screen__object_system_7_of_9
 ;   MAC_math_2_of_5
-;   MAC_05_game_screen__object_system_8_of_9
+;   MAC_06_game_screen__object_system_8_of_9
 ;   MAC_math_3_of_5
 
-.macro MAC_01b_demo_screen_2_of_2
+.macro MAC_03_demo_screen_2_of_2
 ; ----------------------------------------------------------------------------
 L_E243: lda     $06F3                           ; E243
         and     #$7F                            ; E246
