@@ -11,23 +11,24 @@ L_CDBA: jsr     L_DEC2                          ; CDBA
 L_CDC8: .byte   $06,$04,$02,$13,$07,$05,$37,$2B ; CDC8
 .endmacro
 
-; Interrupted by 16 macros:
+; Interrupted by 17 macros:
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_5_of_19
+;   MAC__ungrouped_3_of_17
 ;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_6_of_19
+;   MAC__ungrouped_4_of_17
 ;   MAC_06_game_screen__viewport_2_of_2
-;   MAC__ungrouped_7_of_19
-;   MAC_06_game_screen__object_system_3_of_9
-;   MAC__ungrouped_8_of_19
-;   MAC_06_game_screen__object_system_4_of_9
-;   MAC__ungrouped_9_of_19
-;   MAC_06_game_screen__object_system_5_of_9
-;   MAC__ungrouped_10_of_19
+;   MAC__ungrouped_5_of_17
+;   MAC_06_game_screen__object_system_2_of_8
+;   MAC__ungrouped_6_of_17
+;   MAC_06_game_screen__object_system_3_of_8
+;   MAC__ungrouped_7_of_17
+;   MAC_06_game_screen__object_system_4_of_8
+;   MAC__ungrouped_8_of_17
 ;   MAC_level_rendering
-;   MAC__ungrouped_11_of_19
+;   MAC__ungrouped_9_of_17
+;   MAC_transitions_3_of_3
 
 .macro MAC_sound_2_of_2
 ; ----------------------------------------------------------------------------

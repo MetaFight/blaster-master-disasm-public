@@ -114,42 +114,40 @@ L_C3AA: jsr     L_C772                          ; C3AA
 
 .endmacro
 
-; Interrupted by 36 macros:
+; Interrupted by 34 macros:
 ;   MAC_06_game_screen__game_loop
-;   MAC__ungrouped_1_of_19
-;   MAC_07_pause_screen_1_of_2
-;   MAC_10_ending_1_of_3
-;   MAC__ungrouped_2_of_19
-;   MAC_06_game_screen__object_system_1_of_9
-;   MAC__ungrouped_3_of_19
+;   MAC_transitions_1_of_3
+;   MAC__ungrouped_1_of_17
+;   MAC_transitions_2_of_3
 ;   MAC_06_game_screen__hud
-;   MAC_06_game_screen__object_system_2_of_9
-;   MAC__ungrouped_4_of_19
+;   MAC_06_game_screen__object_system_1_of_8
+;   MAC__ungrouped_2_of_17
 ;   MAC_06_game_screen__viewport_1_of_2
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_5_of_19
+;   MAC__ungrouped_3_of_17
 ;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_6_of_19
+;   MAC__ungrouped_4_of_17
 ;   MAC_06_game_screen__viewport_2_of_2
-;   MAC__ungrouped_7_of_19
-;   MAC_06_game_screen__object_system_3_of_9
-;   MAC__ungrouped_8_of_19
-;   MAC_06_game_screen__object_system_4_of_9
-;   MAC__ungrouped_9_of_19
-;   MAC_06_game_screen__object_system_5_of_9
-;   MAC__ungrouped_10_of_19
+;   MAC__ungrouped_5_of_17
+;   MAC_06_game_screen__object_system_2_of_8
+;   MAC__ungrouped_6_of_17
+;   MAC_06_game_screen__object_system_3_of_8
+;   MAC__ungrouped_7_of_17
+;   MAC_06_game_screen__object_system_4_of_8
+;   MAC__ungrouped_8_of_17
 ;   MAC_level_rendering
-;   MAC__ungrouped_11_of_19
+;   MAC__ungrouped_9_of_17
+;   MAC_transitions_3_of_3
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_12_of_19
-;   MAC_06_game_screen__object_system_6_of_9
-;   MAC__ungrouped_13_of_19
-;   MAC_06_game_screen__object_system_7_of_9
+;   MAC__ungrouped_10_of_17
+;   MAC_06_game_screen__object_system_5_of_8
+;   MAC__ungrouped_11_of_17
+;   MAC_06_game_screen__object_system_6_of_8
 ;   MAC_math_2_of_5
-;   MAC_06_game_screen__object_system_8_of_9
+;   MAC_06_game_screen__object_system_7_of_8
 ;   MAC_math_3_of_5
 
 .macro MAC_03_demo_screen_2_of_2

@@ -321,10 +321,10 @@ L_CDB9: rts                                     ; CDB9
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_5_of_19
+;   MAC__ungrouped_3_of_17
 ;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_6_of_19
+;   MAC__ungrouped_4_of_17
 
 .macro MAC_06_game_screen__viewport_2_of_2
 ; ----------------------------------------------------------------------------

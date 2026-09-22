@@ -28,7 +28,7 @@ Step_RNG:            ; $EB71
 
 i.e. **`$13 := (5 · $13 − 1) mod 256`**, returning the new byte in `A`.
 
-- **Seed:** `LevelInit` (`$C301`) stores `#$00 → $13` at `$C30A`, so the sequence restarts at each
+- **Seed:** `Initialise_Section` (`$C301`) stores `#$00 → $13` at `$C30A`, so the sequence restarts at each
   area load. From `$00` the first outputs are `$FF, $FA, $E1, …`.
 - **State persists** across the whole area and only advances when a caller steps it, so the
   stream is deterministic given call timing (the usual NES-RNG property).
@@ -56,7 +56,7 @@ Consumers typically read:
 
 ## Secondary use — frame pacing
 
-`StorySequence_FramePaced` (`$E4A6`) steps the same counter and stores the result in `$58`
+`Start_StorySequence_FramePaced` (`$E4A6`) steps the same counter and stores the result in `$58`
 as a **frame-pacing tick** for story-sequence timing — the byte is reused there as a cheap
 changing value rather than as gameplay randomness.
 

@@ -103,3 +103,9 @@
         OamAttributes .byte   ; +$01 (byte)  OAM Attributes.
 .endstruct
 
+; TunnelFieldPair: Origin/Destination field pair for Tunnel transitions.
+.struct TunnelFieldPair
+        Origin      .byte   ; +$00 (byte)  Origin field.
+        Destination .byte   ; +$01 (byte)  Destination field.
+.endstruct
+

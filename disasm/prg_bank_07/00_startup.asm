@@ -34,5 +34,5 @@ L_C267: sta     L0000,x                         ; C267
         lda     #$FF                            ; C299
         sta     $06F4                           ; C29B
 .endmacro
-; Falls through into TitleScreen_Initialise, the start of group "01_title-screen" (MAC_01_title_screen_1_of_3).
+; Falls through into Start_TitleScreen_WithTimeoutToStory, the start of group "01_title-screen" (MAC_01_title_screen_1_of_3).
 

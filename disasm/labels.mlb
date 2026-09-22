@@ -3512,6 +3512,7 @@ NesPrgRom:1C454:L_C454
 NesPrgRom:1C458:L_C458
 NesPrgRom:1C45F:L_C45F
 NesPrgRom:1C465:L_C465
+NesPrgRom:1C46E:L_C46E
 NesPrgRom:1C475:L_C475
 NesPrgRom:1C47C:L_C47C
 NesPrgRom:1C483:L_C483
@@ -3568,13 +3569,13 @@ NesPrgRom:1C772:L_C772
 NesPrgRom:1C77E:L_C77E
 NesPrgRom:1C785:L_C785
 NesPrgRom:1C789:L_C789
-NesPrgRom:1C78F:L_C78F
-NesPrgRom:1C79D:L_C79D
-NesPrgRom:1C79F:L_C79F
-NesPrgRom:1C7A8:L_C7A8
-NesPrgRom:1C7BA:L_C7BA
-NesPrgRom:1C7BE:L_C7BE
-NesPrgRom:1C7C7:L_C7C7
+NesPrgRom:1C78F:Tunnel_FindAndFollowExit:Tries to find a matching Exit Tunnel for an Original Tunnel at the Player's current position.\n\nInput:\n  Current_Section\n  LoadedObj + Obj::Position_X_Hi\n  LoadedObj + Obj::Position_Y_Hi\n\nOutput:\n  on Exit found,\n    Current_Section = Exit Tunnel section\n    LoadedObj + Obj::Position_X_Hi = Exit Tunnel X\n    LoadedObj + Obj::Position_Y_Hi = Exit Tunnel Y\n  on Exit not found,\n    Input values left unmodified.
+NesPrgRom:1C79D:_Tunnel_FindAndFollowExit__CopyPtrLoop:Copy the 3 LE sub-table pointers into $00-$05 for the tunnel-pair search.
+NesPrgRom:1C7A8:_Tunnel_FindAndFollowExit__MatchLoop:Search the tunnel origin/destination pairs for an origin match.
+NesPrgRom:1C7BA:_Tunnel_FindAndFollowExit__NextEntry:Advance to next tunnel-pair entry.
+NesPrgRom:1C7BE:_DEAD_Tunnel_FindAndFollowExit__NextPage:Callerless 9-byte block — the cut page-crossing continuation of Tunnel_FindAndFollowExit's tunnel-pair search. $01/$03/$05 are the high bytes of the three ZP sub-table pointers ($00-$05), so it advances all three arrays by one page and re-enters the scan loop. The live loop instead returns when the Y index wraps ($C7BD), capping the search at 256 entries — that return reads as a one-byte patch that severed this fall-through. Never executed.
+NesPrgRom:1C7C7:_Tunnel_FindAndFollowExit__Match:Make the Exit Tunnel values active.
+NesPrgRom:1C7CA::Each pair sits at offsets 2k/2k+1 within its table, so flipping bit 0 of the offset in Y selects the other end of the pair: the Exit Tunnel.
 NesPrgRom:1C7D8:L_C7D8
 NesPrgRom:1C7F5:L_C7F5
 NesPrgRom:1C7F8:L_C7F8
@@ -4048,6 +4049,8 @@ NesPrgRom:1DD6F:L_DD6F
 NesPrgRom:1DD76:L_DD76
 NesPrgRom:1DD78:L_DD78
 NesPrgRom:1DD7E:L_DD7E
+NesPrgRom:1DDEA:L_DDEA
+NesPrgRom:1DE56:L_DE56
 NesPrgRom:1DEC2:L_DEC2
 NesPrgRom:1DECC:Enqueue_Sound_Command:Insert value (A) into first empty or matching slot of Sound_Command_Queue ($0370-$0377); 8-slot scan from slot 7 down
 NesPrgRom:1DECF::Save X to stack

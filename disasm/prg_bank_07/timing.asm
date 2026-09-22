@@ -10,38 +10,39 @@ L_CE4A: pha                                     ; CE4A
 
 .endmacro
 
-; Interrupted by 33 macros:
-;   MAC__ungrouped_5_of_19
+; Interrupted by 34 macros:
+;   MAC__ungrouped_3_of_17
 ;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_6_of_19
+;   MAC__ungrouped_4_of_17
 ;   MAC_06_game_screen__viewport_2_of_2
-;   MAC__ungrouped_7_of_19
-;   MAC_06_game_screen__object_system_3_of_9
-;   MAC__ungrouped_8_of_19
-;   MAC_06_game_screen__object_system_4_of_9
-;   MAC__ungrouped_9_of_19
-;   MAC_06_game_screen__object_system_5_of_9
-;   MAC__ungrouped_10_of_19
+;   MAC__ungrouped_5_of_17
+;   MAC_06_game_screen__object_system_2_of_8
+;   MAC__ungrouped_6_of_17
+;   MAC_06_game_screen__object_system_3_of_8
+;   MAC__ungrouped_7_of_17
+;   MAC_06_game_screen__object_system_4_of_8
+;   MAC__ungrouped_8_of_17
 ;   MAC_level_rendering
-;   MAC__ungrouped_11_of_19
+;   MAC__ungrouped_9_of_17
+;   MAC_transitions_3_of_3
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_12_of_19
-;   MAC_06_game_screen__object_system_6_of_9
-;   MAC__ungrouped_13_of_19
-;   MAC_06_game_screen__object_system_7_of_9
+;   MAC__ungrouped_10_of_17
+;   MAC_06_game_screen__object_system_5_of_8
+;   MAC__ungrouped_11_of_17
+;   MAC_06_game_screen__object_system_6_of_8
 ;   MAC_math_2_of_5
-;   MAC_06_game_screen__object_system_8_of_9
+;   MAC_06_game_screen__object_system_7_of_8
 ;   MAC_math_3_of_5
 ;   MAC_03_demo_screen_2_of_2
 ;   MAC_02_story_sequence
 ;   MAC_mmc1
 ;   MAC_hardware_1_of_7
-;   MAC__ungrouped_14_of_19
+;   MAC__ungrouped_12_of_17
 ;   MAC_hardware_2_of_7
-;   MAC__ungrouped_15_of_19
+;   MAC__ungrouped_13_of_17
 ;   MAC_hardware_3_of_7
-;   MAC__ungrouped_16_of_19
+;   MAC__ungrouped_14_of_17
 ;   MAC_hardware_4_of_7
 ;   MAC_input
 
@@ -77,11 +78,11 @@ L_E949: lda     $FF                             ; E949
 ; Interrupted by 8 macros:
 ;   MAC_drawing_background
 ;   MAC_hardware_5_of_7
-;   MAC__ungrouped_17_of_19
+;   MAC__ungrouped_15_of_17
 ;   MAC_math_4_of_5
-;   MAC_06_game_screen__object_system_9_of_9
+;   MAC_06_game_screen__object_system_8_of_8
 ;   MAC_math_5_of_5
-;   MAC__ungrouped_18_of_19
+;   MAC__ungrouped_16_of_17
 ;   MAC_rng
 
 .macro MAC_timing_3_of_3
