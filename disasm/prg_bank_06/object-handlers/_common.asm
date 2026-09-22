@@ -13,7 +13,7 @@
 ;   LoadedObj's Health is set from EnemyDesc::Health
 ;   LoadedObj's IFrameCounter is set to 0
 ;   LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's
-;     own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field
+;     own position ($49/$4B vs the viewport), NOT from EnemyDesc, which holds no tile field
 ;   ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler
 ;     need not advance $46 itself
 .proc TankEnemy_Init

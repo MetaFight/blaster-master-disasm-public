@@ -142,16 +142,16 @@ L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
 
 .macro MAC_06_game_screen__object_system_2_of_8
 ; ----------------------------------------------------------------------------
-; Read LevelTileData[LoadedObj.TileIndex].
+; Read ScreenTileMap[LoadedObj.TileIndex].
 ; 
 ; Input:
 ;   LoadedObj.TileIndex
 ; 
 ; Output:
-;   A = tile data from LevelTileData
+;   A = tile data from ScreenTileMap
 .proc Obj_ReadTile
         ldx     LoadedObj + Obj::TileIndex      ; D2AB
-        lda     LevelTileData,x                 ; D2AD
+        lda     ScreenTileMap + TileAttributes::Flags,x ; D2AD
         rts                                     ; D2B0
 .endproc
 
@@ -171,12 +171,12 @@ L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
 ; A (step offset) + $4E → cell index; A = $0500[index] = the look-ahead tile.
         adc     LoadedObj + Obj::TileIndex      ; D2B2
         tax                                     ; D2B4
-        lda     LevelTileData,x                 ; D2B5
+        lda     ScreenTileMap + TileAttributes::Flags,x ; D2B5
         rts                                     ; D2B8
 .endproc
 
 ; ----------------------------------------------------------------------------
-; Computes the index (+TilemapBaseIndex) into the LevelTileData tile map corresponding to
+; Computes the index (+TilemapBaseIndex) into the ScreenTileMap tile map corresponding to
 ; LoadedObj's current position.
 .proc Obj_CalcTileIndex
         lda     LoadedObj + Obj::Position_Y_Hi  ; D2B9
@@ -205,7 +205,7 @@ L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
         clc                                     ; D2D2
 ; This adds the X component (how far ito the row) to TileIndex
 ; 
-; TileIndex = (Obj.X - Camera.X) + TileIndex
+; TileIndex = (Obj.X - Viewport.X) + TileIndex
         adc     LoadedObj + Obj::TileIndex      ; D2D3
         clc                                     ; D2D5
         adc     $3A                             ; D2D6
@@ -458,7 +458,7 @@ _TileLeft:
 ; bit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.
 ; Otherwise, check top/bottom Y edge tiles
 _ReadTile:
-        lda     LevelTileData,x                 ; D3AC
+        lda     ScreenTileMap + TileAttributes::Flags,x ; D3AC
         bmi     _Exit                           ; D3AF
 ; BOTTOM-edge Y cross-check:
 ; If (Position_Y_Lo + the half-height) > $FF the bottom edge has spilled into the next row, so
@@ -475,7 +475,7 @@ _CheckBottom:
         clc                                     ; D3BD
         adc     #$11                            ; D3BE
         tay                                     ; D3C0
-        lda     LevelTileData,y                 ; D3C1
+        lda     ScreenTileMap + TileAttributes::Flags,y ; D3C1
         bmi     _Exit                           ; D3C4
 ; TOP-edge Y cross-check:
 ; Same as bottom-edge check, but with subtraction.
@@ -490,7 +490,7 @@ _CheckTop:
         sec                                     ; D3D2
         sbc     #$11                            ; D3D3
         tay                                     ; D3D5
-        lda     LevelTileData,y                 ; D3D6
+        lda     ScreenTileMap + TileAttributes::Flags,y ; D3D6
         bmi     _Exit                           ; D3D9
 ; No overlap detected.  Return Z = 1.
 _NoCollide:
@@ -576,7 +576,7 @@ _TileAbove:
 ; bit 7 being set means the tile is solid.  In this case, we use the escape hatch via BMI.
 ; Otherwise, check left/right X edge tiles
 _ReadTile:
-        lda     LevelTileData,x                 ; D418
+        lda     ScreenTileMap + TileAttributes::Flags,x ; D418
         bmi     _Exit                           ; D41B
 ; RIGHT-edge X cross-check:
 ; If (Position_X_Lo + the half-width) > $FF the right edge has spilled into the next column, so
@@ -590,7 +590,7 @@ _CheckRight:
         cmp     #$20                            ; D424
         bcc     _CheckLeft                      ; D426
         inx                                     ; D428
-        lda     LevelTileData,x                 ; D429
+        lda     ScreenTileMap + TileAttributes::Flags,x ; D429
         bmi     _Exit                           ; D42C
         dex                                     ; D42E
 ; LEFT-edge X cross-check:
@@ -603,7 +603,7 @@ _CheckLeft:
         cmp     #$E0                            ; D436
         bcs     _NoCollide                      ; D438
         dex                                     ; D43A
-        lda     LevelTileData,x                 ; D43B
+        lda     ScreenTileMap + TileAttributes::Flags,x ; D43B
         bmi     _Exit                           ; D43E
 ; No overlap detected.  Return Z = 1.
 _NoCollide:
@@ -796,7 +796,7 @@ L_D547: lda     LoadedObj + Obj::Position_X_Hi  ; D547
         sta     LoadedObj + Obj::Position_X_Hi  ; D558
         jsr     L_D5AA                          ; D55A
         jsr     L_D5EE                          ; D55D
-L_D560: lda     LevelTileData,x                 ; D560
+L_D560: lda     ScreenTileMap + TileAttributes::Flags,x ; D560
         bmi     L_D5A5                          ; D563
         inx                                     ; D565
         lda     LoadedObj + Obj::Position_X_Hi  ; D566
@@ -823,7 +823,7 @@ L_D574: lda     LoadedObj + Obj::Position_Y_Hi  ; D574
         sta     LoadedObj + Obj::Position_Y_Hi  ; D585
         jsr     L_D5CC                          ; D587
         jsr     L_D5EE                          ; D58A
-L_D58D: lda     LevelTileData,x                 ; D58D
+L_D58D: lda     ScreenTileMap + TileAttributes::Flags,x ; D58D
         bmi     L_D5A5                          ; D590
         txa                                     ; D592
         clc                                     ; D593
@@ -1163,7 +1163,7 @@ L_D7F2: sta     LoadedObject + Obj::Type,x      ; D7F2
 ; Then, changes the ObjType to $02 (Tombstoned).
 ; 
 ; This is first stage of unloading an already-active object that has scrolled off-screen.
-; If the Camera scrolls this object back on-screen, the $02 Object Handler will take care of
+; If the Viewport scrolls this object back on-screen, the $02 Object Handler will take care of
 ; restoring the slot to its original state.
 .proc Obj_Tombstone
         ldx     ObjectSlot_Index                ; D7F8

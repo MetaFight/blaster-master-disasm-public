@@ -412,7 +412,7 @@ _Write:
         adc     $1D                             ; A2BD
 ; Restore the slot allocated to into X (though it should still be there, no??)
         ldx     $05                             ; A2BF
-; Set the child's Position_X to the Camera's + the selected offset
+; Set the child's Position_X to the Viewport's + the selected offset
         sta     ObjectTable + Obj::Position_X_Hi,x ; A2C1
         lda     $1C                             ; A2C4
         sta     ObjectTable + Obj::Position_X_Lo,x ; A2C6

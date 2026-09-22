@@ -211,7 +211,7 @@ L_82E4: lda     $F3                             ; 82E4
         and     #$04                            ; 82E6
         beq     L_831B                          ; 82E8
         ldx     LoadedObj + Obj::TileIndex      ; 82EA
-        lda     LevelTileData,x                 ; 82EC
+        lda     ScreenTileMap + TileAttributes::Flags,x ; 82EC
         jsr     LD238                           ; 82EF
         bne     L_82FC                          ; 82F2
         lda     #$01                            ; 82F4
@@ -223,7 +223,7 @@ L_82FC: txa                                     ; 82FC
         clc                                     ; 82FD
         adc     #$11                            ; 82FE
         tax                                     ; 8300
-        lda     LevelTileData,x                 ; 8301
+        lda     ScreenTileMap + TileAttributes::Flags,x ; 8301
         jsr     LD283                           ; 8304
         beq     L_8314                          ; 8307
         lda     #$02                            ; 8309

@@ -89,7 +89,7 @@ L_BA7D: stx     LoadedObj + Obj::Facing         ; BA7D
         clc                                     ; BA81
         adc     LBADE,x                         ; BA82
         tax                                     ; BA85
-        lda     LevelTileData,x                 ; BA86
+        lda     ScreenTileMap + TileAttributes::Flags,x ; BA86
         and     #$C0                            ; BA89
         bne     L_BAA5                          ; BA8B
         stx     LoadedObj + Obj::TileIndex      ; BA8D

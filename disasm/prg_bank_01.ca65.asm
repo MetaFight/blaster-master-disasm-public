@@ -685,8 +685,9 @@ TankLvl6_MapData:
 TankLvl6_ScrollData:
         .byte   $FB,$FE,$EF,$10,$10,$EF,$F8,$E7 ; 8BFE
         .byte   $87,$D9,$98,$98,$98,$9C,$94,$96 ; 8C06
-; Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder
-; 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+; Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit)
+; 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder
+; 6+7=destroyable
 TankLvl6_TileAttrTable:
         .byte   $00,$02,$02,$02,$02,$02,$02,$02 ; 8C0E
         .byte   $02,$02,$02,$02,$02,$02,$02,$02 ; 8C16
@@ -1359,8 +1360,9 @@ TankLvl7_MapData:
         .byte   $22,$35,$36,$2E,$34,$35,$34,$35 ; 985E
         .byte   $CD,$94,$B7,$98,$AE,$98,$C5,$9C ; 9866
         .byte   $9E,$98,$AE,$98,$AE,$98,$C5,$9C ; 986E
-; Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder
-; 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+; Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit)
+; 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder
+; 6+7=destroyable
 TankLvl7_TileAttrTable:
         .byte   $00,$01,$03,$03,$03,$03,$03,$03 ; 9876
         .byte   $03,$02,$02,$02,$02,$02,$02,$02 ; 987E
@@ -2071,8 +2073,9 @@ TankLvl8_MapData:
         .byte   $D2,$F6,$C0,$C0,$F7,$F8,$C0,$CC ; A564
         .byte   $F9,$FA,$CE,$CF,$D0,$D1,$D3,$D0 ; A56C
         .byte   $D4,$D2,$D0,$D4,$FB,$E6,$FC,$FD ; A574
-; Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder
-; 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+; Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit)
+; 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder
+; 6+7=destroyable
 TankLvl8_TileAttrTable:
         .byte   $00,$03,$00,$00,$00,$00,$00,$00 ; A57C
         .byte   $00,$00,$00,$01,$01,$01,$01,$00 ; A584

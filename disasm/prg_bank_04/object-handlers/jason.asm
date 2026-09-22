@@ -319,7 +319,7 @@ L_8CE0: jsr     LC165                           ; 8CE0
         inx                                     ; 8CFF
         inx                                     ; 8D00
 L_8D01: dex                                     ; 8D01
-        lda     LevelTileData,x                 ; 8D02
+        lda     ScreenTileMap + TileAttributes::Flags,x ; 8D02
         and     #$08                            ; 8D05
         beq     L_8D27                          ; 8D07
         lda     #$03                            ; 8D09
@@ -362,7 +362,7 @@ L_8D2B: jsr     LC03F                           ; 8D2B
         clc                                     ; 8D4E
         adc     #$22                            ; 8D4F
 L_8D51: tax                                     ; 8D51
-        lda     LevelTileData,x                 ; 8D52
+        lda     ScreenTileMap + TileAttributes::Flags,x ; 8D52
         and     #$08                            ; 8D55
         beq     L_8D72                          ; 8D57
         lda     #$00                            ; 8D59

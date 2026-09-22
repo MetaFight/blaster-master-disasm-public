@@ -1,7 +1,7 @@
 .macro MAC_06_game_screen__object_system_terrain
 ; ----------------------------------------------------------------------------
 L_CEC6: ldx     LoadedObj + Obj::TileIndex      ; CEC6
-        sta     LevelTileData,x                 ; CEC8
+        sta     ScreenTileMap + TileAttributes::Flags,x ; CEC8
         jsr     L_E712                          ; CECB
         lda     $C7                             ; CECE
         and     #$FE                            ; CED0
@@ -14,7 +14,7 @@ L_CEC6: ldx     LoadedObj + Obj::TileIndex      ; CEC6
 ; ----------------------------------------------------------------------------
 L_CEDD: lda     #$00                            ; CEDD
         ldx     LoadedObj + Obj::TileIndex      ; CEDF
-        sta     LevelTileData,x                 ; CEE1
+        sta     ScreenTileMap + TileAttributes::Flags,x ; CEE1
         jsr     L_E712                          ; CEE4
         lda     $C7                             ; CEE7
         and     #$FE                            ; CEE9

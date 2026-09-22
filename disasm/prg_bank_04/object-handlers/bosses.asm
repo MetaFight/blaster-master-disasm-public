@@ -1701,7 +1701,7 @@ L_A32F: lda     L_A33A,x                        ; A32F
         clc                                     ; A332
         adc     LoadedObj + Obj::TileIndex      ; A333
         tay                                     ; A335
-        lda     LevelTileData,y                 ; A336
+        lda     ScreenTileMap + TileAttributes::Flags,y ; A336
         rts                                     ; A339
 
 ; ----------------------------------------------------------------------------
@@ -1719,18 +1719,18 @@ L_A357: lda     L_A381                          ; A357
         jsr     LC1B0                           ; A364
         lda     #$80                            ; A367
         ldx     LoadedObj + Obj::TileIndex      ; A369
-        sta     LevelTileData,x                 ; A36B
+        sta     ScreenTileMap + TileAttributes::Flags,x ; A36B
         dex                                     ; A36E
-        sta     LevelTileData,x                 ; A36F
+        sta     ScreenTileMap + TileAttributes::Flags,x ; A36F
         pha                                     ; A372
         txa                                     ; A373
         sec                                     ; A374
         sbc     #$11                            ; A375
         tax                                     ; A377
         pla                                     ; A378
-        sta     LevelTileData,x                 ; A379
+        sta     ScreenTileMap + TileAttributes::Flags,x ; A379
         inx                                     ; A37C
-        sta     LevelTileData,x                 ; A37D
+        sta     ScreenTileMap + TileAttributes::Flags,x ; A37D
         rts                                     ; A380
 
 ; ----------------------------------------------------------------------------
@@ -1748,18 +1748,18 @@ L_A394: lda     L_A3BE                          ; A394
         jsr     LC1B0                           ; A3A1
         lda     #$00                            ; A3A4
         ldx     LoadedObj + Obj::TileIndex      ; A3A6
-        sta     LevelTileData,x                 ; A3A8
+        sta     ScreenTileMap + TileAttributes::Flags,x ; A3A8
         dex                                     ; A3AB
-        sta     LevelTileData,x                 ; A3AC
+        sta     ScreenTileMap + TileAttributes::Flags,x ; A3AC
         pha                                     ; A3AF
         txa                                     ; A3B0
         sec                                     ; A3B1
         sbc     #$11                            ; A3B2
         tax                                     ; A3B4
         pla                                     ; A3B5
-        sta     LevelTileData,x                 ; A3B6
+        sta     ScreenTileMap + TileAttributes::Flags,x ; A3B6
         inx                                     ; A3B9
-        sta     LevelTileData,x                 ; A3BA
+        sta     ScreenTileMap + TileAttributes::Flags,x ; A3BA
         rts                                     ; A3BD
 
 ; ----------------------------------------------------------------------------

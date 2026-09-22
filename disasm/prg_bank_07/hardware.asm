@@ -479,7 +479,7 @@ L_F255: lda     $2002                           ; F255
         lda     #$06                            ; F269
         sta     $FE                             ; F26B
         sta     $2001                           ; F26D
-        jmp     L_C24F                          ; F270
+        jmp     TryWarmBoot                     ; F270
 
 .endmacro
 

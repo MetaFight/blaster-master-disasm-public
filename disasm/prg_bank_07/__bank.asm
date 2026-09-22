@@ -29,6 +29,7 @@ MMC1_PrgBank_FFFF  := $FFFF
 .include "03_demo-screen.asm"
 .include "04_intro-screen.asm"
 .include "05_lives-left-screen.asm"
+.include "06_game-screen.asm"
 .include "06_game-screen/game-loop.asm"
 .include "06_game-screen/hud.asm"
 .include "06_game-screen/object-system.asm"
@@ -61,6 +62,7 @@ MMC1_PrgBank_FFFF  := $FFFF
         MAC_00_startup  ; falls through into MAC_01_title_screen_1_of_3
         MAC_01_title_screen_1_of_3
         MAC_03_demo_screen_1_of_2
+        MAC_06_game_screen
         MAC_06_game_screen__game_loop
         MAC_transitions_1_of_3
         MAC__ungrouped_1_of_17

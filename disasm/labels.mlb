@@ -43,7 +43,7 @@ NesPrgRom:0030:TankLvl1_TileDescTable:154 TileDesc records — the level's Tile 
 NesPrgRom:0298:TankLvl1_StructureDescTable:244 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
 NesPrgRom:0668:TankLvl1_ChunkDescTable:203 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl1_MapData's 32×32 grid holds.
 NesPrgRom:0994:TankLvl1_MapData:32×32 chunk-index grid = 1024 bytes
-NesPrgRom:0D94:TankLvl1_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:0D94:TankLvl1_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit) 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
 NesPrgRom:0E2E:TankLvl1_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
 NesPrgRom:0E3E:TankLvl2_MapPointers
 NesPrgRom:0E4A:TankLvl2_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
@@ -52,14 +52,14 @@ NesPrgRom:10BA:TankLvl2_StructureDescTable:142 StructureDesc records — the lev
 NesPrgRom:12F2:TankLvl2_ChunkDescTable:160 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl2_MapData's grid holds.
 NesPrgRom:1572:TankLvl2_MapData:32×32 chunk-index grid = 1024 bytes
 NesPrgRom:1972:TankLvl2_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
-NesPrgRom:1982:TankLvl2_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:1982:TankLvl2_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit) 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
 NesPrgRom:1A1A:TankLvl3_MapPointers
 NesPrgRom:1A26:TankLvl3_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 NesPrgRom:1A36:TankLvl3_TileDescTable:121 TileDesc records — the level's Tile definitions. Index space shared with TankLvl3_TileAttrTable, which has the matching 121 entries.
 NesPrgRom:1C1A:TankLvl3_StructureDescTable:128 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
 NesPrgRom:1E1A:TankLvl3_ChunkDescTable:179 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl3_MapData's grid holds.
 NesPrgRom:20E6:TankLvl3_MapData:32×32 chunk-index grid = 1024 bytes
-NesPrgRom:24E6:TankLvl3_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:24E6:TankLvl3_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit) 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
 NesPrgRom:255F:TankLvl3_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
 NesPrgRom:256F:TankLvl4_MapPointers
 NesPrgRom:257B:TankLvl4_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
@@ -67,7 +67,7 @@ NesPrgRom:258B:TankLvl4_TileDescTable:131 TileDesc records — the level's Tile 
 NesPrgRom:2797:TankLvl4_StructureDescTable:182 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
 NesPrgRom:2A6F:TankLvl4_ChunkDescTable:158 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl4_MapData's grid holds.
 NesPrgRom:2CE7:TankLvl4_MapData:32×32 chunk-index grid = 1024 bytes
-NesPrgRom:30E7:TankLvl4_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:30E7:TankLvl4_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit) 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
 NesPrgRom:316A:TankLvl4_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
 NesPrgRom:317A:TankLvl5_MapPointers
 NesPrgRom:3186:TankLvl5_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
@@ -75,7 +75,7 @@ NesPrgRom:3196:TankLvl5_TileDescTable:130 TileDesc records — the level's Tile 
 NesPrgRom:339E:TankLvl5_StructureDescTable:159 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
 NesPrgRom:361A:TankLvl5_ChunkDescTable:184 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl5_MapData's grid holds.
 NesPrgRom:38FA:TankLvl5_MapData:32×32 chunk-index grid = 1024 bytes
-NesPrgRom:3CFA:TankLvl5_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:3CFA:TankLvl5_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit) 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
 NesPrgRom:3D7C:TankLvl5_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
 NesPrgRom:3D8C:L_BD8C
 NesPrgRom:3F8E:L_BF8E
@@ -94,14 +94,14 @@ NesPrgRom:41D2:TankLvl6_StructureDescTable:193 StructureDesc records — the lev
 NesPrgRom:44D6:TankLvl6_ChunkDescTable:202 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl6_MapData's grid holds.
 NesPrgRom:47FE:TankLvl6_MapData:32×32 chunk-index grid = 1024 bytes
 NesPrgRom:4BFE:TankLvl6_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
-NesPrgRom:4C0E:TankLvl6_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:4C0E:TankLvl6_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit) 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
 NesPrgRom:4C76:TankLvl7_MapPointers
 NesPrgRom:4C82:TankLvl7_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
 NesPrgRom:4C92:TankLvl7_TileDescTable:122 TileDesc records — the level's Tile definitions. Index space shared with TankLvl7_TileAttrTable, which has the matching 122 entries.
 NesPrgRom:4E7A:TankLvl7_StructureDescTable:177 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
 NesPrgRom:513E:TankLvl7_ChunkDescTable:206 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl7_MapData's grid holds.
 NesPrgRom:5476:TankLvl7_MapData:32×32 chunk-index grid = 1024 bytes
-NesPrgRom:5876:TankLvl7_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:5876:TankLvl7_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit) 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
 NesPrgRom:58F0:TankLvl7_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
 NesPrgRom:5900:TankLvl8_MapPointers
 NesPrgRom:590C:TankLvl8_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
@@ -109,7 +109,7 @@ NesPrgRom:591C:TankLvl8_TileDescTable:133 TileDesc records — the level's Tile 
 NesPrgRom:5B30:TankLvl8_StructureDescTable:149 StructureDesc records — the level's Structure definitions, each a 2×2 quad of Tiles.
 NesPrgRom:5D84:TankLvl8_ChunkDescTable:254 ChunkDesc records — the level's Chunk definitions, each a 2×2 quad of Structures. These are the indices TankLvl8_MapData's grid holds.
 NesPrgRom:617C:TankLvl8_MapData:32×32 chunk-index grid = 1024 bytes
-NesPrgRom:657C:TankLvl8_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+NesPrgRom:657C:TankLvl8_TileAttrTable:Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit) 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
 NesPrgRom:6601:TankLvl8_ScrollData:16 bytes — 8 B vertical + 8 B horizontal scroll-boundary flags
 NesPrgRom:6611:OvhdLvl1_MapPointers
 NesPrgRom:661D:OvhdLvl1_BgPalette:4 BgPalette records — the level's 4 background sub-palettes × 4 NES colour indices.
@@ -2423,13 +2423,13 @@ NesPrgRom:1A2B8::Save negated value.
 NesPrgRom:1A2BA::select x-offset +15 (tiles)
 NesPrgRom:1A2BC:_Obj_TryCloneAtScreenEdge__Write
 NesPrgRom:1A2BF::Restore the slot allocated to into X (though it should still be there, no??)
-NesPrgRom:1A2C1::Set the child's Position_X to the Camera's + the selected offset
+NesPrgRom:1A2C1::Set the child's Position_X to the Viewport's + the selected offset
 NesPrgRom:1A2CB::Save Velocity_X to spawned child
 NesPrgRom:1A2CE::Return A = 1 for sucess
 NesPrgRom:1A2D1:_Obj_TryCloneAtScreenEdge__NoSlot:Return A = 0 for failure (no free slot).
 NesPrgRom:1A2D4:Enemy_TileSnapY:If the occupied tile has attribute bit6 ($40, Water) clear, snap LoadedObj.Position_Y down to the next tile row and update the LoadedObj.TileIndex.
 NesPrgRom:1A2E8:_Enemy_TileSnapY__Done
-NesPrgRom:1A2E9:TankEnemy_Init:(alpha: not fully human-verified / pending re-verification) Shared initialisation routine for every damageable tank enemy, called by each enemy's Init handler.\nOverhead parallel: OvhdEnemy_Init ($B2B4). See docs/us/entities/tank/_shared-enemy-system.md.\n\nInput:\n   A = descriptor index (aka Thing ID).\n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the\n    damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them\n  LoadedObj's Health is set from EnemyDesc::Health\n  LoadedObj's IFrameCounter is set to 0\n  LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's\n    own position ($49/$4B vs the camera), NOT from EnemyDesc, which holds no tile field\n  ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler\n    need not advance $46 itself
+NesPrgRom:1A2E9:TankEnemy_Init:(alpha: not fully human-verified / pending re-verification) Shared initialisation routine for every damageable tank enemy, called by each enemy's Init handler.\nOverhead parallel: OvhdEnemy_Init ($B2B4). See docs/us/entities/tank/_shared-enemy-system.md.\n\nInput:\n   A = descriptor index (aka Thing ID).\n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) point at this enemy's EnemyDesc, so the Main handler and the\n    damage/drop code can reach its ContactDamage/DropType/DropChance without re-deriving them\n  LoadedObj's Health is set from EnemyDesc::Health\n  LoadedObj's IFrameCounter is set to 0\n  LoadedObj's TileIndex is registered with the tilemap by $D2B9 -- derived from the object's\n    own position ($49/$4B vs the viewport), NOT from EnemyDesc, which holds no tile field\n  ObjType ($46) is incremented to the enemy's active handler, which is why an Init handler\n    need not advance $46 itself
 NesPrgRom:1A2EC::Load desc[0] (EnemyDesc::Health, starting HP) via ($A1),Y → $53; clear anim state $4F.
 NesPrgRom:1A2F4::JSR $D2B9 init tile position; INC $46 → advance to the enemy's main handler.
 NesPrgRom:1A2FA:TankEnemy_Load_EnemyDescPtr:Points EnemyParam_Ptr[Lo/Hi] to the given enemy's TankEnemy_DescTable entry.\n\nInput:\n   A = TankEnemy_DescTable index (aka Thing ID). \n\nOutput:\n  EnemyParam_Ptr[Lo/Hi] ($A1/$A2) are set to point to the enemy's 4-byte EnemyDesc entry in TankEnemy_DescTable.
@@ -3487,15 +3487,23 @@ NesPrgRom:1C243:L_C243
 NesPrgRom:1C246:L_C246
 NesPrgRom:1C249:L_C249
 NesPrgRom:1C24C:L_C24C
-NesPrgRom:1C24F:L_C24F
+NesPrgRom:1C24F:TryWarmBoot:Determines whether the current boot-up is Warm (reset button) or Cold (power-on).\n\nOn Warm boots (detected by the presence of the warm boot signature in ram), do a soft init and skip to TitleScreen.\n\nOn Cool boots, hard reset the system state and stamp the warm boot signature.\n\nBoth cases yield control to Start_TitleScreen_WithTimeoutToStory.
+NesPrgRom:1C262::If the warm-boot signature is intact ($01/$23), go straight to the TitleScreen.
 NesPrgRom:1C264:L_C264
 NesPrgRom:1C267:L_C267
-NesPrgRom:1C29E:L_C29E
-NesPrgRom:1C2AC:L_C2AC
-NesPrgRom:1C2BC:L_C2BC
+NesPrgRom:1C29E:Start_TitleScreen_WithTimeoutToStory:Displays the TitleScreen. Transitions to gameplay if user presses START.  Transitions to StorySequence on timeout.
+NesPrgRom:1C2A0::Reset stack.
+NesPrgRom:1C2A7::START pressed, so start gameplay.
+NesPrgRom:1C2A9::TitleScreen timed out, so start demo.
+NesPrgRom:1C2AC:Start_TitleScreen_WithTimeoutToDemo:Displays the TitleScreen. Transitions to gameplay if user presses START.  Transitions to Demo on timeout.
+NesPrgRom:1C2AE::Reset stack
+NesPrgRom:1C2B1::Set GameMode 'Title Screen before Demo' (#$80).
+NesPrgRom:1C2BA::TitleScreen timed out, so start demo.
+NesPrgRom:1C2BC:Start_Gameplay:Start gameplay from the beginning:  Area 1 tank section with IntroScreen cut scene.
+NesPrgRom:1C2CD::Clear tank and overhead defeated bosses as well as acquired power-ups.
 NesPrgRom:1C2DB:L_C2DB
 NesPrgRom:1C2F7:L_C2F7
-NesPrgRom:1C2FB:L_C2FB
+NesPrgRom:1C2FB:Start_NewGame_FromTankSection:Short preamble for Start_NewGame that forces Current_Section to the tank section of the current Area.
 NesPrgRom:1C301:L_C301
 NesPrgRom:1C326:L_C326
 NesPrgRom:1C334:L_C334
@@ -3778,13 +3786,13 @@ NesPrgRom:1D29B:L_D29B
 NesPrgRom:1D29E:L_D29E
 NesPrgRom:1D2A1:L_D2A1
 NesPrgRom:1D2A8:L_D2A8
-NesPrgRom:1D2AB:Obj_ReadTile:Read LevelTileData[LoadedObj.TileIndex].\n\nInput:\n  LoadedObj.TileIndex\n\nOutput:\n  A = tile data from LevelTileData
+NesPrgRom:1D2AB:Obj_ReadTile:Read ScreenTileMap[LoadedObj.TileIndex].\n\nInput:\n  LoadedObj.TileIndex\n\nOutput:\n  A = tile data from ScreenTileMap
 NesPrgRom:1D2B1:Obj_ReadTile_WithOffset:Reads the tile byte at LoadedObj.TileIndex plus an offset (A).\n\nInput:\n  A = offset\n    eg, $11 = immediately below\n        $ff = 1 to the left\n        $01 = 1 to the right\n\nOutput:\n  A = Tile data
 NesPrgRom:1D2B2::A (step offset) + $4E → cell index; A = $0500[index] = the look-ahead tile.
-NesPrgRom:1D2B9:Obj_CalcTileIndex:Computes the index (+TilemapBaseIndex) into the LevelTileData tile map corresponding to LoadedObj's current position.
+NesPrgRom:1D2B9:Obj_CalcTileIndex:Computes the index (+TilemapBaseIndex) into the ScreenTileMap tile map corresponding to LoadedObj's current position.
 NesPrgRom:1D2C0::At this point, TileIndex holds a temp value corresponding to the *row offset* in the 17x15 table.
 NesPrgRom:1D2C9::Here, we convert TileIndex (currently a row offset) into an actual *Index*.\nBecause a row is 17-wide, we do this by multiplying by 17.\n\nThe multiplication by 17 is implemented as\nTileIndex = TileIndex + (16 * TileIndex)
-NesPrgRom:1D2D3::This adds the X component (how far ito the row) to TileIndex\n\nTileIndex = (Obj.X - Camera.X) + TileIndex
+NesPrgRom:1D2D3::This adds the X component (how far ito the row) to TileIndex\n\nTileIndex = (Obj.X - Viewport.X) + TileIndex
 NesPrgRom:1D2D8::Finally, we add in TilemapBaseIndex
 NesPrgRom:1D2DB:Obj_Apply_Velocity_XY:Applies Velocity_X and Velocity_Y to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.\n\nNotes:\n  I'm not sure what the benefits of this variant's arithmetic are over Apply_Double_Velocity_XY's appreach.\n  Why is the sign of the high byte dropped?  Why isn't the Lo addition done first for easy carry into the high byte?
 NesPrgRom:1D2DE:Obj_Apply_Velocity_X:Applies Velocity_X to LoadedObj's position with carry-aware 16-bit fixed-point arithmetic.
@@ -3948,7 +3956,7 @@ NesPrgRom:1D7E3:ClearEnemySlots:Clear all the ObjectTable slots.
 NesPrgRom:1D7E7:_ClearEnemySlots__Loop
 NesPrgRom:1D7EE:L_D7EE
 NesPrgRom:1D7F2:L_D7F2
-NesPrgRom:1D7F8:Obj_Tombstone:Saves the current LoadedObj's ObjType into Tombstoned_ObjTypes.\nThen, changes the ObjType to $02 (Tombstoned).\n\nThis is first stage of unloading an already-active object that has scrolled off-screen.\nIf the Camera scrolls this object back on-screen, the $02 Object Handler will take care of restoring the slot to its original state.
+NesPrgRom:1D7F8:Obj_Tombstone:Saves the current LoadedObj's ObjType into Tombstoned_ObjTypes.\nThen, changes the ObjType to $02 (Tombstoned).\n\nThis is first stage of unloading an already-active object that has scrolled off-screen.\nIf the Viewport scrolls this object back on-screen, the $02 Object Handler will take care of restoring the slot to its original state.
 NesPrgRom:1D804:Obj_DespawnAndLog:Despawn, logging the kill for slots ≥ 8.\n\nSlot 0 is always the player.\nNot yet confirmed:\n  Slots 1-5 are for Player weapons.
 NesPrgRom:1D80A::if slot ObjectSlot_Index ≥ 8, then advance ring index Section_DefeatedThing_IndexRing_WriteIndex (modulo 64).
 NesPrgRom:1D811::Read the slot's saved Thing index before logging it\n  effectively Section_ThingIndex_By_EnemySlot_Index,y ($100,y) not Pad2Raw,y ($00F8,y) despite the $00F8 base.  This is because ObjectIndex (Y) is always >= 8 here.
@@ -4436,14 +4444,14 @@ NesPrgRom:1EF2D::Here we start the 16-bit subtraction:\n(Position_X_Hi:Position_
 NesPrgRom:1EF30::set Local_Sprite_Screen_X = (LoadedObj.Position_X_Lo − Viewport_X_Lo)\nthis corresponds (roughly) to values 0..15px in fixed4.4 (wwww.ffff)\n\nThe borrow this subtraction produced is sitting in C for the Hi half to\nconsume.
 NesPrgRom:1EF32::X Hi-byte half of the subtract:\n\nset A = (LoadedObj.Position_X_Hi − Viewport_X_Hi − borrow)
 NesPrgRom:1EF36::The full signed difference is now split across two places \n  Hi byte in A\n  Lo byte in Local_Sprite_Screen_X\n\nso A:Local_Sprite_Screen_X\n\nNext we shift the 16-bit pair A:Local_Sprite_Screen_X right by 4 to drop the lower 4 fraction bits leaving us with 12-bits representing WHOLE SCREEN PIXELS\n\nThis is done using 4 LSR/ROR pairs.\n\nLSR shifts A one bit to the right\n  this pushes A's rightmost bit into Carry.\nROR shifts Local_Sprite_Screen_X one bit to the right\n  this brings in the previous Carry into Local_Sprite_Screen_X's leftmost bit.\n\nAfter 4 such shift pairs, A's original sign bit (bit 7) has now travelled down to bit 3.\nIf you're wondering if this will cause any issues, don't worry.  It just gets discarded later.
-NesPrgRom:1EF42::A:Local_Sprite_Screen_X is now a signed 12-bit value stored in 16-bits (0000 SWWW:wwww wwww)\n\nLo (Local_Sprite_Screen_X) holds the Screen X value in whole pixels\n\nHi (A) holds the sign bit and 3 whole value bits.\n  If any of those bit are set it means the object is more than 255px from the camera in X, i.e. off-screen.\n\nStash A in scratch $00 so both axes' leftovers can be tested by a single branch at $EF5B, once Y has been through the same steps.
+NesPrgRom:1EF42::A:Local_Sprite_Screen_X is now a signed 12-bit value stored in 16-bits (0000 SWWW:wwww wwww)\n\nLo (Local_Sprite_Screen_X) holds the Screen X value in whole pixels\n\nHi (A) holds the sign bit and 3 whole value bits.\n  If any of those bit are set it means the object is more than 255px from the viewport in X, i.e. off-screen.\n\nStash A in scratch $00 so both axes' leftovers can be tested by a single branch at $EF5B, once Y has been through the same steps.
 NesPrgRom:1EF44::Y Component (same as X Component)
 NesPrgRom:1EF49::Save Lo-byte difference to Local_Sprite_Screen_Y
 NesPrgRom:1EF4B::Calculate Hi-byte difference into A
 NesPrgRom:1EF4F::4-bit right shift
 NesPrgRom:1EF5B::A:Local_Sprite_Screen_Y is now a signed 12-bit value stored in 16-bits (0000 SWWW:wwww wwww)\n\nWe have have the leftover bits for both axes:\n  A holds Y's bits,\n  $00 holds X's\n\nORing them here let's us combine the off-screen test for both axes into one.
 NesPrgRom:1EF5D::Bit 3, (the old sign bit shifted down 4 places) is deliberately masked off here.\n\nIt doesn't seem to be important in detecting whether the object is offscreen.
-NesPrgRom:1EF5F::Now the off-screen test.\n\nKeeping only bits 0-2 to drop the old sign bit,\nif any of the remaining bits are set this means the the object is more than 255px away from the camera on either the X or Y axis.\n\nBranch and handle.
+NesPrgRom:1EF5F::Now the off-screen test.\n\nKeeping only bits 0-2 to drop the old sign bit,\nif any of the remaining bits are set this means the the object is more than 255px away from the viewport on either the X or Y axis.\n\nBranch and handle.
 NesPrgRom:1EF61::otherwise, check for overlaps with the screen edges:\n== Left and Right edges ==
 NesPrgRom:1EF67::At this point A = (Hitbox_Width / 2) + Screen_X\n  This is the box's right edge\n\nThe CMP with Hitbox_Width works for both the left and right checks:\n  offscreen is detected when Carry is Clear (ie, when A < Hitbox_Width)\n\n  for the left screen edge:\n    when A < Hitbox_Width (Carry clear),\n      rightBoxEdge < Hitbox_Width\n\n      taking Hitbox_Width from both sides gives\n      (rightBoxEdge - Hitbox_Width) < (Hitbox_Width - Hitbox_Width)\n\n      which simplifies to\n      leftBoxEdge < 0\n\n      which means the box overlaps with the left screen edge.\n  \n  for the right screen edge:\n    the screen is 256px wide\n    if A is off the right edge that means its value is > 255 and therefore wrapped around during the ADC.\n    We know the box center is on screen, so its right edge has, at most, rolled over by (Hitbox_Width / 2).\n\n    so, A < (Hitbox_Width / 2)\n    \n    and this case is caught by the left screen edge test.
 NesPrgRom:1EF6B::== Top and Bottom edges ==\nUnlike horizontally, the accepted band is not the full 0..255.\nInstead: box's top edge must be >= $0C, and its bottom edge < $E4.
@@ -4711,7 +4719,7 @@ NesInternalRam:004A:LoadedObj__Position_Y_Lo:The lower 8-bits of the Signed 16-b
 NesInternalRam:004B:LoadedObj__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:004C:LoadedObj__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:004D:LoadedObj__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:004E:LoadedObj__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:004E:LoadedObj__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:004F:LoadedObj__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:0050:LoadedObj__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:0051:LoadedObj__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4784,7 +4792,7 @@ NesInternalRam:0404:PlayerSlot__Position_Y_Lo:The lower 8-bits of the Signed 16-
 NesInternalRam:0405:PlayerSlot__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0406:PlayerSlot__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0407:PlayerSlot__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0408:PlayerSlot__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:0408:PlayerSlot__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:0409:PlayerSlot__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:040A:PlayerSlot__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:040B:PlayerSlot__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4798,7 +4806,7 @@ NesInternalRam:0412:Object_Slot_01__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0413:Object_Slot_01__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0414:Object_Slot_01__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0415:Object_Slot_01__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0416:Object_Slot_01__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:0416:Object_Slot_01__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:0417:Object_Slot_01__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:0418:Object_Slot_01__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:0419:Object_Slot_01__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4812,7 +4820,7 @@ NesInternalRam:0420:Object_Slot_02__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0421:Object_Slot_02__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0422:Object_Slot_02__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0423:Object_Slot_02__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0424:Object_Slot_02__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:0424:Object_Slot_02__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:0425:Object_Slot_02__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:0426:Object_Slot_02__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:0427:Object_Slot_02__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4826,7 +4834,7 @@ NesInternalRam:042E:Object_Slot_03__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:042F:Object_Slot_03__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0430:Object_Slot_03__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0431:Object_Slot_03__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0432:Object_Slot_03__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:0432:Object_Slot_03__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:0433:Object_Slot_03__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:0434:Object_Slot_03__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:0435:Object_Slot_03__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4840,7 +4848,7 @@ NesInternalRam:043C:Object_Slot_04__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:043D:Object_Slot_04__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:043E:Object_Slot_04__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:043F:Object_Slot_04__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0440:Object_Slot_04__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:0440:Object_Slot_04__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:0441:Object_Slot_04__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:0442:Object_Slot_04__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:0443:Object_Slot_04__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4854,7 +4862,7 @@ NesInternalRam:044A:Object_Slot_05__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:044B:Object_Slot_05__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:044C:Object_Slot_05__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:044D:Object_Slot_05__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:044E:Object_Slot_05__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:044E:Object_Slot_05__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:044F:Object_Slot_05__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:0450:Object_Slot_05__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:0451:Object_Slot_05__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4868,7 +4876,7 @@ NesInternalRam:0458:Object_Slot_06__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0459:Object_Slot_06__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:045A:Object_Slot_06__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:045B:Object_Slot_06__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:045C:Object_Slot_06__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:045C:Object_Slot_06__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:045D:Object_Slot_06__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:045E:Object_Slot_06__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:045F:Object_Slot_06__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4882,7 +4890,7 @@ NesInternalRam:0466:Object_Slot_07__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0467:Object_Slot_07__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0468:Object_Slot_07__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0469:Object_Slot_07__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:046A:Object_Slot_07__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:046A:Object_Slot_07__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:046B:Object_Slot_07__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:046C:Object_Slot_07__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:046D:Object_Slot_07__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4896,7 +4904,7 @@ NesInternalRam:0474:Object_Slot_08__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0475:Object_Slot_08__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0476:Object_Slot_08__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0477:Object_Slot_08__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0478:Object_Slot_08__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:0478:Object_Slot_08__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:0479:Object_Slot_08__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:047A:Object_Slot_08__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:047B:Object_Slot_08__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4910,7 +4918,7 @@ NesInternalRam:0482:Object_Slot_09__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0483:Object_Slot_09__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0484:Object_Slot_09__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0485:Object_Slot_09__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0486:Object_Slot_09__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:0486:Object_Slot_09__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:0487:Object_Slot_09__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:0488:Object_Slot_09__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:0489:Object_Slot_09__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4924,7 +4932,7 @@ NesInternalRam:0490:Object_Slot_10__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:0491:Object_Slot_10__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:0492:Object_Slot_10__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:0493:Object_Slot_10__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:0494:Object_Slot_10__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:0494:Object_Slot_10__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:0495:Object_Slot_10__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:0496:Object_Slot_10__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:0497:Object_Slot_10__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4938,7 +4946,7 @@ NesInternalRam:049E:Object_Slot_11__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:049F:Object_Slot_11__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04A0:Object_Slot_11__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04A1:Object_Slot_11__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04A2:Object_Slot_11__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:04A2:Object_Slot_11__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:04A3:Object_Slot_11__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:04A4:Object_Slot_11__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:04A5:Object_Slot_11__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4952,7 +4960,7 @@ NesInternalRam:04AC:Object_Slot_12__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04AD:Object_Slot_12__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04AE:Object_Slot_12__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04AF:Object_Slot_12__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04B0:Object_Slot_12__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:04B0:Object_Slot_12__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:04B1:Object_Slot_12__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:04B2:Object_Slot_12__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:04B3:Object_Slot_12__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4966,7 +4974,7 @@ NesInternalRam:04BA:Object_Slot_13__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04BB:Object_Slot_13__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04BC:Object_Slot_13__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04BD:Object_Slot_13__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04BE:Object_Slot_13__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:04BE:Object_Slot_13__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:04BF:Object_Slot_13__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:04C0:Object_Slot_13__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:04C1:Object_Slot_13__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4980,7 +4988,7 @@ NesInternalRam:04C8:Object_Slot_14__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04C9:Object_Slot_14__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04CA:Object_Slot_14__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04CB:Object_Slot_14__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04CC:Object_Slot_14__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:04CC:Object_Slot_14__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:04CD:Object_Slot_14__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:04CE:Object_Slot_14__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:04CF:Object_Slot_14__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -4994,7 +5002,7 @@ NesInternalRam:04D6:Object_Slot_15__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04D7:Object_Slot_15__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04D8:Object_Slot_15__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04D9:Object_Slot_15__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04DA:Object_Slot_15__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:04DA:Object_Slot_15__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:04DB:Object_Slot_15__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:04DC:Object_Slot_15__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:04DD:Object_Slot_15__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -5008,7 +5016,7 @@ NesInternalRam:04E4:Object_Slot_16__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04E5:Object_Slot_16__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04E6:Object_Slot_16__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04E7:Object_Slot_16__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04E8:Object_Slot_16__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:04E8:Object_Slot_16__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:04E9:Object_Slot_16__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:04EA:Object_Slot_16__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:04EB:Object_Slot_16__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
@@ -5022,13 +5030,12 @@ NesInternalRam:04F2:Object_Slot_17__Position_Y_Lo:The lower 8-bits of the Signed
 NesInternalRam:04F3:Object_Slot_17__Position_Y_Hi:The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
 NesInternalRam:04F4:Object_Slot_17__Velocity_X:X velocity in px/frame (signed 4.4: swww.ffff).
 NesInternalRam:04F5:Object_Slot_17__Velocity_Y:Y velocity in px/frame (signed 4.4: swww.ffff).
-NesInternalRam:04F6:Object_Slot_17__TileIndex:Index of the tile this object currently occupies in the loaded LevelTileData.  Used for collision, not rendering.
+NesInternalRam:04F6:Object_Slot_17__TileIndex:Index of the tile this object currently occupies in the loaded ScreenTileMap.  Used for collision, not rendering.
 NesInternalRam:04F7:Object_Slot_17__IFrameCounter:Invincibility-frame counter.  Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType.  Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
 NesInternalRam:04F8:Object_Slot_17__Scratch0:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:04F9:Object_Slot_17__Scratch1:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:04FA:Object_Slot_17__Scratch2:General-purpose storage.  Its meaning is entirely ObjType-defined.
 NesInternalRam:04FB:Object_Slot_17__Health:HP for this object.
-NesInternalRam:0500-05FF:LevelTileData:A 17x15 (+1? TBD) table of level tile attributes for the tiles currently on screen.\n\nThis is used for detecting player and object terrain collision.\nIt's probably also used for spike and water tile interactions, but that is TBC.
 NesInternalRam:0600:OAM_Staging_Buffer_Sprite0__Screen_Y:Screen Y minus 1 (the PPU renders a sprite on the scanline AFTER this value).
 NesInternalRam:0601:OAM_Staging_Buffer_Sprite0__Tile:Pattern-table tile index. In 8x16 sprite mode bit 0 selects the pattern table ($0000/$1000) and bits 7-1 are the tile pair.
 NesInternalRam:0602:OAM_Staging_Buffer_Sprite0__Attr:Attribute byte: bits 0-1 sprite palette, bit 5 priority (behind background), bit 6 horizontal flip, bit 7 vertical flip.

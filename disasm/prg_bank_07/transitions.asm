@@ -41,12 +41,12 @@ L_C498: cmp     #$07                            ; C498
 ; ----------------------------------------------------------------------------
 L_C49F: cmp     #$08                            ; C49F
         bne     L_C4A6                          ; C4A1
-        jmp     L_C2AC                          ; C4A3
+        jmp     Start_TitleScreen_WithTimeoutToDemo ; C4A3
 
 ; ----------------------------------------------------------------------------
 L_C4A6: cmp     #$09                            ; C4A6
         bne     L_C4AD                          ; C4A8
-        jmp     L_C29E                          ; C4AA
+        jmp     Start_TitleScreen_WithTimeoutToStory ; C4AA
 
 ; ----------------------------------------------------------------------------
 L_C4AD: lda     #$00                            ; C4AD
@@ -131,7 +131,7 @@ L_C52A: jsr     L_DEC2                          ; C52A
         lda     $14                             ; C548
         ora     #$08                            ; C54A
         sta     $14                             ; C54C
-        jmp     L_C2FB                          ; C54E
+        jmp     Start_NewGame_FromTankSection   ; C54E
 
 ; ----------------------------------------------------------------------------
 L_C551: jsr     L_C5FA                          ; C551
@@ -139,7 +139,7 @@ L_C551: jsr     L_C5FA                          ; C551
         jmp     L_C326                          ; C557
 
 ; ----------------------------------------------------------------------------
-L_C55A: jmp     L_C29E                          ; C55A
+L_C55A: jmp     Start_TitleScreen_WithTimeoutToStory ; C55A
 
 ; ----------------------------------------------------------------------------
 L_C55D: lda     #$00                            ; C55D

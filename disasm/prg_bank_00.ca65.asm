@@ -781,8 +781,9 @@ TankLvl1_MapData:
         .byte   $C7,$C5,$C6,$C0,$C8,$AB,$AB,$C1 ; 8D7C
         .byte   $C5,$C9,$AB,$AB,$AB,$AB,$AB,$AB ; 8D84
         .byte   $AB,$AB,$C1,$C5,$C5,$C5,$CA,$AB ; 8D8C
-; Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder
-; 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+; Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit)
+; 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder
+; 6+7=destroyable
 TankLvl1_TileAttrTable:
         .byte   $00,$01,$01,$01,$00,$00,$00,$00 ; 8D94
         .byte   $00,$00,$00,$00,$00,$00,$00,$83 ; 8D9C
@@ -1419,8 +1420,9 @@ TankLvl2_MapData:
 TankLvl2_ScrollData:
         .byte   $F3,$3F,$0C,$0C,$0F,$CF,$40,$C1 ; 9972
         .byte   $AA,$AA,$AA,$AA,$A8,$6B,$6B,$2B ; 997A
-; Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder
-; 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+; Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit)
+; 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder
+; 6+7=destroyable
 TankLvl2_TileAttrTable:
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; 9982
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; 998A
@@ -2022,8 +2024,9 @@ TankLvl3_MapData:
         .byte   $00,$02,$03,$05,$04,$02,$04,$05 ; A4CE
         .byte   $00,$AC,$AF,$B1,$AC,$69,$B2,$B1 ; A4D6
         .byte   $AC,$69,$69,$69,$B2,$B1,$69,$AC ; A4DE
-; Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder
-; 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+; Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit)
+; 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder
+; 6+7=destroyable
 TankLvl3_TileAttrTable:
         .byte   $00,$11,$03,$03,$03,$03,$03,$03 ; A4E6
         .byte   $03,$03,$03,$03,$03,$03,$03,$03 ; A4EE
@@ -2669,8 +2672,9 @@ TankLvl4_MapData:
         .byte   $9C,$9C,$9C,$9C,$9C,$9C,$9C,$9C ; B0CF
         .byte   $9C,$7B,$7B,$7B,$7B,$92,$7B,$92 ; B0D7
         .byte   $7B,$92,$92,$7B,$92,$92,$92,$7B ; B0DF
-; Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder
-; 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+; Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit)
+; 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder
+; 6+7=destroyable
 TankLvl4_TileAttrTable:
         .byte   $00,$00,$00,$00,$00,$00,$00,$00 ; B0E7
         .byte   $02,$02,$02,$02,$02,$02,$00,$00 ; B0EF
@@ -3319,8 +3323,9 @@ TankLvl5_MapData:
         .byte   $5B,$5E,$AE,$AE,$5B,$27,$27,$86 ; BCE2
         .byte   $89,$88,$B0,$90,$8F,$A4,$7F,$B7 ; BCEA
         .byte   $90,$B0,$A4,$7F,$93,$99,$99,$99 ; BCF2
-; Tile attribute table – bits: 0-1=palette 3=Gateway 2+3=Tunnel(→Overhead) 4=damage 5=ladder
-; 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable
+; Tile attribute table – bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit)
+; 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid  3+7=Doorway 4+6=lava 5+7=solid-ladder
+; 6+7=destroyable
 TankLvl5_TileAttrTable:
         .byte   $80,$41,$42,$42,$42,$42,$42,$42 ; BCFA
         .byte   $42,$42,$81,$81,$81,$42,$42,$42 ; BD02

@@ -884,13 +884,13 @@ L_9083: pla                                     ; 9083
 ; ----------------------------------------------------------------------------
 L_908B: ldx     LoadedObj + Obj::TileIndex      ; 908B
         inx                                     ; 908D
-        lda     LevelTileData,x                 ; 908E
+        lda     ScreenTileMap + TileAttributes::Flags,x ; 908E
         bmi     L_9097                          ; 9091
         lda     $F3                             ; 9093
         bmi     L_909E                          ; 9095
 L_9097: dex                                     ; 9097
         dex                                     ; 9098
-        lda     LevelTileData,x                 ; 9099
+        lda     ScreenTileMap + TileAttributes::Flags,x ; 9099
         bmi     L_90B1                          ; 909C
 L_909E: lda     #$C0                            ; 909E
         sta     LoadedObj + Obj::Position_X_Lo  ; 90A0
@@ -1088,13 +1088,13 @@ L_91EE: pla                                     ; 91EE
 ; ----------------------------------------------------------------------------
 L_91F6: ldx     LoadedObj + Obj::TileIndex      ; 91F6
         dex                                     ; 91F8
-        lda     LevelTileData,x                 ; 91F9
+        lda     ScreenTileMap + TileAttributes::Flags,x ; 91F9
         bmi     L_9202                          ; 91FC
         lda     $F3                             ; 91FE
         bmi     L_9209                          ; 9200
 L_9202: inx                                     ; 9202
         inx                                     ; 9203
-        lda     LevelTileData,x                 ; 9204
+        lda     ScreenTileMap + TileAttributes::Flags,x ; 9204
         bmi     L_921C                          ; 9207
 L_9209: lda     #$40                            ; 9209
         sta     LoadedObj + Obj::Position_X_Lo  ; 920B
@@ -1772,7 +1772,7 @@ L_96BF: sta     $D9                             ; 96BF
 
 ; ----------------------------------------------------------------------------
 L_96C2: ldx     LoadedObj + Obj::TileIndex      ; 96C2
-        lda     LevelTileData,x                 ; 96C4
+        lda     ScreenTileMap + TileAttributes::Flags,x ; 96C4
         and     #$40                            ; 96C7
         bne     L_96D0                          ; 96C9
         lda     #$00                            ; 96CB
@@ -1789,7 +1789,7 @@ L_96D5: lda     $F3                             ; 96D5
         and     #$04                            ; 96D7
         beq     L_96EA                          ; 96D9
         ldx     LoadedObj + Obj::TileIndex      ; 96DB
-        lda     LevelTileData,x                 ; 96DD
+        lda     ScreenTileMap + TileAttributes::Flags,x ; 96DD
         jsr     LD246                           ; 96E0
         bne     L_96EA                          ; 96E3
         lda     #$01                            ; 96E5

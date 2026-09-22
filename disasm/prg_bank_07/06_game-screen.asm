@@ -1,0 +1,105 @@
+.macro MAC_06_game_screen
+; ----------------------------------------------------------------------------
+; Short preamble for Start_NewGame that forces Current_Section to the tank section of the current
+; Area.
+.proc Start_NewGame_FromTankSection
+        lda     $14                             ; C2FB
+        ora     #$08                            ; C2FD
+        sta     $14                             ; C2FF
+.endproc
+L_C301: lda     #$02                            ; C301
+        sta     $DD                             ; C303
+        jsr     L_CA14                          ; C305
+        lda     #$00                            ; C308
+        sta     $13                             ; C30A
+        sta     $10                             ; C30C
+        sta     Global_FrameCounter             ; C30E
+        sta     $06F0                           ; C310
+        sta     $06F1                           ; C313
+        sta     $06F2                           ; C316
+        sta     $92                             ; C319
+        lda     #$FF                            ; C31B
+        sta     $C1                             ; C31D
+        lda     #$03                            ; C31F
+        sta     LoadedObj + Obj::Type           ; C321
+        jsr     L_C5B2                          ; C323
+L_C326: lda     $06F3                           ; C326
+        asl     a                               ; C329
+        bne     L_C334                          ; C32A
+        lda     #$00                            ; C32C
+        jsr     L_E692                          ; C32E
+        jsr     L_F7D1                          ; C331
+L_C334: lda     #$00                            ; C334
+        sta     $C5                             ; C336
+        sta     $15                             ; C338
+        sta     $B7                             ; C33A
+        sta     Player_GunLevel                 ; C33C
+        sta     $90                             ; C33E
+        sta     LoadedObj + Obj::Velocity_X     ; C340
+        sta     LoadedObj + Obj::Velocity_Y     ; C342
+        sta     LoadedObj + Obj::Scratch0       ; C344
+        sta     LoadedObj + Obj::IFrameCounter  ; C346
+        sta     LoadedObj + Obj::Facing         ; C348
+        sta     Sophia_LookUpAnimation_Counter  ; C34A
+        sta     $8F                             ; C34C
+        lda     #$FF                            ; C34E
+        sta     LoadedObj + Obj::Health         ; C350
+        sta     $03FF                           ; C352
+        jsr     ClearEnemySlots                 ; C355
+        jsr     Clear_ThingSpawnHistory         ; C358
+        jsr     L_E243                          ; C35B
+L_C35E: lda     #$00                            ; C35E
+        sta     $03D6                           ; C360
+        sta     $8F                             ; C363
+        jsr     L_C6EF                          ; C365
+        jsr     L_C659                          ; C368
+        jsr     L_E6FA                          ; C36B
+        jsr     L_EA03                          ; C36E
+        lda     LoadedObj + Obj::Position_X_Lo  ; C371
+        sta     $1C                             ; C373
+        lda     LoadedObj + Obj::Position_X_Hi  ; C375
+        sta     $1D                             ; C377
+        sec                                     ; C379
+        lda     $1C                             ; C37A
+        sbc     #$00                            ; C37C
+        sta     $1C                             ; C37E
+        lda     $1D                             ; C380
+        sbc     #$08                            ; C382
+        sta     $1D                             ; C384
+        lda     LoadedObj + Obj::Position_Y_Lo  ; C386
+        sta     $1E                             ; C388
+        lda     LoadedObj + Obj::Position_Y_Hi  ; C38A
+        sta     $1F                             ; C38C
+        sec                                     ; C38E
+        lda     $1E                             ; C38F
+        sbc     #$80                            ; C391
+        sta     $1E                             ; C393
+        lda     $1F                             ; C395
+        sbc     #$07                            ; C397
+        sta     $1F                             ; C399
+        jsr     L_CC35                          ; C39B
+        jsr     L_DCFC                          ; C39E
+        lda     $C5                             ; C3A1
+        and     #$02                            ; C3A3
+        beq     L_C3AA                          ; C3A5
+        jsr     L_C742                          ; C3A7
+L_C3AA: jsr     L_C772                          ; C3AA
+        lda     #$00                            ; C3AD
+        sta     $8E                             ; C3AF
+        lda     #$00                            ; C3B1
+        sta     ObjectSlot_Offset               ; C3B3
+        jsr     Obj_SaveToSlot                  ; C3B5
+        jsr     L_C9D6                          ; C3B8
+        jsr     L_D7B6                          ; C3BB
+        jsr     L_CE0F                          ; C3BE
+        lda     $C5                             ; C3C1
+        bit     L_E6E1                          ; C3C3
+        beq     L_C3D5                          ; C3C6
+        lda     #$00                            ; C3C8
+        sta     ObjectSlot_Offset               ; C3CA
+        jsr     Obj_LoadFromSlot                ; C3CC
+        jsr     L0000                           ; C3CF
+        jmp     L_C465                          ; C3D2
+
+.endmacro
+

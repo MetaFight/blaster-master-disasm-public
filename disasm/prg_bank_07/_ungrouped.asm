@@ -1467,8 +1467,8 @@ L_EB64: pha                                     ; EB64
 ; Lo (Local_Sprite_Screen_X) holds the Screen X value in whole pixels
 ; 
 ; Hi (A) holds the sign bit and 3 whole value bits.
-;   If any of those bit are set it means the object is more than 255px from the camera in X, i.e.
-;   off-screen.
+;   If any of those bit are set it means the object is more than 255px from the viewport in X,
+;   i.e. off-screen.
 ; 
 ; Stash A in scratch $00 so both axes' leftovers can be tested by a single branch at $EF5B, once Y
 ; has been through the same steps.
@@ -1507,7 +1507,7 @@ L_EB64: pha                                     ; EB64
 ; 
 ; Keeping only bits 0-2 to drop the old sign bit,
 ; if any of the remaining bits are set this means the the object is more than 255px away from the
-; camera on either the X or Y axis.
+; viewport on either the X or Y axis.
 ; 
 ; Branch and handle.
         bne     _OffScreen                      ; EF5F

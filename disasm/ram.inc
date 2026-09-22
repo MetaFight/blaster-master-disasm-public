@@ -40,9 +40,10 @@ Sprite_Palette_3 := $0074   ; element 3
 ; why their "18 entries" description was wrong twice over (18 is the BYTE count; there are 6
 ; records). The record count is pinned three independent ways: Collision_Detection_Sub scans
 ; ldx #$0F then dex x3 ($D6E7) = records 5 down to 0; SpriteX_ClearAll ($D7B6) zeroes exactly
-; $7C-$8D at AreaInit; and $8E is an unrelated variable. Direct (unindexed) access is record
-; 0, the player -- see PlayerContact, and Obj_TryDamagePlayer ($D71F), which is the "did this
-; enemy attack hit the player?" test and reads $7C/$7D/$7E with no index at all.
+; $7C-$8D at Initialise_Gameplay_Loop; and $8E is an unrelated variable. Direct (unindexed)
+; access is record 0, the player -- see PlayerContact, and Obj_TryDamagePlayer ($D71F), which
+; is the "did this enemy attack hit the player?" test and reads $7C/$7D/$7E with no index at
+; all.
 ContactTable  := $007C   ; Contact[] base — indexed access (any element)
 PlayerContact := $007C   ; element 0 — direct access
 Projectile1   := $007F   ; element 1
@@ -74,6 +75,10 @@ Object_Slot_14 := $04C4   ; element 14
 Object_Slot_15 := $04D2   ; element 15
 Object_Slot_16 := $04E0   ; element 16
 Object_Slot_17 := $04EE   ; element 17
+; A 17x15 (+1? TBD) table of level tile attributes for the tiles currently on screen. This is
+; used for detecting player and object terrain collision. It's probably also used for spike
+; and water tile interactions, but that is TBC.
+ScreenTileMap := $0500   ; TileAttributes[] base — indexed access (any element)
 ; The sprite staging buffer: 20 OamEntry records the renderers append to, then blitted
 ; wholesale into the $0200 OAM shadow by OAM_BlitFromStaging ($EC73) and DMAd to the PPU from
 ; there. The write head is a BYTE offset in OAM_Staging_Buffer_TailPos ($3C), so every access
@@ -120,7 +125,3 @@ SavedPrgBank                   := $00D3
 ; real ObjType when it is made Dormant (ObjType $02).
 ; The Dormant ObjType handler then reads from this table to restore the tombstoned Object.
 Tombstoned_ObjTypes            := $0150
-; A 17x15 (+1? TBD) table of level tile attributes for the tiles currently on screen.
-; This is used for detecting player and object terrain collision.
-; It's probably also used for spike and water tile interactions, but that is TBC.
-LevelTileData                  := $0500

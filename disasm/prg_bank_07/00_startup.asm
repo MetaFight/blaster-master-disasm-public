@@ -1,6 +1,15 @@
 .macro MAC_00_startup
 ; ----------------------------------------------------------------------------
-L_C24F: lda     #$00                            ; C24F
+; Determines whether the current boot-up is Warm (reset button) or Cold (power-on).
+; 
+; On Warm boots (detected by the presence of the warm boot signature in ram), do a soft init and
+; skip to TitleScreen.
+; 
+; On Cool boots, hard reset the system state and stamp the warm boot signature.
+; 
+; Both cases yield control to Start_TitleScreen_WithTimeoutToStory.
+.proc TryWarmBoot
+        lda     #$00                            ; C24F
         sta     SavedPrgBank                    ; C251
         jsr     L_DEC2                          ; C253
         lda     $03F3                           ; C256
@@ -8,7 +17,9 @@ L_C24F: lda     #$00                            ; C24F
         bne     L_C264                          ; C25B
         lda     $03F4                           ; C25D
         cmp     #$23                            ; C260
-        beq     L_C29E                          ; C262
+; If the warm-boot signature is intact ($01/$23), go straight to the TitleScreen.
+        beq     Start_TitleScreen_WithTimeoutToStory ; C262
+.endproc
 L_C264: ldx     #$00                            ; C264
         txa                                     ; C266
 L_C267: sta     L0000,x                         ; C267
@@ -16,7 +27,7 @@ L_C267: sta     L0000,x                         ; C267
         sta     $0200,x                         ; C26C
         sta     $0300,x                         ; C26F
         sta     ObjectTable + Obj::Type,x       ; C272
-        sta     LevelTileData,x                 ; C275
+        sta     ScreenTileMap + TileAttributes::Flags,x ; C275
         sta     OAM_Staging_Buffer + OamEntry::Screen_Y,x ; C278
         sta     $0700,x                         ; C27B
         inx                                     ; C27E

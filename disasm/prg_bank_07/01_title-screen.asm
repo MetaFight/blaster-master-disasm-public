@@ -1,35 +1,54 @@
 ; Entered by falling through from the end of group "00_startup" (MAC_00_startup).
 .macro MAC_01_title_screen_1_of_3
-L_C29E: ldx     #$FF                            ; C29E
+; Displays the TitleScreen. Transitions to gameplay if user presses START.  Transitions to
+; StorySequence on timeout.
+.proc Start_TitleScreen_WithTimeoutToStory
+        ldx     #$FF                            ; C29E
+; Reset stack.
         txs                                     ; C2A0
         jsr     L_DEC2                          ; C2A1
         jsr     TitleScreen_Wrapper             ; C2A4
-        beq     L_C2BC                          ; C2A7
+; START pressed, so start gameplay.
+        beq     Start_Gameplay                  ; C2A7
+; TitleScreen timed out, so start demo.
         jsr     L_E309                          ; C2A9
-L_C2AC: ldx     #$FF                            ; C2AC
+.endproc
+; Displays the TitleScreen. Transitions to gameplay if user presses START.  Transitions to Demo on
+; timeout.
+.proc Start_TitleScreen_WithTimeoutToDemo
+        ldx     #$FF                            ; C2AC
+; Reset stack
         txs                                     ; C2AE
         lda     #$80                            ; C2AF
+; Set GameMode 'Title Screen before Demo' (#$80).
         sta     $06F3                           ; C2B1
         jsr     L_DEC2                          ; C2B4
         jsr     TitleScreen_Wrapper             ; C2B7
+; TitleScreen timed out, so start demo.
         bne     L_C2DB                          ; C2BA
-L_C2BC: lda     #$08                            ; C2BC
+.endproc
+; Start gameplay from the beginning:  Area 1 tank section with IntroScreen cut scene.
+.proc Start_Gameplay
+        lda     #$08                            ; C2BC
         sta     $14                             ; C2BE
         jsr     L_CDBA                          ; C2C0
         jsr     L_F5D9                          ; C2C3
         lda     #$05                            ; C2C6
         sta     $037E                           ; C2C8
         lda     #$00                            ; C2CB
+; Clear tank and overhead defeated bosses as well as acquired power-ups.
         sta     $03FE                           ; C2CD
         sta     $03FB                           ; C2D0
         sta     $03FC                           ; C2D3
         sta     $99                             ; C2D6
-        jmp     L_C2FB                          ; C2D8
+        jmp     Start_NewGame_FromTankSection   ; C2D8
+.endproc
 
 .endmacro
 
-; Interrupted by 62 macros:
+; Interrupted by 63 macros:
 ;   MAC_03_demo_screen_1_of_2
+;   MAC_06_game_screen
 ;   MAC_06_game_screen__game_loop
 ;   MAC_transitions_1_of_3
 ;   MAC__ungrouped_1_of_17

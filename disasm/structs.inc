@@ -15,7 +15,7 @@
         Position_Y_Hi .byte   ; +$05 (sbyte)  The upper 8-bits of the Signed 16-bit Fixed Point position (SWWW WWWW wwww.ffff) representing the object's Y-position.
         Velocity_X    .byte   ; +$06 (sfixed44)  X velocity in px/frame (signed 4.4: swww.ffff).
         Velocity_Y    .byte   ; +$07 (sfixed44)  Y velocity in px/frame (signed 4.4: swww.ffff).
-        TileIndex     .byte   ; +$08 (byte)  Index of the tile this object currently occupies in the loaded LevelTileData. Used for collision, not rendering.
+        TileIndex     .byte   ; +$08 (byte)  Index of the tile this object currently occupies in the loaded ScreenTileMap. Used for collision, not rendering.
         IFrameCounter .byte   ; +$09 (byte)  Invincibility-frame counter. Set upon taking damage and decremented every frame by ObjectLoop regardless of ObjType. Whether this leads to temporary invincibility (it usually doesn't) depends on the ObjType handler.
         Scratch0      .byte   ; +$0A (byte)  General-purpose storage. Its meaning is entirely ObjType-defined.
         Scratch1      .byte   ; +$0B (byte)  General-purpose storage. Its meaning is entirely ObjType-defined.
@@ -107,5 +107,10 @@
 .struct TunnelFieldPair
         Origin      .byte   ; +$00 (byte)  Origin field.
         Destination .byte   ; +$01 (byte)  Destination field.
+.endstruct
+
+; TileAttributes: Single byte with flags representing various statuses for a given map Tile.
+.struct TileAttributes
+        Flags .byte   ; +$00 (byte)  Flag bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit) 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid 3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable.
 .endstruct
 

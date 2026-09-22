@@ -23,7 +23,7 @@ However, Claude's semantic analysis of subroutines is usually good enough to pro
 
 | Metric | Progress |
 |--------|----------|
-| **M4** — Verified subroutines (public, clean) | 137 / 800 (17%) |
+| **M4** — Verified subroutines (public, clean) | 142 / 801 (18%) |
 | **M6** — Verified docs (public, clean) | 4 / 118 (3%) |
 
 - **M4** counts named subroutines in the disassembly whose label carries the `[verified]` tag, against every named subroutine in the ROM's code banks. Verification is a human step: no tool sets the tag.
@@ -433,19 +433,20 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/sophia` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/submersible` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 06 / `object-handlers/swooping-sphere` |  |
-| ⬜⬜⬜▫️<br/>`84.6%` | 07 / `01_title-screen` | `TitleScreen_Wrapper` depends on unverified routines `PPU_ClearAndReset`, `VramQueue_WriteStringAt` and 9 more. |
+| ⬜⬜⬜◽<br/>`96.2%` | 07 / `01_title-screen` | `Start_TitleScreen_WithTimeoutToStory`, `Start_TitleScreen_WithTimeoutToDemo`, `Start_Gameplay`, and `TitleScreen_Wrapper` depend on unverified routines `SoundSystem_Reset`, `Start_StorySequence` and 13 more. |
 | ⬜⬜▫️⬛<br/>`60.7%` | 07 / `06_game-screen/object-system` |  |
 | ⬜⬜▫️⬛<br/>`57.1%` | 07 / `screen-fade` |  |
 | ⬜⬜⬛⬛<br/>`50.0%` | 07 / `sound` |  |
 | ⬜◽⬛⬛<br/>`37.5%` | 07 / `mmc1` | `BankSave_Switch` depends on unverified routine `Nmi_DoWork`. |
+| ⬜▫️⬛⬛<br/>`33.3%` | 07 / `00_startup` | `TryWarmBoot` depends on unverified routine `SoundSystem_Reset`. |
 | ⬜▫️⬛⬛<br/>`33.3%` | 07 / `timing` | `NMI` depends on unverified routine `Nmi_DoWork`. |
 | ◽⬛⬛⬛<br/>`24.1%` | 07 / `math` |  |
 | ◽⬛⬛⬛<br/>`17.6%` | 07 / `transitions` |  |
+| ◽⬛⬛⬛<br/>`16.7%` | 07 / `06_game-screen` |  |
 | ▫️⬛⬛⬛<br/>`9.6%` | 07 / `hardware` |  |
 | ▫️⬛⬛⬛<br/>`6.1%` | 07 / `drawing-metasprites` | `Metasprite_Render` depends on unverified routine `Metasprite_RenderNoBank`. |
 | ▫️⬛⬛⬛<br/>`5.6%` | 07 / `_ungrouped` |  |
 | ▫️⬛⬛⬛<br/>`4.2%` | 07 / `drawing-sprites` |  |
-| ⬛⬛⬛⬛<br/>`0.0%` | 07 / `00_startup` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `02_story-sequence` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `03_demo-screen` |  |
 | ⬛⬛⬛⬛<br/>`0.0%` | 07 / `04_intro-screen` |  |
@@ -465,7 +466,7 @@ A finer-grained view of M4 above, broken down by the same organizational groupin
 
 This export publishes **7** pages, of which **3** are alpha.
 
-_Generated: 2026-09-22 10:09 UTC_
+_Generated: 2026-09-22 17:22 UTC_
 
 ## Pages
 

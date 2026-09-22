@@ -1151,7 +1151,7 @@ L_9488: lda     #$00                            ; 9488
         jmp     L_941E                          ; 9498
 
 ; ----------------------------------------------------------------------------
-L_949B: lda     LevelTileData,x                 ; 949B
+L_949B: lda     ScreenTileMap + TileAttributes::Flags,x ; 949B
         lsr     a                               ; 949E
         lsr     a                               ; 949F
         lsr     a                               ; 94A0
@@ -1184,7 +1184,7 @@ L_94A9: lda     $3F                             ; 94A9
         dec     LoadedObj + Obj::Position_X_Hi  ; 94C7
         dec     LoadedObj + Obj::TileIndex      ; 94C9
 L_94CB: ldx     LoadedObj + Obj::TileIndex      ; 94CB
-        ldy     LevelTileData,x                 ; 94CD
+        ldy     ScreenTileMap + TileAttributes::Flags,x ; 94CD
         lda     LoadedObj + Obj::Position_X_Hi  ; 94D0
         and     #$03                            ; 94D2
         cmp     #$02                            ; 94D4
@@ -1263,7 +1263,7 @@ L_9549: dec     LoadedObj + Obj::Position_Y_Hi  ; 9549
         sbc     #$11                            ; 954E
         sta     LoadedObj + Obj::TileIndex      ; 9550
         ldx     LoadedObj + Obj::TileIndex      ; 9552
-        ldy     LevelTileData,x                 ; 9554
+        ldy     ScreenTileMap + TileAttributes::Flags,x ; 9554
         lda     LoadedObj + Obj::Position_Y_Hi  ; 9557
         and     #$02                            ; 9559
         beq     L_9568                          ; 955B
