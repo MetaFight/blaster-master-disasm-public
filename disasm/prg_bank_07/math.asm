@@ -97,23 +97,24 @@ L_CFEC: .byte   $00,$02,$04,$06,$08,$0A,$0C,$0E ; CFEC
         .byte   $50                             ; D02C
 .endmacro
 
-; Interrupted by 17 macros:
-;   MAC__ungrouped_4_of_17
+; Interrupted by 18 macros:
+;   MAC__ungrouped_3_of_16
+;   MAC_palette_2_of_2
 ;   MAC_06_game_screen__viewport_2_of_2
-;   MAC__ungrouped_5_of_17
+;   MAC__ungrouped_4_of_16
 ;   MAC_06_game_screen__object_system_2_of_8
-;   MAC__ungrouped_6_of_17
+;   MAC__ungrouped_5_of_16
 ;   MAC_06_game_screen__object_system_3_of_8
-;   MAC__ungrouped_7_of_17
+;   MAC__ungrouped_6_of_16
 ;   MAC_06_game_screen__object_system_4_of_8
-;   MAC__ungrouped_8_of_17
+;   MAC__ungrouped_7_of_16
 ;   MAC_level_rendering
-;   MAC__ungrouped_9_of_17
+;   MAC__ungrouped_8_of_16
 ;   MAC_transitions_3_of_3
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_10_of_17
+;   MAC__ungrouped_9_of_16
 ;   MAC_06_game_screen__object_system_5_of_8
-;   MAC__ungrouped_11_of_17
+;   MAC__ungrouped_10_of_16
 ;   MAC_06_game_screen__object_system_6_of_8
 
 .macro MAC_math_2_of_5
@@ -327,22 +328,24 @@ L_E202: .byte   $00,$03,$06,$09,$0C,$10,$13,$16 ; E202
         .byte   $7F                             ; E242
 .endmacro
 
-; Interrupted by 15 macros:
+; Interrupted by 17 macros:
 ;   MAC_03_demo_screen_2_of_2
 ;   MAC_02_story_sequence
 ;   MAC_mmc1
 ;   MAC_hardware_1_of_7
-;   MAC__ungrouped_12_of_17
+;   MAC__ungrouped_11_of_16
 ;   MAC_hardware_2_of_7
-;   MAC__ungrouped_13_of_17
+;   MAC__ungrouped_12_of_16
 ;   MAC_hardware_3_of_7
-;   MAC__ungrouped_14_of_17
+;   MAC__ungrouped_13_of_16
+;   MAC_drawing_background_1_of_2
+;   MAC_drawing_text
 ;   MAC_hardware_4_of_7
 ;   MAC_input
 ;   MAC_timing_2_of_3
-;   MAC_drawing_background
+;   MAC_drawing_background_2_of_2
 ;   MAC_hardware_5_of_7
-;   MAC__ungrouped_15_of_17
+;   MAC__ungrouped_14_of_16
 
 .macro MAC_math_4_of_5
 ; ----------------------------------------------------------------------------

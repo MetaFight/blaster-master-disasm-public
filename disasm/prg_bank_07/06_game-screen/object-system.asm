@@ -127,18 +127,19 @@ L_C9D3: jmp     (IndirectPtrLo)                 ; C9D3
 
 .endmacro
 
-; Interrupted by 11 macros:
-;   MAC__ungrouped_2_of_17
+; Interrupted by 12 macros:
+;   MAC__ungrouped_2_of_16
 ;   MAC_06_game_screen__viewport_1_of_2
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_3_of_17
+;   MAC_palette_1_of_2
 ;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_4_of_17
+;   MAC__ungrouped_3_of_16
+;   MAC_palette_2_of_2
 ;   MAC_06_game_screen__viewport_2_of_2
-;   MAC__ungrouped_5_of_17
+;   MAC__ungrouped_4_of_16
 
 .macro MAC_06_game_screen__object_system_2_of_8
 ; ----------------------------------------------------------------------------
@@ -968,7 +969,7 @@ L_D643: ldx     LoadedObj + Obj::Facing         ; D643
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_6_of_17
+;   MAC__ungrouped_5_of_16
 
 .macro MAC_06_game_screen__object_system_3_of_8
 ; ----------------------------------------------------------------------------
@@ -1075,7 +1076,7 @@ _Miss:
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_7_of_17
+;   MAC__ungrouped_6_of_16
 
 .macro MAC_06_game_screen__object_system_4_of_8
 ; ----------------------------------------------------------------------------
@@ -1281,12 +1282,12 @@ L_D86D: ldx     #$4C                            ; D86D
 .endmacro
 
 ; Interrupted by 6 macros:
-;   MAC__ungrouped_8_of_17
+;   MAC__ungrouped_7_of_16
 ;   MAC_level_rendering
-;   MAC__ungrouped_9_of_17
+;   MAC__ungrouped_8_of_16
 ;   MAC_transitions_3_of_3
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_10_of_17
+;   MAC__ungrouped_9_of_16
 
 .macro MAC_06_game_screen__object_system_5_of_8
 ; ----------------------------------------------------------------------------
@@ -1700,7 +1701,7 @@ L_E05D: sta     $44                             ; E05D
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_11_of_17
+;   MAC__ungrouped_10_of_16
 
 .macro MAC_06_game_screen__object_system_6_of_8
 ; ----------------------------------------------------------------------------
@@ -2023,23 +2024,25 @@ L_E152: lda     L0000                           ; E152
 
 .endmacro
 
-; Interrupted by 17 macros:
+; Interrupted by 19 macros:
 ;   MAC_math_3_of_5
 ;   MAC_03_demo_screen_2_of_2
 ;   MAC_02_story_sequence
 ;   MAC_mmc1
 ;   MAC_hardware_1_of_7
-;   MAC__ungrouped_12_of_17
+;   MAC__ungrouped_11_of_16
 ;   MAC_hardware_2_of_7
-;   MAC__ungrouped_13_of_17
+;   MAC__ungrouped_12_of_16
 ;   MAC_hardware_3_of_7
-;   MAC__ungrouped_14_of_17
+;   MAC__ungrouped_13_of_16
+;   MAC_drawing_background_1_of_2
+;   MAC_drawing_text
 ;   MAC_hardware_4_of_7
 ;   MAC_input
 ;   MAC_timing_2_of_3
-;   MAC_drawing_background
+;   MAC_drawing_background_2_of_2
 ;   MAC_hardware_5_of_7
-;   MAC__ungrouped_15_of_17
+;   MAC__ungrouped_14_of_16
 ;   MAC_math_4_of_5
 
 .macro MAC_06_game_screen__object_system_8_of_8

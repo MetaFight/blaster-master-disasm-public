@@ -73,7 +73,7 @@ L_F305: jsr     L_F412                          ; F305
 ; ----------------------------------------------------------------------------
 L_F30F: ldx     #$1F                            ; F30F
 L_F311: lda     L_F31B,x                        ; F311
-        sta     $0650,x                         ; F314
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; F314
         dex                                     ; F317
         bpl     L_F311                          ; F318
         rts                                     ; F31A
@@ -94,7 +94,7 @@ L_F33B: lda     LoadedObj + Obj::Scratch1       ; F33B
         tay                                     ; F349
         ldx     #$07                            ; F34A
 L_F34C: lda     L_F359,y                        ; F34C
-        sta     $0650,x                         ; F34F
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; F34F
         sta     Background_Palettes + BgPalette::Colour0,x ; F352
         dey                                     ; F354
         dex                                     ; F355
@@ -572,7 +572,7 @@ L_FCBC: jsr     L_E6FA                          ; FCBC
         ldx     #$13                            ; FCBF
 L_FCC1: lda     L_FCCD,x                        ; FCC1
         sta     Background_Palettes + BgPalette::Colour0,x ; FCC4
-        sta     $0650,x                         ; FCC6
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; FCC6
         dex                                     ; FCC9
         bpl     L_FCC1                          ; FCCA
         rts                                     ; FCCC

@@ -114,3 +114,17 @@
         Flags .byte   ; +$00 (byte)  Flag bits: 0-1=palette 3=Tunnel (tank: Tank Tunnel; overhead: Dungeon Exit) 2+3=Dungeon Entrance 4=damage 5=ladder 6=water 7=solid 3+7=Doorway 4+6=lava 5+7=solid-ladder 6+7=destroyable.
 .endstruct
 
+; Point: A point in 2D space.
+.struct Point
+        X_   .byte   ; +$00 (byte)
+        Y_   .byte   ; +$01 (byte)
+.endstruct
+
+; Vector2: A 2D vector of q12.4 fixed point numbers.
+.struct Vector2
+        X_Lo .byte   ; +$00 (byte)
+        X_Hi .byte   ; +$01 (byte)
+        Y_Lo .byte   ; +$02 (byte)
+        Y_Hi .byte   ; +$03 (byte)
+.endstruct
+

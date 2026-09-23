@@ -67,7 +67,7 @@ L_8A20: dec     LoadedObj + Obj::Scratch1       ; 8A20
         bne     L_8A2B                          ; 8A22
         lda     #$03                            ; 8A24
         sta     LoadedObj + Obj::Type           ; 8A26
-        jsr     LC5B2                           ; 8A28
+        jsr     SetCheckpoint                   ; 8A28
 L_8A2B: jmp     L_8A77                          ; 8A2B
 
 ; ----------------------------------------------------------------------------
@@ -116,7 +116,7 @@ L_8A69: dec     LoadedObj + Obj::Scratch1       ; 8A69
         bne     L_8A74                          ; 8A6B
         lda     #$03                            ; 8A6D
         sta     LoadedObj + Obj::Type           ; 8A6F
-        jsr     LC5B2                           ; 8A71
+        jsr     SetCheckpoint                   ; 8A71
 L_8A74: jmp     L_8AB2                          ; 8A74
 
 ; ----------------------------------------------------------------------------

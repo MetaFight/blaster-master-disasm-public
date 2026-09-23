@@ -107,7 +107,7 @@ L_F8E3: lda     #$00                            ; F8E3
 ; ----------------------------------------------------------------------------
 L_F90B: ldx     #$0F                            ; F90B
 L_F90D: lda     L_F917,x                        ; F90D
-        sta     $0650,x                         ; F910
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; F910
         dex                                     ; F913
         bpl     L_F90D                          ; F914
         rts                                     ; F916

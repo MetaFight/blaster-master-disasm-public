@@ -25,7 +25,7 @@ L_F71C: jsr     L_EA03                          ; F71C
         sta     $C8                             ; F74D
         jsr     L_E823                          ; F74F
         jsr     L_F1CA                          ; F752
-        jsr     L_CE82                          ; F755
+        jsr     TextScreen_LoadPalettes         ; F755
         lda     #$00                            ; F758
         sta     $01                             ; F75A
         jsr     L_CE0F                          ; F75C

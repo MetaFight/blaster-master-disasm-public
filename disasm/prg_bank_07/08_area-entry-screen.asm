@@ -40,7 +40,7 @@ L_F6E5: pha                                     ; F6E5
 L_F6F3: jsr     L_E6FA                          ; F6F3
         ldx     #$03                            ; F6F6
 L_F6F8: lda     L_F702,x                        ; F6F8
-        sta     $0650,x                         ; F6FB
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; F6FB
         dex                                     ; F6FE
         bpl     L_F6F8                          ; F6FF
         rts                                     ; F701

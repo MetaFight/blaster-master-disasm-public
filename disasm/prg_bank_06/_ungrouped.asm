@@ -16,13 +16,13 @@ L_888C: lda     $F3                             ; 888C
         lda     LoadedObj + Obj::Facing         ; 88A9
         sta     $03D5                           ; 88AB
         lda     LoadedObj + Obj::Position_X_Lo  ; 88AE
-        sta     $03D0                           ; 88B0
+        sta     ParkedSophia_Position + Vector2::X_Lo ; 88B0
         lda     LoadedObj + Obj::Position_X_Hi  ; 88B3
-        sta     $03D1                           ; 88B5
+        sta     ParkedSophia_Position + Vector2::X_Hi ; 88B5
         lda     LoadedObj + Obj::Position_Y_Lo  ; 88B8
-        sta     $03D2                           ; 88BA
+        sta     ParkedSophia_Position + Vector2::Y_Lo ; 88BA
         lda     LoadedObj + Obj::Position_Y_Hi  ; 88BD
-        sta     $03D3                           ; 88BF
+        sta     ParkedSophia_Position + Vector2::Y_Hi ; 88BF
         lda     #$1E                            ; 88C2
         sta     $03D6                           ; 88C4
         lda     #$00                            ; 88C7
@@ -64,13 +64,13 @@ L_88F1: lda     $C1                             ; 88F1
         pha                                     ; 890A
         lda     LoadedObj + Obj::IFrameCounter  ; 890B
         pha                                     ; 890D
-        lda     $03D0                           ; 890E
+        lda     ParkedSophia_Position + Vector2::X_Lo ; 890E
         sta     LoadedObj + Obj::Position_X_Lo  ; 8911
-        lda     $03D1                           ; 8913
+        lda     ParkedSophia_Position + Vector2::X_Hi ; 8913
         sta     LoadedObj + Obj::Position_X_Hi  ; 8916
-        lda     $03D2                           ; 8918
+        lda     ParkedSophia_Position + Vector2::Y_Lo ; 8918
         sta     LoadedObj + Obj::Position_Y_Lo  ; 891B
-        lda     $03D3                           ; 891D
+        lda     ParkedSophia_Position + Vector2::Y_Hi ; 891D
         sta     LoadedObj + Obj::Position_Y_Hi  ; 8920
         lda     $03D5                           ; 8922
         sta     LoadedObj + Obj::Facing         ; 8925

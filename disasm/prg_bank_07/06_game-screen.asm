@@ -1,15 +1,15 @@
 .macro MAC_06_game_screen
 ; ----------------------------------------------------------------------------
-; Short preamble for Start_NewGame that forces Current_Section to the tank section of the current
-; Area.
-.proc Start_NewGame_FromTankSection
+; Short preamble for Start_GameScreen that forces Current_Section to the tank section of the
+; current Area.
+.proc Start_GameScreen_FromTankSection
         lda     $14                             ; C2FB
         ora     #$08                            ; C2FD
         sta     $14                             ; C2FF
 .endproc
 L_C301: lda     #$02                            ; C301
         sta     $DD                             ; C303
-        jsr     L_CA14                          ; C305
+        jsr     MovePlayerToSpawnPosition       ; C305
         lda     #$00                            ; C308
         sta     $13                             ; C30A
         sta     $10                             ; C30C
@@ -22,7 +22,7 @@ L_C301: lda     #$02                            ; C301
         sta     $C1                             ; C31D
         lda     #$03                            ; C31F
         sta     LoadedObj + Obj::Type           ; C321
-        jsr     L_C5B2                          ; C323
+        jsr     SetCheckpoint                   ; C323
 L_C326: lda     $06F3                           ; C326
         asl     a                               ; C329
         bne     L_C334                          ; C32A

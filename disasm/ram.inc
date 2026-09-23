@@ -19,7 +19,7 @@ Global_FrameCounter            := $0011
 ; Set by NMI to signal BankSave_Switch must complete the deferred NMI work.
 Nmi_SignalFlags                := $0012
 ; The 14-byte zero-page working copy of the currently active object slot
-LoadedObject := $0046   ; Obj[] base — indexed access (any element)
+LoadedObject := $0046   ; Obj record
 LoadedObj    := $0046   ; element 0 — direct access
 Background_Palettes := $0058   ; BgPalette[] base — indexed access (any element)
 BG_Palette_0        := $0058   ; element 0 — direct access
@@ -51,6 +51,10 @@ Projectile2   := $0082   ; element 2
 Projectile3   := $0085   ; element 3
 Projectile4   := $0088   ; element 4
 Projectile5   := $008B   ; element 5
+Checkpoint_ParkedSophia_Position := $0378   ; Vector2 record
+; Sophia's parked Position when Jason has disembarked.
+ParkedSophia_Position := $03D0   ; Vector2 record
+Checkpoint_Position := $03F5   ; Vector2 record
 ; The object table: 18 Obj records (14 bytes each) packed at $0400-$04FB. Slot 0 is reserved
 ; for the player (Sophia/Jason); slots 1-17 hold enemies, projectiles, pickups, gates and
 ; other objects. Indexed access ($0400,X with X = ObjectSlot_Offset $56) reaches any slot;
@@ -86,7 +90,7 @@ ScreenTileMap := $0500   ; TileAttributes[] base — indexed access (any element
 ; by name. Extent: Metasprite_RenderNoBank ($F04F) flushes the buffer whenever $3C reaches
 ; $40, BEFORE staging each entry, and the largest single stager adds $10 bytes (4 sprites,
 ; $EE77/$EEE9) at offsets +$00..+$0F. $40 + $10 = $50 = 80 bytes = exactly 20 records, which
-; lands the buffer at $0600-$064F and stops one byte short of Palette_Shadow ($0650) -- the
+; lands the buffer at $0600-$064F and stops one byte short of BgPalette_Shadow ($0650) -- the
 ; threshold looks chosen so the largest entry cannot overrun the palette. Appended by
 ; OAM_Stage_Pattern ($ECB4, 1 sprite) and the shape stagers $ECD1/$ED12/$ED54/$EDA4/$EDF5/
 ; $EE77/$EEE9 (2-4 sprites each), all of which write $0600+N,X for N = 0..$0F and then advance
@@ -96,6 +100,12 @@ OAM_Staging_Buffer_Sprite0 := $0600   ; element 0 — direct access
 OAM_Staging_Buffer_Sprite1 := $0604   ; element 1
 OAM_Staging_Buffer_Sprite2 := $0608   ; element 2
 OAM_Staging_Buffer_Sprite3 := $060C   ; element 3
+; 16-byte background palette shadow buffer. ScreenFade_Step reads from here as the unfaded
+; source. Faded output written to PPU upload buffer.
+BgPalette_Shadow := $0650   ; BgPalette[] base — indexed access (any element)
+; 16-byte sprite palette shadow buffer. ScreenFade_Step reads from here as the unfaded source.
+; Faded output written to PPU upload buffer.
+SpritePalette_Shadow := $0660   ; SpritePalette[] base — indexed access (any element)
 
 ; Byte offset of the active slot
 ObjectSlot_Offset              := $0056

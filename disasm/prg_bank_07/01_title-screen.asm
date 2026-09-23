@@ -9,7 +9,7 @@
         jsr     L_DEC2                          ; C2A1
         jsr     TitleScreen_Wrapper             ; C2A4
 ; START pressed, so start gameplay.
-        beq     Start_Gameplay                  ; C2A7
+        beq     Start_GameScreen_WithResetProgression ; C2A7
 ; TitleScreen timed out, so start demo.
         jsr     L_E309                          ; C2A9
 .endproc
@@ -28,7 +28,7 @@
         bne     L_C2DB                          ; C2BA
 .endproc
 ; Start gameplay from the beginning:  Area 1 tank section with IntroScreen cut scene.
-.proc Start_Gameplay
+.proc Start_GameScreen_WithResetProgression
         lda     #$08                            ; C2BC
         sta     $14                             ; C2BE
         jsr     L_CDBA                          ; C2C0
@@ -41,44 +41,46 @@
         sta     $03FB                           ; C2D0
         sta     $03FC                           ; C2D3
         sta     $99                             ; C2D6
-        jmp     Start_NewGame_FromTankSection   ; C2D8
+        jmp     Start_GameScreen_FromTankSection ; C2D8
 .endproc
 
 .endmacro
 
-; Interrupted by 63 macros:
+; Interrupted by 67 macros:
 ;   MAC_03_demo_screen_1_of_2
 ;   MAC_06_game_screen
 ;   MAC_06_game_screen__game_loop
 ;   MAC_transitions_1_of_3
-;   MAC__ungrouped_1_of_17
+;   MAC_checkpoint
+;   MAC__ungrouped_1_of_16
 ;   MAC_transitions_2_of_3
 ;   MAC_06_game_screen__hud
 ;   MAC_06_game_screen__object_system_1_of_8
-;   MAC__ungrouped_2_of_17
+;   MAC__ungrouped_2_of_16
 ;   MAC_06_game_screen__viewport_1_of_2
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_3_of_17
+;   MAC_palette_1_of_2
 ;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_4_of_17
+;   MAC__ungrouped_3_of_16
+;   MAC_palette_2_of_2
 ;   MAC_06_game_screen__viewport_2_of_2
-;   MAC__ungrouped_5_of_17
+;   MAC__ungrouped_4_of_16
 ;   MAC_06_game_screen__object_system_2_of_8
-;   MAC__ungrouped_6_of_17
+;   MAC__ungrouped_5_of_16
 ;   MAC_06_game_screen__object_system_3_of_8
-;   MAC__ungrouped_7_of_17
+;   MAC__ungrouped_6_of_16
 ;   MAC_06_game_screen__object_system_4_of_8
-;   MAC__ungrouped_8_of_17
+;   MAC__ungrouped_7_of_16
 ;   MAC_level_rendering
-;   MAC__ungrouped_9_of_17
+;   MAC__ungrouped_8_of_16
 ;   MAC_transitions_3_of_3
 ;   MAC_sound_2_of_2
-;   MAC__ungrouped_10_of_17
+;   MAC__ungrouped_9_of_16
 ;   MAC_06_game_screen__object_system_5_of_8
-;   MAC__ungrouped_11_of_17
+;   MAC__ungrouped_10_of_16
 ;   MAC_06_game_screen__object_system_6_of_8
 ;   MAC_math_2_of_5
 ;   MAC_06_game_screen__object_system_7_of_8
@@ -87,26 +89,28 @@
 ;   MAC_02_story_sequence
 ;   MAC_mmc1
 ;   MAC_hardware_1_of_7
-;   MAC__ungrouped_12_of_17
+;   MAC__ungrouped_11_of_16
 ;   MAC_hardware_2_of_7
-;   MAC__ungrouped_13_of_17
+;   MAC__ungrouped_12_of_16
 ;   MAC_hardware_3_of_7
-;   MAC__ungrouped_14_of_17
+;   MAC__ungrouped_13_of_16
+;   MAC_drawing_background_1_of_2
+;   MAC_drawing_text
 ;   MAC_hardware_4_of_7
 ;   MAC_input
 ;   MAC_timing_2_of_3
-;   MAC_drawing_background
+;   MAC_drawing_background_2_of_2
 ;   MAC_hardware_5_of_7
-;   MAC__ungrouped_15_of_17
+;   MAC__ungrouped_14_of_16
 ;   MAC_math_4_of_5
 ;   MAC_06_game_screen__object_system_8_of_8
 ;   MAC_math_5_of_5
-;   MAC__ungrouped_16_of_17
+;   MAC__ungrouped_15_of_16
 ;   MAC_rng
 ;   MAC_timing_3_of_3
 ;   MAC_hardware_6_of_7
 ;   MAC_drawing_sprites
-;   MAC__ungrouped_17_of_17
+;   MAC__ungrouped_16_of_16
 ;   MAC_drawing_metasprites
 ;   MAC_hardware_7_of_7
 ;   MAC_10_ending_1_of_2
@@ -250,8 +254,8 @@ _Done:
 ; Copy the 4-byte stage-select palette $F51F → BG $0650 and sprite $0660 (X=$03..0).
 _CopyLoop:
         lda     _Resource_BgPalette,x           ; F512
-        sta     $0650,x                         ; F515
-        sta     $0660,x                         ; F518
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; F515
+        sta     SpritePalette_Shadow + SpritePalette::Transparency,x ; F518
         dex                                     ; F51B
         bpl     _CopyLoop                       ; F51C
         rts                                     ; F51E
@@ -364,7 +368,7 @@ _HandleStartPress:
 ; then copy the four 4-byte background palettes.
 _CopyLoop:
         lda     _TitleScreen_Palette + BgPalette::Colour0,x ; F594
-        sta     $0650,x                         ; F597
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; F597
         dex                                     ; F59A
         bpl     _CopyLoop                       ; F59B
         rts                                     ; F59D
@@ -411,12 +415,12 @@ L_F5D1: .byte   "CREDIT "                       ; F5D1
 
 .macro MAC_01_title_screen_3_of_3
 ; ----------------------------------------------------------------------------
-; Fill the Palette_Shadow buffer (32 bytes) with $0F (black).
+; Fill the BgPalette_Shadow buffer (32 bytes) with $0F (black).
 .proc Background_BlackoutPalettes
         lda     #$0F                            ; F9CA
         ldx     #$1F                            ; F9CC
 _Loop:
-        sta     $0650,x                         ; F9CE
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; F9CE
         dex                                     ; F9D1
         bpl     _Loop                           ; F9D2
         rts                                     ; F9D4

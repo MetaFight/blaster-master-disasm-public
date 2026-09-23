@@ -1,4 +1,4 @@
-.macro MAC__ungrouped_1_of_17
+.macro MAC__ungrouped_1_of_16
 ; ----------------------------------------------------------------------------
 L_C642: lda     $10                             ; C642
         and     #$07                            ; C644
@@ -22,7 +22,7 @@ L_C659: lda     $C5                             ; C659
         jsr     L_EB51                          ; C669
         ldy     #$0F                            ; C66C
 L_C66E: lda     (IndirectPtrLo),y               ; C66E
-        sta     $0650,y                         ; C670
+        sta     BgPalette_Shadow + BgPalette::Colour0,y ; C670
         dey                                     ; C673
         bpl     L_C66E                          ; C674
         jmp     L_C683                          ; C676
@@ -30,7 +30,7 @@ L_C66E: lda     (IndirectPtrLo),y               ; C66E
 ; ----------------------------------------------------------------------------
 L_C679: ldx     #$0F                            ; C679
         lda     #$0F                            ; C67B
-L_C67D: sta     $0650,x                         ; C67D
+L_C67D: sta     BgPalette_Shadow + BgPalette::Colour0,x ; C67D
         dex                                     ; C680
         bpl     L_C67D                          ; C681
 L_C683: ldx     #$0B                            ; C683
@@ -38,14 +38,14 @@ L_C683: ldx     #$0B                            ; C683
         and     #$20                            ; C687
         bne     L_C695                          ; C689
 L_C68B: lda     L_C6CB,x                        ; C68B
-        sta     $0660,x                         ; C68E
+        sta     SpritePalette_Shadow + SpritePalette::Transparency,x ; C68E
         dex                                     ; C691
         bpl     L_C68B                          ; C692
         rts                                     ; C694
 
 ; ----------------------------------------------------------------------------
 L_C695: lda     L_C6BF,x                        ; C695
-        sta     $0660,x                         ; C698
+        sta     SpritePalette_Shadow + SpritePalette::Transparency,x ; C698
         dex                                     ; C69B
         bpl     L_C695                          ; C69C
         lda     $C5                             ; C69E
@@ -62,7 +62,7 @@ L_C695: lda     L_C6BF,x                        ; C695
         tay                                     ; C6B1
         ldx     #$03                            ; C6B2
 L_C6B4: lda     L_C6D7,y                        ; C6B4
-        sta     $0668,x                         ; C6B7
+        sta     SpritePalette_Shadow + $08 + SpritePalette::Transparency,x ; C6B7
         dey                                     ; C6BA
         dex                                     ; C6BB
         bne     L_C6B4                          ; C6BC
@@ -153,7 +153,7 @@ L_C789: sta     $FF                             ; C789
 ;   MAC_06_game_screen__hud
 ;   MAC_06_game_screen__object_system_1_of_8
 
-.macro MAC__ungrouped_2_of_17
+.macro MAC__ungrouped_2_of_16
 ; ----------------------------------------------------------------------------
 L_C9D6: lda     #$00                            ; C9D6
         sta     ObjectSlot_Offset               ; C9D8
@@ -176,25 +176,42 @@ L_C9F4: .byte   $16,$22,$18,$28,$20,$24,$2A,$26 ; C9F4
 L_CA04: .byte   $17,$23,$19,$29,$21,$25,$2B,$27 ; CA04
         .byte   $01,$03,$05,$07,$09,$11,$13,$15 ; CA0C
 ; ----------------------------------------------------------------------------
-L_CA14: lda     $14                             ; CA14
+; Load Player spawn position and move the Player there.
+.proc MovePlayerToSpawnPosition
+        lda     $14                             ; CA14
         and     #$0F                            ; CA16
         asl     a                               ; CA18
         tax                                     ; CA19
-        lda     L_CA2B,x                        ; CA1A
+        lda     SectionSpawnPositionTable + Point::X_,x ; CA1A
         sta     LoadedObj + Obj::Position_X_Hi  ; CA1D
-        lda     LCA2C,x                         ; CA1F
+        lda     SectionSpawnPositionTable + Point::Y_,x ; CA1F
         sta     LoadedObj + Obj::Position_Y_Hi  ; CA22
-L_CA24: lda     #$80                            ; CA24
+        lda     #$80                            ; CA24
+; Center player within the Tile.
         sta     LoadedObj + Obj::Position_X_Lo  ; CA26
         sta     LoadedObj + Obj::Position_Y_Lo  ; CA28
         rts                                     ; CA2A
+.endproc
 
 ; ----------------------------------------------------------------------------
-L_CA2B: .byte   $5A                             ; CA2B
-LCA2C:  .byte   $16,$39,$36,$19,$55,$1E,$79,$69 ; CA2C
-        .byte   $5D,$4E,$79,$39,$14,$59,$15     ; CA34
-L_CA3B: .byte   $18,$39,$45,$4B,$55,$07,$06,$0B ; CA3B
-        .byte   $36,$0B,$05,$7B,$05,$39,$39,$07 ; CA43
+; Player Sections spawn positions.
+SectionSpawnPositionTable:
+        .byte   $5A,$16 ; CA2B  X_=$5A Y_=$16
+        .byte   $39,$36 ; CA2D  X_=$39 Y_=$36
+        .byte   $19,$55 ; CA2F  X_=$19 Y_=$55
+        .byte   $1E,$79 ; CA31  X_=$1E Y_=$79
+        .byte   $69,$5D ; CA33  X_=$69 Y_=$5D
+        .byte   $4E,$79 ; CA35  X_=$4E Y_=$79
+        .byte   $39,$14 ; CA37  X_=$39 Y_=$14
+        .byte   $59,$15 ; CA39  X_=$59 Y_=$15
+        .byte   $18,$39 ; CA3B  X_=$18 Y_=$39
+        .byte   $45,$4B ; CA3D  X_=$45 Y_=$4B
+        .byte   $55,$07 ; CA3F  X_=$55 Y_=$07
+        .byte   $06,$0B ; CA41  X_=$06 Y_=$0B
+        .byte   $36,$0B ; CA43  X_=$36 Y_=$0B
+        .byte   $05,$7B ; CA45  X_=$05 Y_=$7B
+        .byte   $05,$39 ; CA47  X_=$05 Y_=$39
+        .byte   $39,$07 ; CA49  X_=$39 Y_=$07
 ; ----------------------------------------------------------------------------
 L_CA4B: lda     $C5                             ; CA4B
         and     #$0C                            ; CA4D
@@ -370,88 +387,16 @@ _Loop:
 
 .endmacro
 
-; Interrupted by 4 macros:
+; Interrupted by 7 macros:
 ;   MAC_06_game_screen__viewport_1_of_2
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-
-.macro MAC__ungrouped_3_of_17
-; ----------------------------------------------------------------------------
-L_CE55: lda     $45                             ; CE55
-        pha                                     ; CE57
-        lda     $10                             ; CE58
-        asl     a                               ; CE5A
-        asl     a                               ; CE5B
-        sta     $45                             ; CE5C
-        ldx     #$0F                            ; CE5E
-L_CE60: lda     $45                             ; CE60
-        clc                                     ; CE62
-        adc     #$10                            ; CE63
-        and     #$30                            ; CE65
-        sta     $45                             ; CE67
-        lda     $0650,x                         ; CE69
-        eor     $45                             ; CE6C
-        sta     Background_Palettes + BgPalette::Colour0,x ; CE6E
-        dex                                     ; CE70
-        bpl     L_CE60                          ; CE71
-        pla                                     ; CE73
-        sta     $45                             ; CE74
-        rts                                     ; CE76
-
-; ----------------------------------------------------------------------------
-L_CE77: ldx     #$0F                            ; CE77
-L_CE79: lda     $0650,x                         ; CE79
-        sta     Background_Palettes + BgPalette::Colour0,x ; CE7C
-        dex                                     ; CE7E
-        bpl     L_CE79                          ; CE7F
-        rts                                     ; CE81
-
-; ----------------------------------------------------------------------------
-L_CE82: jsr     L_E6FA                          ; CE82
-        ldx     #$03                            ; CE85
-L_CE87: lda     L_CE97,x                        ; CE87
-        sta     $0650,x                         ; CE8A
-        lda     L_CE9B,x                        ; CE8D
-        sta     $0660,x                         ; CE90
-        dex                                     ; CE93
-        bpl     L_CE87                          ; CE94
-        rts                                     ; CE96
-
-; ----------------------------------------------------------------------------
-L_CE97: .byte   $0F,$30,$0F,$0F                 ; CE97
-L_CE9B: .byte   $0F,$30,$15,$02,$0F,$30,$30,$30 ; CE9B
-; ----------------------------------------------------------------------------
-L_CEA3: lda     $0650,x                         ; CEA3
-        cmp     #$0F                            ; CEA6
-        beq     L_CEB3                          ; CEA8
-        sec                                     ; CEAA
-        sbc     $45                             ; CEAB
-        bcs     L_CEB1                          ; CEAD
-        lda     #$0F                            ; CEAF
-L_CEB1: sta     Background_Palettes + BgPalette::Colour0,x ; CEB1
-L_CEB3: rts                                     ; CEB3
-
-; ----------------------------------------------------------------------------
-L_CEB4: inx                                     ; CEB4
-        jsr     L_CEA3                          ; CEB5
-        inx                                     ; CEB8
-        jsr     L_CEA3                          ; CEB9
-        inx                                     ; CEBC
-        jsr     L_CEA3                          ; CEBD
-        txa                                     ; CEC0
-        sec                                     ; CEC1
-        sbc     #$03                            ; CEC2
-        tax                                     ; CEC4
-        rts                                     ; CEC5
-
-.endmacro
-
-; Interrupted by 2 macros:
+;   MAC_palette_1_of_2
 ;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
 
-.macro MAC__ungrouped_4_of_17
+.macro MAC__ungrouped_3_of_16
 ; ----------------------------------------------------------------------------
 L_D02D: lda     #$00                            ; D02D
         sta     $04                             ; D02F
@@ -592,21 +537,13 @@ L_D161: lda     L0000                           ; D161
 
 ; ----------------------------------------------------------------------------
 L_D17D: .byte   $01,$00,$02,$03                 ; D17D
-; ----------------------------------------------------------------------------
-L_D181: lda     #$0F                            ; D181
-        tax                                     ; D183
-L_D184: sta     Background_Palettes + BgPalette::Colour0,x ; D184
-        sta     $0650,x                         ; D186
-        dex                                     ; D189
-        bpl     L_D184                          ; D18A
-        rts                                     ; D18C
-
 .endmacro
 
-; Interrupted by 1 macro:
+; Interrupted by 2 macros:
+;   MAC_palette_2_of_2
 ;   MAC_06_game_screen__viewport_2_of_2
 
-.macro MAC__ungrouped_5_of_17
+.macro MAC__ungrouped_4_of_16
 ; ----------------------------------------------------------------------------
 L_D1EF: sta     $B7                             ; D1EF
         lda     $15                             ; D1F1
@@ -740,7 +677,7 @@ L_D2A8: lda     #$00                            ; D2A8
 ; Interrupted by 1 macro:
 ;   MAC_06_game_screen__object_system_2_of_8
 
-.macro MAC__ungrouped_6_of_17
+.macro MAC__ungrouped_5_of_16
 ; ----------------------------------------------------------------------------
 L_D65E: .byte   $00,$00,$01,$01,$01,$00,$FF,$FF ; D65E
         .byte   $FF                             ; D666
@@ -865,7 +802,7 @@ L_D71E: rts                                     ; D71E
 ; Interrupted by 1 macro:
 ;   MAC_06_game_screen__object_system_3_of_8
 
-.macro MAC__ungrouped_7_of_17
+.macro MAC__ungrouped_6_of_16
 ; ----------------------------------------------------------------------------
 L_D763: jsr     L_D697                          ; D763
         bne     L_D76F                          ; D766
@@ -936,7 +873,7 @@ L_D7BA: sta     $7C,x                           ; D7BA
 ; Interrupted by 1 macro:
 ;   MAC_06_game_screen__object_system_4_of_8
 
-.macro MAC__ungrouped_8_of_17
+.macro MAC__ungrouped_7_of_16
 ; ----------------------------------------------------------------------------
 L_D883: lda     #$00                            ; D883
         sta     $93                             ; D885
@@ -1017,7 +954,7 @@ L_D907: rts                                     ; D907
 ; Interrupted by 1 macro:
 ;   MAC_level_rendering
 
-.macro MAC__ungrouped_9_of_17
+.macro MAC__ungrouped_8_of_16
 ; ----------------------------------------------------------------------------
 L_DCFC: lda     #$01                            ; DCFC
         sta     $39                             ; DCFE
@@ -1090,7 +1027,7 @@ L_DD6F: pla                                     ; DD6F
 ;   MAC_transitions_3_of_3
 ;   MAC_sound_2_of_2
 
-.macro MAC__ungrouped_10_of_17
+.macro MAC__ungrouped_9_of_16
 ; ----------------------------------------------------------------------------
 L_DF05: lda     #$05                            ; DF05
         jmp     BankSave_Switch                 ; DF07
@@ -1104,7 +1041,7 @@ L_DF0A: lda     SavedPrgBank                    ; DF0A
 ; Interrupted by 1 macro:
 ;   MAC_06_game_screen__object_system_5_of_8
 
-.macro MAC__ungrouped_11_of_17
+.macro MAC__ungrouped_10_of_16
 ; ----------------------------------------------------------------------------
 L_E060: lsr     a                               ; E060
         dex                                     ; E061
@@ -1136,7 +1073,7 @@ L_E06A: cmp     #$80                            ; E06A
 ;   MAC_mmc1
 ;   MAC_hardware_1_of_7
 
-.macro MAC__ungrouped_12_of_17
+.macro MAC__ungrouped_11_of_16
 ; ----------------------------------------------------------------------------
 ; Single ROM byte, $00 in the shipped ROM - a build-time switch read (never written) by
 ; OAM_Copy_To_PPU ($E697) and OAM_BlitFromStaging ($EC77). Both do LDA OAM_Flag__HARDCODED_00 /
@@ -1151,7 +1088,7 @@ OAM_Flag__HARDCODED_00:
 ; Interrupted by 1 macro:
 ;   MAC_hardware_2_of_7
 
-.macro MAC__ungrouped_13_of_17
+.macro MAC__ungrouped_12_of_16
 ; ----------------------------------------------------------------------------
 L_E6DE: jmp     L_E6DE                          ; E6DE
 
@@ -1166,7 +1103,7 @@ LE6E6:  .byte   $20,$40,$80                     ; E6E6
 ; Interrupted by 1 macro:
 ;   MAC_hardware_3_of_7
 
-.macro MAC__ungrouped_14_of_17
+.macro MAC__ungrouped_13_of_16
 ; ----------------------------------------------------------------------------
 L_E6FA: lda     #$0F                            ; E6FA
         ldx     #$1F                            ; E6FC
@@ -1272,14 +1209,16 @@ L_E796: rts                                     ; E796
 
 .endmacro
 
-; Interrupted by 5 macros:
+; Interrupted by 7 macros:
+;   MAC_drawing_background_1_of_2
+;   MAC_drawing_text
 ;   MAC_hardware_4_of_7
 ;   MAC_input
 ;   MAC_timing_2_of_3
-;   MAC_drawing_background
+;   MAC_drawing_background_2_of_2
 ;   MAC_hardware_5_of_7
 
-.macro MAC__ungrouped_15_of_17
+.macro MAC__ungrouped_14_of_16
 ; ----------------------------------------------------------------------------
 ; Helper routine to switch PRG banks.  This variant hardcodes X (IndirectPtrLo) to #$7A.
 ; 
@@ -1350,7 +1289,7 @@ L_EA63: lda     (IndirectPtrLo),y               ; EA63
 ;   MAC_06_game_screen__object_system_8_of_8
 ;   MAC_math_5_of_5
 
-.macro MAC__ungrouped_16_of_17
+.macro MAC__ungrouped_15_of_16
 ; ----------------------------------------------------------------------------
 L_EB44: tya                                     ; EB44
         clc                                     ; EB45
@@ -1391,7 +1330,7 @@ L_EB64: pha                                     ; EB64
 ;   MAC_hardware_6_of_7
 ;   MAC_drawing_sprites
 
-.macro MAC__ungrouped_17_of_17
+.macro MAC__ungrouped_16_of_16
 ; ----------------------------------------------------------------------------
 ; Computes the object's on-screen visibility and offsets the provided X/Y screen coordinates to
 ; the top-left corner of their OAM object (See ScreenPos_Adjust).

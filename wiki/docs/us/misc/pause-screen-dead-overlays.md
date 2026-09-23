@@ -7,7 +7,7 @@
 
 ## Summary
 
-CHR bank `$15` contains cut content: graphical overlay tiles designed to be drawn directly onto the Sophia vehicle illustration in the pause-screen nametable when a vehicle upgrade is collected. In the shipped game these tiles go completely unused; the ability labels (text tiles) are drawn instead. The overlay tiles exist in the ROM alongside the text tiles and are reachable using the same `VramQueue_StageRow` + `VramQueue_Flush` pipeline — the only changes needed are the nametable position, descriptor, and tile index in the item data records at `$F985`–`$F98C`.
+CHR bank `$15` contains cut content: graphical overlay tiles designed to be drawn directly onto the Sophia vehicle illustration in the pause-screen nametable when a vehicle upgrade is collected. In the shipped game these tiles go completely unused; the ability labels (text tiles) are drawn instead. The overlay tiles exist in the ROM alongside the text tiles and are reachable using the same `Nametable_StagePatternRect` + `VramQueue_Flush` pipeline — the only changes needed are the nametable position, descriptor, and tile index in the item data records at `$F985`–`$F98C`.
 
 ---
 
@@ -49,7 +49,7 @@ Which upgrade each overlay was *designed* for is not certain — the overlay til
 
 ## VramQueue descriptor format
 
-`VramQueue_StageRow ($E797)` reads one descriptor byte followed by tile indices from `($7A)`.
+`Nametable_StagePatternRect ($E797)` reads one descriptor byte followed by tile indices from `($7A)`.
 
 | Bits | Field | Notes |
 |---|---|---|

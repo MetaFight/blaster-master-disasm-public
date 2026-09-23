@@ -1106,7 +1106,7 @@ L_9EB3: jsr     LC10E                           ; 9EB3
 L_9ECA: pha                                     ; 9ECA
         lda     L_9F21,x                        ; 9ECB
         sta     Background_Palettes + BgPalette::Colour0,y ; 9ECE
-        sta     $0650,y                         ; 9ED1
+        sta     BgPalette_Shadow + BgPalette::Colour0,y ; 9ED1
         inx                                     ; 9ED4
         iny                                     ; 9ED5
         pla                                     ; 9ED6
@@ -1885,7 +1885,7 @@ L_A4A4: rts                                     ; A4A4
 L_A4A5: ldx     #$0F                            ; A4A5
 L_A4A7: lda     L_A4B3,x                        ; A4A7
         sta     Background_Palettes + BgPalette::Colour0,x ; A4AA
-        sta     $0650,x                         ; A4AC
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; A4AC
         dex                                     ; A4AF
         bpl     L_A4A7                          ; A4B0
         rts                                     ; A4B2
@@ -2489,7 +2489,7 @@ L_A895: pla                                     ; A895
         ldy     #$03                            ; A8C7
 L_A8C9: lda     LA8F2,y                         ; A8C9
         sta     Background_Palettes + BgPalette::Colour0,x ; A8CC
-        sta     $0650,x                         ; A8CE
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; A8CE
         dex                                     ; A8D1
         dey                                     ; A8D2
         bne     L_A8C9                          ; A8D3
@@ -2874,13 +2874,13 @@ L_AB98: rts                                     ; AB98
 ; ----------------------------------------------------------------------------
 L_AB99: ldx     #$0F                            ; AB99
 L_AB9B: lda     L_ABB6,x                        ; AB9B
-        sta     $0650,x                         ; AB9E
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; AB9E
         sta     Background_Palettes + BgPalette::Colour0,x ; ABA1
         dex                                     ; ABA3
         bpl     L_AB9B                          ; ABA4
         ldx     #$03                            ; ABA6
 L_ABA8: lda     L_ABB6,x                        ; ABA8
-        sta     $0668,x                         ; ABAB
+        sta     SpritePalette_Shadow + $08 + SpritePalette::Transparency,x ; ABAB
         sta     Sprite_Palettes + $08 + SpritePalette::Transparency,x ; ABAE
         dex                                     ; ABB0
         bpl     L_ABA8                          ; ABB1
@@ -3287,13 +3287,13 @@ L_AE5A: lda     $0671                           ; AE5A
 ; ----------------------------------------------------------------------------
 L_AE62: ldx     #$0F                            ; AE62
 L_AE64: lda     L_AE7F,x                        ; AE64
-        sta     $0650,x                         ; AE67
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; AE67
         sta     Background_Palettes + BgPalette::Colour0,x ; AE6A
         dex                                     ; AE6C
         bpl     L_AE64                          ; AE6D
         ldx     #$03                            ; AE6F
 L_AE71: lda     L_AE8F,x                        ; AE71
-        sta     $0668,x                         ; AE74
+        sta     SpritePalette_Shadow + $08 + SpritePalette::Transparency,x ; AE74
         sta     Sprite_Palettes + $08 + SpritePalette::Transparency,x ; AE77
         dex                                     ; AE79
         bpl     L_AE71                          ; AE7A

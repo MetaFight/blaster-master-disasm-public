@@ -317,14 +317,15 @@ L_CDB9: rts                                     ; CDB9
 
 .endmacro
 
-; Interrupted by 7 macros:
+; Interrupted by 8 macros:
 ;   MAC_sound_1_of_2
 ;   MAC_screen_fade
 ;   MAC_timing_1_of_3
-;   MAC__ungrouped_3_of_17
+;   MAC_palette_1_of_2
 ;   MAC_06_game_screen__object_system_terrain
 ;   MAC_math_1_of_5
-;   MAC__ungrouped_4_of_17
+;   MAC__ungrouped_3_of_16
+;   MAC_palette_2_of_2
 
 .macro MAC_06_game_screen__viewport_2_of_2
 ; ----------------------------------------------------------------------------

@@ -72,7 +72,7 @@ L_E3BF: lda     #$16                            ; E3BF
         ldx     #$00                            ; E3C3
 L_E3C5: lda     (IndirectPtrLo),y               ; E3C5
         iny                                     ; E3C7
-        sta     $0650,x                         ; E3C8
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; E3C8
         inx                                     ; E3CB
         cpx     #$20                            ; E3CC
         bne     L_E3C5                          ; E3CE

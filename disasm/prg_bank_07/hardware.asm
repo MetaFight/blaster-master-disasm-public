@@ -38,7 +38,7 @@ _DEAD_ManualLoop:
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_12_of_17
+;   MAC__ungrouped_11_of_16
 
 .macro MAC_hardware_2_of_7
 ; ----------------------------------------------------------------------------
@@ -60,7 +60,7 @@ L_E6BF: lda     $FF                             ; E6BF
 .endmacro
 
 ; Interrupted by 1 macro:
-;   MAC__ungrouped_13_of_17
+;   MAC__ungrouped_12_of_16
 
 .macro MAC_hardware_3_of_7
 ; ----------------------------------------------------------------------------
@@ -78,161 +78,12 @@ L_E6F0: lda     $FE                             ; E6F0
 
 .endmacro
 
-; Interrupted by 1 macro:
-;   MAC__ungrouped_14_of_17
+; Interrupted by 3 macros:
+;   MAC__ungrouped_13_of_16
+;   MAC_drawing_background_1_of_2
+;   MAC_drawing_text
 
 .macro MAC_hardware_4_of_7
-; ----------------------------------------------------------------------------
-L_E797: lda     $01                             ; E797
-        pha                                     ; E799
-        lda     L0000                           ; E79A
-        pha                                     ; E79C
-        lda     $03                             ; E79D
-        pha                                     ; E79F
-        lda     $02                             ; E7A0
-        pha                                     ; E7A2
-        lda     $C8                             ; E7A3
-        sta     $02                             ; E7A5
-        ldy     #$00                            ; E7A7
-        lda     (IndirectPtrLo),y               ; E7A9
-        iny                                     ; E7AB
-        sta     L0000                           ; E7AC
-        asl     a                               ; E7AE
-        bcc     L_E7B6                          ; E7AF
-        lda     (IndirectPtrLo),y               ; E7B1
-        iny                                     ; E7B3
-        sta     $45                             ; E7B4
-L_E7B6: jsr     L_E74D                          ; E7B6
-        jsr     L_F19F                          ; E7B9
-        lda     L0000                           ; E7BC
-        and     #$0F                            ; E7BE
-        sta     $01                             ; E7C0
-        lda     $45                             ; E7C2
-        sta     $03                             ; E7C4
-L_E7C6: bit     L0000                           ; E7C6
-        bmi     L_E7D0                          ; E7C8
-        lda     (IndirectPtrLo),y               ; E7CA
-        iny                                     ; E7CC
-        jmp     L_E7D4                          ; E7CD
-
-; ----------------------------------------------------------------------------
-L_E7D0: lda     $03                             ; E7D0
-        inc     $03                             ; E7D2
-L_E7D4: sta     $0300,x                         ; E7D4
-        inx                                     ; E7D7
-        dec     $01                             ; E7D8
-        beq     L_E7F6                          ; E7DA
-        inc     $C8                             ; E7DC
-        lda     $C8                             ; E7DE
-        cmp     #$1E                            ; E7E0
-        bne     L_E7C6                          ; E7E2
-        lda     #$00                            ; E7E4
-        sta     $C8                             ; E7E6
-        stx     $19                             ; E7E8
-        jsr     L_F1BC                          ; E7EA
-        jsr     L_E74D                          ; E7ED
-        jsr     L_F19F                          ; E7F0
-        jmp     L_E7C6                          ; E7F3
-
-; ----------------------------------------------------------------------------
-L_E7F6: stx     $19                             ; E7F6
-        jsr     L_F1BC                          ; E7F8
-        lda     $45                             ; E7FB
-        clc                                     ; E7FD
-        adc     #$10                            ; E7FE
-        sta     $45                             ; E800
-        lda     L0000                           ; E802
-        sec                                     ; E804
-        sbc     #$10                            ; E805
-        sta     L0000                           ; E807
-        and     #$70                            ; E809
-        beq     L_E816                          ; E80B
-        lda     $02                             ; E80D
-        sta     $C8                             ; E80F
-        inc     $C7                             ; E811
-        jmp     L_E7B6                          ; E813
-
-; ----------------------------------------------------------------------------
-L_E816: pla                                     ; E816
-        sta     $02                             ; E817
-        pla                                     ; E819
-        sta     $03                             ; E81A
-        pla                                     ; E81C
-        sta     L0000                           ; E81D
-        pla                                     ; E81F
-        sta     $01                             ; E820
-        rts                                     ; E822
-
-; ----------------------------------------------------------------------------
-L_E823: jsr     L_E74D                          ; E823
-L_E826: jsr     L_F19B                          ; E826
-        ldy     #$00                            ; E829
-L_E82B: lda     (IndirectPtrLo),y               ; E82B
-        iny                                     ; E82D
-        cmp     #$00                            ; E82E
-        beq     L_E83A                          ; E830
-        jsr     L_F192                          ; E832
-        inc     $C7                             ; E835
-        jmp     L_E82B                          ; E837
-
-; ----------------------------------------------------------------------------
-L_E83A: jsr     L_F1BC                          ; E83A
-        jmp     L_EB44                          ; E83D
-
-; ----------------------------------------------------------------------------
-L_E840: jsr     L_EAE9                          ; E840
-        pha                                     ; E843
-        jsr     L_E74D                          ; E844
-        jsr     L_F19B                          ; E847
-        pla                                     ; E84A
-        pha                                     ; E84B
-        lsr     a                               ; E84C
-        lsr     a                               ; E84D
-        lsr     a                               ; E84E
-        lsr     a                               ; E84F
-        jsr     L_E85A                          ; E850
-        pla                                     ; E853
-        jsr     L_E85A                          ; E854
-        jmp     L_F1BC                          ; E857
-
-; ----------------------------------------------------------------------------
-L_E85A: and     #$0F                            ; E85A
-        clc                                     ; E85C
-        adc     #$30                            ; E85D
-        jmp     L_F192                          ; E85F
-
-; ----------------------------------------------------------------------------
-L_E862: jsr     L_EAE9                          ; E862
-        pha                                     ; E865
-        jsr     L_E74D                          ; E866
-        jsr     L_F19B                          ; E869
-        pla                                     ; E86C
-        pha                                     ; E86D
-        lsr     a                               ; E86E
-        lsr     a                               ; E86F
-        lsr     a                               ; E870
-        lsr     a                               ; E871
-        jsr     L_E87C                          ; E872
-        pla                                     ; E875
-        jsr     L_E87C                          ; E876
-        jmp     L_F1BC                          ; E879
-
-; ----------------------------------------------------------------------------
-L_E87C: and     #$0F                            ; E87C
-        clc                                     ; E87E
-        adc     #$F6                            ; E87F
-        jmp     L_F192                          ; E881
-
-; ----------------------------------------------------------------------------
-L_E884: pha                                     ; E884
-        jsr     L_E74D                          ; E885
-        jsr     L_F19B                          ; E888
-        pla                                     ; E88B
-        clc                                     ; E88C
-        adc     #$30                            ; E88D
-        jsr     L_F192                          ; E88F
-        jmp     L_F1BC                          ; E892
-
 ; ----------------------------------------------------------------------------
 ; Clear PPU_CTRL bit2 ($FF shadow + $2000): VRAM address increment = +1 (write across a row).
 ; Dispatch slot $C234; callers: Nametable_RLE_Decompress ($E95B), NMI palette upload ($EBC0).
@@ -260,7 +111,7 @@ L_E884: pha                                     ; E884
 ; Interrupted by 3 macros:
 ;   MAC_input
 ;   MAC_timing_2_of_3
-;   MAC_drawing_background
+;   MAC_drawing_background_2_of_2
 
 .macro MAC_hardware_5_of_7
 ; ----------------------------------------------------------------------------
@@ -294,11 +145,11 @@ L_EA30: sta     $2007                           ; EA30
 .endmacro
 
 ; Interrupted by 7 macros:
-;   MAC__ungrouped_15_of_17
+;   MAC__ungrouped_14_of_16
 ;   MAC_math_4_of_5
 ;   MAC_06_game_screen__object_system_8_of_8
 ;   MAC_math_5_of_5
-;   MAC__ungrouped_16_of_17
+;   MAC__ungrouped_15_of_16
 ;   MAC_rng
 ;   MAC_timing_3_of_3
 
@@ -360,7 +211,7 @@ L_ECB3: rts                                     ; ECB3
 
 ; Interrupted by 3 macros:
 ;   MAC_drawing_sprites
-;   MAC__ungrouped_17_of_17
+;   MAC__ungrouped_16_of_16
 ;   MAC_drawing_metasprites
 
 .macro MAC_hardware_7_of_7

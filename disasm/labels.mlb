@@ -3499,11 +3499,11 @@ NesPrgRom:1C2AC:Start_TitleScreen_WithTimeoutToDemo:Displays the TitleScreen. Tr
 NesPrgRom:1C2AE::Reset stack
 NesPrgRom:1C2B1::Set GameMode 'Title Screen before Demo' (#$80).
 NesPrgRom:1C2BA::TitleScreen timed out, so start demo.
-NesPrgRom:1C2BC:Start_Gameplay:Start gameplay from the beginning:  Area 1 tank section with IntroScreen cut scene.
+NesPrgRom:1C2BC:Start_GameScreen_WithResetProgression:Start gameplay from the beginning:  Area 1 tank section with IntroScreen cut scene.
 NesPrgRom:1C2CD::Clear tank and overhead defeated bosses as well as acquired power-ups.
 NesPrgRom:1C2DB:L_C2DB
 NesPrgRom:1C2F7:L_C2F7
-NesPrgRom:1C2FB:Start_NewGame_FromTankSection:Short preamble for Start_NewGame that forces Current_Section to the tank section of the current Area.
+NesPrgRom:1C2FB:Start_GameScreen_FromTankSection:Short preamble for Start_GameScreen that forces Current_Section to the tank section of the current Area.
 NesPrgRom:1C301:L_C301
 NesPrgRom:1C326:L_C326
 NesPrgRom:1C334:L_C334
@@ -3546,8 +3546,8 @@ NesPrgRom:1C55D:L_C55D
 NesPrgRom:1C56D:L_C56D
 NesPrgRom:1C586:L_C586
 NesPrgRom:1C5A2:L_C5A2
-NesPrgRom:1C5B2:L_C5B2
-NesPrgRom:1C5FA:L_C5FA
+NesPrgRom:1C5B2:SetCheckpoint:Save Player position, current section, active player, player object type, and Parked Sophia position, section, and facing.
+NesPrgRom:1C5FA:RestoreCheckpoint:Restore Player position, current section, active player, player object type, and Parked Sophia position, section, and facing.
 NesPrgRom:1C642:L_C642
 NesPrgRom:1C651:L_C651
 NesPrgRom:1C659:L_C659
@@ -3614,10 +3614,9 @@ NesPrgRom:1C9DA:L_C9DA
 NesPrgRom:1C9EA:L_C9EA
 NesPrgRom:1C9F4:L_C9F4
 NesPrgRom:1CA04:L_CA04
-NesPrgRom:1CA14:L_CA14
-NesPrgRom:1CA24:L_CA24
-NesPrgRom:1CA2B:L_CA2B
-NesPrgRom:1CA3B:L_CA3B
+NesPrgRom:1CA14:MovePlayerToSpawnPosition:Load Player spawn position and move the Player there.
+NesPrgRom:1CA26::Center player within the Tile.
+NesPrgRom:1CA2B:SectionSpawnPositionTable:Player Sections spawn positions.
 NesPrgRom:1CA4B:L_CA4B
 NesPrgRom:1CA52:L_CA52
 NesPrgRom:1CA70:L_CA70
@@ -3702,10 +3701,11 @@ NesPrgRom:1CE55:L_CE55
 NesPrgRom:1CE60:L_CE60
 NesPrgRom:1CE77:L_CE77
 NesPrgRom:1CE79:L_CE79
-NesPrgRom:1CE82:L_CE82
-NesPrgRom:1CE87:L_CE87
-NesPrgRom:1CE97:L_CE97
-NesPrgRom:1CE9B:L_CE9B
+NesPrgRom:1CE82:TextScreen_LoadPalettes:Loads the palettes used from the Continue and Lives Left screens (white text on black and a sophia-like palette with black replaced with dark blue).
+NesPrgRom:1CE85::Load the 4-entry fade colour tables: LCE97 → $0650 (BG), LCE9B → $0660 (sprite).
+NesPrgRom:1CE87:_TextScreen_LoadPalettes__Loop
+NesPrgRom:1CE97:_TextScreen_LoadPalettes__BackgroundPalette
+NesPrgRom:1CE9B:_TextScreen_LoadPalettes__SpritePalettes
 NesPrgRom:1CEA3:L_CEA3
 NesPrgRom:1CEB1:L_CEB1
 NesPrgRom:1CEB3:L_CEB3
@@ -4655,7 +4655,7 @@ NesPrgRom:1F9A0:L_F9A0
 NesPrgRom:1F9A4:L_F9A4
 NesPrgRom:1F9A5:L_F9A5
 NesPrgRom:1F9AF:L_F9AF
-NesPrgRom:1F9CA:Background_BlackoutPalettes:Fill the Palette_Shadow buffer (32 bytes) with $0F (black).
+NesPrgRom:1F9CA:Background_BlackoutPalettes:Fill the BgPalette_Shadow buffer (32 bytes) with $0F (black).
 NesPrgRom:1F9CE:_Background_BlackoutPalettes__Loop
 NesPrgRom:1F9D5:L_F9D5
 NesPrgRom:1FA07:L_FA07
@@ -4784,6 +4784,18 @@ NesInternalRam:009A:TerrainCollisionFlags:Set by Obj_MoveAndCollide and Obj_Move
 NesInternalRam:00C3:Player_GunLevel:Overhead Jason's persistent gun level.
 NesInternalRam:00D3:SavedPrgBank:PRG bank number to restore via BankSave_Switch ($E619) once a temporary bank switch is done.
 NesInternalRam:0150-0161:Tombstoned_ObjTypes:18-entry array (one per object slot, indexed by ObjectSlot_Index) used to stash an object's\nreal ObjType when it is made Dormant (ObjType $02).\nThe Dormant ObjType handler then reads from this table to restore the tombstoned Object.
+NesInternalRam:0378:Checkpoint_ParkedSophia_Position__X_Lo
+NesInternalRam:0379:Checkpoint_ParkedSophia_Position__X_Hi
+NesInternalRam:037A:Checkpoint_ParkedSophia_Position__Y_Lo
+NesInternalRam:037B:Checkpoint_ParkedSophia_Position__Y_Hi
+NesInternalRam:03D0:ParkedSophia_Position__X_Lo
+NesInternalRam:03D1:ParkedSophia_Position__X_Hi
+NesInternalRam:03D2:ParkedSophia_Position__Y_Lo
+NesInternalRam:03D3:ParkedSophia_Position__Y_Hi
+NesInternalRam:03F5:Checkpoint_Position__X_Lo
+NesInternalRam:03F6:Checkpoint_Position__X_Hi
+NesInternalRam:03F7:Checkpoint_Position__Y_Lo
+NesInternalRam:03F8:Checkpoint_Position__Y_Hi
 NesInternalRam:0400:PlayerSlot__Type:Object Type. 0 = empty (inactive slot); 1 = reserved; 2 = tombstoned; any other value dispatches to an Object Handler.
 NesInternalRam:0401:PlayerSlot__Facing:Direction byte (ObjType-defined: 8-bit heading angle / 2-bit direction index / facing bit-flags).
 NesInternalRam:0402:PlayerSlot__Position_X_Lo:The lower 8-bits of the Signed 16-bit Fixed Point position (swww wwww WWWW.FFFF) representing the object's X-position.

@@ -29,7 +29,7 @@ L_F7D1: jsr     L_EA03                          ; F7D1
         adc     #$30                            ; F80B
         jsr     L_F192                          ; F80D
         jsr     L_F1BC                          ; F810
-        jsr     L_CE82                          ; F813
+        jsr     TextScreen_LoadPalettes         ; F813
         jsr     L_CE0F                          ; F816
         lda     #$64                            ; F819
 L_F81B: pha                                     ; F81B

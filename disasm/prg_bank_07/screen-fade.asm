@@ -37,7 +37,7 @@ _Apply_Change:
         sta     L0000                           ; CDF4
         ldx     #$1F                            ; CDF6
 _Apply_To_Palette_Entry_X:
-        lda     $0650,x                         ; CDF8
+        lda     BgPalette_Shadow + BgPalette::Colour0,x ; CDF8
         sec                                     ; CDFB
         sbc     L0000                           ; CDFC
         bcs     _Save_Palette_Entry             ; CDFE

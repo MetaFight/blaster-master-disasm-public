@@ -643,22 +643,22 @@ L_8624: lda     $F3                             ; 8624
         sta     $00                             ; 863E
         bcs     L_8644                          ; 8640
         dec     $01                             ; 8642
-L_8644: lda     $03D0                           ; 8644
+L_8644: lda     ParkedSophia_Position + Vector2::X_Lo ; 8644
         cmp     $00                             ; 8647
-        lda     $03D1                           ; 8649
+        lda     ParkedSophia_Position + Vector2::X_Hi ; 8649
         sbc     $01                             ; 864C
         asl     a                               ; 864E
         bne     L_8676                          ; 864F
-        lda     $03D3                           ; 8651
+        lda     ParkedSophia_Position + Vector2::Y_Hi ; 8651
         sec                                     ; 8654
         sbc     LoadedObj + Obj::Position_Y_Hi  ; 8655
         asl     a                               ; 8657
         bne     L_8676                          ; 8658
         lda     #$1D                            ; 865A
         sta     LoadedObj + Obj::Type           ; 865C
-        lda     $03D0                           ; 865E
+        lda     ParkedSophia_Position + Vector2::X_Lo ; 865E
         sta     LoadedObj + Obj::Position_X_Lo  ; 8661
-        lda     $03D1                           ; 8663
+        lda     ParkedSophia_Position + Vector2::X_Hi ; 8663
         sta     LoadedObj + Obj::Position_X_Hi  ; 8666
         lda     #$16                            ; 8668
         sta     $03D6                           ; 866A
@@ -688,13 +688,13 @@ L_868C: bne     L_86CC                          ; 868C
         lda     #$00                            ; 8697
         sta     LoadedObj + Obj::Velocity_X     ; 8699
         sta     LoadedObj + Obj::Velocity_Y     ; 869B
-        lda     $03D0                           ; 869D
+        lda     ParkedSophia_Position + Vector2::X_Lo ; 869D
         sta     LoadedObj + Obj::Position_X_Lo  ; 86A0
-        lda     $03D1                           ; 86A2
+        lda     ParkedSophia_Position + Vector2::X_Hi ; 86A2
         sta     LoadedObj + Obj::Position_X_Hi  ; 86A5
-        lda     $03D2                           ; 86A7
+        lda     ParkedSophia_Position + Vector2::Y_Lo ; 86A7
         sta     LoadedObj + Obj::Position_Y_Lo  ; 86AA
-        lda     $03D3                           ; 86AC
+        lda     ParkedSophia_Position + Vector2::Y_Hi ; 86AC
         sta     LoadedObj + Obj::Position_Y_Hi  ; 86AF
         lda     $03D5                           ; 86B1
         sta     LoadedObj + Obj::Facing         ; 86B4
@@ -792,7 +792,7 @@ L_8750: dec     LoadedObj + Obj::Scratch1       ; 8750
         bne     L_875B                          ; 8752
         lda     #$1B                            ; 8754
         sta     LoadedObj + Obj::Type           ; 8756
-        jsr     LC5B2                           ; 8758
+        jsr     SetCheckpoint                   ; 8758
 L_875B: jmp     L_87A9                          ; 875B
 
 ; ----------------------------------------------------------------------------
@@ -839,7 +839,7 @@ L_879B: dec     LoadedObj + Obj::Scratch1       ; 879B
         bne     L_87A6                          ; 879D
         lda     #$1B                            ; 879F
         sta     LoadedObj + Obj::Type           ; 87A1
-        jsr     LC5B2                           ; 87A3
+        jsr     SetCheckpoint                   ; 87A3
 L_87A6: jmp     L_87DA                          ; 87A6
 
 ; ----------------------------------------------------------------------------

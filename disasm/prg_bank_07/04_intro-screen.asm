@@ -87,7 +87,7 @@ L_F668: pha                                     ; F668
 L_F67C: jsr     L_E6FA                          ; F67C
         ldx     #$1B                            ; F67F
 L_F681: lda     L_F68B,x                        ; F681
-        sta     $0650,x                         ; F684
+        sta     BgPalette_Shadow + BgPalette::Colour0,x ; F684
         dex                                     ; F687
         bpl     L_F681                          ; F688
         rts                                     ; F68A
